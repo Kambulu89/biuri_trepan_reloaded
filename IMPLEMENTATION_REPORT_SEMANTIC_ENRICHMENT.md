@@ -131,9 +131,8 @@ Ver a secção final com os números da execução completa. Ficheiros novos: `t
    como features. Exigem ontologias com indivíduos/relações que o dataset tabular não referencia.
 4. **Famílias/papéis** só são descobertos por anotações (`measurementFamily`/`statisticRole`); não se
    infere família a partir de `subPropertyOf` ou equivalências.
-5. **Professor ontológico no pipeline de produção:** a avaliação do enriquecimento é calculada e
-   reportada, mas o MLP+OWL **aceite não passa a ser o professor** do TREPAN em produção (continua o MLP
-   original). O caminho legado/GUI mantém o seu próprio mecanismo.
+5. **Professor ontológico no pipeline de produção:** implementado na fase seguinte (secção 11). Só é
+   usado com evidência forte e entradas reconstruíveis; **não melhorou de forma consistente as árvores**.
 6. **Otimização:** busca aleatória com semente (orçamento igual), não Optuna; é determinística e testável,
    mas menos poderosa.
 7. **`ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN`** usa o máximo de duas métricas secundárias, o que aumenta
@@ -152,7 +151,7 @@ Ver a secção final com os números da execução completa. Ficheiros novos: `t
 
 | | Antes (início da sessão) | Depois |
 |---|---|---|
-| Passam | 329 | **449** |
+| Passam | 329 | **468** |
 | Falham | 3 | **2** |
 | Ignorados | 2 | 2 |
 
@@ -170,3 +169,39 @@ Ver a secção final com os números da execução completa. Ficheiros novos: `t
   operações relacionais novas pedidas (2 famílias × 5), mantendo todas as outras asserções.
 * `compileall` e build (wheel) passam; as ontologias de teste são construídas em memória com owlready2.
 * Não validado aqui (ver limitações 8 e 9): GUI (PyQt6) e CLEAR (TensorFlow).
+
+## 11. Professor semântico (MLP+OWL) no TREPAN de produção
+
+**O que foi feito** (`core/semantic_teacher.py`, `core/production_training.py`, `core/production_inference.py`):
+
+* a avaliação do enriquecimento passou a correr **antes** do TREPAN, para o professor escolhido alimentar a
+  procura de capacidade e o treino dos dois braços; o professor é o **mesmo objeto** para o TREPAN Original e
+  o Reloaded (`reloaded_oracle_adapter == identity_same_oracle`, testado), preservando o protocolo controlado;
+* política (`decide_semantic_teacher`): usado só se `semantic_mlp_accepted` **e** `evidence_strength` ≥
+  `teacher_min_evidence` (por omissão `strong`, i.e. IC da utilidade acima de zero) **e** houver features
+  semânticas selecionadas; aceitações fracas não mudam o professor;
+* o professor reconstrói as colunas originais a partir do espaço do modelo, aplica o `OntologyProcessor`
+  ajustado no treino (ontologia destacada, serializável) e consulta um MLP afinado só no treino; se as
+  entradas não forem reconstruíveis (ex. categóricas codificadas) fica `UNAVAILABLE` com a razão;
+* a fidelidade das árvores passa a medir-se contra o professor realmente usado; `mlp_original` continua
+  reportado à parte; o bundle guarda o professor e `predict(model="mlp_semantic")` funciona;
+* falha ao construir o professor → mantém o MLP original e regista a razão (nunca silenciosa).
+
+**Resultado (`results/semantic_validation/teacher_comparison.json`, `scripts/run_teacher_comparison.py`):**
+
+| Cenário | Semente | Decisão do enriquecimento | Professor | BA árvore Reloaded: original → semântico |
+|---|---|---|---|---|
+| relação escondida entre ruído | 1 | `ACCEPT_PARTIAL_FEATURE_SET` (forte) | semântico | 0,759 → 0,719 |
+| relação escondida entre ruído | 2 | `ACCEPT_PARTIAL_FEATURE_SET` (forte) | semântico | 0,760 → 0,736 |
+| relação escondida entre ruído | 3 | `ACCEPT_PARTIAL_FEATURE_SET` (forte) | semântico | 0,706 → 0,735 |
+| fácil (sem ruído) | 1 | `REJECT_DEGRADATION` | original | 0,828 → 0,828 |
+| fácil (sem ruído) | 2 | `REJECT_NO_INFORMATIONAL_GAIN` | original | 0,694 → 0,694 |
+| fácil (sem ruído) | 3 | `REJECT_NO_INFORMATIONAL_GAIN` | original | 0,737 → 0,737 |
+
+**Leitura honesta:** mesmo quando o MLP semântico é melhor com evidência forte, as árvores **não
+melhoram de forma consistente** (2 de 3 sementes pioram; amostras de teste pequenas, 3 sementes). Explicação
+mecânica: as árvores continuam a dividir só sobre as features originais e o conhecimento extra do professor
+(o rácio worst/mean) não é expressável por esses cortes. Para o TREPAN Reloaded aproveitar o professor é
+preciso que também divida sobre as features `onto_*` selecionadas (espaço aumentado, com
+`OriginalOracleProjection`), o que **ainda não está ligado** no pipeline de produção e é o próximo passo
+(altera o protocolo de comparação Original vs Reloaded e a inferência do Reloaded, por isso exige decisão).
