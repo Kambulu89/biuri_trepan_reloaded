@@ -56,6 +56,15 @@ def _numeric_bound(value: Any) -> Optional[float]:
     return out if np.isfinite(out) else None
 
 
+def _has_integer_range(entity: Any) -> bool:
+    """``rdfs:range`` xsd:integer (ou faceta sobre inteiro) numa data property."""
+    for target in _iter_attr(entity, "range"):
+        base = getattr(target, "base_datatype", target)
+        if base is int or "integer" in str(getattr(base, "iri", "") or base).lower():
+            return True
+    return False
+
+
 def _explicit_entity_bounds(entity: Any) -> Tuple[Optional[float], Optional[float]]:
     """Limites numéricos declarados na OWL (xsd:min/maxInclusive/Exclusive).
 
@@ -111,6 +120,7 @@ class OntologySemanticGraph:
     parents: Dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
     domains: Dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
     entity_bounds: Dict[str, Tuple[Optional[float], Optional[float]]] = field(default_factory=dict)
+    integer_entities: Set[str] = field(default_factory=set)
     source_path: Optional[str] = None
     load_error: Optional[str] = None
 
@@ -188,6 +198,8 @@ class OntologySemanticGraph:
             for attr in ("label", "prefLabel", "altLabel"):
                 labels.extend(str(v) for v in _iter_attr(entity, attr))
             graph.labels[n] = list(dict.fromkeys(labels))
+            if _has_integer_range(entity):
+                graph.integer_entities.add(n)
             low, high = _explicit_entity_bounds(entity)
             if low is not None or high is not None:
                 graph.entity_bounds[n] = (low, high)
@@ -347,6 +359,57 @@ class OntologySemanticGraph:
                 valid &= ~(column > high)
         return valid
 
+    def is_integer_feature(self, feature: Any) -> bool:
+        entity = self.entity_for_feature(feature)
+        return bool(entity is not None and entity in self.integer_entities)
+
+    def domain_constraints(
+        self,
+        feature_names: Sequence[str],
+        reference_X=None,
+        *,
+        min_reference_coverage: float = 0.99,
+    ) -> "OntologyDomainConstraints":
+        """Restrições OWL aplicáveis à matriz efectivamente usada pela árvore.
+
+        Os limites da OWL estão em unidades do domínio; se a matriz estiver
+        escalada/codificada, aplicá-los destruiria a feature. Uma restrição só é
+        usada quando pelo menos ``min_reference_coverage`` das linhas de treino
+        já a cumprem (prova de que a coluna está nas unidades da OWL).
+        """
+        names = list(map(str, feature_names))
+        ref = None if reference_X is None else np.asarray(reference_X, dtype=float)
+        specs: Dict[int, Dict[str, Any]] = {}
+        skipped: List[str] = []
+        if self.is_active:
+            for j, name in enumerate(names):
+                low, high = self.feature_bounds(name)
+                integer = self.is_integer_feature(name)
+                if low is None and high is None and not integer:
+                    continue
+                if ref is not None and ref.ndim == 2 and j < ref.shape[1] and len(ref):
+                    col = ref[:, j]
+                    col = col[np.isfinite(col)]
+                    ok = np.ones(len(col), dtype=bool)
+                    if low is not None:
+                        ok &= col >= low
+                    if high is not None:
+                        ok &= col <= high
+                    bounds_fit = bool(len(col) == 0 or ok.mean() >= min_reference_coverage)
+                    int_fit = bool(
+                        len(col) == 0
+                        or np.mean(np.isclose(col, np.round(col), atol=1e-9)) >= min_reference_coverage
+                    )
+                    if not bounds_fit:
+                        low = high = None
+                    integer = integer and int_fit
+                    if low is None and high is None and not integer:
+                        skipped.append(name)
+                        continue
+                specs[j] = {"feature": name, "low": low, "high": high, "integer": bool(integer)}
+        return OntologyDomainConstraints(specs, len(names), skipped)
+
+
     def _derive_feature_groups(self) -> None:
         groups: Dict[str, List[str]] = {}
         for feature, entity in self.feature_to_entity.items():
@@ -498,4 +561,64 @@ class OntologySemanticGraph:
         }
 
 
-__all__ = ["OntologySemanticGraph", "RELATION_WEIGHTS", "normalize_ontology_name"]
+@dataclass
+class OntologyDomainConstraints:
+    """Validação e projecção de amostras para o domínio OWL (por índice)."""
+
+    specs: Dict[int, Dict[str, Any]]
+    n_features: int
+    skipped_features: List[str] = field(default_factory=list)
+
+    @property
+    def is_active(self) -> bool:
+        return bool(self.specs)
+
+    def sample_validity_mask(self, X, feature_names: Optional[Sequence[str]] = None) -> np.ndarray:
+        X = np.asarray(X, dtype=float)
+        valid = np.ones(len(X), dtype=bool)
+        if X.ndim != 2:
+            return valid
+        for j, spec in self.specs.items():
+            if j >= X.shape[1]:
+                continue
+            column = X[:, j]
+            if spec["low"] is not None:
+                valid &= ~(column < spec["low"])
+            if spec["high"] is not None:
+                valid &= ~(column > spec["high"])
+            if spec["integer"]:
+                valid &= np.isclose(column, np.round(column), atol=1e-9)
+        return valid
+
+    def project(self, X) -> np.ndarray:
+        """Projecção mínima para o espaço conceptual válido.
+
+        Arredonda features xsd:integer e recorta aos limites declarados; as
+        restantes colunas ficam intactas.
+        """
+        out = np.array(X, dtype=float, copy=True)
+        for j, spec in self.specs.items():
+            if j >= out.shape[1]:
+                continue
+            column = out[:, j]
+            if spec["integer"]:
+                column = np.round(column)
+            if spec["low"] is not None or spec["high"] is not None:
+                low = -np.inf if spec["low"] is None else spec["low"]
+                high = np.inf if spec["high"] is None else spec["high"]
+                column = np.clip(column, low, high)
+            out[:, j] = column
+        return out
+
+    def summary(self) -> Dict[str, Any]:
+        return {
+            "constrained_features": [spec["feature"] for spec in self.specs.values()],
+            "integer_features": [s["feature"] for s in self.specs.values() if s["integer"]],
+            "skipped_unit_mismatch": list(self.skipped_features),
+        }
+
+
+__all__ = [
+    "OntologySemanticGraph", "OntologyDomainConstraints", "RELATION_WEIGHTS",
+    "normalize_ontology_name",
+]

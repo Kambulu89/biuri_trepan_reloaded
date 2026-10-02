@@ -233,7 +233,48 @@ def constrain_synthetic_samples(
     return kept, audit
 
 
+def build_semantic_query_projector(
+    ontology_graph,
+    feature_names: Sequence[str],
+    reference_X=None,
+    *,
+    semantic_query_projection: bool = True,
+    base_projector=None,
+):
+    """Projector de membership queries para o espaço conceptual da OWL.
+
+    Cada query gerada na fronteira do nó é primeiro projectada para o domínio
+    OWL (arredondamento xsd:integer + recorte aos limites declarados) e só
+    depois passa pelo ``base_projector`` (ex.: recomposição de colunas onto_*)
+    e pelo oráculo. Devolve ``(projector, constraints, audit)``; o projector é
+    ``base_projector`` inalterado quando não há restrições OWL aplicáveis.
+    """
+    audit = {
+        "semantic_query_projection": bool(semantic_query_projection),
+        "enabled": False,
+        "reason": "disabled",
+    }
+    if not semantic_query_projection:
+        return base_projector, None, audit
+    if ontology_graph is None or not getattr(ontology_graph, "is_active", False):
+        audit["reason"] = "ontology_inactive"
+        return base_projector, None, audit
+    constraints = ontology_graph.domain_constraints(feature_names, reference_X)
+    audit.update(constraints.summary())
+    if not constraints.is_active:
+        audit["reason"] = "no_applicable_owl_domain_constraints"
+        return base_projector, None, audit
+
+    def projector(rows):
+        projected = constraints.project(rows)
+        return projected if base_projector is None else base_projector(projected)
+
+    audit.update({"enabled": True, "reason": "owl_domain_projection"})
+    return projector, constraints, audit
+
+
 __all__ = [
     "DistillationConfig", "temperature_scale", "expand_soft_targets",
     "expand_hybrid_targets", "constrain_synthetic_samples",
+    "build_semantic_query_projector",
 ]

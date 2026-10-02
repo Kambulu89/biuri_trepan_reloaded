@@ -1,0 +1,84 @@
+[
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Original",
+    "optimization_method": "baseline",
+    "best_params": {
+      "hidden_layer_sizes": [
+        44,
+        22
+      ],
+      "activation": "relu",
+      "solver": "lbfgs",
+      "alpha": 0.001,
+      "max_iter": 2000,
+      "tol": 1e-05,
+      "early_stopping": false,
+      "random_state": 42
+    },
+    "best_cv_score": 0.9764367816091954,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 0.44215089999488555,
+    "selected_as_best": false,
+    "timestamp": "20261002_191300"
+  },
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Original",
+    "optimization_method": "grid_search",
+    "best_params": {
+      "activation": "relu",
+      "alpha": 0.01,
+      "early_stopping": false,
+      "hidden_layer_sizes": [
+        32
+      ],
+      "max_iter": 1500,
+      "solver": "lbfgs"
+    },
+    "best_cv_score": 0.9783218390804598,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 24.220621400003438,
+    "selected_as_best": false,
+    "timestamp": "20261002_191300"
+  },
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Original",
+    "optimization_method": "optuna",
+    "best_params": {
+      "hidden_layer_sizes": [
+        231
+      ],
+      "activation": "relu",
+      "solver": "lbfgs",
+      "alpha": 0.01261575123342998,
+      "learning_rate_init": 0.0031597370907366657,
+      "max_iter": 1648,
+      "early_stopping": true,
+      "validation_fraction": 0.1,
+      "n_iter_no_change": 10,
+      "random_state": 42
+    },
+    "best_cv_score": 0.9823218390804598,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 51.19221719999041,
+    "selected_as_best": true,
+    "timestamp": "20261002_191300"
+  }
+]

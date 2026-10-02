@@ -64,9 +64,11 @@ class ControlledTrepanConfig:
     error_focus_min_regions: int = 1
     mirror_when_no_semantic_effect: bool = True
     # Gain_Reloaded(A) = GainRatio(A) + alpha*OntoDepth(A) + beta*ErrorCoverage(A)
-    alpha: float = 0.15
-    beta: float = 0.10
-    gain_criterion: str = "information_gain"
+    alpha: float = 0.35
+    beta: float = 0.20
+    gain_criterion: str = "normalized_information_gain"
+    semantic_query_projection: bool = True
+    error_focus_fidelity_tolerance: float = 0.015
 
     def common_tree_kwargs(self) -> dict[str, Any]:
         values = asdict(self)
@@ -80,6 +82,7 @@ class ControlledTrepanConfig:
             "error_focus_min_real_fidelity_gain", "error_focus_anchor_k",
             "error_focus_top_k", "error_focus_min_regions",
             "mirror_when_no_semantic_effect", "alpha", "beta", "gain_criterion",
+            "semantic_query_projection", "error_focus_fidelity_tolerance",
         ):
             values.pop(key, None)
         return values
@@ -312,6 +315,8 @@ def fit_controlled_trepan_pair(
         alpha=float(config.alpha),
         beta=float(config.beta),
         gain_criterion=str(config.gain_criterion),
+        semantic_query_projection=bool(config.semantic_query_projection),
+        error_focus_fidelity_tolerance=float(config.error_focus_fidelity_tolerance),
     ).fit(
         X_rel,
         oracle=reloaded_oracle,

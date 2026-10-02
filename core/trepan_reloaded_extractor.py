@@ -132,7 +132,7 @@ class TrepanReloadedExtractor:
         {'depth_grid': [12, 16, 20, None], 'min_samples_leaf': 1, 'min_samples_split': 2},
     )
 
-    def __init__(self, ontology=None, onto_feature_bias_weight=None, alpha=0.15, beta=0.10):
+    def __init__(self, ontology=None, onto_feature_bias_weight=None, alpha=0.35, beta=0.20):
         # Pesos de Gain_Reloaded(A) = GainRatio(A) + alpha*OntoDepth(A) + beta*ErrorCoverage(A).
         # Podem ser sobrepostos por _training_limits['alpha'/'beta'].
         self.alpha = float(alpha)
@@ -1064,7 +1064,9 @@ class TrepanReloadedExtractor:
             mirror_when_no_semantic_effect=bool(limits.get('mirror_when_no_semantic_effect', True)),
             alpha=float(limits.get('alpha', self.alpha)),
             beta=float(limits.get('beta', self.beta)),
-            gain_criterion=str(limits.get('gain_criterion', 'information_gain')),
+            gain_criterion=str(limits.get('gain_criterion', 'normalized_information_gain')),
+            semantic_query_projection=bool(limits.get('semantic_query_projection', True)),
+            error_focus_fidelity_tolerance=float(limits.get('error_focus_fidelity_tolerance', 0.015)),
         )
         semantic_tuning = None
         selected_cfg = base_cfg
@@ -1110,6 +1112,8 @@ class TrepanReloadedExtractor:
             alpha=float(selected_cfg.alpha),
             beta=float(selected_cfg.beta),
             gain_criterion=str(selected_cfg.gain_criterion),
+            semantic_query_projection=bool(selected_cfg.semantic_query_projection),
+            error_focus_fidelity_tolerance=float(selected_cfg.error_focus_fidelity_tolerance),
         ).fit(
             X_seed,
             oracle=active_oracle_view,

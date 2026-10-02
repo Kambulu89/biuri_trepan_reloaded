@@ -187,6 +187,8 @@ def tune_scientific_trepan(
                     alpha=candidate.alpha,
                     beta=candidate.beta,
                     gain_criterion=candidate.gain_criterion,
+                    semantic_query_projection=candidate.semantic_query_projection,
+                    error_focus_fidelity_tolerance=candidate.error_focus_fidelity_tolerance,
                 ).fit(
                     X[tr], oracle=oracle, feature_names=feature_names,
                     semantic_feature_weights=weights,

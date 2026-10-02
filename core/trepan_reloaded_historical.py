@@ -27,7 +27,10 @@ from core.trepan_original import (
     _Node,
     _entropy,
 )
-from core.probabilistic_distillation import constrain_synthetic_samples
+from core.probabilistic_distillation import (
+    build_semantic_query_projector,
+    constrain_synthetic_samples,
+)
 from core.error_focused_semantic_refinement import (
     combine_error_and_semantics,
     nearest_anchor_similarity,
@@ -41,10 +44,14 @@ from core.error_focused_semantic_refinement import (
 class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """TREPAN Reloaded construído directamente sobre o motor histórico.
 
+    ``GAIN_CRITERIA`` lista as bases aceites para Gain_Reloaded.
+
     ``semantic_feature_weights`` e ``query_projector`` são argumentos de
     ``fit`` e não do construtor para que closures/callbacks de treino não fiquem
     persistidos no artefacto final.
     """
+
+    GAIN_CRITERIA = ("normalized_information_gain", "information_gain", "gain_ratio")
 
     def __init__(
         self,
@@ -78,9 +85,11 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         error_focus_top_k: int = 3,
         error_focus_min_regions: int = 1,
         mirror_when_no_semantic_effect: bool = True,
-        alpha: float = 0.15,
-        beta: float = 0.10,
-        gain_criterion: str = "information_gain",
+        alpha: float = 0.35,
+        beta: float = 0.20,
+        gain_criterion: str = "normalized_information_gain",
+        semantic_query_projection: bool = True,
+        error_focus_fidelity_tolerance: float = 0.015,
     ):
         super().__init__(
             max_nodes=max_nodes,
@@ -117,12 +126,18 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # Gain_Reloaded(A) = GainRatio(A) + alpha*OntoDepth(A) + beta*ErrorCoverage(A)
         self.alpha = float(alpha)
         self.beta = float(beta)
-        # Base do Gain_Reloaded. Por omissão o IG do TREPAN histórico: na
-        # calibração V9.2 trocar para GainRatio baixou a fidelidade ao oráculo
-        # abaixo do Original; "gain_ratio" fica disponível para ablação.
-        if gain_criterion not in ("information_gain", "gain_ratio"):
-            raise ValueError("gain_criterion deve ser 'information_gain' ou 'gain_ratio'.")
+        # Base do Gain_Reloaded. Por omissão IG/H(nó) em [0,1], na mesma escala
+        # de OntoDepth e ErrorCoverage. "information_gain" (IG cru do TREPAN) e
+        # "gain_ratio" ficam disponíveis para ablação; na calibração V9.2 o
+        # GainRatio baixou a fidelidade ao oráculo abaixo do Original.
+        if gain_criterion not in self.GAIN_CRITERIA:
+            raise ValueError(f"gain_criterion deve ser um de {self.GAIN_CRITERIA}.")
         self.gain_criterion = gain_criterion
+        # Membership queries projectadas para o domínio OWL antes do oráculo.
+        self.semantic_query_projection = bool(semantic_query_projection)
+        # EFSR: perda de fidelidade local/real tolerada quando a coerência
+        # semântica do split aumenta. 0 recupera o gate estrito anterior.
+        self.error_focus_fidelity_tolerance = float(error_focus_fidelity_tolerance)
 
     def fit(
         self,
@@ -160,6 +175,20 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         self.ontology_sampling_audit_ = {
             "batches": 0, "candidates": 0, "rejected": 0, "fallback_filled": 0,
         }
+        schema_names = list(feature_names or [f"x{i}" for i in range(X_arr.shape[1])])
+        self._ontology_domain_fit = (
+            ontology_graph.domain_constraints(schema_names, X_arr) if graph_active else None
+        )
+        if self._ontology_domain_fit is not None and not self._ontology_domain_fit.is_active:
+            self._ontology_domain_fit = None
+        query_projector, _domain, projection_audit = build_semantic_query_projector(
+            ontology_graph if graph_active else None,
+            schema_names,
+            X_arr,
+            semantic_query_projection=self.semantic_query_projection,
+            base_projector=query_projector,
+        )
+        self.semantic_query_projection_audit_ = projection_audit
         if semantic_feature_weights is None:
             weights = np.ones(X_arr.shape[1], dtype=float)
         else:
@@ -239,10 +268,6 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         self._query_projector_fit = query_projector
         # Como o projector, o grafo é só de treino e não fica no artefacto.
         self._ontology_graph_fit = ontology_graph if graph_active else None
-        names_for_bounds = list(feature_names or [f"x{i}" for i in range(X_arr.shape[1])])
-        self._ontology_bounded_fit = bool(graph_active and any(
-            ontology_graph.feature_bounds(name) != (None, None) for name in names_for_bounds
-        ))
         # A estrutura semântica é fixa durante o fit; o score de cada split
         # candidato consulta-a, por isso é calculada uma única vez.
         self._semantic_structure_cache_ = None
@@ -259,6 +284,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             # Não persistir callback/closure de treino no artefacto.
             self._query_projector_fit = None
             self._ontology_graph_fit = None
+            self._ontology_domain_fit = None
             self._semantic_structure_cache_enabled_ = False
             self._semantic_structure_cache_ = None
         self.semantic_split_audit_ = []
@@ -552,6 +578,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             "real_fidelity_gain": None,
             "required_real_fidelity_gain": float(self.error_focus_min_real_fidelity_gain),
             "real_training_gate_evaluated": False,
+            "fidelity_tolerance": float(self.error_focus_fidelity_tolerance),
+            "semantic_coherence_gain": 0.0,
+            "accepted_within_tolerance": False,
         }
         if semantic_test is None or self._test_signature(semantic_test) == self._test_signature(data_test):
             return result
@@ -575,14 +604,25 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             data_fidelity = split_surrogate_fidelity(y, data_test.evaluate(X), self.classes_)
         semantic_fidelity = split_surrogate_fidelity(y, semantic_test.evaluate(X), self.classes_)
         gain = float(semantic_fidelity - data_fidelity)
+        coherence_gain = float(
+            self._semantic_coherence(semantic_test) - self._semantic_coherence(data_test)
+        )
+        tolerance = max(0.0, float(self.error_focus_fidelity_tolerance))
+        # A tolerância só compra coerência semântica: sem aumento de coerência
+        # o gate continua estrito.
+        tolerable = bool(tolerance > 0.0 and coherence_gain > 1e-12)
         result.update({
             "data_only_local_fidelity": float(data_fidelity),
             "semantic_local_fidelity": float(semantic_fidelity),
             "local_fidelity_gain": gain,
+            "semantic_coherence_gain": coherence_gain,
         })
+        within_tolerance = False
         if gain + 1e-12 < float(self.error_focus_min_local_fidelity_gain):
-            result["reason"] = "semantic_candidate_no_local_fidelity_gain"
-            return result
+            if not (tolerable and gain + tolerance + 1e-12 >= 0.0):
+                result["reason"] = "semantic_candidate_no_local_fidelity_gain"
+                return result
+            within_tolerance = True
 
         # Segundo gate: o candidato precisa também melhorar (ou pelo menos não
         # degradar quando não há resolução suficiente) as linhas REAIS de treino
@@ -614,15 +654,21 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
                     "real_fidelity_gain": real_gain,
                 })
                 required_real = float(self.error_focus_min_real_fidelity_gain)
-                # ``0`` significa ganho estritamente positivo; nunca permite
-                # deterioração nos dados reais do treino.
+                # ``0`` significa ganho estritamente positivo. Uma perda real só
+                # é aceite dentro da tolerância e com ganho de coerência OWL.
                 real_ok = real_gain > 1e-12 if required_real <= 0.0 else real_gain + 1e-12 >= required_real
                 if not real_ok:
-                    result["reason"] = "semantic_candidate_fails_real_training_gate"
-                    return result
+                    if not (tolerable and real_gain + tolerance + 1e-12 >= 0.0):
+                        result["reason"] = "semantic_candidate_fails_real_training_gate"
+                        return result
+                    within_tolerance = True
 
         result["accepted"] = True
-        result["reason"] = "semantic_candidate_improves_local_and_real_training_fidelity"
+        if within_tolerance:
+            result["accepted_within_tolerance"] = True
+            result["reason"] = "semantic_coherence_gain_within_fidelity_tolerance"
+        else:
+            result["reason"] = "semantic_candidate_improves_local_and_real_training_fidelity"
         return result
 
     def _feature_priority_scores(self, X: np.ndarray) -> np.ndarray:
@@ -698,6 +744,31 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             return 0.0
         return float(information_gain / split_info)
 
+    def _normalized_information_gain(self, information_gain: float, y: np.ndarray) -> float:
+        """IG/H(y) do nó: fracção da incerteza local removida, em [0, 1]."""
+        node_entropy = _entropy(np.asarray(y), self.classes_)
+        if node_entropy <= 1e-12:
+            return 0.0
+        return float(np.clip(information_gain / node_entropy, 0.0, 1.0))
+
+    def _semantic_coherence(self, test: Optional[MofNTest]) -> float:
+        """Coerência/interpretabilidade OWL de um teste, sem olhar para y.
+
+        Média do suporte estrutural e da profundidade OWL dos literais, mais a
+        coesão de grupo das regras m-of-n (0 para testes univariados).
+        """
+        if test is None or not test.literals:
+            return 0.0
+        support = self._semantic_support_vector()
+        depths = np.asarray(getattr(self, "semantic_feature_depths_", np.zeros(len(support))), dtype=float)
+        per_literal = []
+        for lit in test.literals:
+            s = float(support[lit.feature]) if lit.feature < len(support) else 0.0
+            d = float(depths[lit.feature]) if lit.feature < len(depths) else 0.0
+            per_literal.append(0.5 * (s + d))
+        group_bonus = max(0.0, self._semantic_group_coherence_factor(test) - 1.0)
+        return float(np.mean(per_literal) + group_bonus)
+
     def _test_feature_mean(self, values, test: Optional[MofNTest]) -> float:
         if test is None or not test.literals or values is None:
             return 0.0
@@ -722,7 +793,12 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # Um split sem informação nunca vence só pelos bónus ontológicos.
         if raw <= 1e-12:
             return 0.0
-        base_gain = self._gain_ratio(raw, mask) if self.gain_criterion == "gain_ratio" else raw
+        if self.gain_criterion == "gain_ratio":
+            base_gain = self._gain_ratio(raw, mask)
+        elif self.gain_criterion == "normalized_information_gain":
+            base_gain = self._normalized_information_gain(raw, y)
+        else:
+            base_gain = raw
         if not np.isclose(weight, 1.0, atol=1e-12):
             base_gain *= weight ** float(self.semantic_gain_strength)
         onto_depth = self._onto_depth_for_test(test)
@@ -1055,6 +1131,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             'real_fidelity_gain': intervention.get('real_fidelity_gain'),
             'required_real_fidelity_gain': float(intervention.get('required_real_fidelity_gain', self.error_focus_min_real_fidelity_gain)),
             'real_training_gate_evaluated': bool(intervention.get('real_training_gate_evaluated', False)),
+            'fidelity_tolerance': float(intervention.get('fidelity_tolerance', 0.0)),
+            'semantic_coherence_gain': float(intervention.get('semantic_coherence_gain', 0.0)),
+            'error_focused_accepted_within_tolerance': bool(intervention.get('accepted_within_tolerance', False)),
             'error_region_eligibility_reason': profile.get('eligibility_reason'),
         }
         return final_result
@@ -1148,6 +1227,12 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             'alpha': float(self.alpha),
             'beta': float(self.beta),
             'gain_criterion': self.gain_criterion,
+            'error_focus_fidelity_tolerance': float(self.error_focus_fidelity_tolerance),
+            'error_focused_accepted_within_tolerance': int(sum(
+                bool(row.get('error_focused_accepted_within_tolerance'))
+                for row in (getattr(self, 'semantic_split_audit_', []) or [])
+            )),
+            'semantic_query_projection': dict(getattr(self, 'semantic_query_projection_audit_', {}) or {}),
             'ontology_sampling': dict(getattr(self, 'ontology_sampling_audit_', {}) or {}),
         }
 
@@ -1160,13 +1245,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
     ) -> np.ndarray:
         if n <= 0:
             return np.empty((0, model.n_features_in_), dtype=float)
-        graph = getattr(self, "_ontology_graph_fit", None)
-        if graph is not None and getattr(self, "_ontology_bounded_fit", False):
-            # Sobre-amostra o pool estatístico e filtra pelas restrições OWL;
-            # o fallback de constrain_synthetic_samples completa o lote.
-            pool = self._draw_membership_queries_unfiltered(model, int(n) * 2, constraints, node)
+        domain = getattr(self, "_ontology_domain_fit", None)
+        if domain is not None:
+            # Toda a query passa pela validação OWL antes do oráculo. Com
+            # projecção activa já é válida por construção; sem ela, sobre-amostra
+            # e o fallback de constrain_synthetic_samples completa o lote.
+            projected = bool(self.semantic_query_projection_audit_.get("enabled"))
+            pool_size = int(n) if projected else int(n) * 2
+            pool = self._draw_membership_queries_unfiltered(model, pool_size, constraints, node)
             kept, audit = constrain_synthetic_samples(
-                pool, min_samples=n, ontology_graph=graph,
+                pool, min_samples=n, ontology_graph=domain,
                 feature_names=self.feature_names_in_,
             )
             stats = self.ontology_sampling_audit_

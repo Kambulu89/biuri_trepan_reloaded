@@ -1,0 +1,62 @@
+{
+  "dataset_name": "breast_cancer.arff",
+  "preset": "scientific",
+  "total_seconds": 576.43,
+  "used_cache": false,
+  "stopped_by_timeout": false,
+  "stopped_by_cancel": false,
+  "stopped_by_early_fidelity": false,
+  "stages": [
+    {
+      "stage": "MLP Original",
+      "elapsed_seconds": 62.201,
+      "n_features": 30,
+      "n_trials": 50,
+      "best_score": 0.9707602339181286,
+      "used_cache": false,
+      "timeout": false,
+      "early_stop": false
+    },
+    {
+      "stage": "Professor Híbrido Ontológico",
+      "elapsed_seconds": 267.719,
+      "n_features": 31,
+      "n_trials": 1,
+      "best_score": 0.99,
+      "used_cache": false,
+      "timeout": false,
+      "early_stop": false
+    },
+    {
+      "stage": "C4.5",
+      "elapsed_seconds": 26.078,
+      "n_features": null,
+      "n_trials": null,
+      "best_score": null,
+      "used_cache": false,
+      "timeout": false,
+      "early_stop": false
+    },
+    {
+      "stage": "Trepan Original",
+      "elapsed_seconds": 40.385,
+      "n_features": null,
+      "n_trials": null,
+      "best_score": 0.9064327485380117,
+      "used_cache": false,
+      "timeout": false,
+      "early_stop": false
+    },
+    {
+      "stage": "Trepan Reloaded",
+      "elapsed_seconds": 179.215,
+      "n_features": null,
+      "n_trials": null,
+      "best_score": 0.935672514619883,
+      "used_cache": false,
+      "timeout": false,
+      "early_stop": false
+    }
+  ],
+  "timestamp": "2026-10-02T18:33:36.416116"
+}

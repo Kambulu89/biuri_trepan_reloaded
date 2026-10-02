@@ -249,6 +249,13 @@ def test_fidelity_hierarchy_c45_original_reloaded():
         assert summary["ontology_active"] is True
         assert summary["ontology_influenced_splits"] > 0
         assert np.any(reloaded.semantic_feature_depths_ > 0)
+        # Membership queries projectadas para o domínio OWL antes do MLP.
+        assert summary["query_projection_active"] is True
+        assert summary["semantic_query_projection"]["enabled"] is True
+    summaries = [run[-1].semantic_audit_summary_ for run in runs]
+    # Agregado dos seeds: a semântica muda decisões e o EFSR aceita intervenções.
+    assert np.mean([s["semantic_decision_impact"] for s in summaries]) > 0.0
+    assert sum(s["error_focused_interventions_accepted"] for s in summaries) >= 1
     fidelity_c45, fidelity_trepan_original, fidelity_trepan_reloaded = (
         float(np.mean([run[i] for run in runs])) for i in range(3)
     )

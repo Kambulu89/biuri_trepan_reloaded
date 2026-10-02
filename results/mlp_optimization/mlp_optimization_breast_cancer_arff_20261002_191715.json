@@ -1,0 +1,88 @@
+[
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Residual Ontológico",
+    "optimization_method": "baseline",
+    "best_params": {
+      "hidden_layer_sizes": [
+        16,
+        8
+      ],
+      "activation": "relu",
+      "solver": "lbfgs",
+      "alpha": 0.001,
+      "max_iter": 2000,
+      "tol": 1e-05,
+      "early_stopping": false,
+      "random_state": 42
+    },
+    "best_cv_score": 0.9431434450885252,
+    "accuracy": 0.99,
+    "precision": 0.99015625,
+    "recall": 0.99,
+    "f1": 0.9899708769280552,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 0.9632439999986673,
+    "selected_as_best": true,
+    "timestamp": "20261002_191715"
+  },
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Residual Ontológico",
+    "optimization_method": "grid_search",
+    "best_params": {
+      "activation": "relu",
+      "alpha": 0.001,
+      "early_stopping": true,
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.0005,
+      "max_iter": 1000,
+      "solver": "adam",
+      "validation_fraction": 0.15
+    },
+    "best_cv_score": 0.9704872961165867,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 74.56816719999188,
+    "selected_as_best": false,
+    "timestamp": "20261002_191715"
+  },
+  {
+    "dataset_name": "breast_cancer.arff",
+    "model_name": "MLP Residual Ontológico",
+    "optimization_method": "optuna",
+    "best_params": {
+      "hidden_layer_sizes": [
+        88,
+        122,
+        63
+      ],
+      "activation": "tanh",
+      "solver": "adam",
+      "alpha": 1.2025498678910827e-05,
+      "learning_rate_init": 0.00964532580621984,
+      "max_iter": 1997,
+      "early_stopping": true,
+      "validation_fraction": 0.1,
+      "n_iter_no_change": 10,
+      "random_state": 42
+    },
+    "best_cv_score": 0.9731899988192894,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 172.25931500000297,
+    "selected_as_best": false,
+    "timestamp": "20261002_191715"
+  }
+]
