@@ -122,6 +122,7 @@ def tune_scientific_trepan(
     query_projector=None,
     search: ScientificTrepanSearchConfig = ScientificTrepanSearchConfig(),
     ontology_graph=None,
+    semantic_feature_entities=None,
 ) -> dict[str, Any]:
     X=np.asarray(X_train,dtype=float); y=np.asarray(y_train)
     if X.ndim != 2 or len(X)!=len(y):
@@ -196,6 +197,7 @@ def tune_scientific_trepan(
                     semantic_relatedness_matrix=semantic_relatedness_matrix,
                     query_projector=query_projector,
                     ontology_graph=ontology_graph,
+                    semantic_feature_entities=semantic_feature_entities,
                 )
                 rows.append(_objective(model,X[va],y[va],oracle,candidate,search))
                 usage.append(float(model.semantic_audit_summary_.get("ontology_usage_rate",0.0)))

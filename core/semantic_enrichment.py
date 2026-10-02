@@ -33,6 +33,7 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.feature_selection import mutual_info_classif
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from sklearn.neural_network import MLPClassifier
@@ -115,9 +116,11 @@ def _preprocessor(frame: pd.DataFrame) -> ColumnTransformer:
     categorical = [c for c in frame.columns if c not in numeric]
     parts = []
     if numeric:
-        parts.append(("num", StandardScaler(), numeric))
+        parts.append(("num", Pipeline([("imp", SimpleImputer(strategy="median")),
+                                       ("scale", StandardScaler())]), numeric))
     if categorical:
-        parts.append(("cat", OneHotEncoder(handle_unknown="ignore"), categorical))
+        parts.append(("cat", Pipeline([("imp", SimpleImputer(strategy="most_frequent")),
+                                       ("onehot", OneHotEncoder(handle_unknown="ignore"))]), categorical))
     return ColumnTransformer(parts)
 
 
@@ -309,7 +312,10 @@ def evaluate_semantic_enrichment(
         return out
 
     # ---- Etapa B: novidade (ajuste final no conjunto de desenvolvimento) --------
-    full = new_processor().fit(X, accepted_matches=matches, log=False)
+    try:
+        full = new_processor().fit(X, accepted_matches=matches, log=False)
+    except Exception as exc:
+        return finish("NOT_EVALUATED", f"processor_error:{type(exc).__name__}: {exc}", trepan=True)
     pool_all = [n for n in full.output_features_ if n not in base_cols]
     pool = keep(full, pool_all)
     summary = dict(full.generation_summary_)

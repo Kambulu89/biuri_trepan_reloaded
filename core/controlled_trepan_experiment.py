@@ -239,6 +239,7 @@ def fit_controlled_trepan_pair(
     query_projector: Optional[Callable[[np.ndarray], np.ndarray]] = None,
     run_id: str = "controlled_trepan_pair",
     ontology_graph=None,
+    semantic_feature_entities=None,
 ) -> ControlledTrepanPair:
     """Ajusta os dois braços sem aceitar qualquer conjunto de teste.
 
@@ -326,6 +327,7 @@ def fit_controlled_trepan_pair(
         semantic_relatedness_matrix=semantic_relatedness_matrix,
         query_projector=query_projector,
         ontology_graph=ontology_graph,
+        semantic_feature_entities=semantic_feature_entities,
     )
 
     # O professor é o mesmo objecto lógico; no braço enriquecido pode existir

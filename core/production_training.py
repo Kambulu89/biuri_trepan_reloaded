@@ -27,6 +27,10 @@ from core.controlled_trepan_experiment import (
 )
 from core.ontology_quality import OntologyQualityGate
 from core.ontology_reasoner import run_owl_reasoner
+from core.ontology_processor import OntologyProcessor
+from core.ontology_stage_status import build_ontology_stage_status
+from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
+from core.semantic_metadata import apply_family_relatedness
 from core.ontology_semantic_graph import OntologySemanticGraph
 from core.semantic_contribution_gate import SemanticContributionGate
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig, tune_scientific_trepan
@@ -93,6 +97,7 @@ def train_production_dataframe(
     require_reasoner: bool=True, trepan_config: Optional[ControlledTrepanConfig]=None,
     scientific_tuning: bool=True,
     trepan_search: Optional[ScientificTrepanSearchConfig]=None,
+    semantic_enrichment: Optional[EnrichmentConfig]=None,
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -118,6 +123,7 @@ def train_production_dataframe(
     )
 
     quality=None; graph=None; semantic_weights=None; semantic_groups=None; relation_matrix=None
+    semantic_entities=None; original_feature_names=[]
     if owl_path or ontology is not None:
         ontology=ontology or _load_ontology(owl_path)
         if reasoner_report is None:
@@ -128,6 +134,19 @@ def train_production_dataframe(
         if quality['accepted']:
             graph=OntologySemanticGraph.from_ontology(ontology,accepted_matches=quality['matches'])
             model_names,semantic_weights,semantic_groups,relation_matrix=_semantic_inputs(pre,quality,graph)
+            accepted_matches=[m for m in quality['matches'] if m.get('accepted')]
+            sources=[str(x.get('source_column')) for x in pre.feature_origins]
+            semantic_entities=[graph.feature_to_entity.get(src) for src in sources]
+            # Famílias de medida declaradas na OWL (mean/error/worst da mesma grandeza)
+            # tornam essas features relacionadas para o m-of-n; sem famílias nada muda.
+            try:
+                family_proc=OntologyProcessor(ontology).fit(
+                    Xtr[original_feature_names],accepted_matches=accepted_matches,log=False)
+                column_family={src:spec['family'] for spec in family_proc.feature_specs_
+                               if spec.get('family') for src in spec.get('sources',[])}
+            except Exception:
+                column_family={}
+            relation_matrix=apply_family_relatedness(relation_matrix,sources,column_family)
 
     tuning_report = None
     if scientific_tuning:
@@ -138,6 +157,7 @@ def train_production_dataframe(
             semantic_relatedness_matrix=relation_matrix,
             search=trepan_search or ScientificTrepanSearchConfig(),
             ontology_graph=graph,
+            semantic_feature_entities=semantic_entities,
         )
         cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
 
@@ -148,6 +168,7 @@ def train_production_dataframe(
         semantic_relatedness_matrix=relation_matrix,
         run_id=f"production_v9_2_seed_{seed}",
         ontology_graph=graph,
+        semantic_feature_entities=semantic_entities,
     )
     evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte)
     mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
@@ -171,6 +192,19 @@ def train_production_dataframe(
         original_metrics=evaluation['models']['original'],reloaded_metrics=evaluation['models']['reloaded'],
     ) if quality else {"accepted":False,"status":"NO_ONTOLOGY","reasons":["ontology_not_provided"]}
     evaluation['semantic_contribution_gate']=contribution
+    # Enriquecimento semântico do MLP (opt-in): só treino de desenvolvimento, nunca o teste.
+    enrichment=None
+    if semantic_enrichment is not None and quality:
+        try:
+            result=evaluate_semantic_enrichment(
+                Xtr[original_feature_names].reset_index(drop=True),ytr,ontology,
+                quality_report=quality,reasoner_report=reasoner_report,config=semantic_enrichment)
+            enrichment=result.report
+        except Exception as exc:  # a avaliação nunca pode quebrar o treino de produção
+            enrichment={'decision':'NOT_EVALUATED','decision_reason':f'{type(exc).__name__}: {exc}',
+                        'semantic_mlp_accepted':False,'semantic_trepan_available':False,'test_used':False}
+    evaluation['semantic_enrichment']=enrichment
+    evaluation['ontology_stage_status']=build_ontology_stage_status(quality,None,enrichment) if quality else None
 
     bundle={
         'format_version':'biuri-v9.2-production-5-semantic-real-gain', 'contract':contract, 'preprocessor':pre,

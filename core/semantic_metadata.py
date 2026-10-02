@@ -194,3 +194,28 @@ def audit_double_counting(
                 "reason": "derived_feature_already_encodes_relation",
             })
     return flagged
+
+
+def apply_family_relatedness(
+    matrix,
+    source_columns: Sequence[Optional[str]],
+    column_family: Dict[str, str],
+    config: RelatednessConfig = RelatednessConfig(),
+) -> np.ndarray:
+    """Sobrepõe ``same_family`` à matriz existente (só aumenta, nunca reduz).
+
+    ``source_columns[i]`` é a coluna original da feature do modelo ``i`` (várias features
+    codificadas podem partilhar a mesma coluna); ``column_family`` vem das famílias que
+    a OWL declara. Sem famílias declaradas a matriz devolvida é igual à recebida.
+    """
+    out = np.array(matrix, dtype=float, copy=True)
+    n = len(source_columns)
+    for i in range(n):
+        fam_i = column_family.get(str(source_columns[i])) if source_columns[i] is not None else None
+        if not fam_i:
+            continue
+        for j in range(i + 1, n):
+            fam_j = column_family.get(str(source_columns[j])) if source_columns[j] is not None else None
+            if fam_j == fam_i and source_columns[i] != source_columns[j]:
+                out[i, j] = out[j, i] = max(out[i, j], config.same_family)
+    return out

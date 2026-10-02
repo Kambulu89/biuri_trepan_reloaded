@@ -136,3 +136,18 @@ def test_entities_length_is_validated():
         TrepanReloadedClassifier(max_nodes=3, max_queries=0, random_state=0).fit(
             X, y=(X[:, 0] > 0).astype(int), semantic_feature_entities=["only_one"])
 
+
+
+def test_family_overlay_only_raises_and_is_neutral_without_families():
+    from core.semantic_metadata import apply_family_relatedness
+    base = np.eye(4); base[0, 1] = base[1, 0] = 0.9; base[1, 2] = base[2, 1] = 0.6
+    same = apply_family_relatedness(base, ["a", "b", "c", "d"], {})
+    assert np.array_equal(same, base)  # sem famílias: idêntica
+    out = apply_family_relatedness(base, ["a", "b", "c", "d"], {"a": "F", "b": "F", "c": "F"})
+    assert out[0, 1] == 0.9                      # nunca reduz um valor já mais alto
+    assert out[1, 2] == 0.75                     # sobe um valor inferior ao de família
+    assert out[0, 2] == out[2, 0] == 0.75 and out[1, 2] == 0.75
+    assert out[0, 3] == 0.0                      # fora da família: inalterado
+    # colunas one-hot da mesma coluna original não ganham relação artificial entre si
+    enc = apply_family_relatedness(np.eye(3), ["x", "x", "y"], {"x": "F", "y": "F"})
+    assert enc[0, 1] == 0.0 and enc[0, 2] == 0.75
