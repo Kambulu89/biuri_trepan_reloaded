@@ -10,7 +10,8 @@ from core.production_inference import load_production_bundle
 from core.production_training import train_production_dataframe
 from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
 from core.semantic_teacher import (
-    SemanticTeacher, build_semantic_teacher, decide_semantic_teacher, detach_ontology, teacher_inputs_available,
+    SemanticTeacher, build_semantic_teacher, decide_semantic_teacher, detach_ontology, make_consistency_projector,
+    teacher_inputs_available,
 )
 from core.ontology_quality import OntologyQualityGate
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig
@@ -150,7 +151,8 @@ def test_production_uses_semantic_teacher_for_both_arms_when_evidence_is_strong(
     assert ev["semantic_enrichment"]["evidence_strength"] == "strong", ev["semantic_enrichment"]["decision"]
     assert ev["semantic_teacher"]["teacher"] == "mlp_semantic"
     assert isinstance(seen["oracle"], SemanticTeacher)                      # o MESMO professor para os dois braços
-    assert ev["experiment_audit"]["reloaded_oracle_adapter"] == "identity_same_oracle"
+    assert ev["experiment_audit"]["same_oracle"] is True                  # mesmo professor nos dois braços
+    assert ev["experiment_audit"]["reloaded_oracle_adapter"] == "OriginalOracleProjection"
     assert "mlp_semantic" in ev["models"] and "mlp_original" in ev["models"]
     assert ev["ontology_stage_status"]["semantic_teacher_used"] is True
     assert rep["manifest"]["teacher_id"] == "mlp_semantic" and rep["manifest"]["test_used_for_selection"] is False
@@ -193,3 +195,111 @@ def test_teacher_build_failure_falls_back_to_original_without_hiding_it(tmp_path
     st = rep["evaluation"]["semantic_teacher"]
     assert st["teacher"] == "mlp_original" and "teacher_build_failed:RuntimeError: boom" in st["reason"]
     assert (tmp_path / "production_bundle.joblib").exists()
+
+
+# ------------------------------------------------------- Reloaded em espaço aumentado ---
+def _teacher_and_data(name):
+    X, y, res = _result(name=name)
+    teacher = build_semantic_teacher(res, X.to_numpy(float), y, list(X.columns), config=CFG, seed=5)
+    return X.to_numpy(float), y, res, teacher
+
+
+def test_augment_appends_selected_features_computed_from_original_columns():
+    Z, y, res, teacher = _teacher_and_data("a1")
+    aug = teacher.augment(Z)
+    k = len(teacher.selected_features)
+    assert aug.shape == (len(Z), Z.shape[1] + k) and k > 0
+    np.testing.assert_array_equal(aug[:, :Z.shape[1]], Z)
+    np.testing.assert_allclose(aug[:, Z.shape[1]:], teacher.semantic_columns(Z).to_numpy(float))
+
+
+def test_consistency_projector_recomputes_semantic_columns_and_keeps_original_ones():
+    Z, y, res, teacher = _teacher_and_data("a2")
+    n = Z.shape[1]
+    proj = make_consistency_projector(teacher, n)
+    rng = np.random.default_rng(0)
+    # consulta "sintética" com colunas semânticas amostradas de forma independente (incoerente)
+    raw = np.hstack([Z[rng.integers(0, len(Z), 50)], rng.normal(size=(50, len(teacher.selected_features))) * 99])
+    out = proj(raw)
+    np.testing.assert_array_equal(out[:, :n], raw[:, :n])                       # originais intactas
+    np.testing.assert_allclose(out[:, n:], teacher.semantic_columns(raw[:, :n]).to_numpy(float))
+    assert not np.allclose(out[:, n:], raw[:, n:])                              # e a incoerência foi corrigida
+    assert out.shape == raw.shape and proj(out).shape == raw.shape
+    np.testing.assert_allclose(proj(out), out)                                  # idempotente
+
+
+def test_extend_semantic_inputs_has_no_double_counting_and_documented_relatedness():
+    from core.semantic_metadata import RelatednessConfig, audit_double_counting, extend_semantic_inputs
+    Z, y, res, teacher = _teacher_and_data("a3")
+    names = list(res.input_features)
+    n = len(names)
+    weights = np.linspace(1.0, 1.3, n); groups = ["G"] * n; entities = [f"E{i}" for i in range(n)]
+    base = np.eye(n); base[0, 1] = base[1, 0] = 0.8
+    cfg = RelatednessConfig()
+    n2, w2, g2, e2, m2, rec = extend_semantic_inputs(names, weights, groups, entities, base, teacher.processor,
+                                                      teacher.selected_features, cfg)
+    k = len(teacher.selected_features)
+    assert len(n2) == len(w2) == len(g2) == len(e2) == n + k and m2.shape == (n + k, n + k)
+    assert np.allclose(m2, m2.T) and np.allclose(np.diag(m2), 1.0) and m2.min() >= 0 and m2.max() <= 1
+    np.testing.assert_array_equal(m2[:n, :n], base)            # o bloco original não muda
+    np.testing.assert_array_equal(w2[:n], weights)
+    idx = {nm: i for i, nm in enumerate(n2)}
+    for r in rec:
+        d = idx[r["feature"]]
+        assert w2[d] <= max(w2[idx[s]] for s in r["sources"]) + 1e-12   # sem dupla contagem
+        for s in r["sources"]:
+            assert m2[d, idx[s]] == cfg.derived_to_source
+    meta = [{"feature_name": nm, "origin": "ontology" if i >= n else "original", "ontology_entities": [],
+             "source_features": next((r["sources"] for r in rec if r["feature"] == nm), [])}
+            for i, nm in enumerate(n2)]
+    assert audit_double_counting(meta, w2) == []
+
+
+def test_production_reloaded_arm_uses_augmented_space_with_consistent_queries(tmp_path, monkeypatch):
+    import core.production_training as pt
+    seen = {}
+    original = pt.fit_controlled_trepan_pair
+
+    def spy(*a, **k):
+        seen.update(k)
+        return original(*a, **k)
+    monkeypatch.setattr(pt, "fit_controlled_trepan_pair", spy)
+    df = _frame(420, 20)
+    rep = _produce(tmp_path, df, 20, "r1")
+    ev = rep["evaluation"]
+    assert ev["semantic_teacher"]["teacher"] == "mlp_semantic"
+    space = ev["reloaded_feature_space"]
+    assert space["space"] == "augmented" and space["semantic_features"]
+    n = df.shape[1] - 1
+    assert space["n_features"] == n + len(space["semantic_features"])
+    assert seen["original_feature_indices"] == tuple(range(n)) and seen["query_projector"] is not None
+    assert seen["reloaded_X_train"].shape[1] == space["n_features"]
+    # braço Original mantém o espaço original; o protocolo continua pareado e sem espelho falso
+    audit = ev["experiment_audit"]
+    assert audit["base_feature_count"] == n and audit["reloaded_feature_count"] == space["n_features"]
+    assert audit["same_oracle"] is True and audit["semantic_effect_mirror_applied"] is False
+    assert audit["config"]["mirror_when_no_semantic_effect"] is False
+    assert rep["manifest"]["reloaded_feature_space"] == "augmented" and rep["manifest"]["test_used_for_selection"] is False
+    # a inferência reconstrói o espaço aumentado a partir do bundle
+    predictor = load_production_bundle(tmp_path)
+    sample = df.drop(columns="target").iloc[:8]
+    z = predictor._z(sample)
+    direct = predictor.reloaded.predict(predictor.semantic_teacher.augment(z))
+    np.testing.assert_array_equal(predictor.predict(sample, model="trepan_reloaded"), direct)
+    assert predictor.explain(sample.iloc[[0]])["model"] == "trepan_reloaded"
+    assert len(predictor.predict(sample, model="trepan_original")) == 8
+
+
+def test_augmentation_can_be_disabled_and_keeps_the_original_space(tmp_path):
+    rep = _produce(tmp_path, _frame(420, 20), 20, "r2", augment_reloaded_space=False)
+    ev = rep["evaluation"]
+    assert ev["semantic_teacher"]["teacher"] == "mlp_semantic"      # professor semântico, mas...
+    assert ev["reloaded_feature_space"]["space"] == "original"
+    assert ev["experiment_audit"]["reloaded_feature_count"] == ev["experiment_audit"]["base_feature_count"]
+    assert rep["manifest"]["reloaded_feature_space"] == "original"
+
+
+def test_reloaded_stays_in_original_space_when_teacher_is_not_used(tmp_path):
+    rep = _produce(tmp_path, _frame(160, 0, signal="mean_only"), 0, "r3")
+    assert rep["evaluation"]["reloaded_feature_space"]["space"] == "original"
+    assert rep["manifest"]["reloaded_feature_space"] == "original"

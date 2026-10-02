@@ -19,6 +19,7 @@ class ProductionPredictor:
         self.preprocessor=bundle['preprocessor']; self.mlp=bundle['mlp_original']
         self.original=bundle['trepan_original']; self.reloaded=bundle['trepan_reloaded']; self.c45=bundle.get('c45_native')
         self.semantic_teacher=bundle.get('semantic_teacher')
+        self.reloaded_space=bundle.get('reloaded_feature_space','original')
     def validate(self,df:pd.DataFrame)->Dict[str,Any]:
         try:
             self.preprocessor.transform(df)
@@ -26,6 +27,12 @@ class ProductionPredictor:
         except Exception as exc:
             return {'valid':False,'issues':[f'{type(exc).__name__}: {exc}']}
     def _z(self,df): return self.preprocessor.transform(df)
+    def _z_for(self,z,model):
+        # O Reloaded em espaço aumentado precisa das features semânticas, recompostas como no treino.
+        if model=='trepan_reloaded' and self.reloaded_space=='augmented':
+            if self.semantic_teacher is None: raise ArtifactCompatibilityError('Reloaded aumentado sem o transformador semântico no bundle.')
+            return self.semantic_teacher.augment(z)
+        return z
     def predict(self,df,*,model='mlp'):
         z=self._z(df)
         mapping={'mlp':self.mlp,'trepan_original':self.original,'trepan_reloaded':self.reloaded}
@@ -36,14 +43,14 @@ class ProductionPredictor:
             if self.c45 is None: raise ArtifactCompatibilityError('Bundle sem C4.5-Nativo.')
             return self.c45.predict(pd.DataFrame(df).to_numpy(dtype=object))
         if model not in mapping: raise ValueError(f"Modelo desconhecido: {model}.")
-        return mapping[model].predict(z)
+        return mapping[model].predict(self._z_for(z,model))
     def predict_proba(self,df,*,model='mlp'):
         z=self._z(df); estimator={'mlp':self.mlp,'trepan_original':self.original,'trepan_reloaded':self.reloaded}.get(model)
         if estimator is None or not hasattr(estimator,'predict_proba'): raise ArtifactCompatibilityError(f'{model} não disponibiliza predict_proba.')
-        return estimator.predict_proba(z)
+        return estimator.predict_proba(self._z_for(z,model))
     def explain(self,row,*,model='trepan_reloaded'):
         frame=row if isinstance(row,pd.DataFrame) else pd.DataFrame([row])
-        z=self._z(frame); estimator=self.reloaded if model=='trepan_reloaded' else self.original
+        z=self._z_for(self._z(frame),model); estimator=self.reloaded if model=='trepan_reloaded' else self.original
         if hasattr(estimator,'export_rules'):
             return {'prediction':str(estimator.predict(z)[0]),'rules':estimator.export_rules(),'model':model}
         return {'prediction':str(estimator.predict(z)[0]),'model':model}

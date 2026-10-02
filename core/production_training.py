@@ -5,6 +5,7 @@ pode alterar o braço Reloaded através da estrutura semântica; o oráculo, see
 orçamento e dados permanecem iguais aos do TREPAN Original.
 """
 from __future__ import annotations
+import dataclasses
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -30,8 +31,8 @@ from core.ontology_reasoner import run_owl_reasoner
 from core.ontology_processor import OntologyProcessor
 from core.ontology_stage_status import build_ontology_stage_status
 from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
-from core.semantic_metadata import apply_family_relatedness
-from core.semantic_teacher import build_semantic_teacher, decide_semantic_teacher, teacher_inputs_available
+from core.semantic_metadata import apply_family_relatedness, extend_semantic_inputs
+from core.semantic_teacher import build_semantic_teacher, decide_semantic_teacher, make_consistency_projector, teacher_inputs_available
 from core.ontology_semantic_graph import OntologySemanticGraph
 from core.semantic_contribution_gate import SemanticContributionGate
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig, tune_scientific_trepan
@@ -101,6 +102,7 @@ def train_production_dataframe(
     semantic_enrichment: Optional[EnrichmentConfig]=None,
     use_semantic_teacher: bool=True,
     teacher_min_evidence: Optional[str]="strong",
+    augment_reloaded_space: bool=True,
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -199,23 +201,52 @@ def train_production_dataframe(
         )
         cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
 
+    # Espaço do Reloaded: com professor semântico, o braço Reloaded divide também sobre as
+    # features onto_* selecionadas (espaço aumentado). O oráculo continua a ver só as colunas
+    # originais (OriginalOracleProjection) e cada consulta sintética é recomposta para ficar
+    # coerente. O braço Original fica no espaço original: a única variável é a extensão semântica.
+    augmented=bool(teacher is not None and augment_reloaded_space and teacher.selected_features)
+    pair_kwargs={}
+    pair_cfg=cfg
+    Zte_rel=Zte
+    reloaded_space={'space':'original','n_features':len(model_names)}
+    if augmented:
+        names_aug,w_aug,g_aug,e_aug,r_aug,derived=extend_semantic_inputs(
+            model_names,semantic_weights,semantic_groups,semantic_entities,relation_matrix,
+            teacher.processor,teacher.selected_features)
+        Ztr_rel=teacher.augment(Ztr); Zte_rel=teacher.augment(Zte)
+        pair_kwargs=dict(
+            reloaded_X_train=Ztr_rel,reloaded_feature_names=names_aug,
+            original_feature_indices=tuple(range(len(model_names))),
+            query_projector=make_consistency_projector(teacher,len(model_names)))
+        semantic_weights_pair,semantic_groups_pair,relation_pair,entities_pair=w_aug,g_aug,r_aug,e_aug
+        # O espelho refaria um TREPAN sobre as colunas aumentadas e chamar-lhe "Original" seria falso.
+        pair_cfg=dataclasses.replace(cfg,mirror_when_no_semantic_effect=False)
+        reloaded_space={'space':'augmented','n_features':len(names_aug),'semantic_features':list(teacher.selected_features),
+                        'derived':derived,'mirror_disabled_reason':'reloaded_arm_uses_augmented_space'}
+    else:
+        semantic_weights_pair,semantic_groups_pair,relation_pair,entities_pair=(
+            semantic_weights,semantic_groups,relation_matrix,semantic_entities)
+        if teacher is not None and not augment_reloaded_space:
+            reloaded_space['reason']='augment_reloaded_space_disabled'
     pair=fit_controlled_trepan_pair(
-        Ztr,ytr,oracle=oracle,feature_names=model_names,config=cfg,
-        semantic_feature_weights=semantic_weights,
-        semantic_feature_groups=semantic_groups,
-        semantic_relatedness_matrix=relation_matrix,
+        Ztr,ytr,oracle=oracle,feature_names=model_names,config=pair_cfg,
+        semantic_feature_weights=semantic_weights_pair,
+        semantic_feature_groups=semantic_groups_pair,
+        semantic_relatedness_matrix=relation_pair,
         run_id=f"production_v9_2_seed_{seed}",
         ontology_graph=graph,
-        semantic_feature_entities=semantic_entities,
+        semantic_feature_entities=entities_pair,
+        **pair_kwargs,
     )
-    evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte)
+    evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte,reloaded_X_test=Zte_rel if augmented else None)
     mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
     teacher_pred=oracle.predict(Zte)  # referência de fidelidade = professor realmente usado
     evaluation['models']['mlp_original']=classification_metrics(yte,mlp_pred)
     if teacher is not None:
         evaluation['models']['mlp_semantic']=classification_metrics(yte,teacher_pred)
     evaluation['models']['c45_native']=classification_metrics(yte,c45_pred)
-    original_pred=pair.original.predict(Zte); reloaded_pred=pair.reloaded.predict(Zte)
+    original_pred=pair.original.predict(Zte); reloaded_pred=pair.reloaded.predict(Zte_rel)
     evaluation['scientific_validation']=build_scientific_validation_report(
         yte, teacher_pred, {
             'trepan_reloaded':reloaded_pred,
@@ -235,6 +266,7 @@ def train_production_dataframe(
     evaluation['semantic_contribution_gate']=contribution
     evaluation['semantic_enrichment']=enrichment
     evaluation['semantic_teacher']=teacher_report
+    evaluation['reloaded_feature_space']=reloaded_space
     status=build_ontology_stage_status(quality,None,enrichment) if quality else None
     if status is not None:
         status['semantic_teacher_used']=bool(teacher is not None)
@@ -243,6 +275,7 @@ def train_production_dataframe(
 
     bundle={
         'format_version':'biuri-v9.2-production-5-semantic-real-gain', 'contract':contract, 'preprocessor':pre,
+        'reloaded_feature_space':reloaded_space['space'],
         'mlp_original':mlp,'semantic_teacher':teacher,'c45_native':c45,'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,
         'classes':list(map(str,getattr(mlp,'classes_',[]))),
     }
@@ -253,7 +286,7 @@ def train_production_dataframe(
         'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,
         'train_rows':len(tr),'test_rows':len(te),'test_used_for_selection':False,
         'tree_runtime_policy':'historical_trepan_only_no_cart',
-        'teacher_id':teacher_report['teacher'],'teacher_reason':teacher_report['reason'],
+        'reloaded_feature_space':reloaded_space['space'],'teacher_id':teacher_report['teacher'],'teacher_reason':teacher_report['reason'],
         'ontology_used':bool(quality and quality.get('accepted')),
         'semantic_contribution_status':contribution.get('status'),
         'claim_guard':evaluation['scientific_validation'].get('claim_guard'),

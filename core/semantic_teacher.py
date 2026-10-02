@@ -99,6 +99,15 @@ class SemanticTeacher:
         full = self.processor.transform(frame)
         return full[self.input_columns + self.selected_features]
 
+    def semantic_columns(self, Z) -> pd.DataFrame:
+        """Só as features semânticas selecionadas, calculadas a partir das colunas originais de Z."""
+        return self._enriched(Z)[self.selected_features]
+
+    def augment(self, Z) -> np.ndarray:
+        """Espaço aumentado do TREPAN Reloaded: ``[Z | features semânticas selecionadas]``."""
+        Z = np.asarray(Z, dtype=float)
+        return np.hstack([Z, self.semantic_columns(Z).to_numpy(dtype=float)])
+
     def predict(self, Z):
         return self.pipeline.predict(self._enriched(Z))
 
@@ -144,3 +153,22 @@ def build_semantic_teacher(
     }
     return SemanticTeacher(detach_ontology(result.processor), inputs, z_idx,
                            result.selected_features, pipeline, audit)
+
+
+def make_consistency_projector(teacher: SemanticTeacher, n_base: int):
+    """``query_projector`` que mantém o espaço aumentado internamente coerente.
+
+    O TREPAN amostra cada coluna de forma independente; sem isto, as colunas ``onto_*`` das
+    consultas sintéticas não corresponderiam às colunas originais (o oráculo só vê as
+    originais). Para cada consulta recalcula as colunas semânticas a partir das ``n_base``
+    primeiras, exatamente como acontece na inferência. Não altera as colunas originais.
+    """
+    n_base = int(n_base)
+
+    def project(raw):
+        raw = np.asarray(raw, dtype=float)
+        out = raw.copy()
+        out[:, n_base:] = teacher.semantic_columns(raw[:, :n_base]).to_numpy(dtype=float)
+        return out
+
+    return project

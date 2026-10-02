@@ -219,3 +219,65 @@ def apply_family_relatedness(
             if fam_j == fam_i and source_columns[i] != source_columns[j]:
                 out[i, j] = out[j, i] = max(out[i, j], config.same_family)
     return out
+
+
+def extend_semantic_inputs(
+    names: Sequence[str],
+    weights,
+    groups: Sequence[Optional[str]],
+    entities: Sequence[Optional[str]],
+    matrix,
+    processor,
+    selected: Sequence[str],
+    config: RelatednessConfig = RelatednessConfig(),
+):
+    """Estende pesos/grupos/entidades/relatedness do espaço original ao aumentado.
+
+    Cada feature ``onto_*`` selecionada entra no fim, por esta ordem. Regras:
+
+    * peso de split = o maior peso das suas fontes (sem bónus extra por ser ``onto_*``);
+    * grupo = a família OWL da feature, ou o grupo da primeira fonte;
+    * relatedness com a fonte = ``derived_to_source``; com as restantes features herda o
+      máximo das relações das suas fontes (limitado a ``derived_to_source``); entre duas
+      derivadas que partilham fonte ou família = ``same_family``.
+
+    Devolve ``(names, weights, groups, entities, matrix, records)``.
+    """
+    config.validate()
+    names = [str(n) for n in names]
+    n = len(names)
+    weights = np.asarray(weights, dtype=float)
+    base = np.asarray(matrix, dtype=float)
+    specs = {s["name"]: s for s in (getattr(processor, "feature_specs_", []) or [])}
+    entity_map = dict(getattr(processor, "column_entity_map_", {}) or {})
+    selected = [f for f in selected if f in specs]
+    m = n + len(selected)
+    out = np.zeros((m, m), dtype=float)
+    out[:n, :n] = base
+    new_weights = list(weights)
+    new_groups, new_entities, records, src_of = list(groups), list(entities), [], []
+    for k, name in enumerate(selected):
+        spec = specs[name]
+        sources = [str(s) for s in (spec.get("sources") or ([spec["source"]] if spec.get("source") else []))]
+        src_idx = [names.index(s) for s in sources if s in names]
+        src_of.append(set(src_idx))
+        new_weights.append(float(max((weights[i] for i in src_idx), default=1.0)))
+        new_groups.append(spec.get("family") or next((groups[i] for i in src_idx if groups[i]), None))
+        entity = next(iter(spec.get("owl_entities") or []), None) or entity_map.get(sources[0] if sources else "")
+        new_entities.append(entity)
+        row = n + k
+        out[row, row] = 1.0
+        for j in range(n):
+            inherited = max((base[i, j] for i in src_idx if i != j), default=0.0)
+            value = min(float(inherited), config.derived_to_source)
+            if j in src_idx:
+                value = config.derived_to_source
+            out[row, j] = out[j, row] = value
+        records.append({"feature": name, "sources": sources, "weight": new_weights[-1],
+                        "group": new_groups[-1], "entity": entity})
+    for a in range(len(selected)):
+        for b in range(a + 1, len(selected)):
+            same_family = specs[selected[a]].get("family") and specs[selected[a]].get("family") == specs[selected[b]].get("family")
+            if src_of[a] & src_of[b] or same_family:
+                out[n + a, n + b] = out[n + b, n + a] = config.same_family
+    return names + selected, np.asarray(new_weights, dtype=float), new_groups, new_entities, out, records
