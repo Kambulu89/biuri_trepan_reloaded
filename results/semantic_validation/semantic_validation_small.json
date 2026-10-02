@@ -1,0 +1,2681 @@
+{
+  "semantic_pipeline_version": "9.3.0",
+  "datasets": {
+    "iris@seed42": {
+      "n_samples": 150,
+      "n_features": 4,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 4,
+        "total_features": 4,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.9417433799999344,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_DEGRADATION",
+        "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 2,
+        "retained": 2,
+        "stable_features": [
+          "onto_SepalMeasurement_aggregate",
+          "onto_PetalMeasurement_aggregate"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.96,
+          "balanced_accuracy": 0.96,
+          "precision_macro": 0.96,
+          "recall_macro": 0.96,
+          "macro_f1": 0.96,
+          "minority_recall": 0.94,
+          "utility": 0.957
+        },
+        "with_owl": {
+          "accuracy": 0.9466666666666667,
+          "balanced_accuracy": 0.9466666666666667,
+          "precision_macro": 0.9471153846153846,
+          "recall_macro": 0.9466666666666667,
+          "macro_f1": 0.9466453247965854,
+          "minority_recall": 0.9,
+          "utility": 0.9329925303454715
+        },
+        "utility_gain": -0.02400746965452849,
+        "utility_gain_ci": [
+          -0.05134422425853614,
+          -0.00666666666666671
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.957
+          },
+          "with_owl": {
+            "accuracy": 0.9466666666666667,
+            "balanced_accuracy": 0.9466666666666667,
+            "precision_macro": 0.9471153846153846,
+            "recall_macro": 0.9466666666666667,
+            "macro_f1": 0.9466453247965854,
+            "minority_recall": 0.9,
+            "utility": 0.9329925303454715
+          },
+          "utility_gain": -0.02400746965452849,
+          "utility_gain_ci": [
+            -0.05134422425853614,
+            -0.00666666666666671
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.957
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.9503333333333333
+          },
+          "utility_gain": -0.00666666666666671,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            -0.00666666666666671
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.957
+          },
+          "with_owl": {
+            "accuracy": 0.9466666666666667,
+            "balanced_accuracy": 0.9466666666666667,
+            "precision_macro": 0.9471153846153846,
+            "recall_macro": 0.9466666666666667,
+            "macro_f1": 0.9466453247965854,
+            "minority_recall": 0.9,
+            "utility": 0.9329925303454715
+          },
+          "utility_gain": -0.02400746965452849,
+          "utility_gain_ci": [
+            -0.05134422425853614,
+            -0.00666666666666671
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.957
+          },
+          "with_owl": {
+            "accuracy": 0.9533333333333334,
+            "balanced_accuracy": 0.9533333333333333,
+            "precision_macro": 0.9534480458850206,
+            "recall_macro": 0.9533333333333333,
+            "macro_f1": 0.9533286661999533,
+            "minority_recall": 0.92,
+            "utility": 0.9416650331699836
+          },
+          "utility_gain": -0.015334966830016339,
+          "utility_gain_ci": [
+            -0.03342494656202166,
+            -0.00666666666666671
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": -0.02400746965452849,
+        "control_gains": [
+          -0.00666666666666671,
+          -0.02400746965452849,
+          -0.015334966830016339
+        ],
+        "controls_ge_real": 3
+      },
+      "seconds": 64.8
+    },
+    "iris@seed43": {
+      "n_samples": 150,
+      "n_features": 4,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 4,
+        "total_features": 4,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.6196960109998599,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+        "reason": "non_inferior_with_secondary_metric_gain",
+        "semantic_mlp_accepted": true,
+        "semantic_trepan_available": true,
+        "generated": 2,
+        "retained": 2,
+        "stable_features": [
+          "onto_SepalMeasurement_aggregate",
+          "onto_PetalMeasurement_aggregate"
+        ],
+        "selected_features": [
+          "onto_SepalMeasurement_aggregate",
+          "onto_PetalMeasurement_aggregate"
+        ],
+        "base": {
+          "accuracy": 0.94,
+          "balanced_accuracy": 0.94,
+          "precision_macro": 0.9414308176100629,
+          "recall_macro": 0.94,
+          "macro_f1": 0.9402958986870221,
+          "minority_recall": 0.9,
+          "utility": 0.9341035645404577
+        },
+        "with_owl": {
+          "accuracy": 0.96,
+          "balanced_accuracy": 0.96,
+          "precision_macro": 0.96,
+          "recall_macro": 0.96,
+          "macro_f1": 0.96,
+          "minority_recall": 0.94,
+          "utility": 0.9503333333333333
+        },
+        "utility_gain": 0.01622976879287552,
+        "utility_gain_ci": [
+          -0.00666666666666671,
+          0.044668640548026856
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94,
+            "precision_macro": 0.9414308176100629,
+            "recall_macro": 0.94,
+            "macro_f1": 0.9402958986870221,
+            "minority_recall": 0.9,
+            "utility": 0.9341035645404577
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.9503333333333333
+          },
+          "utility_gain": 0.01622976879287552,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.044668640548026856
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94,
+            "precision_macro": 0.9414308176100629,
+            "recall_macro": 0.94,
+            "macro_f1": 0.9402958986870221,
+            "minority_recall": 0.9,
+            "utility": 0.9341035645404577
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.9503333333333333
+          },
+          "utility_gain": 0.01622976879287552,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.044668640548026856
+          ]
+        },
+        {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94,
+            "precision_macro": 0.9414308176100629,
+            "recall_macro": 0.94,
+            "macro_f1": 0.9402958986870221,
+            "minority_recall": 0.9,
+            "utility": 0.9341035645404577
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.9503333333333333
+          },
+          "utility_gain": 0.01622976879287552,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.044668640548026856
+          ]
+        },
+        {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.94,
+            "balanced_accuracy": 0.94,
+            "precision_macro": 0.9414308176100629,
+            "recall_macro": 0.94,
+            "macro_f1": 0.9402958986870221,
+            "minority_recall": 0.9,
+            "utility": 0.9341035645404577
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.96,
+            "recall_macro": 0.96,
+            "macro_f1": 0.96,
+            "minority_recall": 0.94,
+            "utility": 0.9503333333333333
+          },
+          "utility_gain": 0.01622976879287552,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.044668640548026856
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.01622976879287552,
+        "control_gains": [
+          0.01622976879287552,
+          0.01622976879287552,
+          0.01622976879287552
+        ],
+        "controls_ge_real": 3
+      },
+      "seconds": 68.9
+    },
+    "iris@seed44": {
+      "n_samples": 150,
+      "n_features": 4,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 4,
+        "total_features": 4,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.9729580799998985,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+        "reason": "non_inferior_with_secondary_metric_gain",
+        "semantic_mlp_accepted": true,
+        "semantic_trepan_available": true,
+        "generated": 2,
+        "retained": 2,
+        "stable_features": [
+          "onto_SepalMeasurement_aggregate",
+          "onto_PetalMeasurement_aggregate"
+        ],
+        "selected_features": [
+          "onto_SepalMeasurement_aggregate",
+          "onto_PetalMeasurement_aggregate"
+        ],
+        "base": {
+          "accuracy": 0.96,
+          "balanced_accuracy": 0.96,
+          "precision_macro": 0.9604700854700855,
+          "recall_macro": 0.96,
+          "macro_f1": 0.9599839935974389,
+          "minority_recall": 0.92,
+          "utility": 0.9539943977591037
+        },
+        "with_owl": {
+          "accuracy": 0.9666666666666667,
+          "balanced_accuracy": 0.9666666666666667,
+          "precision_macro": 0.9667867146858743,
+          "recall_macro": 0.9666666666666667,
+          "macro_f1": 0.9666633329999667,
+          "minority_recall": 0.94,
+          "utility": 0.955998833216655
+        },
+        "utility_gain": 0.0020044354575513568,
+        "utility_gain_ci": [
+          -0.00666666666666671,
+          0.020138649430218133
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.9604700854700855,
+            "recall_macro": 0.96,
+            "macro_f1": 0.9599839935974389,
+            "minority_recall": 0.92,
+            "utility": 0.9539943977591037
+          },
+          "with_owl": {
+            "accuracy": 0.9666666666666667,
+            "balanced_accuracy": 0.9666666666666667,
+            "precision_macro": 0.9667867146858743,
+            "recall_macro": 0.9666666666666667,
+            "macro_f1": 0.9666633329999667,
+            "minority_recall": 0.94,
+            "utility": 0.955998833216655
+          },
+          "utility_gain": 0.0020044354575513568,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.020138649430218133
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.9604700854700855,
+            "recall_macro": 0.96,
+            "macro_f1": 0.9599839935974389,
+            "minority_recall": 0.92,
+            "utility": 0.9539943977591037
+          },
+          "with_owl": {
+            "accuracy": 0.9666666666666667,
+            "balanced_accuracy": 0.9666666666666667,
+            "precision_macro": 0.9667867146858743,
+            "recall_macro": 0.9666666666666667,
+            "macro_f1": 0.9666633329999667,
+            "minority_recall": 0.94,
+            "utility": 0.955998833216655
+          },
+          "utility_gain": 0.0020044354575513568,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.020138649430218133
+          ]
+        },
+        {
+          "decision": "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "selected_features": [
+            "onto_SepalMeasurement_aggregate",
+            "onto_PetalMeasurement_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.9604700854700855,
+            "recall_macro": 0.96,
+            "macro_f1": 0.9599839935974389,
+            "minority_recall": 0.92,
+            "utility": 0.9539943977591037
+          },
+          "with_owl": {
+            "accuracy": 0.9666666666666667,
+            "balanced_accuracy": 0.9666666666666667,
+            "precision_macro": 0.9667867146858743,
+            "recall_macro": 0.9666666666666667,
+            "macro_f1": 0.9666633329999667,
+            "minority_recall": 0.94,
+            "utility": 0.955998833216655
+          },
+          "utility_gain": 0.0020044354575513568,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            0.020138649430218133
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 2,
+          "retained": 2,
+          "stable_features": [
+            "onto_PetalMeasurement_aggregate",
+            "onto_SepalMeasurement_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.9604700854700855,
+            "recall_macro": 0.96,
+            "macro_f1": 0.9599839935974389,
+            "minority_recall": 0.92,
+            "utility": 0.9539943977591037
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.96,
+            "precision_macro": 0.9604700854700855,
+            "recall_macro": 0.96,
+            "macro_f1": 0.9599839935974389,
+            "minority_recall": 0.92,
+            "utility": 0.947327731092437
+          },
+          "utility_gain": -0.00666666666666671,
+          "utility_gain_ci": [
+            -0.00666666666666671,
+            -0.00666666666666671
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.0020044354575513568,
+        "control_gains": [
+          0.0020044354575513568,
+          0.0020044354575513568,
+          -0.00666666666666671
+        ],
+        "controls_ge_real": 2
+      },
+      "seconds": 69.5
+    },
+    "wine@seed42": {
+      "n_samples": 178,
+      "n_features": 13,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 13,
+        "total_features": 13,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0000000000000004,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.9189741220000087,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_DEGRADATION",
+        "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 3,
+        "retained": 3,
+        "stable_features": [
+          "onto_PhysicalChemicalProfile_aggregate",
+          "onto_PhenolicProfile_aggregate"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9831460674157303,
+          "balanced_accuracy": 0.9836658841940532,
+          "precision_macro": 0.9827380952380952,
+          "recall_macro": 0.9836658841940532,
+          "macro_f1": 0.9831622365258159,
+          "minority_recall": 0.971830985915493,
+          "utility": 0.9816364002516377
+        },
+        "with_owl": {
+          "accuracy": 0.9775280898876404,
+          "balanced_accuracy": 0.978971048513302,
+          "precision_macro": 0.9760080843931775,
+          "recall_macro": 0.978971048513302,
+          "macro_f1": 0.9773657916774957,
+          "minority_recall": 0.9577464788732394,
+          "utility": 0.9723424127142443
+        },
+        "utility_gain": -0.009293987537393411,
+        "utility_gain_ci": [
+          -0.023507750653046156,
+          -0.002666666666666706
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9827380952380952,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9831622365258159,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9816364002516377
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.978971048513302,
+            "precision_macro": 0.9760080843931775,
+            "recall_macro": 0.978971048513302,
+            "macro_f1": 0.9773657916774957,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9723424127142443
+          },
+          "utility_gain": -0.009293987537393411,
+          "utility_gain_ci": [
+            -0.023507750653046156,
+            -0.002666666666666706
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhenolicProfile_aggregate",
+            "onto_AcidityProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9827380952380952,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9831622365258159,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9816364002516377
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.978971048513302,
+            "precision_macro": 0.9772956759325254,
+            "recall_macro": 0.978971048513302,
+            "macro_f1": 0.9779761904761904,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9725560522937876
+          },
+          "utility_gain": -0.009080347957850066,
+          "utility_gain_ci": [
+            -0.022595825462174042,
+            -0.002666666666666706
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9827380952380952,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9831622365258159,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9816364002516377
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.978971048513302,
+            "precision_macro": 0.9772956759325254,
+            "recall_macro": 0.978971048513302,
+            "macro_f1": 0.9779761904761904,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9725560522937876
+          },
+          "utility_gain": -0.009080347957850066,
+          "utility_gain_ci": [
+            -0.03125643305219072,
+            0.010811597172363296
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhenolicProfile_aggregate",
+            "onto_PhysicalChemicalProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9827380952380952,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9831622365258159,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9816364002516377
+          },
+          "with_owl": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9733213309991777,
+            "precision_macro": 0.9712210307851955,
+            "recall_macro": 0.9733213309991777,
+            "macro_f1": 0.9722206731660932,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9677215234760966
+          },
+          "utility_gain": -0.01391487677554104,
+          "utility_gain_ci": [
+            -0.037290653312687064,
+            0.00892411050125497
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": -0.009293987537393411,
+        "control_gains": [
+          -0.009080347957850066,
+          -0.009080347957850066,
+          -0.01391487677554104
+        ],
+        "controls_ge_real": 2
+      },
+      "seconds": 53.0
+    },
+    "wine@seed43": {
+      "n_samples": 178,
+      "n_features": 13,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 13,
+        "total_features": 13,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0000000000000004,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.6039653110001382,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+        "reason": "ci_includes_zero_and_no_secondary_gain",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 3,
+        "retained": 3,
+        "stable_features": [
+          "onto_PhysicalChemicalProfile_aggregate",
+          "onto_PhenolicProfile_aggregate"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9831460674157303,
+          "balanced_accuracy": 0.9836658841940532,
+          "precision_macro": 0.9816326530612245,
+          "recall_macro": 0.9836658841940532,
+          "macro_f1": 0.9825985230679243,
+          "minority_recall": 0.971830985915493,
+          "utility": 0.9814391005413757
+        },
+        "with_owl": {
+          "accuracy": 0.9831460674157303,
+          "balanced_accuracy": 0.9859154929577465,
+          "precision_macro": 0.9811111111111112,
+          "recall_macro": 0.9859154929577465,
+          "macro_f1": 0.9832019138590686,
+          "minority_recall": 0.9577464788732394,
+          "utility": 0.9776583076625641
+        },
+        "utility_gain": -0.003780792878811612,
+        "utility_gain_ci": [
+          -0.021452431006146588,
+          0.018645989023712877
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9816326530612245,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9825985230679243,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9814391005413757
+          },
+          "with_owl": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9859154929577465,
+            "precision_macro": 0.9811111111111112,
+            "recall_macro": 0.9859154929577465,
+            "macro_f1": 0.9832019138590686,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9776583076625641
+          },
+          "utility_gain": -0.003780792878811612,
+          "utility_gain_ci": [
+            -0.021452431006146588,
+            0.018645989023712877
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate",
+            "onto_AcidityProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9816326530612245,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9825985230679243,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9814391005413757
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.9780161666799289,
+            "precision_macro": 0.9780161666799289,
+            "recall_macro": 0.9780161666799289,
+            "macro_f1": 0.9780161666799289,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9732651780464202
+          },
+          "utility_gain": -0.008173922494955521,
+          "utility_gain_ci": [
+            -0.029094965973442934,
+            0.009921421506918616
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_AcidityProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9816326530612245,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9825985230679243,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9814391005413757
+          },
+          "with_owl": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9859154929577465,
+            "precision_macro": 0.9803921568627452,
+            "recall_macro": 0.9859154929577465,
+            "macro_f1": 0.9827047452946734,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9774842986650257
+          },
+          "utility_gain": -0.00395480187635,
+          "utility_gain_ci": [
+            -0.021066436044931906,
+            0.018689171738755308
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhenolicProfile_aggregate",
+            "onto_AcidityProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9816326530612245,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9825985230679243,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.9814391005413757
+          },
+          "with_owl": {
+            "accuracy": 0.9831460674157303,
+            "balanced_accuracy": 0.9836658841940532,
+            "precision_macro": 0.9816326530612245,
+            "recall_macro": 0.9836658841940532,
+            "macro_f1": 0.9825985230679243,
+            "minority_recall": 0.971830985915493,
+            "utility": 0.978772433874709
+          },
+          "utility_gain": -0.002666666666666706,
+          "utility_gain_ci": [
+            -0.002666666666666706,
+            -0.002666666666666706
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": -0.003780792878811612,
+        "control_gains": [
+          -0.008173922494955521,
+          -0.00395480187635,
+          -0.002666666666666706
+        ],
+        "controls_ge_real": 1
+      },
+      "seconds": 64.4
+    },
+    "wine@seed44": {
+      "n_samples": 178,
+      "n_features": 13,
+      "n_classes": 3,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 13,
+        "total_features": 13,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0000000000000004,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.4361147360000359,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+        "reason": "ci_includes_zero_and_no_secondary_gain",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 3,
+        "retained": 3,
+        "stable_features": [
+          "onto_PhysicalChemicalProfile_aggregate",
+          "onto_PhenolicProfile_aggregate"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9719101123595506,
+          "balanced_accuracy": 0.9733213309991777,
+          "precision_macro": 0.9704761904761905,
+          "recall_macro": 0.9733213309991777,
+          "macro_f1": 0.9717252240048593,
+          "minority_recall": 0.9577464788732394,
+          "utility": 0.9702147829363315
+        },
+        "with_owl": {
+          "accuracy": 0.9775280898876404,
+          "balanced_accuracy": 0.978971048513302,
+          "precision_macro": 0.9751690821256038,
+          "recall_macro": 0.978971048513302,
+          "macro_f1": 0.9768707482993197,
+          "minority_recall": 0.9577464788732394,
+          "utility": 0.9721691475318827
+        },
+        "utility_gain": 0.0019543645955512057,
+        "utility_gain_ci": [
+          -0.016688853058663054,
+          0.022862689056934473
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9733213309991777,
+            "precision_macro": 0.9704761904761905,
+            "recall_macro": 0.9733213309991777,
+            "macro_f1": 0.9717252240048593,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9702147829363315
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.978971048513302,
+            "precision_macro": 0.9751690821256038,
+            "recall_macro": 0.978971048513302,
+            "macro_f1": 0.9768707482993197,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9721691475318827
+          },
+          "utility_gain": 0.0019543645955512057,
+          "utility_gain_ci": [
+            -0.016688853058663054,
+            0.022862689056934473
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_AcidityProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9733213309991777,
+            "precision_macro": 0.9704761904761905,
+            "recall_macro": 0.9733213309991777,
+            "macro_f1": 0.9717252240048593,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9702147829363315
+          },
+          "with_owl": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9742762128325508,
+            "precision_macro": 0.9705636352901816,
+            "recall_macro": 0.9742762128325508,
+            "macro_f1": 0.9721447584200681,
+            "minority_recall": 0.9436619718309859,
+            "utility": 0.9659164859003303
+          },
+          "utility_gain": -0.004298297036001153,
+          "utility_gain_ci": [
+            -0.03141425414300594,
+            0.020034792363607355
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_PhenolicProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9733213309991777,
+            "precision_macro": 0.9704761904761905,
+            "recall_macro": 0.9733213309991777,
+            "macro_f1": 0.9717252240048593,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9702147829363315
+          },
+          "with_owl": {
+            "accuracy": 0.9662921348314607,
+            "balanced_accuracy": 0.9695813771517997,
+            "precision_macro": 0.9633255292166617,
+            "recall_macro": 0.9695813771517997,
+            "macro_f1": 0.9658711090936154,
+            "minority_recall": 0.9295774647887324,
+            "utility": 0.9591221434622575
+          },
+          "utility_gain": -0.011092639474073906,
+          "utility_gain_ci": [
+            -0.03523251157180244,
+            0.008262739001565158
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_PhysicalChemicalProfile_aggregate",
+            "onto_AcidityProfile_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9719101123595506,
+            "balanced_accuracy": 0.9733213309991777,
+            "precision_macro": 0.9704761904761905,
+            "recall_macro": 0.9733213309991777,
+            "macro_f1": 0.9717252240048593,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9702147829363315
+          },
+          "with_owl": {
+            "accuracy": 0.9775280898876404,
+            "balanced_accuracy": 0.978971048513302,
+            "precision_macro": 0.9751690821256038,
+            "recall_macro": 0.978971048513302,
+            "macro_f1": 0.9768707482993197,
+            "minority_recall": 0.9577464788732394,
+            "utility": 0.9721691475318827
+          },
+          "utility_gain": 0.0019543645955512057,
+          "utility_gain_ci": [
+            -0.016688853058663054,
+            0.022862689056934473
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.0019543645955512057,
+        "control_gains": [
+          -0.004298297036001153,
+          -0.011092639474073906,
+          0.0019543645955512057
+        ],
+        "controls_ge_real": 1
+      },
+      "seconds": 73.8
+    },
+    "breast_cancer@seed42": {
+      "n_samples": 569,
+      "n_features": 30,
+      "n_classes": 2,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 30,
+        "total_features": 30,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 0.9999999999999996,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 30,
+          "family_annotated_properties": 30,
+          "knowledge_sources": [
+            "statistic_roles"
+          ],
+          "level": "limited"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.642512085999897,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+        "reason": "ci_includes_zero_and_no_secondary_gain",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 53,
+        "retained": 53,
+        "stable_features": [
+          "onto_MeanMorphology_aggregate",
+          "onto_WorstMorphology_aggregate",
+          "onto_area_worst_minus_mean",
+          "onto_concave_points_error_ratio",
+          "onto_concavity_error_ratio",
+          "onto_perimeter_worst_minus_mean",
+          "onto_radius_worst_minus_mean",
+          "onto_radius_relative_worst_delta",
+          "onto_radius_family_contrast"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9701230228471002,
+          "balanced_accuracy": 0.9666111727709952,
+          "precision_macro": 0.9693646996278575,
+          "recall_macro": 0.9666111727709952,
+          "macro_f1": 0.9679550250615357,
+          "minority_recall": 0.9528301886792453,
+          "utility": 0.9655411509703375
+        },
+        "with_owl": {
+          "accuracy": 0.9753954305799648,
+          "balanced_accuracy": 0.9717707837852122,
+          "precision_macro": 0.9755153952695503,
+          "recall_macro": 0.9717707837852122,
+          "macro_f1": 0.9735840297121634,
+          "minority_recall": 0.9575471698113207,
+          "utility": 0.9662001901673897
+        },
+        "utility_gain": 0.0006590391970521248,
+        "utility_gain_ci": [
+          -0.01732413111349935,
+          0.01625108908124104
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9701230228471002,
+            "balanced_accuracy": 0.9666111727709952,
+            "precision_macro": 0.9693646996278575,
+            "recall_macro": 0.9666111727709952,
+            "macro_f1": 0.9679550250615357,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9655411509703375
+          },
+          "with_owl": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9703702235611225,
+            "precision_macro": 0.973145933014354,
+            "recall_macro": 0.9703702235611225,
+            "macro_f1": 0.9717250221131197,
+            "minority_recall": 0.9575471698113207,
+            "utility": 0.9681611056580344
+          },
+          "utility_gain": 0.002619954687696824,
+          "utility_gain_ci": [
+            -0.0074660660000960685,
+            0.011985539373835086
+          ]
+        },
+        "C_relational_only": {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_area_worst_minus_mean",
+            "onto_area_family_contrast",
+            "onto_concave_points_error_ratio",
+            "onto_concavity_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_radius_worst_minus_mean",
+            "onto_radius_relative_worst_delta",
+            "onto_radius_family_contrast"
+          ],
+          "selected_features": [
+            "onto_area_worst_minus_mean",
+            "onto_area_family_contrast",
+            "onto_concave_points_error_ratio",
+            "onto_concavity_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_radius_worst_minus_mean",
+            "onto_radius_relative_worst_delta",
+            "onto_radius_family_contrast"
+          ],
+          "base": {
+            "accuracy": 0.9701230228471002,
+            "balanced_accuracy": 0.9666111727709952,
+            "precision_macro": 0.9693646996278575,
+            "recall_macro": 0.9666111727709952,
+            "macro_f1": 0.9679550250615357,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9655411509703375
+          },
+          "with_owl": {
+            "accuracy": 0.9824253075571178,
+            "balanced_accuracy": 0.9783309550235189,
+            "precision_macro": 0.9841263473214047,
+            "recall_macro": 0.9783309550235189,
+            "macro_f1": 0.9810938330675173,
+            "minority_recall": 0.9622641509433962,
+            "utility": 0.9732915682911503
+          },
+          "utility_gain": 0.007750417320812719,
+          "utility_gain_ci": [
+            -0.007034364323483805,
+            0.020685581056369137
+          ]
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 49,
+          "stable_features": [
+            "onto_ErrorMorphology_aggregate",
+            "onto_MeanMorphology_aggregate",
+            "onto_concavity_normalized_error",
+            "onto_fractal_dimension_normalized_error",
+            "onto_perimeter_worst_minus_mean",
+            "onto_perimeter_relative_worst_delta",
+            "onto_perimeter_family_contrast"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9701230228471002,
+            "balanced_accuracy": 0.9666111727709952,
+            "precision_macro": 0.9693646996278575,
+            "recall_macro": 0.9666111727709952,
+            "macro_f1": 0.9679550250615357,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9655411509703375
+          },
+          "with_owl": {
+            "accuracy": 0.9771528998242531,
+            "balanced_accuracy": 0.9722134136673537,
+            "precision_macro": 0.9789466630930046,
+            "recall_macro": 0.9722134136673537,
+            "macro_f1": 0.9753972134359088,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9673773989778829
+          },
+          "utility_gain": 0.001836248007545338,
+          "utility_gain_ci": [
+            -0.010058004728052511,
+            0.012500406540312564
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 48,
+          "stable_features": [
+            "onto_ErrorMorphology_aggregate",
+            "onto_MeanMorphology_aggregate",
+            "onto_area_worst_minus_mean",
+            "onto_area_family_contrast",
+            "onto_area_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_perimeter_family_contrast",
+            "onto_radius_worst_minus_mean"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9701230228471002,
+            "balanced_accuracy": 0.9666111727709952,
+            "precision_macro": 0.9693646996278575,
+            "recall_macro": 0.9666111727709952,
+            "macro_f1": 0.9679550250615357,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9655411509703375
+          },
+          "with_owl": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9627337942329506
+          },
+          "utility_gain": -0.002807356737386968,
+          "utility_gain_ci": [
+            -0.013508245711329801,
+            0.007520431191397752
+          ]
+        },
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 45,
+          "stable_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_ErrorMorphology_aggregate",
+            "onto_MeanMorphology_aggregate",
+            "onto_fractal_dimension_family_contrast",
+            "onto_perimeter_worst_minus_mean",
+            "onto_perimeter_family_contrast",
+            "onto_smoothness_normalized_error",
+            "onto_symmetry_relative_worst_delta"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9701230228471002,
+            "balanced_accuracy": 0.9666111727709952,
+            "precision_macro": 0.9693646996278575,
+            "recall_macro": 0.9666111727709952,
+            "macro_f1": 0.9679550250615357,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9655411509703375
+          },
+          "with_owl": {
+            "accuracy": 0.9648506151142355,
+            "balanced_accuracy": 0.959535701072882,
+            "precision_macro": 0.9651033726497098,
+            "recall_macro": 0.959535701072882,
+            "macro_f1": 0.9621876661350346,
+            "minority_recall": 0.9386792452830188,
+            "utility": 0.9539221312665693
+          },
+          "utility_gain": -0.011619019703768219,
+          "utility_gain_ci": [
+            -0.02302183644817843,
+            -0.0012126252784393399
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.0006590391970521248,
+        "control_gains": [
+          0.001836248007545338,
+          -0.002807356737386968,
+          -0.011619019703768219
+        ],
+        "controls_ge_real": 1
+      },
+      "seconds": 278.9
+    },
+    "breast_cancer@seed43": {
+      "n_samples": 569,
+      "n_features": 30,
+      "n_classes": 2,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 30,
+        "total_features": 30,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 0.9999999999999996,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 30,
+          "family_annotated_properties": 30,
+          "knowledge_sources": [
+            "statistic_roles"
+          ],
+          "level": "limited"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.4746785339998496,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+        "reason": "ci_includes_zero_and_no_secondary_gain",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 53,
+        "retained": 53,
+        "stable_features": [
+          "onto_MeanMorphology_aggregate",
+          "onto_WorstMorphology_aggregate",
+          "onto_area_worst_minus_mean",
+          "onto_concave_points_error_ratio",
+          "onto_concavity_error_ratio",
+          "onto_perimeter_worst_minus_mean",
+          "onto_radius_worst_minus_mean",
+          "onto_radius_relative_worst_delta"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9736379613356766,
+          "balanced_accuracy": 0.9694122932191744,
+          "precision_macro": 0.9741105506178771,
+          "recall_macro": 0.9694122932191744,
+          "macro_f1": 0.9716690842823996,
+          "minority_recall": 0.9528301886792453,
+          "utility": 0.9683487046277892
+        },
+        "with_owl": {
+          "accuracy": 0.9753954305799648,
+          "balanced_accuracy": 0.9727287141271603,
+          "precision_macro": 0.9745722244329487,
+          "recall_macro": 0.9727287141271603,
+          "macro_f1": 0.9736357859620323,
+          "minority_recall": 0.9622641509433962,
+          "utility": 0.967665985943932
+        },
+        "utility_gain": -0.0006827186838571642,
+        "utility_gain_ci": [
+          -0.01228365558645589,
+          0.011014727116344068
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9694122932191744,
+            "precision_macro": 0.9741105506178771,
+            "recall_macro": 0.9694122932191744,
+            "macro_f1": 0.9716690842823996,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9683487046277892
+          },
+          "with_owl": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9670538026531368,
+            "precision_macro": 0.9727125625183878,
+            "recall_macro": 0.9670538026531368,
+            "macro_f1": 0.9697501329080276,
+            "minority_recall": 0.9481132075471698,
+            "utility": 0.9646304323921912
+          },
+          "utility_gain": -0.0037182722355980635,
+          "utility_gain_ci": [
+            -0.01205614872688915,
+            0.0029755156444349756
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_area_worst_minus_mean",
+            "onto_area_relative_worst_delta",
+            "onto_area_family_contrast",
+            "onto_concave_points_error_ratio",
+            "onto_concavity_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_radius_worst_minus_mean",
+            "onto_radius_relative_worst_delta",
+            "onto_radius_family_contrast"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9694122932191744,
+            "precision_macro": 0.9741105506178771,
+            "recall_macro": 0.9694122932191744,
+            "macro_f1": 0.9716690842823996,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9683487046277892
+          },
+          "with_owl": {
+            "accuracy": 0.9771528998242531,
+            "balanced_accuracy": 0.9731713440093018,
+            "precision_macro": 0.9779072250246884,
+            "recall_macro": 0.9731713440093018,
+            "macro_f1": 0.975446539711413,
+            "minority_recall": 0.9575471698113207,
+            "utility": 0.9676058851322017
+          },
+          "utility_gain": -0.0007428194955875211,
+          "utility_gain_ci": [
+            -0.009825636782861805,
+            0.009081754430384162
+          ]
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_DEGRADATION",
+          "reason": "utility_ci_below_zero_or_loss_above_noninferiority_margin",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 43,
+          "stable_features": [
+            "onto_ErrorMorphology_aggregate",
+            "onto_WorstMorphology_aggregate",
+            "onto_MeanMorphology_aggregate",
+            "onto_compactness_worst_minus_mean",
+            "onto_perimeter_normalized_error",
+            "onto_radius_error_ratio",
+            "onto_texture_normalized_error"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9694122932191744,
+            "precision_macro": 0.9741105506178771,
+            "recall_macro": 0.9694122932191744,
+            "macro_f1": 0.9716690842823996,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9683487046277892
+          },
+          "with_owl": {
+            "accuracy": 0.968365553602812,
+            "balanced_accuracy": 0.9632947518630093,
+            "precision_macro": 0.9689079675840488,
+            "recall_macro": 0.9632947518630093,
+            "macro_f1": 0.9659688995215311,
+            "minority_recall": 0.9433962264150944,
+            "utility": 0.9582227612034911
+          },
+          "utility_gain": -0.010125943424298067,
+          "utility_gain_ci": [
+            -0.01958744134251666,
+            -0.002384781648138951
+          ]
+        },
+        {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 49,
+          "stable_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_area_worst_minus_mean",
+            "onto_concave_points_worst_minus_mean",
+            "onto_concave_points_relative_worst_delta",
+            "onto_concave_points_family_contrast",
+            "onto_radius_normalized_error",
+            "onto_radius_error_ratio",
+            "onto_texture_normalized_error"
+          ],
+          "selected_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_area_worst_minus_mean",
+            "onto_concave_points_worst_minus_mean",
+            "onto_concave_points_relative_worst_delta",
+            "onto_concave_points_family_contrast",
+            "onto_radius_normalized_error",
+            "onto_radius_error_ratio",
+            "onto_texture_normalized_error"
+          ],
+          "base": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9694122932191744,
+            "precision_macro": 0.9741105506178771,
+            "recall_macro": 0.9694122932191744,
+            "macro_f1": 0.9716690842823996,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9683487046277892
+          },
+          "with_owl": {
+            "accuracy": 0.9789103690685413,
+            "balanced_accuracy": 0.9755298345753396,
+            "precision_macro": 0.979304282974643,
+            "recall_macro": 0.9755298345753396,
+            "macro_f1": 0.9773577397532829,
+            "minority_recall": 0.9622641509433962,
+            "utility": 0.970476302701019
+          },
+          "utility_gain": 0.0021275980732298194,
+          "utility_gain_ci": [
+            -0.007020526482849343,
+            0.011677055111124813
+          ]
+        },
+        {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 49,
+          "stable_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_ErrorMorphology_aggregate",
+            "onto_area_normalized_error",
+            "onto_area_error_ratio",
+            "onto_perimeter_normalized_error",
+            "onto_perimeter_error_ratio",
+            "onto_smoothness_worst_minus_mean"
+          ],
+          "selected_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_ErrorMorphology_aggregate",
+            "onto_area_normalized_error",
+            "onto_area_error_ratio",
+            "onto_perimeter_normalized_error",
+            "onto_perimeter_error_ratio",
+            "onto_smoothness_worst_minus_mean"
+          ],
+          "base": {
+            "accuracy": 0.9736379613356766,
+            "balanced_accuracy": 0.9694122932191744,
+            "precision_macro": 0.9741105506178771,
+            "recall_macro": 0.9694122932191744,
+            "macro_f1": 0.9716690842823996,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.9683487046277892
+          },
+          "with_owl": {
+            "accuracy": 0.9771528998242531,
+            "balanced_accuracy": 0.97412927435125,
+            "precision_macro": 0.9769271664008505,
+            "recall_macro": 0.97412927435125,
+            "macro_f1": 0.9754950191647038,
+            "minority_recall": 0.9622641509433962,
+            "utility": 0.9694972765619475
+          },
+          "utility_gain": 0.0011485719341582934,
+          "utility_gain_ci": [
+            -0.005775296677931527,
+            0.009815218958382695
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": -0.0006827186838571642,
+        "control_gains": [
+          -0.010125943424298067,
+          0.0021275980732298194,
+          0.0011485719341582934
+        ],
+        "controls_ge_real": 2
+      },
+      "seconds": 290.3
+    },
+    "breast_cancer@seed44": {
+      "n_samples": 569,
+      "n_features": 30,
+      "n_classes": 2,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 30,
+        "total_features": 30,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 0.9999999999999996,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 30,
+          "family_annotated_properties": 30,
+          "knowledge_sources": [
+            "statistic_roles"
+          ],
+          "level": "limited"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 0.5312284250003358,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+        "reason": "non_inferior_with_secondary_metric_gain",
+        "semantic_mlp_accepted": true,
+        "semantic_trepan_available": true,
+        "generated": 53,
+        "retained": 53,
+        "stable_features": [
+          "onto_MeanMorphology_aggregate",
+          "onto_WorstMorphology_aggregate",
+          "onto_area_worst_minus_mean",
+          "onto_concave_points_error_ratio",
+          "onto_concavity_error_ratio",
+          "onto_perimeter_worst_minus_mean",
+          "onto_radius_worst_minus_mean",
+          "onto_radius_relative_worst_delta",
+          "onto_radius_family_contrast"
+        ],
+        "selected_features": [
+          "onto_MeanMorphology_aggregate",
+          "onto_WorstMorphology_aggregate",
+          "onto_area_worst_minus_mean",
+          "onto_concave_points_error_ratio",
+          "onto_concavity_error_ratio",
+          "onto_perimeter_worst_minus_mean",
+          "onto_radius_worst_minus_mean",
+          "onto_radius_relative_worst_delta",
+          "onto_radius_family_contrast"
+        ],
+        "base": {
+          "accuracy": 0.9718804920913884,
+          "balanced_accuracy": 0.9680117329950848,
+          "precision_macro": 0.9717265075644577,
+          "recall_macro": 0.9680117329950848,
+          "macro_f1": 0.9698103196710439,
+          "minority_recall": 0.9528301886792453,
+          "utility": 0.96694432054874
+        },
+        "with_owl": {
+          "accuracy": 0.9824253075571178,
+          "balanced_accuracy": 0.9802468157074151,
+          "precision_macro": 0.9821196445151876,
+          "recall_macro": 0.9802468157074151,
+          "macro_f1": 0.9811684185443088,
+          "minority_recall": 0.9716981132075472,
+          "utility": 0.9749984604874185
+        },
+        "utility_gain": 0.008054139938678428,
+        "utility_gain_ci": [
+          -0.0032135283934598383,
+          0.020110809963278624
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate"
+          ],
+          "selected_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate"
+          ],
+          "base": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.96694432054874
+          },
+          "with_owl": {
+            "accuracy": 0.9806678383128296,
+            "balanced_accuracy": 0.9788462554833255,
+            "precision_macro": 0.9797717704996161,
+            "recall_macro": 0.9788462554833255,
+            "macro_f1": 0.9793053282414985,
+            "minority_recall": 0.9716981132075472,
+            "utility": 0.9769579470317449
+          },
+          "utility_gain": 0.010013626483004856,
+          "utility_gain_ci": [
+            -0.0008153335808104129,
+            0.021760161386570998
+          ]
+        },
+        "C_relational_only": {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": [
+            "onto_area_worst_minus_mean",
+            "onto_area_relative_worst_delta",
+            "onto_area_family_contrast",
+            "onto_concave_points_error_ratio",
+            "onto_concavity_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_radius_worst_minus_mean",
+            "onto_radius_relative_worst_delta",
+            "onto_radius_family_contrast"
+          ],
+          "selected_features": [
+            "onto_area_worst_minus_mean",
+            "onto_area_relative_worst_delta",
+            "onto_area_family_contrast",
+            "onto_concave_points_error_ratio",
+            "onto_concavity_error_ratio",
+            "onto_perimeter_worst_minus_mean",
+            "onto_radius_worst_minus_mean",
+            "onto_radius_relative_worst_delta",
+            "onto_radius_family_contrast"
+          ],
+          "base": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.96694432054874
+          },
+          "with_owl": {
+            "accuracy": 0.9806678383128296,
+            "balanced_accuracy": 0.9778883251413772,
+            "precision_macro": 0.9807083997873471,
+            "recall_macro": 0.9778883251413772,
+            "macro_f1": 0.9792650162162878,
+            "minority_recall": 0.9669811320754716,
+            "utility": 0.9725356304180434
+          },
+          "utility_gain": 0.00559130986930334,
+          "utility_gain_ci": [
+            -0.007437211568314701,
+            0.0191614429370237
+          ]
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 53,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 48,
+          "stable_features": [
+            "onto_concave_points_worst_minus_mean",
+            "onto_concave_points_family_contrast",
+            "onto_symmetry_worst_minus_mean",
+            "onto_texture_worst_minus_mean",
+            "onto_texture_relative_worst_delta",
+            "onto_texture_family_contrast",
+            "onto_texture_normalized_error"
+          ],
+          "selected_features": [
+            "onto_concave_points_worst_minus_mean",
+            "onto_concave_points_family_contrast",
+            "onto_symmetry_worst_minus_mean",
+            "onto_texture_worst_minus_mean",
+            "onto_texture_relative_worst_delta",
+            "onto_texture_family_contrast",
+            "onto_texture_normalized_error"
+          ],
+          "base": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.96694432054874
+          },
+          "with_owl": {
+            "accuracy": 0.9824253075571178,
+            "balanced_accuracy": 0.9792888853654669,
+            "precision_macro": 0.9830931706797358,
+            "recall_macro": 0.9792888853654669,
+            "macro_f1": 0.9811314497944024,
+            "minority_recall": 0.9669811320754716,
+            "utility": 0.9747742994670588
+          },
+          "utility_gain": 0.007829978918318825,
+          "utility_gain_ci": [
+            -0.004935413358422596,
+            0.020033083136987512
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 42,
+          "stable_features": [
+            "onto_WorstMorphology_aggregate",
+            "onto_MeanMorphology_aggregate",
+            "onto_ErrorMorphology_aggregate",
+            "onto_concave_points_error_ratio",
+            "onto_texture_worst_minus_mean",
+            "onto_texture_normalized_error",
+            "onto_texture_error_ratio"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.96694432054874
+          },
+          "with_owl": {
+            "accuracy": 0.9753954305799648,
+            "balanced_accuracy": 0.9717707837852122,
+            "precision_macro": 0.9755153952695503,
+            "recall_macro": 0.9717707837852122,
+            "macro_f1": 0.9735840297121634,
+            "minority_recall": 0.9575471698113207,
+            "utility": 0.9670317909989905
+          },
+          "utility_gain": 8.747045025048195e-05,
+          "utility_gain_ci": [
+            -0.009059298243990798,
+            0.009155522617177
+          ]
+        },
+        {
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "reason": "non_inferior_with_secondary_metric_gain",
+          "semantic_mlp_accepted": true,
+          "semantic_trepan_available": true,
+          "generated": 53,
+          "retained": 40,
+          "stable_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate",
+            "onto_perimeter_worst_minus_mean",
+            "onto_perimeter_relative_worst_delta",
+            "onto_perimeter_family_contrast",
+            "onto_perimeter_normalized_error",
+            "onto_symmetry_normalized_error",
+            "onto_texture_error_ratio"
+          ],
+          "selected_features": [
+            "onto_MeanMorphology_aggregate",
+            "onto_WorstMorphology_aggregate",
+            "onto_perimeter_worst_minus_mean",
+            "onto_perimeter_relative_worst_delta",
+            "onto_perimeter_family_contrast",
+            "onto_perimeter_normalized_error",
+            "onto_symmetry_normalized_error",
+            "onto_texture_error_ratio"
+          ],
+          "base": {
+            "accuracy": 0.9718804920913884,
+            "balanced_accuracy": 0.9680117329950848,
+            "precision_macro": 0.9717265075644577,
+            "recall_macro": 0.9680117329950848,
+            "macro_f1": 0.9698103196710439,
+            "minority_recall": 0.9528301886792453,
+            "utility": 0.96694432054874
+          },
+          "with_owl": {
+            "accuracy": 0.9771528998242531,
+            "balanced_accuracy": 0.97412927435125,
+            "precision_macro": 0.9769271664008505,
+            "recall_macro": 0.97412927435125,
+            "macro_f1": 0.9754950191647038,
+            "minority_recall": 0.9622641509433962,
+            "utility": 0.9690705340299418
+          },
+          "utility_gain": 0.0021262134812017885,
+          "utility_gain_ci": [
+            -0.007924165825116304,
+            0.012380990978609317
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.008054139938678428,
+        "control_gains": [
+          0.007829978918318825,
+          8.747045025048195e-05,
+          0.0021262134812017885
+        ],
+        "controls_ge_real": 0
+      },
+      "seconds": 316.3
+    }
+  }
+}

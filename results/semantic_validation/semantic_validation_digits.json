@@ -1,0 +1,274 @@
+{
+  "semantic_pipeline_version": "9.3.0",
+  "datasets": {
+    "digits@seed42": {
+      "n_samples": 700,
+      "n_features": 64,
+      "n_classes": 10,
+      "quality": {
+        "feature_coverage": 1.0,
+        "mapped_features": 64,
+        "total_features": 64,
+        "ambiguous_matches": 0,
+        "entity_collisions": 0,
+        "generic_match_ratio": 0.0,
+        "mapping_entropy": 1.0000000000000013,
+        "ontology_depth": 2,
+        "semantic_richness": {
+          "object_property_count": 0,
+          "restriction_count": 0,
+          "bounded_datatype_properties": 0,
+          "role_annotated_properties": 0,
+          "family_annotated_properties": 0,
+          "knowledge_sources": [],
+          "level": "poor"
+        },
+        "status": "VALID_DOMAIN_ONTOLOGY",
+        "abox": "SAFE"
+      },
+      "reasoner": {
+        "executed": true,
+        "consistent": true,
+        "reasoner_used": true,
+        "duration_seconds": 1.1003878789999817,
+        "inferred_axioms_count": 0
+      },
+      "full": {
+        "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+        "reason": "ci_includes_zero_and_no_secondary_gain",
+        "semantic_mlp_accepted": false,
+        "semantic_trepan_available": true,
+        "generated": 3,
+        "retained": 3,
+        "stable_features": [
+          "onto_MiddleImageRegion_aggregate",
+          "onto_LowerImageRegion_aggregate"
+        ],
+        "selected_features": [],
+        "base": {
+          "accuracy": 0.9571428571428572,
+          "balanced_accuracy": 0.9570481971110552,
+          "precision_macro": 0.9575280895749767,
+          "recall_macro": 0.9570481971110552,
+          "macro_f1": 0.9569861145447767,
+          "minority_recall": 0.8970588235294118,
+          "utility": 0.9480422611803815
+        },
+        "with_owl": {
+          "accuracy": 0.9528571428571428,
+          "balanced_accuracy": 0.9529269993361705,
+          "precision_macro": 0.9532516102652074,
+          "recall_macro": 0.9529269993361705,
+          "macro_f1": 0.9528652856574571,
+          "minority_recall": 0.9264705882352942,
+          "utility": 0.9483203988055745
+        },
+        "utility_gain": 0.0002781376251930201,
+        "utility_gain_ci": [
+          -0.020378918734224927,
+          0.015948888652928494
+        ]
+      },
+      "ablation": {
+        "B_aggregates_only": {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_MiddleImageRegion_aggregate",
+            "onto_LowerImageRegion_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9571428571428572,
+            "balanced_accuracy": 0.9570481971110552,
+            "precision_macro": 0.9575280895749767,
+            "recall_macro": 0.9570481971110552,
+            "macro_f1": 0.9569861145447767,
+            "minority_recall": 0.8970588235294118,
+            "utility": 0.9480422611803815
+          },
+          "with_owl": {
+            "accuracy": 0.9528571428571428,
+            "balanced_accuracy": 0.9529269993361705,
+            "precision_macro": 0.9532516102652074,
+            "recall_macro": 0.9529269993361705,
+            "macro_f1": 0.9528652856574571,
+            "minority_recall": 0.9264705882352942,
+            "utility": 0.9483203988055745
+          },
+          "utility_gain": 0.0002781376251930201,
+          "utility_gain_ci": [
+            -0.020378918734224927,
+            0.015948888652928494
+          ]
+        },
+        "C_relational_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "D_constraints_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        },
+        "E_reasoner_inferred_only": {
+          "decision": "REJECT_NO_NOVEL_FEATURES",
+          "reason": "all_candidates_removed_by_novelty_filters",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": null,
+          "selected_features": [],
+          "base": null,
+          "with_owl": null,
+          "utility_gain": null,
+          "utility_gain_ci": null
+        }
+      },
+      "negative_control_shuffled": [
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_MiddleImageRegion_aggregate",
+            "onto_LowerImageRegion_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9571428571428572,
+            "balanced_accuracy": 0.9570481971110552,
+            "precision_macro": 0.9575280895749767,
+            "recall_macro": 0.9570481971110552,
+            "macro_f1": 0.9569861145447767,
+            "minority_recall": 0.8970588235294118,
+            "utility": 0.9480422611803815
+          },
+          "with_owl": {
+            "accuracy": 0.9614285714285714,
+            "balanced_accuracy": 0.9613563906885473,
+            "precision_macro": 0.961478381790047,
+            "recall_macro": 0.9613563906885473,
+            "macro_f1": 0.9612516263781237,
+            "minority_recall": 0.9117647058823529,
+            "utility": 0.9532857369639128
+          },
+          "utility_gain": 0.005243475783531348,
+          "utility_gain_ci": [
+            -0.011767390350374086,
+            0.02035616601159764
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_MiddleImageRegion_aggregate",
+            "onto_LowerImageRegion_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9571428571428572,
+            "balanced_accuracy": 0.9570481971110552,
+            "precision_macro": 0.9575280895749767,
+            "recall_macro": 0.9570481971110552,
+            "macro_f1": 0.9569861145447767,
+            "minority_recall": 0.8970588235294118,
+            "utility": 0.9480422611803815
+          },
+          "with_owl": {
+            "accuracy": 0.96,
+            "balanced_accuracy": 0.9599893735816434,
+            "precision_macro": 0.9602043928039029,
+            "recall_macro": 0.9599893735816434,
+            "macro_f1": 0.9599273475209584,
+            "minority_recall": 0.9154929577464789,
+            "utility": 0.9526887354418218
+          },
+          "utility_gain": 0.00464647426144027,
+          "utility_gain_ci": [
+            -0.01193048683829182,
+            0.019023960676213234
+          ]
+        },
+        {
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "reason": "ci_includes_zero_and_no_secondary_gain",
+          "semantic_mlp_accepted": false,
+          "semantic_trepan_available": true,
+          "generated": 3,
+          "retained": 3,
+          "stable_features": [
+            "onto_UpperImageRegion_aggregate",
+            "onto_LowerImageRegion_aggregate"
+          ],
+          "selected_features": [],
+          "base": {
+            "accuracy": 0.9571428571428572,
+            "balanced_accuracy": 0.9570481971110552,
+            "precision_macro": 0.9575280895749767,
+            "recall_macro": 0.9570481971110552,
+            "macro_f1": 0.9569861145447767,
+            "minority_recall": 0.8970588235294118,
+            "utility": 0.9480422611803815
+          },
+          "with_owl": {
+            "accuracy": 0.9557142857142857,
+            "balanced_accuracy": 0.9556397464068297,
+            "precision_macro": 0.9561308993347362,
+            "recall_macro": 0.9556397464068297,
+            "macro_f1": 0.9556251984756876,
+            "minority_recall": 0.8970588235294118,
+            "utility": 0.9462526364893751
+          },
+          "utility_gain": -0.0017896246910064084,
+          "utility_gain_ci": [
+            -0.019767450246938253,
+            0.014731970190805873
+          ]
+        }
+      ],
+      "control_summary": {
+        "real_utility_gain": 0.0002781376251930201,
+        "control_gains": [
+          0.005243475783531348,
+          0.00464647426144027,
+          -0.0017896246910064084
+        ],
+        "controls_ge_real": 2
+      },
+      "seconds": 396.2
+    }
+  }
+}
