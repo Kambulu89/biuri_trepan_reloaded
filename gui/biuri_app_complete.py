@@ -5052,6 +5052,9 @@ Use la pestaña Métricas para el detalle visual de fidelidad y precisión.
                 comparison_report_file = os.path.join(
                     directory, f"comparacao_cientifica_{timestamp}.txt"
                 )
+                detailed_report = self.metrics_comparator.generate_comparison_report()
+                if detailed_report is None:
+                    detailed_report = "No fue posible generar informe detallado."
                 with open(comparison_report_file, 'w', encoding='utf-8') as f:
                     f.write(detailed_report)
                 try:
