@@ -1497,19 +1497,15 @@ class TrepanReloadedExtractor:
             return 'general'
     
     def _group_by_semantics(self, name):
-        
-        name_lower = name.lower()
-        
-        if any(word in name_lower for word in ['medical', 'health', 'saúde', 'medical']):
-            return 'medical'
-        elif any(word in name_lower for word in ['financial', 'finance', 'money', 'dinheiro']):
-            return 'financial'
-        elif any(word in name_lower for word in ['social', 'society', 'social']):
-            return 'social'
-        elif any(word in name_lower for word in ['technical', 'tech', 'system', 'sistema']):
-            return 'technical'
-        else:
-            return 'general'
+        """Grupo semântico de uma feature SEM ontologia: nenhum.
+
+        Antes adivinhava domínios (medical/financial/social/technical) por palavras no
+        nome da feature. Esse "conhecimento" não vem da ontologia e chegava ao bónus de
+        coesão de grupo do TREPAN. Os grupos reais vêm do grafo OWL
+        (``OntologySemanticGraph.primary_group``) ou dos pais do conceito casado;
+        sem isso a feature fica em ``general``, que o TREPAN ignora.
+        """
+        return 'general'
 
     def _get_ontology_entity_type(self, entity):
         """Tipo OWL: class, datatype_property ou object_property."""
