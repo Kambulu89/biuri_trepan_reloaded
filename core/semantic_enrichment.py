@@ -40,8 +40,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from core.ontology_processor import OntologyProcessor
+from core.semantic_version import SEMANTIC_PIPELINE_VERSION
 
-SEMANTIC_PIPELINE_VERSION = "9.3.0"
 
 
 @dataclass(frozen=True)

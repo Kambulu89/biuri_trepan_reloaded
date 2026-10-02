@@ -12,6 +12,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 
+from core.semantic_version import SEMANTIC_PIPELINE_VERSION
 from core.training_config import TrainingPreset, preset_config_hash
 
 
@@ -45,21 +46,72 @@ def compute_dataset_hash(
     return h.hexdigest()[:16]
 
 
+def _ontology_structure(ontology_obj) -> Dict[str, Any]:
+    """Assinatura estrutural: TBox (classes, propriedades, subclasses) e ABox (indivíduos)."""
+    def names(method):
+        try:
+            return sorted(str(x) for x in getattr(ontology_obj, method)())
+        except Exception:
+            return []
+    classes = names("classes")
+    subclass = []
+    try:
+        for cls in ontology_obj.classes():
+            for parent in getattr(cls, "is_a", []) or []:
+                subclass.append(f"{cls}<{parent}")
+    except Exception:
+        pass
+    abox = []
+    try:
+        for ind in ontology_obj.individuals():
+            abox.append(f"{ind}:{sorted(str(t) for t in getattr(ind, 'is_a', []) or [])}")
+    except Exception:
+        pass
+    return {
+        "tbox": {"classes": classes, "data_properties": names("data_properties"),
+                 "object_properties": names("object_properties"), "subclass": sorted(subclass)},
+        "abox": sorted(abox),
+    }
+
+
 def compute_ontology_hash(ontology_path: Optional[str], ontology_obj=None) -> str:
+    """Hash do CONTEÚDO da OWL (não de caminho/mtime).
+
+    Copiar o ficheiro não invalida a cache; editar o conteúdo (TBox ou ABox) invalida,
+    mesmo que o tamanho e a data de modificação coincidam.
+    """
     if ontology_path:
         p = Path(ontology_path)
         if p.exists():
-            stat = p.stat()
-            return _stable_hash(
-                {"path": str(p.resolve()), "size": stat.st_size, "mtime": stat.st_mtime}
-            )[:12]
+            h = hashlib.sha256()
+            with p.open("rb") as fh:
+                for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+                    h.update(chunk)
+            return h.hexdigest()[:12]
     if ontology_obj is not None:
         try:
-            classes = sorted(str(c) for c in ontology_obj.classes())
-            return _stable_hash({"n_classes": len(classes), "head": classes[:20]})[:12]
+            return _stable_hash(_ontology_structure(ontology_obj))[:12]
         except Exception:
             pass
     return "no_ontology"
+
+
+def compute_semantic_config_hash(*configs: Any) -> str:
+    """Hash estável das configurações semânticas (processor, gates, enriquecimento)."""
+    import dataclasses
+    payload = [dataclasses.asdict(c) if dataclasses.is_dataclass(c) and not isinstance(c, type) else c
+               for c in configs]
+    return _stable_hash(payload)[:12]
+
+
+def compute_matching_hash(matches) -> str:
+    """Hash do matching ARFF<->OWL aceite (feature, entidade, score)."""
+    rows = sorted(
+        (str(m.get("feature")), str(m.get("entity_name")), round(float(m.get("score", 0.0)), 4),
+         bool(m.get("accepted", True)))
+        for m in (matches or [])
+    )
+    return _stable_hash(rows)[:12]
 
 
 def compute_preprocessing_hash(
@@ -88,9 +140,16 @@ def build_cache_key(
     feature_names: Optional[list] = None,
     selected_onto_features: Optional[list] = None,
     training_mode: Optional[str] = None,
+    semantic_pipeline_version: str = SEMANTIC_PIPELINE_VERSION,
+    semantic_config_hash: Optional[str] = None,
+    matching_hash: Optional[str] = None,
 ) -> str:
     return _stable_hash(
         {
+            # Um MLP treinado com outra versão/config das features ontológicas nunca é reutilizado.
+            "semantic_pipeline_version": semantic_pipeline_version,
+            "semantic_config": semantic_config_hash,
+            "matching": matching_hash,
             "role": model_role,
             "model_type": model_role,
             "dataset": dataset_hash,
