@@ -31,6 +31,7 @@ from core.ontology_reasoner import run_owl_reasoner
 from core.ontology_processor import OntologyProcessor
 from core.ontology_stage_status import build_ontology_stage_status
 from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
+from core.semantic_controls import shuffle_accepted_matches
 from core.semantic_metadata import apply_family_relatedness, extend_semantic_inputs
 from core.semantic_teacher import build_semantic_teacher, decide_semantic_teacher, make_consistency_projector, teacher_inputs_available
 from core.ontology_semantic_graph import OntologySemanticGraph
@@ -103,6 +104,9 @@ def train_production_dataframe(
     use_semantic_teacher: bool=True,
     teacher_min_evidence: Optional[str]="strong",
     augment_reloaded_space: bool=True,
+    semantic_control: Optional[str]=None,
+    semantic_control_seed: int=0,
+    trepan_overrides: Optional[Dict[str,Any]]=None,
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -128,6 +132,9 @@ def train_production_dataframe(
         max_queries=2000,random_state=seed,
     )
 
+    if trepan_overrides:  # ex.: ablação de componentes do Reloaded (alpha, beta, gain_criterion, ...)
+        cfg=dataclasses.replace(cfg,**trepan_overrides)
+
     quality=None; graph=None; semantic_weights=None; semantic_groups=None; relation_matrix=None
     semantic_entities=None; original_feature_names=[]
     if owl_path or ontology is not None:
@@ -137,6 +144,14 @@ def train_production_dataframe(
         original_feature_names=[c.name for c in contract.columns if c.name!=contract.target and c.treatment!='descartar']
         q=OntologyQualityGate().evaluate(original_feature_names,ontology,reasoner_report=reasoner_report,require_reasoner=require_reasoner)
         quality=q.to_dict()
+        if semantic_control not in (None,'shuffled_semantics'):
+            raise ValueError("semantic_control deve ser None ou 'shuffled_semantics'.")
+        if semantic_control=='shuffled_semantics' and quality['accepted']:
+            # Controlo negativo: mesmas entidades e mesmo número de features, mas a atribuição
+            # feature->entidade é baralhada ANTES de construir grafo, pesos, grupos, relatedness,
+            # famílias, profundidades e restrições de domínio. Tudo o que vem da OWL perde o significado.
+            quality['matches']=shuffle_accepted_matches(quality['matches'],seed=semantic_control_seed)
+            quality['semantic_control']='shuffled_semantics'
         if quality['accepted']:
             graph=OntologySemanticGraph.from_ontology(ontology,accepted_matches=quality['matches'])
             model_names,semantic_weights,semantic_groups,relation_matrix=_semantic_inputs(pre,quality,graph)
