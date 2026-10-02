@@ -42,6 +42,7 @@ class AttributionConfig:
     min_gain: float = 0.0          # ganho médio de fidelidade sobre os controlos
     min_win_fraction: float = 0.6  # fração de vitórias entre comparações não empatadas
     random_state: int = 42
+    report_test_controls: bool = True  # só RELATA o ganho atribuível no teste; nunca decide nada
 
 
 class AugmentedPredictor:
@@ -160,3 +161,25 @@ def make_random_derived_teacher(teacher: SemanticTeacher, Z_train, *, seed: int)
     control.processor = processor
     control.audit_ = {**teacher.audit_, "control": "random_derived_features", "control_seed": int(seed)}
     return control
+
+
+def test_attribution_report(real_model, control_models: Sequence[Any], Z_test, y_test, oracle) -> Dict[str, Any]:
+    """Ganho atribuível medido UMA vez no teste final (apenas relatado, nunca usado para decidir)."""
+    from sklearn.metrics import balanced_accuracy_score
+    Z_test = np.asarray(Z_test, dtype=float)
+    teacher = np.asarray(oracle.predict(Z_test))
+
+    def scores(model):
+        pred = np.asarray(model.predict(Z_test))
+        return {"balanced_accuracy": float(balanced_accuracy_score(y_test, pred)),
+                "oracle_fidelity": float(np.mean(pred == teacher))}
+
+    real = scores(real_model)
+    controls = [scores(m) for m in control_models]
+    out: Dict[str, Any] = {"scope": "final_test_reported_only", "real": real, "controls": controls}
+    if controls:
+        for key in ("balanced_accuracy", "oracle_fidelity"):
+            mean_ctrl = float(np.mean([c[key] for c in controls]))
+            out[f"attributable_{key}"] = real[key] - mean_ctrl
+            out[f"controls_ge_real_{key}"] = int(sum(c[key] >= real[key] for c in controls))
+    return out

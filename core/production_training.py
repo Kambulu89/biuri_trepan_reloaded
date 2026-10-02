@@ -23,6 +23,7 @@ from core.mlp_convergence import fit_with_convergence, extract_mlp_convergence
 from core.c45_j48_tree import C45Classifier
 from core.evaluation_protocol import classification_metrics
 from core.controlled_trepan_experiment import (
+    fit_reloaded_arm, OriginalOracleProjection,
     ControlledTrepanConfig, fit_controlled_trepan_pair,
     evaluate_controlled_trepan_pair, oracle_health_gate,
 )
@@ -31,6 +32,8 @@ from core.ontology_reasoner import run_owl_reasoner
 from core.ontology_processor import OntologyProcessor
 from core.ontology_stage_status import build_ontology_stage_status
 from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
+from core.semantic_attribution import (ATTRIBUTED, AttributionConfig, AugmentedPredictor, evaluate_attribution,
+    make_random_derived_teacher, test_attribution_report)
 from core.semantic_controls import shuffle_accepted_matches
 from core.semantic_metadata import apply_family_relatedness, extend_semantic_inputs
 from core.semantic_teacher import build_semantic_teacher, decide_semantic_teacher, make_consistency_projector, teacher_inputs_available
@@ -93,6 +96,78 @@ def _semantic_inputs(pre: DataPreprocessor, quality: Dict[str,Any], graph: Ontol
     return names, np.asarray(weights,float), groups, matrix
 
 
+def _semantic_context(ontology, quality, pre, Xtr, original_feature_names):
+    """Grafo + entradas semânticas do TREPAN (pesos, grupos, relatedness, entidades) para um conjunto de matches."""
+    graph=OntologySemanticGraph.from_ontology(ontology,accepted_matches=quality['matches'])
+    model_names,weights,groups,matrix=_semantic_inputs(pre,quality,graph)
+    accepted_matches=[m for m in quality['matches'] if m.get('accepted')]
+    sources=[str(x.get('source_column')) for x in pre.feature_origins]
+    entities=[graph.feature_to_entity.get(src) for src in sources]
+    # Famílias de medida declaradas na OWL (mean/error/worst da mesma grandeza)
+    # tornam essas features relacionadas para o m-of-n; sem famílias nada muda.
+    try:
+        family_proc=OntologyProcessor(ontology).fit(
+            Xtr[original_feature_names],accepted_matches=accepted_matches,log=False)
+        column_family={src:spec['family'] for spec in family_proc.feature_specs_
+                       if spec.get('family') for src in spec.get('sources',[])}
+    except Exception:
+        column_family={}
+    matrix=apply_family_relatedness(matrix,sources,column_family)
+    return {'graph':graph,'names':model_names,'weights':weights,'groups':groups,'matrix':matrix,'entities':entities}
+
+
+def _select_reloaded_mode(acfg,augmented,teacher,oracle,Ztr,ytr,cfg,ontology,quality,pre,Xtr,original_feature_names,real_ctx,seed):
+    """Escolhe o modo do Reloaded pelo gate de atribuição: augmented -> original_space -> neutral.
+
+    Devolve ``(relatório, modo, {modo: fábrica_de_controlos})``. Tudo com dados de treino.
+    """
+    n=len(real_ctx['names']); candidates=[]
+    ctx_cache={}
+
+    def shuffled_ctx(sd):
+        if sd not in ctx_cache:
+            q=dict(quality); q['matches']=shuffle_accepted_matches(quality['matches'],seed=int(seed)*100003+int(sd))
+            ctx_cache[sd]=_semantic_context(ontology,q,pre,Xtr,original_feature_names)
+        return ctx_cache[sd]
+
+    def original_space_real(Z,y):
+        return fit_reloaded_arm(Z,oracle=oracle,feature_names=real_ctx['names'],config=cfg,
+            semantic_feature_weights=real_ctx['weights'],semantic_feature_groups=real_ctx['groups'],
+            semantic_relatedness_matrix=real_ctx['matrix'],ontology_graph=real_ctx['graph'],
+            semantic_feature_entities=real_ctx['entities'])
+
+    def original_space_control(sd):
+        c=shuffled_ctx(sd)
+        return lambda Z,y: fit_reloaded_arm(Z,oracle=oracle,feature_names=c['names'],config=cfg,
+            semantic_feature_weights=c['weights'],semantic_feature_groups=c['groups'],
+            semantic_relatedness_matrix=c['matrix'],ontology_graph=c['graph'],semantic_feature_entities=c['entities'])
+
+    cfg_aug=dataclasses.replace(cfg,mirror_when_no_semantic_effect=False)
+    def aug_fit(tch):
+        names,w,g,e,r,_=extend_semantic_inputs(real_ctx['names'],real_ctx['weights'],real_ctx['groups'],
+            real_ctx['entities'],real_ctx['matrix'],tch.processor,tch.selected_features)
+        proj=OriginalOracleProjection(oracle,tuple(range(n)))
+        return lambda Z,y: AugmentedPredictor(fit_reloaded_arm(tch.augment(Z),oracle=proj,feature_names=names,
+            config=cfg_aug,semantic_feature_weights=w,semantic_feature_groups=g,semantic_relatedness_matrix=r,
+            query_projector=make_consistency_projector(tch,n),ontology_graph=real_ctx['graph'],
+            semantic_feature_entities=e),tch)
+
+    def aug_control(sd):
+        return aug_fit(make_random_derived_teacher(teacher,Ztr,seed=int(seed)*100003+int(sd)))
+
+    if augmented:
+        candidates.append(('augmented',aug_fit(teacher),aug_control))
+    candidates.append(('original_space',original_space_real,original_space_control))
+    reports=[]; chosen='neutral'; variants={}
+    for mode,real_variant,control_variant in candidates:
+        rep=evaluate_attribution(Ztr,ytr,oracle,real_variant,control_variant,acfg)
+        rep['mode']=mode; reports.append(rep); variants[mode]=control_variant
+        if rep['attributed']:
+            chosen=mode; break
+    return {'status':ATTRIBUTED if chosen!='neutral' else 'NOT_ATTRIBUTED','candidates':reports,
+            'config':dataclasses.asdict(acfg)},chosen,variants
+
+
 def train_production_dataframe(
     df: pd.DataFrame, *, target, out_dir: str | Path,
     seed: int=42, test_size: float=0.25, owl_path: Optional[str|Path]=None,
@@ -107,6 +182,7 @@ def train_production_dataframe(
     semantic_control: Optional[str]=None,
     semantic_control_seed: int=0,
     trepan_overrides: Optional[Dict[str,Any]]=None,
+    semantic_attribution: Optional[AttributionConfig]=None,
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -153,21 +229,9 @@ def train_production_dataframe(
             quality['matches']=shuffle_accepted_matches(quality['matches'],seed=semantic_control_seed)
             quality['semantic_control']='shuffled_semantics'
         if quality['accepted']:
-            graph=OntologySemanticGraph.from_ontology(ontology,accepted_matches=quality['matches'])
-            model_names,semantic_weights,semantic_groups,relation_matrix=_semantic_inputs(pre,quality,graph)
-            accepted_matches=[m for m in quality['matches'] if m.get('accepted')]
-            sources=[str(x.get('source_column')) for x in pre.feature_origins]
-            semantic_entities=[graph.feature_to_entity.get(src) for src in sources]
-            # Famílias de medida declaradas na OWL (mean/error/worst da mesma grandeza)
-            # tornam essas features relacionadas para o m-of-n; sem famílias nada muda.
-            try:
-                family_proc=OntologyProcessor(ontology).fit(
-                    Xtr[original_feature_names],accepted_matches=accepted_matches,log=False)
-                column_family={src:spec['family'] for spec in family_proc.feature_specs_
-                               if spec.get('family') for src in spec.get('sources',[])}
-            except Exception:
-                column_family={}
-            relation_matrix=apply_family_relatedness(relation_matrix,sources,column_family)
+            ctx=_semantic_context(ontology,quality,pre,Xtr,original_feature_names)
+            graph=ctx['graph']; model_names=ctx['names']; semantic_weights=ctx['weights']
+            semantic_groups=ctx['groups']; relation_matrix=ctx['matrix']; semantic_entities=ctx['entities']
 
     # Enriquecimento semântico do MLP (opt-in): só treino de desenvolvimento, nunca o teste.
     # Corre ANTES do TREPAN porque o professor escolhido alimenta a procura de capacidade e
@@ -221,6 +285,18 @@ def train_production_dataframe(
     # originais (OriginalOracleProjection) e cada consulta sintética é recomposta para ficar
     # coerente. O braço Original fica no espaço original: a única variável é a extensão semântica.
     augmented=bool(teacher is not None and augment_reloaded_space and teacher.selected_features)
+    # Gate de atribuição (opt-in, só treino): o Reloaded só usa a semântica se bater sistematicamente
+    # controlos com a mesma maquinaria e sem significado (semântica baralhada / features aleatórias).
+    # Caso contrário degrada para o Original e não reivindica ganho nenhum.
+    attribution=None; reloaded_mode='augmented' if augmented else ('original_space' if graph is not None else 'none')
+    attribution_variants={}
+    if semantic_attribution is not None and graph is not None:
+        attribution,reloaded_mode,attribution_variants=_select_reloaded_mode(
+            semantic_attribution,augmented,teacher,oracle,Ztr,ytr,cfg,
+            ontology,quality,pre,Xtr,original_feature_names,
+            dict(graph=graph,names=model_names,weights=semantic_weights,groups=semantic_groups,
+                 matrix=relation_matrix,entities=semantic_entities),semantic_control_seed)
+        augmented=(reloaded_mode=='augmented')
     pair_kwargs={}
     pair_cfg=cfg
     Zte_rel=Zte
@@ -239,6 +315,11 @@ def train_production_dataframe(
         pair_cfg=dataclasses.replace(cfg,mirror_when_no_semantic_effect=False)
         reloaded_space={'space':'augmented','n_features':len(names_aug),'semantic_features':list(teacher.selected_features),
                         'derived':derived,'mirror_disabled_reason':'reloaded_arm_uses_augmented_space'}
+    elif reloaded_mode=='neutral':
+        # Semântica não atribuível à ontologia: o Reloaded fica sem entradas semânticas e é
+        # idêntico ao Original (mesmo professor, semente e orçamento). Não há ganho a reivindicar.
+        semantic_weights_pair=semantic_groups_pair=relation_pair=entities_pair=None
+        reloaded_space['reason']='semantics_not_attributable_to_ontology'
     else:
         semantic_weights_pair,semantic_groups_pair,relation_pair,entities_pair=(
             semantic_weights,semantic_groups,relation_matrix,semantic_entities)
@@ -250,7 +331,7 @@ def train_production_dataframe(
         semantic_feature_groups=semantic_groups_pair,
         semantic_relatedness_matrix=relation_pair,
         run_id=f"production_v9_2_seed_{seed}",
-        ontology_graph=graph,
+        ontology_graph=None if reloaded_mode=='neutral' else graph,
         semantic_feature_entities=entities_pair,
         **pair_kwargs,
     )
@@ -281,7 +362,17 @@ def train_production_dataframe(
     evaluation['semantic_contribution_gate']=contribution
     evaluation['semantic_enrichment']=enrichment
     evaluation['semantic_teacher']=teacher_report
+    reloaded_space['mode']=reloaded_mode
     evaluation['reloaded_feature_space']=reloaded_space
+    if attribution is not None:
+        attribution['selected_mode']=reloaded_mode
+        if semantic_attribution.report_test_controls and reloaded_mode in attribution_variants:
+            # Ganho atribuível medido UMA vez no teste final: só relatado, nunca decide nada.
+            ctrl_fit=attribution_variants[reloaded_mode]
+            controls=[ctrl_fit(semantic_attribution.random_state*7+k)(Ztr,ytr) for k in range(semantic_attribution.controls)]
+            real_model=AugmentedPredictor(pair.reloaded,teacher) if reloaded_mode=='augmented' else pair.reloaded
+            attribution['test_attribution']=test_attribution_report(real_model,controls,Zte,yte,oracle)
+        evaluation['semantic_attribution']=attribution
     status=build_ontology_stage_status(quality,None,enrichment) if quality else None
     if status is not None:
         status['semantic_teacher_used']=bool(teacher is not None)
@@ -301,7 +392,8 @@ def train_production_dataframe(
         'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,
         'train_rows':len(tr),'test_rows':len(te),'test_used_for_selection':False,
         'tree_runtime_policy':'historical_trepan_only_no_cart',
-        'reloaded_feature_space':reloaded_space['space'],'teacher_id':teacher_report['teacher'],'teacher_reason':teacher_report['reason'],
+        'reloaded_feature_space':reloaded_space['space'],'reloaded_mode':reloaded_mode,
+        'teacher_id':teacher_report['teacher'],'teacher_reason':teacher_report['reason'],
         'ontology_used':bool(quality and quality.get('accepted')),
         'semantic_contribution_status':contribution.get('status'),
         'claim_guard':evaluation['scientific_validation'].get('claim_guard'),
