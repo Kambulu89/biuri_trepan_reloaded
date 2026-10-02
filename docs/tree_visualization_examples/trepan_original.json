@@ -1,0 +1,1633 @@
+{
+  "tree": {
+    "algorithm": "Trepan-Original",
+    "source_kind": "trepan",
+    "root_id": 0,
+    "logical_node_count": 31,
+    "class_names": [
+      "class_0",
+      "class_1",
+      "class_2"
+    ],
+    "feature_names": [
+      "measurement_0_mean",
+      "measurement_1_worst",
+      "measurement_2_std_error",
+      "measurement_3_mean",
+      "measurement_4_worst",
+      "measurement_5_std_error",
+      "measurement_6_mean",
+      "measurement_7_worst",
+      "measurement_8_std_error",
+      "measurement_9_mean"
+    ],
+    "nodes": [
+      {
+        "node_id": 0,
+        "depth": 0,
+        "is_leaf": false,
+        "parent_id": null,
+        "samples": 490,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.367,
+          "class_1": 0.287,
+          "class_2": 0.346
+        },
+        "distribution_kind": "probability",
+        "split_type": "simple",
+        "feature_full": "measurement_7_worst",
+        "threshold_full": 0.3495460042486386,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": ">",
+            "threshold_full": 0.3495460042486386,
+            "text_full": "measurement_7_worst > 0.3495460042486386",
+            "text_display": "meas_7_w > 0.3495"
+          }
+        ],
+        "m": 1,
+        "n": 1,
+        "children": [
+          1,
+          2
+        ],
+        "edges": [
+          {
+            "parent_id": 0,
+            "child_id": 1,
+            "label": "≤ 0.3495",
+            "full_label": "measurement_7_worst ≤ 0.3495460042486386",
+            "branch": "left",
+            "samples": 294
+          },
+          {
+            "parent_id": 0,
+            "child_id": 2,
+            "label": "> 0.3495",
+            "full_label": "measurement_7_worst > 0.3495460042486386",
+            "branch": "right",
+            "samples": 196
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 1.0,
+          "node_fidelity": 0.367,
+          "real_samples": 490,
+          "synthetic_samples": 510,
+          "effective_samples": 1000,
+          "queries_used": 510,
+          "queries_requested": 510,
+          "information_gain": 0.327581025326541
+        }
+      },
+      {
+        "node_id": 1,
+        "depth": 1,
+        "is_leaf": false,
+        "parent_id": 0,
+        "samples": 294,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.123,
+          "class_1": 0.272,
+          "class_2": 0.605
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": -0.662206013617981,
+            "text_full": "measurement_5_std_error > -0.662206013617981",
+            "text_display": "meas_5_std_err > -0.6622"
+          },
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": ">",
+            "threshold_full": 0.23842372025037245,
+            "text_full": "measurement_8_std_error > 0.23842372025037245",
+            "text_display": "meas_8_std_err > 0.2384"
+          }
+        ],
+        "m": 2,
+        "n": 2,
+        "children": [
+          3,
+          4
+        ],
+        "edges": [
+          {
+            "parent_id": 1,
+            "child_id": 3,
+            "label": "no",
+            "full_label": "NOT 2-of-2",
+            "branch": "left",
+            "samples": 165
+          },
+          {
+            "parent_id": 1,
+            "child_id": 4,
+            "label": "sí",
+            "full_label": "2-of-2",
+            "branch": "right",
+            "samples": 129
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.61,
+          "node_fidelity": 0.605,
+          "real_samples": 294,
+          "synthetic_samples": 706,
+          "effective_samples": 1000,
+          "queries_used": 706,
+          "queries_requested": 706,
+          "m_of_n_text": "2-of-2(measurement_5_std_error > -0.662206; measurement_8_std_error > 0.238424)",
+          "information_gain": 0.18426269253213767
+        }
+      },
+      {
+        "node_id": 3,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 1,
+        "samples": 165,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.145,
+          "class_1": 0.062,
+          "class_2": 0.793
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": ">",
+            "threshold_full": 0.5063821924351888,
+            "text_full": "measurement_2_std_error > 0.5063821924351888",
+            "text_display": "meas_2_std_err > 0.5064"
+          },
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": ">",
+            "threshold_full": 1.0387091183302242,
+            "text_full": "measurement_1_worst > 1.0387091183302242",
+            "text_display": "meas_1_w > 1.039"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": ">",
+            "threshold_full": -0.8175012101300918,
+            "text_full": "measurement_4_worst > -0.8175012101300918",
+            "text_display": "meas_4_w > -0.8175"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          9,
+          10
+        ],
+        "edges": [
+          {
+            "parent_id": 3,
+            "child_id": 9,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 123
+          },
+          {
+            "parent_id": 3,
+            "child_id": 10,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 42
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.40077,
+          "node_fidelity": 0.793,
+          "real_samples": 165,
+          "synthetic_samples": 835,
+          "effective_samples": 1000,
+          "queries_used": 835,
+          "queries_requested": 835,
+          "m_of_n_text": "2-of-3(measurement_2_std_error > 0.506382; measurement_1_worst > 1.03871; measurement_4_worst > -0.817501)",
+          "information_gain": 0.13882244536706995
+        }
+      },
+      {
+        "node_id": 9,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 3,
+        "samples": 123,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.067,
+          "class_1": 0.034,
+          "class_2": 0.899
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": -1.1926989125403702,
+            "text_full": "measurement_5_std_error > -1.1926989125403702",
+            "text_display": "meas_5_std_err > -1.193"
+          },
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": ">",
+            "threshold_full": -0.29271782519359124,
+            "text_full": "measurement_7_worst > -0.29271782519359124",
+            "text_display": "meas_7_w > -0.2927"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": ">",
+            "threshold_full": -0.6116082525754323,
+            "text_full": "measurement_4_worst > -0.6116082525754323",
+            "text_display": "meas_4_w > -0.6116"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          21,
+          22
+        ],
+        "edges": [
+          {
+            "parent_id": 9,
+            "child_id": 21,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 79
+          },
+          {
+            "parent_id": 9,
+            "child_id": 22,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 44
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.29015748,
+          "node_fidelity": 0.899,
+          "real_samples": 123,
+          "synthetic_samples": 877,
+          "effective_samples": 1000,
+          "queries_used": 877,
+          "queries_requested": 877,
+          "m_of_n_text": "2-of-3(measurement_5_std_error > -1.1927; measurement_7_worst > -0.292718; measurement_4_worst > -0.611608)",
+          "information_gain": 0.08464008373143442
+        }
+      },
+      {
+        "node_id": 21,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 9,
+        "samples": 79,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 1.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.181348425,
+          "node_fidelity": 1.0,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 22,
+        "depth": 4,
+        "is_leaf": false,
+        "parent_id": 9,
+        "samples": 44,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.141,
+          "class_1": 0.094,
+          "class_2": 0.765
+        },
+        "distribution_kind": "probability",
+        "split_type": "simple",
+        "feature_full": "measurement_5_std_error",
+        "threshold_full": -0.07722617028772673,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": -0.07722617028772673,
+            "text_full": "measurement_5_std_error > -0.07722617028772673",
+            "text_display": "meas_5_std_err > -0.07723"
+          }
+        ],
+        "m": 1,
+        "n": 1,
+        "children": [
+          23,
+          24
+        ],
+        "edges": [
+          {
+            "parent_id": 22,
+            "child_id": 23,
+            "label": "≤ -0.07723",
+            "full_label": "measurement_5_std_error ≤ -0.07722617028772673",
+            "branch": "left",
+            "samples": 34
+          },
+          {
+            "parent_id": 22,
+            "child_id": 24,
+            "label": "> -0.07723",
+            "full_label": "measurement_5_std_error > -0.07722617028772673",
+            "branch": "right",
+            "samples": 10
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.10880905500000002,
+          "node_fidelity": 0.765,
+          "real_samples": 44,
+          "synthetic_samples": 956,
+          "effective_samples": 1000,
+          "queries_used": 956,
+          "queries_requested": 956,
+          "information_gain": 0.12265502686508223
+        }
+      },
+      {
+        "node_id": 23,
+        "depth": 5,
+        "is_leaf": true,
+        "parent_id": 22,
+        "samples": 34,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.08823529411764706,
+          "class_2": 0.9117647058823529
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.080845127865,
+          "node_fidelity": 0.9117647058823529,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 24,
+        "depth": 5,
+        "is_leaf": false,
+        "parent_id": 22,
+        "samples": 10,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.301,
+          "class_1": 0.169,
+          "class_2": 0.53
+        },
+        "distribution_kind": "probability",
+        "split_type": "simple",
+        "feature_full": "measurement_9_mean",
+        "threshold_full": 0.6054354617331349,
+        "conditions": [
+          {
+            "feature_full": "measurement_9_mean",
+            "feature_display": "meas_9_mn",
+            "op": "≤",
+            "threshold_full": 0.6054354617331349,
+            "text_full": "measurement_9_mean ≤ 0.6054354617331349",
+            "text_display": "meas_9_mn ≤ 0.6054"
+          }
+        ],
+        "m": 1,
+        "n": 1,
+        "children": [
+          26,
+          25
+        ],
+        "edges": [
+          {
+            "parent_id": 24,
+            "child_id": 26,
+            "label": "≤ 0.6054",
+            "full_label": "measurement_9_mean ≤ 0.6054354617331349",
+            "branch": "left",
+            "samples": 7
+          },
+          {
+            "parent_id": 24,
+            "child_id": 25,
+            "label": "> 0.6054",
+            "full_label": "measurement_9_mean > 0.6054354617331349",
+            "branch": "right",
+            "samples": 3
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.027963927135000004,
+          "node_fidelity": 0.53,
+          "real_samples": 10,
+          "synthetic_samples": 990,
+          "effective_samples": 1000,
+          "queries_used": 990,
+          "queries_requested": 990,
+          "information_gain": 0.2420138148944126
+        }
+      },
+      {
+        "node_id": 26,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 24,
+        "samples": 7,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.42857142857142855,
+          "class_2": 0.5714285714285714
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.020497558589955004,
+          "node_fidelity": 0.5714285714285714,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 25,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 24,
+        "samples": 3,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.0074663685450450015,
+          "node_fidelity": 1.0,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 10,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 3,
+        "samples": 42,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.399,
+          "class_1": 0.152,
+          "class_2": 0.449
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": ">",
+            "threshold_full": -0.9081374844242139,
+            "text_full": "measurement_7_worst > -0.9081374844242139",
+            "text_display": "meas_7_w > -0.9081"
+          },
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": ">",
+            "threshold_full": 1.6620372211395544,
+            "text_full": "measurement_2_std_error > 1.6620372211395544",
+            "text_display": "meas_2_std_err > 1.662"
+          }
+        ],
+        "m": 1,
+        "n": 2,
+        "children": [
+          11,
+          12
+        ],
+        "edges": [
+          {
+            "parent_id": 10,
+            "child_id": 11,
+            "label": "no",
+            "full_label": "NOT 1-of-2",
+            "branch": "left",
+            "samples": 15
+          },
+          {
+            "parent_id": 10,
+            "child_id": 12,
+            "label": "sí",
+            "full_label": "1-of-2",
+            "branch": "right",
+            "samples": 27
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.11061252000000002,
+          "node_fidelity": 0.449,
+          "real_samples": 42,
+          "synthetic_samples": 958,
+          "effective_samples": 1000,
+          "queries_used": 958,
+          "queries_requested": 958,
+          "m_of_n_text": "1-of-2(measurement_7_worst > -0.908137; measurement_2_std_error > 1.66204)",
+          "information_gain": 0.15728148222335725
+        }
+      },
+      {
+        "node_id": 11,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 10,
+        "samples": 15,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.13333333333333333,
+          "class_2": 0.8666666666666667
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.038493156960000004,
+          "node_fidelity": 0.8666666666666667,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 12,
+        "depth": 4,
+        "is_leaf": false,
+        "parent_id": 10,
+        "samples": 27,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.5,
+          "class_1": 0.195,
+          "class_2": 0.305
+        },
+        "distribution_kind": "probability",
+        "split_type": "simple",
+        "feature_full": "measurement_0_mean",
+        "threshold_full": 0.15638202651676097,
+        "conditions": [
+          {
+            "feature_full": "measurement_0_mean",
+            "feature_display": "meas_0_mn",
+            "op": ">",
+            "threshold_full": 0.15638202651676097,
+            "text_full": "measurement_0_mean > 0.15638202651676097",
+            "text_display": "meas_0_mn > 0.1564"
+          }
+        ],
+        "m": 1,
+        "n": 1,
+        "children": [
+          13,
+          14
+        ],
+        "edges": [
+          {
+            "parent_id": 12,
+            "child_id": 13,
+            "label": "≤ 0.1564",
+            "full_label": "measurement_0_mean ≤ 0.15638202651676097",
+            "branch": "left",
+            "samples": 13
+          },
+          {
+            "parent_id": 12,
+            "child_id": 14,
+            "label": "> 0.1564",
+            "full_label": "measurement_0_mean > 0.15638202651676097",
+            "branch": "right",
+            "samples": 14
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.07211936304000001,
+          "node_fidelity": 0.5,
+          "real_samples": 27,
+          "synthetic_samples": 973,
+          "effective_samples": 1000,
+          "queries_used": 973,
+          "queries_requested": 973,
+          "information_gain": 0.11276840648706443
+        }
+      },
+      {
+        "node_id": 13,
+        "depth": 5,
+        "is_leaf": false,
+        "parent_id": 12,
+        "samples": 13,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.555,
+          "class_1": 0.077,
+          "class_2": 0.368
+        },
+        "distribution_kind": "probability",
+        "split_type": "simple",
+        "feature_full": "measurement_5_std_error",
+        "threshold_full": -1.3347623028397033,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": -1.3347623028397033,
+            "text_full": "measurement_5_std_error > -1.3347623028397033",
+            "text_display": "meas_5_std_err > -1.335"
+          }
+        ],
+        "m": 1,
+        "n": 1,
+        "children": [
+          27,
+          28
+        ],
+        "edges": [
+          {
+            "parent_id": 13,
+            "child_id": 27,
+            "label": "≤ -1.335",
+            "full_label": "measurement_5_std_error ≤ -1.3347623028397033",
+            "branch": "left",
+            "samples": 7
+          },
+          {
+            "parent_id": 13,
+            "child_id": 28,
+            "label": "> -1.335",
+            "full_label": "measurement_5_std_error > -1.3347623028397033",
+            "branch": "right",
+            "samples": 6
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.04031472393936,
+          "node_fidelity": 0.555,
+          "real_samples": 13,
+          "synthetic_samples": 987,
+          "effective_samples": 1000,
+          "queries_used": 987,
+          "queries_requested": 987,
+          "information_gain": 0.12895113932259394
+        }
+      },
+      {
+        "node_id": 27,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 13,
+        "samples": 7,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.14285714285714285,
+          "class_1": 0.0,
+          "class_2": 0.8571428571428571
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.017053128226349284,
+          "node_fidelity": 0.8571428571428571,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 28,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 13,
+        "samples": 6,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.6666666666666666,
+          "class_1": 0.0,
+          "class_2": 0.3333333333333333
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.02326159571301072,
+          "node_fidelity": 0.6666666666666666,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 14,
+        "depth": 5,
+        "is_leaf": true,
+        "parent_id": 12,
+        "samples": 14,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.2857142857142857,
+          "class_1": 0.5714285714285714,
+          "class_2": 0.14285714285714285
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.031804639100640006,
+          "node_fidelity": 0.5714285714285714,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 4,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 1,
+        "samples": 129,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.032,
+          "class_1": 0.674,
+          "class_2": 0.294
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": 0.669113379789728,
+            "text_full": "measurement_5_std_error > 0.669113379789728",
+            "text_display": "meas_5_std_err > 0.6691"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": ">",
+            "threshold_full": 0.06897743617369576,
+            "text_full": "measurement_4_worst > 0.06897743617369576",
+            "text_display": "meas_4_w > 0.06898"
+          }
+        ],
+        "m": 1,
+        "n": 2,
+        "children": [
+          15,
+          16
+        ],
+        "edges": [
+          {
+            "parent_id": 4,
+            "child_id": 15,
+            "label": "no",
+            "full_label": "NOT 1-of-2",
+            "branch": "left",
+            "samples": 34
+          },
+          {
+            "parent_id": 4,
+            "child_id": 16,
+            "label": "sí",
+            "full_label": "1-of-2",
+            "branch": "right",
+            "samples": 95
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.20923,
+          "node_fidelity": 0.674,
+          "real_samples": 129,
+          "synthetic_samples": 871,
+          "effective_samples": 1000,
+          "queries_used": 871,
+          "queries_requested": 871,
+          "m_of_n_text": "1-of-2(measurement_5_std_error > 0.669113; measurement_4_worst > 0.0689774)",
+          "information_gain": 0.10580799053098339
+        }
+      },
+      {
+        "node_id": 15,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 4,
+        "samples": 34,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.01,
+          "class_1": 0.324,
+          "class_2": 0.666
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": "≤",
+            "threshold_full": 0.30555011683965594,
+            "text_full": "measurement_2_std_error ≤ 0.30555011683965594",
+            "text_display": "meas_2_std_err ≤ 0.3056"
+          },
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 1.4393177491655091,
+            "text_full": "measurement_8_std_error ≤ 1.4393177491655091",
+            "text_display": "meas_8_std_err ≤ 1.439"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": "≤",
+            "threshold_full": -1.0532178682578506,
+            "text_full": "measurement_4_worst ≤ -1.0532178682578506",
+            "text_display": "meas_4_w ≤ -1.053"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          17,
+          18
+        ],
+        "edges": [
+          {
+            "parent_id": 15,
+            "child_id": 17,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 16
+          },
+          {
+            "parent_id": 15,
+            "child_id": 18,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 18
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.07009204999999999,
+          "node_fidelity": 0.666,
+          "real_samples": 34,
+          "synthetic_samples": 966,
+          "effective_samples": 1000,
+          "queries_used": 966,
+          "queries_requested": 966,
+          "m_of_n_text": "2-of-3(measurement_2_std_error <= 0.30555; measurement_8_std_error <= 1.43932; measurement_4_worst <= -1.05322)",
+          "information_gain": 0.18201391580807458
+        }
+      },
+      {
+        "node_id": 17,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 15,
+        "samples": 16,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.9375,
+          "class_2": 0.0625
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.03371427604999999,
+          "node_fidelity": 0.9375,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 18,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 15,
+        "samples": 18,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.05555555555555555,
+          "class_1": 0.05555555555555555,
+          "class_2": 0.8888888888888888
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.03637777395,
+          "node_fidelity": 0.8888888888888888,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 16,
+        "depth": 3,
+        "is_leaf": true,
+        "parent_id": 4,
+        "samples": 95,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.9263157894736842,
+          "class_2": 0.07368421052631578
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.13913795,
+          "node_fidelity": 0.9263157894736842,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 2,
+        "depth": 1,
+        "is_leaf": false,
+        "parent_id": 0,
+        "samples": 196,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.848,
+          "class_1": 0.138,
+          "class_2": 0.014
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_0_mean",
+            "feature_display": "meas_0_mn",
+            "op": ">",
+            "threshold_full": 0.6006891893404875,
+            "text_full": "measurement_0_mean > 0.6006891893404875",
+            "text_display": "meas_0_mn > 0.6007"
+          },
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": ">",
+            "threshold_full": -0.35814766699099154,
+            "text_full": "measurement_8_std_error > -0.35814766699099154",
+            "text_display": "meas_8_std_err > -0.3581"
+          },
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": "≤",
+            "threshold_full": 0.3514839410209192,
+            "text_full": "measurement_2_std_error ≤ 0.3514839410209192",
+            "text_display": "meas_2_std_err ≤ 0.3515"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          5,
+          6
+        ],
+        "edges": [
+          {
+            "parent_id": 2,
+            "child_id": 5,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 103
+          },
+          {
+            "parent_id": 2,
+            "child_id": 6,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 93
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.39,
+          "node_fidelity": 0.848,
+          "real_samples": 196,
+          "synthetic_samples": 804,
+          "effective_samples": 1000,
+          "queries_used": 804,
+          "queries_requested": 804,
+          "m_of_n_text": "2-of-3(measurement_0_mean > 0.600689; measurement_8_std_error > -0.358148; measurement_2_std_error <= 0.351484)",
+          "information_gain": 0.10614119452757302
+        }
+      },
+      {
+        "node_id": 5,
+        "depth": 2,
+        "is_leaf": true,
+        "parent_id": 2,
+        "samples": 103,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.970873786407767,
+          "class_1": 0.02912621359223301,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.21216000000000002,
+          "node_fidelity": 0.970873786407767,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 6,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 2,
+        "samples": 93,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.662,
+          "class_1": 0.306,
+          "class_2": 0.032
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_0_mean",
+            "feature_display": "meas_0_mn",
+            "op": ">",
+            "threshold_full": -0.1837723735996773,
+            "text_full": "measurement_0_mean > -0.1837723735996773",
+            "text_display": "meas_0_mn > -0.1838"
+          },
+          {
+            "feature_full": "measurement_9_mean",
+            "feature_display": "meas_9_mn",
+            "op": "≤",
+            "threshold_full": 1.0354364878364177,
+            "text_full": "measurement_9_mean ≤ 1.0354364878364177",
+            "text_display": "meas_9_mn ≤ 1.035"
+          }
+        ],
+        "m": 2,
+        "n": 2,
+        "children": [
+          7,
+          8
+        ],
+        "edges": [
+          {
+            "parent_id": 6,
+            "child_id": 7,
+            "label": "no",
+            "full_label": "NOT 2-of-2",
+            "branch": "left",
+            "samples": 59
+          },
+          {
+            "parent_id": 6,
+            "child_id": 8,
+            "label": "sí",
+            "full_label": "2-of-2",
+            "branch": "right",
+            "samples": 34
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.17784000000000003,
+          "node_fidelity": 0.662,
+          "real_samples": 93,
+          "synthetic_samples": 907,
+          "effective_samples": 1000,
+          "queries_used": 907,
+          "queries_requested": 907,
+          "m_of_n_text": "2-of-2(measurement_0_mean > -0.183772; measurement_9_mean <= 1.03544)",
+          "information_gain": 0.14504030588100103
+        }
+      },
+      {
+        "node_id": 7,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 6,
+        "samples": 59,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.872,
+          "class_1": 0.12,
+          "class_2": 0.008
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": -0.9443011903917069,
+            "text_full": "measurement_5_std_error > -0.9443011903917069",
+            "text_display": "meas_5_std_err > -0.9443"
+          },
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": ">",
+            "threshold_full": -0.9265359780245732,
+            "text_full": "measurement_2_std_error > -0.9265359780245732",
+            "text_display": "meas_2_std_err > -0.9265"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": "≤",
+            "threshold_full": 0.7603177959794781,
+            "text_full": "measurement_4_worst ≤ 0.7603177959794781",
+            "text_display": "meas_4_w ≤ 0.7603"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          19,
+          20
+        ],
+        "edges": [
+          {
+            "parent_id": 7,
+            "child_id": 19,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 19
+          },
+          {
+            "parent_id": 7,
+            "child_id": 20,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 40
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.12039768000000002,
+          "node_fidelity": 0.872,
+          "real_samples": 59,
+          "synthetic_samples": 941,
+          "effective_samples": 1000,
+          "queries_used": 941,
+          "queries_requested": 941,
+          "m_of_n_text": "2-of-3(measurement_5_std_error > -0.944301; measurement_2_std_error > -0.926536; measurement_4_worst <= 0.760318)",
+          "information_gain": 0.09718703674515422
+        }
+      },
+      {
+        "node_id": 19,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 7,
+        "samples": 19,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.47368421052631576,
+          "class_1": 0.5263157894736842,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.029858624640000005,
+          "node_fidelity": 0.5263157894736842,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 20,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 7,
+        "samples": 40,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.925,
+          "class_1": 0.075,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.09053905536000001,
+          "node_fidelity": 0.925,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 8,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 6,
+        "samples": 34,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.245,
+          "class_1": 0.701,
+          "class_2": 0.054
+        },
+        "distribution_kind": "probability",
+        "split_type": "m_of_n",
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": ">",
+            "threshold_full": 0.2493090533672814,
+            "text_full": "measurement_5_std_error > 0.2493090533672814",
+            "text_display": "meas_5_std_err > 0.2493"
+          },
+          {
+            "feature_full": "measurement_3_mean",
+            "feature_display": "meas_3_mn",
+            "op": ">",
+            "threshold_full": -0.4924313978283431,
+            "text_full": "measurement_3_mean > -0.4924313978283431",
+            "text_display": "meas_3_mn > -0.4924"
+          },
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": ">",
+            "threshold_full": 0.1249911062777889,
+            "text_full": "measurement_4_worst > 0.1249911062777889",
+            "text_display": "meas_4_w > 0.125"
+          }
+        ],
+        "m": 2,
+        "n": 3,
+        "children": [
+          29,
+          30
+        ],
+        "edges": [
+          {
+            "parent_id": 8,
+            "child_id": 29,
+            "label": "no",
+            "full_label": "NOT 2-of-3",
+            "branch": "left",
+            "samples": 6
+          },
+          {
+            "parent_id": 8,
+            "child_id": 30,
+            "label": "sí",
+            "full_label": "2-of-3",
+            "branch": "right",
+            "samples": 28
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.05744232000000001,
+          "node_fidelity": 0.701,
+          "real_samples": 34,
+          "synthetic_samples": 966,
+          "effective_samples": 1000,
+          "queries_used": 966,
+          "queries_requested": 966,
+          "m_of_n_text": "2-of-3(measurement_5_std_error > 0.249309; measurement_3_mean > -0.492431; measurement_4_worst > 0.124991)",
+          "information_gain": 0.16859190587289835
+        }
+      },
+      {
+        "node_id": 29,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 8,
+        "samples": 6,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 0.8333333333333334,
+          "class_1": 0.16666666666666666,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.01246498344,
+          "node_fidelity": 0.8333333333333334,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      },
+      {
+        "node_id": 30,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 8,
+        "samples": 28,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.14285714285714285,
+          "class_1": 0.8571428571428571,
+          "class_2": 0.0
+        },
+        "distribution_kind": "probability",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "reach": 0.04497733656000001,
+          "node_fidelity": 0.8571428571428571,
+          "stop_reason": "STOP_MAX_NODES",
+          "stop_detail": {
+            "max_nodes": 31,
+            "nodes_created": 31
+          }
+        }
+      }
+    ]
+  },
+  "diagnostic": {
+    "algorithm": "Trepan-Original",
+    "logical_node_count": 31,
+    "model_node_count": 31,
+    "rendered_node_count": 31,
+    "hidden_node_count": 0,
+    "rendered_plus_hidden": 31,
+    "consistent": true,
+    "depth": 6,
+    "layout": "hierarchical (Reingold-Tilford, subtree contours)",
+    "preset": "large",
+    "bounding_box": [
+      -745.76,
+      0.0,
+      468.76,
+      656.0
+    ],
+    "overlaps_detected": 0,
+    "spacing_iterations": 0,
+    "hidden_or_collapsed": 0,
+    "verdict": "ok"
+  },
+  "metadata": {
+    "algorithm": "Trepan-Original",
+    "seed": 42
+  }
+}

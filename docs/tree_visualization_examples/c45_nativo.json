@@ -1,0 +1,2293 @@
+{
+  "tree": {
+    "algorithm": "C4.5-Nativo",
+    "source_kind": "c45",
+    "root_id": 0,
+    "logical_node_count": 55,
+    "class_names": [
+      "class_0",
+      "class_1",
+      "class_2"
+    ],
+    "feature_names": [
+      "measurement_0_mean",
+      "measurement_1_worst",
+      "measurement_2_std_error",
+      "measurement_3_mean",
+      "measurement_4_worst",
+      "measurement_5_std_error",
+      "measurement_6_mean",
+      "measurement_7_worst",
+      "measurement_8_std_error",
+      "measurement_9_mean"
+    ],
+    "nodes": [
+      {
+        "node_id": 0,
+        "depth": 0,
+        "is_leaf": false,
+        "parent_id": null,
+        "samples": 490,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 168.0,
+          "class_1": 161.0,
+          "class_2": 161.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_7_worst",
+        "threshold_full": 0.32649603065826477,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": "≤",
+            "threshold_full": 0.32649603065826477,
+            "text_full": "measurement_7_worst ≤ 0.32649603065826477",
+            "text_display": "meas_7_w ≤ 0.3265"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          1,
+          48
+        ],
+        "edges": [
+          {
+            "parent_id": 0,
+            "child_id": 1,
+            "label": "≤ 0.3265",
+            "full_label": "measurement_7_worst ≤ 0.32649603065826477",
+            "branch": "left",
+            "samples": 290
+          },
+          {
+            "parent_id": 0,
+            "child_id": 48,
+            "label": "> 0.3265",
+            "full_label": "measurement_7_worst > 0.32649603065826477",
+            "branch": "right",
+            "samples": 200
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.5652990438009521,
+          "gain_ratio": 0.57948129739467
+        }
+      },
+      {
+        "node_id": 1,
+        "depth": 1,
+        "is_leaf": false,
+        "parent_id": 0,
+        "samples": 290,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 11.0,
+          "class_1": 118.0,
+          "class_2": 161.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_9_mean",
+        "threshold_full": 1.2865216430787054,
+        "conditions": [
+          {
+            "feature_full": "measurement_9_mean",
+            "feature_display": "meas_9_mn",
+            "op": "≤",
+            "threshold_full": 1.2865216430787054,
+            "text_full": "measurement_9_mean ≤ 1.2865216430787054",
+            "text_display": "meas_9_mn ≤ 1.287"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          2,
+          47
+        ],
+        "edges": [
+          {
+            "parent_id": 1,
+            "child_id": 2,
+            "label": "≤ 1.287",
+            "full_label": "measurement_9_mean ≤ 1.2865216430787054",
+            "branch": "left",
+            "samples": 283
+          },
+          {
+            "parent_id": 1,
+            "child_id": 47,
+            "label": "> 1.287",
+            "full_label": "measurement_9_mean > 1.2865216430787054",
+            "branch": "right",
+            "samples": 7
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.10399737160299868,
+          "gain_ratio": 0.6338122234277328
+        }
+      },
+      {
+        "node_id": 2,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 1,
+        "samples": 283,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 4.0,
+          "class_1": 118.0,
+          "class_2": 161.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": 0.5072689898274583,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 0.5072689898274583,
+            "text_full": "measurement_8_std_error ≤ 0.5072689898274583",
+            "text_display": "meas_8_std_err ≤ 0.5073"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          3,
+          26
+        ],
+        "edges": [
+          {
+            "parent_id": 2,
+            "child_id": 3,
+            "label": "≤ 0.5073",
+            "full_label": "measurement_8_std_error ≤ 0.5072689898274583",
+            "branch": "left",
+            "samples": 159
+          },
+          {
+            "parent_id": 2,
+            "child_id": 26,
+            "label": "> 0.5073",
+            "full_label": "measurement_8_std_error > 0.5072689898274583",
+            "branch": "right",
+            "samples": 124
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.39933600466153407,
+          "gain_ratio": 0.4038027330254893
+        }
+      },
+      {
+        "node_id": 3,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 2,
+        "samples": 159,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 3.0,
+          "class_1": 16.0,
+          "class_2": 140.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_2_std_error",
+        "threshold_full": 2.1823824602095585,
+        "conditions": [
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": "≤",
+            "threshold_full": 2.1823824602095585,
+            "text_full": "measurement_2_std_error ≤ 2.1823824602095585",
+            "text_display": "meas_2_std_err ≤ 2.182"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          4,
+          25
+        ],
+        "edges": [
+          {
+            "parent_id": 3,
+            "child_id": 4,
+            "label": "≤ 2.182",
+            "full_label": "measurement_2_std_error ≤ 2.1823824602095585",
+            "branch": "left",
+            "samples": 157
+          },
+          {
+            "parent_id": 3,
+            "child_id": 25,
+            "label": "> 2.182",
+            "full_label": "measurement_2_std_error > 2.1823824602095585",
+            "branch": "right",
+            "samples": 2
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.04785384776804164,
+          "gain_ratio": 0.4911117947718356
+        }
+      },
+      {
+        "node_id": 4,
+        "depth": 4,
+        "is_leaf": false,
+        "parent_id": 3,
+        "samples": 157,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 16.0,
+          "class_2": 140.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_0_mean",
+        "threshold_full": 1.8068594387154722,
+        "conditions": [
+          {
+            "feature_full": "measurement_0_mean",
+            "feature_display": "meas_0_mn",
+            "op": "≤",
+            "threshold_full": 1.8068594387154722,
+            "text_full": "measurement_0_mean ≤ 1.8068594387154722",
+            "text_display": "meas_0_mn ≤ 1.807"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          5,
+          22
+        ],
+        "edges": [
+          {
+            "parent_id": 4,
+            "child_id": 5,
+            "label": "≤ 1.807",
+            "full_label": "measurement_0_mean ≤ 1.8068594387154722",
+            "branch": "left",
+            "samples": 153
+          },
+          {
+            "parent_id": 4,
+            "child_id": 22,
+            "label": "> 1.807",
+            "full_label": "measurement_0_mean > 1.8068594387154722",
+            "branch": "right",
+            "samples": 4
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.06928497125401155,
+          "gain_ratio": 0.40475136261605865
+        }
+      },
+      {
+        "node_id": 5,
+        "depth": 5,
+        "is_leaf": false,
+        "parent_id": 4,
+        "samples": 153,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 13.0,
+          "class_2": 140.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_7_worst",
+        "threshold_full": 0.13564423854273594,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": "≤",
+            "threshold_full": 0.13564423854273594,
+            "text_full": "measurement_7_worst ≤ 0.13564423854273594",
+            "text_display": "meas_7_w ≤ 0.1356"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          6,
+          19
+        ],
+        "edges": [
+          {
+            "parent_id": 5,
+            "child_id": 6,
+            "label": "≤ 0.1356",
+            "full_label": "measurement_7_worst ≤ 0.13564423854273594",
+            "branch": "left",
+            "samples": 144
+          },
+          {
+            "parent_id": 5,
+            "child_id": 19,
+            "label": "> 0.1356",
+            "full_label": "measurement_7_worst > 0.13564423854273594",
+            "branch": "right",
+            "samples": 9
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.07474219273469204,
+          "gain_ratio": 0.23157422535528344
+        }
+      },
+      {
+        "node_id": 6,
+        "depth": 6,
+        "is_leaf": false,
+        "parent_id": 5,
+        "samples": 144,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 7.0,
+          "class_2": 137.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": -0.23988483211857672,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": -0.23988483211857672,
+            "text_full": "measurement_8_std_error ≤ -0.23988483211857672",
+            "text_display": "meas_8_std_err ≤ -0.2399"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          7,
+          8
+        ],
+        "edges": [
+          {
+            "parent_id": 6,
+            "child_id": 7,
+            "label": "≤ -0.2399",
+            "full_label": "measurement_8_std_error ≤ -0.23988483211857672",
+            "branch": "left",
+            "samples": 87
+          },
+          {
+            "parent_id": 6,
+            "child_id": 8,
+            "label": "> -0.2399",
+            "full_label": "measurement_8_std_error > -0.23988483211857672",
+            "branch": "right",
+            "samples": 57
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.04286056265781686,
+          "gain_ratio": 0.044256363725667776
+        }
+      },
+      {
+        "node_id": 7,
+        "depth": 7,
+        "is_leaf": true,
+        "parent_id": 6,
+        "samples": 87,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 87.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 8,
+        "depth": 7,
+        "is_leaf": false,
+        "parent_id": 6,
+        "samples": 57,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 7.0,
+          "class_2": 50.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_7_worst",
+        "threshold_full": -0.5514598786232016,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": "≤",
+            "threshold_full": -0.5514598786232016,
+            "text_full": "measurement_7_worst ≤ -0.5514598786232016",
+            "text_display": "meas_7_w ≤ -0.5515"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          9,
+          14
+        ],
+        "edges": [
+          {
+            "parent_id": 8,
+            "child_id": 9,
+            "label": "≤ -0.5515",
+            "full_label": "measurement_7_worst ≤ -0.5514598786232016",
+            "branch": "left",
+            "samples": 46
+          },
+          {
+            "parent_id": 8,
+            "child_id": 14,
+            "label": "> -0.5515",
+            "full_label": "measurement_7_worst > -0.5514598786232016",
+            "branch": "right",
+            "samples": 11
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.07442602243336191,
+          "gain_ratio": 0.10517066932354972
+        }
+      },
+      {
+        "node_id": 9,
+        "depth": 8,
+        "is_leaf": true,
+        "parent_id": 8,
+        "samples": 46,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 2.0,
+          "class_2": 44.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 14,
+        "depth": 8,
+        "is_leaf": false,
+        "parent_id": 8,
+        "samples": 11,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 5.0,
+          "class_2": 6.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": 0.10656433603787467,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 0.10656433603787467,
+            "text_full": "measurement_8_std_error ≤ 0.10656433603787467",
+            "text_display": "meas_8_std_err ≤ 0.1066"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          15,
+          18
+        ],
+        "edges": [
+          {
+            "parent_id": 14,
+            "child_id": 15,
+            "label": "≤ 0.1066",
+            "full_label": "measurement_8_std_error ≤ 0.10656433603787467",
+            "branch": "left",
+            "samples": 8
+          },
+          {
+            "parent_id": 14,
+            "child_id": 18,
+            "label": "> 0.1066",
+            "full_label": "measurement_8_std_error > 0.10656433603787467",
+            "branch": "right",
+            "samples": 3
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.22219157550667806,
+          "gain_ratio": 0.262839450316853
+        }
+      },
+      {
+        "node_id": 15,
+        "depth": 9,
+        "is_leaf": false,
+        "parent_id": 14,
+        "samples": 8,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 2.0,
+          "class_2": 6.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_4_worst",
+        "threshold_full": -0.16195467291356538,
+        "conditions": [
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": "≤",
+            "threshold_full": -0.16195467291356538,
+            "text_full": "measurement_4_worst ≤ -0.16195467291356538",
+            "text_display": "meas_4_w ≤ -0.162"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          16,
+          17
+        ],
+        "edges": [
+          {
+            "parent_id": 15,
+            "child_id": 16,
+            "label": "≤ -0.162",
+            "full_label": "measurement_4_worst ≤ -0.16195467291356538",
+            "branch": "left",
+            "samples": 2
+          },
+          {
+            "parent_id": 15,
+            "child_id": 17,
+            "label": "> -0.162",
+            "full_label": "measurement_4_worst > -0.16195467291356538",
+            "branch": "right",
+            "samples": 6
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.8112781244591328,
+          "gain_ratio": 1.0
+        }
+      },
+      {
+        "node_id": 16,
+        "depth": 10,
+        "is_leaf": true,
+        "parent_id": 15,
+        "samples": 2,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 2.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 17,
+        "depth": 10,
+        "is_leaf": true,
+        "parent_id": 15,
+        "samples": 6,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 6.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 18,
+        "depth": 9,
+        "is_leaf": true,
+        "parent_id": 14,
+        "samples": 3,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 3.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 19,
+        "depth": 6,
+        "is_leaf": false,
+        "parent_id": 5,
+        "samples": 9,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 6.0,
+          "class_2": 3.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": -1.0594208765781914,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": -1.0594208765781914,
+            "text_full": "measurement_1_worst ≤ -1.0594208765781914",
+            "text_display": "meas_1_w ≤ -1.059"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          20,
+          21
+        ],
+        "edges": [
+          {
+            "parent_id": 19,
+            "child_id": 20,
+            "label": "≤ -1.059",
+            "full_label": "measurement_1_worst ≤ -1.0594208765781914",
+            "branch": "left",
+            "samples": 3
+          },
+          {
+            "parent_id": 19,
+            "child_id": 21,
+            "label": "> -1.059",
+            "full_label": "measurement_1_worst > -1.0594208765781914",
+            "branch": "right",
+            "samples": 6
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.9182958340544896,
+          "gain_ratio": 1.0
+        }
+      },
+      {
+        "node_id": 20,
+        "depth": 7,
+        "is_leaf": true,
+        "parent_id": 19,
+        "samples": 3,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 3.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 21,
+        "depth": 7,
+        "is_leaf": true,
+        "parent_id": 19,
+        "samples": 6,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 6.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 22,
+        "depth": 5,
+        "is_leaf": true,
+        "parent_id": 4,
+        "samples": 4,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 3.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 25,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 3,
+        "samples": 2,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 2.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 26,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 2,
+        "samples": 124,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 102.0,
+          "class_2": 21.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_5_std_error",
+        "threshold_full": -0.8683179218670043,
+        "conditions": [
+          {
+            "feature_full": "measurement_5_std_error",
+            "feature_display": "meas_5_std_err",
+            "op": "≤",
+            "threshold_full": -0.8683179218670043,
+            "text_full": "measurement_5_std_error ≤ -0.8683179218670043",
+            "text_display": "meas_5_std_err ≤ -0.8683"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          27,
+          30
+        ],
+        "edges": [
+          {
+            "parent_id": 26,
+            "child_id": 27,
+            "label": "≤ -0.8683",
+            "full_label": "measurement_5_std_error ≤ -0.8683179218670043",
+            "branch": "left",
+            "samples": 10
+          },
+          {
+            "parent_id": 26,
+            "child_id": 30,
+            "label": "> -0.8683",
+            "full_label": "measurement_5_std_error > -0.8683179218670043",
+            "branch": "right",
+            "samples": 114
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.134301163115296,
+          "gain_ratio": 0.3320600788694191
+        }
+      },
+      {
+        "node_id": 27,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 26,
+        "samples": 10,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 1.0,
+          "class_2": 9.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 30,
+        "depth": 4,
+        "is_leaf": false,
+        "parent_id": 26,
+        "samples": 114,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 101.0,
+          "class_2": 12.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": 1.282396223233277,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": 1.282396223233277,
+            "text_full": "measurement_1_worst ≤ 1.282396223233277",
+            "text_display": "meas_1_w ≤ 1.282"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          31,
+          46
+        ],
+        "edges": [
+          {
+            "parent_id": 30,
+            "child_id": 31,
+            "label": "≤ 1.282",
+            "full_label": "measurement_1_worst ≤ 1.282396223233277",
+            "branch": "left",
+            "samples": 111
+          },
+          {
+            "parent_id": 30,
+            "child_id": 46,
+            "label": "> 1.282",
+            "full_label": "measurement_1_worst > 1.282396223233277",
+            "branch": "right",
+            "samples": 3
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.05290480649826442,
+          "gain_ratio": 0.3013402369854949
+        }
+      },
+      {
+        "node_id": 31,
+        "depth": 5,
+        "is_leaf": false,
+        "parent_id": 30,
+        "samples": 111,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 101.0,
+          "class_2": 9.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": 1.2440473514098696,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 1.2440473514098696,
+            "text_full": "measurement_8_std_error ≤ 1.2440473514098696",
+            "text_display": "meas_8_std_err ≤ 1.244"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          32,
+          45
+        ],
+        "edges": [
+          {
+            "parent_id": 31,
+            "child_id": 32,
+            "label": "≤ 1.244",
+            "full_label": "measurement_8_std_error ≤ 1.2440473514098696",
+            "branch": "left",
+            "samples": 54
+          },
+          {
+            "parent_id": 31,
+            "child_id": 45,
+            "label": "> 1.244",
+            "full_label": "measurement_8_std_error > 1.2440473514098696",
+            "branch": "right",
+            "samples": 57
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.06153098572303513,
+          "gain_ratio": 0.061563428407087305
+        }
+      },
+      {
+        "node_id": 32,
+        "depth": 6,
+        "is_leaf": false,
+        "parent_id": 31,
+        "samples": 54,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 44.0,
+          "class_2": 9.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_4_worst",
+        "threshold_full": 0.3234744045390593,
+        "conditions": [
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": "≤",
+            "threshold_full": 0.3234744045390593,
+            "text_full": "measurement_4_worst ≤ 0.3234744045390593",
+            "text_display": "meas_4_w ≤ 0.3235"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          33,
+          42
+        ],
+        "edges": [
+          {
+            "parent_id": 32,
+            "child_id": 33,
+            "label": "≤ 0.3235",
+            "full_label": "measurement_4_worst ≤ 0.3234744045390593",
+            "branch": "left",
+            "samples": 33
+          },
+          {
+            "parent_id": 32,
+            "child_id": 42,
+            "label": "> 0.3235",
+            "full_label": "measurement_4_worst > 0.3234744045390593",
+            "branch": "right",
+            "samples": 21
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.07843446580385095,
+          "gain_ratio": 0.08135690637211873
+        }
+      },
+      {
+        "node_id": 33,
+        "depth": 7,
+        "is_leaf": false,
+        "parent_id": 32,
+        "samples": 33,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 24.0,
+          "class_2": 9.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": 0.4410147595720797,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": 0.4410147595720797,
+            "text_full": "measurement_1_worst ≤ 0.4410147595720797",
+            "text_display": "meas_1_w ≤ 0.441"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          34,
+          39
+        ],
+        "edges": [
+          {
+            "parent_id": 33,
+            "child_id": 34,
+            "label": "≤ 0.441",
+            "full_label": "measurement_1_worst ≤ 0.4410147595720797",
+            "branch": "left",
+            "samples": 25
+          },
+          {
+            "parent_id": 33,
+            "child_id": 39,
+            "label": "> 0.441",
+            "full_label": "measurement_1_worst > 0.4410147595720797",
+            "branch": "right",
+            "samples": 8
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.3238251722978548,
+          "gain_ratio": 0.4052634649453466
+        }
+      },
+      {
+        "node_id": 34,
+        "depth": 8,
+        "is_leaf": false,
+        "parent_id": 33,
+        "samples": 25,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 23.0,
+          "class_2": 2.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": 0.841719674661591,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 0.841719674661591,
+            "text_full": "measurement_8_std_error ≤ 0.841719674661591",
+            "text_display": "meas_8_std_err ≤ 0.8417"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          35,
+          38
+        ],
+        "edges": [
+          {
+            "parent_id": 34,
+            "child_id": 35,
+            "label": "≤ 0.8417",
+            "full_label": "measurement_8_std_error ≤ 0.841719674661591",
+            "branch": "left",
+            "samples": 10
+          },
+          {
+            "parent_id": 34,
+            "child_id": 38,
+            "label": "> 0.8417",
+            "full_label": "measurement_8_std_error > 0.841719674661591",
+            "branch": "right",
+            "samples": 15
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.05000945221848162,
+          "gain_ratio": 0.05150566105432921
+        }
+      },
+      {
+        "node_id": 35,
+        "depth": 9,
+        "is_leaf": false,
+        "parent_id": 34,
+        "samples": 10,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 8.0,
+          "class_2": 2.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": -0.24136270678927918,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": -0.24136270678927918,
+            "text_full": "measurement_1_worst ≤ -0.24136270678927918",
+            "text_display": "meas_1_w ≤ -0.2414"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          36,
+          37
+        ],
+        "edges": [
+          {
+            "parent_id": 35,
+            "child_id": 36,
+            "label": "≤ -0.2414",
+            "full_label": "measurement_1_worst ≤ -0.24136270678927918",
+            "branch": "left",
+            "samples": 8
+          },
+          {
+            "parent_id": 35,
+            "child_id": 37,
+            "label": "> -0.2414",
+            "full_label": "measurement_1_worst > -0.24136270678927918",
+            "branch": "right",
+            "samples": 2
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.7219280948873623,
+          "gain_ratio": 1.0
+        }
+      },
+      {
+        "node_id": 36,
+        "depth": 10,
+        "is_leaf": true,
+        "parent_id": 35,
+        "samples": 8,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 8.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 37,
+        "depth": 10,
+        "is_leaf": true,
+        "parent_id": 35,
+        "samples": 2,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 2.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 38,
+        "depth": 9,
+        "is_leaf": true,
+        "parent_id": 34,
+        "samples": 15,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 15.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 39,
+        "depth": 8,
+        "is_leaf": true,
+        "parent_id": 33,
+        "samples": 8,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 1.0,
+          "class_2": 7.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 42,
+        "depth": 7,
+        "is_leaf": true,
+        "parent_id": 32,
+        "samples": 21,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 20.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 45,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 31,
+        "samples": 57,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 57.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 46,
+        "depth": 5,
+        "is_leaf": true,
+        "parent_id": 30,
+        "samples": 3,
+        "class_prediction": "class_2",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 0.0,
+          "class_2": 3.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 47,
+        "depth": 2,
+        "is_leaf": true,
+        "parent_id": 1,
+        "samples": 7,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 7.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 48,
+        "depth": 1,
+        "is_leaf": false,
+        "parent_id": 0,
+        "samples": 200,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 157.0,
+          "class_1": 43.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_0_mean",
+        "threshold_full": 0.6572105348500679,
+        "conditions": [
+          {
+            "feature_full": "measurement_0_mean",
+            "feature_display": "meas_0_mn",
+            "op": "≤",
+            "threshold_full": 0.6572105348500679,
+            "text_full": "measurement_0_mean ≤ 0.6572105348500679",
+            "text_display": "meas_0_mn ≤ 0.6572"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          49,
+          70
+        ],
+        "edges": [
+          {
+            "parent_id": 48,
+            "child_id": 49,
+            "label": "≤ 0.6572",
+            "full_label": "measurement_0_mean ≤ 0.6572105348500679",
+            "branch": "left",
+            "samples": 168
+          },
+          {
+            "parent_id": 48,
+            "child_id": 70,
+            "label": "> 0.6572",
+            "full_label": "measurement_0_mean > 0.6572105348500679",
+            "branch": "right",
+            "samples": 32
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.08478516626103481,
+          "gain_ratio": 0.1336652832055772
+        }
+      },
+      {
+        "node_id": 49,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 48,
+        "samples": 168,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 145.0,
+          "class_1": 23.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_2_std_error",
+        "threshold_full": -0.15370480720133278,
+        "conditions": [
+          {
+            "feature_full": "measurement_2_std_error",
+            "feature_display": "meas_2_std_err",
+            "op": "≤",
+            "threshold_full": -0.15370480720133278,
+            "text_full": "measurement_2_std_error ≤ -0.15370480720133278",
+            "text_display": "meas_2_std_err ≤ -0.1537"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          50,
+          69
+        ],
+        "edges": [
+          {
+            "parent_id": 49,
+            "child_id": 50,
+            "label": "≤ -0.1537",
+            "full_label": "measurement_2_std_error ≤ -0.15370480720133278",
+            "branch": "left",
+            "samples": 82
+          },
+          {
+            "parent_id": 49,
+            "child_id": 69,
+            "label": "> -0.1537",
+            "full_label": "measurement_2_std_error > -0.15370480720133278",
+            "branch": "right",
+            "samples": 86
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.12697176782671682,
+          "gain_ratio": 0.12702371618380973
+        }
+      },
+      {
+        "node_id": 50,
+        "depth": 3,
+        "is_leaf": false,
+        "parent_id": 49,
+        "samples": 82,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 59.0,
+          "class_1": 23.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_7_worst",
+        "threshold_full": 1.0613023000524864,
+        "conditions": [
+          {
+            "feature_full": "measurement_7_worst",
+            "feature_display": "meas_7_w",
+            "op": "≤",
+            "threshold_full": 1.0613023000524864,
+            "text_full": "measurement_7_worst ≤ 1.0613023000524864",
+            "text_display": "meas_7_w ≤ 1.061"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          51,
+          64
+        ],
+        "edges": [
+          {
+            "parent_id": 50,
+            "child_id": 51,
+            "label": "≤ 1.061",
+            "full_label": "measurement_7_worst ≤ 1.0613023000524864",
+            "branch": "left",
+            "samples": 52
+          },
+          {
+            "parent_id": 50,
+            "child_id": 64,
+            "label": "> 1.061",
+            "full_label": "measurement_7_worst > 1.0613023000524864",
+            "branch": "right",
+            "samples": 30
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.09707467902864228,
+          "gain_ratio": 0.10246050132743482
+        }
+      },
+      {
+        "node_id": 51,
+        "depth": 4,
+        "is_leaf": false,
+        "parent_id": 50,
+        "samples": 52,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 30.0,
+          "class_1": 22.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_4_worst",
+        "threshold_full": 0.8631558700878373,
+        "conditions": [
+          {
+            "feature_full": "measurement_4_worst",
+            "feature_display": "meas_4_w",
+            "op": "≤",
+            "threshold_full": 0.8631558700878373,
+            "text_full": "measurement_4_worst ≤ 0.8631558700878373",
+            "text_display": "meas_4_w ≤ 0.8632"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          52,
+          61
+        ],
+        "edges": [
+          {
+            "parent_id": 51,
+            "child_id": 52,
+            "label": "≤ 0.8632",
+            "full_label": "measurement_4_worst ≤ 0.8631558700878373",
+            "branch": "left",
+            "samples": 38
+          },
+          {
+            "parent_id": 51,
+            "child_id": 61,
+            "label": "> 0.8632",
+            "full_label": "measurement_4_worst > 0.8631558700878373",
+            "branch": "right",
+            "samples": 14
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.22409615652825024,
+          "gain_ratio": 0.2666672744616907
+        }
+      },
+      {
+        "node_id": 52,
+        "depth": 5,
+        "is_leaf": false,
+        "parent_id": 51,
+        "samples": 38,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 29.0,
+          "class_1": 9.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_9_mean",
+        "threshold_full": 0.14577958360008278,
+        "conditions": [
+          {
+            "feature_full": "measurement_9_mean",
+            "feature_display": "meas_9_mn",
+            "op": "≤",
+            "threshold_full": 0.14577958360008278,
+            "text_full": "measurement_9_mean ≤ 0.14577958360008278",
+            "text_display": "meas_9_mn ≤ 0.1458"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          53,
+          54
+        ],
+        "edges": [
+          {
+            "parent_id": 52,
+            "child_id": 53,
+            "label": "≤ 0.1458",
+            "full_label": "measurement_9_mean ≤ 0.14577958360008278",
+            "branch": "left",
+            "samples": 4
+          },
+          {
+            "parent_id": 52,
+            "child_id": 54,
+            "label": "> 0.1458",
+            "full_label": "measurement_9_mean > 0.14577958360008278",
+            "branch": "right",
+            "samples": 34
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.16731314127258928,
+          "gain_ratio": 0.34464812566006703
+        }
+      },
+      {
+        "node_id": 53,
+        "depth": 6,
+        "is_leaf": true,
+        "parent_id": 52,
+        "samples": 4,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 4.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 54,
+        "depth": 6,
+        "is_leaf": false,
+        "parent_id": 52,
+        "samples": 34,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 29.0,
+          "class_1": 5.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": -0.45534428287032946,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": -0.45534428287032946,
+            "text_full": "measurement_1_worst ≤ -0.45534428287032946",
+            "text_display": "meas_1_w ≤ -0.4553"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          55,
+          60
+        ],
+        "edges": [
+          {
+            "parent_id": 54,
+            "child_id": 55,
+            "label": "≤ -0.4553",
+            "full_label": "measurement_1_worst ≤ -0.45534428287032946",
+            "branch": "left",
+            "samples": 14
+          },
+          {
+            "parent_id": 54,
+            "child_id": 60,
+            "label": "> -0.4553",
+            "full_label": "measurement_1_worst > -0.45534428287032946",
+            "branch": "right",
+            "samples": 20
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.13922592197838662,
+          "gain_ratio": 0.14244258645752975
+        }
+      },
+      {
+        "node_id": 55,
+        "depth": 7,
+        "is_leaf": false,
+        "parent_id": 54,
+        "samples": 14,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 9.0,
+          "class_1": 5.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": 0.23640809069501673,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": 0.23640809069501673,
+            "text_full": "measurement_8_std_error ≤ 0.23640809069501673",
+            "text_display": "meas_8_std_err ≤ 0.2364"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          56,
+          59
+        ],
+        "edges": [
+          {
+            "parent_id": 55,
+            "child_id": 56,
+            "label": "≤ 0.2364",
+            "full_label": "measurement_8_std_error ≤ 0.23640809069501673",
+            "branch": "left",
+            "samples": 11
+          },
+          {
+            "parent_id": 55,
+            "child_id": 59,
+            "label": "> 0.2364",
+            "full_label": "measurement_8_std_error > 0.23640809069501673",
+            "branch": "right",
+            "samples": 3
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.28961558061701587,
+          "gain_ratio": 0.38636261077191225
+        }
+      },
+      {
+        "node_id": 56,
+        "depth": 8,
+        "is_leaf": false,
+        "parent_id": 55,
+        "samples": 11,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 9.0,
+          "class_1": 2.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_1_worst",
+        "threshold_full": -0.47725413817793405,
+        "conditions": [
+          {
+            "feature_full": "measurement_1_worst",
+            "feature_display": "meas_1_w",
+            "op": "≤",
+            "threshold_full": -0.47725413817793405,
+            "text_full": "measurement_1_worst ≤ -0.47725413817793405",
+            "text_display": "meas_1_w ≤ -0.4773"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          57,
+          58
+        ],
+        "edges": [
+          {
+            "parent_id": 56,
+            "child_id": 57,
+            "label": "≤ -0.4773",
+            "full_label": "measurement_1_worst ≤ -0.47725413817793405",
+            "branch": "left",
+            "samples": 9
+          },
+          {
+            "parent_id": 56,
+            "child_id": 58,
+            "label": "> -0.4773",
+            "full_label": "measurement_1_worst > -0.47725413817793405",
+            "branch": "right",
+            "samples": 2
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.6840384356390417,
+          "gain_ratio": 1.0
+        }
+      },
+      {
+        "node_id": 57,
+        "depth": 9,
+        "is_leaf": true,
+        "parent_id": 56,
+        "samples": 9,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 9.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 58,
+        "depth": 9,
+        "is_leaf": true,
+        "parent_id": 56,
+        "samples": 2,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 2.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 59,
+        "depth": 8,
+        "is_leaf": true,
+        "parent_id": 55,
+        "samples": 3,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 0.0,
+          "class_1": 3.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 60,
+        "depth": 7,
+        "is_leaf": true,
+        "parent_id": 54,
+        "samples": 20,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 20.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 61,
+        "depth": 5,
+        "is_leaf": true,
+        "parent_id": 51,
+        "samples": 14,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 13.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 64,
+        "depth": 4,
+        "is_leaf": true,
+        "parent_id": 50,
+        "samples": 30,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 29.0,
+          "class_1": 1.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      },
+      {
+        "node_id": 69,
+        "depth": 3,
+        "is_leaf": true,
+        "parent_id": 49,
+        "samples": 86,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 86.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 70,
+        "depth": 2,
+        "is_leaf": false,
+        "parent_id": 48,
+        "samples": 32,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 12.0,
+          "class_1": 20.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": "simple",
+        "feature_full": "measurement_8_std_error",
+        "threshold_full": -0.7190759467848673,
+        "conditions": [
+          {
+            "feature_full": "measurement_8_std_error",
+            "feature_display": "meas_8_std_err",
+            "op": "≤",
+            "threshold_full": -0.7190759467848673,
+            "text_full": "measurement_8_std_error ≤ -0.7190759467848673",
+            "text_display": "meas_8_std_err ≤ -0.7191"
+          }
+        ],
+        "m": null,
+        "n": null,
+        "children": [
+          71,
+          72
+        ],
+        "edges": [
+          {
+            "parent_id": 70,
+            "child_id": 71,
+            "label": "≤ -0.7191",
+            "full_label": "measurement_8_std_error ≤ -0.7190759467848673",
+            "branch": "left",
+            "samples": 11
+          },
+          {
+            "parent_id": 70,
+            "child_id": 72,
+            "label": "> -0.7191",
+            "full_label": "measurement_8_std_error > -0.7190759467848673",
+            "branch": "right",
+            "samples": 21
+          }
+        ],
+        "semantic": {},
+        "metadata": {
+          "gain": 0.7236506753834688,
+          "gain_ratio": 0.7794918565734693
+        }
+      },
+      {
+        "node_id": 71,
+        "depth": 3,
+        "is_leaf": true,
+        "parent_id": 70,
+        "samples": 11,
+        "class_prediction": "class_0",
+        "class_distribution": {
+          "class_0": 11.0,
+          "class_1": 0.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PURE_NODE"
+        }
+      },
+      {
+        "node_id": 72,
+        "depth": 3,
+        "is_leaf": true,
+        "parent_id": 70,
+        "samples": 21,
+        "class_prediction": "class_1",
+        "class_distribution": {
+          "class_0": 1.0,
+          "class_1": 20.0,
+          "class_2": 0.0
+        },
+        "distribution_kind": "counts",
+        "split_type": null,
+        "feature_full": null,
+        "threshold_full": null,
+        "conditions": [],
+        "m": null,
+        "n": null,
+        "children": [],
+        "edges": [],
+        "semantic": {},
+        "metadata": {
+          "stop_reason": "STOP_PRUNED"
+        }
+      }
+    ]
+  },
+  "diagnostic": {
+    "algorithm": "C4.5-Nativo",
+    "logical_node_count": 55,
+    "model_node_count": 55,
+    "rendered_node_count": 55,
+    "hidden_node_count": 0,
+    "rendered_plus_hidden": 55,
+    "consistent": true,
+    "depth": 10,
+    "layout": "hierarchical (Reingold-Tilford, subtree contours)",
+    "preset": "large",
+    "bounding_box": [
+      -901.25,
+      0.0,
+      526.62,
+      1064.0
+    ],
+    "overlaps_detected": 0,
+    "spacing_iterations": 0,
+    "hidden_or_collapsed": 0,
+    "verdict": "ok"
+  },
+  "metadata": {
+    "algorithm": "C4.5-Nativo",
+    "seed": 42
+  }
+}

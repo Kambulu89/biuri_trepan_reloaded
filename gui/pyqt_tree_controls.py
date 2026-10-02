@@ -20,53 +20,21 @@ def build_tree_export_basename(dataset_name, model_name):
     return f"{_sanitize_filename_part(dataset_stem)}{_sanitize_filename_part(model_name)}"
 
 
-def export_tree_png(tree_model, feature_names, class_names, output_base):
-    """Exporta sklearn ou TREPAN histórico sem converter m-of-n para CART."""
-    import matplotlib.pyplot as plt
+def export_tree_png(tree_model, feature_names, class_names, output_base, fmt="png", title=None, write_json=False):
+    """Exporta a árvore COMPLETA com o mesmo renderer do ecrã (nós elípticos; m-of-n preservado).
 
-    output_path = output_base if output_base.lower().endswith('.png') else f'{output_base}.png'
-    feature_names_list = list(feature_names) if feature_names else None
-
-    if hasattr(tree_model, 'root_') and hasattr(tree_model, 'export_text'):
-        try:
-            from core.trepan_original import TrepanOriginalExtractor
-            import graphviz
-            adapter = TrepanOriginalExtractor()
-            adapter.adopt_tree(tree_model)
-            dot_path = f'{output_base}.dot'
-            adapter.export_tree_image(feature_names_list, class_names, dot_path, open_image=False)
-            dot_data = Path(dot_path).read_text(encoding='utf-8')
-            rendered = graphviz.Source(dot_data).render(
-                filename=output_base, format='png', cleanup=True
-            )
-            return os.path.abspath(rendered)
-        except (ImportError, OSError, RuntimeError):
-            # Fallback sem Graphviz: não altera a árvore; apresenta as regras nativas.
-            fig, ax = plt.subplots(figsize=(16, 10))
-            ax.axis('off')
-            ax.text(
-                0.01, 0.99, tree_model.export_text(class_names),
-                va='top', ha='left', family='monospace', fontsize=8, wrap=True,
-            )
-            fig.savefig(output_path, dpi=150, bbox_inches='tight', facecolor='white')
-            plt.close(fig)
-            return os.path.abspath(output_path)
-
-    from sklearn.tree import plot_tree
-    names = [str(c) for c in class_names] if class_names is not None else None
-    depth = tree_model.get_depth() if hasattr(tree_model, 'get_depth') else 5
-    n_leaves = tree_model.get_n_leaves() if hasattr(tree_model, 'get_n_leaves') else 10
-    fig, ax = plt.subplots(figsize=(max(12, n_leaves * 1.5), max(8, depth * 2)))
-    try:
-        plot_tree(
-            tree_model, feature_names=feature_names_list, class_names=names,
-            filled=True, rounded=True, ax=ax, fontsize=9,
-        )
-        fig.tight_layout()
-        fig.savefig(output_path, dpi=150, bbox_inches='tight', facecolor='white')
-    finally:
-        plt.close(fig)
-    return os.path.abspath(output_path)
+    Formatos: png (alta resolução), svg e pdf (vectoriais). Não usa caixas rectangulares nem
+    converte m-of-n para CART. Devolve o caminho do ficheiro."""
+    from gui.tree_viz.model import build_visualization_model
+    from gui.tree_viz.render import export_tree
+    base = str(output_base)
+    for ext in (".png", ".svg", ".pdf", ".json"):
+        if base.lower().endswith(ext):
+            base = base[: -len(ext)]
+    names = list(feature_names) if feature_names else []
+    model = build_visualization_model(tree_model, names, list(class_names or []))
+    info = export_tree(model, f"{base}.{fmt}", fmt=fmt, title=title, write_json=write_json)
+    return os.path.abspath(info["path"])
 
 
 # Alias preservado para plugins/testes antigos.
@@ -85,219 +53,178 @@ class TreeControlsWidget(QWidget):
         self.setup_ui()
         
     def setup_ui(self):
-        
+        from gui.tree_viz.strings import tr
+        w = self.tree_widget
         layout = QVBoxLayout()
-        layout.setSpacing(10)
-        
-        # Título
+        layout.setSpacing(8)
+
         title = QLabel("🎛️ Controles del Árbol")
-        title.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(title)
-        
-        # Controles de zoom
-        zoom_group = QGroupBox("Zoom y Navegación")
-        zoom_layout = QHBoxLayout()
-        
-        zoom_out_btn = QPushButton("🔍-")
-        zoom_out_btn.setToolTip("Disminuir zoom")
-        zoom_out_btn.clicked.connect(self.tree_widget.zoom_out)
-        
-        zoom_label = QLabel("Zoom")
-        zoom_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        
-        zoom_in_btn = QPushButton("🔍+")
-        zoom_in_btn.setToolTip("Aumentar zoom")
-        zoom_in_btn.clicked.connect(self.tree_widget.zoom_in)
-        
-        reset_zoom_btn = QPushButton("🔄 Ajustar a la Pantalla")
-        reset_zoom_btn.setToolTip("Ajustar zoom para mostrar todo el árbol")
-        reset_zoom_btn.clicked.connect(self.tree_widget.reset_zoom)
-        
-        center_btn = QPushButton("🎯 Centrar")
-        center_btn.setToolTip("Centrar el árbol")
-        center_btn.clicked.connect(self.tree_widget.center_tree)
-        
-        zoom_layout.addWidget(zoom_out_btn)
-        zoom_layout.addWidget(zoom_label)
-        zoom_layout.addWidget(zoom_in_btn)
-        zoom_layout.addWidget(reset_zoom_btn)
-        zoom_layout.addWidget(center_btn)
-        
-        zoom_group.setLayout(zoom_layout)
-        layout.addWidget(zoom_group)
-        
-        # Controles de filtros
-        filters_group = QGroupBox("Filtros de Visualización")
-        filters_layout = QVBoxLayout()
-        
-        # Checkbox para incerteza
-        uncertainty_layout = QHBoxLayout()
-        self.uncertainty_check = QCheckBox("Mostrar Incertidumbre")
-        self.uncertainty_check.setChecked(True)
-        self.uncertainty_check.toggled.connect(self.tree_widget.toggle_uncertainty_display)
-        uncertainty_layout.addWidget(self.uncertainty_check)
-        uncertainty_layout.addStretch()
-        filters_layout.addLayout(uncertainty_layout)
-        
-        # Botão para filtros avançados
-        advanced_btn = QPushButton("⚙️ Filtros Avanzados")
-        advanced_btn.clicked.connect(self._show_complexity_dialog)
-        filters_layout.addWidget(advanced_btn)
-        
-        filters_group.setLayout(filters_layout)
-        layout.addWidget(filters_group)
-        
-        # Controles de navegação
-        navigation_group = QGroupBox("Navegación")
-        navigation_layout = QHBoxLayout()
-        
-        highlight_path_btn = QPushButton("🛤️ Resaltar Camino")
-        highlight_path_btn.setToolTip("Resaltar caminos importantes")
-        highlight_path_btn.clicked.connect(self._highlight_important_paths)
-        
-        export_btn = QPushButton("💾 Exportar")
-        export_btn.setToolTip("Exportar árbol actual")
-        export_btn.clicked.connect(self._export_tree)
-        
-        navigation_layout.addWidget(highlight_path_btn)
-        navigation_layout.addWidget(export_btn)
-        
-        navigation_group.setLayout(navigation_layout)
-        layout.addWidget(navigation_group)
-        
-        # Espaçador
-        layout.addStretch()
-        
-        self.setLayout(layout)
-        
-    def _show_complexity_dialog(self):
-        
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Filtros de Complejidad")
-        dialog.setModal(True)
-        dialog.setMinimumSize(320, 240); dialog.resize(400, 300)
-        
-        layout = QVBoxLayout()
-        
-        # Título
-        title = QLabel("Filtros de Complejidad")
         title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
-        
-        # Formulário
-        form_layout = QFormLayout()
-        
-        # Slider para mínimo de amostras
+        self.selected_tree_label = QLabel(f"{tr('selected_tree')}: {self.model_name_getter()}")
+        self.selected_tree_label.setStyleSheet("font-weight: bold;")
+        self.selected_tree_label.setWordWrap(True)
+        layout.addWidget(self.selected_tree_label)
+
+        zoom_group = QGroupBox("Zoom y Navegación")
+        zl = QVBoxLayout()
+        row = QHBoxLayout()
+        for text, tip, slot in (("🔍-", "Disminuir zoom", w.zoom_out), ("🔍+", "Aumentar zoom", w.zoom_in)):
+            b = QPushButton(text); b.setToolTip(tip); b.clicked.connect(slot); row.addWidget(b)
+        zl.addLayout(row)
+        row2 = QHBoxLayout()
+        for text, tip, slot in (
+            ("🔄 Ajustar", "Ajustar la vista a toda el árbol (fit to view)", w.reset_zoom),
+            ("↺ Reset", "Restaurar zoom, desplazamiento y selección (sin reconstruir el árbol)", w.reset_view),
+        ):
+            b = QPushButton(text); b.setToolTip(tip); b.clicked.connect(slot); row2.addWidget(b)
+        zl.addLayout(row2)
+        row3 = QHBoxLayout()
+        for text, tip, slot in (
+            ("🎯 Raíz", "Centrar la raíz", w.center_root),
+            ("📍 Nodo", "Centrar el nodo seleccionado", w.center_selected),
+        ):
+            b = QPushButton(text); b.setToolTip(tip); b.clicked.connect(slot); row3.addWidget(b)
+        zl.addLayout(row3)
+        zoom_group.setLayout(zl)
+        layout.addWidget(zoom_group)
+
+        filters_group = QGroupBox("Filtros de Visualización")
+        fl = QVBoxLayout()
+        self.uncertainty_check = QCheckBox("Mostrar Incertidumbre")
+        self.uncertainty_check.setToolTip(tr("uncertainty_def"))
+        self.uncertainty_check.setChecked(w.show_uncertainty)
+        self.uncertainty_check.toggled.connect(lambda on: w.show_uncertainty != on and w.toggle_uncertainty_display())
+        fl.addWidget(self.uncertainty_check)
+        self.scientific_check = QCheckBox("Vista científica (IDs, muestras)")
+        self.scientific_check.toggled.connect(lambda on: (w.set_scientific_view(on), w.set_show_node_ids(on)))
+        fl.addWidget(self.scientific_check)
+        advanced_btn = QPushButton("⚙️ Filtros Avanzados")
+        advanced_btn.setToolTip("Solo visual: oculta/colapsa nodos; no poda el árbol")
+        advanced_btn.clicked.connect(self._show_complexity_dialog)
+        fl.addWidget(advanced_btn)
+        filters_group.setLayout(fl)
+        layout.addWidget(filters_group)
+
+        nav_group = QGroupBox("Navegación")
+        nl = QVBoxLayout()
+        row4 = QHBoxLayout()
+        hp = QPushButton("🛤️ Resaltar Camino"); hp.setCheckable(True); hp.setChecked(True)
+        hp.setToolTip("Resalta el camino raíz → nodo seleccionado"); hp.toggled.connect(lambda _: w.toggle_highlight_path())
+        col = QPushButton("➕/➖ Colapsar"); col.setToolTip("Colapsar/expandir el subárbol seleccionado (solo visual; doble clic también)")
+        col.clicked.connect(lambda: w.toggle_collapse())
+        ex = QPushButton("Expandir todo"); ex.clicked.connect(w.expand_all)
+        row4.addWidget(hp); row4.addWidget(col); row4.addWidget(ex)
+        nl.addLayout(row4)
+        from PyQt6.QtWidgets import QLineEdit
+        self.search_edit = QLineEdit(); self.search_edit.setPlaceholderText(tr("search"))
+        self.search_edit.returnPressed.connect(self._search)
+        nl.addWidget(self.search_edit)
+        self.search_result = QLabel(""); self.search_result.setWordWrap(True)
+        nl.addWidget(self.search_result)
+        export_btn = QPushButton("💾 Exportar")
+        export_btn.setToolTip("Exportar el árbol completo: PNG (alta resolución), SVG, PDF y JSON")
+        export_btn.clicked.connect(self._export_tree)
+        nl.addWidget(export_btn)
+        nav_group.setLayout(nl)
+        layout.addWidget(nav_group)
+        layout.addStretch()
+        self.setLayout(layout)
+        self._search_hits = []
+        self._search_idx = 0
+
+    def set_model_name(self, name):
+        from gui.tree_viz.strings import tr
+        self.selected_tree_label.setText(f"{tr('selected_tree')}: {name}")
+
+    def _search(self):
+        from gui.tree_viz.strings import tr
+        text = self.search_edit.text()
+        if text != getattr(self, "_search_text", None):
+            self._search_text = text
+            self._search_hits = self.tree_widget.search(text)
+            self._search_idx = 0
+        else:
+            self._search_idx += 1
+        if not self._search_hits:
+            self.search_result.setText(tr("no_results"))
+            return
+        self._search_idx %= len(self._search_hits)
+        nid = self._search_hits[self._search_idx]
+        self.search_result.setText(f"{self._search_idx + 1}/{len(self._search_hits)}: " + ", ".join(f"N{i}" for i in self._search_hits[:12]))
+        self.tree_widget.select_node(nid, center=True)
+
+    def _show_complexity_dialog(self):
+        """Filtros SÓ VISUAIS: esconde/colapsa (indicando '+N nós'); nunca poda a árvore."""
+        w = self.tree_widget
+        max_depth = w.model.depth if w.model is not None else 10
+        max_samples = max([n.samples or 0 for n in w.model.nodes.values()] + [1]) if w.model is not None else 100
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Filtros de Complejidad (solo visuales)")
+        dialog.setModal(True)
+        dialog.resize(420, 260)
+        layout = QVBoxLayout()
+        note = QLabel("Estos filtros solo cambian la visualización. No podan ni modifican el árbol.")
+        note.setWordWrap(True)
+        layout.addWidget(note)
+        form = QFormLayout()
         self.samples_slider = QSlider(Qt.Orientation.Horizontal)
-        self.samples_slider.setMinimum(1)
-        self.samples_slider.setMaximum(100)
-        self.samples_slider.setValue(10)
+        self.samples_slider.setRange(0, max_samples)
+        self.samples_slider.setValue(int(w.min_samples_threshold or 0))
+        self.samples_label = QLabel(str(self.samples_slider.value()))
         self.samples_slider.valueChanged.connect(self._on_samples_change)
-        
-        self.samples_label = QLabel("10")
-        self.samples_label.setMinimumWidth(30)
-        
-        samples_layout = QHBoxLayout()
-        samples_layout.addWidget(self.samples_slider)
-        samples_layout.addWidget(self.samples_label)
-        
-        form_layout.addRow("Mín. Muestras:", samples_layout)
-        
-        # Slider para profundidade máxima
+        sl = QHBoxLayout(); sl.addWidget(self.samples_slider); sl.addWidget(self.samples_label)
+        form.addRow("Colapsar nodos con menos muestras que (0 = sin filtro):", sl)
         self.depth_slider = QSlider(Qt.Orientation.Horizontal)
-        self.depth_slider.setMinimum(1)
-        self.depth_slider.setMaximum(10)
-        self.depth_slider.setValue(5)
+        self.depth_slider.setRange(0, max_depth)
+        self.depth_slider.setValue(max_depth if w.max_depth_display is None else int(w.max_depth_display))
+        self.depth_label = QLabel(str(self.depth_slider.value()))
         self.depth_slider.valueChanged.connect(self._on_depth_change)
-        
-        self.depth_label = QLabel("5")
-        self.depth_label.setMinimumWidth(30)
-        
-        depth_layout = QHBoxLayout()
-        depth_layout.addWidget(self.depth_slider)
-        depth_layout.addWidget(self.depth_label)
-        
-        form_layout.addRow("Profundidad Máx:", depth_layout)
-        
-        layout.addLayout(form_layout)
-        
-        # Botões
-        buttons = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
-        )
-        buttons.accepted.connect(lambda: self._apply_filters(dialog))
+        dl = QHBoxLayout(); dl.addWidget(self.depth_slider); dl.addWidget(self.depth_label)
+        form.addRow("Mostrar hasta profundidad:", dl)
+        layout.addLayout(form)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+                                   | QDialogButtonBox.StandardButton.Reset)
+        buttons.accepted.connect(lambda: self._apply_filters(dialog, max_depth))
         buttons.rejected.connect(dialog.reject)
-        
+        buttons.button(QDialogButtonBox.StandardButton.Reset).clicked.connect(lambda: (w.clear_filters(), dialog.reject()))
         layout.addWidget(buttons)
-        
         dialog.setLayout(layout)
         dialog.exec()
-    
+
     def _on_samples_change(self, value):
-        
         self.samples_label.setText(str(value))
-    
+
     def _on_depth_change(self, value):
-        
         self.depth_label.setText(str(value))
-    
-    def _apply_filters(self, dialog):
-        
+
+    def _apply_filters(self, dialog, tree_depth=None):
         min_samples = self.samples_slider.value()
-        max_depth = self.depth_slider.value()
-        
-        self.tree_widget.set_complexity_filter(min_samples, max_depth)
+        depth = self.depth_slider.value()
+        self.tree_widget.set_complexity_filter(min_samples or None, None if (tree_depth is not None and depth >= tree_depth) else depth)
         dialog.accept()
-    
-    def _highlight_important_paths(self):
-        
-        # Implementação simplificada - em uma versão completa,
-        # isso destacaria caminhos com alta importância ou baixa incerteza
-        from PyQt6.QtWidgets import QMessageBox
-        QMessageBox.information(self, "Resaltar Caminos", 
-                               "La funcionalidad de resaltar caminos se implementará próximamente.")
-    
+
     def _export_tree(self):
         tree_model = self.tree_widget.tree_model
-        if tree_model is None:
+        if tree_model is None or self.tree_widget.model is None:
             QMessageBox.warning(self, "Exportar Árbol", "Ningún árbol disponible para exportar.")
             return
-
-        default_basename = build_tree_export_basename(
-            self.dataset_name, self.model_name_getter()
-        )
-        default_path = f"{default_basename}.png"
-
-        file_path, _ = QFileDialog.getSaveFileName(
-            self,
-            "Exportar Árbol",
-            default_path,
-            "Imágenes PNG (*.png);;Todos los archivos (*.*)",
+        default_basename = build_tree_export_basename(self.dataset_name, self.model_name_getter())
+        file_path, selected = QFileDialog.getSaveFileName(
+            self, "Exportar Árbol", f"{default_basename}.png",
+            "PNG alta resolución (*.png);;SVG vectorial (*.svg);;PDF vectorial (*.pdf)",
         )
         if not file_path:
             return
-
-        output_base = file_path
-        if output_base.lower().endswith(".png"):
-            output_base = output_base[:-4]
-
+        fmt = "svg" if "svg" in selected.lower() else "pdf" if "pdf" in selected.lower() else "png"
+        lowered = file_path.lower()
+        for ext in ("png", "svg", "pdf"):
+            if lowered.endswith("." + ext):
+                fmt = ext
         try:
-            saved_path = export_tree_png(
-                tree_model,
-                self.tree_widget.feature_names,
-                self.tree_widget.class_names,
-                output_base,
-            )
-            QMessageBox.information(
-                self,
-                "Exportar Árbol",
-                f"Árbol exportado con éxito!\n\n📁 {saved_path}",
-            )
+            info = self.tree_widget.export(file_path, fmt=fmt, title=str(self.model_name_getter()), write_json=True)
+            QMessageBox.information(self, "Exportar Árbol",
+                                    f"Árbol exportado con éxito!\n\n📁 {info['path']}\n🧾 {info.get('json', '')}")
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Error al exportar árbol:\n{str(e)}",
-            )
+            QMessageBox.critical(self, "Error", f"Error al exportar árbol:\n{str(e)}")

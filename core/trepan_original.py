@@ -1210,7 +1210,7 @@ class TrepanOriginalExtractor:
         tree = self.explainer_tree
         names = list(feature_names or tree.feature_names_in_)
         labels = list(class_names or [])
-        lines = ['digraph TrepanOriginal {', '  rankdir=TB;', '  node [shape=box, style=rounded];']
+        lines = ['digraph TrepanOriginal {', '  rankdir=TB;', '  node [shape=ellipse];']
         counter = itertools.count()
 
         def walk(node):
