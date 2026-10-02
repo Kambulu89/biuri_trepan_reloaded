@@ -36,11 +36,17 @@ class OntologyProcessor:
         *,
         quality_gate: Optional[OntologyQualityGate] = None,
         allow_train_calibrated_bounds: bool = False,
+        drop_linear_redundant: bool = False,
+        linear_redundancy_threshold: float = 0.999,
     ):
         self.ontology = ontology
         self.matcher = matcher
         self.quality_gate = quality_gate or OntologyQualityGate()
         self.allow_train_calibrated_bounds = bool(allow_train_calibrated_bounds)
+        # Por omissão a redundância linear só é auditada; descartar é opt-in porque
+        # os agregados de grupo são, por construção, combinações lineares.
+        self.drop_linear_redundant = bool(drop_linear_redundant)
+        self.linear_redundancy_threshold = float(linear_redundancy_threshold)
         self.is_fitted_ = False
         self.input_features_: List[str] = []
         self.output_features_: List[str] = []
@@ -122,6 +128,13 @@ class OntologyProcessor:
             "feature_audit": list(self.feature_audit_),
             "total_training_features": transformed.shape[1],
             "dropped_duplicate_or_constant": len(candidates) - len(self.feature_specs_),
+            "linear_redundancy_threshold": self.linear_redundancy_threshold,
+            "linear_redundant_features": [
+                row["feature"] for row in self.feature_audit_
+                if row.get("accepted")
+                and row.get("linear_redundancy_r2") is not None
+                and row["linear_redundancy_r2"] >= self.linear_redundancy_threshold
+            ],
         }
         if log:
             self.log_feature_engineering_summary(self.last_engineering_stats)
@@ -716,6 +729,7 @@ class OntologyProcessor:
                 "constant_rate": None,
                 "effect_on_metrics": None,
                 "fold_stability": None,
+                "linear_redundancy_r2": None,
             }
             if spec["name"] in names:
                 audit_row["rejection_reason"] = "name_collision"
@@ -754,6 +768,16 @@ class OntologyProcessor:
                 except Exception:
                     pass
             if not duplicate:
+                r2 = self._linear_redundancy(train, spec, series)
+                audit_row["linear_redundancy_r2"] = r2
+                if (
+                    self.drop_linear_redundant
+                    and r2 is not None
+                    and r2 >= self.linear_redundancy_threshold
+                ):
+                    audit_row["rejection_reason"] = "linear_combination_of_sources"
+                    self.feature_audit_.append(audit_row)
+                    continue
                 accepted.append(dict(spec))
                 existing.append(series)
                 existing_names.append(spec["name"])
@@ -765,6 +789,39 @@ class OntologyProcessor:
                 audit_row["duplicate_of"] = duplicate_of
             self.feature_audit_.append(audit_row)
         return accepted
+
+    def _linear_redundancy(
+        self, train: pd.DataFrame, spec: Dict[str, Any], series: pd.Series
+    ) -> Optional[float]:
+        """R² da feature derivada contra as suas fontes (regressão linear com intercepto).
+
+        Só faz sentido para agregados e relações numéricas; restrições e grupos
+        categóricos são não lineares por natureza e devolvem ``None``. Usa apenas
+        o treino. R² ≈ 1 significa que a feature não traz informação nova a um
+        modelo linear.
+        """
+        if spec.get("kind") not in {"hierarchical_aggregate", "relational"}:
+            return None
+        sources = [str(c) for c in (spec.get("sources") or []) if c in train.columns]
+        if not sources:
+            return None
+        try:
+            design = train[sources].apply(pd.to_numeric, errors="raise").to_numpy(dtype=float)
+            target = pd.to_numeric(pd.Series(series).reset_index(drop=True), errors="raise").to_numpy(dtype=float)
+        except (TypeError, ValueError):
+            return None
+        keep = np.isfinite(design).all(axis=1) & np.isfinite(target)
+        if keep.sum() <= len(sources) + 1:
+            return None
+        design, target = design[keep], target[keep]
+        total = float(((target - target.mean()) ** 2).sum())
+        if total <= 0.0:
+            return None
+        coef, *_ = np.linalg.lstsq(
+            np.column_stack([np.ones(len(design)), design]), target, rcond=None
+        )
+        residual = target - np.column_stack([np.ones(len(design)), design]) @ coef
+        return float(max(0.0, 1.0 - float((residual ** 2).sum()) / total))
 
     def _apply_spec(self, frame: pd.DataFrame, spec: Dict[str, Any]) -> pd.Series:
         kind = spec["kind"]
