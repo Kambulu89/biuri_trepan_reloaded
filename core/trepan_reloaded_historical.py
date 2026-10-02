@@ -361,6 +361,10 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             'oracle_query_count_', 'node_audit_', 'split_audit_', 'expansion_order_',
             'local_model_count_', 'node_count_', 'best_first_', 'm_of_n_',
             'oracle_', 'oracle_attached_',
+            'expansion_log_', 'pruning_audit_', 'pruning_summary_', 'tree_raw_root_', 'nodes_raw_',
+            'nodes_created_', 'nodes_expanded_', 'candidate_totals_', 'budget_starved_nodes_',
+            'query_budget_exhausted_', 'max_nodes_reached_', 'oracle_info_', 'training_time_',
+            'query_time_', 'split_search_time_', 'm_of_n_search_time_', 'pruning_time_',
         ):
             if hasattr(original, name):
                 setattr(self, name, getattr(original, name))

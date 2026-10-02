@@ -1,0 +1,747 @@
+{
+  "dataset": "sklearn breast_cancer (smoke)",
+  "seed": 42,
+  "protocol": {
+    "min_sample": 1000,
+    "max_nodes": 31,
+    "max_depth": 8,
+    "max_n": 3,
+    "beam_width": 2,
+    "random_state": 42
+  },
+  "oracle_accuracy_test": 0.9707602339181286,
+  "runs": {
+    "C4.5": {
+      "ALGORITHM": "C4.5",
+      "implementation": "C45Classifier",
+      "split_criterion": "gain_ratio",
+      "training_target": "real labels (y_train)",
+      "uses_oracle": false,
+      "uses_membership_queries": false,
+      "STRUCTURE": {
+        "nodes_raw": 29,
+        "nodes_final": 17,
+        "leaves": 9,
+        "depth": 6
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 29,
+        "nodes_after_pruning": 17,
+        "pruned_nodes": 12,
+        "pruned_subtrees": 4,
+        "uses_test_data": false
+      },
+      "pruning_audit": [
+        {
+          "node_id": 10,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.487566686842552,
+          "estimated_error_subtree": 3.1194283519625294,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 8,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.576388303217111,
+          "estimated_error_subtree": 3.869206901603233,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 6,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 3.8045355968747607,
+          "estimated_error_subtree": 4.620698641874894,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 5,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 6.151483230995405,
+          "estimated_error_subtree": 7.107031791918527,
+          "uses_test_data": false
+        }
+      ],
+      "STOP_REASONS": {
+        "STOP_PRUNED": 1,
+        "STOP_PURE_NODE": 8
+      },
+      "COMPLEXITY": {
+        "node_count": 17,
+        "leaf_count": 9,
+        "internal_node_count": 8,
+        "depth": 6,
+        "average_leaf_depth": 4.0,
+        "average_rule_length": 4.0,
+        "m_of_n_count": 0,
+        "mean_mofn_n": 0.0,
+        "mean_mofn_m": 0.0,
+        "features_used": [
+          1,
+          20,
+          21,
+          22,
+          27
+        ],
+        "n_features_used": 5
+      },
+      "METRICS": {
+        "accuracy_real": 0.935672514619883,
+        "agreement_with_oracle_informative": 0.9415204678362573,
+        "agreement_target": "MLP Original"
+      },
+      "TIME": {
+        "training_time": 0.40797036899994055
+      }
+    },
+    "TREPAN Original": {
+      "ALGORITHM": "TREPAN Original",
+      "oracle": {
+        "oracle_name": "MLP Original",
+        "oracle_type": "MLPClassifier",
+        "oracle_accuracy": 0.9707602339181286,
+        "oracle_feature_space": 30,
+        "uses_real_labels_for_training": false
+      },
+      "STRUCTURE": {
+        "nodes_raw": 3,
+        "nodes_final": 3,
+        "leaves": 2,
+        "depth": 1,
+        "nodes_created": 3,
+        "nodes_expanded": 1,
+        "configured_max_depth": 8,
+        "achieved_depth": 1,
+        "max_nodes": 31
+      },
+      "CONSTRUCTION": {
+        "query_budget_initial": 10000,
+        "query_budget_used": 2204,
+        "query_budget_remaining": 7796,
+        "query_budget_exhausted": false,
+        "budget_starved_nodes": [],
+        "effective_min_sample": 1000,
+        "best_first_verified": true,
+        "simple_candidates_generated": 540,
+        "simple_candidates_evaluated": 540,
+        "m_of_n_candidates_generated": 36,
+        "m_of_n_candidates_evaluated": 36,
+        "semantic_candidates": 0,
+        "simple_split_wins": 0,
+        "m_of_n_split_wins": 1,
+        "m_of_n_final_tree_count": 1,
+        "min_gain": 0.0
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 3,
+        "nodes_after_pruning": 3,
+        "depth_before": 1,
+        "depth_after": 1,
+        "pruned_nodes": 0,
+        "pruned_subtrees": 0,
+        "fidelity_train_before": 0.957286432160804,
+        "fidelity_train_after": 0.957286432160804,
+        "uses_test_data": false
+      },
+      "pruning_audit": [],
+      "STOP_REASONS": {
+        "STOP_PURE_NODE": 2
+      },
+      "COMPLEXITY": {
+        "node_count": 3,
+        "leaf_count": 2,
+        "internal_node_count": 1,
+        "depth": 1,
+        "average_leaf_depth": 1.0,
+        "average_rule_length": 1.0,
+        "m_of_n_count": 1,
+        "mean_mofn_n": 2.0,
+        "mean_mofn_m": 2.0,
+        "features_used": [
+          22,
+          27
+        ],
+        "n_features_used": 2
+      },
+      "TIME": {
+        "training_time": 0.1715717729998687,
+        "query_time": 0.035575498999833144,
+        "split_search_time": 0.07595675700008542,
+        "m_of_n_search_time": 0.07595675700008542,
+        "pruning_time": 3.921999905287521e-06
+      },
+      "REPRODUCIBILITY": {
+        "random_seed": 42,
+        "dataset_hash": null,
+        "ontology_hash": null,
+        "parameters": {
+          "beam_width": 2,
+          "local_model_alpha": 0.1,
+          "max_depth": 8,
+          "max_features_per_node": 12,
+          "max_n": 3,
+          "max_nodes": 31,
+          "max_queries": 10000,
+          "min_gain": 0.0,
+          "min_sample": 1000,
+          "min_samples_leaf": 4,
+          "mofn_alpha": 0.05,
+          "purity_alpha": 0.05,
+          "purity_epsilon": 0.05,
+          "random_state": 42
+        }
+      },
+      "expansion_log": [
+        {
+          "selected_order": 1,
+          "candidate_node_id": 0,
+          "priority_score": 0.364321608040201,
+          "queue_max_priority_other": 0.364321608040201,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 0,
+          "reach": 1.0,
+          "estimated_error": 0.364321608040201,
+          "priority_components": {
+            "node_probability_mass": 1.0,
+            "estimated_error": 0.364321608040201
+          },
+          "samples": 398,
+          "impurity": 0.946212076699865,
+          "potential_fidelity_gain": 0.364321608040201
+        },
+        {
+          "selected_order": 2,
+          "candidate_node_id": 1,
+          "priority_score": 0.030698630136986312,
+          "queue_max_priority_other": 0.015936507936507936,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 1,
+          "reach": 0.498,
+          "estimated_error": 0.06164383561643838,
+          "priority_components": {
+            "node_probability_mass": 0.498,
+            "estimated_error": 0.06164383561643838
+          },
+          "samples": 146,
+          "impurity": 0.33393606313636676,
+          "potential_fidelity_gain": 0.030698630136986312
+        },
+        {
+          "selected_order": 3,
+          "candidate_node_id": 2,
+          "priority_score": 0.015936507936507936,
+          "queue_max_priority_other": 0.015936507936507936,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 1,
+          "reach": 0.502,
+          "estimated_error": 0.031746031746031744,
+          "priority_components": {
+            "node_probability_mass": 0.502,
+            "estimated_error": 0.031746031746031744
+          },
+          "samples": 252,
+          "impurity": 0.20307392998664564,
+          "potential_fidelity_gain": 0.015936507936507936
+        }
+      ],
+      "node_log": [
+        {
+          "node_id": 0,
+          "depth": 0,
+          "is_leaf": false,
+          "prediction": 1,
+          "reach": 1.0,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.364321608040201,
+          "queries_requested": 602,
+          "queries_generated": 602,
+          "queries_valid": 602,
+          "queries_rejected": 0,
+          "queries_used": 602,
+          "query_budget_remaining_before": 10000,
+          "budget_truncated": false,
+          "candidates_drawn": 3612,
+          "queries_violating_path": 0,
+          "real_samples": 398,
+          "synthetic_samples": 602,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.386,
+            "1": 0.614
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 36,
+            "mofn_evaluated": 36,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-2(worst concave points <= 0.437494; worst perimeter <= 0.307287)"
+        },
+        {
+          "node_id": 1,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.498,
+          "stop_reason": "STOP_PURE_NODE",
+          "stop_detail": {
+            "kind": "wilson_lower_bound",
+            "purity_epsilon": 0.05,
+            "majority_fraction": 0.986
+          },
+          "priority_at_push": 0.030698630136986312,
+          "queries_requested": 854,
+          "queries_generated": 854,
+          "queries_valid": 854,
+          "queries_rejected": 184,
+          "queries_used": 854,
+          "query_budget_remaining_before": 9398,
+          "budget_truncated": false,
+          "candidates_drawn": 5124,
+          "queries_violating_path": 0,
+          "real_samples": 146,
+          "synthetic_samples": 854,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.986,
+            "1": 0.014
+          }
+        },
+        {
+          "node_id": 2,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.502,
+          "stop_reason": "STOP_PURE_NODE",
+          "stop_detail": {
+            "kind": "wilson_lower_bound",
+            "purity_epsilon": 0.05,
+            "majority_fraction": 0.986
+          },
+          "priority_at_push": 0.015936507936507936,
+          "queries_requested": 748,
+          "queries_generated": 748,
+          "queries_valid": 748,
+          "queries_rejected": 118,
+          "queries_used": 748,
+          "query_budget_remaining_before": 8544,
+          "budget_truncated": false,
+          "candidates_drawn": 4488,
+          "queries_violating_path": 0,
+          "real_samples": 252,
+          "synthetic_samples": 748,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.014,
+            "1": 0.986
+          }
+        }
+      ],
+      "STUMP": {
+        "alert": "TREE_STUMP_DIAGNOSTIC",
+        "node_count": 3,
+        "depth": 1,
+        "query_budget_exhausted": false,
+        "max_depth_reached": false,
+        "max_nodes_reached": false,
+        "min_samples": false,
+        "no_valid_split": false,
+        "min_gain": false,
+        "pure_children": true,
+        "pruning_collapsed_tree": false,
+        "error": false,
+        "leaf_stop_reasons": {
+          "1": {
+            "stop_reason": "STOP_PURE_NODE",
+            "detail": {
+              "kind": "wilson_lower_bound",
+              "purity_epsilon": 0.05,
+              "majority_fraction": 0.986
+            }
+          },
+          "2": {
+            "stop_reason": "STOP_PURE_NODE",
+            "detail": {
+              "kind": "wilson_lower_bound",
+              "purity_epsilon": 0.05,
+              "majority_fraction": 0.986
+            }
+          }
+        },
+        "legitimate_by_construction": true
+      },
+      "METRICS": {
+        "fidelity": 0.9239766081871345,
+        "fidelity_target": "MLP Original",
+        "accuracy_real": 0.9298245614035088
+      }
+    },
+    "TREPAN Reloaded (semantics OFF, same oracle)": {
+      "ALGORITHM": "TREPAN Reloaded (semantics OFF, same oracle)",
+      "oracle": {
+        "oracle_name": "MLP Original",
+        "oracle_type": "MLPClassifier",
+        "oracle_accuracy": 0.9707602339181286,
+        "oracle_feature_space": 30,
+        "uses_real_labels_for_training": false
+      },
+      "STRUCTURE": {
+        "nodes_raw": 3,
+        "nodes_final": 3,
+        "leaves": 2,
+        "depth": 1,
+        "nodes_created": 3,
+        "nodes_expanded": 1,
+        "configured_max_depth": 8,
+        "achieved_depth": 1,
+        "max_nodes": 31
+      },
+      "CONSTRUCTION": {
+        "query_budget_initial": 10000,
+        "query_budget_used": 2204,
+        "query_budget_remaining": 7796,
+        "query_budget_exhausted": false,
+        "budget_starved_nodes": [],
+        "effective_min_sample": 1000,
+        "best_first_verified": true,
+        "simple_candidates_generated": 540,
+        "simple_candidates_evaluated": 540,
+        "m_of_n_candidates_generated": 36,
+        "m_of_n_candidates_evaluated": 36,
+        "semantic_candidates": 0,
+        "simple_split_wins": 0,
+        "m_of_n_split_wins": 1,
+        "m_of_n_final_tree_count": 1,
+        "min_gain": 0.0
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 3,
+        "nodes_after_pruning": 3,
+        "depth_before": 1,
+        "depth_after": 1,
+        "pruned_nodes": 0,
+        "pruned_subtrees": 0,
+        "fidelity_train_before": 0.957286432160804,
+        "fidelity_train_after": 0.957286432160804,
+        "uses_test_data": false
+      },
+      "pruning_audit": [],
+      "STOP_REASONS": {
+        "STOP_PURE_NODE": 2
+      },
+      "COMPLEXITY": {
+        "node_count": 3,
+        "leaf_count": 2,
+        "internal_node_count": 1,
+        "depth": 1,
+        "average_leaf_depth": 1.0,
+        "average_rule_length": 1.0,
+        "m_of_n_count": 1,
+        "mean_mofn_n": 2.0,
+        "mean_mofn_m": 2.0,
+        "features_used": [
+          22,
+          27
+        ],
+        "n_features_used": 2
+      },
+      "TIME": {
+        "training_time": 0.2624367369999163,
+        "query_time": 0.05958534699993834,
+        "split_search_time": 0.10904600000003484,
+        "m_of_n_search_time": 0.10904600000003484,
+        "pruning_time": 7.3880000854842365e-06
+      },
+      "REPRODUCIBILITY": {
+        "random_seed": 42,
+        "dataset_hash": null,
+        "ontology_hash": null,
+        "parameters": {
+          "alpha": 0.0,
+          "beam_width": 2,
+          "beta": 0.0,
+          "error_focus_anchor_k": 24,
+          "error_focus_fidelity_tolerance": 0.015,
+          "error_focus_min_disagreement": 0.05,
+          "error_focus_min_local_fidelity_gain": 0.002,
+          "error_focus_min_real_fidelity_gain": 0.0,
+          "error_focus_min_regions": 1,
+          "error_focus_semantic_weight": 0.5,
+          "error_focus_strength": 1.0,
+          "error_focus_top_k": 3,
+          "error_focus_uncertainty_weight": 0.35,
+          "error_focused_refinement": true,
+          "gain_criterion": "normalized_information_gain",
+          "local_model_alpha": 0.1,
+          "max_depth": 8,
+          "max_features_per_node": 12,
+          "max_n": 3,
+          "max_nodes": 31,
+          "max_queries": 10000,
+          "min_sample": 1000,
+          "min_samples_leaf": 4,
+          "mirror_when_no_semantic_effect": true,
+          "mofn_alpha": 0.05,
+          "purity_alpha": 0.05,
+          "purity_epsilon": 0.05,
+          "random_state": 42,
+          "semantic_active_pool_multiplier": 4,
+          "semantic_active_query_fraction": 0.65,
+          "semantic_candidate_budget": 24,
+          "semantic_gain_strength": 1.0,
+          "semantic_group_strength": 0.15,
+          "semantic_query_projection": true,
+          "semantic_relation_threshold": 0.35
+        }
+      },
+      "expansion_log": [
+        {
+          "selected_order": 1,
+          "candidate_node_id": 0,
+          "priority_score": 0.364321608040201,
+          "queue_max_priority_other": 0.364321608040201,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 0,
+          "reach": 1.0,
+          "estimated_error": 0.364321608040201,
+          "priority_components": {
+            "node_probability_mass": 1.0,
+            "estimated_error": 0.364321608040201
+          },
+          "samples": 398,
+          "impurity": 0.946212076699865,
+          "potential_fidelity_gain": 0.364321608040201
+        },
+        {
+          "selected_order": 2,
+          "candidate_node_id": 1,
+          "priority_score": 0.030698630136986312,
+          "queue_max_priority_other": 0.015936507936507936,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 1,
+          "reach": 0.498,
+          "estimated_error": 0.06164383561643838,
+          "priority_components": {
+            "node_probability_mass": 0.498,
+            "estimated_error": 0.06164383561643838
+          },
+          "samples": 146,
+          "impurity": 0.33393606313636676,
+          "potential_fidelity_gain": 0.030698630136986312
+        },
+        {
+          "selected_order": 3,
+          "candidate_node_id": 2,
+          "priority_score": 0.015936507936507936,
+          "queue_max_priority_other": 0.015936507936507936,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 1,
+          "reach": 0.502,
+          "estimated_error": 0.031746031746031744,
+          "priority_components": {
+            "node_probability_mass": 0.502,
+            "estimated_error": 0.031746031746031744
+          },
+          "samples": 252,
+          "impurity": 0.20307392998664564,
+          "potential_fidelity_gain": 0.015936507936507936
+        }
+      ],
+      "node_log": [
+        {
+          "node_id": 0,
+          "depth": 0,
+          "is_leaf": false,
+          "prediction": 1,
+          "reach": 1.0,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.364321608040201,
+          "queries_requested": 602,
+          "queries_generated": 602,
+          "queries_valid": 602,
+          "queries_rejected": 0,
+          "queries_used": 602,
+          "query_budget_remaining_before": 10000,
+          "budget_truncated": false,
+          "candidates_drawn": 3612,
+          "queries_violating_path": 0,
+          "real_samples": 398,
+          "synthetic_samples": 602,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.386,
+            "1": 0.614
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 36,
+            "mofn_evaluated": 36,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-2(worst concave points <= 0.437494; worst perimeter <= 0.307287)"
+        },
+        {
+          "node_id": 1,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.498,
+          "stop_reason": "STOP_PURE_NODE",
+          "stop_detail": {
+            "kind": "wilson_lower_bound",
+            "purity_epsilon": 0.05,
+            "majority_fraction": 0.986
+          },
+          "priority_at_push": 0.030698630136986312,
+          "queries_requested": 854,
+          "queries_generated": 854,
+          "queries_valid": 854,
+          "queries_rejected": 184,
+          "queries_used": 854,
+          "query_budget_remaining_before": 9398,
+          "budget_truncated": false,
+          "candidates_drawn": 5124,
+          "queries_violating_path": 0,
+          "real_samples": 146,
+          "synthetic_samples": 854,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.986,
+            "1": 0.014
+          }
+        },
+        {
+          "node_id": 2,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.502,
+          "stop_reason": "STOP_PURE_NODE",
+          "stop_detail": {
+            "kind": "wilson_lower_bound",
+            "purity_epsilon": 0.05,
+            "majority_fraction": 0.986
+          },
+          "priority_at_push": 0.015936507936507936,
+          "queries_requested": 748,
+          "queries_generated": 748,
+          "queries_valid": 748,
+          "queries_rejected": 118,
+          "queries_used": 748,
+          "query_budget_remaining_before": 8544,
+          "budget_truncated": false,
+          "candidates_drawn": 4488,
+          "queries_violating_path": 0,
+          "real_samples": 252,
+          "synthetic_samples": 748,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.014,
+            "1": 0.986
+          }
+        }
+      ],
+      "STUMP": {
+        "alert": "TREE_STUMP_DIAGNOSTIC",
+        "node_count": 3,
+        "depth": 1,
+        "query_budget_exhausted": false,
+        "max_depth_reached": false,
+        "max_nodes_reached": false,
+        "min_samples": false,
+        "no_valid_split": false,
+        "min_gain": false,
+        "pure_children": true,
+        "pruning_collapsed_tree": false,
+        "error": false,
+        "leaf_stop_reasons": {
+          "1": {
+            "stop_reason": "STOP_PURE_NODE",
+            "detail": {
+              "kind": "wilson_lower_bound",
+              "purity_epsilon": 0.05,
+              "majority_fraction": 0.986
+            }
+          },
+          "2": {
+            "stop_reason": "STOP_PURE_NODE",
+            "detail": {
+              "kind": "wilson_lower_bound",
+              "purity_epsilon": 0.05,
+              "majority_fraction": 0.986
+            }
+          }
+        },
+        "legitimate_by_construction": true
+      },
+      "METRICS": {
+        "fidelity": 0.9239766081871345,
+        "fidelity_target": "MLP Original",
+        "accuracy_real": 0.9298245614035088
+      }
+    }
+  },
+  "budget_sensitivity": [
+    {
+      "query_budget": 2000,
+      "nodes": 3,
+      "depth": 1,
+      "queries_used": 2000,
+      "budget_exhausted": true,
+      "stop_reasons": {
+        "STOP_PURE_NODE": 1,
+        "STOP_QUERY_BUDGET_EXHAUSTED": 1
+      },
+      "fidelity": 0.9239766081871345,
+      "accuracy_real": 0.9298245614035088
+    },
+    {
+      "query_budget": 5000,
+      "nodes": 3,
+      "depth": 1,
+      "queries_used": 2204,
+      "budget_exhausted": false,
+      "stop_reasons": {
+        "STOP_PURE_NODE": 2
+      },
+      "fidelity": 0.9239766081871345,
+      "accuracy_real": 0.9298245614035088
+    },
+    {
+      "query_budget": 10000,
+      "nodes": 3,
+      "depth": 1,
+      "queries_used": 2204,
+      "budget_exhausted": false,
+      "stop_reasons": {
+        "STOP_PURE_NODE": 2
+      },
+      "fidelity": 0.9239766081871345,
+      "accuracy_real": 0.9298245614035088
+    },
+    {
+      "query_budget": 20000,
+      "nodes": 3,
+      "depth": 1,
+      "queries_used": 2204,
+      "budget_exhausted": false,
+      "stop_reasons": {
+        "STOP_PURE_NODE": 2
+      },
+      "fidelity": 0.9239766081871345,
+      "accuracy_real": 0.9298245614035088
+    }
+  ]
+}

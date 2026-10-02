@@ -7,6 +7,8 @@ J48 é uma implementação do Weka e não é utilizado neste projeto.
 """
 from __future__ import annotations
 
+import copy
+
 from dataclasses import dataclass, field
 from statistics import NormalDist
 from types import SimpleNamespace
@@ -75,6 +77,8 @@ class _C45Node:
     default_branch: Any = None
     gain: float = 0.0
     gain_ratio: float = 0.0
+    stop_reason: Optional[str] = None
+    node_id: int = -1
 
     @property
     def is_leaf(self) -> bool:
@@ -225,7 +229,11 @@ class C45Classifier(ClassifierMixin, BaseEstimator):
             i for i, kind in enumerate(self.feature_types_) if kind == "categorical"
         }
         indices = np.arange(len(y_arr), dtype=int)
+        self._next_node_id_ = 0
+        self.pruning_audit_ = []
         self.root_ = self._build_node(indices, weights, depth=0, available_categorical=available_categorical)
+        # Árvore bruta preservada (só contagens de classe, sem dados) antes da poda pessimista.
+        self.root_raw_ = copy.deepcopy(self.root_)
         self._prune(self.root_)
         self._build_tree_adapter()
         self.feature_importances_ = self._calculate_feature_importances()
@@ -266,11 +274,24 @@ class C45Classifier(ClassifierMixin, BaseEstimator):
             running[int(label)] += float(weight)
             cumulative[pos] = running
 
-        candidate_positions = [
-            pos for pos in range(len(known_values) - 1)
-            if known_values[pos] < known_values[pos + 1]
-            and known_y[pos] != known_y[pos + 1]
-        ]
+        # Fronteiras de Fayyad-Irani ao nível dos BLOCOS de valor: entre dois valores
+        # distintos consecutivos só se descarta o corte quando ambos os blocos são puros
+        # e da mesma classe. Comparar apenas linhas adjacentes dependia da ordem das
+        # linhas em empates (atributos binários/one-hot) e podia ignorar o melhor corte.
+        candidate_positions = []
+        block_start = 0
+        n_known = len(known_values)
+        block_classes = []
+        block_ends = []
+        for pos in range(n_known):
+            if pos == n_known - 1 or known_values[pos] < known_values[pos + 1]:
+                block_classes.append(frozenset(known_y[block_start:pos + 1].tolist()))
+                block_ends.append(pos)
+                block_start = pos + 1
+        for b in range(len(block_ends) - 1):
+            left_classes, right_classes = block_classes[b], block_classes[b + 1]
+            if not (len(left_classes) == 1 and left_classes == right_classes):
+                candidate_positions.append(block_ends[b])
         # Correção MDL de C4.5 para não favorecer atributos contínuos apenas
         # porque oferecem muitos limiares possíveis.
         threshold_penalty = (
@@ -413,17 +434,24 @@ class C45Classifier(ClassifierMixin, BaseEstimator):
             prediction_index=int(np.argmax(counts)),
             depth=depth,
         )
-        if (
-            int(np.sum(counts > EPS)) <= 1
-            or float(weights.sum()) + EPS < self.min_samples_split
-            or (self.max_depth is not None and depth >= int(self.max_depth))
-        ):
+        node.node_id = self._next_node_id_
+        self._next_node_id_ += 1
+        if int(np.sum(counts > EPS)) <= 1:
+            node.stop_reason = "STOP_PURE_NODE"
+            return node
+        if float(weights.sum()) + EPS < self.min_samples_split:
+            node.stop_reason = "STOP_MIN_SAMPLES"
+            return node
+        if self.max_depth is not None and depth >= int(self.max_depth):
+            node.stop_reason = "STOP_MAX_DEPTH"
             return node
         split = self._best_split(indices, weights, available_categorical)
         if split is None:
+            node.stop_reason = "STOP_NO_VALID_SPLIT"
             return node
         partitions = self._partition(split, indices, weights)
         if len(partitions) < 2 or any(len(part[0]) == 0 for part in partitions.values()):
+            node.stop_reason = "STOP_NO_VALID_SPLIT"
             return node
         node.feature = split.feature
         node.kind = split.kind
@@ -475,6 +503,14 @@ class C45Classifier(ClassifierMixin, BaseEstimator):
         subtree_error = sum(self._prune(child) for child in node.children.values())
         leaf_error = self._leaf_estimated_error(node)
         if leaf_error <= subtree_error + 0.1:
+            self.pruning_audit_.append({
+                "node_id": int(node.node_id),
+                "reason": "pessimistic_error_pruning",
+                "estimated_error_leaf": float(leaf_error),
+                "estimated_error_subtree": float(subtree_error),
+                "uses_test_data": False,
+            })
+            node.stop_reason = "STOP_PRUNED"
             node.feature = None
             node.kind = None
             node.threshold = None
