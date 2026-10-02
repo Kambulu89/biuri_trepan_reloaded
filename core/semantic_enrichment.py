@@ -413,8 +413,12 @@ def evaluate_semantic_enrichment(
         "per_fold": fold_rows,
     }
     status, reason = _decide(stable, pool, delta, u_onto - u_base, lo, hi, cfg)
+    # Transparência (não altera a decisão): aceitar por não-inferioridade com o IC da utilidade
+    # a incluir zero é evidência fraca; só um IC acima de zero é evidência forte de ganho.
+    strength = ("n/a" if not status.startswith("ACCEPT") else "strong" if lo > 0 else "weak")
     return finish(status, reason, trepan=trepan_ok, selected=stable if status.startswith("ACCEPT") else [],
                   processor=full, extra={
+                      "evidence_strength": strength,
                       "feature_audit": audit,
                       "candidate_stable_features": stable,
                       "semantic_richness_level": (metrics_q.get("semantic_richness") or {}).get("level"),

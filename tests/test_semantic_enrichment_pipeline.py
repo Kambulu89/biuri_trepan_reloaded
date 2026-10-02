@@ -67,6 +67,7 @@ def test_legitimate_acceptance_when_relation_carries_signal():
     d = rep["stages"]["D_mlp_comparison"]
     assert d["with_owl"]["utility"] > d["base"]["utility"]
     assert d["utility_gain_ci"][0] > 0  # intervalo de confiança exclui zero
+    assert rep["evidence_strength"] == "strong"
 
 
 def test_easy_problem_is_not_accepted_just_because_features_exist():
@@ -245,3 +246,16 @@ def test_metrics_and_utility_are_consistent_with_sklearn():
     assert m["macro_f1"] == pytest.approx(f1_score(y, p, average="macro"))
     assert m["minority_recall"] == pytest.approx(recall_score(y, p, average=None).min())
     assert utility(m, FAST, 0.5) < utility(m, FAST, 0.0)
+
+
+def test_weak_evidence_label_never_changes_the_decision():
+    from core.semantic_enrichment import _decide
+    cfg = FAST
+    delta = {"balanced_accuracy": 0.0, "minority_recall": 0.02, "macro_f1": 0.0}
+    status, _ = _decide(["f"], ["f"], delta, 0.002, -0.01, 0.02, cfg)  # IC inclui 0
+    assert status == "ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN"        # regra pré-especificada intacta
+    onto = _family_onto("weak"); X, y = _data(n=150, signal="mean_only")
+    rep = _run(onto, X, y).report
+    lo = rep["stages"]["D_mlp_comparison"]["utility_gain_ci"][0]
+    expected = "n/a" if not rep["decision"].startswith("ACCEPT") else ("strong" if lo > 0 else "weak")
+    assert rep["evidence_strength"] == expected
