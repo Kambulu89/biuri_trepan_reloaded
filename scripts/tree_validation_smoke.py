@@ -3,10 +3,13 @@
 Protocolo fixo e declarado ANTES de olhar para os resultados: mesma divisão
 treino/teste, mesma seed, mesmo budget, mesma profundidade, mesmo max_nodes,
 mesma poda. O teste só é usado para medir, nunca para escolher nada.
-Uso: python scripts/tree_validation_smoke.py [saida.json]
+Agnóstico a datasets: recebe um CSV (colunas numéricas; última coluna = alvo)
+ou, sem argumento, gera dados sintéticos. Nenhum dataset é conhecido pelo código.
+Uso: python scripts/tree_validation_smoke.py [--csv ficheiro.csv] [--out saida.json]
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -16,7 +19,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
@@ -32,15 +35,28 @@ BUDGETS = (2000, 5000, 10000, 20000)  # sensibilidade declarada a priori
 MAIN_BUDGET = 10000
 
 
-def main(out: str = "tree_validation_results.json") -> None:
-    data = load_breast_cancer()
-    X = StandardScaler().fit_transform(data.data)
-    Xtr, Xte, ytr, yte = train_test_split(X, data.target, test_size=0.3, random_state=SEED, stratify=data.target)
+def load_data(csv: str | None):
+    """(X, y, nomes). CSV genérico (última coluna = alvo) ou sintético."""
+    if csv:
+        import pandas as pd
+        frame = pd.read_csv(csv)
+        names = [str(c) for c in frame.columns[:-1]]
+        X = frame.iloc[:, :-1].apply(pd.to_numeric, errors="coerce").fillna(0.0).to_numpy(float)
+        y = pd.factorize(frame.iloc[:, -1])[0]
+        return X, y, names, f"csv:{Path(csv).name}"
+    X, y = make_classification(n_samples=600, n_features=12, n_informative=5, n_redundant=2,
+                               flip_y=0.03, random_state=SEED)
+    return X, y, [f"x{i}" for i in range(X.shape[1])], "synthetic"
+
+
+def main(csv: str | None = None, out: str = "tree_validation_results.json") -> None:
+    Xraw, y, names, source = load_data(csv)
+    X = StandardScaler().fit_transform(Xraw)
+    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=SEED, stratify=y)
     mlp = MLPClassifier((32,), max_iter=1000, random_state=SEED).fit(Xtr, ytr)
     oracle_acc = float(np.mean(mlp.predict(Xte) == yte))
-    names = list(data.feature_names)
     y_oracle_te = mlp.predict(Xte)
-    results: dict = {"dataset": "sklearn breast_cancer (smoke)", "seed": SEED, "protocol": PROTOCOL,
+    results: dict = {"dataset": source, "seed": SEED, "protocol": PROTOCOL,
                      "oracle_accuracy_test": oracle_acc, "runs": {}, "budget_sensitivity": []}
 
     t0 = time.perf_counter()
@@ -78,4 +94,7 @@ def main(out: str = "tree_validation_results.json") -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "tree_validation_results.json")
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--csv"); ap.add_argument("--out", default="tree_validation_results.json")
+    a = ap.parse_args()
+    main(a.csv, a.out)

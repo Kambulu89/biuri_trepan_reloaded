@@ -16,13 +16,13 @@ as queries e o m-of-n são partilhados; o Reloaded só sobrepõe hooks (`_split_
 
 ## 2. Diagnóstico: porque é que as árvores ficavam pequenas
 
-Auditoria + reprodução (`scripts/tree_validation_smoke.py`):
+Auditoria + reprodução (`scripts/tree_validation_smoke.py`, agnóstico: CSV genérico ou dados sintéticos):
 
 1. **O TREPAN Original é um TREPAN verdadeiro**, não destilação CART: consulta o oráculo, gera queries por nó
    respeitando as restrições do caminho, `min_sample` por nó, best-first por `reach·(1−fidelity)`,
    candidatos simples + m-of-n por beam search, teste de pureza (limite inferior de Wilson).
-2. **O stump observado é legítimo no protocolo de referência**: com um m-of-n 2-de-3 na raiz
-   (IG=0,227) os dois filhos ficam com 98,6 % de pureza no conjunto de decisão (1000 amostras) → `STOP_PURE_NODE`.
+2. **Um stump pode ser legítimo**: num problema fácil (verificado numa 1.ª execução com um dataset público, já removido do smoke) um m-of-n 2-de-3 na raiz
+   deixou os dois filhos com 98,6 % de pureza → `STOP_PURE_NODE`. Num problema sintético mais difícil o limite passa a ser o orçamento de queries (ver `TREE_VALIDATION_REPORT.md`).
 3. **Causa de stumps *espúrios* (silenciosos)**: o orçamento de queries é **global** e o extractor usa
    `max_queries = sample_size` (2000 por defeito). A raiz gasta ~600 queries, o 1.º filho ~750, e o 2.º filho
    ficava sem orçamento e era abandonado **sem qualquer registo** (apenas uma entrada interna
@@ -76,3 +76,6 @@ Suite completa: 353 passed, 3 failed — **os mesmos 3 já falhavam antes** (ver
 - Reloaded: a separação base/semântico/penalizações já existe em `semantic_split_audit_` (`information_gain`, `selection_score`, `semantic_bonus`), mas não foi acrescentado `complexity_penalty`/`stability_penalty` (não existem no Reloaded actual).
 - Não implementados: distribuições gaussiana truncada/bootstrap/condicional (o gerador actual é KDE/frequências com rejeição por restrições), amostragem de querying categórica específica, ablações A–G completas, comparação A/B (Reloaded com MLP Original vs Ontológico), diversidade estrutural entre árvores, guardas NaN/Inf adicionais no splitter, cache em disco de árvores (apenas `tree_cache_key` + teste; a cache existente é de MLPs). Sem ontologia real no ambiente smoke, o efeito semântico do Reloaded não foi exercitado end-to-end.
 - Active query generation do Reloaded (EFSR/active sampling) não foi ablacionado nesta entrega.
+
+## 7. Agnosticismo a datasets
+Nenhum módulo de `core/` ou `gui/` referencia datasets; os testes novos usam dados sintéticos e o smoke aceita qualquer CSV. Corrigido ainda o falso positivo do guard estático (parâmetro `digits` → `ndigits` em `gui/ontology_status_presenter.py`).
