@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/trepan-benchmark/synthetic-3class"
+         xmlns="http://example.org/trepan-benchmark/synthetic-3class#">
+
+<owl:Ontology rdf:about="http://example.org/trepan-benchmark/synthetic-3class">
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox de benchmark: contém semântica de domínio e zero instâncias do dataset.</rdfs:comment>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A estrutura foi definida apenas a partir da descrição das features; rótulos, partições e resultados do benchmark não foram consultados.</rdfs:comment>
+</owl:Ontology>
+
+<owl:DatatypeProperty rdf:about="#hasFeat0">
+  <rdfs:domain rdf:resource="#GroupA"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_0</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat1">
+  <rdfs:domain rdf:resource="#GroupA"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_1</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat2">
+  <rdfs:domain rdf:resource="#GroupA"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_2</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat3">
+  <rdfs:domain rdf:resource="#GroupA"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_3</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat4">
+  <rdfs:domain rdf:resource="#GroupB"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_4</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat5">
+  <rdfs:domain rdf:resource="#GroupB"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_5</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat6">
+  <rdfs:domain rdf:resource="#GroupB"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_6</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat7">
+  <rdfs:domain rdf:resource="#GroupB"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_7</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat8">
+  <rdfs:domain rdf:resource="#GroupC"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_8</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat9">
+  <rdfs:domain rdf:resource="#GroupC"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_9</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat10">
+  <rdfs:domain rdf:resource="#GroupC"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_10</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFeat11">
+  <rdfs:domain rdf:resource="#GroupC"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat_11</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#DomainMeasurement">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">synthetic_3class domain measurement</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#GroupA">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GroupA</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#GroupB">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GroupB</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#GroupC">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GroupC</rdfs:label>
+</owl:Class>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#GroupA"/>
+    <rdf:Description rdf:about="#GroupB"/>
+    <rdf:Description rdf:about="#GroupC"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>
