@@ -13,7 +13,7 @@ Gate (validação interna do treino, nunca o teste): para cada fold interno trei
 Reloaded real e K controlos no mesmo treino interno e mede-se a fidelidade ao professor em
 linhas de validação interna nunca vistas. A semântica só é aceite (``ATTRIBUTED``) se o ganho
 médio sobre os controlos for > ``min_gain`` e o real vencer a maioria das comparações
-não empatadas. Caso contrário o Reloaded degrada para o Original e não reivindica ganho.
+(os empates contam contra). Caso contrário o Reloaded degrada para o Original e não reivindica ganho.
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ class AttributionConfig:
     controls: int = 3
     inner_folds: int = 3
     min_gain: float = 0.0          # ganho médio de fidelidade sobre os controlos
-    min_win_fraction: float = 0.6  # fração de vitórias entre comparações não empatadas
+    min_win_fraction: float = 0.6  # fração de TODAS as comparações em que o real vence (empates contam contra)
     random_state: int = 42
     report_test_controls: bool = True  # só RELATA o ganho atribuível no teste; nunca decide nada
 
@@ -81,24 +81,37 @@ def evaluate_attribution(
     cv = StratifiedKFold(folds, shuffle=True, random_state=config.random_state)
     rows: List[Dict[str, Any]] = []
     diffs: List[float] = []
+    failed_controls = 0
     for fold, (tr, va) in enumerate(cv.split(Z, y)):
         teacher_val = np.asarray(oracle.predict(Z[va]))
-        real = real_variant(Z[tr], y[tr])
-        fid_real = float(np.mean(np.asarray(real.predict(Z[va])) == teacher_val))
+        try:
+            real = real_variant(Z[tr], y[tr])
+            fid_real = float(np.mean(np.asarray(real.predict(Z[va])) == teacher_val))
+        except Exception as exc:  # o TREPAN pode falhar em amostras pequenas; nunca rebenta o treino
+            report.update(status=NOT_EVALUATED, attributed=False,
+                          reason=f"real_variant_failed_fold_{fold}:{type(exc).__name__}: {exc}", per_fold=rows)
+            return report
         fid_ctrl = []
         for k in range(config.controls):
-            model = control_variant(fold * 1000 + k)(Z[tr], y[tr])
-            fid_ctrl.append(float(np.mean(np.asarray(model.predict(Z[va])) == teacher_val)))
+            try:
+                model = control_variant(fold * 1000 + k)(Z[tr], y[tr])
+                fid_ctrl.append(float(np.mean(np.asarray(model.predict(Z[va])) == teacher_val)))
+            except Exception:
+                failed_controls += 1  # sem controlo, sem comparação (não favorece o real)
         for f in fid_ctrl:
             diffs.append(fid_real - f)
         rows.append({"fold": fold, "fidelity_real": fid_real, "fidelity_controls": fid_ctrl,
-                     "gain_over_controls_mean": float(fid_real - np.mean(fid_ctrl))})
+                     "gain_over_controls_mean": float(fid_real - np.mean(fid_ctrl)) if fid_ctrl else None})
     d = np.asarray(diffs)
+    if len(d) == 0:
+        report.update(status=NOT_EVALUATED, attributed=False, reason="no_control_could_be_fitted",
+                      failed_controls=failed_controls, per_fold=rows)
+        return report
     wins, losses, ties = int((d > 1e-12).sum()), int((d < -1e-12).sum()), int((np.abs(d) <= 1e-12).sum())
-    decided = wins + losses
-    win_fraction = (wins / decided) if decided else None
-    mean_gain = float(d.mean()) if len(d) else 0.0
-    if decided == 0:
+    # Empates contam contra: um efeito que só aparece em 1 de 9 comparações não é evidência.
+    win_fraction = wins / len(d)
+    mean_gain = float(d.mean())
+    if wins + losses == 0:
         status, attributed = NOT_ATTRIBUTED_TIES, False
     elif mean_gain > config.min_gain and win_fraction >= config.min_win_fraction:
         status, attributed = ATTRIBUTED, True
@@ -106,7 +119,7 @@ def evaluate_attribution(
         status, attributed = NOT_ATTRIBUTED, False
     report.update(status=status, attributed=attributed, mean_gain_over_controls=mean_gain,
                   wins=wins, losses=losses, ties=ties, win_fraction=win_fraction,
-                  comparisons=int(len(d)), per_fold=rows)
+                  comparisons=int(len(d)), failed_controls=failed_controls, per_fold=rows)
     return report
 
 

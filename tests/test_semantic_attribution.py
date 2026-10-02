@@ -52,6 +52,50 @@ def test_real_worse_than_controls_is_rejected():
     assert not rep["attributed"] and rep["status"] == NOT_ATTRIBUTED and rep["mean_gain_over_controls"] < 0
 
 
+def test_ties_count_against_so_a_single_win_is_not_attribution():
+    """Regressão: antes, 1 vitória + 8 empates passava (1/1 entre não empatadas = 100%)."""
+    Z, y = _data(300)
+    calls = {"n": 0}
+
+    def control(k):
+        def make(Ztr, ytr):
+            calls["n"] += 1
+            # idêntico ao real exceto na 1.ª comparação, em que é pior
+            if calls["n"] == 1:
+                return _Const(lambda A: np.where(np.arange(len(A)) % 3 == 0, 1 - PERFECT(A), PERFECT(A)))
+            return _Const(PERFECT)
+        return make
+    rep = evaluate_attribution(Z, y, _Oracle(), _variant(PERFECT), control, AttributionConfig(controls=3))
+    assert rep["wins"] == 1 and rep["losses"] == 0 and rep["ties"] == rep["comparisons"] - 1
+    assert rep["mean_gain_over_controls"] > 0               # a média é positiva...
+    assert rep["win_fraction"] == pytest.approx(1 / rep["comparisons"])
+    assert not rep["attributed"] and rep["status"] == NOT_ATTRIBUTED   # ...mas não há evidência
+
+
+def test_failing_real_variant_is_not_evaluated_instead_of_crashing():
+    Z, y = _data()
+
+    def boom(Ztr, ytr):
+        raise RuntimeError("membership queries")
+    rep = evaluate_attribution(Z, y, _Oracle(), boom, lambda k: _variant(NOISY))
+    assert rep["status"] == NOT_EVALUATED and rep["attributed"] is False and "RuntimeError" in rep["reason"]
+
+
+def test_failing_controls_are_skipped_not_counted_for_the_real():
+    Z, y = _data()
+
+    def bad_control(k):
+        def make(Ztr, ytr):
+            if k % 2 == 0:
+                raise RuntimeError("fail")
+            return _Const(NOISY)
+        return make
+    rep = evaluate_attribution(Z, y, _Oracle(), _variant(PERFECT), bad_control, AttributionConfig(controls=2))
+    assert rep["failed_controls"] > 0 and rep["comparisons"] > 0 and rep["attributed"]
+    all_fail = evaluate_attribution(Z, y, _Oracle(), _variant(PERFECT), lambda k: (lambda a, b: (_ for _ in ()).throw(RuntimeError())))
+    assert all_fail["status"] == NOT_EVALUATED and all_fail["reason"] == "no_control_could_be_fitted"
+
+
 def test_positive_mean_but_losing_most_comparisons_is_rejected():
     Z, y = _data(300)
     state = {"i": 0}

@@ -369,7 +369,12 @@ def train_production_dataframe(
         if semantic_attribution.report_test_controls and reloaded_mode in attribution_variants:
             # Ganho atribuível medido UMA vez no teste final: só relatado, nunca decide nada.
             ctrl_fit=attribution_variants[reloaded_mode]
-            controls=[ctrl_fit(semantic_attribution.random_state*7+k)(Ztr,ytr) for k in range(semantic_attribution.controls)]
+            controls=[]
+            for k in range(semantic_attribution.controls):
+                try:
+                    controls.append(ctrl_fit(semantic_attribution.random_state*7+k)(Ztr,ytr))
+                except Exception:  # um controlo que não treina é ignorado (não favorece o real)
+                    continue
             real_model=AugmentedPredictor(pair.reloaded,teacher) if reloaded_mode=='augmented' else pair.reloaded
             attribution['test_attribution']=test_attribution_report(real_model,controls,Zte,yte,oracle)
         evaluation['semantic_attribution']=attribution
