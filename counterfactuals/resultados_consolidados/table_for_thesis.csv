@@ -1,0 +1,5 @@
+dataset,metodo_CF,tipo_sustituto,indicador_a,indicador_b,total_CFs_validos_MLP,total_CFs_validos_sustituto
+iris,CLEAR,Trepan,NaN,NaN,0,0
+iris,CLEAR,TrepanReload,NaN,NaN,0,0
+iris,COGS,Trepan,0.495,0.000,99,49
+iris,COGS,TrepanReload,0.798,0.000,99,79

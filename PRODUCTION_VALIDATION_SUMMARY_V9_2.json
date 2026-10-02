@@ -1,0 +1,39 @@
+{
+  "release": "BIURI_TREPAN_RELOADED_V9_2_PRODUCTION_CANDIDATE",
+  "validated_runtime": {
+    "python": "3.13.5",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "target_runtime": [
+    "Python 3.11",
+    "Python 3.12"
+  ],
+  "critical_tests_last_run": {
+    "passed": 37,
+    "failed": 0,
+    "command": "pytest production/semantic/ontology/controlled/historical/static/runtime groups"
+  },
+  "full_suite_monolithic": {
+    "status": "timeout",
+    "detail": "No failure emitted before runtime timeout; all test files were exercised in smaller groups with no confirmed remaining failure after the compatibility fix."
+  },
+  "production_readiness_current_environment": false,
+  "blockers_current_environment": [
+    "Python 3.13 is outside target",
+    "dtreeviz unavailable",
+    "PyQt6 not installed",
+    "owlready2/HermiT not installed",
+    "TensorFlow/CLEAR not installed"
+  ],
+  "confirmatory_v7_unchanged": true,
+  "new_capabilities": [
+    "OntologySemanticGraph",
+    "SemanticContributionGate",
+    "paired production training",
+    "production bundle inference",
+    "multi-seed controlled ablation",
+    "claim guard",
+    "optional dependency split",
+    "production readiness checker"
+  ]
+}

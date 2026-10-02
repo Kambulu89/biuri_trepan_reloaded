@@ -1,0 +1,5 @@
+dataset,metodo_CF,tipo_sustituto,indicador_a,indicador_b,indicador_c,total_CFs_validos_MLP,total_CFs_validos_sustituto,total_CFs_generados
+sonar,CLEAR,Trepan,,,,0,0,0
+sonar,CLEAR,TrepanReload,,,,0,0,0
+sonar,COGS,Trepan,0.2558139534883721,0.0,0.7441860465116279,129,33,129
+sonar,COGS,TrepanReload,0.3023255813953488,0.0,0.6976744186046512,129,39,129

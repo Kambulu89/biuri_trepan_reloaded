@@ -1,0 +1,19 @@
+{
+  "dataset": "iris",
+  "clear_cfs_generated": 162,
+  "cogs_cfs_generated": 99,
+  "timers": {
+    "clear_cfs": 166.67772489998606,
+    "cogs_cfs": 7.255824899999425,
+    "compute_indicators": 0.11461320001399145,
+    "total": 174.37643969999044
+  },
+  "clear_trepan_indicador_a": 0.58,
+  "clear_trepan_indicador_b": 0.0,
+  "clear_trepanreload_indicador_a": 0.66,
+  "clear_trepanreload_indicador_b": 0.0,
+  "cogs_trepan_indicador_a": 0.6464646464646465,
+  "cogs_trepan_indicador_b": 0.0,
+  "cogs_trepanreload_indicador_a": 0.7878787878787878,
+  "cogs_trepanreload_indicador_b": 0.0
+}

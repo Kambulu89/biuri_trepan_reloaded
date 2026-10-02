@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-31",
+  "confirmatory_ready": false,
+  "entries": [
+    {
+      "name": "Adult Census Full Ontology",
+      "domain": "census income",
+      "path": "data/adult_census_full_ontology.owl",
+      "source": "legacy project artifact",
+      "url": null,
+      "license": null,
+      "version": "unknown",
+      "date": "unknown",
+      "sha256": "8b204e73c6b0a616434b1cf6a933e9e2a042ee48e97627a74e7c673965392049",
+      "owl_profile": "not audited",
+      "independent": false,
+      "quality_status": "CONTAMINATED_ONTOLOGY",
+      "reason": "Contains dataset row individuals, rowIndex and target-bearing income individuals; prohibited for evaluation."
+    },
+    {
+      "name": "Breast Cancer Benchmark TBox",
+      "domain": "breast cancer tabular measurements",
+      "path": "data/benchmark_ontologies_v7/breast_cancer.owl",
+      "source": "project-curated feature descriptions",
+      "url": null,
+      "license": "project internal",
+      "version": "v7",
+      "date": "2026-08-30",
+      "sha256": "e829679577ccd2dcac58c05bc3c7596b8145e364512d1db60c4f1d08a68afa81",
+      "owl_profile": "OWL 2 TBox",
+      "independent": false,
+      "quality_status": "VALID_DOMAIN_ONTOLOGY"
+    },
+    {
+      "name": "Diabetes Progression Benchmark TBox",
+      "domain": "diabetes progression tabular measurements",
+      "path": "data/benchmark_ontologies_v7/diabetes_progression.owl",
+      "source": "project-curated feature descriptions",
+      "url": null,
+      "license": "project internal",
+      "version": "v7",
+      "date": "2026-08-30",
+      "sha256": "d03b3fc3c3577de2171101ccf2f33dcea59b6ad774635b2d007254bba3685a94",
+      "owl_profile": "OWL 2 TBox",
+      "independent": false,
+      "quality_status": "VALID_DOMAIN_ONTOLOGY"
+    },
+    {
+      "name": "Digits Benchmark TBox",
+      "domain": "handwritten digit image regions",
+      "path": "data/benchmark_ontologies_v7/digits.owl",
+      "source": "project-curated feature descriptions",
+      "url": null,
+      "license": "project internal",
+      "version": "v7",
+      "date": "2026-08-30",
+      "sha256": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+      "owl_profile": "OWL 2 TBox",
+      "independent": false,
+      "quality_status": "VALID_DOMAIN_ONTOLOGY"
+    },
+    {
+      "name": "Iris Benchmark TBox",
+      "domain": "botanical morphometry",
+      "path": "data/benchmark_ontologies_v7/iris.owl",
+      "source": "project-curated feature descriptions",
+      "url": null,
+      "license": "project internal",
+      "version": "v7",
+      "date": "2026-08-30",
+      "sha256": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+      "owl_profile": "OWL 2 TBox",
+      "independent": false,
+      "quality_status": "VALID_DOMAIN_ONTOLOGY"
+    },
+    {
+      "name": "Wine Benchmark TBox",
+      "domain": "wine chemistry",
+      "path": "data/benchmark_ontologies_v7/wine.owl",
+      "source": "project-curated feature descriptions",
+      "url": null,
+      "license": "project internal",
+      "version": "v7",
+      "date": "2026-08-30",
+      "sha256": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+      "owl_profile": "OWL 2 TBox",
+      "independent": false,
+      "quality_status": "VALID_DOMAIN_ONTOLOGY"
+    }
+  ],
+  "blocking_reason": "No externally governed, versioned and licensed ontology has passed the project quality gate. Do not run the V8 confirmatory benchmark."
+}

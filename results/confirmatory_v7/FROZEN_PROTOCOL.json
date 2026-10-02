@@ -1,0 +1,29 @@
+{
+  "frozen_at_utc": "2026-08-30T00:00:00Z",
+  "purpose": "single confirmatory execution after implementation and regression testing",
+  "config_hash": "4d38fe2b09ac1d6b1dd9f372249d5b26dc02e36a84830d640012404183b906ef",
+  "config": {
+    "repeats": 3,
+    "test_size": 0.25,
+    "validation_size": 0.22,
+    "max_samples": 600,
+    "random_state": 20260830,
+    "mlp_search_iterations": 5,
+    "mlp_cv_folds": 3,
+    "active_iterations": 2,
+    "active_budget": 32,
+    "reasoner_engine": "hermit"
+  },
+  "datasets": [
+    "breast_cancer",
+    "diabetes_progression",
+    "digits",
+    "iris",
+    "wine"
+  ],
+  "primary_metrics": ["balanced_accuracy", "macro_f1"],
+  "competitors": ["TREPAN Original", "C4.5-Nativo"],
+  "superiority_rule": "For both competitors and both primary metrics: paired bootstrap 95% lower bound > 0 and one-sided Wilcoxon p < 0.05.",
+  "outer_test_policy": "Each locked outer test is evaluated only after all training and internal selection for its dataset/repeat are complete.",
+  "rerun_policy": "CONFIRMATORY_RUN_COMPLETED.json blocks any second execution in this package."
+}

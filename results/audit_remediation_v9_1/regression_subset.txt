@@ -1,0 +1,28 @@
+.................................................................        [100%]
+=============================== warnings summary ===============================
+tests/test_residual_ontological_oracle.py: 3 warnings
+tests/test_variable_feature_count_dual_oracle.py: 8 warnings
+tests/test_scientific_protocol_unittest.py: 5 warnings
+  /opt/pyvenv/lib/python3.13/site-packages/sklearn/neural_network/_multilayer_perceptron.py:785: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+    warnings.warn(
+
+tests/test_residual_ontological_oracle.py: 6 warnings
+tests/test_variable_feature_count_dual_oracle.py: 2 warnings
+tests/test_mlp_onto_and_bias_weight.py: 7 warnings
+tests/test_dominance_informational.py: 2 warnings
+  /opt/pyvenv/lib/python3.13/site-packages/sklearn/neural_network/_multilayer_perceptron.py:785: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+    warnings.warn(
+
+tests/test_variable_feature_count_dual_oracle.py: 1 warning
+tests/test_mlp_onto_and_bias_weight.py: 1 warning
+tests/test_trepan_reloaded_context.py: 5 warnings
+tests/test_feature_alignment.py: 5 warnings
+  /opt/pyvenv/lib/python3.13/site-packages/sklearn/neural_network/_multilayer_perceptron.py:785: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (100) reached and the optimization hasn't converged yet.
+    warnings.warn(
+
+tests/test_variable_feature_count_dual_oracle.py::test_validate_oracle_width_raises_on_mismatch
+  /opt/pyvenv/lib/python3.13/site-packages/sklearn/neural_network/_multilayer_perceptron.py:785: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (50) reached and the optimization hasn't converged yet.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+65 passed, 46 warnings in 19.83s

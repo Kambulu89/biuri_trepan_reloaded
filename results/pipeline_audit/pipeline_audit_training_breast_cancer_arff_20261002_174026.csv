@@ -1,0 +1,7 @@
+dataset,model,optimization_method,n_features,accuracy,precision,recall,f1,fidelity,training_time_seconds,stage,timestamp,accuracy_original,accuracy_ontological,f1_original,f1_ontological,accuracy_gain,f1_gain,ontology_accepted,final_oracle,ontology_impact
+breast_cancer.arff,MLP Original,optuna,30,0.9707602339181286,0.9716389375658818,0.9707602339181286,0.9708871747643291,,35.89105950000521,training,2026-10-02T17:40:26.068464,,,,,,,,,
+breast_cancer.arff,MLP Residual Ontológico,baseline,31,0.99,0.99015625,0.99,0.9899708769280552,,0.539671599995927,training,2026-10-02T17:40:26.068464,,,,,,,,,
+breast_cancer.arff,Trepan Original,oracle_mlp,30,0.9122807017543859,,,,0.9064327485380117,,training,2026-10-02T17:40:26.068464,,,,,,,,,
+breast_cancer.arff,Trepan Reloaded,oracle_mlp,30,0.9298245614035088,,,,0.9122807017543859,,training,2026-10-02T17:40:26.068464,,,,,,,,,
+breast_cancer.arff,C4.5-Nativo,real_labels,30,0.9239766081871345,0.9226527570789866,0.9141355140186915,0.9180460829493088,,,training,2026-10-02T17:40:26.068464,,,,,,,,,
+breast_cancer.arff,Ontology Scientific Report,residual_ontological_acceptance,,0.99,,,0.9892136770574911,,,training,2026-10-02T17:40:26.068464,0.99,0.99,0.9892136770574911,0.9892136770574911,,,Não,MLP Original,rejected_by_strict_oracle_quality_gate

@@ -1,0 +1,5 @@
+dataset,metodo_CF,tipo_sustituto,indicador_a,indicador_b,indicador_c,total_CFs_validos_MLP,total_CFs_validos_sustituto,total_CFs_generados
+wine,CLEAR,Trepan,,,,0,0,0
+wine,CLEAR,TrepanReload,,,,0,0,0
+wine,COGS,Trepan,0.5213675213675214,0.0,0.47863247863247865,117,61,117
+wine,COGS,TrepanReload,0.4358974358974359,0.0,0.5641025641025641,117,51,117

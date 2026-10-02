@@ -1,0 +1,19 @@
+{
+  "dataset": "wdbc",
+  "clear_cfs_generated": 0,
+  "cogs_cfs_generated": 342,
+  "timers": {
+    "clear_cfs": 2029.8047175999964,
+    "cogs_cfs": 66.74889640009496,
+    "compute_indicators": 0.11551599996164441,
+    "total": 2096.8188334000297
+  },
+  "clear_trepan_indicador_a": null,
+  "clear_trepan_indicador_b": null,
+  "clear_trepanreload_indicador_a": null,
+  "clear_trepanreload_indicador_b": null,
+  "cogs_trepan_indicador_a": 0.3684210526315789,
+  "cogs_trepan_indicador_b": 0.0,
+  "cogs_trepanreload_indicador_a": 0.19883040935672514,
+  "cogs_trepanreload_indicador_b": 0.0
+}

@@ -1,0 +1,23 @@
+{
+  "version": "v9.2-scientific-locked",
+  "python": "3.13.5",
+  "root_cause": "trepan_max_depth=None converted with int() in historical Reloaded path",
+  "scientific_mode_locked": true,
+  "scientific_depth_resolution": "None -> max_nodes",
+  "tests": {
+    "scientific_mode_lock": "6 passed",
+    "scientific_ontology_trepan": "49 passed",
+    "dataset_agnostic_artifacts": "22 passed",
+    "gui_regressions": "16 passed, 1 skipped",
+    "mirror_context_oracle": "8 passed",
+    "mlp_orchestrator_paths": "23 passed"
+  },
+  "compileall": "ok",
+  "not_validated_here": [
+    "PyQt6 GUI runtime",
+    "owlready2/HermiT",
+    "TensorFlow/CLEAR",
+    "Windows",
+    "Python 3.11/3.12 runtime"
+  ]
+}

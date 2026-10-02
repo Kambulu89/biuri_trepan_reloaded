@@ -1,0 +1,17 @@
+{
+  "dataset": "sonar",
+  "mlp_accuracy_test": 0.873015873015873,
+  "trepan_fidelity": 0.966,
+  "trepan_reloaded_fidelity": 0.945,
+  "coincident_instances": 128,
+  "total_train_instances": 145,
+  "selected_instances": 47,
+  "timers": {
+    "load_data": 0.008887000032700598,
+    "train_mlp": 0.1289404999697581,
+    "extract_trepan": 0.08711620001122355,
+    "extract_trepan_reloaded": 0.0725003998959437,
+    "select_instances": 0.010175299947150052,
+    "total": 0.3106109000509605
+  }
+}

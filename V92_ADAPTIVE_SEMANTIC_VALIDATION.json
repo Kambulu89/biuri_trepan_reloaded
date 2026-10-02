@@ -1,0 +1,31 @@
+{
+  "release": "BIURI / TREPAN Reloaded V9.2 Adaptive Semantic Production Candidate",
+  "features": {
+    "ontology_guided_m_of_n_candidates": true,
+    "semantic_active_membership_queries": true,
+    "train_only_common_capacity_tuning": true,
+    "train_only_semantic_strength_tuning": true,
+    "typed_ontology_relatedness": true,
+    "reasoner_materialized_ancestors_supported": true,
+    "cart_in_production": false,
+    "scientific_mode_locked": true
+  },
+  "tests": {
+    "critical_disjoint_groups_passed": 100,
+    "critical_failures": 0,
+    "compileall": true
+  },
+  "protocol": {
+    "external_test_used_for_selection": false,
+    "same_final_capacity_original_reloaded": true,
+    "same_oracle_original_reloaded": true,
+    "confirmatory_v7_unchanged": true
+  },
+  "environment_limitations": [
+    "runtime uses Python 3.13.5 instead of target Python 3.11/3.12",
+    "PyQt6 not validated in this runtime",
+    "owlready2/HermiT not available for a real OWL run",
+    "TensorFlow/CLEAR not validated",
+    "dtreeviz not installed"
+  ]
+}

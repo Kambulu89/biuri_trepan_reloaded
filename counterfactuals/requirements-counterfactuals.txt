@@ -1,0 +1,2 @@
+# Dependencias de contrafactuais — ver requirements-win.txt
+-r ../requirements-win.txt

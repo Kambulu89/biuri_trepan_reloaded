@@ -1,0 +1,17 @@
+{
+  "dataset": "wine",
+  "mlp_accuracy_test": 0.9814814814814815,
+  "trepan_fidelity": 1.0,
+  "trepan_reloaded_fidelity": 1.0,
+  "coincident_instances": 124,
+  "total_train_instances": 124,
+  "selected_instances": 39,
+  "timers": {
+    "load_data": 0.007324600010178983,
+    "train_mlp": 0.09414569998625666,
+    "extract_trepan": 0.05674359994009137,
+    "extract_trepan_reloaded": 0.05539409990888089,
+    "select_instances": 0.004511100007221103,
+    "total": 0.2202938999980688
+  }
+}

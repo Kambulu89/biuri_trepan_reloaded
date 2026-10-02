@@ -1,0 +1,35 @@
+{
+  "release": "BIURI/TREPAN Reloaded V9.2 Production No-CART Candidate",
+  "runtime": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.8.0",
+    "scipy": "1.17.0"
+  },
+  "validated": {
+    "runtime_decision_tree_classifier_imports": 0,
+    "targeted_tests_passed": 82,
+    "targeted_test_failures": 0,
+    "subtests_passed": 5,
+    "compileall": true,
+    "production_smoke_train_without_owl": true,
+    "production_bundle_load_and_predict": true,
+    "confirmatory_v7_hashes_unchanged": true
+  },
+  "limitations": [
+    "full pytest monolithic run exceeded the available runtime timeout after progressing without a new visible failure",
+    "runtime used Python 3.13.5, while the declared production target remains Python 3.11/3.12",
+    "PyQt6 was not available in this environment for live GUI execution",
+    "owlready2/HermiT were not available here for live OWL reasoning validation",
+    "TensorFlow/CLEAR was not validated in this environment"
+  ],
+  "tree_policy": {
+    "trepan_original": "core.trepan_original.TrepanOriginalClassifier",
+    "trepan_reloaded": "core.trepan_reloaded_historical.TrepanReloadedClassifier",
+    "c45": "core.c45_j48_tree.C45Classifier",
+    "decision_tree_classifier_runtime_allowed": false,
+    "silent_fallback_allowed": false,
+    "artifact_policy": "historical_trepan_only_no_cart"
+  }
+}

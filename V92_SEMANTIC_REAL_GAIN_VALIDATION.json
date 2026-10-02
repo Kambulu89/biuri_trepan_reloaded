@@ -1,0 +1,23 @@
+{
+  "implementation": "BIURI/TREPAN Reloaded V9.2 Semantic Real-Gain Contract",
+  "artifact_format": "biuri-v9.2-production-5-semantic-real-gain",
+  "compileall": true,
+  "targeted_batches": [
+    {"passed": 36, "failed": 0, "warnings": 2},
+    {"passed": 39, "failed": 0},
+    {"passed": 33, "failed": 0, "note": "MLP convergence warnings in test fixtures"},
+    {"passed": 16, "failed": 0, "note": "post artifact-format update"}
+  ],
+  "full_combined_batch": {"status": "timeout", "failures_observed_before_timeout": 0},
+  "mechanism_test": {"passed": 1, "failed": 0},
+  "confirmatory_v7_unchanged": true,
+  "no_cart_runtime": true,
+  "scientific_mode_locked": true,
+  "semantic_graph_promoted_from_quality_matches": true,
+  "error_region_topk_fallback": true,
+  "real_training_fidelity_gate": true,
+  "mirror_when_no_semantic_effect": true,
+  "external_test_used_for_selection": false,
+  "production_ready_in_current_environment": false,
+  "readiness_file": "V92_SEMANTIC_REAL_GAIN_READINESS.json"
+}

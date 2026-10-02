@@ -1,0 +1,24 @@
+{
+  "implementation": "BIURI/TREPAN Reloaded V9.2 Error-Focused Semantic Refinement",
+  "python": "3.13.5",
+  "targeted_tests": {
+    "passed": 88,
+    "failed": 0
+  },
+  "compileall": true,
+  "full_suite": {
+    "status": "timeout",
+    "timeout_seconds": 300,
+    "progress_observed": "~23%",
+    "failures_observed_before_timeout": 0
+  },
+  "confirmatory_v7_unchanged": true,
+  "cart_runtime": false,
+  "scientific_mode_locked": true,
+  "external_test_used_for_efsr_selection": false,
+  "same_membership_query_budget_original_reloaded": true,
+  "artifact_format": "biuri-v9.2-production-4-error-focused-semantic",
+  "mechanism_validation_file": "V92_EFSR_MECHANISM_VALIDATION.json",
+  "production_readiness_file": "EFSR_PRODUCTION_READINESS_V9_2.json",
+  "production_ready_in_current_environment": false
+}

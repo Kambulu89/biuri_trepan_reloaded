@@ -1,0 +1,19 @@
+{
+  "dataset": "hepatitis",
+  "clear_cfs_generated": 102,
+  "cogs_cfs_generated": 105,
+  "timers": {
+    "clear_cfs": 734.9125525999989,
+    "cogs_cfs": 11.975815799989505,
+    "compute_indicators": 0.0694810000131838,
+    "total": 747.282927000022
+  },
+  "clear_trepan_indicador_a": 0.3125,
+  "clear_trepan_indicador_b": 0.0,
+  "clear_trepanreload_indicador_a": 0.328125,
+  "clear_trepanreload_indicador_b": 0.0,
+  "cogs_trepan_indicador_a": 0.4380952380952381,
+  "cogs_trepan_indicador_b": 0.0,
+  "cogs_trepanreload_indicador_a": 0.3333333333333333,
+  "cogs_trepanreload_indicador_b": 0.0
+}

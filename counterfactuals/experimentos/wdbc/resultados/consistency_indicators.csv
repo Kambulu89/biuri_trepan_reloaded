@@ -1,0 +1,5 @@
+dataset,metodo_CF,tipo_sustituto,indicador_a,indicador_b,indicador_c,total_CFs_validos_MLP,total_CFs_validos_sustituto,total_CFs_generados
+wdbc,CLEAR,Trepan,,,,0,0,0
+wdbc,CLEAR,TrepanReload,,,,0,0,0
+wdbc,COGS,Trepan,0.3684210526315789,0.0,0.631578947368421,342,126,342
+wdbc,COGS,TrepanReload,0.19883040935672514,0.0,0.8011695906432749,342,68,342

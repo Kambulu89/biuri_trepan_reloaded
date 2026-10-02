@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "confirmatory_v7_unchanged": true,
+    "compileall": true,
+    "preflight": false,
+    "no_cart_runtime": true,
+    "scientific_mode_locked": true
+  },
+  "ready": false,
+  "cart_offenders": [],
+  "preflight_output": "{\n  \"contract\": \"BIURI_TREPAN_RELOADED_V9_2_TARGET_ENVIRONMENT\",\n  \"platform\": \"Linux-6.18.44-x86_64-with-glibc2.41\",\n  \"python\": \"3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]\",\n  \"python_executable\": \"/opt/pyvenv/bin/python\",\n  \"target_python\": \"3.11.x or 3.12.x\",\n  \"runtime_imports\": {\n    \"numpy\": {\n      \"ok\": true,\n      \"version\": \"2.3.5\"\n    },\n    \"scipy\": {\n      \"ok\": true,\n      \"version\": \"1.17.0\"\n    },\n    \"pandas\": {\n      \"ok\": true,\n      \"version\": \"2.2.3\"\n    },\n    \"scikit-learn\": {\n      \"ok\": true,\n      \"version\": \"1.8.0\"\n    },\n    \"statsmodels\": {\n      \"ok\": true,\n      \"version\": \"0.14.6\"\n    },\n    \"matplotlib\": {\n      \"ok\": true,\n      \"version\": \"3.10.8\"\n    },\n    \"seaborn\": {\n      \"ok\": true,\n      \"version\": \"0.13.2\"\n    },\n    \"graphviz\": {\n      \"ok\": true,\n      \"version\": \"0.21\"\n    },\n    \"dtreeviz\": {\n      \"ok\": false,\n      \"error\": \"ModuleNotFoundError: No module named 'dtreeviz'\"\n    },\n    \"optuna\": {\n      \"ok\": true,\n      \"version\": \"4.8.0\"\n    }\n  },\n  \"gui_imports\": {},\n  \"owl_imports\": {},\n  \"clear_imports\": {},\n  \"java\": {\n    \"ok\": true,\n    \"path\": \"/usr/bin/java\",\n    \"version\": \"openjdk version \\\"21.0.11\\\" 2026-04-21\",\n    \"returncode\": 0\n  },\n  \"graphviz_dot\": \"/usr/bin/dot\",\n  \"checks\": {\n    \"python_3_11\": false,\n    \"runtime_dependencies\": false,\n    \"java\": true,\n    \"graphviz_dot\": true\n  },\n  \"ready\": false\n}\n"
+}

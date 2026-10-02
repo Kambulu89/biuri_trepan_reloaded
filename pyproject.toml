@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biuri-trepan-reloaded"
+version = "9.2.0"
+description = "BIURI / TREPAN Reloaded — XAI surrogate trees with ontology-aware auditing"
+requires-python = ">=3.11,<3.13"
+readme = "SCIENTIFIC_VALIDATION_PROTOCOL.md"
+
+[tool.setuptools.packages.find]
+include = ["core*", "gui*", "counterfactuals*"]
+
+
+[project.optional-dependencies]
+gui = ["PyQt6>=6.6"]
+owl = ["owlready2>=0.47"]
+clear = ["tensorflow>=2.15"]
+excel = ["openpyxl>=3.1"]
+parquet = ["pyarrow>=14"]
+test = ["pytest>=8", "pytest-cov>=5"]

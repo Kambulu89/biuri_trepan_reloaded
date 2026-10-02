@@ -1,0 +1,10 @@
+{
+  "protocol": "controlled_same_oracle_same_seed_same_budget_v9_2",
+  "datasets": 5,
+  "without_owl_ok": 5,
+  "without_owl_invalid_oracle": 0,
+  "without_owl_failed": 0,
+  "with_owl_executed": 0,
+  "owlready2_available": false,
+  "note": "Nenhum efeito OWL foi calculado porque o braço OWL não foi executado."
+}

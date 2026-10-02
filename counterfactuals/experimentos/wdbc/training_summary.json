@@ -1,0 +1,17 @@
+{
+  "dataset": "wdbc",
+  "mlp_accuracy_test": 0.9532163742690059,
+  "trepan_fidelity": 0.995,
+  "trepan_reloaded_fidelity": 0.987,
+  "coincident_instances": 392,
+  "total_train_instances": 398,
+  "selected_instances": 130,
+  "timers": {
+    "load_data": 0.006444299942813814,
+    "train_mlp": 0.17396869999356568,
+    "extract_trepan": 0.2815392999909818,
+    "extract_trepan_reloaded": 0.18207020009867847,
+    "select_instances": 0.008982700062915683,
+    "total": 0.6560504999943078
+  }
+}

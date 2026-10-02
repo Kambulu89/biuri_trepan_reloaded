@@ -1,0 +1,119 @@
+{
+  "status": "implementation_candidate_partial",
+  "python": "3.13.5",
+  "sklearn": "1.8.0",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "critical_tests": {
+    "passed": 70,
+    "failed": 0,
+    "duration_seconds": 21.53
+  },
+  "full_suite_completed": false,
+  "optional_components": {
+    "PyQt6": "not_available",
+    "owlready2_HermiT": "not_available",
+    "TensorFlow_CLEAR": "not_available"
+  },
+  "confirmatory_v7_unchanged": true,
+  "confirmatory_execute_run": false,
+  "ablation_v92": {
+    "without_owl_executed": 5,
+    "with_owl_executed": 0
+  },
+  "legacy_pickle_audit": {
+    "total": 64,
+    "loadable": 52,
+    "incompatible": 12
+  },
+  "static_audit": {
+    "bare_except": 0,
+    "except_exception": 156,
+    "print_calls": 477
+  },
+  "historical_reloaded_core_increment": {
+    "passed": 30,
+    "failed": 0,
+    "warnings": 8,
+    "duration_seconds": 28.79,
+    "new_primary_model": "core.trepan_reloaded_historical.TrepanReloadedClassifier",
+    "cart_used_for_final": false,
+    "soft_tree_used_for_final": false,
+    "confirmatory_v7_unchanged": true,
+    "heavy_test_timeout": "tests/test_no_ontology_mirror_original.py::test_no_ontology_metrics_identical_to_original"
+  },
+  "controlled_ablation_increment": {
+    "passed": 41,
+    "failed": 0,
+    "skipped": 1,
+    "compileall": "ok",
+    "protocol": "same_original_mlp_same_seed_same_budget_only_owl_differs",
+    "oracle_gate": "training_cv_dummy_and_c45",
+    "statistical_unit": "dataset",
+    "ablation_without_owl": {
+      "datasets": 5,
+      "ok": 5,
+      "invalid_oracle": 0,
+      "failed": 0,
+      "neutral_deltas_all_zero": true
+    },
+    "ablation_with_owl": {
+      "executed": 0,
+      "reason": "owlready2/HermiT unavailable"
+    },
+    "confirmatory_v7_unchanged": true,
+    "full_suite_completed": false
+  },
+  "ontology_gate_separation_increment": {
+    "status": "implemented_and_critical_tests_green",
+    "critical_tests_passed": 90,
+    "critical_tests_failed": 0,
+    "warnings_observed": 5,
+    "compileall": "ok",
+    "new_test_file": "tests/test_ontology_gate_separation_v92.py",
+    "new_tests_in_file": 11,
+    "dataset_specific_rules_added": false,
+    "quality_feature_teacher_gates_separated": true,
+    "structural_owl_can_feed_reloaded_when_teacher_gate_rejects": true,
+    "same_historical_budget_original_reloaded": true,
+    "manual_uploaded_fixture_mapping": {
+      "arff_feature_count": 30,
+      "mapped_features": 30,
+      "coverage": 1.0,
+      "mean_matching_confidence": 1.0,
+      "reasoner_executed_in_this_environment": false,
+      "note": "fixture manual only; not embedded in production code/tests"
+    },
+    "optional_runtime_not_validated": [
+      "PyQt6 GUI runtime",
+      "owlready2/HermiT",
+      "TensorFlow/CLEAR",
+      "Windows",
+      "Python 3.11/3.12"
+    ],
+    "confirmatory_v7_unchanged": true,
+    "confirmatory_execute_run": false
+  },
+  "semantic_audit_metrics_fix_increment": {
+    "status": "implemented_targeted_tests_green",
+    "new_test_file": "tests/test_semantic_audit_metrics_v92.py",
+    "new_tests_in_file": 6,
+    "targeted_dataset_agnostic_group_passed": 63,
+    "targeted_dataset_agnostic_group_failed": 0,
+    "additional_reloaded_group_passed": 37,
+    "compileall": "ok",
+    "ontological_teacher_duplicate_bar_fixed": true,
+    "projected_original_not_mislabeled": true,
+    "exact_control_fidelity_original_reloaded": true,
+    "semantic_node_audit": true,
+    "ontology_usage_rate": true,
+    "semantic_decision_impact": true,
+    "owl_group_coherence_for_m_of_n": true,
+    "dataset_specific_rules_added": false,
+    "full_suite_completed": false,
+    "full_suite_note": "started; no failure observed before 120s timeout, roughly 26%+ progress",
+    "owlready2_HermiT_validated": false,
+    "confirmatory_v7_unchanged": true,
+    "confirmatory_execute_run": false
+  }
+}

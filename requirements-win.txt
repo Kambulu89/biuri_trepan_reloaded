@@ -1,0 +1,3 @@
+# Compatibilidade: ambiente Windows x64 alvo do BIURI / TREPAN Reloaded.
+# Python suportado por este pacote: 3.11.x
+-r requirements-gui.txt

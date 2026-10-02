@@ -1,0 +1,5 @@
+dataset,metodo_CF,tipo_sustituto,indicador_a,indicador_b,indicador_c,total_CFs_validos_MLP,total_CFs_validos_sustituto,total_CFs_generados
+hepatitis,CLEAR,Trepan,0.3125,0.0,0.6875,64,20,102
+hepatitis,CLEAR,TrepanReload,0.328125,0.0,0.671875,64,21,102
+hepatitis,COGS,Trepan,0.4380952380952381,0.0,0.5619047619047619,105,46,105
+hepatitis,COGS,TrepanReload,0.3333333333333333,0.0,0.6666666666666666,105,35,105

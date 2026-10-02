@@ -1,0 +1,1034 @@
+[
+  {
+    "dataset": "iris",
+    "arm": "without_owl",
+    "status": "ok",
+    "oracle_health": {
+      "status": "oraculo_valido",
+      "valid": true,
+      "evaluation_scope": "training_cv_only",
+      "metric": "balanced_accuracy",
+      "folds": 3,
+      "mlp_cv_balanced_accuracy": 0.9195156695156695,
+      "mlp_cv_std": 0.04274691193197622,
+      "c45_cv_balanced_accuracy": 0.9551282051282052,
+      "c45_cv_std": 0.012212555697636884,
+      "dummy_cv_balanced_accuracy": 0.3333333333333333,
+      "dummy_cv_std": 0.0,
+      "delta_vs_dummy": 0.5861823361823362,
+      "delta_vs_c45": -0.035612535612535634,
+      "required_dummy_margin": 0.02,
+      "allowed_c45_deficit": 0.1,
+      "reasons": [],
+      "test_used": false
+    },
+    "controlled_protocol": {
+      "protocol": "paired_controlled_original_vs_reloaded_v9_2",
+      "only_experimental_variable": "semantic_ontology_extension",
+      "same_oracle": true,
+      "base_oracle_identity": 139622489240112,
+      "reloaded_oracle_adapter": "identity_same_oracle",
+      "same_seed": true,
+      "same_tree_budget": true,
+      "config": {
+        "max_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 2,
+        "min_sample": 224,
+        "max_n": 2,
+        "beam_width": 2,
+        "max_features_per_node": 10,
+        "max_queries": 700,
+        "purity_epsilon": 0.05,
+        "purity_alpha": 0.05,
+        "mofn_alpha": 0.05,
+        "local_model_alpha": 0.1,
+        "random_state": 42,
+        "semantic_gain_strength": 1.0
+      },
+      "base_feature_count": 4,
+      "reloaded_feature_count": 4,
+      "semantic_extension_active": false,
+      "original_membership_queries": 446,
+      "reloaded_membership_queries": 446,
+      "test_available_during_fit": false,
+      "test_used_for_selection": false
+    },
+    "protocol_audit": {
+      "run_id": "ablation_v9_2_no_owl:iris",
+      "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+      "events": [
+        {
+          "phase": "selection",
+          "role": "train",
+          "operation": "fit_same_oracle_original_and_reloaded",
+          "details": {
+            "seed": 42,
+            "max_queries": 700,
+            "min_sample": 224
+          }
+        },
+        {
+          "phase": "final_evaluation",
+          "role": "external_test",
+          "operation": "paired_original_vs_reloaded_final_evaluation",
+          "details": {
+            "n_samples": 38
+          }
+        }
+      ],
+      "test_used_for_selection": false,
+      "test_used_for_feature_selection": false,
+      "test_used_for_oracle_selection": false,
+      "test_used_for_hyperparameter_selection": false,
+      "test_used_for_counterfactual_selection": false,
+      "test_used_for_tree_selection": false,
+      "locked_test_used": true,
+      "final_test_evaluated": true,
+      "final_evaluation_recorded": true,
+      "valid": true
+    },
+    "metrics": {
+      "original": {
+        "accuracy": 0.8421052631578947,
+        "balanced_accuracy": 0.844017094017094,
+        "macro_f1": 0.8412698412698413,
+        "precision_macro": 0.844949494949495,
+        "recall_macro": 0.844017094017094,
+        "confusion_matrix": [
+          [
+            11,
+            1,
+            0
+          ],
+          [
+            1,
+            9,
+            3
+          ],
+          [
+            0,
+            1,
+            12
+          ]
+        ],
+        "oracle_fidelity": 0.8421052631578947,
+        "nodes": 7,
+        "depth": 3,
+        "leaves": 4,
+        "membership_queries": 446,
+        "oracle_query_count": 558
+      },
+      "reloaded": {
+        "accuracy": 0.8421052631578947,
+        "balanced_accuracy": 0.844017094017094,
+        "macro_f1": 0.8412698412698413,
+        "precision_macro": 0.844949494949495,
+        "recall_macro": 0.844017094017094,
+        "confusion_matrix": [
+          [
+            11,
+            1,
+            0
+          ],
+          [
+            1,
+            9,
+            3
+          ],
+          [
+            0,
+            1,
+            12
+          ]
+        ],
+        "oracle_fidelity": 0.8421052631578947,
+        "nodes": 7,
+        "depth": 3,
+        "leaves": 4,
+        "membership_queries": 446,
+        "oracle_query_count": 558
+      }
+    },
+    "comparison_neutral": {
+      "delta_accuracy": 0.0,
+      "delta_balanced_accuracy": 0.0,
+      "delta_macro_f1": 0.0,
+      "delta_oracle_fidelity": 0.0,
+      "delta_nodes": 0,
+      "delta_depth": 0
+    },
+    "c45_native": {
+      "accuracy": 0.9473684210526315,
+      "fidelity_to_mlp": 0.9473684210526315
+    }
+  },
+  {
+    "dataset": "iris",
+    "arm": "with_owl",
+    "status": "not_executed",
+    "reason": "owlready2/HermiT indisponível no ambiente de validação"
+  },
+  {
+    "dataset": "wine",
+    "arm": "without_owl",
+    "status": "ok",
+    "oracle_health": {
+      "status": "oraculo_valido",
+      "valid": true,
+      "evaluation_scope": "training_cv_only",
+      "metric": "balanced_accuracy",
+      "folds": 3,
+      "mlp_cv_balanced_accuracy": 0.9753086419753086,
+      "mlp_cv_std": 0.023096650535641576,
+      "c45_cv_balanced_accuracy": 0.912236746550472,
+      "c45_cv_std": 0.04272868777764421,
+      "dummy_cv_balanced_accuracy": 0.3333333333333333,
+      "dummy_cv_std": 0.0,
+      "delta_vs_dummy": 0.6419753086419753,
+      "delta_vs_c45": 0.0630718954248366,
+      "required_dummy_margin": 0.02,
+      "allowed_c45_deficit": 0.1,
+      "reasons": [],
+      "test_used": false
+    },
+    "controlled_protocol": {
+      "protocol": "paired_controlled_original_vs_reloaded_v9_2",
+      "only_experimental_variable": "semantic_ontology_extension",
+      "same_oracle": true,
+      "base_oracle_identity": 139622508248400,
+      "reloaded_oracle_adapter": "identity_same_oracle",
+      "same_seed": true,
+      "same_tree_budget": true,
+      "config": {
+        "max_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 2,
+        "min_sample": 266,
+        "max_n": 2,
+        "beam_width": 2,
+        "max_features_per_node": 10,
+        "max_queries": 700,
+        "purity_epsilon": 0.05,
+        "purity_alpha": 0.05,
+        "mofn_alpha": 0.05,
+        "local_model_alpha": 0.1,
+        "random_state": 42,
+        "semantic_gain_strength": 1.0
+      },
+      "base_feature_count": 13,
+      "reloaded_feature_count": 13,
+      "semantic_extension_active": false,
+      "original_membership_queries": 532,
+      "reloaded_membership_queries": 532,
+      "test_available_during_fit": false,
+      "test_used_for_selection": false
+    },
+    "protocol_audit": {
+      "run_id": "ablation_v9_2_no_owl:wine",
+      "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+      "events": [
+        {
+          "phase": "selection",
+          "role": "train",
+          "operation": "fit_same_oracle_original_and_reloaded",
+          "details": {
+            "seed": 42,
+            "max_queries": 700,
+            "min_sample": 266
+          }
+        },
+        {
+          "phase": "final_evaluation",
+          "role": "external_test",
+          "operation": "paired_original_vs_reloaded_final_evaluation",
+          "details": {
+            "n_samples": 45
+          }
+        }
+      ],
+      "test_used_for_selection": false,
+      "test_used_for_feature_selection": false,
+      "test_used_for_oracle_selection": false,
+      "test_used_for_hyperparameter_selection": false,
+      "test_used_for_counterfactual_selection": false,
+      "test_used_for_tree_selection": false,
+      "locked_test_used": true,
+      "final_test_evaluated": true,
+      "final_evaluation_recorded": true,
+      "valid": true
+    },
+    "metrics": {
+      "original": {
+        "accuracy": 0.9555555555555556,
+        "balanced_accuracy": 0.9500000000000001,
+        "macro_f1": 0.9564691338541257,
+        "precision_macro": 0.9666666666666667,
+        "recall_macro": 0.9500000000000001,
+        "confusion_matrix": [
+          [
+            14,
+            1,
+            0
+          ],
+          [
+            0,
+            18,
+            0
+          ],
+          [
+            0,
+            1,
+            11
+          ]
+        ],
+        "oracle_fidelity": 0.9555555555555556,
+        "nodes": 7,
+        "depth": 2,
+        "leaves": 4,
+        "membership_queries": 532,
+        "oracle_query_count": 665
+      },
+      "reloaded": {
+        "accuracy": 0.9555555555555556,
+        "balanced_accuracy": 0.9500000000000001,
+        "macro_f1": 0.9564691338541257,
+        "precision_macro": 0.9666666666666667,
+        "recall_macro": 0.9500000000000001,
+        "confusion_matrix": [
+          [
+            14,
+            1,
+            0
+          ],
+          [
+            0,
+            18,
+            0
+          ],
+          [
+            0,
+            1,
+            11
+          ]
+        ],
+        "oracle_fidelity": 0.9555555555555556,
+        "nodes": 7,
+        "depth": 2,
+        "leaves": 4,
+        "membership_queries": 532,
+        "oracle_query_count": 665
+      }
+    },
+    "comparison_neutral": {
+      "delta_accuracy": 0.0,
+      "delta_balanced_accuracy": 0.0,
+      "delta_macro_f1": 0.0,
+      "delta_oracle_fidelity": 0.0,
+      "delta_nodes": 0,
+      "delta_depth": 0
+    },
+    "c45_native": {
+      "accuracy": 0.9333333333333333,
+      "fidelity_to_mlp": 0.9333333333333333
+    }
+  },
+  {
+    "dataset": "wine",
+    "arm": "with_owl",
+    "status": "not_executed",
+    "reason": "owlready2/HermiT indisponível no ambiente de validação"
+  },
+  {
+    "dataset": "breast_cancer",
+    "arm": "without_owl",
+    "status": "ok",
+    "oracle_health": {
+      "status": "oraculo_valido",
+      "valid": true,
+      "evaluation_scope": "training_cv_only",
+      "metric": "balanced_accuracy",
+      "folds": 3,
+      "mlp_cv_balanced_accuracy": 0.963145896656535,
+      "mlp_cv_std": 0.013208922363254778,
+      "c45_cv_balanced_accuracy": 0.9003292806484295,
+      "c45_cv_std": 0.0758714491905861,
+      "dummy_cv_balanced_accuracy": 0.5,
+      "dummy_cv_std": 0.0,
+      "delta_vs_dummy": 0.46314589665653505,
+      "delta_vs_c45": 0.06281661600810551,
+      "required_dummy_margin": 0.02,
+      "allowed_c45_deficit": 0.1,
+      "reasons": [],
+      "test_used": false
+    },
+    "controlled_protocol": {
+      "protocol": "paired_controlled_original_vs_reloaded_v9_2",
+      "only_experimental_variable": "semantic_ontology_extension",
+      "same_oracle": true,
+      "base_oracle_identity": 139622487141216,
+      "reloaded_oracle_adapter": "identity_same_oracle",
+      "same_seed": true,
+      "same_tree_budget": true,
+      "config": {
+        "max_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 2,
+        "min_sample": 450,
+        "max_n": 2,
+        "beam_width": 2,
+        "max_features_per_node": 10,
+        "max_queries": 900,
+        "purity_epsilon": 0.05,
+        "purity_alpha": 0.05,
+        "mofn_alpha": 0.05,
+        "local_model_alpha": 0.1,
+        "random_state": 42,
+        "semantic_gain_strength": 1.0
+      },
+      "base_feature_count": 30,
+      "reloaded_feature_count": 30,
+      "semantic_extension_active": false,
+      "original_membership_queries": 900,
+      "reloaded_membership_queries": 900,
+      "test_available_during_fit": false,
+      "test_used_for_selection": false
+    },
+    "protocol_audit": {
+      "run_id": "ablation_v9_2_no_owl:breast_cancer",
+      "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+      "events": [
+        {
+          "phase": "selection",
+          "role": "train",
+          "operation": "fit_same_oracle_original_and_reloaded",
+          "details": {
+            "seed": 42,
+            "max_queries": 900,
+            "min_sample": 450
+          }
+        },
+        {
+          "phase": "final_evaluation",
+          "role": "external_test",
+          "operation": "paired_original_vs_reloaded_final_evaluation",
+          "details": {
+            "n_samples": 75
+          }
+        }
+      ],
+      "test_used_for_selection": false,
+      "test_used_for_feature_selection": false,
+      "test_used_for_oracle_selection": false,
+      "test_used_for_hyperparameter_selection": false,
+      "test_used_for_counterfactual_selection": false,
+      "test_used_for_tree_selection": false,
+      "locked_test_used": true,
+      "final_test_evaluated": true,
+      "final_evaluation_recorded": true,
+      "valid": true
+    },
+    "metrics": {
+      "original": {
+        "accuracy": 0.8933333333333333,
+        "balanced_accuracy": 0.8643617021276595,
+        "macro_f1": 0.88,
+        "precision_macro": 0.9112349914236707,
+        "recall_macro": 0.8643617021276595,
+        "confusion_matrix": [
+          [
+            21,
+            7
+          ],
+          [
+            1,
+            46
+          ]
+        ],
+        "oracle_fidelity": 0.9066666666666666,
+        "nodes": 5,
+        "depth": 2,
+        "leaves": 3,
+        "membership_queries": 900,
+        "oracle_query_count": 1125
+      },
+      "reloaded": {
+        "accuracy": 0.8933333333333333,
+        "balanced_accuracy": 0.8643617021276595,
+        "macro_f1": 0.88,
+        "precision_macro": 0.9112349914236707,
+        "recall_macro": 0.8643617021276595,
+        "confusion_matrix": [
+          [
+            21,
+            7
+          ],
+          [
+            1,
+            46
+          ]
+        ],
+        "oracle_fidelity": 0.9066666666666666,
+        "nodes": 5,
+        "depth": 2,
+        "leaves": 3,
+        "membership_queries": 900,
+        "oracle_query_count": 1125
+      }
+    },
+    "comparison_neutral": {
+      "delta_accuracy": 0.0,
+      "delta_balanced_accuracy": 0.0,
+      "delta_macro_f1": 0.0,
+      "delta_oracle_fidelity": 0.0,
+      "delta_nodes": 0,
+      "delta_depth": 0
+    },
+    "c45_native": {
+      "accuracy": 0.9066666666666666,
+      "fidelity_to_mlp": 0.8933333333333333
+    }
+  },
+  {
+    "dataset": "breast_cancer",
+    "arm": "with_owl",
+    "status": "not_executed",
+    "reason": "owlready2/HermiT indisponível no ambiente de validação"
+  },
+  {
+    "dataset": "diabetes_progression",
+    "arm": "without_owl",
+    "status": "ok",
+    "oracle_health": {
+      "status": "oraculo_valido",
+      "valid": true,
+      "evaluation_scope": "training_cv_only",
+      "metric": "balanced_accuracy",
+      "folds": 3,
+      "mlp_cv_balanced_accuracy": 0.6043148411569463,
+      "mlp_cv_std": 0.023131324100845705,
+      "c45_cv_balanced_accuracy": 0.6133238501659554,
+      "c45_cv_std": 0.03998598919032614,
+      "dummy_cv_balanced_accuracy": 0.5,
+      "dummy_cv_std": 0.0,
+      "delta_vs_dummy": 0.10431484115694634,
+      "delta_vs_c45": -0.009009009009009028,
+      "required_dummy_margin": 0.02,
+      "allowed_c45_deficit": 0.1,
+      "reasons": [],
+      "test_used": false
+    },
+    "controlled_protocol": {
+      "protocol": "paired_controlled_original_vs_reloaded_v9_2",
+      "only_experimental_variable": "semantic_ontology_extension",
+      "same_oracle": true,
+      "base_oracle_identity": 139622486779504,
+      "reloaded_oracle_adapter": "identity_same_oracle",
+      "same_seed": true,
+      "same_tree_budget": true,
+      "config": {
+        "max_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 2,
+        "min_sample": 450,
+        "max_n": 2,
+        "beam_width": 2,
+        "max_features_per_node": 10,
+        "max_queries": 900,
+        "purity_epsilon": 0.05,
+        "purity_alpha": 0.05,
+        "mofn_alpha": 0.05,
+        "local_model_alpha": 0.1,
+        "random_state": 42,
+        "semantic_gain_strength": 1.0
+      },
+      "base_feature_count": 10,
+      "reloaded_feature_count": 10,
+      "semantic_extension_active": false,
+      "original_membership_queries": 844,
+      "reloaded_membership_queries": 844,
+      "test_available_during_fit": false,
+      "test_used_for_selection": false
+    },
+    "protocol_audit": {
+      "run_id": "ablation_v9_2_no_owl:diabetes_progression",
+      "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+      "events": [
+        {
+          "phase": "selection",
+          "role": "train",
+          "operation": "fit_same_oracle_original_and_reloaded",
+          "details": {
+            "seed": 42,
+            "max_queries": 900,
+            "min_sample": 450
+          }
+        },
+        {
+          "phase": "final_evaluation",
+          "role": "external_test",
+          "operation": "paired_original_vs_reloaded_final_evaluation",
+          "details": {
+            "n_samples": 75
+          }
+        }
+      ],
+      "test_used_for_selection": false,
+      "test_used_for_feature_selection": false,
+      "test_used_for_oracle_selection": false,
+      "test_used_for_hyperparameter_selection": false,
+      "test_used_for_counterfactual_selection": false,
+      "test_used_for_tree_selection": false,
+      "locked_test_used": true,
+      "final_test_evaluated": true,
+      "final_evaluation_recorded": true,
+      "valid": true
+    },
+    "metrics": {
+      "original": {
+        "accuracy": 0.7466666666666667,
+        "balanced_accuracy": 0.7467994310099573,
+        "macro_f1": 0.7466666666666667,
+        "precision_macro": 0.7467994310099573,
+        "recall_macro": 0.7467994310099573,
+        "confusion_matrix": [
+          [
+            28,
+            10
+          ],
+          [
+            9,
+            28
+          ]
+        ],
+        "oracle_fidelity": 0.7333333333333333,
+        "nodes": 7,
+        "depth": 3,
+        "leaves": 4,
+        "membership_queries": 844,
+        "oracle_query_count": 1069
+      },
+      "reloaded": {
+        "accuracy": 0.7466666666666667,
+        "balanced_accuracy": 0.7467994310099573,
+        "macro_f1": 0.7466666666666667,
+        "precision_macro": 0.7467994310099573,
+        "recall_macro": 0.7467994310099573,
+        "confusion_matrix": [
+          [
+            28,
+            10
+          ],
+          [
+            9,
+            28
+          ]
+        ],
+        "oracle_fidelity": 0.7333333333333333,
+        "nodes": 7,
+        "depth": 3,
+        "leaves": 4,
+        "membership_queries": 844,
+        "oracle_query_count": 1069
+      }
+    },
+    "comparison_neutral": {
+      "delta_accuracy": 0.0,
+      "delta_balanced_accuracy": 0.0,
+      "delta_macro_f1": 0.0,
+      "delta_oracle_fidelity": 0.0,
+      "delta_nodes": 0,
+      "delta_depth": 0
+    },
+    "c45_native": {
+      "accuracy": 0.76,
+      "fidelity_to_mlp": 0.6933333333333334
+    }
+  },
+  {
+    "dataset": "diabetes_progression",
+    "arm": "with_owl",
+    "status": "not_executed",
+    "reason": "owlready2/HermiT indisponível no ambiente de validação"
+  },
+  {
+    "dataset": "digits",
+    "arm": "without_owl",
+    "status": "ok",
+    "oracle_health": {
+      "status": "oraculo_valido",
+      "valid": true,
+      "evaluation_scope": "training_cv_only",
+      "metric": "balanced_accuracy",
+      "folds": 3,
+      "mlp_cv_balanced_accuracy": 0.8940476190476191,
+      "mlp_cv_std": 0.027094777801764343,
+      "c45_cv_balanced_accuracy": 0.6767857142857144,
+      "c45_cv_std": 0.056242913385798635,
+      "dummy_cv_balanced_accuracy": 0.10000000000000002,
+      "dummy_cv_std": 1.3877787807814457e-17,
+      "delta_vs_dummy": 0.7940476190476191,
+      "delta_vs_c45": 0.21726190476190466,
+      "required_dummy_margin": 0.02,
+      "allowed_c45_deficit": 0.1,
+      "reasons": [],
+      "test_used": false
+    },
+    "controlled_protocol": {
+      "protocol": "paired_controlled_original_vs_reloaded_v9_2",
+      "only_experimental_variable": "semantic_ontology_extension",
+      "same_oracle": true,
+      "base_oracle_identity": 139622489984144,
+      "reloaded_oracle_adapter": "identity_same_oracle",
+      "same_seed": true,
+      "same_tree_budget": true,
+      "config": {
+        "max_nodes": 7,
+        "max_depth": 3,
+        "min_samples_leaf": 2,
+        "min_sample": 450,
+        "max_n": 2,
+        "beam_width": 2,
+        "max_features_per_node": 10,
+        "max_queries": 900,
+        "purity_epsilon": 0.05,
+        "purity_alpha": 0.05,
+        "mofn_alpha": 0.05,
+        "local_model_alpha": 0.1,
+        "random_state": 42,
+        "semantic_gain_strength": 1.0
+      },
+      "base_feature_count": 64,
+      "reloaded_feature_count": 64,
+      "semantic_extension_active": false,
+      "original_membership_queries": 900,
+      "reloaded_membership_queries": 900,
+      "test_available_during_fit": false,
+      "test_used_for_selection": false
+    },
+    "protocol_audit": {
+      "run_id": "ablation_v9_2_no_owl:digits",
+      "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+      "events": [
+        {
+          "phase": "selection",
+          "role": "train",
+          "operation": "fit_same_oracle_original_and_reloaded",
+          "details": {
+            "seed": 42,
+            "max_queries": 900,
+            "min_sample": 450
+          }
+        },
+        {
+          "phase": "final_evaluation",
+          "role": "external_test",
+          "operation": "paired_original_vs_reloaded_final_evaluation",
+          "details": {
+            "n_samples": 75
+          }
+        }
+      ],
+      "test_used_for_selection": false,
+      "test_used_for_feature_selection": false,
+      "test_used_for_oracle_selection": false,
+      "test_used_for_hyperparameter_selection": false,
+      "test_used_for_counterfactual_selection": false,
+      "test_used_for_tree_selection": false,
+      "locked_test_used": true,
+      "final_test_evaluated": true,
+      "final_evaluation_recorded": true,
+      "valid": true
+    },
+    "metrics": {
+      "original": {
+        "accuracy": 0.3466666666666667,
+        "balanced_accuracy": 0.35892857142857143,
+        "macro_f1": 0.20472831765935212,
+        "precision_macro": 0.1449621212121212,
+        "recall_macro": 0.35892857142857143,
+        "confusion_matrix": [
+          [
+            7,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            5
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            2,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            4,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            6
+          ]
+        ],
+        "oracle_fidelity": 0.36,
+        "nodes": 7,
+        "depth": 2,
+        "leaves": 4,
+        "membership_queries": 900,
+        "oracle_query_count": 1125
+      },
+      "reloaded": {
+        "accuracy": 0.3466666666666667,
+        "balanced_accuracy": 0.35892857142857143,
+        "macro_f1": 0.20472831765935212,
+        "precision_macro": 0.1449621212121212,
+        "recall_macro": 0.35892857142857143,
+        "confusion_matrix": [
+          [
+            7,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            5
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            2,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            0,
+            6
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2,
+            4,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            6
+          ]
+        ],
+        "oracle_fidelity": 0.36,
+        "nodes": 7,
+        "depth": 2,
+        "leaves": 4,
+        "membership_queries": 900,
+        "oracle_query_count": 1125
+      }
+    },
+    "comparison_neutral": {
+      "delta_accuracy": 0.0,
+      "delta_balanced_accuracy": 0.0,
+      "delta_macro_f1": 0.0,
+      "delta_oracle_fidelity": 0.0,
+      "delta_nodes": 0,
+      "delta_depth": 0
+    },
+    "c45_native": {
+      "accuracy": 0.64,
+      "fidelity_to_mlp": 0.6133333333333333
+    }
+  },
+  {
+    "dataset": "digits",
+    "arm": "with_owl",
+    "status": "not_executed",
+    "reason": "owlready2/HermiT indisponível no ambiente de validação"
+  }
+]

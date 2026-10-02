@@ -1,0 +1,44 @@
+{
+  "schema_version": "8.0",
+  "random_state": 42,
+  "external_test_policy": "locked_and_never_used_for_selection",
+  "semantic_utility_gate": {
+    "cv_folds": 5,
+    "min_predictive_gain": 0.002,
+    "max_noninferiority_loss": 0.0,
+    "min_selection_stability": 0.4,
+    "max_semantic_features": 40,
+    "max_complexity_ratio": 0.6,
+    "balanced_accuracy_weight": 0.35,
+    "macro_f1_weight": 0.35,
+    "accuracy_weight": 0.15,
+    "minority_recall_weight": 0.15
+  },
+  "hybrid_teacher": {
+    "weight_grid_step": 0.1,
+    "minimum_gain_over_original": 0.005,
+    "probabilities_for_real_training_rows": "out_of_fold_only"
+  },
+  "hybrid_distillation": {
+    "real_label_weight": 0.6,
+    "teacher_weight": 0.3,
+    "semantic_confidence_weight": 0.1
+  },
+  "canonical_trepan_split": {
+    "real_label_gain_weight": 0.38,
+    "class_balance_gain_weight": 0.2,
+    "oracle_gain_weight": 0.2,
+    "semantic_weight": 0.12,
+    "stability_weight": 0.1
+  },
+  "confirmatory_benchmark": {
+    "status": "BLOCKED",
+    "required": [
+      "all_tests_passed",
+      "externally_governed_versioned_licensed_ontology",
+      "quality_gate_accepted",
+      "frozen_protocol",
+      "independent_external_test"
+    ]
+  }
+}

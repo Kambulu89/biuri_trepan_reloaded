@@ -1,0 +1,199 @@
+"""Pipeline de produção V9.2: dataset-agnostic, OWL opcional e protocolo pareado.
+
+Nenhum nome de dataset é permitido neste módulo. A OWL, quando fornecida, só
+pode alterar o braço Reloaded através da estrutura semântica; o oráculo, seed,
+orçamento e dados permanecem iguais aos do TREPAN Original.
+"""
+from __future__ import annotations
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Any, Dict, Optional
+import hashlib, json, platform, sys
+
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+from core.data_contract import build_data_contract
+from core.preprocessing import DataPreprocessor
+from core.mlp_factory import build_mlp_for_data
+from core.mlp_convergence import fit_with_convergence, extract_mlp_convergence
+from core.c45_j48_tree import C45Classifier
+from core.evaluation_protocol import classification_metrics
+from core.controlled_trepan_experiment import (
+    ControlledTrepanConfig, fit_controlled_trepan_pair,
+    evaluate_controlled_trepan_pair, oracle_health_gate,
+)
+from core.ontology_quality import OntologyQualityGate
+from core.ontology_reasoner import run_owl_reasoner
+from core.ontology_semantic_graph import OntologySemanticGraph
+from core.semantic_contribution_gate import SemanticContributionGate
+from core.trepan_scientific_tuning import ScientificTrepanSearchConfig, tune_scientific_trepan
+from core.scientific_validation import build_scientific_validation_report
+from core.scientific_errors import DataContractError, OntologyQualityError
+
+
+def _hash_dataframe(df: pd.DataFrame) -> str:
+    values = pd.util.hash_pandas_object(df, index=True).to_numpy(dtype=np.uint64)
+    return hashlib.sha256(values.tobytes()).hexdigest()
+
+
+def _sha256_file(path: Optional[str | Path]) -> Optional[str]:
+    if not path: return None
+    p=Path(path)
+    if not p.exists(): return None
+    h=hashlib.sha256()
+    with p.open('rb') as fh:
+        for chunk in iter(lambda: fh.read(1024*1024), b''): h.update(chunk)
+    return h.hexdigest()
+
+
+def _drop_missing_target(df, target, missing_tokens):
+    tokens={str(x).strip().lower() for x in missing_tokens}
+    def missing(v):
+        return v is None or pd.isna(v) or (isinstance(v,str) and v.strip().lower() in tokens)
+    return df.loc[~df[target].map(missing)].reset_index(drop=True)
+
+
+def _load_ontology(path):
+    try:
+        from owlready2 import get_ontology
+    except ImportError as exc:
+        raise OntologyQualityError("OWL requer owlready2. Instale o extra de ontologia antes do treino.") from exc
+    return get_ontology(str(Path(path).resolve())).load()
+
+
+def _semantic_inputs(pre: DataPreprocessor, quality: Dict[str,Any], graph: OntologySemanticGraph):
+    matches={m['feature']:m for m in quality.get('matches',[]) if m.get('accepted')}
+    names=list(map(str,pre.get_feature_names_out()))
+    sources=[str(x.get('source_column')) for x in pre.feature_origins]
+    weights=[]; groups=[]; entities=[]
+    for src in sources:
+        match=matches.get(src)
+        score=float(match.get('score',0.0)) if match else 0.0
+        # Peso absoluto moderado; mesmo quando todos são iguais, grupos/grafo
+        # continuam a fornecer informação relacional ao m-of-n.
+        weights.append(1.0 + 0.25*score if match else 1.0)
+        groups.append(graph.primary_group(src) if match else None)
+        entities.append(graph.feature_to_entity.get(src) if match else None)
+    n=len(names); matrix=np.zeros((n,n),dtype=float)
+    for i,a in enumerate(entities):
+        matrix[i,i]=1.0
+        if not a: continue
+        for j,b in enumerate(entities):
+            if i!=j and b: matrix[i,j]=graph.relatedness(a,b)
+    return names, np.asarray(weights,float), groups, matrix
+
+
+def train_production_dataframe(
+    df: pd.DataFrame, *, target, out_dir: str | Path,
+    seed: int=42, test_size: float=0.25, owl_path: Optional[str|Path]=None,
+    ontology=None, reasoner_report: Optional[Dict[str,Any]]=None,
+    require_reasoner: bool=True, trepan_config: Optional[ControlledTrepanConfig]=None,
+    scientific_tuning: bool=True,
+    trepan_search: Optional[ScientificTrepanSearchConfig]=None,
+) -> Dict[str,Any]:
+    out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
+    contract=build_data_contract(df,target)
+    if not contract.target_confirmed:
+        raise DataContractError("A coluna-alvo deve ser confirmada explicitamente.")
+    clean=_drop_missing_target(df,contract.target,contract.missing_tokens)
+    y=clean[contract.target].to_numpy(); X=clean.drop(columns=[contract.target])
+    _,counts=np.unique(y,return_counts=True)
+    if len(counts)<2 or counts.min()<2: raise DataContractError("O alvo precisa de duas classes com pelo menos duas amostras por classe.")
+    idx=np.arange(len(clean)); tr,te=train_test_split(idx,test_size=test_size,random_state=seed,stratify=y)
+    Xtr,Xte=X.iloc[tr].copy(),X.iloc[te].copy(); ytr,yte=y[tr],y[te]
+    pre=DataPreprocessor(contract,scale_numeric=False).fit(Xtr,ytr)
+    Ztr,Zte=pre.transform(Xtr),pre.transform(Xte); model_names=list(map(str,pre.get_feature_names_out()))
+    mlp=build_mlp_for_data(Ztr,ytr,random_state=seed); fit_with_convergence(mlp,Ztr,ytr)
+    health=oracle_health_gate(mlp,Ztr,ytr,random_state=seed)
+    c45=C45Classifier(random_state=seed).fit(Xtr.to_numpy(dtype=object),ytr)
+
+    cfg=trepan_config or ControlledTrepanConfig(
+        max_nodes=31,max_depth=31,min_samples_leaf=2,
+        min_sample=max(len(Ztr),min(1000,max(120,len(Ztr)*3))),
+        max_n=3,beam_width=2,max_features_per_node=min(20,max(4,Ztr.shape[1])),
+        max_queries=2000,random_state=seed,
+    )
+
+    quality=None; graph=None; semantic_weights=None; semantic_groups=None; relation_matrix=None
+    if owl_path or ontology is not None:
+        ontology=ontology or _load_ontology(owl_path)
+        if reasoner_report is None:
+            reasoner_report=run_owl_reasoner(ontology) if require_reasoner else {"executed":False,"consistent":None}
+        original_feature_names=[c.name for c in contract.columns if c.name!=contract.target and c.treatment!='descartar']
+        q=OntologyQualityGate().evaluate(original_feature_names,ontology,reasoner_report=reasoner_report,require_reasoner=require_reasoner)
+        quality=q.to_dict()
+        if quality['accepted']:
+            graph=OntologySemanticGraph.from_ontology(ontology,accepted_matches=quality['matches'])
+            model_names,semantic_weights,semantic_groups,relation_matrix=_semantic_inputs(pre,quality,graph)
+
+    tuning_report = None
+    if scientific_tuning:
+        tuning_report = tune_scientific_trepan(
+            Ztr, ytr, oracle=mlp, feature_names=model_names, base_config=cfg,
+            semantic_feature_weights=semantic_weights,
+            semantic_feature_groups=semantic_groups,
+            semantic_relatedness_matrix=relation_matrix,
+            search=trepan_search or ScientificTrepanSearchConfig(),
+            ontology_graph=graph,
+        )
+        cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
+
+    pair=fit_controlled_trepan_pair(
+        Ztr,ytr,oracle=mlp,feature_names=model_names,config=cfg,
+        semantic_feature_weights=semantic_weights,
+        semantic_feature_groups=semantic_groups,
+        semantic_relatedness_matrix=relation_matrix,
+        run_id=f"production_v9_2_seed_{seed}",
+        ontology_graph=graph,
+    )
+    evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte)
+    mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
+    evaluation['models']['mlp_original']=classification_metrics(yte,mlp_pred)
+    evaluation['models']['c45_native']=classification_metrics(yte,c45_pred)
+    original_pred=pair.original.predict(Zte); reloaded_pred=pair.reloaded.predict(Zte)
+    evaluation['scientific_validation']=build_scientific_validation_report(
+        yte, mlp_pred, {
+            'trepan_reloaded':reloaded_pred,
+            'trepan_original':original_pred,
+            'c45_j48':c45_pred,
+        }, random_state=seed, n_bootstrap=1000,
+    )
+    evaluation['oracle_health']=health
+    evaluation['trepan_scientific_tuning']=tuning_report
+    evaluation['ontology_quality']=quality
+    evaluation['semantic_graph']=graph.summary() if graph else None
+    contribution=SemanticContributionGate().evaluate(
+        ontology_quality=quality,
+        semantic_audit=evaluation.get('semantic_audit'),comparison=evaluation.get('comparison'),
+        original_metrics=evaluation['models']['original'],reloaded_metrics=evaluation['models']['reloaded'],
+    ) if quality else {"accepted":False,"status":"NO_ONTOLOGY","reasons":["ontology_not_provided"]}
+    evaluation['semantic_contribution_gate']=contribution
+
+    bundle={
+        'format_version':'biuri-v9.2-production-5-semantic-real-gain', 'contract':contract, 'preprocessor':pre,
+        'mlp_original':mlp,'c45_native':c45,'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,
+        'classes':list(map(str,getattr(mlp,'classes_',[]))),
+    }
+    joblib.dump(bundle,out/'production_bundle.joblib')
+    manifest={
+        'format_version':'biuri-v9.2-production-5-semantic-real-gain','seed':seed,'target':contract.target,
+        'dataset_sha256':_hash_dataframe(clean),'owl_sha256':_sha256_file(owl_path),
+        'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,
+        'train_rows':len(tr),'test_rows':len(te),'test_used_for_selection':False,
+        'tree_runtime_policy':'historical_trepan_only_no_cart',
+        'ontology_used':bool(quality and quality.get('accepted')),
+        'semantic_contribution_status':contribution.get('status'),
+        'claim_guard':evaluation['scientific_validation'].get('claim_guard'),
+        'convergence':extract_mlp_convergence(mlp),
+        'scientific_tuning': bool(scientific_tuning),
+        'trepan_selected_config': asdict(cfg) if hasattr(cfg, '__dataclass_fields__') else str(cfg),
+    }
+    (out/'manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False,default=str),encoding='utf-8')
+    report={'manifest':manifest,'contract':contract.to_dict(),'split':{'seed':seed,'train_indices':tr.tolist(),'test_indices':te.tolist()},'evaluation':evaluation,'semantic_graph':graph.to_dict() if graph else None}
+    (out/'production_report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False,default=str),encoding='utf-8')
+    return report
+
+__all__=['train_production_dataframe']

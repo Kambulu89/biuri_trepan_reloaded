@@ -1,0 +1,17 @@
+{
+  "dataset": "german_credit",
+  "mlp_accuracy_test": 0.7566666666666667,
+  "trepan_fidelity": 0.9940000000000001,
+  "trepan_reloaded_fidelity": 0.927,
+  "coincident_instances": 639,
+  "total_train_instances": 700,
+  "selected_instances": 230,
+  "timers": {
+    "load_data": 0.007245899992994964,
+    "train_mlp": 16.798663900000975,
+    "extract_trepan": 0.4939756999956444,
+    "extract_trepan_reloaded": 0.2771492999745533,
+    "select_instances": 0.014642299967817962,
+    "total": 17.594395700027235
+  }
+}

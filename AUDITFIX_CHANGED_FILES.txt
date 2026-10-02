@@ -1,0 +1,40 @@
+BIURI / TREPAN Reloaded V9.1 — ficheiros alterados/adicionados pela remediação da auditoria
+
+ALTERADOS
+- core/confirmatory_benchmark.py
+- core/metrics_comparator.py
+- core/metrics_view_model.py
+- core/mlp_optimizer.py
+- core/mlp_trainer.py
+- core/ontology_acceptance.py
+- core/ontology_processor.py
+- core/pipeline_audit.py
+- core/semantic_utility_gate.py
+- core/trepan.py
+- core/trepan_extractor.py
+- core/trepan_reloaded_extractor.py
+- counterfactuals/clear/CLEAR_perturbations.py
+- docs/CALCULO_PRECISAO_FIDELIDADE.md
+- docs/SCIENTIFIC_SUPERIORITY_PIPELINE_V7.md
+- gui/biuri_app_complete.py
+- gui/pyqt_metrics_visualizer.py
+- pytest.ini
+- requirements-test.txt
+- requirements-win.txt
+
+ADICIONADOS
+- .github/workflows/windows-ci.yml
+- AUDIT_REMEDIATION_V9_1.md
+- VALIDATION_CURRENT_ENVIRONMENT.md
+- AUDITFIX_CHANGED_FILES.txt
+- core/mlp_convergence.py
+- core/protocol_audit.py
+- core/surrogate_acceptance.py
+- pyproject.toml
+- requirements-gui.txt
+- requirements-runtime.txt
+- scripts/environment_preflight.py
+- scripts/run_confirmatory_locked.py
+- scripts/test_clean_windows.ps1
+- tests/test_audit_remediation_v9_1.py
+- results/audit_remediation_v9_1/* (evidências desta execução)

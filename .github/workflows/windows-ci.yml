@@ -1,0 +1,39 @@
+name: Windows scientific regression
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows-tests:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    env:
+      QT_QPA_PLATFORM: offscreen
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Install package and test dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-test.txt
+          python -m pip install -e . --no-deps
+      - name: Target-environment preflight
+        run: python scripts/environment_preflight.py --gui --owl --json results/environment_preflight_windows.json
+      - name: Compile
+        run: python -m compileall -q core gui counterfactuals tests
+      - name: Full suite, including GUI tests when available
+        run: python -m pytest -q --cov=core --cov=counterfactuals --cov-report=xml

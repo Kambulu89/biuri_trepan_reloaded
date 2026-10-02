@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/trepan-benchmark/wine"
+         xmlns="http://example.org/trepan-benchmark/wine#">
+
+<owl:Ontology rdf:about="http://example.org/trepan-benchmark/wine">
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox de benchmark: contém semântica de domínio e zero instâncias do dataset.</rdfs:comment>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A estrutura foi definida apenas a partir da descrição das features; rótulos, partições e resultados do benchmark não foram consultados.</rdfs:comment>
+</owl:Ontology>
+
+<owl:DatatypeProperty rdf:about="#hasMalicAcid">
+  <rdfs:domain rdf:resource="#AcidityProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">malic_acid</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAsh">
+  <rdfs:domain rdf:resource="#AcidityProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ash</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAlcalinityOfAsh">
+  <rdfs:domain rdf:resource="#AcidityProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">alcalinity_of_ash</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTotalPhenols">
+  <rdfs:domain rdf:resource="#PhenolicProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">total_phenols</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFlavanoids">
+  <rdfs:domain rdf:resource="#PhenolicProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">flavanoids</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNonflavanoidPhenols">
+  <rdfs:domain rdf:resource="#PhenolicProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nonflavanoid_phenols</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasProanthocyanins">
+  <rdfs:domain rdf:resource="#PhenolicProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">proanthocyanins</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOd280Od315OfDilutedWines">
+  <rdfs:domain rdf:resource="#PhenolicProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">od280/od315_of_diluted_wines</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAlcohol">
+  <rdfs:domain rdf:resource="#PhysicalChemicalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">alcohol</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMagnesium">
+  <rdfs:domain rdf:resource="#PhysicalChemicalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">magnesium</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasColorIntensity">
+  <rdfs:domain rdf:resource="#PhysicalChemicalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">color_intensity</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasHue">
+  <rdfs:domain rdf:resource="#PhysicalChemicalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hue</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasProline">
+  <rdfs:domain rdf:resource="#PhysicalChemicalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">proline</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#DomainMeasurement">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">wine domain measurement</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#AcidityProfile">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AcidityProfile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PhenolicProfile">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PhenolicProfile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PhysicalChemicalProfile">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PhysicalChemicalProfile</rdfs:label>
+</owl:Class>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#AcidityProfile"/>
+    <rdf:Description rdf:about="#PhenolicProfile"/>
+    <rdf:Description rdf:about="#PhysicalChemicalProfile"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>

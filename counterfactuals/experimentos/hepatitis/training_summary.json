@@ -1,0 +1,17 @@
+{
+  "dataset": "hepatitis",
+  "mlp_accuracy_test": 0.7021276595744681,
+  "trepan_fidelity": 0.991,
+  "trepan_reloaded_fidelity": 0.991,
+  "coincident_instances": 104,
+  "total_train_instances": 108,
+  "selected_instances": 35,
+  "timers": {
+    "load_data": 0.005069499951787293,
+    "train_mlp": 0.2888702000491321,
+    "extract_trepan": 0.06720839999616146,
+    "extract_trepan_reloaded": 0.06938869995065033,
+    "select_instances": 0.005522400024347007,
+    "total": 0.43889929994475096
+  }
+}

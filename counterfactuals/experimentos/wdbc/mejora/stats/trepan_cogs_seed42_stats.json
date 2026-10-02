@@ -1,0 +1,12 @@
+{
+  "total_cfs": 342,
+  "valid_mlp": 342,
+  "valid_tree": 24,
+  "coincident": 24,
+  "divergent": 0,
+  "used": 10,
+  "used_real_anchor": 79,
+  "density_discarded": 18,
+  "type_C_used": 0,
+  "frontier_factor_mean": 1.0
+}

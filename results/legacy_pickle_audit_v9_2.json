@@ -1,0 +1,334 @@
+[
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/y_train_enc_hepatitis.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/mlp_hepatitis.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/X_train_enc_hepatitis.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/trepan_hepatitis.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/y_test_enc_hepatitis.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/pipeline_state_hepatitis.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/mlp_trainer_hepatitis.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/trepan_reloaded_hepatitis.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/modelos/X_test_enc_hepatitis.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/mejora/modelos/trepan_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/hepatitis/mejora/modelos/trepanreload_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/pipeline_state_wdbc.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/X_train_enc_wdbc.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/trepan_wdbc.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/y_train_enc_wdbc.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/y_test_enc_wdbc.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/trepan_reloaded_wdbc.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/mlp_trainer_wdbc.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/mlp_wdbc.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/modelos/X_test_enc_wdbc.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/mejora/modelos/trepan_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wdbc/mejora/modelos/trepanreload_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/y_test_enc_sonar.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/trepan_sonar.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/mlp_trainer_sonar.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/mlp_sonar.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/pipeline_state_sonar.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/y_train_enc_sonar.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/X_test_enc_sonar.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/X_train_enc_sonar.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/modelos/trepan_reloaded_sonar.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/mejora/modelos/trepan_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/sonar/mejora/modelos/trepanreload_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/trepan_reloaded_wine.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/X_train_enc_wine.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/y_test_enc_wine.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/pipeline_state_wine.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/mlp_wine.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/trepan_wine.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/mlp_trainer_wine.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/y_train_enc_wine.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/modelos/X_test_enc_wine.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/mejora/modelos/trepan_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/wine/mejora/modelos/trepanreload_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/trepan_reloaded_german_credit.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/mlp_german_credit.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/y_train_enc_german_credit.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/trepan_german_credit.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/pipeline_state_german_credit.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/y_test_enc_german_credit.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/mlp_trainer_german_credit.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/X_test_enc_german_credit.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/german_credit/modelos/X_train_enc_german_credit.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/trepan_iris.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/X_train_enc_iris.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/trepan_reloaded_iris.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/mlp_iris.pkl",
+    "status": "loadable",
+    "type": "sklearn.neural_network._multilayer_perceptron.MLPClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/mlp_trainer_iris.pkl",
+    "status": "incompatible",
+    "error": "ModuleNotFoundError: No module named 'cf_mlp_trainer'",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/X_test_enc_iris.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/y_test_enc_iris.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/y_train_enc_iris.pkl",
+    "status": "loadable",
+    "type": "numpy.ndarray"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/modelos/pipeline_state_iris.pkl",
+    "status": "incompatible",
+    "error": "TypeError: StringDtype.__init__() takes from 1 to 2 positional arguments but 3 were given",
+    "action": "regenerar a partir do dataset com V9.2"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/mejora/modelos/trepan_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  },
+  {
+    "path": "counterfactuals/experimentos/iris/mejora/modelos/trepanreload_cogs_seed42_improved.pkl",
+    "status": "loadable",
+    "type": "sklearn.tree._classes.DecisionTreeClassifier"
+  }
+]
