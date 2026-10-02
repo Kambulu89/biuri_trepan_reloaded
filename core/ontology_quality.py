@@ -7,6 +7,8 @@ import unicodedata
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
 
+from core.ontology_semantic_graph import _explicit_entity_bounds
+
 
 GENERIC_ENTITY_NAMES = {
     "thing", "entity", "class", "concept", "feature", "attribute", "property",
@@ -21,6 +23,8 @@ IDENTIFIER_PROPERTIES = {
     "rowid", "recordid", "sampleid", "patientid", "subjectid", "instanceid",
     "split", "fold", "partition", "datasetrow", "rowindex",
 }
+ROLE_ANNOTATIONS = ("statisticRole", "measurementRole", "semanticRole", "statistic_role")
+FAMILY_ANNOTATIONS = ("measurementFamily", "semanticFamily", "featureFamily", "measurement_family")
 PLACEHOLDER_RE = re.compile(r"^(?:feature|feat|attr|attribute|column|col|x|f)[_-]?\d+$")
 
 
@@ -84,6 +88,75 @@ def ontology_entities(ontology) -> Dict[str, List[Any]]:
         "datatype_properties": safe("data_properties"),
         "object_properties": safe("object_properties"),
         "individuals": safe("individuals"),
+    }
+
+
+def _has_annotation(entity: Any, names: Sequence[str]) -> bool:
+    """Indica se a entidade declara alguma das anotações (atributo ou propriedade RDF)."""
+    for attr in names:
+        try:
+            if getattr(entity, attr, None):
+                return True
+        except Exception:
+            pass
+    targets = {re.sub(r"[^a-z0-9]+", "", name.lower()) for name in names}
+    try:
+        properties = list(entity.get_properties())
+    except Exception:
+        return False
+    for prop in properties:
+        if re.sub(r"[^a-z0-9]+", "", str(getattr(prop, "name", "")).lower()) not in targets:
+            continue
+        try:
+            if list(prop[entity]):
+                return True
+        except Exception:
+            pass
+    return False
+
+
+def semantic_richness(entities: Dict[str, List[Any]]) -> Dict[str, Any]:
+    """Mede conhecimento *para além da taxonomia* que a OWL realmente declara.
+
+    Cobertura de matching e ausência de ABox não dizem se a ontologia tem algo a
+    ensinar ao modelo. As fontes contadas são as que o enriquecimento consegue
+    usar: relações entre conceitos (propriedades de objeto), restrições OWL,
+    limites numéricos declarados e papéis estatísticos por família de medida.
+    """
+    object_properties = len(entities.get("object_properties", []))
+    restrictions = 0
+    for cls in entities.get("classes", []):
+        try:
+            restrictions += sum(
+                1 for parent in getattr(cls, "is_a", []) or []
+                if hasattr(parent, "property") and hasattr(parent, "type")
+            )
+        except Exception:
+            continue
+    bounded, roles, families = 0, 0, 0
+    for prop in entities.get("datatype_properties", []):
+        try:
+            low, high = _explicit_entity_bounds(prop)
+        except Exception:
+            low = high = None
+        bounded += int(low is not None or high is not None)
+        roles += int(_has_annotation(prop, ROLE_ANNOTATIONS))
+        families += int(_has_annotation(prop, FAMILY_ANNOTATIONS))
+    sources = {
+        "object_properties": object_properties > 0,
+        "restrictions": restrictions > 0,
+        "declared_bounds": bounded > 0,
+        "statistic_roles": roles > 0 and families > 0,
+    }
+    active = sum(sources.values())
+    return {
+        "object_property_count": object_properties,
+        "restriction_count": restrictions,
+        "bounded_datatype_properties": bounded,
+        "role_annotated_properties": roles,
+        "family_annotated_properties": families,
+        "knowledge_sources": sorted(name for name, on in sources.items() if on),
+        "level": "poor" if active == 0 else "limited" if active == 1 else "rich",
     }
 
 
@@ -329,7 +402,15 @@ class OntologyQualityGate:
         ambiguous = sum(decision.reason == "ambiguous_match" for decision in decisions)
         if ambiguous:
             warnings.append(f"{ambiguous} matching(s) rejeitado(s) por ambiguidade.")
+        richness = semantic_richness(entities)
+        if richness["level"] == "poor":
+            warnings.append(
+                "Ontologia semanticamente pobre: sem propriedades de objeto, restrições, "
+                "limites declarados nem papéis estatísticos; o enriquecimento limita-se a "
+                "agregados de grupo (combinações lineares das features originais)."
+            )
         metrics = {
+            "semantic_richness": richness,
             "feature_coverage": coverage,
             "mapped_features": len(accepted_matches),
             "total_features": len(feature_names),
