@@ -236,3 +236,55 @@ O gate rejeitou o enriquecimento nas 3 sementes, pelo que o professor semântico
 * 5 sementes e ~125 amostras de teste: indicativo, não estatístico. Falta um controlo negativo no espaço aumentado (features semânticas baralhadas) para separar "conhecimento semântico" de "mais features"; o gate de enriquecimento (com o seu controlo negativo) é a salvaguarda atual.
 * O modo aumentado exige entradas numéricas reconstruíveis a partir do espaço do modelo; com categóricas codificadas o professor fica `UNAVAILABLE` e o Reloaded mantém o espaço original.
 * A GUI/caminho legado não usa este modo (`BLOCKED_BY_ENVIRONMENT`: PyQt6 ausente).
+
+## 13. O ganho do Reloaded tem de vir da ontologia: atribuição por controlo negativo
+
+**Problema encontrado.** Medir o Reloaded contra o Original não prova que o ganho venha da ontologia. Com a mesma ontologia mas a atribuição feature→entidade **baralhada** (mesmas entidades, mesmo grafo, sem significado), o Reloaded deu quase o mesmo resultado (`scripts/run_reloaded_attribution.py`, 6 sementes × 4 controlos, ontologias de benchmark):
+
+| Dataset | Reloaded − Original (BA) | Atribuível à ontologia (real − baralhado) | IC95% | Controlos ≥ real |
+|---|---|---|---|---|
+| breast_cancer | +0.0183 | +0.0018 | [-0.0008; +0.0047] | 20/24 |
+| wine | +0.0025 | +0.0004 | [-0.0023; +0.0035] | 20/24 |
+| iris | -0.0132 | -0.0023 | [-0.0069; +0.0000] | 24/24 |
+
+Em 12 de 18 sementes (3/6 em breast_cancer, 4/6 em wine, 5/6 em iris) a diferença atribuível era exatamente 0,000, e nas restantes ficava entre −0,014 e +0,007. O que o Reloaded faz de diferente do Original (para melhor **ou pior**) vem de a maquinaria estar ligada e da variação do gerador aleatório, não do significado da ontologia.
+
+**Correção** (`core/semantic_attribution.py`, `train_production_dataframe(semantic_attribution=AttributionConfig(...))`, opt-in): um gate treinado **só no treino**. Em validação cruzada interna compara o Reloaded real com K controlos que têm a mesma maquinaria e nenhum significado — semântica baralhada (espaço original) ou as mesmas formas de feature derivada sobre colunas ao acaso (espaço aumentado) — pela fidelidade ao professor em linhas internas nunca vistas. A semântica só é aceite se o ganho médio for > 0 e o real vencer ≥ 60% de **todas** as comparações (os empates contam contra). Caso contrário o Reloaded degrada para o Original (sem entradas semânticas) e não reivindica ganho nem perda. O ganho atribuível é medido uma vez no teste final e **só relatado**.
+
+**Dois defeitos meus apanhados pela validação:** (1) a primeira versão calculava a fração de vitórias só entre comparações não empatadas, pelo que 1 vitória + 8 empates passava (falso positivo em breast_cancer e wine); passou a contar sobre todas as comparações (limiar inalterado) e há teste de regressão; (2) o TREPAN pode falhar em amostras pequenas (iris), o que fazia rebentar o gate; agora uma falha do real dá `NOT_EVALUATED` (modo neutro) e uma falha de controlo é ignorada sem favorecer o real.
+
+### 13.1 Ontologias reais do repositório (gate ligado, sementes 1–6 e 7–12 nunca usadas antes)
+
+| Dataset | Sementes | Modo neutro | Reloaded − Original (BA) |
+|---|---|---|---|
+| breast_cancer | 12 | 12/12 | +0.0000 (mín +0.0000, máx +0.0000) |
+| wine | 12 | 12/12 | +0.0000 (mín +0.0000, máx +0.0000) |
+| iris | 12 | 12/12 | +0.0000 (mín +0.0000, máx +0.0000) |
+
+Com ontologias que não trazem informação para a classe o gate degrada sempre para o Original: **nenhum ganho nem perda espúrios**.
+
+### 13.2 Cenário informativo (relação worst/mean escondida entre 20 atributos; professor semântico + espaço aumentado + gate)
+
+Sementes 1–5 e 6–10 (estas nunca usadas antes). Atribuível = BA(Reloaded real) − média BA(controlos de features aleatórias), no teste final.
+
+| Semente | Modo | Reloaded − Original (BA) | Atribuível (BA) | Atribuível (fidelidade) |
+|---|---|---|---|---|
+| 1 | augmented | +0.033 | +0.100 | +0.067 |
+| 2 | augmented | +0.129 | +0.130 | +0.115 |
+| 3 | augmented | +0.175 | +0.125 | +0.155 |
+| 4 | augmented | +0.090 | +0.053 | +0.027 |
+| 5 | augmented | +0.086 | +0.097 | +0.101 |
+| 6 | augmented | +0.193 | +0.159 | +0.123 |
+| 7 | augmented | +0.127 | +0.082 | +0.147 |
+| 8 | augmented | +0.210 | +0.197 | +0.123 |
+| 9 | augmented | +0.241 | +0.166 | +0.123 |
+| 10 | augmented | +0.165 | +0.148 | +0.179 |
+
+Modo aumentado em 10/10; atribuível (BA) positivo em 10/10, média +0.126; atribuível (fidelidade) positivo em 10/10, média +0.116; Reloaded − Original média +0.145. Aqui o ganho vem do conhecimento da ontologia: bate controlos com as mesmas formas de feature sobre colunas ao acaso.
+
+### 13.3 Limitações
+
+* O ganho atribuível está demonstrado num cenário sintético em que a ontologia codifica a relação verdadeira; **nas ontologias reais do repositório não há ganho a atribuir** (o gate degrada para o Original). Para ver ganho real faltam ontologias de domínio informativas e independentes.
+* O gate é estatístico: com limiar 0,6 e poucas comparações (K·folds, ~9) tem uma taxa de falsos positivos não nula; a medição final no teste (`test_attribution`) serve de segunda verificação, mas é só relatada. Pode endurecer-se `min_win_fraction`/`controls`/`inner_folds`.
+* Um controlo de features aleatórias pode, por acaso, incluir uma coluna informativa, o que o torna mais forte (conservador para a alegação) e faz o sinal numa única amostra pequena ser ruído; a evidência é agregada em sementes.
+* Custo: o gate treina (1+K)×folds Reloaded por candidato; é opt-in. A GUI/caminho legado não usa o gate (`BLOCKED_BY_ENVIRONMENT`: PyQt6).

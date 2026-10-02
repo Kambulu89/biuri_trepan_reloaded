@@ -1,0 +1,150 @@
+{
+  "summary": {
+    "n_seeds": 6,
+    "modes": {
+      "neutral": 6
+    },
+    "mean_gain_reloaded_vs_original_ba": 0.0,
+    "mean_attributable_ba_when_semantics_active": null
+  },
+  "runs": [
+    {
+      "seed": 7,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.9255765199161425,
+      "ba_reloaded": 0.9255765199161425,
+      "fid_original": 0.9300699300699301,
+      "fid_reloaded": 0.9300699300699301,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_ALL_TIES",
+          "mean_gain_over_controls": 0.0,
+          "wins": 0,
+          "losses": 0,
+          "ties": 9
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 8,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.930607966457023,
+      "ba_reloaded": 0.930607966457023,
+      "fid_original": 0.9090909090909091,
+      "fid_reloaded": 0.9090909090909091,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": 1.2335811384723961e-17,
+          "wins": 1,
+          "losses": 1,
+          "ties": 7
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 9,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.9183438155136268,
+      "ba_reloaded": 0.9183438155136268,
+      "fid_original": 0.8951048951048951,
+      "fid_reloaded": 0.8951048951048951,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_ALL_TIES",
+          "mean_gain_over_controls": 0.0,
+          "wins": 0,
+          "losses": 0,
+          "ties": 9
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 10,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.888993710691824,
+      "ba_reloaded": 0.888993710691824,
+      "fid_original": 0.8881118881118881,
+      "fid_reloaded": 0.8881118881118881,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": 0.002347417840375584,
+          "wins": 3,
+          "losses": 2,
+          "ties": 4
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 11,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.9289308176100629,
+      "ba_reloaded": 0.9289308176100629,
+      "fid_original": 0.958041958041958,
+      "fid_reloaded": 0.958041958041958,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_ALL_TIES",
+          "mean_gain_over_controls": 0.0,
+          "wins": 0,
+          "losses": 0,
+          "ties": 9
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 12,
+      "label": "breast_cancer",
+      "mode": "neutral",
+      "ba_original": 0.909538784067086,
+      "ba_reloaded": 0.909538784067086,
+      "fid_original": 0.9230769230769231,
+      "fid_reloaded": 0.9230769230769231,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": 0.00391236306729264,
+          "wins": 1,
+          "losses": 0,
+          "ties": 8
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    }
+  ]
+}

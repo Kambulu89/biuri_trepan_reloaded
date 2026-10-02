@@ -1,0 +1,127 @@
+{
+  "summary": {
+    "n_seeds": 5,
+    "modes": {
+      "augmented": 5
+    },
+    "mean_gain_reloaded_vs_original_ba": 0.10230414746543777,
+    "mean_attributable_ba_when_semantics_active": 0.10104966717869941
+  },
+  "runs": [
+    {
+      "seed": 1,
+      "label": "synthetic_hidden_relation",
+      "mode": "augmented",
+      "ba_original": 0.7756016385048643,
+      "ba_reloaded": 0.8083717357910907,
+      "fid_original": 0.728,
+      "fid_reloaded": 0.824,
+      "gate": [
+        {
+          "mode": "augmented",
+          "status": "ATTRIBUTED_TO_ONTOLOGY",
+          "mean_gain_over_controls": 0.09155555555555556,
+          "wins": 9,
+          "losses": 0,
+          "ties": 0
+        }
+      ],
+      "attributable_ba": 0.1004864311315925,
+      "attributable_fid": 0.06666666666666654,
+      "controls_ge_real_ba": 0,
+      "gain_reloaded_vs_original_ba": 0.032770097286226374
+    },
+    {
+      "seed": 2,
+      "label": "synthetic_hidden_relation",
+      "mode": "augmented",
+      "ba_original": 0.7594726062467998,
+      "ba_reloaded": 0.8882488479262672,
+      "fid_original": 0.776,
+      "fid_reloaded": 0.856,
+      "gate": [
+        {
+          "mode": "augmented",
+          "status": "ATTRIBUTED_TO_ONTOLOGY",
+          "mean_gain_over_controls": 0.13244444444444448,
+          "wins": 9,
+          "losses": 0,
+          "ties": 0
+        }
+      ],
+      "attributable_ba": 0.12984297661717004,
+      "attributable_fid": 0.11466666666666658,
+      "controls_ge_real_ba": 0,
+      "gain_reloaded_vs_original_ba": 0.12877624167946744
+    },
+    {
+      "seed": 3,
+      "label": "synthetic_hidden_relation",
+      "mode": "augmented",
+      "ba_original": 0.7139016897081414,
+      "ba_reloaded": 0.8887608806963645,
+      "fid_original": 0.704,
+      "fid_reloaded": 0.864,
+      "gate": [
+        {
+          "mode": "augmented",
+          "status": "ATTRIBUTED_TO_ONTOLOGY",
+          "mean_gain_over_controls": 0.12000000000000001,
+          "wins": 9,
+          "losses": 0,
+          "ties": 0
+        }
+      ],
+      "attributable_ba": 0.12485065710872145,
+      "attributable_fid": 0.15466666666666662,
+      "controls_ge_real_ba": 0,
+      "gain_reloaded_vs_original_ba": 0.1748591909882231
+    },
+    {
+      "seed": 4,
+      "label": "synthetic_hidden_relation",
+      "mode": "augmented",
+      "ba_original": 0.7834101382488479,
+      "ba_reloaded": 0.873015873015873,
+      "fid_original": 0.856,
+      "fid_reloaded": 0.832,
+      "gate": [
+        {
+          "mode": "augmented",
+          "status": "ATTRIBUTED_TO_ONTOLOGY",
+          "mean_gain_over_controls": 0.16,
+          "wins": 9,
+          "losses": 0,
+          "ties": 0
+        }
+      ],
+      "attributable_ba": 0.05342208568015028,
+      "attributable_fid": 0.026666666666666505,
+      "controls_ge_real_ba": 0,
+      "gain_reloaded_vs_original_ba": 0.08960573476702516
+    },
+    {
+      "seed": 5,
+      "label": "synthetic_hidden_relation",
+      "mode": "augmented",
+      "ba_original": 0.7218381976446493,
+      "ba_reloaded": 0.807347670250896,
+      "fid_original": 0.696,
+      "fid_reloaded": 0.784,
+      "gate": [
+        {
+          "mode": "augmented",
+          "status": "ATTRIBUTED_TO_ONTOLOGY",
+          "mean_gain_over_controls": 0.10222222222222223,
+          "wins": 6,
+          "losses": 3,
+          "ties": 0
+        }
+      ],
+      "attributable_ba": 0.09664618535586278,
+      "attributable_fid": 0.10133333333333339,
+      "controls_ge_real_ba": 0,
+      "gain_reloaded_vs_original_ba": 0.08550947260624675
+    }
+  ]
+}

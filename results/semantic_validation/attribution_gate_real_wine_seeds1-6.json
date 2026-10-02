@@ -1,0 +1,150 @@
+{
+  "summary": {
+    "n_seeds": 6,
+    "modes": {
+      "neutral": 6
+    },
+    "mean_gain_reloaded_vs_original_ba": 0.0,
+    "mean_attributable_ba_when_semantics_active": null
+  },
+  "runs": [
+    {
+      "seed": 1,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.9629629629629629,
+      "ba_reloaded": 0.9629629629629629,
+      "fid_original": 0.9555555555555556,
+      "fid_reloaded": 0.9555555555555556,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_ALL_TIES",
+          "mean_gain_over_controls": 0.0,
+          "wins": 0,
+          "losses": 0,
+          "ties": 9
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 2,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.8574074074074073,
+      "ba_reloaded": 0.8574074074074073,
+      "fid_original": 0.8888888888888888,
+      "fid_reloaded": 0.8888888888888888,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": -0.04725028058361391,
+          "wins": 0,
+          "losses": 6,
+          "ties": 3
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 3,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.9222222222222222,
+      "ba_reloaded": 0.9222222222222222,
+      "fid_original": 0.9111111111111111,
+      "fid_reloaded": 0.9111111111111111,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": -0.010101010101010117,
+          "wins": 0,
+          "losses": 2,
+          "ties": 7
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 4,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.8981481481481483,
+      "ba_reloaded": 0.8981481481481483,
+      "fid_original": 0.8666666666666667,
+      "fid_reloaded": 0.8666666666666667,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": 0.007575757575757606,
+          "wins": 3,
+          "losses": 0,
+          "ties": 6
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 5,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.9629629629629629,
+      "ba_reloaded": 0.9629629629629629,
+      "fid_original": 0.9333333333333333,
+      "fid_reloaded": 0.9333333333333333,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_ALL_TIES",
+          "mean_gain_over_controls": 0.0,
+          "wins": 0,
+          "losses": 0,
+          "ties": 9
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    },
+    {
+      "seed": 6,
+      "label": "wine",
+      "mode": "neutral",
+      "ba_original": 0.9722222222222222,
+      "ba_reloaded": 0.9722222222222222,
+      "fid_original": 0.9555555555555556,
+      "fid_reloaded": 0.9555555555555556,
+      "gate": [
+        {
+          "mode": "original_space",
+          "status": "NOT_ATTRIBUTED_NO_GAIN_OVER_CONTROLS",
+          "mean_gain_over_controls": -0.005050505050505071,
+          "wins": 0,
+          "losses": 2,
+          "ties": 7
+        }
+      ],
+      "attributable_ba": null,
+      "attributable_fid": null,
+      "controls_ge_real_ba": null,
+      "gain_reloaded_vs_original_ba": 0.0
+    }
+  ]
+}
