@@ -1,0 +1,13 @@
+# Caches e artefactos de build
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+coverage.xml
+build/
+dist/
+*.egg-info/
+
+# Saídas com timestamp geradas pela execução dos testes/pipelines (results/<dir>/<nome>_AAAAMMDD_HHMMSS.*)
+results/*/*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9].csv
+results/*/*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9].json
