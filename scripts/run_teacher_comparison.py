@@ -48,7 +48,7 @@ def make_frame(n, noise, signal, seed):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="results/semantic_validation/teacher_comparison.json")
-    ap.add_argument("--seeds", default="1,2,3"); ap.add_argument("--n", type=int, default=500)
+    ap.add_argument("--seeds", default="1,2,3,4,5"); ap.add_argument("--n", type=int, default=500)
     args = ap.parse_args(); warnings.filterwarnings("ignore")
     from core.production_training import train_production_dataframe
     from core.semantic_enrichment import EnrichmentConfig
@@ -59,15 +59,19 @@ def main():
         for seed in [int(s) for s in args.seeds.split(",")]:
             df = make_frame(args.n, noise, signal, seed)
             res = {}
-            for label, use in (("original_teacher", False), ("semantic_teacher", True)):
+            arms = (("original_teacher", False, True),            # MLP original, árvores no espaço original
+                    ("semantic_teacher_original_space", True, False),  # professor semântico, Reloaded no espaço original
+                    ("semantic_teacher_augmented", True, True))        # professor semântico, Reloaded no espaço aumentado
+            for label, use, augment in arms:
                 with tempfile.TemporaryDirectory() as tmp:
                     rep = train_production_dataframe(
                         df, target="target", out_dir=tmp, seed=seed, ontology=make_ontology(noise),
                         require_reasoner=False, scientific_tuning=False,
-                        semantic_enrichment=cfg, use_semantic_teacher=use)
+                        semantic_enrichment=cfg, use_semantic_teacher=use, augment_reloaded_space=augment)
                 ev = rep["evaluation"]
                 res[label] = {
                     "teacher_used": ev["semantic_teacher"]["teacher"], "reason": ev["semantic_teacher"]["reason"],
+                    "reloaded_space": ev["reloaded_feature_space"]["space"],
                     "decision": (ev["semantic_enrichment"] or {}).get("decision"),
                     "evidence": (ev["semantic_enrichment"] or {}).get("evidence_strength"),
                     "mlp_original": ev["models"]["mlp_original"], "mlp_semantic": ev["models"].get("mlp_semantic"),
@@ -79,9 +83,13 @@ def main():
     p.write_text(json.dumps(out, indent=2, default=str), encoding="utf-8")
     for sc, rows in out["scenarios"].items():
         for r in rows:
-            o, s = r["original_teacher"], r["semantic_teacher"]
-            print(sc, r["seed"], "| decision", s["decision"], s["evidence"], "| teacher", s["teacher_used"],
-                  "| tree BA orig-teacher %.3f -> sem-teacher %.3f" % (o["trepan_reloaded"]["balanced_accuracy"],
-                                                                     s["trepan_reloaded"]["balanced_accuracy"]))
+            o, s2, a = r["original_teacher"], r["semantic_teacher_original_space"], r["semantic_teacher_augmented"]
+            b = lambda x: x["trepan_reloaded"]["balanced_accuracy"]
+            fid = lambda x: x["trepan_reloaded"]["oracle_fidelity"]
+            print(f"{sc} seed={r['seed']} | decision {a['decision']} ({a['evidence']}) teacher={a['teacher_used']} "
+                  f"space={a['reloaded_space']} | Reloaded BA: orig-teacher {b(o):.3f} | sem-teacher/orig-space {b(s2):.3f} "
+                  f"| sem-teacher/augmented {b(a):.3f} | fid(augm) {fid(a):.3f}")
+
+
 if __name__ == "__main__":
     main()

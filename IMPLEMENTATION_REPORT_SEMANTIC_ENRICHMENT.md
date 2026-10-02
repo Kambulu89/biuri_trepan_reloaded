@@ -131,8 +131,8 @@ Ver a secção final com os números da execução completa. Ficheiros novos: `t
    como features. Exigem ontologias com indivíduos/relações que o dataset tabular não referencia.
 4. **Famílias/papéis** só são descobertos por anotações (`measurementFamily`/`statisticRole`); não se
    infere família a partir de `subPropertyOf` ou equivalências.
-5. **Professor ontológico no pipeline de produção:** implementado na fase seguinte (secção 11). Só é
-   usado com evidência forte e entradas reconstruíveis; **não melhorou de forma consistente as árvores**.
+5. **Professor ontológico no pipeline de produção:** implementado (secções 11 e 12). Só é usado com evidência forte e
+   entradas reconstruíveis; só melhora as árvores quando o Reloaded divide sobre as features semânticas (espaço aumentado).
 6. **Otimização:** busca aleatória com semente (orçamento igual), não Optuna; é determinística e testável,
    mas menos poderosa.
 7. **`ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN`** usa o máximo de duas métricas secundárias, o que aumenta
@@ -198,10 +198,41 @@ Ver a secção final com os números da execução completa. Ficheiros novos: `t
 | fácil (sem ruído) | 2 | `REJECT_NO_INFORMATIONAL_GAIN` | original | 0,694 → 0,694 |
 | fácil (sem ruído) | 3 | `REJECT_NO_INFORMATIONAL_GAIN` | original | 0,737 → 0,737 |
 
-**Leitura honesta:** mesmo quando o MLP semântico é melhor com evidência forte, as árvores **não
-melhoram de forma consistente** (2 de 3 sementes pioram; amostras de teste pequenas, 3 sementes). Explicação
-mecânica: as árvores continuam a dividir só sobre as features originais e o conhecimento extra do professor
-(o rácio worst/mean) não é expressável por esses cortes. Para o TREPAN Reloaded aproveitar o professor é
-preciso que também divida sobre as features `onto_*` selecionadas (espaço aumentado, com
-`OriginalOracleProjection`), o que **ainda não está ligado** no pipeline de produção e é o próximo passo
-(altera o protocolo de comparação Original vs Reloaded e a inferência do Reloaded, por isso exige decisão).
+**Leitura honesta:** com a árvore ainda no espaço original o professor semântico não melhora as árvores; ver a secção 12 para o espaço aumentado, que resolve essa limitação no cenário em que a OWL é informativa.
+
+## 12. Reloaded em espaço aumentado com o professor semântico
+
+**O que foi feito** (`core/semantic_teacher.py`, `core/semantic_metadata.py`, `core/production_training.py`, `core/production_inference.py`): quando o professor semântico é usado (evidência forte), o TREPAN Reloaded passa a dividir sobre `[colunas originais | features onto_* selecionadas]`. O protocolo pareado mantém-se: o oráculo vê só as colunas originais (`OriginalOracleProjection`) e é o **mesmo** professor do braço Original (`same_oracle`); um `query_projector` de consistência recompõe as colunas `onto_*` de cada consulta sintética a partir das originais (como na inferência), em vez de as deixar amostrar independentemente; pesos/grupos/entidades/relatedness são estendidos às derivadas sem dupla contagem; o espelho do Reloaded é desligado neste modo (refaria uma árvore sobre colunas aumentadas e não poderia chamar-se "Original"); o bundle regista `reloaded_feature_space` e a inferência reconstrói o espaço aumentado. O braço Original fica sempre no espaço original. `augment_reloaded_space=False` desliga o modo.
+
+### 12.1 Cenário sintético declarado (relação worst/mean escondida entre 20 atributos irrelevantes)
+
+Aqui a ontologia codifica a relação verdadeira por construção: valida o **mecanismo**, não utilidade em dados reais. Comparação justa: Reloaded aumentado vs TREPAN Original **sob o mesmo professor semântico** (BA no teste, só reportado no fim).
+
+| Semente | Original (prof. original) | Original (prof. semântico) | Reloaded (prof. sem., esp. original) | **Reloaded (prof. sem., aumentado)** | Δ vs Original (mesmo prof.) | Fidelidade Orig → Reloaded |
+|---|---|---|---|---|---|---|
+| 1 | 0.760 | 0.721 | 0.719 | **0.928** | +0.207 | 0.736 → 0.880 |
+| 2 | 0.751 | 0.752 | 0.736 | **0.831** | +0.079 | 0.776 → 0.840 |
+| 3 | 0.729 | 0.706 | 0.735 | **0.880** | +0.174 | 0.704 → 0.864 |
+| 4 | 0.847 | 0.833 | 0.832 | **0.928** | +0.095 | 0.784 → 0.928 |
+| 5 | 0.690 | 0.783 | 0.775 | **0.807** | +0.024 | 0.728 → 0.800 |
+
+Média do Δ: +0.116; Reloaded aumentado melhor em 5/5 sementes. O mesmo professor semântico com a árvore **no espaço original** não melhora (coluna 4): o ganho só aparece quando a árvore pode dividir sobre as features semânticas.
+
+No cenário fácil (sem ruído) o gate rejeita o enriquecimento em todas as sementes, o professor semântico não é usado e os três braços coincidem (verificado no JSON).
+
+### 12.2 Dados reais: breast_cancer com a ontologia do repositório (3 sementes)
+
+| Semente | Decisão do enriquecimento | Professor | Espaço do Reloaded | BA Original | BA Reloaded |
+|---|---|---|---|---|---|
+| 1 | `REJECT_NO_INFORMATIONAL_GAIN` | mlp_original | original | 0.899 | 0.931 |
+| 2 | `REJECT_NO_INFORMATIONAL_GAIN` | mlp_original | original | 0.887 | 0.934 |
+| 3 | `REJECT_NO_INFORMATIONAL_GAIN` | mlp_original | original | 0.899 | 0.923 |
+
+O gate rejeitou o enriquecimento nas 3 sementes, pelo que o professor semântico **não foi usado** e o espaço aumentado **não foi ativado**: o resultado em dados reais não testa esta funcionalidade. A diferença Reloaded vs Original que se vê vem do mecanismo semântico já existente (pesos, grupos, relatedness incl. famílias) e, sem controlo negativo, **não pode ser atribuída à ontologia** (3 sementes, ~150 amostras de teste).
+
+### 12.3 Limitações
+
+* O ganho do espaço aumentado está demonstrado só num cenário sintético em que a ontologia codifica a relação verdadeira; nas ontologias reais do repositório o enriquecimento é rejeitado e a funcionalidade fica inativa.
+* 5 sementes e ~125 amostras de teste: indicativo, não estatístico. Falta um controlo negativo no espaço aumentado (features semânticas baralhadas) para separar "conhecimento semântico" de "mais features"; o gate de enriquecimento (com o seu controlo negativo) é a salvaguarda atual.
+* O modo aumentado exige entradas numéricas reconstruíveis a partir do espaço do modelo; com categóricas codificadas o professor fica `UNAVAILABLE` e o Reloaded mantém o espaço original.
+* A GUI/caminho legado não usa este modo (`BLOCKED_BY_ENVIRONMENT`: PyQt6 ausente).

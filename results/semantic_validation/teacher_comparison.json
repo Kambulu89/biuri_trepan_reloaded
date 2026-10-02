@@ -6,6 +6,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -73,9 +74,10 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_semantic",
           "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -158,6 +160,93 @@
             "membership_queries": 2000,
             "oracle_query_count": 2375
           }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "augmented",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.856,
+            "balanced_accuracy": 0.855862775217614,
+            "macro_f1": 0.8559170081967213,
+            "precision_macro": 0.8564102564102565,
+            "recall_macro": 0.855862775217614,
+            "confusion_matrix": [
+              [
+                52,
+                10
+              ],
+              [
+                8,
+                55
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.936,
+            "balanced_accuracy": 0.9358678955453148,
+            "macro_f1": 0.9359631147540983,
+            "precision_macro": 0.9365384615384615,
+            "recall_macro": 0.9358678955453148,
+            "confusion_matrix": [
+              [
+                57,
+                5
+              ],
+              [
+                3,
+                60
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.72,
+            "balanced_accuracy": 0.7210701484895033,
+            "macro_f1": 0.7153360661070987,
+            "precision_macro": 0.7376169510181618,
+            "recall_macro": 0.7210701484895033,
+            "confusion_matrix": [
+              [
+                53,
+                9
+              ],
+              [
+                26,
+                37
+              ]
+            ],
+            "oracle_fidelity": 0.736,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.928,
+            "balanced_accuracy": 0.9284434203789043,
+            "macro_f1": 0.9278337289114119,
+            "precision_macro": 0.933100414078675,
+            "recall_macro": 0.9284434203789043,
+            "confusion_matrix": [
+              [
+                61,
+                1
+              ],
+              [
+                8,
+                55
+              ]
+            ],
+            "oracle_fidelity": 0.88,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
         }
       },
       {
@@ -165,6 +254,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -232,9 +322,10 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_semantic",
           "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -317,6 +408,93 @@
             "membership_queries": 2000,
             "oracle_query_count": 2375
           }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "augmented",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8317972350230414,
+            "macro_f1": 0.8318277916586585,
+            "precision_macro": 0.8328197226502312,
+            "recall_macro": 0.8317972350230414,
+            "confusion_matrix": [
+              [
+                54,
+                9
+              ],
+              [
+                12,
+                50
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.864,
+            "balanced_accuracy": 0.8639272913466463,
+            "macro_f1": 0.8639651750848217,
+            "precision_macro": 0.8641137295081966,
+            "recall_macro": 0.8639272913466463,
+            "confusion_matrix": [
+              [
+                55,
+                8
+              ],
+              [
+                9,
+                53
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.752,
+            "balanced_accuracy": 0.7520481310803891,
+            "macro_f1": 0.752,
+            "precision_macro": 0.7520481310803891,
+            "recall_macro": 0.7520481310803891,
+            "confusion_matrix": [
+              [
+                47,
+                16
+              ],
+              [
+                15,
+                47
+              ]
+            ],
+            "oracle_fidelity": 0.776,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8307731694828469,
+            "macro_f1": 0.8275862068965518,
+            "precision_macro": 0.8664208735110607,
+            "recall_macro": 0.8307731694828469,
+            "confusion_matrix": [
+              [
+                62,
+                1
+              ],
+              [
+                20,
+                42
+              ]
+            ],
+            "oracle_fidelity": 0.84,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
         }
       },
       {
@@ -324,6 +502,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -391,9 +570,10 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_semantic",
           "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "original",
           "decision": "ACCEPT_PARTIAL_FEATURE_SET",
           "evidence": "strong",
           "mlp_original": {
@@ -476,6 +656,589 @@
             "membership_queries": 2000,
             "oracle_query_count": 2375
           }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "augmented",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.848,
+            "balanced_accuracy": 0.8477982590885818,
+            "macro_f1": 0.847844192453072,
+            "precision_macro": 0.8488700564971752,
+            "recall_macro": 0.8477982590885818,
+            "confusion_matrix": [
+              [
+                51,
+                11
+              ],
+              [
+                8,
+                55
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.888,
+            "balanced_accuracy": 0.8885048643113159,
+            "macro_f1": 0.8876476630713919,
+            "precision_macro": 0.8941558441558441,
+            "recall_macro": 0.8885048643113159,
+            "confusion_matrix": [
+              [
+                59,
+                3
+              ],
+              [
+                11,
+                52
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.704,
+            "balanced_accuracy": 0.7059651817716334,
+            "macro_f1": 0.6859083191850595,
+            "precision_macro": 0.7703293010752688,
+            "recall_macro": 0.7059651817716334,
+            "confusion_matrix": [
+              [
+                59,
+                3
+              ],
+              [
+                34,
+                29
+              ]
+            ],
+            "oracle_fidelity": 0.704,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.88,
+            "balanced_accuracy": 0.8804403481822836,
+            "macro_f1": 0.8797228815190199,
+            "precision_macro": 0.884575569358178,
+            "recall_macro": 0.8804403481822836,
+            "confusion_matrix": [
+              [
+                58,
+                4
+              ],
+              [
+                11,
+                52
+              ]
+            ],
+            "oracle_fidelity": 0.864,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        }
+      },
+      {
+        "seed": 4,
+        "original_teacher": {
+          "teacher_used": "mlp_original",
+          "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.848,
+            "balanced_accuracy": 0.8481822836661546,
+            "macro_f1": 0.8479610780359772,
+            "precision_macro": 0.8487179487179488,
+            "recall_macro": 0.8481822836661546,
+            "confusion_matrix": [
+              [
+                52,
+                11
+              ],
+              [
+                8,
+                54
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.848,
+            "balanced_accuracy": 0.8472862263184844,
+            "macro_f1": 0.8465861378463924,
+            "precision_macro": 0.8594329623741388,
+            "recall_macro": 0.8472862263184844,
+            "confusion_matrix": [
+              [
+                59,
+                4
+              ],
+              [
+                15,
+                47
+              ]
+            ],
+            "oracle_fidelity": 0.776,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8325652841781874,
+            "macro_f1": 0.8313090418353576,
+            "precision_macro": 0.8388106416275429,
+            "recall_macro": 0.8325652841781874,
+            "confusion_matrix": [
+              [
+                48,
+                15
+              ],
+              [
+                6,
+                56
+              ]
+            ],
+            "oracle_fidelity": 0.808,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_original_space": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "original",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.848,
+            "balanced_accuracy": 0.8481822836661546,
+            "macro_f1": 0.8479610780359772,
+            "precision_macro": 0.8487179487179488,
+            "recall_macro": 0.8481822836661546,
+            "confusion_matrix": [
+              [
+                52,
+                11
+              ],
+              [
+                8,
+                54
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.904,
+            "balanced_accuracy": 0.9039938556067588,
+            "macro_f1": 0.9039938556067588,
+            "precision_macro": 0.9039938556067588,
+            "recall_macro": 0.9039938556067588,
+            "confusion_matrix": [
+              [
+                57,
+                6
+              ],
+              [
+                6,
+                56
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8326932923707118,
+            "macro_f1": 0.8309178743961353,
+            "precision_macro": 0.8423340358271865,
+            "recall_macro": 0.8326932923707118,
+            "confusion_matrix": [
+              [
+                47,
+                16
+              ],
+              [
+                5,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.784,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8323092677931387,
+            "macro_f1": 0.8318277916586585,
+            "precision_macro": 0.8340195573854863,
+            "recall_macro": 0.8323092677931387,
+            "confusion_matrix": [
+              [
+                50,
+                13
+              ],
+              [
+                8,
+                54
+              ]
+            ],
+            "oracle_fidelity": 0.784,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "augmented",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.848,
+            "balanced_accuracy": 0.8481822836661546,
+            "macro_f1": 0.8479610780359772,
+            "precision_macro": 0.8487179487179488,
+            "recall_macro": 0.8481822836661546,
+            "confusion_matrix": [
+              [
+                52,
+                11
+              ],
+              [
+                8,
+                54
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.904,
+            "balanced_accuracy": 0.9039938556067588,
+            "macro_f1": 0.9039938556067588,
+            "precision_macro": 0.9039938556067588,
+            "recall_macro": 0.9039938556067588,
+            "confusion_matrix": [
+              [
+                57,
+                6
+              ],
+              [
+                6,
+                56
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.832,
+            "balanced_accuracy": 0.8326932923707118,
+            "macro_f1": 0.8309178743961353,
+            "precision_macro": 0.8423340358271865,
+            "recall_macro": 0.8326932923707118,
+            "confusion_matrix": [
+              [
+                47,
+                16
+              ],
+              [
+                5,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.784,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.928,
+            "balanced_accuracy": 0.9280593958013312,
+            "macro_f1": 0.928,
+            "precision_macro": 0.9280593958013312,
+            "recall_macro": 0.9280593958013312,
+            "confusion_matrix": [
+              [
+                58,
+                5
+              ],
+              [
+                4,
+                58
+              ]
+            ],
+            "oracle_fidelity": 0.928,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        }
+      },
+      {
+        "seed": 5,
+        "original_teacher": {
+          "teacher_used": "mlp_original",
+          "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.8,
+            "balanced_accuracy": 0.7999231950844854,
+            "macro_f1": 0.7999487868894437,
+            "precision_macro": 0.8000768442622951,
+            "recall_macro": 0.7999231950844854,
+            "confusion_matrix": [
+              [
+                49,
+                13
+              ],
+              [
+                12,
+                51
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6895801331285202,
+            "macro_f1": 0.6760582098478305,
+            "precision_macro": 0.7239866908650938,
+            "recall_macro": 0.6895801331285202,
+            "confusion_matrix": [
+              [
+                55,
+                7
+              ],
+              [
+                32,
+                31
+              ]
+            ],
+            "oracle_fidelity": 0.68,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.704,
+            "balanced_accuracy": 0.7018689196108551,
+            "macro_f1": 0.680351095445435,
+            "precision_macro": 0.7832255747126436,
+            "recall_macro": 0.7018689196108551,
+            "confusion_matrix": [
+              [
+                27,
+                35
+              ],
+              [
+                2,
+                61
+              ]
+            ],
+            "oracle_fidelity": 0.68,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_original_space": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "original",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.8,
+            "balanced_accuracy": 0.7999231950844854,
+            "macro_f1": 0.7999487868894437,
+            "precision_macro": 0.8000768442622951,
+            "recall_macro": 0.7999231950844854,
+            "confusion_matrix": [
+              [
+                49,
+                13
+              ],
+              [
+                12,
+                51
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.864,
+            "balanced_accuracy": 0.8641833077316948,
+            "macro_f1": 0.8639651750848217,
+            "precision_macro": 0.8647435897435898,
+            "recall_macro": 0.8641833077316948,
+            "confusion_matrix": [
+              [
+                55,
+                7
+              ],
+              [
+                10,
+                53
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.784,
+            "balanced_accuracy": 0.783026113671275,
+            "macro_f1": 0.7804021081397619,
+            "precision_macro": 0.8015548281505729,
+            "recall_macro": 0.783026113671275,
+            "confusion_matrix": [
+              [
+                41,
+                21
+              ],
+              [
+                6,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.728,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.776,
+            "balanced_accuracy": 0.7753456221198156,
+            "macro_f1": 0.7742518059855521,
+            "precision_macro": 0.7833245521601686,
+            "recall_macro": 0.7753456221198156,
+            "confusion_matrix": [
+              [
+                43,
+                19
+              ],
+              [
+                9,
+                54
+              ]
+            ],
+            "oracle_fidelity": 0.752,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_semantic",
+          "reason": "accepted_with_sufficient_evidence",
+          "reloaded_space": "augmented",
+          "decision": "ACCEPT_PARTIAL_FEATURE_SET",
+          "evidence": "strong",
+          "mlp_original": {
+            "accuracy": 0.8,
+            "balanced_accuracy": 0.7999231950844854,
+            "macro_f1": 0.7999487868894437,
+            "precision_macro": 0.8000768442622951,
+            "recall_macro": 0.7999231950844854,
+            "confusion_matrix": [
+              [
+                49,
+                13
+              ],
+              [
+                12,
+                51
+              ]
+            ]
+          },
+          "mlp_semantic": {
+            "accuracy": 0.864,
+            "balanced_accuracy": 0.8641833077316948,
+            "macro_f1": 0.8639651750848217,
+            "precision_macro": 0.8647435897435898,
+            "recall_macro": 0.8641833077316948,
+            "confusion_matrix": [
+              [
+                55,
+                7
+              ],
+              [
+                10,
+                53
+              ]
+            ]
+          },
+          "trepan_original": {
+            "accuracy": 0.784,
+            "balanced_accuracy": 0.783026113671275,
+            "macro_f1": 0.7804021081397619,
+            "precision_macro": 0.8015548281505729,
+            "recall_macro": 0.783026113671275,
+            "confusion_matrix": [
+              [
+                41,
+                21
+              ],
+              [
+                6,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.728,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.808,
+            "balanced_accuracy": 0.807347670250896,
+            "macro_f1": 0.8065015479876161,
+            "precision_macro": 0.8162539515279241,
+            "recall_macro": 0.807347670250896,
+            "confusion_matrix": [
+              [
+                45,
+                17
+              ],
+              [
+                7,
+                56
+              ]
+            ],
+            "oracle_fidelity": 0.8,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
         }
       }
     ],
@@ -485,6 +1248,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "REJECT_DEGRADATION",
           "evidence": "n/a",
           "mlp_original": {
@@ -552,9 +1316,81 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_original",
           "reason": "enrichment_not_accepted:REJECT_DEGRADATION",
+          "reloaded_space": "original",
+          "decision": "REJECT_DEGRADATION",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.944,
+            "balanced_accuracy": 0.9449282786885246,
+            "macro_f1": 0.9439856603290442,
+            "precision_macro": 0.9460708782742682,
+            "recall_macro": 0.9449282786885246,
+            "confusion_matrix": [
+              [
+                58,
+                6
+              ],
+              [
+                1,
+                60
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.744,
+            "balanced_accuracy": 0.7423155737704918,
+            "macro_f1": 0.7420020639834881,
+            "precision_macro": 0.7479035639412999,
+            "recall_macro": 0.7423155737704918,
+            "confusion_matrix": [
+              [
+                52,
+                12
+              ],
+              [
+                20,
+                41
+              ]
+            ],
+            "oracle_fidelity": 0.752,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.824,
+            "balanced_accuracy": 0.8277407786885246,
+            "macro_f1": 0.8206833594157538,
+            "precision_macro": 0.859006734006734,
+            "recall_macro": 0.8277407786885246,
+            "confusion_matrix": [
+              [
+                43,
+                21
+              ],
+              [
+                1,
+                60
+              ]
+            ],
+            "oracle_fidelity": 0.832,
+            "nodes": 7,
+            "depth": 3,
+            "leaves": 4,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_DEGRADATION",
+          "reloaded_space": "original",
           "decision": "REJECT_DEGRADATION",
           "evidence": "n/a",
           "mlp_original": {
@@ -628,6 +1464,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "REJECT_NO_INFORMATIONAL_GAIN",
           "evidence": "n/a",
           "mlp_original": {
@@ -695,9 +1532,81 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_original",
           "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.88,
+            "balanced_accuracy": 0.8800563236047108,
+            "macro_f1": 0.88,
+            "precision_macro": 0.8800563236047108,
+            "recall_macro": 0.8800563236047108,
+            "confusion_matrix": [
+              [
+                55,
+                7
+              ],
+              [
+                8,
+                55
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.72,
+            "balanced_accuracy": 0.7210701484895033,
+            "macro_f1": 0.7153360661070987,
+            "precision_macro": 0.7376169510181618,
+            "recall_macro": 0.7210701484895033,
+            "confusion_matrix": [
+              [
+                53,
+                9
+              ],
+              [
+                26,
+                37
+              ]
+            ],
+            "oracle_fidelity": 0.744,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.696,
+            "balanced_accuracy": 0.6939324116743472,
+            "macro_f1": 0.6732250963126032,
+            "precision_macro": 0.7657894736842106,
+            "recall_macro": 0.6939324116743472,
+            "confusion_matrix": [
+              [
+                27,
+                35
+              ],
+              [
+                3,
+                60
+              ]
+            ],
+            "oracle_fidelity": 0.72,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
           "decision": "REJECT_NO_INFORMATIONAL_GAIN",
           "evidence": "n/a",
           "mlp_original": {
@@ -771,6 +1680,7 @@
         "original_teacher": {
           "teacher_used": "mlp_original",
           "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
           "decision": "REJECT_NO_INFORMATIONAL_GAIN",
           "evidence": "n/a",
           "mlp_original": {
@@ -838,9 +1748,10 @@
             "oracle_query_count": 2375
           }
         },
-        "semantic_teacher": {
+        "semantic_teacher_original_space": {
           "teacher_used": "mlp_original",
           "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
           "decision": "REJECT_NO_INFORMATIONAL_GAIN",
           "evidence": "n/a",
           "mlp_original": {
@@ -898,6 +1809,509 @@
               [
                 28,
                 35
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.928,
+            "balanced_accuracy": 0.9276753712237583,
+            "macro_f1": 0.9278337289114119,
+            "precision_macro": 0.9309855521155831,
+            "recall_macro": 0.9276753712237583,
+            "confusion_matrix": [
+              [
+                55,
+                7
+              ],
+              [
+                2,
+                61
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.504,
+            "balanced_accuracy": 0.5,
+            "macro_f1": 0.3351063829787234,
+            "precision_macro": 0.252,
+            "recall_macro": 0.5,
+            "confusion_matrix": [
+              [
+                0,
+                62
+              ],
+              [
+                0,
+                63
+              ]
+            ],
+            "oracle_fidelity": 0.544,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.736,
+            "balanced_accuracy": 0.7374551971326164,
+            "macro_f1": 0.7275609272835348,
+            "precision_macro": 0.7727941176470587,
+            "recall_macro": 0.7374551971326164,
+            "confusion_matrix": [
+              [
+                57,
+                5
+              ],
+              [
+                28,
+                35
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        }
+      },
+      {
+        "seed": 4,
+        "original_teacher": {
+          "teacher_used": "mlp_original",
+          "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.968,
+            "balanced_accuracy": 0.9681259600614439,
+            "macro_f1": 0.9679979518689197,
+            "precision_macro": 0.9683657786885246,
+            "recall_macro": 0.9681259600614439,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                1,
+                61
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6778033794162825,
+            "macro_f1": 0.6527777777777778,
+            "precision_macro": 0.7557069219440353,
+            "recall_macro": 0.6778033794162825,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                37,
+                25
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6898361495135689,
+            "macro_f1": 0.6715180917727916,
+            "precision_macro": 0.7396574014221073,
+            "recall_macro": 0.6898361495135689,
+            "confusion_matrix": [
+              [
+                29,
+                34
+              ],
+              [
+                5,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.704,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_original_space": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.968,
+            "balanced_accuracy": 0.9681259600614439,
+            "macro_f1": 0.9679979518689197,
+            "precision_macro": 0.9683657786885246,
+            "recall_macro": 0.9681259600614439,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                1,
+                61
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6778033794162825,
+            "macro_f1": 0.6527777777777778,
+            "precision_macro": 0.7557069219440353,
+            "recall_macro": 0.6778033794162825,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                37,
+                25
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6898361495135689,
+            "macro_f1": 0.6715180917727916,
+            "precision_macro": 0.7396574014221073,
+            "recall_macro": 0.6898361495135689,
+            "confusion_matrix": [
+              [
+                29,
+                34
+              ],
+              [
+                5,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.704,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.968,
+            "balanced_accuracy": 0.9681259600614439,
+            "macro_f1": 0.9679979518689197,
+            "precision_macro": 0.9683657786885246,
+            "recall_macro": 0.9681259600614439,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                1,
+                61
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6778033794162825,
+            "macro_f1": 0.6527777777777778,
+            "precision_macro": 0.7557069219440353,
+            "recall_macro": 0.6778033794162825,
+            "confusion_matrix": [
+              [
+                60,
+                3
+              ],
+              [
+                37,
+                25
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6898361495135689,
+            "macro_f1": 0.6715180917727916,
+            "precision_macro": 0.7396574014221073,
+            "recall_macro": 0.6898361495135689,
+            "confusion_matrix": [
+              [
+                29,
+                34
+              ],
+              [
+                5,
+                57
+              ]
+            ],
+            "oracle_fidelity": 0.704,
+            "nodes": 3,
+            "depth": 1,
+            "leaves": 2,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        }
+      },
+      {
+        "seed": 5,
+        "original_teacher": {
+          "teacher_used": "mlp_original",
+          "reason": "semantic_teacher_disabled",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.896,
+            "balanced_accuracy": 0.8958013312852022,
+            "macro_f1": 0.8958933948363124,
+            "precision_macro": 0.8970210580380071,
+            "recall_macro": 0.8958013312852022,
+            "confusion_matrix": [
+              [
+                54,
+                8
+              ],
+              [
+                5,
+                58
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6780593958013312,
+            "macro_f1": 0.6590289143480633,
+            "precision_macro": 0.7337029569892473,
+            "recall_macro": 0.6780593958013312,
+            "confusion_matrix": [
+              [
+                27,
+                35
+              ],
+              [
+                5,
+                58
+              ]
+            ],
+            "oracle_fidelity": 0.688,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6879160266257041,
+            "macro_f1": 0.6879201075475322,
+            "precision_macro": 0.6880122950819672,
+            "recall_macro": 0.6879160266257041,
+            "confusion_matrix": [
+              [
+                42,
+                20
+              ],
+              [
+                19,
+                44
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_original_space": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.896,
+            "balanced_accuracy": 0.8958013312852022,
+            "macro_f1": 0.8958933948363124,
+            "precision_macro": 0.8970210580380071,
+            "recall_macro": 0.8958013312852022,
+            "confusion_matrix": [
+              [
+                54,
+                8
+              ],
+              [
+                5,
+                58
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6780593958013312,
+            "macro_f1": 0.6590289143480633,
+            "precision_macro": 0.7337029569892473,
+            "recall_macro": 0.6780593958013312,
+            "confusion_matrix": [
+              [
+                27,
+                35
+              ],
+              [
+                5,
+                58
+              ]
+            ],
+            "oracle_fidelity": 0.688,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6879160266257041,
+            "macro_f1": 0.6879201075475322,
+            "precision_macro": 0.6880122950819672,
+            "recall_macro": 0.6879160266257041,
+            "confusion_matrix": [
+              [
+                42,
+                20
+              ],
+              [
+                19,
+                44
+              ]
+            ],
+            "oracle_fidelity": 0.696,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          }
+        },
+        "semantic_teacher_augmented": {
+          "teacher_used": "mlp_original",
+          "reason": "enrichment_not_accepted:REJECT_NO_INFORMATIONAL_GAIN",
+          "reloaded_space": "original",
+          "decision": "REJECT_NO_INFORMATIONAL_GAIN",
+          "evidence": "n/a",
+          "mlp_original": {
+            "accuracy": 0.896,
+            "balanced_accuracy": 0.8958013312852022,
+            "macro_f1": 0.8958933948363124,
+            "precision_macro": 0.8970210580380071,
+            "recall_macro": 0.8958013312852022,
+            "confusion_matrix": [
+              [
+                54,
+                8
+              ],
+              [
+                5,
+                58
+              ]
+            ]
+          },
+          "mlp_semantic": null,
+          "trepan_original": {
+            "accuracy": 0.68,
+            "balanced_accuracy": 0.6780593958013312,
+            "macro_f1": 0.6590289143480633,
+            "precision_macro": 0.7337029569892473,
+            "recall_macro": 0.6780593958013312,
+            "confusion_matrix": [
+              [
+                27,
+                35
+              ],
+              [
+                5,
+                58
+              ]
+            ],
+            "oracle_fidelity": 0.688,
+            "nodes": 5,
+            "depth": 2,
+            "leaves": 3,
+            "membership_queries": 2000,
+            "oracle_query_count": 2375
+          },
+          "trepan_reloaded": {
+            "accuracy": 0.688,
+            "balanced_accuracy": 0.6879160266257041,
+            "macro_f1": 0.6879201075475322,
+            "precision_macro": 0.6880122950819672,
+            "recall_macro": 0.6879160266257041,
+            "confusion_matrix": [
+              [
+                42,
+                20
+              ],
+              [
+                19,
+                44
               ]
             ],
             "oracle_fidelity": 0.696,
