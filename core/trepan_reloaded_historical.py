@@ -153,8 +153,18 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         query_projector: Optional[Callable[[np.ndarray], np.ndarray]] = None,
         semantic_feature_depths=None,
         ontology_graph=None,
+        semantic_feature_entities: Optional[Sequence[Optional[str]]] = None,
     ):
         X_arr = np.asarray(X, dtype=float)
+        if semantic_feature_entities is not None and len(semantic_feature_entities) != X_arr.shape[1]:
+            raise ValueError(
+                "semantic_feature_entities incompatível com o número de features: "
+                f"{len(semantic_feature_entities)} != {X_arr.shape[1]}."
+            )
+        self.semantic_feature_entities_ = (
+            [str(v) if v not in (None, '') else None for v in semantic_feature_entities]
+            if semantic_feature_entities is not None else None
+        )
         graph_active = bool(ontology_graph is not None and getattr(ontology_graph, "is_active", False))
         if semantic_feature_depths is None and graph_active:
             names = list(feature_names or [f"x{i}" for i in range(X_arr.shape[1])])
@@ -298,6 +308,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             row['decision_changed'] = bool(row.get('decision_changed', False))
             row['decision_reinforced'] = bool(row.get('decision_reinforced', False))
             row['ontology_influenced'] = bool(row.get('ontology_influenced', row['decision_changed'] or row['decision_reinforced']))
+            self._annotate_semantic_split_row(row)
             self.semantic_split_audit_.append(row)
         preliminary_summary = self.semantic_audit_summary()
         measurable_effect = bool(
@@ -679,6 +690,45 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # O expoente permite desligar/reduzir o viés sem mudar o algoritmo.
         factor = np.power(weights, float(self.semantic_gain_strength))
         return base * factor
+
+    def _annotate_semantic_split_row(self, row: dict) -> None:
+        """Torna cada split auditável: o que foi escolhido, qual a entidade OWL e porquê.
+
+        ``base_score`` é o ganho estatístico antes do bónus; ``final_score`` o score
+        usado na seleção. O score do TREPAN não tem termo de complexidade, por isso
+        ``complexity_penalty`` é 0.0 e declarado como não modelado (não é inventado).
+        """
+        names = list(getattr(self, 'feature_names_in_', None) or [])
+        features = [int(i) for i in row.get('semantic_features', [])]
+        entities = getattr(self, 'semantic_feature_entities_', None)
+        groups = getattr(self, 'semantic_feature_groups_', None) or []
+        rel = getattr(self, 'semantic_relatedness_matrix_', None)
+        row['base_score'] = float(row['information_gain'])
+        row['final_score'] = float(row['selection_score'])
+        row['complexity_penalty'] = 0.0
+        row['complexity_penalty_note'] = 'not_modelled_in_trepan_selection_score'
+        row['selected_feature'] = [names[i] for i in features if i < len(names)] or None
+        row['ontology_entity'] = (
+            [entities[i] for i in features if i < len(entities) and entities[i]] or None
+            if entities is not None else None
+        )
+        reasons = []
+        bonus = row['semantic_bonus']
+        if features and abs(bonus) > 1e-12:
+            reasons.append(f"bónus semântico {bonus:+.6f} sobre o ganho estatístico {row['base_score']:.6f}")
+        used_groups = sorted({groups[i] for i in features if i < len(groups) and groups[i]})
+        if used_groups:
+            reasons.append("grupo(s) ontológico(s): " + ", ".join(used_groups))
+        if rel is not None and len(features) >= 2:
+            pair = [float(rel[a][b]) for k, a in enumerate(features) for b in features[k + 1:]
+                    if a < len(rel) and b < len(rel)]
+            if pair and max(pair) > 0:
+                reasons.append(f"relatedness máxima entre literais {max(pair):.2f}")
+        if row.get('decision_changed'):
+            reasons.append("a decisão do split mudou face ao TREPAN data-only")
+        elif row.get('decision_reinforced'):
+            reasons.append("o vencedor data-only foi mantido e reforçado")
+        row['semantic_reason'] = "; ".join(reasons) if reasons else "sem influência ontológica neste split"
 
     def _semantic_group_coherence_factor(self, test: Optional[MofNTest]) -> float:
         """Bónus genérico para regras m-of-n semanticamente coesas.
