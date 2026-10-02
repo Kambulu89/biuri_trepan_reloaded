@@ -18,6 +18,7 @@ class ProductionPredictor:
         self.bundle=bundle; self.manifest=manifest
         self.preprocessor=bundle['preprocessor']; self.mlp=bundle['mlp_original']
         self.original=bundle['trepan_original']; self.reloaded=bundle['trepan_reloaded']; self.c45=bundle.get('c45_native')
+        self.semantic_teacher=bundle.get('semantic_teacher')
     def validate(self,df:pd.DataFrame)->Dict[str,Any]:
         try:
             self.preprocessor.transform(df)
@@ -28,6 +29,9 @@ class ProductionPredictor:
     def predict(self,df,*,model='mlp'):
         z=self._z(df)
         mapping={'mlp':self.mlp,'trepan_original':self.original,'trepan_reloaded':self.reloaded}
+        if model=='mlp_semantic':
+            if self.semantic_teacher is None: raise ArtifactCompatibilityError('Bundle sem professor semântico (MLP+OWL).')
+            mapping['mlp_semantic']=self.semantic_teacher
         if model=='c45_native':
             if self.c45 is None: raise ArtifactCompatibilityError('Bundle sem C4.5-Nativo.')
             return self.c45.predict(pd.DataFrame(df).to_numpy(dtype=object))

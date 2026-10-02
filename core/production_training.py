@@ -31,6 +31,7 @@ from core.ontology_processor import OntologyProcessor
 from core.ontology_stage_status import build_ontology_stage_status
 from core.semantic_enrichment import EnrichmentConfig, evaluate_semantic_enrichment
 from core.semantic_metadata import apply_family_relatedness
+from core.semantic_teacher import build_semantic_teacher, decide_semantic_teacher, teacher_inputs_available
 from core.ontology_semantic_graph import OntologySemanticGraph
 from core.semantic_contribution_gate import SemanticContributionGate
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig, tune_scientific_trepan
@@ -98,6 +99,8 @@ def train_production_dataframe(
     scientific_tuning: bool=True,
     trepan_search: Optional[ScientificTrepanSearchConfig]=None,
     semantic_enrichment: Optional[EnrichmentConfig]=None,
+    use_semantic_teacher: bool=True,
+    teacher_min_evidence: Optional[str]="strong",
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -111,6 +114,7 @@ def train_production_dataframe(
     Xtr,Xte=X.iloc[tr].copy(),X.iloc[te].copy(); ytr,yte=y[tr],y[te]
     pre=DataPreprocessor(contract,scale_numeric=False).fit(Xtr,ytr)
     Ztr,Zte=pre.transform(Xtr),pre.transform(Xte); model_names=list(map(str,pre.get_feature_names_out()))
+    model_names_original=list(model_names)
     mlp=build_mlp_for_data(Ztr,ytr,random_state=seed); fit_with_convergence(mlp,Ztr,ytr)
     health=oracle_health_gate(mlp,Ztr,ytr,random_state=seed)
     c45=C45Classifier(random_state=seed).fit(Xtr.to_numpy(dtype=object),ytr)
@@ -148,10 +152,44 @@ def train_production_dataframe(
                 column_family={}
             relation_matrix=apply_family_relatedness(relation_matrix,sources,column_family)
 
+    # Enriquecimento semântico do MLP (opt-in): só treino de desenvolvimento, nunca o teste.
+    # Corre ANTES do TREPAN porque o professor escolhido alimenta a procura de capacidade e
+    # o treino dos dois braços (Original e Reloaded usam sempre o MESMO professor).
+    enrichment=None; enrichment_result=None
+    if semantic_enrichment is not None and quality:
+        try:
+            enrichment_result=evaluate_semantic_enrichment(
+                Xtr[original_feature_names].reset_index(drop=True),ytr,ontology,
+                quality_report=quality,reasoner_report=reasoner_report,config=semantic_enrichment)
+            enrichment=enrichment_result.report
+        except Exception as exc:  # a avaliação nunca pode quebrar o treino de produção
+            enrichment_result=None
+            enrichment={'decision':'NOT_EVALUATED','decision_reason':f'{type(exc).__name__}: {exc}',
+                        'semantic_mlp_accepted':False,'semantic_trepan_available':False,'test_used':False}
+    oracle=mlp; teacher=None
+    teacher_report={'teacher':'mlp_original','reason':'semantic_enrichment_not_requested'}
+    if semantic_enrichment is not None:
+        choice=decide_semantic_teacher(enrichment,teacher_min_evidence if use_semantic_teacher else None)
+        teacher_report={'teacher':'mlp_original','reason':choice.reason,**choice.details,
+                        'min_evidence_required':teacher_min_evidence if use_semantic_teacher else None}
+        if choice.use and enrichment_result is not None:
+            avail=teacher_inputs_available(enrichment_result.processor,model_names_original)
+            if avail.use:
+                try:
+                    teacher=build_semantic_teacher(enrichment_result,Ztr,ytr,model_names_original,
+                                                   config=semantic_enrichment,seed=seed)
+                    oracle=teacher
+                    teacher_report={'teacher':'mlp_semantic','reason':choice.reason,**choice.details,
+                                    **teacher.audit_}
+                except Exception as exc:  # falha ao construir: mantém o professor original, sem esconder
+                    teacher_report={'teacher':'mlp_original','reason':f'teacher_build_failed:{type(exc).__name__}: {exc}'}
+            else:
+                teacher_report={'teacher':'mlp_original','reason':avail.reason,**avail.details}
+
     tuning_report = None
     if scientific_tuning:
         tuning_report = tune_scientific_trepan(
-            Ztr, ytr, oracle=mlp, feature_names=model_names, base_config=cfg,
+            Ztr, ytr, oracle=oracle, feature_names=model_names, base_config=cfg,
             semantic_feature_weights=semantic_weights,
             semantic_feature_groups=semantic_groups,
             semantic_relatedness_matrix=relation_matrix,
@@ -162,7 +200,7 @@ def train_production_dataframe(
         cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
 
     pair=fit_controlled_trepan_pair(
-        Ztr,ytr,oracle=mlp,feature_names=model_names,config=cfg,
+        Ztr,ytr,oracle=oracle,feature_names=model_names,config=cfg,
         semantic_feature_weights=semantic_weights,
         semantic_feature_groups=semantic_groups,
         semantic_relatedness_matrix=relation_matrix,
@@ -172,11 +210,14 @@ def train_production_dataframe(
     )
     evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte)
     mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
+    teacher_pred=oracle.predict(Zte)  # referência de fidelidade = professor realmente usado
     evaluation['models']['mlp_original']=classification_metrics(yte,mlp_pred)
+    if teacher is not None:
+        evaluation['models']['mlp_semantic']=classification_metrics(yte,teacher_pred)
     evaluation['models']['c45_native']=classification_metrics(yte,c45_pred)
     original_pred=pair.original.predict(Zte); reloaded_pred=pair.reloaded.predict(Zte)
     evaluation['scientific_validation']=build_scientific_validation_report(
-        yte, mlp_pred, {
+        yte, teacher_pred, {
             'trepan_reloaded':reloaded_pred,
             'trepan_original':original_pred,
             'c45_j48':c45_pred,
@@ -192,23 +233,17 @@ def train_production_dataframe(
         original_metrics=evaluation['models']['original'],reloaded_metrics=evaluation['models']['reloaded'],
     ) if quality else {"accepted":False,"status":"NO_ONTOLOGY","reasons":["ontology_not_provided"]}
     evaluation['semantic_contribution_gate']=contribution
-    # Enriquecimento semântico do MLP (opt-in): só treino de desenvolvimento, nunca o teste.
-    enrichment=None
-    if semantic_enrichment is not None and quality:
-        try:
-            result=evaluate_semantic_enrichment(
-                Xtr[original_feature_names].reset_index(drop=True),ytr,ontology,
-                quality_report=quality,reasoner_report=reasoner_report,config=semantic_enrichment)
-            enrichment=result.report
-        except Exception as exc:  # a avaliação nunca pode quebrar o treino de produção
-            enrichment={'decision':'NOT_EVALUATED','decision_reason':f'{type(exc).__name__}: {exc}',
-                        'semantic_mlp_accepted':False,'semantic_trepan_available':False,'test_used':False}
     evaluation['semantic_enrichment']=enrichment
-    evaluation['ontology_stage_status']=build_ontology_stage_status(quality,None,enrichment) if quality else None
+    evaluation['semantic_teacher']=teacher_report
+    status=build_ontology_stage_status(quality,None,enrichment) if quality else None
+    if status is not None:
+        status['semantic_teacher_used']=bool(teacher is not None)
+        status['semantic_teacher_reason']=teacher_report.get('reason')
+    evaluation['ontology_stage_status']=status
 
     bundle={
         'format_version':'biuri-v9.2-production-5-semantic-real-gain', 'contract':contract, 'preprocessor':pre,
-        'mlp_original':mlp,'c45_native':c45,'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,
+        'mlp_original':mlp,'semantic_teacher':teacher,'c45_native':c45,'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,
         'classes':list(map(str,getattr(mlp,'classes_',[]))),
     }
     joblib.dump(bundle,out/'production_bundle.joblib')
@@ -218,6 +253,7 @@ def train_production_dataframe(
         'python':platform.python_version(),'numpy':np.__version__,'pandas':pd.__version__,
         'train_rows':len(tr),'test_rows':len(te),'test_used_for_selection':False,
         'tree_runtime_policy':'historical_trepan_only_no_cart',
+        'teacher_id':teacher_report['teacher'],'teacher_reason':teacher_report['reason'],
         'ontology_used':bool(quality and quality.get('accepted')),
         'semantic_contribution_status':contribution.get('status'),
         'claim_guard':evaluation['scientific_validation'].get('claim_guard'),
