@@ -206,3 +206,18 @@ def test_synthetic_sampling_uses_original_mlp_not_onto():
     )
     assert result.shape[1] == n_base
     assert len(onto_calls) == 0
+
+
+def test_reloaded_reference_uses_identity_when_oracle_is_the_original_mlp():
+    """Ontologia rejeitada: oráculo do Reloaded == MLP Original; 30 features == 30 colunas não pode virar mlp_onto."""
+    class FakeMLP:
+        n_features_in_ = 30
+
+    mlp = FakeMLP()
+    names = [f"f{i}" for i in range(30)]
+    assert MetricsComparator._reloaded_fidelity_reference(mlp, names, n_matrix_features=30) == "mlp_onto"  # heurística antiga
+    assert MetricsComparator._reloaded_fidelity_reference(
+        mlp, names, n_matrix_features=30, mlp_model_original=mlp) == "mlp_original"
+    other = FakeMLP()
+    assert MetricsComparator._reloaded_fidelity_reference(
+        other, names, n_matrix_features=30, mlp_model_original=mlp) == "mlp_onto"

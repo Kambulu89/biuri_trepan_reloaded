@@ -179,9 +179,15 @@ class MetricsComparator:
         mlp_model_reloaded,
         feature_names_reloaded,
         n_matrix_features=None,
+        mlp_model_original=None,
     ):
         """Determina se a fidelidade Reloaded deve referenciar MLP_Onto ou MLP original."""
         if mlp_model_reloaded is None:
+            return 'mlp_original'
+        # Se o oráculo do Reloaded É o MLP Original (ontologia rejeitada), a identidade decide:
+        # a heurística por nº de features confundia um MLP original com 30 features e uma matriz
+        # com 30 colunas com um MLP ontológico.
+        if mlp_model_original is not None and mlp_model_reloaded is mlp_model_original:
             return 'mlp_original'
         oracle_type = getattr(mlp_model_reloaded, 'ORACLE_TYPE', None)
         if oracle_type in {'projected_original', 'mlp_original', 'original'}:
@@ -253,6 +259,7 @@ class MetricsComparator:
                 mlp_model_reloaded,
                 feature_names_reloaded,
                 n_matrix_features=X_test_reloaded.shape[1],
+                mlp_model_original=mlp_model,
             )
             if fidelity_ref == 'mlp_onto':
                 oracle_names_reloaded = feature_names_reloaded
@@ -1415,6 +1422,7 @@ class MetricsComparator:
                 mlp_model_reloaded,
                 feature_names_reloaded,
                 n_matrix_features=X_rel.shape[1],
+                mlp_model_original=mlp_model,
             )
             if fidelity_ref == 'mlp_onto':
                 mlp_ref_model = mlp_model_reloaded if mlp_model_reloaded is not None else mlp_model
