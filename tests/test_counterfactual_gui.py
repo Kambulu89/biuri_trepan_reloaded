@@ -157,7 +157,7 @@ def test_counterfactual_panel_options_and_results(qapp):
         'candidates': [{
             'method': 'CLEAR', 'prediction': 1,
             'changes': [{'feature': 'f0'}],
-            'metrics': {'proximity': 0.1, 'robustness': 0.9},
+            'metrics': {'validity': True, 'proximity': 0.1, 'robustness': 0.9},   # só CFs validados no modelo habilitam a árvore CF
         }],
     })
     assert panel.candidates_table.rowCount() == 1
@@ -276,3 +276,59 @@ def test_counterfactual_worker_transfer_smoke(qapp):
     assert results[0]['transfer']['protocol'] == 'P1-P8'
     assert results[0]['transfer']['scope'] == 'loaded_dataset_only'
     assert results[0]['transfer']['dataset'] == 'dataset_carregado.arff'
+
+
+def _cf_tree_session():
+    from sklearn.ensemble import RandomForestClassifier
+    rng = np.random.RandomState(3)
+    X = rng.uniform(-2, 2, size=(300, 3))
+    y = (X[:, 0] + 0.5 * X[:, 1] > 0).astype(int)
+    oracle = RandomForestClassifier(n_estimators=15, random_state=0).fit(X, y)
+    names = ['f0', 'f1', 'f2']
+    return {
+        'dataset_name': 'dataset_carregado.arff',
+        'mlp_oracle': oracle, 'mlp_original': oracle,
+        'X_train_enc': X, 'y_train_enc': y,
+        'X_train_original': X, 'y_train_original': y,
+        'tree_a': oracle, 'tree_b': oracle,
+        'transformed_feature_names': names, 'feature_names_original': names,
+        'tree_a_feature_names': names, 'tree_b_feature_names': names,
+        'class_labels': {0: 'neg', 1: 'pos'},
+    }
+
+
+def test_construir_arvore_cf_end_to_end_worker_to_panel(qapp):
+    """'Construir árvore CF': gerar CF (worker) -> árvore (worker) -> painel."""
+    session = _cf_tree_session()
+    outs, errors = [], []
+
+    gen = CounterfactualWorker(
+        session, mode=CounterfactualWorker.STAGE_GENERATE,
+        options={'method': 'LORE-LOCAL', 'instance_index': 0, 'seed': 1, 'n_cfs': 3},
+    )
+    gen.finished_ok.connect(outs.append)
+    gen.failed.connect(errors.append)
+    gen.run()
+    assert not errors, errors
+    cf_result = outs[0]['counterfactuals']
+    assert any(c.get('metrics', {}).get('validity') for c in cf_result['candidates'])
+
+    tree = CounterfactualWorker(
+        session, mode=CounterfactualWorker.STAGE_TREE, cf_result=cf_result,
+        options={'seed': 1, 'cf_tree_neighborhood_size': 120},
+    )
+    tree.finished_ok.connect(outs.append)
+    tree.failed.connect(errors.append)
+    tree.run()
+    assert not errors, errors
+    tree_result = outs[1]['counterfactuals']
+    assert tree_result['result_type'] == 'counterfactual_tree'
+    assert tree_result['tree_kind'] == 'CF-LocalTree'
+    assert tree_result['methodology']['causality'] == 'NOT_CLAIMED'
+    assert 'sample_weight' not in str(tree_result['methodology']['training'])
+    assert tree_result['tree_rules']
+
+    panel = CounterfactualPanel()
+    panel.display_result(tree_result)
+    assert panel.candidates_table.rowCount() >= 1
+    panel.close()

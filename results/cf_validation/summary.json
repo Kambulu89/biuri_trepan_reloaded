@@ -1,0 +1,170 @@
+{
+  "binary_noonto": {
+    "LORE-inspired": {
+      "n_tasks": 12,
+      "success_rate": 1.0,
+      "mean_proximity": 0.04512884946641091,
+      "mean_sparsity": 1.0,
+      "mean_plausibility": 0.47847222222222224,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.5805641556666691,
+      "status_counts": {
+        "SUCCESS": 12
+      }
+    },
+    "CLEAR-inspired": {
+      "n_tasks": 12,
+      "success_rate": 1.0,
+      "mean_proximity": 0.04242674189984736,
+      "mean_sparsity": 1.0,
+      "mean_plausibility": 0.49625,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.10768352733337376,
+      "status_counts": {
+        "SUCCESS": 12
+      }
+    },
+    "CoGS-inspired": {
+      "n_tasks": 12,
+      "success_rate": 1.0,
+      "mean_proximity": 0.10464137845668033,
+      "mean_sparsity": 1.0833333333333333,
+      "mean_plausibility": 0.44222222222222224,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.6667195864166615,
+      "status_counts": {
+        "SUCCESS": 12
+      }
+    }
+  },
+  "binary_onto": {
+    "LORE-inspired": {
+      "n_tasks": 12,
+      "success_rate": 0.5,
+      "mean_proximity": 0.11736176760403444,
+      "mean_sparsity": 1.1666666666666667,
+      "mean_plausibility": 0.3252777777777778,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.5732767400833154,
+      "status_counts": {
+        "CONSTRAINT_INFEASIBLE": 6,
+        "SUCCESS": 6
+      }
+    },
+    "CLEAR-inspired": {
+      "n_tasks": 12,
+      "success_rate": 0.5833333333333334,
+      "mean_proximity": 0.25341726040905016,
+      "mean_sparsity": 2.142857142857143,
+      "mean_plausibility": 0.4404761904761904,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.09661884175003858,
+      "status_counts": {
+        "CONSTRAINT_INFEASIBLE": 5,
+        "SUCCESS": 7
+      }
+    },
+    "CoGS-inspired": {
+      "n_tasks": 12,
+      "success_rate": 1.0,
+      "mean_proximity": 0.1251453154258522,
+      "mean_sparsity": 1.75,
+      "mean_plausibility": 0.4490277777777778,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.7049220583333522,
+      "status_counts": {
+        "SUCCESS": 12
+      }
+    }
+  },
+  "multiclass_noonto": {
+    "LORE-inspired": {
+      "n_tasks": 24,
+      "success_rate": 1.0,
+      "mean_proximity": 0.03256898452463046,
+      "mean_sparsity": 1.0,
+      "mean_plausibility": 0.6015277777777778,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.5980479739166734,
+      "status_counts": {
+        "SUCCESS": 24
+      }
+    },
+    "CLEAR-inspired": {
+      "n_tasks": 24,
+      "success_rate": 1.0,
+      "mean_proximity": 0.03157672576448715,
+      "mean_sparsity": 1.0,
+      "mean_plausibility": 0.593125,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.11775021862498154,
+      "status_counts": {
+        "SUCCESS": 24
+      }
+    },
+    "CoGS-inspired": {
+      "n_tasks": 24,
+      "success_rate": 1.0,
+      "mean_proximity": 0.06971344479588719,
+      "mean_sparsity": 1.0,
+      "mean_plausibility": 0.27416666666666667,
+      "semantic_validity_rate": null,
+      "semantic_available_rate": 0.0,
+      "mean_runtime": 0.7072150894166688,
+      "status_counts": {
+        "SUCCESS": 24
+      }
+    }
+  },
+  "multiclass_onto": {
+    "LORE-inspired": {
+      "n_tasks": 24,
+      "success_rate": 0.5833333333333334,
+      "mean_proximity": 0.1578570367155924,
+      "mean_sparsity": 1.0714285714285714,
+      "mean_plausibility": 0.6338095238095238,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.5942428091250065,
+      "status_counts": {
+        "CONSTRAINT_INFEASIBLE": 10,
+        "SUCCESS": 14
+      }
+    },
+    "CLEAR-inspired": {
+      "n_tasks": 24,
+      "success_rate": 0.8333333333333334,
+      "mean_proximity": 0.20884600477610502,
+      "mean_sparsity": 2.0,
+      "mean_plausibility": 0.7365000000000002,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.1094802055000154,
+      "status_counts": {
+        "CONSTRAINT_INFEASIBLE": 4,
+        "SUCCESS": 20
+      }
+    },
+    "CoGS-inspired": {
+      "n_tasks": 24,
+      "success_rate": 1.0,
+      "mean_proximity": 0.12072613392458148,
+      "mean_sparsity": 1.8333333333333333,
+      "mean_plausibility": 0.2790277777777778,
+      "semantic_validity_rate": 1.0,
+      "semantic_available_rate": 1.0,
+      "mean_runtime": 0.734294252041669,
+      "status_counts": {
+        "SUCCESS": 24
+      }
+    }
+  }
+}

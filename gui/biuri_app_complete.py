@@ -3199,7 +3199,45 @@ Asegúrese de que:
                     ),
                 }
 
+        # --- Contexto para o pipeline cfkit (Parte 5/6/9/10): só TREINO, categóricas legíveis, derivadas recalculáveis
+        feature_encoders_info = {}
+        try:
+            for position, encoder in (getattr(trainer, 'feature_encoders', {}) or {}).items():
+                if int(position) < len(original_names):
+                    feature_encoders_info[str(original_names[int(position)])] = {
+                        'labels': [str(c) for c in getattr(encoder, 'classes_', [])]
+                    }
+        except Exception as exc:  # metadados em falta nunca bloqueiam a explicação
+            print(f"[WARN] encoders de categóricas indisponíveis para CF: {exc}")
+        cf_train_original = (
+            np.asarray(original_split['X_train'], dtype=float) if original_split is not None and original_split.get('X_train') is not None else None
+        )
+        aug_split = self._eval_split_augmented
+        cf_train_augmented = (
+            np.asarray(aug_split['X_train'], dtype=float) if aug_split is not None and aug_split.get('X_train') is not None else None
+        )
+        augmented_derive_fn = None
+        try:
+            processor = getattr(self.trepan.extractor, 'ontology_processor', None)
+            if (processor is not None and getattr(processor, 'is_fitted_', False)
+                    and augmented_names and all(n in augmented_names for n in original_names)):
+                positions = [augmented_names.index(n) for n in original_names]
+
+                def augmented_derive_fn(rows, _p=processor, _pos=positions, _names=list(original_names)):
+                    base = np.asarray(rows, dtype=float)[:, _pos]
+                    transformed, _ = _p.transform_matrix(base, _names)
+                    return np.asarray(transformed, dtype=float)
+        except Exception as exc:
+            print(f"[WARN] derive_fn OWL indisponível para CF: {exc}")
+            augmented_derive_fn = None
+
         return {
+            'feature_encoders_info': feature_encoders_info,
+            'X_cf_train_original': cf_train_original,
+            'X_cf_train_augmented': cf_train_augmented,
+            'augmented_derive_fn': augmented_derive_fn,
+            'ontology_path': self.loaded_ontology_path,
+            'active_dataset': (self.arff_meta or {}).get('file_name', 'gui'),
             'mlp_oracle': cf_oracle,
             'mlp_original': self._cf_oracle_predictor(self.mlp_model),
             'mlp_onto': onto_oracle,

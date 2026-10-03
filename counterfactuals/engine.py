@@ -508,6 +508,14 @@ class CounterfactualEngine:
     SUPPORTED_METHODS = (
         "AUTO", "DICE", "CLEAR", "COGS", "LORE-LOCAL", "LORE-GLOBAL"
     )
+    # Rótulos honestos: nenhum destes geradores é uma réplica verificada do método da literatura.
+    METHOD_LABELS = {
+        "DICE": "DiCE (dice-ml opcional; fallback interno = DiCE-inspired)",
+        "CLEAR": "CLEAR-inspired (regressão local; legado)",
+        "COGS": "CoGS-inspired (pesquisa genética; legado)",
+        "LORE-LOCAL": "LORE-inspired (substituto local TREPAN; legado)",
+        "LORE-GLOBAL": "Tree-path (regras globais; não é LORE)",
+    }
 
     def __init__(
         self,
@@ -617,11 +625,22 @@ class CounterfactualEngine:
                 -item["metrics"]["robustness"],
             )
         )
-        evaluated = evaluated[: max(1, int(total_cfs))]
+        # REGRA OBRIGATÓRIA: só se devolve como sucesso o que foi re-validado no modelo E cumpre as restrições de domínio.
+        validated = [e for e in evaluated if e["metrics"]["validity"] and e["metrics"]["plausibility"]]
+        rejected = [
+            {"vector": e["vector"], "validity": e["metrics"]["validity"], "plausibility": e["metrics"]["plausibility"],
+             "violations": (e.get("domain_validation") or {}).get("violations", [])}
+            for e in evaluated if e not in validated
+        ]
+        evaluated = validated[: max(1, int(total_cfs))]
         best = evaluated[0] if evaluated else None
         aggregate = self._aggregate_metrics(evaluated)
         return {
             "status": "success" if best is not None else "no_counterfactual_found",
+            "rejected_candidates": rejected,
+            "method_labels": {m: self.METHOD_LABELS.get(m, m) for m in methods},
+            "canonical": False,
+            "causality": "NOT_CLAIMED",
             "method": method_key,
             "methods_executed": methods,
             "factual_prediction": self._scalar(factual),

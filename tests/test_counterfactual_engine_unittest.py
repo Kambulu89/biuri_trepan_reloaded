@@ -180,13 +180,14 @@ class CounterfactualEngineTests(unittest.TestCase):
                 "robustness_samples": 10,
             },
         )
-        self.assertEqual(result["status"], "success")
+        self.assertEqual(result["status"], "SUCCESS")          # estados explícitos (Parte 27); legado em status_legacy
+        self.assertEqual(result["status_legacy"], "success")
         with tempfile.TemporaryDirectory() as directory:
             paths = export_counterfactual_result(result, directory, stem="test_cf")
             for path in paths.values():
                 self.assertTrue(Path(path).exists())
             payload = json.loads(Path(paths["json"]).read_text(encoding="utf-8"))
-            self.assertEqual(payload["status"], "success")
+            self.assertEqual(payload["status"], "SUCCESS")
 
     def test_transfer_protocol_strong_and_aggregates(self):
         session = {

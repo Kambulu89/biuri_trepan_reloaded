@@ -65,7 +65,15 @@ def build_counterfactual_tree(
     model_name: str = "modelo",
     dataset_name: str = "dataset_carregado",
 ) -> Dict[str, Any]:
-    """Treina um substituto local com vizinhança real + CFs, sem mutar modelos.
+    """Constrói a *árvore local de contrafactuais* (CF-LocalTree).
+
+    Finalidade: resumir, em regras legíveis, a fronteira de decisão do modelo
+    explicado na vizinhança da instância activa, usando o factual e os CFs
+    validados como sementes. NÃO é a árvore global TREPAN Original/Reloaded:
+    é um substituto local, treinado com o motor TREPAN histórico apenas como
+    algoritmo de indução, e a sua fidelidade refere-se ao oráculo local.
+    O algoritmo TREPAN não usa pesos de amostra, pelo que nenhuma ponderação
+    de CFs é aplicada (as sementes entram com peso uniforme).
 
     A implementação legada treinava por vezes com uma amostra repetida ou
     rótulos contraditórios. Esta versão reserva uma vizinhança para avaliação,
@@ -122,14 +130,10 @@ def build_counterfactual_tree(
     cf_labels = _predict(oracle, cf_vectors)
     augmented_X = np.vstack([X_train, original.reshape(1, -1), cf_vectors])
     augmented_y = np.concatenate([y_train, np.asarray([factual_label]), cf_labels])
-    sample_weight = np.concatenate([
-        np.ones(len(X_train)), np.asarray([2.0]), np.full(len(cf_vectors), 3.0),
-    ])
     model_fingerprint = _model_fingerprint(oracle, X, names)
     effective_seed = int(
         (int(model_fingerprint[:8], 16) ^ int(seed)) % (2**31 - 1)
     )
-    sample_weight[-len(cf_vectors):] = 1.5 + 2.5 * cf_plausibility
     # Produção: a árvore local pertence à mesma família TREPAN histórica do
     # restante sistema. Contrafactuais válidos são sementes adicionais, mas
     # os rótulos continuam a ser consultados no próprio oráculo.
@@ -147,7 +151,7 @@ def build_counterfactual_tree(
         max_queries=max(300, local_min_sample * 2),
         random_state=effective_seed,
     )
-    tree.fit(augmented_X, oracle=oracle, sample_weight=sample_weight, feature_names=names)
+    tree.fit(augmented_X, oracle=oracle, feature_names=names)
 
     eval_prediction = tree.predict(X_eval)
     original_reference = _compatible_tree(original_tree, len(names))
@@ -195,6 +199,8 @@ def build_counterfactual_tree(
     ).hexdigest()
     return {
         "result_type": "counterfactual_tree",
+        "tree_kind": "CF-LocalTree",
+        "tree_kind_note": "Árvore local de contrafactuais; distinta de TREPAN Original/Reloaded globais.",
         "scope": "loaded_dataset_only",
         "dataset": dataset_name,
         "target_model": model_name,
@@ -212,7 +218,9 @@ def build_counterfactual_tree(
             "evaluation": evaluation_mode,
             "non_mutating": True,
             "oracle_isolated_per_target": True,
-            "cf_weighting": "validity + plausibility + proximity + robustness + OWL coherence",
+            "cf_weighting": "none (TREPAN ignora sample_weight; sementes com peso uniforme)",
+            "purpose": "resumo local da fronteira de decisão do modelo explicado; não é explicação causal",
+            "causality": "NOT_CLAIMED",
         },
         "_runtime_tree_model": tree,
     }

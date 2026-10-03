@@ -65,7 +65,8 @@ class CounterfactualPanel(QWidget):
         "plausibility": "Plausibilidade",
         "actionability": "Acionabilidade",
         "ontology_consistency": "Consistência ontológica",
-        "causal_consistency": "Consistência causal",
+        "causal_consistency": "Consistência de regras de domínio (não causal)",
+        "plausibility_score": "Plausibilidade (percentil kNN no treino)",
         "global_fidelity": "Fidelidade global",
         "local_fidelity": "Fidelidade local",
         "rule_coverage": "Cobertura das regras",
@@ -109,7 +110,7 @@ class CounterfactualPanel(QWidget):
         "mean_joint_robustness": "Robustez conjunta média",
     }
     PERCENT_METRICS = {
-        "validity", "stability", "robustness", "plausibility", "actionability",
+        "validity", "stability", "robustness", "plausibility", "plausibility_score", "actionability",
         "ontology_consistency", "causal_consistency", "global_fidelity",
         "local_fidelity", "rule_coverage", "instance_coverage",
         "symbolic_stability_proxy", "rule_consistency", "fidelity_to_oracle",
@@ -204,6 +205,8 @@ class CounterfactualPanel(QWidget):
         self.owl_checkbox = QCheckBox("Validar coerência OWL quando aplicável")
         self.owl_checkbox.setChecked(True)
         self.rst_checkbox = QCheckBox("Aplicar filtro de relevância RST")
+        self.show_all_checkbox = QCheckBox("Mostrar todas as features (por defeito só as alteradas)")
+        self.show_all_checkbox.setToolTip("Apenas muda a apresentação: o contrafactual não é alterado")
 
         self.model_combo.setToolTip("Modelo cuja decisão será explicada")
         self.instance_spin.setToolTip("Índice da instância no dataset ativo")
@@ -227,6 +230,7 @@ class CounterfactualPanel(QWidget):
         validations_layout.addWidget(validation_label)
         validations_layout.addWidget(self.owl_checkbox)
         validations_layout.addWidget(self.rst_checkbox)
+        validations_layout.addWidget(self.show_all_checkbox)
 
         self._configuration_cells = [
             self._field_cell("Modelo alvo", self.model_combo),
@@ -785,7 +789,12 @@ class CounterfactualPanel(QWidget):
         if index >= 0:
             self.model_combo.setCurrentIndex(index)
         self.desired_combo.clear()
-        self.desired_combo.addItem("Automática (outra classe)", None)
+        self._multiclass = len(class_labels) > 2
+        if self._multiclass:
+            # Multiclasse: nunca se assume "classe oposta". O serviço devolve INVALID_TARGET com as opções válidas.
+            self.desired_combo.addItem("Escolha a classe alvo (obrigatório)", None)
+        else:
+            self.desired_combo.addItem("Automática (classe oposta)", None)
         for value, label in class_labels.items():
             self.desired_combo.addItem(f"{label} ({value})", value)
         names = set(available_models)
@@ -805,6 +814,7 @@ class CounterfactualPanel(QWidget):
         self._visualization_ready = False
         self._local_result = {}
         self.current_result = {}
+        self._last_generation = {}
         self.summary_text.clear()
         self.metrics_table.setRowCount(0)
         self.candidates_table.setRowCount(0)
@@ -830,6 +840,10 @@ class CounterfactualPanel(QWidget):
             "cf_tree_max_depth": 5,
             "cf_tree_neighborhood_size": 300,
             "seed": 42,
+            "max_time": 30.0,
+            "max_iterations": 40,
+            "pipeline": "cfkit",
+            "show_all_features": self.show_all_checkbox.isChecked(),
         }
 
     def set_busy(self, busy: bool) -> None:
@@ -871,13 +885,8 @@ class CounterfactualPanel(QWidget):
             "sparsity": "Esparsidade", "robustness": "Robustez",
             "actionability": "Acionabilidade", "plausibility": "Plausibilidade",
         })
-        text = result.get("narrative") or "Sem resumo disponível."
-        warnings = result.get("warnings") or []
-        if warnings:
-            text += "\n\nAvisos:\n" + "\n".join(f"- {item}" for item in warnings)
-        best = result.get("best_candidate")
-        if best and best.get("rule"):
-            text += "\n\nRegra sugerida:\n" + str(best["rule"])
+        self._last_generation = dict(result)
+        text = self._generation_text(result)
         self._set_summary_content("Resultado local", text)
         metrics_summary = result.get("aggregate_metrics") or {}
         formal_summary = (result.get("formal_evaluation") or {}).get("summary") or {}
@@ -889,7 +898,7 @@ class CounterfactualPanel(QWidget):
         self.candidates_table.setRowCount(len(candidates))
         for row_index, candidate in enumerate(candidates):
             metrics = candidate.get("metrics") or {}
-            changed = ", ".join(item["feature"] for item in candidate.get("changes") or [])
+            changed = "; ".join(_format_change(item) for item in candidate.get("changes") or [])
             values = (
                 row_index + 1,
                 candidate.get("method", ""),
@@ -901,6 +910,42 @@ class CounterfactualPanel(QWidget):
             for column, value in enumerate(values):
                 self._set_table_item(self.candidates_table, row_index, column, value)
         self._reset_result_scrolls()
+
+    def _generation_text(self, result: Mapping[str, Any]) -> str:
+        """Texto do resultado local: modelo explicado, estado, alterações (só as alteradas por defeito) e avisos."""
+        lines = []
+        if result.get("model_explained") or result.get("target_model"):
+            lines.append(
+                f"Modelo explicado: {result.get('model_explained') or result.get('target_model')}"
+                f" · método: {result.get('method_label') or result.get('method')}"
+                f" · estado: {result.get('status')}"
+            )
+        if result.get("message") and str(result.get("status")) not in {"SUCCESS", "success"}:
+            lines.append(f"Motivo: {result['message']}")
+        lines.append("")
+        lines.append(result.get("narrative") or "Sem resumo disponível.")
+        best = result.get("best_candidate")
+        if best:
+            lines.append("\nAlterações do melhor contrafactual:")
+            lines += [f"  • {_format_change(item)}" for item in best.get("changes") or []] or ["  (nenhuma)"]
+            if self.show_all_checkbox.isChecked() and result.get("original_human") and best.get("human"):
+                lines.append("\nTodas as features (original → contrafactual):")
+                changed = {item["feature"] for item in best.get("changes") or []}
+                for name, original in result["original_human"].items():
+                    cf_value = best["human"].get(name, original)
+                    lines.append(f"  {'*' if name in changed else ' '} {name}: {original} → {cf_value}")
+            if best.get("rule"):
+                lines.append("\nRegra sugerida:\n" + str(best["rule"]))
+            sem = (best.get("ontology_validation") or {})
+            if sem.get("status"):
+                lines.append(f"\nValidade semântica: {sem['status']} (a validade no modelo é independente)")
+        warnings = result.get("warnings") or []
+        if warnings:
+            lines.append("\nAvisos:\n" + "\n".join(f"- {item}" for item in warnings))
+        rejected = result.get("rejected") or []
+        if rejected:
+            lines.append(f"\nCandidatos rejeitados por constraints hard: {len(rejected)}")
+        return "\n".join(lines)
 
     def _display_transfer(self, result: Mapping[str, Any]) -> None:
         self._set_candidate_mode("transfer")
@@ -1106,6 +1151,16 @@ class CounterfactualPanel(QWidget):
                 return f"{int(numeric):,}".replace(",", " ")
             return _format_number(numeric)
         return str(value)
+
+
+def _format_change(item: Mapping[str, Any]) -> str:
+    """'A: 10 → 13 (+3)'; categorias: 'B: X → Y'. Usa o espaço humano quando disponível."""
+    before, after = item.get("original"), item.get("counterfactual")
+    def fmt(v):
+        return f"{v:.6g}" if isinstance(v, float) else str(v)
+    delta = item.get("delta")
+    suffix = f" ({delta:+.6g})" if isinstance(delta, (int, float)) and not isinstance(delta, bool) and item.get("kind") in (None, "continuous", "integer") else ""
+    return f"{item.get('feature')}: {fmt(before)} → {fmt(after)}{suffix}"
 
 
 def _format_number(value: Any) -> str:

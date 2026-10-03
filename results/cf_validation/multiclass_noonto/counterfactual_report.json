@@ -1,0 +1,1371 @@
+{
+  "pipeline_version": "cfkit-1.0",
+  "n_results": 3,
+  "extra": {
+    "benchmark_summary": {
+      "LORE-inspired": {
+        "n_tasks": 24,
+        "success_rate": 1.0,
+        "mean_proximity": 0.03256898452463046,
+        "mean_sparsity": 1.0,
+        "mean_plausibility": 0.6015277777777778,
+        "semantic_validity_rate": null,
+        "semantic_available_rate": 0.0,
+        "mean_runtime": 0.5980479739166734,
+        "status_counts": {
+          "SUCCESS": 24
+        }
+      },
+      "CLEAR-inspired": {
+        "n_tasks": 24,
+        "success_rate": 1.0,
+        "mean_proximity": 0.03157672576448715,
+        "mean_sparsity": 1.0,
+        "mean_plausibility": 0.593125,
+        "semantic_validity_rate": null,
+        "semantic_available_rate": 0.0,
+        "mean_runtime": 0.11775021862498154,
+        "status_counts": {
+          "SUCCESS": 24
+        }
+      },
+      "CoGS-inspired": {
+        "n_tasks": 24,
+        "success_rate": 1.0,
+        "mean_proximity": 0.06971344479588719,
+        "mean_sparsity": 1.0,
+        "mean_plausibility": 0.27416666666666667,
+        "semantic_validity_rate": null,
+        "semantic_available_rate": 0.0,
+        "mean_runtime": 0.7072150894166688,
+        "status_counts": {
+          "SUCCESS": 24
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "method": "LORE",
+      "status": "SUCCESS",
+      "model_explained": "MLP",
+      "dataset": "synthetic",
+      "original_instance": [
+        59.0,
+        2.0,
+        32.66983859204426,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "original_human": {
+        "age": 59,
+        "children": 2,
+        "income": 32.66983859204426,
+        "sex": 1,
+        "employment": "b"
+      },
+      "original_class": 1,
+      "target_class": 0,
+      "predicted_class": 0,
+      "changed_features": [
+        "income"
+      ],
+      "proximity": 0.017711618428302267,
+      "sparsity": 1,
+      "plausibility": 0.29833333333333334,
+      "semantic_validation": "NOT_AVAILABLE",
+      "runtime": 0.5757440039999437,
+      "seed": 0,
+      "warnings": [],
+      "message": "2 contrafactual(is) validado(s) no modelo explicado",
+      "instance_id": null,
+      "iterations": 15,
+      "terminated_by": "completed",
+      "diversity": {
+        "mean_pairwise": 0.21771161842830225,
+        "min_pairwise": 0.21771161842830225
+      },
+      "diagnostics": {
+        "method_stats": {
+          "neighborhood": 601,
+          "neighborhood_class_counts": {
+            "0": 127,
+            "1": 306,
+            "2": 168
+          },
+          "local_fidelity": 1.0,
+          "surrogate": "C4.5 nativo",
+          "factual_rule": "SE income <= 38.9362 E income > 25.5631 E emp_c <= 0.5, ENTÃO classe 1"
+        },
+        "model_calls": 222241,
+        "raw_candidates": 2,
+        "unique_candidates": 2,
+        "rejected_model_invalid": 0,
+        "rejected_hard_constraints": 0,
+        "near_duplicates_removed": 0
+      },
+      "provenance": {
+        "pipeline_version": "cfkit-1.0",
+        "model_fingerprint": "463c4377c78a8f4d83df5f220090eb8011374e448506a6e9ab442effdbc94f3f",
+        "dataset": "synthetic",
+        "ontology_hash": "none",
+        "constraints": {
+          "schema": {
+            "fit_rows": 1050,
+            "range_priority": [
+              "owl",
+              "config",
+              "metadata",
+              "train",
+              "fallback"
+            ],
+            "notes": []
+          },
+          "columns": [
+            {
+              "name": "age",
+              "kind": "integer",
+              "low": 18.0,
+              "high": 69.0,
+              "range_source": "train",
+              "direction": "increase_only",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "children",
+              "kind": "integer",
+              "low": 0.0,
+              "high": 4.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "income",
+              "kind": "continuous",
+              "low": 0.0,
+              "high": 88.27414898672077,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "sex",
+              "kind": "binary",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": true,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "emp_a",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "a",
+              "reversible": true
+            },
+            {
+              "name": "emp_b",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "b",
+              "reversible": true
+            },
+            {
+              "name": "emp_c",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "c",
+              "reversible": true
+            }
+          ],
+          "nonactionable_policy": "invalid",
+          "semantic_source": "none",
+          "rules": [],
+          "range_sources": {
+            "age": "train",
+            "children": "train",
+            "income": "train",
+            "sex": "train",
+            "emp_a": "train",
+            "emp_b": "train",
+            "emp_c": "train"
+          },
+          "ontology_notes": [],
+          "not_extracted": [],
+          "derive_fn": false
+        },
+        "objective_weights": {
+          "prediction": 4.0,
+          "distance": 1.5,
+          "sparsity": 0.6,
+          "plausibility": 0.5,
+          "semantic": 0.5
+        },
+        "options": {
+          "n_cfs": "3",
+          "max_iterations": "25",
+          "max_time": "20.0",
+          "sparsify_post": "True",
+          "require_plausible": "False",
+          "lore_surrogate": "c45",
+          "duplicate_tol": "0.001"
+        },
+        "method_registry": {
+          "label": "LORE-inspired",
+          "canonical": false,
+          "reference": "Guidotti et al., LORE (arXiv:1805.10820)",
+          "implements": [
+            "vizinhança por algoritmo genético (50% mesma classe / 50% classe diferente)",
+            "substituto local em árvore (C4.5 nativo ou TREPAN)",
+            "regra factual + regras contrafactuais (premissas violadas mínimas)"
+          ],
+          "divergences": [
+            "o substituto local é C4.5 nativo/TREPAN, não o DecisionTreeClassifier (CART) do LORE original",
+            "se a regra contrafactual não vira a classe no modelo, aplica-se um refinamento por passo (validado no modelo) que preserva o caminho",
+            "operadores genéticos e tamanhos de população são simplificados e configuráveis",
+            "a regra contrafactual é aplicada ao vector e RE-VALIDADA no modelo (o LORE original não o faz)"
+          ]
+        },
+        "log": {
+          "method": "LORE",
+          "instance_id": null,
+          "target": "0",
+          "seed": 0,
+          "iterations": 15,
+          "runtime": 0.5757440039999437,
+          "status": "SUCCESS",
+          "terminated_by": "completed"
+        },
+        "ranges_learned_from": "X_train only",
+        "causality": "NOT_CLAIMED: constraints semânticas não são causais"
+      },
+      "explanation": "Para o modelo MLP prever 0 em vez de 1, o contrafactual encontrado (LORE-inspired) altera 1 característica(s): income: 32.6698 → 24.8524 (-7.81739). Com estas alterações o modelo passaria a prever 0. Método LORE-inspired é uma aproximação inspirada no método original (não a implementação canónica). Isto descreve o comportamento do modelo, não uma relação causal nem uma garantia sobre o mundo real.",
+      "canonical": false,
+      "method_label": "LORE-inspired",
+      "candidates": [
+        {
+          "vector": [
+            59.0,
+            2.0,
+            24.85244837236474,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 24.85244837236474,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 24.85244837236474,
+              "delta": -7.817390219679517,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.017711618428302267,
+          "sparsity": 1,
+          "plausibility": 0.29833333333333334,
+          "plausible": true,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.5205103495913284,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.017711618428302267,
+          "method": "LORE",
+          "rule": "SE income <= 38.9362 E income <= 25.5631 E children > 0.5, ENTÃO classe 0",
+          "dominated_by": [],
+          "cross_model": {},
+          "metadata": {
+            "rule": "SE income <= 38.9362 E income <= 25.5631 E children > 0.5, ENTÃO classe 0",
+            "rule_id": "R2",
+            "support": 0.20465890183028287,
+            "confidence": 1.0,
+            "premise_changes": 1,
+            "path_respected": true,
+            "tree_family": "C4.5 nativo",
+            "refine_factor": 1.1,
+            "has_m_of_n": false,
+            "local_fidelity": 1.0,
+            "density": {
+              "available": true,
+              "plausibility": 0.29833333333333334,
+              "plausible": true,
+              "knn_distance": 0.038927313570770825,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        },
+        {
+          "vector": [
+            59.0,
+            2.0,
+            32.66983859204426,
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 32.66983859204426,
+            "sex": 1,
+            "employment": "c"
+          },
+          "changes": [
+            {
+              "feature": "employment",
+              "kind": "onehot",
+              "columns": [
+                "emp_a",
+                "emp_b",
+                "emp_c"
+              ],
+              "original": "b",
+              "counterfactual": "c",
+              "delta": null,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.2,
+          "sparsity": 1,
+          "plausibility": 0.64,
+          "plausible": true,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.7363390189184218,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.2,
+          "method": "LORE",
+          "rule": "SE income <= 38.9362 E income > 25.5631 E emp_c > 0.5, ENTÃO classe 0",
+          "dominated_by": [
+            0
+          ],
+          "cross_model": {},
+          "metadata": {
+            "rule": "SE income <= 38.9362 E income > 25.5631 E emp_c > 0.5, ENTÃO classe 0",
+            "rule_id": "R4",
+            "support": 0.0066555740432612314,
+            "confidence": 1.0,
+            "premise_changes": 1,
+            "path_respected": true,
+            "tree_family": "C4.5 nativo",
+            "refine_factor": 3.0,
+            "has_m_of_n": false,
+            "local_fidelity": 1.0,
+            "density": {
+              "available": true,
+              "plausibility": 0.64,
+              "plausible": true,
+              "knn_distance": 0.02857128273922278,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        }
+      ],
+      "counterfactual": [
+        59.0,
+        2.0,
+        24.85244837236474,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "rejected": []
+    },
+    {
+      "method": "CLEAR",
+      "status": "SUCCESS",
+      "model_explained": "MLP",
+      "dataset": "synthetic",
+      "original_instance": [
+        59.0,
+        2.0,
+        32.66983859204426,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "original_human": {
+        "age": 59,
+        "children": 2,
+        "income": 32.66983859204426,
+        "sex": 1,
+        "employment": "b"
+      },
+      "original_class": 1,
+      "target_class": 0,
+      "predicted_class": 0,
+      "changed_features": [
+        "income"
+      ],
+      "proximity": 0.016164329335616512,
+      "sparsity": 1,
+      "plausibility": 0.33666666666666667,
+      "semantic_validation": "NOT_AVAILABLE",
+      "runtime": 0.11413481899990074,
+      "seed": 0,
+      "warnings": [],
+      "message": "3 contrafactual(is) validado(s) no modelo explicado",
+      "instance_id": null,
+      "iterations": 12,
+      "terminated_by": "completed",
+      "diversity": {
+        "mean_pairwise": 0.1702533437400842,
+        "min_pairwise": 0.04328104747423844
+      },
+      "diagnostics": {
+        "method_stats": {
+          "neighborhood": 449,
+          "local_r2": 0.8868834287654518,
+          "wlr_intercept": 0.19576610303666192,
+          "b_counterfactuals": 6
+        },
+        "model_calls": 223449,
+        "raw_candidates": 6,
+        "unique_candidates": 6,
+        "rejected_model_invalid": 0,
+        "rejected_hard_constraints": 0,
+        "near_duplicates_removed": 1
+      },
+      "provenance": {
+        "pipeline_version": "cfkit-1.0",
+        "model_fingerprint": "463c4377c78a8f4d83df5f220090eb8011374e448506a6e9ab442effdbc94f3f",
+        "dataset": "synthetic",
+        "ontology_hash": "none",
+        "constraints": {
+          "schema": {
+            "fit_rows": 1050,
+            "range_priority": [
+              "owl",
+              "config",
+              "metadata",
+              "train",
+              "fallback"
+            ],
+            "notes": []
+          },
+          "columns": [
+            {
+              "name": "age",
+              "kind": "integer",
+              "low": 18.0,
+              "high": 69.0,
+              "range_source": "train",
+              "direction": "increase_only",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "children",
+              "kind": "integer",
+              "low": 0.0,
+              "high": 4.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "income",
+              "kind": "continuous",
+              "low": 0.0,
+              "high": 88.27414898672077,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "sex",
+              "kind": "binary",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": true,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "emp_a",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "a",
+              "reversible": true
+            },
+            {
+              "name": "emp_b",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "b",
+              "reversible": true
+            },
+            {
+              "name": "emp_c",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "c",
+              "reversible": true
+            }
+          ],
+          "nonactionable_policy": "invalid",
+          "semantic_source": "none",
+          "rules": [],
+          "range_sources": {
+            "age": "train",
+            "children": "train",
+            "income": "train",
+            "sex": "train",
+            "emp_a": "train",
+            "emp_b": "train",
+            "emp_c": "train"
+          },
+          "ontology_notes": [],
+          "not_extracted": [],
+          "derive_fn": false
+        },
+        "objective_weights": {
+          "prediction": 4.0,
+          "distance": 1.5,
+          "sparsity": 0.6,
+          "plausibility": 0.5,
+          "semantic": 0.5
+        },
+        "options": {
+          "n_cfs": "3",
+          "max_iterations": "25",
+          "max_time": "20.0",
+          "sparsify_post": "True",
+          "require_plausible": "False",
+          "lore_surrogate": "c45",
+          "duplicate_tol": "0.001"
+        },
+        "method_registry": {
+          "label": "CLEAR-inspired",
+          "canonical": false,
+          "reference": "White & Garcez, CLEAR (arXiv:1908.03020)",
+          "implements": [
+            "vizinhança com pontos de fronteira (bissecção até instâncias da classe alvo)",
+            "regressão linear local ponderada (WLR) sobre P(classe alvo)",
+            "b-contrafactuais por feature a partir dos coeficientes da WLR"
+          ],
+          "divergences": [
+            "não replica a geração exacta de perturbações nem os 'b-perturbation' datasets do CLEAR original",
+            "multiclasse tratado como alvo-vs-resto; refinamento por bissecção no modelo",
+            "restrições de domínio/schema aplicadas por projecção"
+          ]
+        },
+        "log": {
+          "method": "CLEAR",
+          "instance_id": null,
+          "target": "0",
+          "seed": 0,
+          "iterations": 12,
+          "runtime": 0.11413481899990074,
+          "status": "SUCCESS",
+          "terminated_by": "completed"
+        },
+        "ranges_learned_from": "X_train only",
+        "causality": "NOT_CLAIMED: constraints semânticas não são causais"
+      },
+      "explanation": "Para o modelo MLP prever 0 em vez de 1, o contrafactual encontrado (CLEAR-inspired) altera 1 característica(s): income: 32.6698 → 25.5354 (-7.13446). Com estas alterações o modelo passaria a prever 0. Método CLEAR-inspired é uma aproximação inspirada no método original (não a implementação canónica). Isto descreve o comportamento do modelo, não uma relação causal nem uma garantia sobre o mundo real.",
+      "canonical": false,
+      "method_label": "CLEAR-inspired",
+      "candidates": [
+        {
+          "vector": [
+            59.0,
+            2.0,
+            25.535376511831092,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 25.535376511831092,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 25.535376511831092,
+              "delta": -7.134462080213165,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.016164329335616512,
+          "sparsity": 1,
+          "plausibility": 0.33666666666666667,
+          "plausible": true,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.47055169345033704,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.016164329335616512,
+          "method": "CLEAR",
+          "rule": null,
+          "dominated_by": [],
+          "cross_model": {},
+          "metadata": {
+            "local_r2": 0.8868834287654518,
+            "n_units_regression": 1,
+            "step_factor": 1.0,
+            "wlr_p0": 0.19576610303666192,
+            "density": {
+              "available": true,
+              "plausibility": 0.33666666666666667,
+              "plausible": true,
+              "knn_distance": 0.03738002447808507,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        },
+        {
+          "vector": [
+            59.0,
+            2.0,
+            32.66983859204426,
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 32.66983859204426,
+            "sex": 1,
+            "employment": "c"
+          },
+          "changes": [
+            {
+              "feature": "employment",
+              "kind": "onehot",
+              "columns": [
+                "emp_a",
+                "emp_b",
+                "emp_c"
+              ],
+              "original": "b",
+              "counterfactual": "c",
+              "delta": null,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.2,
+          "sparsity": 1,
+          "plausibility": 0.64,
+          "plausible": true,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.7363390189184218,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.2,
+          "method": "CLEAR",
+          "rule": null,
+          "dominated_by": [
+            0,
+            1
+          ],
+          "cross_model": {},
+          "metadata": {
+            "local_r2": 0.8868834287654518,
+            "n_units_regression": 3,
+            "step_factor": 1.0,
+            "wlr_p0": 0.19576610303666192,
+            "density": {
+              "available": true,
+              "plausibility": 0.64,
+              "plausible": true,
+              "knn_distance": 0.02857128273922278,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        },
+        {
+          "vector": [
+            69.0,
+            2.0,
+            27.329708012979495,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 69,
+            "children": 2,
+            "income": 27.329708012979495,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "age",
+              "kind": "integer",
+              "columns": [
+                "age"
+              ],
+              "original": 59,
+              "counterfactual": 69,
+              "delta": 10.0,
+              "actionable": true,
+              "direction": "increase_only",
+              "cost": 1.0
+            },
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 27.329708012979495,
+              "delta": -5.340130579064763,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.05131465441039766,
+          "sparsity": 2,
+          "plausibility": 0.2866666666666667,
+          "plausible": true,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.47260312403820254,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.05131465441039766,
+          "method": "CLEAR",
+          "rule": null,
+          "dominated_by": [
+            0,
+            1
+          ],
+          "cross_model": {},
+          "metadata": {
+            "local_r2": 0.8868834287654518,
+            "n_units_regression": 2,
+            "step_factor": 1.25,
+            "wlr_p0": 0.19576610303666192,
+            "density": {
+              "available": true,
+              "plausibility": 0.2866666666666667,
+              "plausible": true,
+              "knn_distance": 0.03932542165389418,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        }
+      ],
+      "counterfactual": [
+        59.0,
+        2.0,
+        25.535376511831092,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "rejected": []
+    },
+    {
+      "method": "COGS",
+      "status": "SUCCESS",
+      "model_explained": "MLP",
+      "dataset": "synthetic",
+      "original_instance": [
+        59.0,
+        2.0,
+        32.66983859204426,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "original_human": {
+        "age": 59,
+        "children": 2,
+        "income": 32.66983859204426,
+        "sex": 1,
+        "employment": "b"
+      },
+      "original_class": 1,
+      "target_class": 0,
+      "predicted_class": 0,
+      "changed_features": [
+        "income"
+      ],
+      "proximity": 0.05085864773343472,
+      "sparsity": 1,
+      "plausibility": 0.035,
+      "semantic_validation": "NOT_AVAILABLE",
+      "runtime": 0.9829039829999147,
+      "seed": 0,
+      "warnings": [],
+      "message": "3 contrafactual(is) validado(s) no modelo explicado",
+      "instance_id": null,
+      "iterations": 23,
+      "terminated_by": "found_enough",
+      "diversity": {
+        "mean_pairwise": 0.0028973203343908662,
+        "min_pairwise": 0.002085035301256416
+      },
+      "diagnostics": {
+        "method_stats": {
+          "archive_size": 1026
+        },
+        "model_calls": 226370,
+        "raw_candidates": 1026,
+        "unique_candidates": 1026,
+        "candidates_truncated_to": 24,
+        "rejected_model_invalid": 0,
+        "rejected_hard_constraints": 0,
+        "near_duplicates_removed": 19
+      },
+      "provenance": {
+        "pipeline_version": "cfkit-1.0",
+        "model_fingerprint": "463c4377c78a8f4d83df5f220090eb8011374e448506a6e9ab442effdbc94f3f",
+        "dataset": "synthetic",
+        "ontology_hash": "none",
+        "constraints": {
+          "schema": {
+            "fit_rows": 1050,
+            "range_priority": [
+              "owl",
+              "config",
+              "metadata",
+              "train",
+              "fallback"
+            ],
+            "notes": []
+          },
+          "columns": [
+            {
+              "name": "age",
+              "kind": "integer",
+              "low": 18.0,
+              "high": 69.0,
+              "range_source": "train",
+              "direction": "increase_only",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "children",
+              "kind": "integer",
+              "low": 0.0,
+              "high": 4.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "income",
+              "kind": "continuous",
+              "low": 0.0,
+              "high": 88.27414898672077,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "sex",
+              "kind": "binary",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": true,
+              "cost": 1.0,
+              "group": null,
+              "category": null,
+              "reversible": true
+            },
+            {
+              "name": "emp_a",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "a",
+              "reversible": true
+            },
+            {
+              "name": "emp_b",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "b",
+              "reversible": true
+            },
+            {
+              "name": "emp_c",
+              "kind": "onehot",
+              "low": 0.0,
+              "high": 1.0,
+              "range_source": "train",
+              "direction": "both",
+              "actionable": true,
+              "immutable": false,
+              "cost": 1.0,
+              "group": "employment",
+              "category": "c",
+              "reversible": true
+            }
+          ],
+          "nonactionable_policy": "invalid",
+          "semantic_source": "none",
+          "rules": [],
+          "range_sources": {
+            "age": "train",
+            "children": "train",
+            "income": "train",
+            "sex": "train",
+            "emp_a": "train",
+            "emp_b": "train",
+            "emp_c": "train"
+          },
+          "ontology_notes": [],
+          "not_extracted": [],
+          "derive_fn": false
+        },
+        "objective_weights": {
+          "prediction": 4.0,
+          "distance": 1.5,
+          "sparsity": 0.6,
+          "plausibility": 0.5,
+          "semantic": 0.5
+        },
+        "options": {
+          "n_cfs": "3",
+          "max_iterations": "25",
+          "max_time": "20.0",
+          "sparsify_post": "True",
+          "require_plausible": "False",
+          "lore_surrogate": "c45",
+          "duplicate_tol": "0.001"
+        },
+        "method_registry": {
+          "label": "CoGS-inspired",
+          "canonical": false,
+          "reference": "pesquisa genética multiobjectivo para contrafactuais (família CoGS)",
+          "implements": [
+            "população de vectores com operadores sensíveis ao tipo (inteiro/binário/one-hot/código)",
+            "fitness = perda de predição + distância + esparsidade + penalização de plausibilidade + penalização semântica soft",
+            "constraints hard por reparação/projecção; terminação por gerações/tempo/estagnação"
+          ],
+          "divergences": [
+            "não é uma réplica verificada do CoGS publicado (sem acesso ao código/benchmarks originais)",
+            "fitness escalarizada com pesos configuráveis (não Pareto)"
+          ]
+        },
+        "log": {
+          "method": "COGS",
+          "instance_id": null,
+          "target": "0",
+          "seed": 0,
+          "iterations": 23,
+          "runtime": 0.9829039829999147,
+          "status": "SUCCESS",
+          "terminated_by": "found_enough"
+        },
+        "ranges_learned_from": "X_train only",
+        "causality": "NOT_CLAIMED: constraints semânticas não são causais"
+      },
+      "explanation": "Para o modelo MLP prever 0 em vez de 1, o contrafactual encontrado (CoGS-inspired) altera 1 característica(s): income: 32.6698 → 10.2223 (-22.4475). Com estas alterações o modelo passaria a prever 0. Método CoGS-inspired é uma aproximação inspirada no método original (não a implementação canónica). Isto descreve o comportamento do modelo, não uma relação causal nem uma garantia sobre o mundo real.",
+      "canonical": false,
+      "method_label": "CoGS-inspired",
+      "candidates": [
+        {
+          "vector": [
+            59.0,
+            2.0,
+            10.222319355622428,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 10.222319355622428,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 10.222319355622428,
+              "delta": -22.44751923642183,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.05085864773343472,
+          "sparsity": 1,
+          "plausibility": 0.035,
+          "plausible": false,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.9748476471525334,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.05085864773343472,
+          "method": "COGS",
+          "rule": null,
+          "dominated_by": [],
+          "cross_model": {},
+          "metadata": {
+            "objective": 0.3361572562269744,
+            "density": {
+              "available": true,
+              "plausibility": 0.035,
+              "plausible": false,
+              "knn_distance": 0.061911411931136806,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        },
+        {
+          "vector": [
+            59.0,
+            2.0,
+            9.224404288298771,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 9.224404288298771,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 9.224404288298771,
+              "delta": -23.445434303745486,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.0531195929337646,
+          "sparsity": 1,
+          "plausibility": 0.03333333333333333,
+          "plausible": false,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.9799206791101555,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.0531195929337646,
+          "method": "COGS",
+          "rule": null,
+          "dominated_by": [
+            0,
+            1
+          ],
+          "cross_model": {},
+          "metadata": {
+            "objective": 0.33107249725442184,
+            "density": {
+              "available": true,
+              "plausibility": 0.03333333333333333,
+              "plausible": false,
+              "knn_distance": 0.06326797905133473,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        },
+        {
+          "vector": [
+            59.0,
+            2.0,
+            8.304130704170365,
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "human": {
+            "age": 59,
+            "children": 2,
+            "income": 8.304130704170365,
+            "sex": 1,
+            "employment": "b"
+          },
+          "changes": [
+            {
+              "feature": "income",
+              "kind": "continuous",
+              "columns": [
+                "income"
+              ],
+              "original": 32.66983859204426,
+              "counterfactual": 8.304130704170365,
+              "delta": -24.365707887873892,
+              "actionable": true,
+              "direction": "both",
+              "cost": 1.0
+            }
+          ],
+          "predicted_class": 0,
+          "model_valid": true,
+          "semantic_valid": null,
+          "semantic_status": "NOT_AVAILABLE",
+          "hard_violations": [],
+          "soft_warnings": [],
+          "proximity": 0.05520462823502102,
+          "sparsity": 1,
+          "plausibility": 0.028333333333333332,
+          "plausible": false,
+          "original_probability": 0.6294592151274386,
+          "counterfactual_probability": 0.9836194516117776,
+          "original_target_probability": 0.14889728908814764,
+          "cost_weighted_distance": 0.05520462823502102,
+          "method": "COGS",
+          "rule": null,
+          "dominated_by": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "cross_model": {},
+          "metadata": {
+            "objective": 0.3334898440029604,
+            "density": {
+              "available": true,
+              "plausibility": 0.028333333333333332,
+              "plausible": false,
+              "knn_distance": 0.06488503807318294,
+              "threshold": 0.05740405971568768,
+              "k": 5,
+              "quantile": 0.95
+            }
+          },
+          "fully_valid": true
+        }
+      ],
+      "counterfactual": [
+        59.0,
+        2.0,
+        10.222319355622428,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "rejected": []
+    }
+  ]
+}
