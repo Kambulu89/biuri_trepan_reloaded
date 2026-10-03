@@ -238,3 +238,9 @@ def test_rejected_card_explains_in_human_words_and_lists_metrics_as_na():
         assert rows[metric].startswith("Não calculado — professor semântico rejeitado")
     assert rows["Δ utilidade"].startswith("Não calculado")
     assert rows["Accuracy"] != dict(rp.model_card_rows(r.models["mlp_original"], r))["Accuracy"]
+
+
+def test_trepan_semantics_reason_is_humanised_not_a_raw_code():
+    r = make_result(enrichment=EnrichmentInfo(mlp_status="NOT_AVAILABLE", trepan_semantics_available=False,
+                                              trepan_semantics_reason="no_ontology"))
+    assert dict(rp.enrichment_rows(r))["Semântica no TREPAN"] == "INDISPONÍVEL — ontologia não carregada"

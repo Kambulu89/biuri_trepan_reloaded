@@ -169,7 +169,8 @@ def enrichment_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
     elif e.trepan_semantics_available:
         trepan = f"{tr('status.AVAILABLE')} ({tr('field.reloaded_mode')}: {e.reloaded_mode or tr('misc.none')})"
     else:
-        trepan = f"{tr('status.NOT_AVAILABLE')} — {e.trepan_semantics_reason or na_text(Reason.TEACHER_REJECTED)}"
+        trepan = (f"{tr('status.NOT_AVAILABLE')} — "
+                  f"{_reason_text(e.trepan_semantics_reason) if e.trepan_semantics_reason else na_text(Reason.TEACHER_REJECTED)}")
     rows.append((tr("field.trepan_semantics"), trepan))
     rows.append((tr("field.teacher"), _model_name(e.teacher) if e.teacher else tr("misc.none")))
     if result.stale is False and e.generated is not None:
