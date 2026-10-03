@@ -225,7 +225,36 @@ def generate_explanation_from_session(
     desired = options.get('desired_class')
     if isinstance(desired, str) and desired.strip().lstrip('-').isdigit():
         desired = int(desired)
-    progress('generate', 25, f"Gerando com {options.get('method', 'AUTO')}...")
+    method_key = str(options.get('method', 'AUTO')).upper().replace('_', '-')
+    from counterfactuals.cfkit.session import CFKIT_METHODS, generate_with_cfkit
+    if str(options.get('pipeline', 'cfkit')).lower() == 'cfkit' and method_key in CFKIT_METHODS:
+        # Pipeline unificado: constraints (hard/soft), re-validação no modelo explicado, status explícito, sem causalidade.
+        progress('generate', 25, f"Gerando com {method_key} (cfkit)...")
+        result = generate_with_cfkit(session, context, options, index, desired)
+        if cancel_fn and cancel_fn():
+            raise InterruptedError('Cancelado')
+        result.update({
+            'instance_index': index,
+            'target_model': context['target_model'],
+            'oracle_label': context['oracle_label'],
+            'ontology_active': bool(context['ontology_active']),
+            'scope': 'loaded_dataset_only',
+            'dataset': session.get('dataset_name', 'dataset_carregado'),
+            'active_dataset': session.get('dataset_name', 'dataset_carregado'),
+            'active_model': context['target_model'],
+            'active_instance': index,
+        })
+        progress('evaluate', 85, 'Calculando métricas contrafactuais formais...')
+        from counterfactuals.evaluation import evaluate_generation_result
+        try:
+            result['formal_evaluation'] = evaluate_generation_result(
+                result, context['oracle'], context['X'], context['y'], seed=int(options.get('seed', 42)),
+            )
+        except Exception as exc:   # a avaliação formal nunca invalida o resultado já validado
+            result['formal_evaluation'] = {'summary': {}, 'error': f'{type(exc).__name__}: {exc}'}
+        progress('done', 100, 'Explicação contrafactual concluída.')
+        return result
+    progress('generate', 25, f"Gerando com {options.get('method', 'AUTO')} (motor legado)...")
     result = engine.generate(
         context['X'][index],
         desired_class=desired,

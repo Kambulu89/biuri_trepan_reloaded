@@ -1,0 +1,30 @@
+[
+  {
+    "dataset_name": "unknown",
+    "model_name": "MLP Original",
+    "optimization_method": "baseline",
+    "best_params": {
+      "hidden_layer_sizes": [
+        16,
+        8
+      ],
+      "activation": "relu",
+      "solver": "lbfgs",
+      "alpha": 0.001,
+      "max_iter": 2000,
+      "tol": 1e-05,
+      "early_stopping": false,
+      "random_state": 42
+    },
+    "best_cv_score": 0.29999999999999993,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "fidelity_target": null,
+    "fidelity_value": null,
+    "training_time_seconds": 0.46232803400005196,
+    "selected_as_best": true,
+    "timestamp": "20261002_213650"
+  }
+]

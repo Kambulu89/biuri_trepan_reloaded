@@ -1,3 +1,4 @@
+from core.tree_stop_summary import stop_summary_of
 import graphviz
 import logging
 import os
@@ -1157,7 +1158,7 @@ class TrepanReloadedExtractor:
             'scientific_semantic_tuning': semantic_tuning,
             'splits': model.split_audit_,
             'node_audit': list(getattr(model, 'node_audit_', []) or []),
-            'stop_summary': dict(getattr(model, 'stop_summary_', {}) or {}),
+            'stop_summary': stop_summary_of(model),
             'semantic_split_audit': list(getattr(model, 'semantic_split_audit_', []) or []),
             'semantic_audit_summary': dict(getattr(model, 'semantic_audit_summary_', {}) or {}),
             'error_region_audit': list(getattr(model, 'error_region_audit_', []) or []),
@@ -1226,6 +1227,21 @@ class TrepanReloadedExtractor:
             'scientific_semantic_tuning': semantic_tuning,
             'external_test_used_for_selection': False,
         })
+        try:
+            from core.tree_build_report import trepan_build_report
+            _oracle_label = str(self.last_audit.get('oracle') or 'selected oracle')
+            _y_oracle_eval = np.asarray(active_oracle_view.predict(X_eval))
+            _report = trepan_build_report(
+                model, algorithm='TREPAN Reloaded', oracle_name=_oracle_label,
+                oracle_type=type(labeling_oracle).__name__,
+                X_eval=X_eval, y_oracle_eval=_y_oracle_eval, y_real_eval=y_eval_real,
+            )
+            self.last_audit['build_report'] = _report
+            self.last_audit['stop_reasons'] = _report['STOP_REASONS']
+            self.last_audit['query_budget_exhausted'] = _report['CONSTRUCTION']['query_budget_exhausted']
+            self.last_audit['stump_diagnostic'] = _report['STUMP']
+        except Exception as exc:  # o relatório nunca deve derrubar a extracção
+            self.last_audit['build_report_error'] = f'{type(exc).__name__}: {exc}'
 
         self._training_cache = {
             'X_training': X_train_augmented,

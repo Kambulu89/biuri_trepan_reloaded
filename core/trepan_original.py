@@ -15,9 +15,11 @@ O extractor CART legado permanece noutro módulo apenas por compatibilidade.
 """
 from __future__ import annotations
 
+import copy
 import heapq
 import itertools
 import math
+import time
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Optional, Sequence, Tuple
 import os
@@ -32,6 +34,25 @@ try:  # scipy é dependência transitiva do scikit-learn
     from scipy.stats import chi2_contingency, ks_2samp
 except Exception:  # pragma: no cover - fallback conservador
     chi2_contingency = ks_2samp = None
+
+
+class StopReason:
+    """Códigos explícitos de paragem de uma folha (nunca ``return leaf`` silencioso)."""
+
+    PURE_NODE = "STOP_PURE_NODE"
+    MAX_DEPTH = "STOP_MAX_DEPTH"
+    MIN_SAMPLES = "STOP_MIN_SAMPLES"
+    NO_VALID_SPLIT = "STOP_NO_VALID_SPLIT"
+    MIN_GAIN = "STOP_MIN_GAIN"
+    QUERY_BUDGET_EXHAUSTED = "STOP_QUERY_BUDGET_EXHAUSTED"
+    MAX_NODES = "STOP_MAX_NODES"
+    QUERY_GENERATION_FAILURE = "STOP_QUERY_GENERATION_FAILURE"
+    NUMERICAL_FAILURE = "STOP_NUMERICAL_FAILURE"
+    PRUNED = "STOP_PRUNED"
+
+    ALL = (PURE_NODE, MAX_DEPTH, MIN_SAMPLES, NO_VALID_SPLIT, MIN_GAIN,
+           QUERY_BUDGET_EXHAUSTED, MAX_NODES, QUERY_GENERATION_FAILURE,
+           NUMERICAL_FAILURE, PRUNED)
 
 
 @dataclass(frozen=True)
@@ -177,6 +198,8 @@ class FeatureDistributionModel:
                 break
             batch = self._draw_unconstrained(max(64, remaining * 6))
             keep = batch[constraints.accepts(batch)]
+            self.n_drawn_ = getattr(self, "n_drawn_", 0) + len(batch)
+            self.n_rejected_ = getattr(self, "n_rejected_", 0) + (len(batch) - len(keep))
             if len(keep):
                 take = keep[:remaining]
                 accepted.append(take)
@@ -188,6 +211,8 @@ class FeatureDistributionModel:
             for _ in range(160):
                 batch = self._draw_unconstrained(max(128, remaining * 12))
                 keep = batch[constraints.accepts(batch)]
+                self.n_drawn_ = getattr(self, "n_drawn_", 0) + len(batch)
+                self.n_rejected_ = getattr(self, "n_rejected_", 0) + (len(batch) - len(keep))
                 if len(keep):
                     take = keep[:remaining]
                     accepted.append(take)
@@ -265,6 +290,9 @@ class _Node:
     query_y: np.ndarray = field(default_factory=lambda: np.empty((0,), dtype=object))
     fidelity: float = 0.0
     node_id: int = -1
+    stop_reason: Optional[str] = None
+    stop_detail: dict = field(default_factory=dict)
+    stats: dict = field(default_factory=dict)
 
     @property
     def is_leaf(self) -> bool:
@@ -303,7 +331,9 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         mofn_alpha: float = 0.05,
         local_model_alpha: float = 0.10,
         random_state: int = 42,
+        min_gain: float = 0.0,
     ):
+        self.min_gain = min_gain
         self.max_nodes = max_nodes
         self.max_depth = max_depth
         self.min_samples_leaf = min_samples_leaf
@@ -399,7 +429,15 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             key = (lit.feature, round(lit.threshold, 12), lit.greater)
             if key not in seen:
                 seen.add(key); out.append((score, lit))
+        self._count("simple_generated", len(candidates))
+        self._count("simple_evaluated", len(out))
         return out
+
+    def _count(self, name: str, amount: int = 1) -> None:
+        """Contadores de auditoria activos apenas durante a procura de splits do nó."""
+        counters = getattr(self, "_split_counters_", None)
+        if counters is not None:
+            counters[name] = counters.get(name, 0) + int(amount)
 
     def _partition_significantly_different(self, base: MofNTest, candidate: MofNTest, X: np.ndarray) -> bool:
         a = base.evaluate(X); b = candidate.evaluate(X)
@@ -439,12 +477,16 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                         if m < 1 or m > len(literals):
                             continue
                         cand = MofNTest(m, literals)
+                        self._count("mofn_generated")
                         if not self._partition_significantly_different(test, cand, X):
+                            self._count("mofn_rejected_not_distinct")
                             continue
                         mask = cand.evaluate(X)
                         if mask.sum() < self.min_samples_leaf or (~mask).sum() < self.min_samples_leaf:
+                            self._count("mofn_rejected_min_samples_leaf")
                             continue
                         score = self._split_selection_score(y, mask, cand)
+                        self._count("mofn_evaluated")
                         generated.append((score, cand))
             if not generated:
                 break
@@ -479,15 +521,39 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                 local_model = candidate
         needed = max(0, int(self.effective_min_sample_) - len(X))
         remaining_budget = max(0, int(self.max_queries) - self.membership_queries_)
+        requested = needed
         needed = min(needed, remaining_budget)
+        node.stats.update({
+            "queries_requested": int(requested),
+            "queries_generated": 0, "queries_valid": 0, "queries_rejected": 0,
+            "queries_used": 0, "query_budget_remaining_before": int(remaining_budget),
+            "budget_truncated": bool(needed < requested),
+        })
         if needed > 0 and self.oracle_ is not None:
+            drawn_before = getattr(local_model, "n_drawn_", 0)
+            rejected_before = getattr(local_model, "n_rejected_", 0)
+            t0 = time.perf_counter()
             qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
             qy = np.asarray(self.oracle_.predict(qx))
+            self.query_time_ += time.perf_counter() - t0
+            valid = int(np.sum(node.constraints.accepts(qx))) if len(qx) else 0
+            node.stats.update({
+                "queries_generated": int(len(qx)),
+                "queries_valid": valid,
+                # linhas candidatas descartadas pela amostragem por rejeição (restrições do caminho)
+                "queries_rejected": int(getattr(local_model, "n_rejected_", 0) - rejected_before),
+                "candidates_drawn": int(getattr(local_model, "n_drawn_", 0) - drawn_before),
+                "queries_used": int(len(qx)),
+                "queries_violating_path": int(len(qx) - valid),
+            })
             self.membership_queries_ += len(qx)
             node.query_X = qx
             node.query_y = qy
             X = np.vstack([X, qx]) if len(X) else qx
             y = np.concatenate([y, qy]) if len(y) else qy
+        node.stats["real_samples"] = int(len(node.real_y))
+        node.stats["synthetic_samples"] = int(len(y) - len(node.real_y))
+        node.stats["effective_samples"] = int(len(y))
         return X, y, local_model
 
     def fit(
@@ -519,6 +585,22 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self._rng = np.random.default_rng(self.random_state)
         self.global_distribution_model_ = FeatureDistributionModel(random_state=self.random_state).fit(X)
         self.membership_queries_ = 0
+        self._fit_started_ = time.perf_counter()
+        self.query_time_ = 0.0
+        self.split_search_time_ = 0.0
+        self.m_of_n_search_time_ = 0.0
+        self.pruning_time_ = 0.0
+        self.expansion_log_: list[dict] = []
+        self.candidate_totals_: dict = {}
+        self.pruning_audit_: list[dict] = []
+        self.budget_starved_nodes_: list[int] = []
+        self.tree_raw_root_ = None
+        self._split_counters_ = None
+        self.oracle_info_ = {
+            "oracle_type": type(oracle).__name__ if oracle is not None else "labels_from_y",
+            "oracle_feature_space": int(X.shape[1]),
+            "uses_real_labels": False if oracle is not None else None,
+        }
         # Compatibilidade com chamadas antigas que forneciam um orçamento menor
         # do que o min_sample histórico: reduzimos uma única vez o alvo efectivo
         # e registamo-lo. Quando o orçamento é suficiente, effective == min_sample.
@@ -528,13 +610,6 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.split_audit_: list[dict] = []
         self.expansion_order_: list[int] = []
         self.local_model_count_ = 0
-        # Observabilidade (só regista; não altera nenhuma decisão do algoritmo).
-        self.stop_reasons_: dict[str, int] = {}
-        self.stop_summary_: dict = {}
-
-        def _stop(entry: dict, reason: str) -> None:
-            entry["stop_reason"] = reason
-            self.stop_reasons_[reason] = self.stop_reasons_.get(reason, 0) + 1
 
         root_dist = self._distribution(y_oracle)
         root_pred = self.classes_[int(np.argmax(root_dist))]
@@ -550,6 +625,7 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
 
         def push(node: _Node):
             priority = self._priority(node)
+            node.stats["priority_at_push"] = float(priority)
             heapq.heappush(queue, (-priority, next(serial), node))
             self.node_audit_.append({
                 "node_id": node.node_id,
@@ -560,20 +636,62 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                 "expanded": False,
             })
 
+        def stop(node: _Node, reason: str, **detail) -> None:
+            node.stop_reason = reason
+            node.stop_detail = dict(detail)
+
+        self.nodes_created_ = 1
+        self.nodes_expanded_ = 0
         push(root)
         next_node_id = 1
         node_count = 1
+        self.max_nodes_reached_ = False
 
         while queue and node_count + 2 <= self.max_nodes:
-            _, _, node = heapq.heappop(queue)
+            neg_priority, _, node = heapq.heappop(queue)
+            # Prova best-first: a prioridade escolhida é o máximo da fila no momento.
+            queue_max = max([-item[0] for item in queue], default=-neg_priority)
+            order = len(self.expansion_log_) + 1
+            self.expansion_log_.append({
+                "selected_order": order,
+                "candidate_node_id": node.node_id,
+                "priority_score": float(-neg_priority),
+                "queue_max_priority_other": float(queue_max),
+                "is_best_first_choice": bool(-neg_priority >= queue_max - 1e-12),
+                "queue_size_after_pop": len(queue),
+                "depth": node.depth,
+                "reach": float(node.reach),
+                "estimated_error": float(1.0 - node.fidelity),
+                "priority_components": {
+                    "node_probability_mass": float(node.reach),
+                    "estimated_error": float(1.0 - node.fidelity),
+                },
+                "samples": int(len(node.real_y)),
+                "impurity": float(_entropy(node.real_y, self.classes_)) if len(node.real_y) else 0.0,
+                "potential_fidelity_gain": float(node.reach * (1.0 - node.fidelity)),
+            })
             if self.max_depth is not None and node.depth >= self.max_depth:
-                _stop(self._node_entry(node), "max_depth")
+                stop(node, StopReason.MAX_DEPTH, configured_max_depth=self.max_depth, node_depth=node.depth)
                 continue
-            decision_X, decision_y, local_model = self._decision_sample(node)
+            try:
+                decision_X, decision_y, local_model = self._decision_sample(node)
+            except RuntimeError as exc:
+                stop(node, StopReason.QUERY_GENERATION_FAILURE, error=str(exc))
+                continue
             node.distribution = self._distribution(decision_y)
             node.prediction = self.classes_[int(np.argmax(node.distribution))]
             node.fidelity = self._fidelity(decision_y, node.prediction)
             if len(decision_y) < int(self.effective_min_sample_):
+                starved = self.oracle_ is not None
+                if starved:
+                    self.budget_starved_nodes_.append(node.node_id)
+                    stop(node, StopReason.QUERY_BUDGET_EXHAUSTED,
+                         query_budget=int(self.max_queries), queries_used=int(self.membership_queries_),
+                         decision_sample_size=int(len(decision_y)),
+                         required_sample_size=int(self.effective_min_sample_))
+                else:
+                    stop(node, StopReason.MIN_SAMPLES, decision_sample_size=int(len(decision_y)),
+                         required_sample_size=int(self.effective_min_sample_))
                 self.node_audit_.append({
                     "node_id": node.node_id,
                     "depth": node.depth,
@@ -584,10 +702,9 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                     "real_sample_size": int(len(node.real_y)),
                     "query_sample_size": int(len(decision_y) - len(node.real_y)),
                     "expanded": False,
-                    "stop_reason": "query_budget_before_min_sample",
+                    "stop_reason": "query_budget_before_min_sample" if starved else "min_sample",
+                    "stop_code": node.stop_reason,
                 })
-                self.stop_reasons_["query_budget_before_min_sample"] = (
-                    self.stop_reasons_.get("query_budget_before_min_sample", 0) + 1)
                 continue
             audit = {
                 "node_id": node.node_id,
@@ -602,18 +719,48 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             }
             # substitui a entrada preliminar pela versão de decisão
             self.node_audit_.append(audit)
-            if len(np.unique(decision_y)) < 2 or self._is_statistically_pure(decision_y):
-                _stop(audit, "pure_node")
+            node.stats["oracle_distribution"] = {
+                str(c): float(p) for c, p in zip(self.classes_, node.distribution)
+            }
+            if len(np.unique(decision_y)) < 2:
+                stop(node, StopReason.PURE_NODE, kind="single_class")
                 continue
-            best = self._best_mofn(decision_X, decision_y)
+            if self._is_statistically_pure(decision_y):
+                stop(node, StopReason.PURE_NODE, kind="wilson_lower_bound",
+                     purity_epsilon=float(self.purity_epsilon), majority_fraction=float(node.distribution.max()))
+                continue
+            self._split_counters_ = {}
+            t0 = time.perf_counter()
+            try:
+                best = self._best_mofn(decision_X, decision_y)
+            except (FloatingPointError, ZeroDivisionError, ValueError) as exc:
+                self._split_counters_ = None
+                stop(node, StopReason.NUMERICAL_FAILURE, error=str(exc))
+                continue
+            elapsed = time.perf_counter() - t0
+            counters, self._split_counters_ = self._split_counters_, None
+            self.split_search_time_ += elapsed
+            if counters.get("mofn_generated", 0):
+                self.m_of_n_search_time_ += elapsed
+            counters["semantic_candidates"] = int(getattr(self, "_semantic_candidates_last_", 0) or 0)
+            node.stats["candidate_counters"] = counters
+            for key, value in counters.items():
+                self.candidate_totals_[key] = self.candidate_totals_.get(key, 0) + int(value)
             if best is None:
-                _stop(audit, "no_valid_split")
+                stop(node, StopReason.NO_VALID_SPLIT, reason="no_candidate_satisfies_min_samples_leaf",
+                     min_samples_leaf=int(self.min_samples_leaf), **counters)
                 continue
             test, gain = best
+            raw_gain = _information_gain(decision_y, test.evaluate(decision_X), self.classes_)
+            if float(raw_gain) < float(self.min_gain):
+                stop(node, StopReason.MIN_GAIN, best_candidate_gain=float(raw_gain),
+                     required_min_gain=float(self.min_gain), best_test=test.text(self.feature_names_in_))
+                continue
             real_mask = test.evaluate(node.real_X)
             dec_mask = test.evaluate(decision_X)
             if dec_mask.sum() < self.min_samples_leaf or (~dec_mask).sum() < self.min_samples_leaf:
-                _stop(audit, "min_samples_leaf")
+                stop(node, StopReason.NO_VALID_SPLIT, reason="best_split_violates_min_samples_leaf",
+                     best_test=test.text(self.feature_names_in_))
                 continue
             # reach é estimado pela frequência do ramo no conjunto de decisão do nó.
             p_true = float(np.mean(dec_mask)); p_false = 1.0 - p_true
@@ -640,7 +787,8 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             true_node.fidelity = self._fidelity(true_y, true_node.prediction)
             node.test = test; node.false_child = false_node; node.true_child = true_node
             audit["expanded"] = True
-            raw_gain = _information_gain(decision_y, dec_mask, self.classes_)
+            split_kind = "m_of_n" if (len(test.literals) > 1 or test.m > 1) else "simple"
+            node.stats["split_type"] = split_kind
             split_record = {
                 "node_id": node.node_id,
                 "information_gain": float(raw_gain),
@@ -648,36 +796,56 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                 "test": test.text(self.feature_names_in_),
                 "m": int(test.m),
                 "n": int(len(test.literals)),
+                "split_type": split_kind,
                 "decision_sample_size": int(len(decision_y)),
+                "left_count": int((~dec_mask).sum()),
+                "right_count": int(dec_mask.sum()),
+                "candidate_counters": dict(counters),
             }
             split_record.update(self._split_audit_metadata(test))
             self.split_audit_.append(split_record)
             self.expansion_order_.append(node.node_id)
             node_count += 2
+            self.nodes_created_ += 2
+            self.nodes_expanded_ += 1
             push(false_node); push(true_node)
 
+        # Folhas ainda na fila quando o laço termina: o único motivo possível é max_nodes.
+        for _, _, leftover in queue:
+            if leftover.stop_reason is None:
+                self.max_nodes_reached_ = True
+                stop(leftover, StopReason.MAX_NODES, max_nodes=int(self.max_nodes),
+                     nodes_created=int(node_count))
+
         self.node_count_ = node_count
+        self.nodes_raw_ = node_count
         self.best_first_ = True
         self.m_of_n_ = any(s["n"] > 1 for s in self.split_audit_)
         self.oracle_query_count_ = int(len(X) + self.membership_queries_)
-        nodes_before_pruning = int(node_count)
-        # Por que o ciclo terminou (sem alterar a lógica): orçamento de nós ou fila esgotada.
-        node_budget_reached = bool(queue) and node_count + 2 > self.max_nodes
-        unexpanded_in_queue = len(queue)
+        self.query_budget_exhausted_ = bool(
+            self.membership_queries_ >= int(self.max_queries) or self.budget_starved_nodes_
+        )
+        # Árvore bruta preservada (sem arrays de dados) antes de qualquer poda.
+        self.tree_raw_root_ = self._snapshot(self.root_)
+        raw_pred = self._predict_with_root(self.tree_raw_root_, X)
+        t0 = time.perf_counter()
         self._prune_identical_subtrees(self.root_)
+        self.pruning_time_ = time.perf_counter() - t0
         self.node_count_ = self._count_nodes(self.root_)
-        self.stop_summary_ = {
-            "loop_end_reason": "node_budget_exhausted" if node_budget_reached else "no_expandable_nodes_left",
-            "node_budget": int(self.max_nodes),
-            "nodes_before_pruning": nodes_before_pruning,
+        final_pred = self._predict_with_root(self.root_, X)
+        # Efeito da poda medido APENAS em dados de treino face ao oráculo (nunca no teste).
+        self.pruning_summary_ = {
+            "nodes_before_pruning": int(self.nodes_raw_),
             "nodes_after_pruning": int(self.node_count_),
-            "unexpanded_nodes_waiting": int(unexpanded_in_queue),
-            "query_budget": int(self.max_queries),
-            "queries_used": int(self.membership_queries_),
-            "query_budget_exhausted": bool(self.membership_queries_ >= int(self.max_queries)),
-            "max_depth": None if self.max_depth is None else int(self.max_depth),
-            "stop_reasons": dict(self.stop_reasons_),
+            "depth_before": int(self._depth_of(self.tree_raw_root_)),
+            "depth_after": int(self._depth_of(self.root_)),
+            "pruned_nodes": int(self.nodes_raw_ - self.node_count_),
+            "pruned_subtrees": int(len(self.pruning_audit_)),
+            "fidelity_train_before": float(np.mean(raw_pred == y_oracle)),
+            "fidelity_train_after": float(np.mean(final_pred == y_oracle)),
+            "uses_test_data": False,
         }
+        self.training_time_ = time.perf_counter() - self._fit_started_
         # O oráculo só é necessário durante a extracção. Não o persistir evita
         # acoplar o artefacto final ao MLP, ao extractor/GUI ou a callbacks de
         # treino, e permite carregar a árvore em qualquer directório/processo.
@@ -685,15 +853,42 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.oracle_attached_ = False
         return self
 
-    def _node_entry(self, node: "_Node") -> dict:
-        """Entrada de auditoria do nó (a mais recente); cria-a se ainda não existir."""
-        for entry in reversed(self.node_audit_):
-            if entry.get("node_id") == node.node_id:
-                return entry
-        entry = {"node_id": node.node_id, "depth": node.depth, "reach": float(node.reach),
-                 "fidelity": float(node.fidelity), "expanded": False}
-        self.node_audit_.append(entry)
-        return entry
+    @staticmethod
+    def _snapshot(node: "_Node") -> "_Node":
+        """Cópia estrutural (sem matrizes de dados) usada como árvore bruta."""
+        empty_X = np.empty((0, node.real_X.shape[1] if node.real_X.ndim == 2 else 0))
+        clone = _Node(
+            empty_X, np.empty((0,), dtype=node.real_y.dtype), node.depth, ConstraintSet(),
+            node.reach, np.array(node.distribution, copy=True), node.prediction,
+            test=node.test, fidelity=node.fidelity, node_id=node.node_id,
+            stop_reason=node.stop_reason, stop_detail=dict(node.stop_detail),
+            stats=copy.deepcopy(node.stats),
+        )
+        if not node.is_leaf:
+            clone.false_child = TrepanOriginalClassifier._snapshot(node.false_child)
+            clone.true_child = TrepanOriginalClassifier._snapshot(node.true_child)
+        return clone
+
+    def _predict_with_root(self, root: "_Node", X) -> np.ndarray:
+        X = np.asarray(X, dtype=float)
+        out = []
+        for row in X:
+            node = root
+            r = row.reshape(1, -1)
+            while not node.is_leaf:
+                node = node.true_child if bool(node.test.evaluate(r)[0]) else node.false_child
+            out.append(self.classes_[int(np.argmax(node.distribution))])
+        return np.asarray(out)
+
+    def predict_raw(self, X):
+        """Predição da árvore bruta (antes da poda)."""
+        return self._predict_with_root(self.tree_raw_root_, X)
+
+    @staticmethod
+    def _depth_of(node: "_Node") -> int:
+        return int(node.depth if node.is_leaf else max(
+            TrepanOriginalClassifier._depth_of(node.false_child),
+            TrepanOriginalClassifier._depth_of(node.true_child)))
 
     def _prune_identical_subtrees(self, node: _Node) -> Any:
         if node.is_leaf:
@@ -701,8 +896,20 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         left = self._prune_identical_subtrees(node.false_child)
         right = self._prune_identical_subtrees(node.true_child)
         if left == right:
+            removed = self._count_nodes(node) - 1
+            self.pruning_audit_.append({
+                "node_id": node.node_id,
+                "reason": "identical_leaf_predictions",
+                "removed_nodes": int(removed),
+                "validation_effect": 0.0,
+                "fidelity_before": float(node.fidelity),
+                "fidelity_after": float(node.fidelity),
+                "uses_test_data": False,
+            })
             node.test = None; node.false_child = None; node.true_child = None
             node.prediction = left
+            node.stop_reason = StopReason.PRUNED
+            node.stop_detail = {"reason": "identical_leaf_predictions"}
             return left
         return object()
 
@@ -941,8 +1148,6 @@ class TrepanOriginalExtractor:
             'configuration_selection_scope': 'training_only',
             'final_test_used_for_selection': False,
             'split_audit': list(getattr(model, 'split_audit_', [])),
-            'node_audit': list(getattr(model, 'node_audit_', [])),
-            'stop_summary': dict(getattr(model, 'stop_summary_', {}) or {}),
             'expansion_order': list(getattr(model, 'expansion_order_', [])),
             'extra_seed_samples': extra_seed_samples,
         }
@@ -965,6 +1170,21 @@ class TrepanOriginalExtractor:
                 })
         else:
             audit['trepan_fidelity'] = audit['trepan_fidelity_train']
+        # Relatório de construção auditável (queries, best-first, m-of-n, paragens, poda).
+        from core.tree_build_report import trepan_build_report
+        y_oracle_eval_report = None if X_test is None else np.asarray(mlp_model.predict(np.asarray(X_test, dtype=float)))
+        report = trepan_build_report(
+            model, algorithm='TREPAN Original', oracle_name='MLP Original',
+            oracle_type=type(mlp_model).__name__,
+            X_eval=None if X_test is None else np.asarray(X_test, dtype=float),
+            y_oracle_eval=y_oracle_eval_report,
+            y_real_eval=None if (X_test is None or y_test is None) else np.asarray(y_test),
+        )
+        audit['build_report'] = report
+        audit['stop_reasons'] = report['STOP_REASONS']
+        audit['query_budget_exhausted'] = report['CONSTRUCTION']['query_budget_exhausted']
+        audit['stump_diagnostic'] = report['STUMP']
+        audit['oracle_name'] = 'MLP Original'
         self.last_audit = audit
 
         rules = model.export_text(class_names)
@@ -990,7 +1210,7 @@ class TrepanOriginalExtractor:
         tree = self.explainer_tree
         names = list(feature_names or tree.feature_names_in_)
         labels = list(class_names or [])
-        lines = ['digraph TrepanOriginal {', '  rankdir=TB;', '  node [shape=box, style=rounded];']
+        lines = ['digraph TrepanOriginal {', '  rankdir=TB;', '  node [shape=ellipse];']
         counter = itertools.count()
 
         def walk(node):

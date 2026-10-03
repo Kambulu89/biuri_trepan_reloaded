@@ -1,0 +1,2490 @@
+{
+  "dataset": "synthetic",
+  "seed": 42,
+  "protocol": {
+    "min_sample": 1000,
+    "max_nodes": 31,
+    "max_depth": 8,
+    "max_n": 3,
+    "beam_width": 2,
+    "random_state": 42
+  },
+  "oracle_accuracy_test": 0.8777777777777778,
+  "runs": {
+    "C4.5": {
+      "ALGORITHM": "C4.5",
+      "implementation": "C45Classifier",
+      "split_criterion": "gain_ratio",
+      "training_target": "real labels (y_train)",
+      "uses_oracle": false,
+      "uses_membership_queries": false,
+      "STRUCTURE": {
+        "nodes_raw": 77,
+        "nodes_final": 53,
+        "leaves": 27,
+        "depth": 10
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 77,
+        "nodes_after_pruning": 53,
+        "pruned_nodes": 24,
+        "pruned_subtrees": 10,
+        "uses_test_data": false
+      },
+      "pruning_audit": [
+        {
+          "node_id": 4,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.5587202095743944,
+          "estimated_error_subtree": 3.416146920421693,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 17,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.2503325547205404,
+          "estimated_error_subtree": 2.901611468394959,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 27,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.1719911166685133,
+          "estimated_error_subtree": 2.791493043237269,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 26,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.5483533711800637,
+          "estimated_error_subtree": 3.537149607566204,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 20,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 4.93158965861629,
+          "estimated_error_subtree": 5.768590221495444,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 45,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.4404568318552555,
+          "estimated_error_subtree": 3.0859874102760276,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 53,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.1719911166685133,
+          "estimated_error_subtree": 2.791493043237269,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 52,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.5594371597311922,
+          "estimated_error_subtree": 3.544042002985512,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 66,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.3420158198106207,
+          "estimated_error_subtree": 3.0022016269612743,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 69,
+          "reason": "pessimistic_error_pruning",
+          "estimated_error_leaf": 2.3420158198106207,
+          "estimated_error_subtree": 3.0022016269612743,
+          "uses_test_data": false
+        }
+      ],
+      "STOP_REASONS": {
+        "STOP_PURE_NODE": 18,
+        "STOP_PRUNED": 7,
+        "STOP_MIN_SAMPLES": 2
+      },
+      "COMPLEXITY": {
+        "node_count": 53,
+        "leaf_count": 27,
+        "internal_node_count": 26,
+        "depth": 10,
+        "average_leaf_depth": 6.518518518518518,
+        "average_rule_length": 6.518518518518518,
+        "m_of_n_count": 0,
+        "mean_mofn_n": 0.0,
+        "mean_mofn_m": 0.0,
+        "features_used": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          9,
+          11
+        ],
+        "n_features_used": 9
+      },
+      "METRICS": {
+        "accuracy_real": 0.8444444444444444,
+        "agreement_with_oracle_informative": 0.8555555555555555,
+        "agreement_target": "MLP Original"
+      },
+      "TIME": {
+        "training_time": 0.5057029359998069
+      }
+    },
+    "TREPAN Original": {
+      "ALGORITHM": "TREPAN Original",
+      "oracle": {
+        "oracle_name": "MLP Original",
+        "oracle_type": "MLPClassifier",
+        "oracle_accuracy": 0.8777777777777778,
+        "oracle_feature_space": 12,
+        "uses_real_labels_for_training": false
+      },
+      "STRUCTURE": {
+        "nodes_raw": 23,
+        "nodes_final": 19,
+        "leaves": 10,
+        "depth": 5,
+        "nodes_created": 23,
+        "nodes_expanded": 11,
+        "configured_max_depth": 8,
+        "achieved_depth": 5,
+        "max_nodes": 31
+      },
+      "CONSTRUCTION": {
+        "query_budget_initial": 10000,
+        "query_budget_used": 10000,
+        "query_budget_remaining": 0,
+        "query_budget_exhausted": true,
+        "budget_starved_nodes": [
+          13,
+          12,
+          11,
+          21,
+          18,
+          20,
+          9,
+          1,
+          15,
+          22,
+          17,
+          19
+        ],
+        "effective_min_sample": 1000,
+        "best_first_verified": true,
+        "simple_candidates_generated": 6042,
+        "simple_candidates_evaluated": 6042,
+        "m_of_n_candidates_generated": 384,
+        "m_of_n_candidates_evaluated": 381,
+        "semantic_candidates": 0,
+        "simple_split_wins": 1,
+        "m_of_n_split_wins": 10,
+        "m_of_n_final_tree_count": 8,
+        "min_gain": 0.0
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 23,
+        "nodes_after_pruning": 19,
+        "depth_before": 5,
+        "depth_after": 5,
+        "pruned_nodes": 4,
+        "pruned_subtrees": 2,
+        "fidelity_train_before": 0.8428571428571429,
+        "fidelity_train_after": 0.8428571428571429,
+        "uses_test_data": false
+      },
+      "pruning_audit": [
+        {
+          "node_id": 14,
+          "reason": "identical_leaf_predictions",
+          "removed_nodes": 2,
+          "validation_effect": 0.0,
+          "fidelity_before": 0.922,
+          "fidelity_after": 0.922,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 10,
+          "reason": "identical_leaf_predictions",
+          "removed_nodes": 2,
+          "validation_effect": 0.0,
+          "fidelity_before": 0.863,
+          "fidelity_after": 0.863,
+          "uses_test_data": false
+        }
+      ],
+      "STOP_REASONS": {
+        "STOP_QUERY_BUDGET_EXHAUSTED": 9,
+        "STOP_PRUNED": 1
+      },
+      "COMPLEXITY": {
+        "node_count": 19,
+        "leaf_count": 10,
+        "internal_node_count": 9,
+        "depth": 5,
+        "average_leaf_depth": 4.1,
+        "average_rule_length": 4.1,
+        "m_of_n_count": 8,
+        "mean_mofn_n": 2.625,
+        "mean_mofn_m": 1.625,
+        "features_used": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "n_features_used": 7
+      },
+      "TIME": {
+        "training_time": 1.1688457069999458,
+        "query_time": 0.0705492269999013,
+        "split_search_time": 0.902645972000073,
+        "m_of_n_search_time": 0.8407968760000131,
+        "pruning_time": 5.848699993293849e-05
+      },
+      "REPRODUCIBILITY": {
+        "random_seed": 42,
+        "dataset_hash": null,
+        "ontology_hash": null,
+        "parameters": {
+          "beam_width": 2,
+          "local_model_alpha": 0.1,
+          "max_depth": 8,
+          "max_features_per_node": 12,
+          "max_n": 3,
+          "max_nodes": 31,
+          "max_queries": 10000,
+          "min_gain": 0.0,
+          "min_sample": 1000,
+          "min_samples_leaf": 4,
+          "mofn_alpha": 0.05,
+          "purity_alpha": 0.05,
+          "purity_epsilon": 0.05,
+          "random_state": 42
+        }
+      },
+      "expansion_log": [
+        {
+          "selected_order": 1,
+          "candidate_node_id": 0,
+          "priority_score": 0.4976190476190476,
+          "queue_max_priority_other": 0.4976190476190476,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 0,
+          "reach": 1.0,
+          "estimated_error": 0.4976190476190476,
+          "priority_components": {
+            "node_probability_mass": 1.0,
+            "estimated_error": 0.4976190476190476
+          },
+          "samples": 420,
+          "impurity": 0.9999836428515498,
+          "potential_fidelity_gain": 0.4976190476190476
+        },
+        {
+          "selected_order": 2,
+          "candidate_node_id": 2,
+          "priority_score": 0.25864968152866247,
+          "queue_max_priority_other": 0.011698113207547167,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 1,
+          "reach": 0.752,
+          "estimated_error": 0.3439490445859873,
+          "priority_components": {
+            "node_probability_mass": 0.752,
+            "estimated_error": 0.3439490445859873
+          },
+          "samples": 314,
+          "impurity": 0.9285476315878131,
+          "potential_fidelity_gain": 0.25864968152866247
+        },
+        {
+          "selected_order": 3,
+          "candidate_node_id": 4,
+          "priority_score": 0.17889470270270272,
+          "queue_max_priority_other": 0.08333609638554218,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 2,
+          "depth": 2,
+          "reach": 0.367728,
+          "estimated_error": 0.4864864864864865,
+          "priority_components": {
+            "node_probability_mass": 0.367728,
+            "estimated_error": 0.4864864864864865
+          },
+          "samples": 148,
+          "impurity": 0.9994730201859836,
+          "potential_fidelity_gain": 0.17889470270270272
+        },
+        {
+          "selected_order": 4,
+          "candidate_node_id": 6,
+          "priority_score": 0.0914907264,
+          "queue_max_priority_other": 0.08333609638554218,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 3,
+          "depth": 3,
+          "reach": 0.228726816,
+          "estimated_error": 0.4,
+          "priority_components": {
+            "node_probability_mass": 0.228726816,
+            "estimated_error": 0.4
+          },
+          "samples": 100,
+          "impurity": 0.9709505944546686,
+          "potential_fidelity_gain": 0.0914907264
+        },
+        {
+          "selected_order": 5,
+          "candidate_node_id": 3,
+          "priority_score": 0.08333609638554218,
+          "queue_max_priority_other": 0.061283012424827574,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 4,
+          "depth": 2,
+          "reach": 0.384272,
+          "estimated_error": 0.2168674698795181,
+          "priority_components": {
+            "node_probability_mass": 0.384272,
+            "estimated_error": 0.2168674698795181
+          },
+          "samples": 166,
+          "impurity": 0.7544062039636578,
+          "potential_fidelity_gain": 0.08333609638554218
+        },
+        {
+          "selected_order": 6,
+          "candidate_node_id": 7,
+          "priority_score": 0.061283012424827574,
+          "queue_max_priority_other": 0.04739354666666665,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 5,
+          "depth": 4,
+          "reach": 0.12694338287999998,
+          "estimated_error": 0.48275862068965514,
+          "priority_components": {
+            "node_probability_mass": 0.12694338287999998,
+            "estimated_error": 0.48275862068965514
+          },
+          "samples": 58,
+          "impurity": 0.9991421039919088,
+          "potential_fidelity_gain": 0.061283012424827574
+        },
+        {
+          "selected_order": 7,
+          "candidate_node_id": 10,
+          "priority_score": 0.04739354666666665,
+          "queue_max_priority_other": 0.046333728000000005,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 6,
+          "depth": 3,
+          "reach": 0.341233536,
+          "estimated_error": 0.13888888888888884,
+          "priority_components": {
+            "node_probability_mass": 0.341233536,
+            "estimated_error": 0.13888888888888884
+          },
+          "samples": 144,
+          "impurity": 0.5813214987637028,
+          "potential_fidelity_gain": 0.04739354666666665
+        },
+        {
+          "selected_order": 8,
+          "candidate_node_id": 5,
+          "priority_score": 0.046333728000000005,
+          "queue_max_priority_other": 0.024234150742857147,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 7,
+          "depth": 3,
+          "reach": 0.139001184,
+          "estimated_error": 0.33333333333333337,
+          "priority_components": {
+            "node_probability_mass": 0.139001184,
+            "estimated_error": 0.33333333333333337
+          },
+          "samples": 48,
+          "impurity": 0.9182958340544896,
+          "potential_fidelity_gain": 0.046333728000000005
+        },
+        {
+          "selected_order": 9,
+          "candidate_node_id": 16,
+          "priority_score": 0.025743019276800002,
+          "queue_max_priority_other": 0.024234150742857147,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 8,
+          "depth": 4,
+          "reach": 0.064357548192,
+          "estimated_error": 0.4,
+          "priority_components": {
+            "node_probability_mass": 0.064357548192,
+            "estimated_error": 0.4
+          },
+          "samples": 20,
+          "impurity": 0.9709505944546686,
+          "potential_fidelity_gain": 0.025743019276800002
+        },
+        {
+          "selected_order": 10,
+          "candidate_node_id": 8,
+          "priority_score": 0.024234150742857147,
+          "queue_max_priority_other": 0.023857182260512828,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 9,
+          "depth": 4,
+          "reach": 0.10178343312,
+          "estimated_error": 0.23809523809523814,
+          "priority_components": {
+            "node_probability_mass": 0.10178343312,
+            "estimated_error": 0.23809523809523814
+          },
+          "samples": 42,
+          "impurity": 0.7918583525674836,
+          "potential_fidelity_gain": 0.024234150742857147
+        },
+        {
+          "selected_order": 11,
+          "candidate_node_id": 14,
+          "priority_score": 0.023857182260512828,
+          "queue_max_priority_other": 0.023001667982222227,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 10,
+          "depth": 4,
+          "reach": 0.27912903244799997,
+          "estimated_error": 0.0854700854700855,
+          "priority_components": {
+            "node_probability_mass": 0.27912903244799997,
+            "estimated_error": 0.0854700854700855
+          },
+          "samples": 117,
+          "impurity": 0.4211660145082221,
+          "potential_fidelity_gain": 0.023857182260512828
+        },
+        {
+          "selected_order": 12,
+          "candidate_node_id": 13,
+          "priority_score": 0.023001667982222227,
+          "queue_max_priority_other": 0.020757781968537597,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 11,
+          "depth": 4,
+          "reach": 0.06210450355200002,
+          "estimated_error": 0.37037037037037035,
+          "priority_components": {
+            "node_probability_mass": 0.06210450355200002,
+            "estimated_error": 0.37037037037037035
+          },
+          "samples": 27,
+          "impurity": 0.9509560484549725,
+          "potential_fidelity_gain": 0.023001667982222227
+        },
+        {
+          "selected_order": 13,
+          "candidate_node_id": 12,
+          "priority_score": 0.020757781968537597,
+          "queue_max_priority_other": 0.019203071737483635,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 10,
+          "depth": 5,
+          "reach": 0.07413493560191999,
+          "estimated_error": 0.28,
+          "priority_components": {
+            "node_probability_mass": 0.07413493560191999,
+            "estimated_error": 0.28
+          },
+          "samples": 25,
+          "impurity": 0.8554508105601306,
+          "potential_fidelity_gain": 0.020757781968537597
+        },
+        {
+          "selected_order": 14,
+          "candidate_node_id": 11,
+          "priority_score": 0.019203071737483635,
+          "queue_max_priority_other": 0.01671672760994132,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 9,
+          "depth": 5,
+          "reach": 0.05280844727808,
+          "estimated_error": 0.36363636363636365,
+          "priority_components": {
+            "node_probability_mass": 0.05280844727808,
+            "estimated_error": 0.36363636363636365
+          },
+          "samples": 33,
+          "impurity": 0.9456603046006401,
+          "potential_fidelity_gain": 0.019203071737483635
+        },
+        {
+          "selected_order": 15,
+          "candidate_node_id": 21,
+          "priority_score": 0.01671672760994132,
+          "queue_max_priority_other": 0.016644894306078316,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 8,
+          "depth": 5,
+          "reach": 0.257915225981952,
+          "estimated_error": 0.06481481481481477,
+          "priority_components": {
+            "node_probability_mass": 0.257915225981952,
+            "estimated_error": 0.06481481481481477
+          },
+          "samples": 108,
+          "impurity": 0.3462685742714824,
+          "potential_fidelity_gain": 0.01671672760994132
+        },
+        {
+          "selected_order": 16,
+          "candidate_node_id": 18,
+          "priority_score": 0.016644894306078316,
+          "queue_max_priority_other": 0.013011774017772967,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 7,
+          "depth": 5,
+          "reach": 0.045178998830783995,
+          "estimated_error": 0.368421052631579,
+          "priority_components": {
+            "node_probability_mass": 0.045178998830783995,
+            "estimated_error": 0.368421052631579
+          },
+          "samples": 19,
+          "impurity": 0.9494520153879484,
+          "potential_fidelity_gain": 0.016644894306078316
+        },
+        {
+          "selected_order": 17,
+          "candidate_node_id": 20,
+          "priority_score": 0.013011774017772967,
+          "queue_max_priority_other": 0.011737762909090907,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 6,
+          "depth": 5,
+          "reach": 0.09628712773152,
+          "estimated_error": 0.1351351351351351,
+          "priority_components": {
+            "node_probability_mass": 0.09628712773152,
+            "estimated_error": 0.1351351351351351
+          },
+          "samples": 37,
+          "impurity": 0.5713549744279549,
+          "potential_fidelity_gain": 0.013011774017772967
+        },
+        {
+          "selected_order": 18,
+          "candidate_node_id": 9,
+          "priority_score": 0.011737762909090907,
+          "queue_max_priority_other": 0.011698113207547167,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 5,
+          "depth": 3,
+          "reach": 0.043038464,
+          "estimated_error": 0.2727272727272727,
+          "priority_components": {
+            "node_probability_mass": 0.043038464,
+            "estimated_error": 0.2727272727272727
+          },
+          "samples": 22,
+          "impurity": 0.8453509366224364,
+          "potential_fidelity_gain": 0.011737762909090907
+        },
+        {
+          "selected_order": 19,
+          "candidate_node_id": 1,
+          "priority_score": 0.011698113207547167,
+          "queue_max_priority_other": 0.010663376544000002,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 4,
+          "depth": 1,
+          "reach": 0.248,
+          "estimated_error": 0.047169811320754707,
+          "priority_components": {
+            "node_probability_mass": 0.248,
+            "estimated_error": 0.047169811320754707
+          },
+          "samples": 106,
+          "impurity": 0.2742506410502928,
+          "potential_fidelity_gain": 0.011698113207547167
+        },
+        {
+          "selected_order": 20,
+          "candidate_node_id": 15,
+          "priority_score": 0.010663376544000002,
+          "queue_max_priority_other": 0.007071268822016,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 3,
+          "depth": 4,
+          "reach": 0.07464363580799999,
+          "estimated_error": 0.1428571428571429,
+          "priority_components": {
+            "node_probability_mass": 0.07464363580799999,
+            "estimated_error": 0.1428571428571429
+          },
+          "samples": 28,
+          "impurity": 0.5916727785823275,
+          "potential_fidelity_gain": 0.010663376544000002
+        },
+        {
+          "selected_order": 21,
+          "candidate_node_id": 22,
+          "priority_score": 0.007071268822016,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 2,
+          "depth": 5,
+          "reach": 0.021213806466047997,
+          "estimated_error": 0.33333333333333337,
+          "priority_components": {
+            "node_probability_mass": 0.021213806466047997,
+            "estimated_error": 0.33333333333333337
+          },
+          "samples": 9,
+          "impurity": 0.9182958340544896,
+          "potential_fidelity_gain": 0.007071268822016
+        },
+        {
+          "selected_order": 22,
+          "candidate_node_id": 17,
+          "priority_score": 0.0,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 5,
+          "reach": 0.019178549361216,
+          "estimated_error": 0.0,
+          "priority_components": {
+            "node_probability_mass": 0.019178549361216,
+            "estimated_error": 0.0
+          },
+          "samples": 1,
+          "impurity": -0.0,
+          "potential_fidelity_gain": 0.0
+        },
+        {
+          "selected_order": 23,
+          "candidate_node_id": 19,
+          "priority_score": 0.0,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 5,
+          "reach": 0.005496305388480005,
+          "estimated_error": 0.0,
+          "priority_components": {
+            "node_probability_mass": 0.005496305388480005,
+            "estimated_error": 0.0
+          },
+          "samples": 5,
+          "impurity": -0.0,
+          "potential_fidelity_gain": 0.0
+        }
+      ],
+      "node_log": [
+        {
+          "node_id": 0,
+          "depth": 0,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 1.0,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.4976190476190476,
+          "queries_requested": 580,
+          "queries_generated": 580,
+          "queries_valid": 580,
+          "queries_rejected": 0,
+          "queries_used": 580,
+          "query_budget_remaining_before": 10000,
+          "budget_truncated": false,
+          "candidates_drawn": 3480,
+          "queries_violating_path": 0,
+          "real_samples": 420,
+          "synthetic_samples": 580,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.523,
+            "1": 0.477
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 44,
+            "mofn_evaluated": 44,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x3 > -0.67109; x0 <= 0.232138; x4 <= 0.309504)"
+        },
+        {
+          "node_id": 1,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.248,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 106,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.011698113207547167,
+          "queries_requested": 894,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 106,
+          "synthetic_samples": 0,
+          "effective_samples": 106
+        },
+        {
+          "node_id": 2,
+          "depth": 1,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.752,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.25864968152866247,
+          "queries_requested": 686,
+          "queries_generated": 686,
+          "queries_valid": 686,
+          "queries_rejected": 449,
+          "queries_used": 686,
+          "query_budget_remaining_before": 9420,
+          "budget_truncated": false,
+          "candidates_drawn": 4116,
+          "queries_violating_path": 0,
+          "real_samples": 314,
+          "synthetic_samples": 686,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.703,
+            "1": 0.297
+          },
+          "candidate_counters": {
+            "simple_generated": 550,
+            "simple_evaluated": 550,
+            "mofn_generated": 4,
+            "mofn_evaluated": 4,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-2(x9 <= 0.124801; x0 > 0.7785)"
+        },
+        {
+          "node_id": 3,
+          "depth": 2,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.384272,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.08333609638554218,
+          "queries_requested": 834,
+          "queries_generated": 834,
+          "queries_valid": 834,
+          "queries_rejected": 619,
+          "queries_used": 834,
+          "query_budget_remaining_before": 6982,
+          "budget_truncated": false,
+          "candidates_drawn": 5004,
+          "queries_violating_path": 0,
+          "real_samples": 166,
+          "synthetic_samples": 834,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.808,
+            "1": 0.192
+          },
+          "candidate_counters": {
+            "simple_generated": 552,
+            "simple_evaluated": 552,
+            "semantic_candidates": 0
+          },
+          "split_type": "simple",
+          "test": "1-of-1(x3 > -1.22469)"
+        },
+        {
+          "node_id": 9,
+          "depth": 3,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.043038464,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 22,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.011737762909090907,
+          "queries_requested": 978,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 22,
+          "synthetic_samples": 0,
+          "effective_samples": 22
+        },
+        {
+          "node_id": 10,
+          "depth": 3,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.341233536,
+          "stop_reason": "STOP_PRUNED",
+          "stop_detail": {
+            "reason": "identical_leaf_predictions"
+          },
+          "priority_at_push": 0.04739354666666665,
+          "queries_requested": 856,
+          "queries_generated": 856,
+          "queries_valid": 856,
+          "queries_rejected": 1100,
+          "queries_used": 856,
+          "query_budget_remaining_before": 5206,
+          "budget_truncated": false,
+          "candidates_drawn": 5136,
+          "queries_violating_path": 0,
+          "real_samples": 144,
+          "synthetic_samples": 856,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.863,
+            "1": 0.137
+          },
+          "candidate_counters": {
+            "simple_generated": 554,
+            "simple_evaluated": 554,
+            "mofn_generated": 24,
+            "mofn_evaluated": 24,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n"
+        },
+        {
+          "node_id": 4,
+          "depth": 2,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.367728,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.17889470270270272,
+          "queries_requested": 852,
+          "queries_generated": 852,
+          "queries_valid": 852,
+          "queries_rejected": 1022,
+          "queries_used": 852,
+          "query_budget_remaining_before": 8734,
+          "budget_truncated": false,
+          "candidates_drawn": 5112,
+          "queries_violating_path": 0,
+          "real_samples": 148,
+          "synthetic_samples": 852,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.582,
+            "1": 0.418
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 116,
+            "mofn_evaluated": 116,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-3(x5 > 0.828424; x3 > 0.665255; x4 <= -1.2224)"
+        },
+        {
+          "node_id": 5,
+          "depth": 3,
+          "is_leaf": false,
+          "prediction": 1,
+          "reach": 0.139001184,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.046333728000000005,
+          "queries_requested": 952,
+          "queries_generated": 952,
+          "queries_valid": 952,
+          "queries_rejected": 1677,
+          "queries_used": 952,
+          "query_budget_remaining_before": 4350,
+          "budget_truncated": false,
+          "candidates_drawn": 5712,
+          "queries_violating_path": 0,
+          "real_samples": 48,
+          "synthetic_samples": 952,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.375,
+            "1": 0.625
+          },
+          "candidate_counters": {
+            "simple_generated": 548,
+            "simple_evaluated": 548,
+            "mofn_generated": 8,
+            "mofn_evaluated": 8,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-2(x9 > -0.907636; x3 > -0.259178)"
+        },
+        {
+          "node_id": 15,
+          "depth": 4,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.07464363580799999,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 28,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.010663376544000002,
+          "queries_requested": 972,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 28,
+          "synthetic_samples": 0,
+          "effective_samples": 28
+        },
+        {
+          "node_id": 16,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.064357548192,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.025743019276800002,
+          "queries_requested": 980,
+          "queries_generated": 980,
+          "queries_valid": 980,
+          "queries_rejected": 4008,
+          "queries_used": 980,
+          "query_budget_remaining_before": 3398,
+          "budget_truncated": false,
+          "candidates_drawn": 5880,
+          "queries_violating_path": 0,
+          "real_samples": 20,
+          "synthetic_samples": 980,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.535,
+            "1": 0.465
+          },
+          "candidate_counters": {
+            "simple_generated": 542,
+            "simple_evaluated": 542,
+            "mofn_generated": 112,
+            "mofn_evaluated": 112,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x9 > -0.553908; x0 <= 0.657535; x2 <= 0.128673)"
+        },
+        {
+          "node_id": 17,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.019178549361216,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 1,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.0,
+          "queries_requested": 999,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 1,
+          "synthetic_samples": 0,
+          "effective_samples": 1
+        },
+        {
+          "node_id": 18,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.045178998830783995,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 19,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.016644894306078316,
+          "queries_requested": 981,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 19,
+          "synthetic_samples": 0,
+          "effective_samples": 19
+        },
+        {
+          "node_id": 6,
+          "depth": 3,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.228726816,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.0914907264,
+          "queries_requested": 900,
+          "queries_generated": 900,
+          "queries_valid": 900,
+          "queries_rejected": 2686,
+          "queries_used": 900,
+          "query_budget_remaining_before": 7882,
+          "budget_truncated": false,
+          "candidates_drawn": 5400,
+          "queries_violating_path": 0,
+          "real_samples": 100,
+          "synthetic_samples": 900,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.681,
+            "1": 0.319
+          },
+          "candidate_counters": {
+            "simple_generated": 542,
+            "simple_evaluated": 542,
+            "mofn_generated": 16,
+            "mofn_evaluated": 16,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x9 > -0.896847; x5 > 1.11239; x4 <= -0.689578)"
+        },
+        {
+          "node_id": 7,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.12694338287999998,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.061283012424827574,
+          "queries_requested": 942,
+          "queries_generated": 942,
+          "queries_valid": 942,
+          "queries_rejected": 3009,
+          "queries_used": 942,
+          "query_budget_remaining_before": 6148,
+          "budget_truncated": false,
+          "candidates_drawn": 5652,
+          "queries_violating_path": 0,
+          "real_samples": 58,
+          "synthetic_samples": 942,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.538,
+            "1": 0.462
+          },
+          "candidate_counters": {
+            "simple_generated": 544,
+            "simple_evaluated": 544,
+            "mofn_generated": 28,
+            "mofn_evaluated": 28,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-2(x9 <= -1.97415; x2 > -0.00622943)"
+        },
+        {
+          "node_id": 11,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.05280844727808,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 33,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.019203071737483635,
+          "queries_requested": 967,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 33,
+          "synthetic_samples": 0,
+          "effective_samples": 33
+        },
+        {
+          "node_id": 12,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.07413493560191999,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 25,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.020757781968537597,
+          "queries_requested": 975,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 25,
+          "synthetic_samples": 0,
+          "effective_samples": 25
+        },
+        {
+          "node_id": 8,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.10178343312,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.024234150742857147,
+          "queries_requested": 958,
+          "queries_generated": 958,
+          "queries_valid": 958,
+          "queries_rejected": 2843,
+          "queries_used": 958,
+          "query_budget_remaining_before": 2418,
+          "budget_truncated": false,
+          "candidates_drawn": 5748,
+          "queries_violating_path": 0,
+          "real_samples": 42,
+          "synthetic_samples": 958,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.899,
+            "1": 0.101
+          },
+          "candidate_counters": {
+            "simple_generated": 566,
+            "simple_evaluated": 566,
+            "mofn_generated": 24,
+            "mofn_evaluated": 21,
+            "mofn_rejected_not_distinct": 2,
+            "mofn_rejected_min_samples_leaf": 1,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x3 > -0.0707088; x8 <= 1.31084; x4 <= 1.2016)"
+        },
+        {
+          "node_id": 19,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.005496305388480005,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 5,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.0,
+          "queries_requested": 995,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 5,
+          "synthetic_samples": 0,
+          "effective_samples": 5
+        },
+        {
+          "node_id": 20,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.09628712773152,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 37,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.013011774017772967,
+          "queries_requested": 963,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 37,
+          "synthetic_samples": 0,
+          "effective_samples": 37
+        }
+      ],
+      "STUMP": null,
+      "METRICS": {
+        "fidelity": 0.85,
+        "fidelity_target": "MLP Original",
+        "accuracy_real": 0.8277777777777777
+      }
+    },
+    "TREPAN Reloaded (semantics OFF, same oracle)": {
+      "ALGORITHM": "TREPAN Reloaded (semantics OFF, same oracle)",
+      "oracle": {
+        "oracle_name": "MLP Original",
+        "oracle_type": "MLPClassifier",
+        "oracle_accuracy": 0.8777777777777778,
+        "oracle_feature_space": 12,
+        "uses_real_labels_for_training": false
+      },
+      "STRUCTURE": {
+        "nodes_raw": 23,
+        "nodes_final": 19,
+        "leaves": 10,
+        "depth": 5,
+        "nodes_created": 23,
+        "nodes_expanded": 11,
+        "configured_max_depth": 8,
+        "achieved_depth": 5,
+        "max_nodes": 31
+      },
+      "CONSTRUCTION": {
+        "query_budget_initial": 10000,
+        "query_budget_used": 10000,
+        "query_budget_remaining": 0,
+        "query_budget_exhausted": true,
+        "budget_starved_nodes": [
+          13,
+          12,
+          11,
+          21,
+          18,
+          20,
+          9,
+          1,
+          15,
+          22,
+          17,
+          19
+        ],
+        "effective_min_sample": 1000,
+        "best_first_verified": true,
+        "simple_candidates_generated": 6042,
+        "simple_candidates_evaluated": 6042,
+        "m_of_n_candidates_generated": 384,
+        "m_of_n_candidates_evaluated": 381,
+        "semantic_candidates": 0,
+        "simple_split_wins": 1,
+        "m_of_n_split_wins": 10,
+        "m_of_n_final_tree_count": 8,
+        "min_gain": 0.0
+      },
+      "PRUNING": {
+        "nodes_before_pruning": 23,
+        "nodes_after_pruning": 19,
+        "depth_before": 5,
+        "depth_after": 5,
+        "pruned_nodes": 4,
+        "pruned_subtrees": 2,
+        "fidelity_train_before": 0.8428571428571429,
+        "fidelity_train_after": 0.8428571428571429,
+        "uses_test_data": false
+      },
+      "pruning_audit": [
+        {
+          "node_id": 14,
+          "reason": "identical_leaf_predictions",
+          "removed_nodes": 2,
+          "validation_effect": 0.0,
+          "fidelity_before": 0.922,
+          "fidelity_after": 0.922,
+          "uses_test_data": false
+        },
+        {
+          "node_id": 10,
+          "reason": "identical_leaf_predictions",
+          "removed_nodes": 2,
+          "validation_effect": 0.0,
+          "fidelity_before": 0.863,
+          "fidelity_after": 0.863,
+          "uses_test_data": false
+        }
+      ],
+      "STOP_REASONS": {
+        "STOP_QUERY_BUDGET_EXHAUSTED": 9,
+        "STOP_PRUNED": 1
+      },
+      "COMPLEXITY": {
+        "node_count": 19,
+        "leaf_count": 10,
+        "internal_node_count": 9,
+        "depth": 5,
+        "average_leaf_depth": 4.1,
+        "average_rule_length": 4.1,
+        "m_of_n_count": 8,
+        "mean_mofn_n": 2.625,
+        "mean_mofn_m": 1.625,
+        "features_used": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "n_features_used": 7
+      },
+      "TIME": {
+        "training_time": 1.6486679480001385,
+        "query_time": 0.1060218350003197,
+        "split_search_time": 1.2627634910002143,
+        "m_of_n_search_time": 1.158491282000341,
+        "pruning_time": 4.5279000005393755e-05
+      },
+      "REPRODUCIBILITY": {
+        "random_seed": 42,
+        "dataset_hash": null,
+        "ontology_hash": null,
+        "parameters": {
+          "alpha": 0.0,
+          "beam_width": 2,
+          "beta": 0.0,
+          "error_focus_anchor_k": 24,
+          "error_focus_fidelity_tolerance": 0.015,
+          "error_focus_min_disagreement": 0.05,
+          "error_focus_min_local_fidelity_gain": 0.002,
+          "error_focus_min_real_fidelity_gain": 0.0,
+          "error_focus_min_regions": 1,
+          "error_focus_semantic_weight": 0.5,
+          "error_focus_strength": 1.0,
+          "error_focus_top_k": 3,
+          "error_focus_uncertainty_weight": 0.35,
+          "error_focused_refinement": true,
+          "gain_criterion": "normalized_information_gain",
+          "local_model_alpha": 0.1,
+          "max_depth": 8,
+          "max_features_per_node": 12,
+          "max_n": 3,
+          "max_nodes": 31,
+          "max_queries": 10000,
+          "min_sample": 1000,
+          "min_samples_leaf": 4,
+          "mirror_when_no_semantic_effect": true,
+          "mofn_alpha": 0.05,
+          "purity_alpha": 0.05,
+          "purity_epsilon": 0.05,
+          "random_state": 42,
+          "semantic_active_pool_multiplier": 4,
+          "semantic_active_query_fraction": 0.65,
+          "semantic_candidate_budget": 24,
+          "semantic_gain_strength": 1.0,
+          "semantic_group_strength": 0.15,
+          "semantic_query_projection": true,
+          "semantic_relation_threshold": 0.35
+        }
+      },
+      "expansion_log": [
+        {
+          "selected_order": 1,
+          "candidate_node_id": 0,
+          "priority_score": 0.4976190476190476,
+          "queue_max_priority_other": 0.4976190476190476,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 0,
+          "reach": 1.0,
+          "estimated_error": 0.4976190476190476,
+          "priority_components": {
+            "node_probability_mass": 1.0,
+            "estimated_error": 0.4976190476190476
+          },
+          "samples": 420,
+          "impurity": 0.9999836428515498,
+          "potential_fidelity_gain": 0.4976190476190476
+        },
+        {
+          "selected_order": 2,
+          "candidate_node_id": 2,
+          "priority_score": 0.25864968152866247,
+          "queue_max_priority_other": 0.011698113207547167,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 1,
+          "reach": 0.752,
+          "estimated_error": 0.3439490445859873,
+          "priority_components": {
+            "node_probability_mass": 0.752,
+            "estimated_error": 0.3439490445859873
+          },
+          "samples": 314,
+          "impurity": 0.9285476315878131,
+          "potential_fidelity_gain": 0.25864968152866247
+        },
+        {
+          "selected_order": 3,
+          "candidate_node_id": 4,
+          "priority_score": 0.17889470270270272,
+          "queue_max_priority_other": 0.08333609638554218,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 2,
+          "depth": 2,
+          "reach": 0.367728,
+          "estimated_error": 0.4864864864864865,
+          "priority_components": {
+            "node_probability_mass": 0.367728,
+            "estimated_error": 0.4864864864864865
+          },
+          "samples": 148,
+          "impurity": 0.9994730201859836,
+          "potential_fidelity_gain": 0.17889470270270272
+        },
+        {
+          "selected_order": 4,
+          "candidate_node_id": 6,
+          "priority_score": 0.0914907264,
+          "queue_max_priority_other": 0.08333609638554218,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 3,
+          "depth": 3,
+          "reach": 0.228726816,
+          "estimated_error": 0.4,
+          "priority_components": {
+            "node_probability_mass": 0.228726816,
+            "estimated_error": 0.4
+          },
+          "samples": 100,
+          "impurity": 0.9709505944546686,
+          "potential_fidelity_gain": 0.0914907264
+        },
+        {
+          "selected_order": 5,
+          "candidate_node_id": 3,
+          "priority_score": 0.08333609638554218,
+          "queue_max_priority_other": 0.061283012424827574,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 4,
+          "depth": 2,
+          "reach": 0.384272,
+          "estimated_error": 0.2168674698795181,
+          "priority_components": {
+            "node_probability_mass": 0.384272,
+            "estimated_error": 0.2168674698795181
+          },
+          "samples": 166,
+          "impurity": 0.7544062039636578,
+          "potential_fidelity_gain": 0.08333609638554218
+        },
+        {
+          "selected_order": 6,
+          "candidate_node_id": 7,
+          "priority_score": 0.061283012424827574,
+          "queue_max_priority_other": 0.04739354666666665,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 5,
+          "depth": 4,
+          "reach": 0.12694338287999998,
+          "estimated_error": 0.48275862068965514,
+          "priority_components": {
+            "node_probability_mass": 0.12694338287999998,
+            "estimated_error": 0.48275862068965514
+          },
+          "samples": 58,
+          "impurity": 0.9991421039919088,
+          "potential_fidelity_gain": 0.061283012424827574
+        },
+        {
+          "selected_order": 7,
+          "candidate_node_id": 10,
+          "priority_score": 0.04739354666666665,
+          "queue_max_priority_other": 0.046333728000000005,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 6,
+          "depth": 3,
+          "reach": 0.341233536,
+          "estimated_error": 0.13888888888888884,
+          "priority_components": {
+            "node_probability_mass": 0.341233536,
+            "estimated_error": 0.13888888888888884
+          },
+          "samples": 144,
+          "impurity": 0.5813214987637028,
+          "potential_fidelity_gain": 0.04739354666666665
+        },
+        {
+          "selected_order": 8,
+          "candidate_node_id": 5,
+          "priority_score": 0.046333728000000005,
+          "queue_max_priority_other": 0.024234150742857147,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 7,
+          "depth": 3,
+          "reach": 0.139001184,
+          "estimated_error": 0.33333333333333337,
+          "priority_components": {
+            "node_probability_mass": 0.139001184,
+            "estimated_error": 0.33333333333333337
+          },
+          "samples": 48,
+          "impurity": 0.9182958340544896,
+          "potential_fidelity_gain": 0.046333728000000005
+        },
+        {
+          "selected_order": 9,
+          "candidate_node_id": 16,
+          "priority_score": 0.025743019276800002,
+          "queue_max_priority_other": 0.024234150742857147,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 8,
+          "depth": 4,
+          "reach": 0.064357548192,
+          "estimated_error": 0.4,
+          "priority_components": {
+            "node_probability_mass": 0.064357548192,
+            "estimated_error": 0.4
+          },
+          "samples": 20,
+          "impurity": 0.9709505944546686,
+          "potential_fidelity_gain": 0.025743019276800002
+        },
+        {
+          "selected_order": 10,
+          "candidate_node_id": 8,
+          "priority_score": 0.024234150742857147,
+          "queue_max_priority_other": 0.023857182260512828,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 9,
+          "depth": 4,
+          "reach": 0.10178343312,
+          "estimated_error": 0.23809523809523814,
+          "priority_components": {
+            "node_probability_mass": 0.10178343312,
+            "estimated_error": 0.23809523809523814
+          },
+          "samples": 42,
+          "impurity": 0.7918583525674836,
+          "potential_fidelity_gain": 0.024234150742857147
+        },
+        {
+          "selected_order": 11,
+          "candidate_node_id": 14,
+          "priority_score": 0.023857182260512828,
+          "queue_max_priority_other": 0.023001667982222227,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 10,
+          "depth": 4,
+          "reach": 0.27912903244799997,
+          "estimated_error": 0.0854700854700855,
+          "priority_components": {
+            "node_probability_mass": 0.27912903244799997,
+            "estimated_error": 0.0854700854700855
+          },
+          "samples": 117,
+          "impurity": 0.4211660145082221,
+          "potential_fidelity_gain": 0.023857182260512828
+        },
+        {
+          "selected_order": 12,
+          "candidate_node_id": 13,
+          "priority_score": 0.023001667982222227,
+          "queue_max_priority_other": 0.020757781968537597,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 11,
+          "depth": 4,
+          "reach": 0.06210450355200002,
+          "estimated_error": 0.37037037037037035,
+          "priority_components": {
+            "node_probability_mass": 0.06210450355200002,
+            "estimated_error": 0.37037037037037035
+          },
+          "samples": 27,
+          "impurity": 0.9509560484549725,
+          "potential_fidelity_gain": 0.023001667982222227
+        },
+        {
+          "selected_order": 13,
+          "candidate_node_id": 12,
+          "priority_score": 0.020757781968537597,
+          "queue_max_priority_other": 0.019203071737483635,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 10,
+          "depth": 5,
+          "reach": 0.07413493560191999,
+          "estimated_error": 0.28,
+          "priority_components": {
+            "node_probability_mass": 0.07413493560191999,
+            "estimated_error": 0.28
+          },
+          "samples": 25,
+          "impurity": 0.8554508105601306,
+          "potential_fidelity_gain": 0.020757781968537597
+        },
+        {
+          "selected_order": 14,
+          "candidate_node_id": 11,
+          "priority_score": 0.019203071737483635,
+          "queue_max_priority_other": 0.01671672760994132,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 9,
+          "depth": 5,
+          "reach": 0.05280844727808,
+          "estimated_error": 0.36363636363636365,
+          "priority_components": {
+            "node_probability_mass": 0.05280844727808,
+            "estimated_error": 0.36363636363636365
+          },
+          "samples": 33,
+          "impurity": 0.9456603046006401,
+          "potential_fidelity_gain": 0.019203071737483635
+        },
+        {
+          "selected_order": 15,
+          "candidate_node_id": 21,
+          "priority_score": 0.01671672760994132,
+          "queue_max_priority_other": 0.016644894306078316,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 8,
+          "depth": 5,
+          "reach": 0.257915225981952,
+          "estimated_error": 0.06481481481481477,
+          "priority_components": {
+            "node_probability_mass": 0.257915225981952,
+            "estimated_error": 0.06481481481481477
+          },
+          "samples": 108,
+          "impurity": 0.3462685742714824,
+          "potential_fidelity_gain": 0.01671672760994132
+        },
+        {
+          "selected_order": 16,
+          "candidate_node_id": 18,
+          "priority_score": 0.016644894306078316,
+          "queue_max_priority_other": 0.013011774017772967,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 7,
+          "depth": 5,
+          "reach": 0.045178998830783995,
+          "estimated_error": 0.368421052631579,
+          "priority_components": {
+            "node_probability_mass": 0.045178998830783995,
+            "estimated_error": 0.368421052631579
+          },
+          "samples": 19,
+          "impurity": 0.9494520153879484,
+          "potential_fidelity_gain": 0.016644894306078316
+        },
+        {
+          "selected_order": 17,
+          "candidate_node_id": 20,
+          "priority_score": 0.013011774017772967,
+          "queue_max_priority_other": 0.011737762909090907,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 6,
+          "depth": 5,
+          "reach": 0.09628712773152,
+          "estimated_error": 0.1351351351351351,
+          "priority_components": {
+            "node_probability_mass": 0.09628712773152,
+            "estimated_error": 0.1351351351351351
+          },
+          "samples": 37,
+          "impurity": 0.5713549744279549,
+          "potential_fidelity_gain": 0.013011774017772967
+        },
+        {
+          "selected_order": 18,
+          "candidate_node_id": 9,
+          "priority_score": 0.011737762909090907,
+          "queue_max_priority_other": 0.011698113207547167,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 5,
+          "depth": 3,
+          "reach": 0.043038464,
+          "estimated_error": 0.2727272727272727,
+          "priority_components": {
+            "node_probability_mass": 0.043038464,
+            "estimated_error": 0.2727272727272727
+          },
+          "samples": 22,
+          "impurity": 0.8453509366224364,
+          "potential_fidelity_gain": 0.011737762909090907
+        },
+        {
+          "selected_order": 19,
+          "candidate_node_id": 1,
+          "priority_score": 0.011698113207547167,
+          "queue_max_priority_other": 0.010663376544000002,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 4,
+          "depth": 1,
+          "reach": 0.248,
+          "estimated_error": 0.047169811320754707,
+          "priority_components": {
+            "node_probability_mass": 0.248,
+            "estimated_error": 0.047169811320754707
+          },
+          "samples": 106,
+          "impurity": 0.2742506410502928,
+          "potential_fidelity_gain": 0.011698113207547167
+        },
+        {
+          "selected_order": 20,
+          "candidate_node_id": 15,
+          "priority_score": 0.010663376544000002,
+          "queue_max_priority_other": 0.007071268822016,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 3,
+          "depth": 4,
+          "reach": 0.07464363580799999,
+          "estimated_error": 0.1428571428571429,
+          "priority_components": {
+            "node_probability_mass": 0.07464363580799999,
+            "estimated_error": 0.1428571428571429
+          },
+          "samples": 28,
+          "impurity": 0.5916727785823275,
+          "potential_fidelity_gain": 0.010663376544000002
+        },
+        {
+          "selected_order": 21,
+          "candidate_node_id": 22,
+          "priority_score": 0.007071268822016,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 2,
+          "depth": 5,
+          "reach": 0.021213806466047997,
+          "estimated_error": 0.33333333333333337,
+          "priority_components": {
+            "node_probability_mass": 0.021213806466047997,
+            "estimated_error": 0.33333333333333337
+          },
+          "samples": 9,
+          "impurity": 0.9182958340544896,
+          "potential_fidelity_gain": 0.007071268822016
+        },
+        {
+          "selected_order": 22,
+          "candidate_node_id": 17,
+          "priority_score": 0.0,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 1,
+          "depth": 5,
+          "reach": 0.019178549361216,
+          "estimated_error": 0.0,
+          "priority_components": {
+            "node_probability_mass": 0.019178549361216,
+            "estimated_error": 0.0
+          },
+          "samples": 1,
+          "impurity": -0.0,
+          "potential_fidelity_gain": 0.0
+        },
+        {
+          "selected_order": 23,
+          "candidate_node_id": 19,
+          "priority_score": 0.0,
+          "queue_max_priority_other": 0.0,
+          "is_best_first_choice": true,
+          "queue_size_after_pop": 0,
+          "depth": 5,
+          "reach": 0.005496305388480005,
+          "estimated_error": 0.0,
+          "priority_components": {
+            "node_probability_mass": 0.005496305388480005,
+            "estimated_error": 0.0
+          },
+          "samples": 5,
+          "impurity": -0.0,
+          "potential_fidelity_gain": 0.0
+        }
+      ],
+      "node_log": [
+        {
+          "node_id": 0,
+          "depth": 0,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 1.0,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.4976190476190476,
+          "queries_requested": 580,
+          "queries_generated": 580,
+          "queries_valid": 580,
+          "queries_rejected": 0,
+          "queries_used": 580,
+          "query_budget_remaining_before": 10000,
+          "budget_truncated": false,
+          "candidates_drawn": 3480,
+          "queries_violating_path": 0,
+          "real_samples": 420,
+          "synthetic_samples": 580,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.523,
+            "1": 0.477
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 44,
+            "mofn_evaluated": 44,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x3 > -0.67109; x0 <= 0.232138; x4 <= 0.309504)"
+        },
+        {
+          "node_id": 1,
+          "depth": 1,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.248,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 106,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.011698113207547167,
+          "queries_requested": 894,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 106,
+          "synthetic_samples": 0,
+          "effective_samples": 106
+        },
+        {
+          "node_id": 2,
+          "depth": 1,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.752,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.25864968152866247,
+          "queries_requested": 686,
+          "queries_generated": 686,
+          "queries_valid": 686,
+          "queries_rejected": 449,
+          "queries_used": 686,
+          "query_budget_remaining_before": 9420,
+          "budget_truncated": false,
+          "candidates_drawn": 4116,
+          "queries_violating_path": 0,
+          "real_samples": 314,
+          "synthetic_samples": 686,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.703,
+            "1": 0.297
+          },
+          "candidate_counters": {
+            "simple_generated": 550,
+            "simple_evaluated": 550,
+            "mofn_generated": 4,
+            "mofn_evaluated": 4,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-2(x9 <= 0.124801; x0 > 0.7785)"
+        },
+        {
+          "node_id": 3,
+          "depth": 2,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.384272,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.08333609638554218,
+          "queries_requested": 834,
+          "queries_generated": 834,
+          "queries_valid": 834,
+          "queries_rejected": 619,
+          "queries_used": 834,
+          "query_budget_remaining_before": 6982,
+          "budget_truncated": false,
+          "candidates_drawn": 5004,
+          "queries_violating_path": 0,
+          "real_samples": 166,
+          "synthetic_samples": 834,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.808,
+            "1": 0.192
+          },
+          "candidate_counters": {
+            "simple_generated": 552,
+            "simple_evaluated": 552,
+            "semantic_candidates": 0
+          },
+          "split_type": "simple",
+          "test": "1-of-1(x3 > -1.22469)"
+        },
+        {
+          "node_id": 9,
+          "depth": 3,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.043038464,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 22,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.011737762909090907,
+          "queries_requested": 978,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 22,
+          "synthetic_samples": 0,
+          "effective_samples": 22
+        },
+        {
+          "node_id": 10,
+          "depth": 3,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.341233536,
+          "stop_reason": "STOP_PRUNED",
+          "stop_detail": {
+            "reason": "identical_leaf_predictions"
+          },
+          "priority_at_push": 0.04739354666666665,
+          "queries_requested": 856,
+          "queries_generated": 856,
+          "queries_valid": 856,
+          "queries_rejected": 1100,
+          "queries_used": 856,
+          "query_budget_remaining_before": 5206,
+          "budget_truncated": false,
+          "candidates_drawn": 5136,
+          "queries_violating_path": 0,
+          "real_samples": 144,
+          "synthetic_samples": 856,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.863,
+            "1": 0.137
+          },
+          "candidate_counters": {
+            "simple_generated": 554,
+            "simple_evaluated": 554,
+            "mofn_generated": 24,
+            "mofn_evaluated": 24,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n"
+        },
+        {
+          "node_id": 4,
+          "depth": 2,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.367728,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.17889470270270272,
+          "queries_requested": 852,
+          "queries_generated": 852,
+          "queries_valid": 852,
+          "queries_rejected": 1022,
+          "queries_used": 852,
+          "query_budget_remaining_before": 8734,
+          "budget_truncated": false,
+          "candidates_drawn": 5112,
+          "queries_violating_path": 0,
+          "real_samples": 148,
+          "synthetic_samples": 852,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.582,
+            "1": 0.418
+          },
+          "candidate_counters": {
+            "simple_generated": 540,
+            "simple_evaluated": 540,
+            "mofn_generated": 116,
+            "mofn_evaluated": 116,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-3(x5 > 0.828424; x3 > 0.665255; x4 <= -1.2224)"
+        },
+        {
+          "node_id": 5,
+          "depth": 3,
+          "is_leaf": false,
+          "prediction": 1,
+          "reach": 0.139001184,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.046333728000000005,
+          "queries_requested": 952,
+          "queries_generated": 952,
+          "queries_valid": 952,
+          "queries_rejected": 1677,
+          "queries_used": 952,
+          "query_budget_remaining_before": 4350,
+          "budget_truncated": false,
+          "candidates_drawn": 5712,
+          "queries_violating_path": 0,
+          "real_samples": 48,
+          "synthetic_samples": 952,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.375,
+            "1": 0.625
+          },
+          "candidate_counters": {
+            "simple_generated": 548,
+            "simple_evaluated": 548,
+            "mofn_generated": 8,
+            "mofn_evaluated": 8,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-2(x9 > -0.907636; x3 > -0.259178)"
+        },
+        {
+          "node_id": 15,
+          "depth": 4,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.07464363580799999,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 28,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.010663376544000002,
+          "queries_requested": 972,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 28,
+          "synthetic_samples": 0,
+          "effective_samples": 28
+        },
+        {
+          "node_id": 16,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.064357548192,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.025743019276800002,
+          "queries_requested": 980,
+          "queries_generated": 980,
+          "queries_valid": 980,
+          "queries_rejected": 4008,
+          "queries_used": 980,
+          "query_budget_remaining_before": 3398,
+          "budget_truncated": false,
+          "candidates_drawn": 5880,
+          "queries_violating_path": 0,
+          "real_samples": 20,
+          "synthetic_samples": 980,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.535,
+            "1": 0.465
+          },
+          "candidate_counters": {
+            "simple_generated": 542,
+            "simple_evaluated": 542,
+            "mofn_generated": 112,
+            "mofn_evaluated": 112,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x9 > -0.553908; x0 <= 0.657535; x2 <= 0.128673)"
+        },
+        {
+          "node_id": 17,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.019178549361216,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 1,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.0,
+          "queries_requested": 999,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 1,
+          "synthetic_samples": 0,
+          "effective_samples": 1
+        },
+        {
+          "node_id": 18,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.045178998830783995,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 19,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.016644894306078316,
+          "queries_requested": 981,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 19,
+          "synthetic_samples": 0,
+          "effective_samples": 19
+        },
+        {
+          "node_id": 6,
+          "depth": 3,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.228726816,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.0914907264,
+          "queries_requested": 900,
+          "queries_generated": 900,
+          "queries_valid": 900,
+          "queries_rejected": 2686,
+          "queries_used": 900,
+          "query_budget_remaining_before": 7882,
+          "budget_truncated": false,
+          "candidates_drawn": 5400,
+          "queries_violating_path": 0,
+          "real_samples": 100,
+          "synthetic_samples": 900,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.681,
+            "1": 0.319
+          },
+          "candidate_counters": {
+            "simple_generated": 542,
+            "simple_evaluated": 542,
+            "mofn_generated": 16,
+            "mofn_evaluated": 16,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x9 > -0.896847; x5 > 1.11239; x4 <= -0.689578)"
+        },
+        {
+          "node_id": 7,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.12694338287999998,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.061283012424827574,
+          "queries_requested": 942,
+          "queries_generated": 942,
+          "queries_valid": 942,
+          "queries_rejected": 3009,
+          "queries_used": 942,
+          "query_budget_remaining_before": 6148,
+          "budget_truncated": false,
+          "candidates_drawn": 5652,
+          "queries_violating_path": 0,
+          "real_samples": 58,
+          "synthetic_samples": 942,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.538,
+            "1": 0.462
+          },
+          "candidate_counters": {
+            "simple_generated": 544,
+            "simple_evaluated": 544,
+            "mofn_generated": 28,
+            "mofn_evaluated": 28,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "1-of-2(x9 <= -1.97415; x2 > -0.00622943)"
+        },
+        {
+          "node_id": 11,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.05280844727808,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 33,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.019203071737483635,
+          "queries_requested": 967,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 33,
+          "synthetic_samples": 0,
+          "effective_samples": 33
+        },
+        {
+          "node_id": 12,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.07413493560191999,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 25,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.020757781968537597,
+          "queries_requested": 975,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 25,
+          "synthetic_samples": 0,
+          "effective_samples": 25
+        },
+        {
+          "node_id": 8,
+          "depth": 4,
+          "is_leaf": false,
+          "prediction": 0,
+          "reach": 0.10178343312,
+          "stop_reason": null,
+          "stop_detail": {},
+          "priority_at_push": 0.024234150742857147,
+          "queries_requested": 958,
+          "queries_generated": 958,
+          "queries_valid": 958,
+          "queries_rejected": 2843,
+          "queries_used": 958,
+          "query_budget_remaining_before": 2418,
+          "budget_truncated": false,
+          "candidates_drawn": 5748,
+          "queries_violating_path": 0,
+          "real_samples": 42,
+          "synthetic_samples": 958,
+          "effective_samples": 1000,
+          "oracle_distribution": {
+            "0": 0.899,
+            "1": 0.101
+          },
+          "candidate_counters": {
+            "simple_generated": 566,
+            "simple_evaluated": 566,
+            "mofn_generated": 24,
+            "mofn_evaluated": 21,
+            "mofn_rejected_not_distinct": 2,
+            "mofn_rejected_min_samples_leaf": 1,
+            "semantic_candidates": 0
+          },
+          "split_type": "m_of_n",
+          "test": "2-of-3(x3 > -0.0707088; x8 <= 1.31084; x4 <= 1.2016)"
+        },
+        {
+          "node_id": 19,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 1,
+          "reach": 0.005496305388480005,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 5,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.0,
+          "queries_requested": 995,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 5,
+          "synthetic_samples": 0,
+          "effective_samples": 5
+        },
+        {
+          "node_id": 20,
+          "depth": 5,
+          "is_leaf": true,
+          "prediction": 0,
+          "reach": 0.09628712773152,
+          "stop_reason": "STOP_QUERY_BUDGET_EXHAUSTED",
+          "stop_detail": {
+            "query_budget": 10000,
+            "queries_used": 10000,
+            "decision_sample_size": 37,
+            "required_sample_size": 1000
+          },
+          "priority_at_push": 0.013011774017772967,
+          "queries_requested": 963,
+          "queries_generated": 0,
+          "queries_valid": 0,
+          "queries_rejected": 0,
+          "queries_used": 0,
+          "query_budget_remaining_before": 0,
+          "budget_truncated": true,
+          "real_samples": 37,
+          "synthetic_samples": 0,
+          "effective_samples": 37
+        }
+      ],
+      "STUMP": null,
+      "METRICS": {
+        "fidelity": 0.85,
+        "fidelity_target": "MLP Original",
+        "accuracy_real": 0.8277777777777777
+      }
+    }
+  },
+  "budget_sensitivity": [
+    {
+      "query_budget": 2000,
+      "nodes": 3,
+      "depth": 1,
+      "queries_used": 2000,
+      "budget_exhausted": true,
+      "stop_reasons": {
+        "STOP_QUERY_BUDGET_EXHAUSTED": 1,
+        "STOP_PRUNED": 1
+      },
+      "fidelity": 0.75,
+      "accuracy_real": 0.75
+    },
+    {
+      "query_budget": 5000,
+      "nodes": 13,
+      "depth": 5,
+      "queries_used": 5000,
+      "budget_exhausted": true,
+      "stop_reasons": {
+        "STOP_QUERY_BUDGET_EXHAUSTED": 7
+      },
+      "fidelity": 0.8277777777777777,
+      "accuracy_real": 0.8166666666666667
+    },
+    {
+      "query_budget": 10000,
+      "nodes": 19,
+      "depth": 5,
+      "queries_used": 10000,
+      "budget_exhausted": true,
+      "stop_reasons": {
+        "STOP_QUERY_BUDGET_EXHAUSTED": 9,
+        "STOP_PRUNED": 1
+      },
+      "fidelity": 0.85,
+      "accuracy_real": 0.8277777777777777
+    },
+    {
+      "query_budget": 20000,
+      "nodes": 27,
+      "depth": 6,
+      "queries_used": 13230,
+      "budget_exhausted": false,
+      "stop_reasons": {
+        "STOP_MAX_NODES": 13,
+        "STOP_PRUNED": 1
+      },
+      "fidelity": 0.8833333333333333,
+      "accuracy_real": 0.85
+    }
+  ]
+}

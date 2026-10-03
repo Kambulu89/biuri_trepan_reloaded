@@ -1,0 +1,426 @@
+{
+  "per_split": [
+    {
+      "split_id": "seed11",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.0567195339999671,
+      "reasoner_time": 0.5121169839999311,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "ff5ff6bd94b9f644",
+      "mlp_enrichment_accepted": true,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.8934583934583936,
+        "inner_cv_ontological": 0.9037999037999039,
+        "inner_cv_gain": 0.010341510341510318,
+        "accepted": true,
+        "reason": "ganho CV interno +0.0103 > margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_ontological",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed11",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "70d437e4e9ab2b2ea56b674ec961591cb881d84e4aeb36c1848b4a499b0bb326"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    },
+    {
+      "split_id": "seed22",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.04646333400000913,
+      "reasoner_time": 0.4951853550001033,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "efd9223ccce9cdf3",
+      "mlp_enrichment_accepted": false,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.8516113516113516,
+        "inner_cv_ontological": 0.8518518518518517,
+        "inner_cv_gain": 0.00024050024050015217,
+        "accepted": false,
+        "reason": "ganho CV interno +0.0002 <= margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_original",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed22",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "7ef01e06aa80d7dc841afa4f511d14e51813d59381d6babebe54b06f644a7a06"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    },
+    {
+      "split_id": "seed33",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.0561819120000564,
+      "reasoner_time": 0.49723672799996166,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "ad669f2041486c40",
+      "mlp_enrichment_accepted": true,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.9232804232804233,
+        "inner_cv_ontological": 0.9336219336219337,
+        "inner_cv_gain": 0.01034151034151043,
+        "accepted": true,
+        "reason": "ganho CV interno +0.0103 > margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_ontological",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed33",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "7a39aa2deb4aea40f0ae496e9e07dd8efd92439f9443722ed10fcf840cab39aa"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    },
+    {
+      "split_id": "seed44",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.04838692299995273,
+      "reasoner_time": 0.49742825800012724,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "977c83b039f0c715",
+      "mlp_enrichment_accepted": true,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.892977392977393,
+        "inner_cv_ontological": 0.9035594035594037,
+        "inner_cv_gain": 0.010582010582010692,
+        "accepted": true,
+        "reason": "ganho CV interno +0.0106 > margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_ontological",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed44",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "97bba6476edbb6b70e56ff1d7cdb8335eee1f71d6430a567d43cc5cbab2557fd"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    },
+    {
+      "split_id": "seed55",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.048417282000173145,
+      "reasoner_time": 0.5372720789998766,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "dd498c1075d9ac8d",
+      "mlp_enrichment_accepted": false,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.9134199134199136,
+        "inner_cv_ontological": 0.9033189033189033,
+        "inner_cv_gain": -0.010101010101010277,
+        "accepted": false,
+        "reason": "ganho CV interno -0.0101 <= margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_original",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed55",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "bc906b25c6d945198fe826c8844cae45261c04feb40f106ddbffb126cea700bd"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    },
+    {
+      "split_id": "seed66",
+      "provider": "owl_real",
+      "semantic_available": true,
+      "ontology_valid": true,
+      "reason": "",
+      "n_derived_features": 3,
+      "semantic_time": 0.04773480299991206,
+      "reasoner_time": 0.5123993130000599,
+      "info": {
+        "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+        "reasoner": "hermit",
+        "feature_coverage": 1.0
+      },
+      "real_structure_signature": "8b12e8d33af311a0",
+      "shuffled_structure_signature": "c477a1b4d5ea619b",
+      "mlp_enrichment_accepted": false,
+      "oracle_gate": {
+        "gate_margin": 0.01,
+        "available": true,
+        "inner_cv_original": 0.8828763828763829,
+        "inner_cv_ontological": 0.8876863876863877,
+        "inner_cv_gain": 0.00481000481000482,
+        "accepted": false,
+        "reason": "ganho CV interno +0.0048 <= margem 0.01"
+      },
+      "trepan_semantics_available": true,
+      "selected_oracle": "mlp_original",
+      "protocol_audit": {
+        "run_id": "synthetic_3class:seed66",
+        "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+        "events": [
+          {
+            "phase": "selection",
+            "role": "train",
+            "operation": "fit_all_models_on_train",
+            "details": {
+              "split_hash": "914dc2f964ac94dcfe89940a62dfd485a05f500d535c569d13fadd2b3e1170a3"
+            }
+          },
+          {
+            "phase": "selection",
+            "role": "validation",
+            "operation": "oracle_gate_inner_cv_on_train_only",
+            "details": {
+              "folds": 3
+            }
+          },
+          {
+            "phase": "final_evaluation",
+            "role": "test",
+            "operation": "final_metrics_all_arms_once",
+            "details": {
+              "n_test": 65
+            }
+          }
+        ],
+        "test_used_for_selection": false,
+        "test_used_for_feature_selection": false,
+        "test_used_for_oracle_selection": false,
+        "test_used_for_hyperparameter_selection": false,
+        "test_used_for_counterfactual_selection": false,
+        "test_used_for_tree_selection": false,
+        "locked_test_used": true,
+        "final_test_evaluated": true,
+        "final_evaluation_recorded": true,
+        "valid": true
+      }
+    }
+  ],
+  "skipped_arms": [],
+  "not_applicable_ablations": {
+    "sem_reasoner": "o reasoner \u00e9 pr\u00e9-requisito do quality gate OWL; deslig\u00e1-lo invalida a ontologia (n\u00e3o exposto como switch).",
+    "sem_relational_features": "o OntologyProcessor n\u00e3o exp\u00f5e um switch independente para features relacionais.",
+    "sem_aggregates": "idem: agregados s\u00e3o gerados no mesmo passo que as demais features derivadas.",
+    "sem_constraints": "constraints de dom\u00ednio s\u00f3 actuam na gera\u00e7\u00e3o de queries do extractor da GUI (n\u00e3o neste runner).",
+    "sem_semantic_pruning": "o Reloaded actual n\u00e3o implementa poda sem\u00e2ntica (s\u00f3 colapso de sub\u00e1rvores id\u00eanticas)."
+  }
+}

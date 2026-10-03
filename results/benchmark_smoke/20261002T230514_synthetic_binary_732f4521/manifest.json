@@ -1,0 +1,124 @@
+{
+  "experiment_id": "20261002T230514_synthetic_binary_732f4521",
+  "timestamp": "2026-10-02T23:05:14.367415+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "c84a06867a59cbfcdf8334f0f16b7e20f87772ab",
+  "dataset": "synthetic_binary",
+  "dataset_hash": "1cc0664bf7bcd69d842526e4058762367da41998c283b356e7cfd60dc544c45d",
+  "ontology_hash": "43e2650bc6701e973784a387cbc98b52c0ee746f0ad72e3ff9e9cc579d395e0d",
+  "config_hash": "732f4521378337d17acf15c7b12890f808b0198cdbd902d1dbc09ee7067a7cf0",
+  "seeds": [
+    11,
+    22,
+    33,
+    44,
+    55,
+    66
+  ],
+  "split_hash": "46a0c87a17a7137757571b061ede9b50d96717167acaf10ca4debfedc841454e",
+  "library_versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.6",
+    "sklearn": "1.9.1",
+    "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+    "mlp_original",
+    "mlp_ontological",
+    "c45",
+    "trepan_original",
+    "reloaded_lambda0",
+    "reloaded_semantic_score",
+    "reloaded_owl_features",
+    "reloaded_owl_full",
+    "reloaded_owl_shuffled",
+    "reloaded_e2e",
+    "trepan_original_no_mofn",
+    "reloaded_owl_full_no_mofn",
+    "reloaded_owl_full_no_active_queries",
+    "reloaded_owl_full_no_error_focus"
+  ],
+  "classes": [
+    "0",
+    "1"
+  ],
+  "n_samples": 260,
+  "n_features": 9,
+  "n_classes": 2,
+  "class_counts": {
+    "0": 128,
+    "1": 132
+  },
+  "splits": [
+    {
+      "split_id": "seed11",
+      "seed": 11,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "1e5cb6880325d5679694c91c3940953fcc4897149a82388ab47e4cf3d704708f",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed22",
+      "seed": 22,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "70110dc24184d7ef532dd28a6c5bc5245fbe4db5250845a12c44367776d21290",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed33",
+      "seed": 33,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "fc31ad97d487ef198eb60559e79b8e3d1fddc6a532f782f4b3f82c0ce54256a9",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed44",
+      "seed": 44,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "3ec1dfff8101868be5cd7fe1a4558bfa73548d7d2f0ff97c502665ba5e1198e4",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed55",
+      "seed": 55,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "f7ae909cdb43ba32ce90b52b0e4f0f2b6b5687364ca1db885f5d8b7203d68c81",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed66",
+      "seed": 66,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "968b8823e361d3b1529f701a5a490e7f1287d5ae4ef75fba24f62eb92dbd92b4",
+      "n_train": 195,
+      "n_test": 65,
+      "scheme": "holdout",
+      "stratified": true
+    }
+  ]
+}

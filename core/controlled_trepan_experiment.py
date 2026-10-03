@@ -28,6 +28,7 @@ from core.evaluation_protocol import (
     classification_metrics,
 )
 from core.trepan_original import TrepanOriginalClassifier
+from core.tree_stop_summary import stop_summary_of
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
 
 
@@ -492,8 +493,8 @@ def evaluate_controlled_trepan_pair(
         "error_region_audit": list(getattr(pair.reloaded, "error_region_audit_", []) or []),
         # Porque cada árvore parou (observabilidade; chave separada para não tocar nas métricas).
         "tree_diagnostics": {
-            "original": dict(getattr(pair.original, "stop_summary_", {}) or {}),
-            "reloaded": dict(getattr(pair.reloaded, "stop_summary_", {}) or {}),
+            "original": stop_summary_of(pair.original),
+            "reloaded": stop_summary_of(pair.reloaded),
         },
     }
 

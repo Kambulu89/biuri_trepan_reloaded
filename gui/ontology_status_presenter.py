@@ -15,11 +15,11 @@ def _pct(value: Any) -> str:
         return "N/A"
 
 
-def _num(value: Any, decimals: int = 4) -> str:
+def _num(value: Any, ndigits: int = 4) -> str:
     if value is None:
         return "N/A"
     try:
-        return f"{float(value):.{decimals}f}".replace(".", ",")
+        return f"{float(value):.{ndigits}f}".replace(".", ",")
     except (TypeError, ValueError):
         return "N/A"
 

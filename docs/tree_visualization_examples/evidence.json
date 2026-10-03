@@ -1,0 +1,56 @@
+{
+  "C4.5-Nativo": {
+    "signature_before": "fe216650064c3ac487cd2026d239b0095b44dcba11923eb99e60a32b336a09c7",
+    "signature_after": "fe216650064c3ac487cd2026d239b0095b44dcba11923eb99e60a32b336a09c7",
+    "signature_unchanged": true,
+    "predictions_unchanged": true,
+    "logical_node_count": 55,
+    "rendered_node_count": 55,
+    "source_node_count": 55,
+    "overlaps_detected": 0,
+    "depth": 10,
+    "preset": "large",
+    "verdict": "ok",
+    "files": [
+      "docs/tree_visualization_examples/c45_nativo.png",
+      "docs/tree_visualization_examples/c45_nativo.svg",
+      "docs/tree_visualization_examples/c45_nativo.pdf"
+    ]
+  },
+  "Trepan-Original": {
+    "signature_before": "ec9330ec372514e907f8a9368763d348121a5b27830b0d39cf04ae11bb173972",
+    "signature_after": "ec9330ec372514e907f8a9368763d348121a5b27830b0d39cf04ae11bb173972",
+    "signature_unchanged": true,
+    "predictions_unchanged": true,
+    "logical_node_count": 31,
+    "rendered_node_count": 31,
+    "source_node_count": 31,
+    "overlaps_detected": 0,
+    "depth": 6,
+    "preset": "large",
+    "verdict": "ok",
+    "files": [
+      "docs/tree_visualization_examples/trepan_original.png",
+      "docs/tree_visualization_examples/trepan_original.svg",
+      "docs/tree_visualization_examples/trepan_original.pdf"
+    ]
+  },
+  "Trepan-Reloaded": {
+    "signature_before": "ec9330ec372514e907f8a9368763d348121a5b27830b0d39cf04ae11bb173972",
+    "signature_after": "ec9330ec372514e907f8a9368763d348121a5b27830b0d39cf04ae11bb173972",
+    "signature_unchanged": true,
+    "predictions_unchanged": true,
+    "logical_node_count": 31,
+    "rendered_node_count": 31,
+    "source_node_count": 31,
+    "overlaps_detected": 0,
+    "depth": 6,
+    "preset": "large",
+    "verdict": "ok",
+    "files": [
+      "docs/tree_visualization_examples/trepan_reloaded.png",
+      "docs/tree_visualization_examples/trepan_reloaded.svg",
+      "docs/tree_visualization_examples/trepan_reloaded.pdf"
+    ]
+  }
+}

@@ -128,6 +128,12 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         # --- trepan
         "stop.node_budget_exhausted": "orçamento de nós esgotado",
         "stop.no_expandable_nodes_left": "não restavam nós expansíveis",
+        "stop.STOP_PURE_NODE": "nó puro (uma só classe do Oracle)", "stop.STOP_MAX_DEPTH": "profundidade máxima",
+        "stop.STOP_MIN_SAMPLES": "amostra mínima não atingida", "stop.STOP_NO_VALID_SPLIT": "nenhum split válido",
+        "stop.STOP_MIN_GAIN": "ganho de informação abaixo do mínimo",
+        "stop.STOP_QUERY_BUDGET_EXHAUSTED": "orçamento de queries esgotado", "stop.STOP_MAX_NODES": "orçamento de nós esgotado",
+        "stop.STOP_QUERY_GENERATION_FAILURE": "falha na geração de queries", "stop.STOP_NUMERICAL_FAILURE": "falha numérica",
+        "stop.STOP_PRUNED": "removido pela poda", "stop.STOP_UNRECORDED": "motivo não registado",
         "stop.pure_node": "nó puro (uma só classe do Oracle)", "stop.no_valid_split": "nenhum split válido",
         "stop.min_samples_leaf": "split rejeitado (folha mínima)", "stop.max_depth": "profundidade máxima",
         "stop.query_budget_before_min_sample": "orçamento de queries insuficiente para o nó",

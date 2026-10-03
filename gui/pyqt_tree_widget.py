@@ -1,16 +1,28 @@
-import sys
+"""Widget interactivo de árvores (nós ELÍPTICOS) sobre o pacote ``gui.tree_viz``.
+
+Camadas: árvore científica (só leitura) -> TreeVisualizationModel -> layout hierárquico ->
+renderer -> viewport (zoom/pan). Zoom/pan NUNCA recalculam o layout; filtros/colapsos são
+puramente visuais (nada é podado nem alterado na árvore).
+"""
 import math
+from typing import Optional
+
 import numpy as np
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
-    QScrollArea, QFrame, QSlider, QCheckBox, QDialog, QDialogButtonBox,
-    QMessageBox, QApplication
+from PyQt6.QtCore import QPointF, QRectF, Qt, pyqtSignal
+from PyQt6.QtGui import QColor, QFont, QPainter, QPen
+from PyQt6.QtWidgets import QApplication, QTextEdit, QToolTip, QVBoxLayout, QWidget
+
+from gui.tree_viz import details as _details
+from gui.tree_viz.labels import class_color_map
+from gui.tree_viz.layout import compute_layout, diagnostics
+from gui.tree_viz.model import (
+    TreeVisualizationError, TreeVisualizationModel, VizEdge, VizNode,
+    build_visualization_model, tree_signature,
 )
-from PyQt6.QtCore import Qt, QRect, QPoint, QSize, pyqtSignal
-from PyQt6.QtGui import (
-    QPainter, QPen, QBrush, QColor, QFont, QFontMetrics,
-    QLinearGradient, QPainterPath, QPolygonF
-)
+from gui.tree_viz.render import QtTextMeasure, RenderOptions, draw_legend, draw_scene, export_tree
+from gui.tree_viz.strings import tr
+
+MIN_ZOOM, MAX_ZOOM = 0.08, 6.0
 
 
 class TreeNode:
@@ -54,61 +66,80 @@ class TreeNode:
         return entropy / max_entropy if max_entropy > 0 else 0.0
 
 
+
+class TreeDetailsPanel(QTextEdit):
+    """Painel de detalhes (nó/aresta) ligado ao widget da árvore: detalhes sob demanda."""
+
+    def __init__(self, tree_widget=None, parent=None):
+        super().__init__(parent)
+        self.setReadOnly(True)
+        self.setFont(QFont("Monospace", 9))
+        self.setMinimumWidth(260)
+        self.setPlaceholderText(tr("node_details"))
+        self._tree_widget = None
+        if tree_widget is not None:
+            self.attach(tree_widget)
+
+    def attach(self, tree_widget):
+        self._tree_widget = tree_widget
+        tree_widget.selection_changed.connect(self.show_selection)
+        self.show_selection(tree_widget.selected_object())
+
+    def show_selection(self, obj):
+        w = self._tree_widget
+        if obj is None or w is None or w.model is None:
+            self.clear()
+        elif isinstance(obj, VizEdge):
+            self.setPlainText(_details.edge_details_text(w.model, obj.parent_id, obj.child_id))
+        else:
+            self.setPlainText(_details.node_details_text(w.model, obj.node_id))
+
+
 class InteractiveTreeWidget(QWidget):
-    
-    
-    node_clicked = pyqtSignal(object)  # Sinal emitido quando um nó é clicado
-    
-    def __init__(self, tree_model, feature_names, class_names, parent=None):
+
+    node_clicked = pyqtSignal(object)        # VizNode (compatível com o sinal antigo)
+    selection_changed = pyqtSignal(object)   # VizNode | VizEdge | None
+    view_changed = pyqtSignal()
+
+    def __init__(self, tree_model, feature_names, class_names, parent=None, algorithm=None):
         super().__init__(parent)
         self.tree_model = tree_model
+        self.algorithm = algorithm
         self.feature_names = self._align_feature_names(feature_names, tree_model)
         self.class_names = list(class_names or [])
         self._export_class_names = self._class_names_for_tree(tree_model, self.class_names)
-        
-        # Configurações de visualização
-        self.node_radius = 20
-        self.level_height = 60
-        self.min_node_spacing = 80
+        self._measure = QtTextMeasure()
+        self.model: Optional[TreeVisualizationModel] = None
+        self.layout = None
+        self.error: Optional[str] = None
+        self._layout_cache = {}
+        # viewport (única transformação: screen = world * zoom + offset)
         self.zoom_factor = 1.0
-        self.pan_x = 0
-        self.pan_y = 0
-        
-        # Controles de complexidade
-        self.show_uncertainty = True
-        self.min_samples_threshold = 10
-        self.max_depth_display = 5
-        
-        # Estado da interação
+        self.offset_x = 0.0
+        self.offset_y = 0.0
+        # opções visuais (nunca tocam na árvore)
+        self.show_uncertainty = False
+        self.scientific_view = False
+        self.show_node_ids = False
+        self.show_semantic = True
+        self.show_legend = True
+        self.min_samples_threshold = None
+        self.max_depth_display = None
+        self.collapsed = set()
+        self.selected_id = None
+        self.selected_edge = None
+        self.highlight_path = True
         self.hovered_node = None
-        self.selected_path = []
         self.dragging = False
-        self.last_pan_x = 0
-        self.last_pan_y = 0
-        
-        # Controle de labels das arestas
-        self.edge_labels = []
-        self.label_positions = []
-        
-        # Dimensões da árvore
-        self.tree_width = 0
-        self.tree_height = 0
-        self.tree_min_x = 0
-        self.tree_max_x = 0
-        self.tree_min_y = 0
-        self.tree_max_y = 0
-        
-        # Constrói a estrutura da árvore
-        self.tree_nodes = self._build_tree_structure()
-        self._layout_tree()
-        self._calculate_tree_bounds()
-        self._auto_fit_tree()
-        
-        # Configurar widget
-        self.setMinimumSize(800, 600)
+        self._press_pos = None
+        self.setMinimumSize(520, 380)
         self.setMouseTracking(True)
         self.setCursor(Qt.CursorShape.OpenHandCursor)
+        self._rebuild_model()
+        self._relayout()
+        self.initial_view()
 
+    # ---------------------------------------------------------------- compat helpers
     @staticmethod
     def _align_feature_names(feature_names, tree_model):
         """Garante len(feature_names) >= n_features da árvore (Reloaded pode ter onto_*)."""
@@ -143,570 +174,368 @@ class InteractiveTreeWidget(QWidget):
             out.append(str(names[ci]) if 0 <= ci < len(names) else str(c))
         return out
 
-    def _feature_name_at(self, feature_idx):
-        if feature_idx is None or feature_idx < 0:
-            return "?"
-        idx = int(feature_idx)
-        if idx < len(self.feature_names):
-            return str(self.feature_names[idx])
-        return f"feature_{idx}"
+    # ---------------------------------------------------------------- model / layout
+    def _build_tree_structure(self):
+        """Constrói o modelo visual a partir da árvore (TREPAN nativo, C4.5 nativo ou sklearn-like)."""
+        if self.tree_model is None:
+            raise TreeVisualizationError("NO_TREE", tr("no_tree"))
+        if hasattr(self.tree_model, 'root_') and hasattr(self.tree_model, 'export_rules'):
+            return self._build_historical_trepan_structure()
+        return build_visualization_model(self.tree_model, self.feature_names, self.class_names, self.algorithm)
 
-    def _leaf_class_name(self, values):
-        if values is None or len(values) == 0 or self.tree_model is None:
-            return None
-        tree_classes = np.asarray(getattr(self.tree_model, 'classes_', []))
-        if tree_classes.size == 0:
-            idx = int(np.argmax(values))
-            return (
-                self.class_names[idx]
-                if idx < len(self.class_names)
-                else f"class_{idx}"
-            )
-        class_idx = int(np.argmax(values))
-        if class_idx >= len(tree_classes):
-            return f"class_{class_idx}"
-        raw_label = tree_classes[class_idx]
+    def _build_historical_trepan_structure(self):
+        return build_visualization_model(self.tree_model, self.feature_names, self.class_names, self.algorithm)
+
+    def _rebuild_model(self):
+        self.error = None
+        self.model = None
         try:
-            label = int(raw_label)
-        except (TypeError, ValueError):
-            return str(raw_label)
-        if 0 <= label < len(self.class_names):
-            return str(self.class_names[label])
-        export = self._export_class_names
-        if class_idx < len(export):
-            return str(export[class_idx])
-        return str(raw_label)
+            self.model = self._build_tree_structure()
+        except TreeVisualizationError as exc:
+            self.error = str(exc)
+        except Exception as exc:  # nunca crashar: mostrar diagnóstico
+            self.error = f"{tr('viz_error')} [{type(exc).__name__}] {exc}"
+        self._layout_cache.clear()
 
-    def update_tree(self, tree_model, feature_names=None, class_names=None):
-        """Troca árvore e nomes (ex.: Original 30 cols vs Reloaded 212 cols)."""
+    def _layout_key(self):
+        return (id(self.model), frozenset(self.collapsed), self.max_depth_display, self.min_samples_threshold,
+                self.show_uncertainty, self.scientific_view, self.show_node_ids)
+
+    def _relayout(self):
+        """Recalcula o layout (só quando estrutura/labels/filtros mudam; zoom/pan não passam por aqui)."""
+        if self.model is None:
+            self.layout = None
+            return
+        key = self._layout_key()
+        if key not in self._layout_cache:
+            if len(self._layout_cache) > 8:
+                self._layout_cache.clear()
+            self._layout_cache[key] = compute_layout(
+                self.model, self._measure, collapsed=set(self.collapsed), max_depth=self.max_depth_display,
+                min_samples=self.min_samples_threshold, show_uncertainty=self.show_uncertainty,
+                scientific=self.scientific_view, show_ids=self.show_node_ids)
+        self.layout = self._layout_cache[key]
+
+    def update_tree(self, tree_model, feature_names=None, class_names=None, algorithm=None):
+        """Troca a árvore: NÃO reconstrói nenhum modelo; recalcula layout e ajusta a vista."""
         self.tree_model = tree_model
+        if algorithm is not None:
+            self.algorithm = algorithm
         if class_names is not None:
             self.class_names = list(class_names)
         self.feature_names = self._align_feature_names(
-            feature_names if feature_names is not None else self.feature_names,
-            tree_model,
-        )
+            feature_names if feature_names is not None else self.feature_names, tree_model)
         self._export_class_names = self._class_names_for_tree(tree_model, self.class_names)
-        self.tree_nodes = self._build_tree_structure()
-        self._layout_tree()
-        self._calculate_tree_bounds()
-        self._auto_fit_tree()
+        self.collapsed.clear(); self.selected_id = None; self.selected_edge = None
+        self.hovered_node = None; self.min_samples_threshold = None; self.max_depth_display = None
+        self._rebuild_model()
+        self._relayout()
+        self.initial_view()
+        self.selection_changed.emit(None)
         self.update()
-        
-    def _build_tree_structure(self):
-    
-        if self.tree_model is None:
-            return {}
 
-        if hasattr(self.tree_model, 'root_') and hasattr(self.tree_model, 'export_rules'):
-            return self._build_historical_trepan_structure()
+    # ---------------------------------------------------------------- viewport
+    def _world_bbox(self):
+        return self.layout.bbox if self.layout else (0, 0, 1, 1)
 
-        if not hasattr(self.tree_model, 'tree_'):
-            raise TypeError('O visualizador recebeu um modelo que não expõe uma estrutura de árvore suportada.')
-
-        tree = self.tree_model.tree_
-        nodes = {}
-        
-        def build_node(node_id):
-            if node_id == -1:
-                return None
-                
-            feature = tree.feature[node_id]
-            threshold = tree.threshold[node_id]
-            samples = tree.n_node_samples[node_id]
-            values = tree.value[node_id][0] if tree.value[node_id].size > 0 else []
-            
-            # Determina se é folha
-            is_leaf = (tree.children_left[node_id] == -1 and 
-                      tree.children_right[node_id] == -1)
-            
-            # Determina classe para folhas
-            class_name = None
-            if is_leaf and len(values) > 0:
-                class_name = self._leaf_class_name(values)
-            
-            node = TreeNode(
-                node_id=node_id,
-                feature=feature,
-                threshold=threshold,
-                samples=samples,
-                values=values,
-                class_name=class_name,
-                is_leaf=is_leaf
-            )
-            
-            nodes[node_id] = node
-            
-            # Recursivamente constrói filhos
-            if not is_leaf:
-                left_child = build_node(tree.children_left[node_id])
-                right_child = build_node(tree.children_right[node_id])
-                node.left = left_child
-                node.right = right_child
-                
-                if left_child:
-                    nodes[tree.children_left[node_id]] = left_child
-                if right_child:
-                    nodes[tree.children_right[node_id]] = right_child
-            
-            return node
-        
-        root = build_node(0)
-        return nodes
-
-    def _build_historical_trepan_structure(self):
-        nodes = {}
-        model = self.tree_model
-
-        def class_name_for_prediction(prediction):
-            classes = np.asarray(getattr(model, 'classes_', []))
-            matches = np.where(classes == prediction)[0] if classes.size else []
-            if len(matches):
-                idx = int(matches[0])
-                if idx < len(self._export_class_names):
-                    return str(self._export_class_names[idx])
-            return str(prediction)
-
-        def build(source):
-            distribution = np.asarray(source.distribution, dtype=float)
-            samples = int(len(source.real_y))
-            values = distribution * max(1, samples)
-            condition_text = None if source.is_leaf else source.test.text(self.feature_names)
-            feature = None
-            threshold = None
-            if not source.is_leaf and source.test.literals:
-                feature = int(source.test.literals[0].feature)
-                threshold = float(source.test.literals[0].threshold)
-            node = TreeNode(
-                node_id=int(source.node_id),
-                feature=feature,
-                threshold=threshold,
-                samples=samples,
-                values=values,
-                class_name=(class_name_for_prediction(source.prediction) if source.is_leaf else None),
-                is_leaf=bool(source.is_leaf),
-                condition_text=condition_text,
-                false_label='não',
-                true_label='sim',
-            )
-            nodes[node.node_id] = node
-            if not source.is_leaf:
-                node.left = build(source.false_child)
-                node.right = build(source.true_child)
-            return node
-
-        build(model.root_)
-        return nodes
-    
-    def _layout_tree(self):
-        
-        if not self.tree_nodes:
+    def fit_tree_to_view(self, legible: bool = False, margin: float = 28.0):
+        """Ajusta a bounding box REAL ao viewport (sem constantes fixas). legible=True aplica piso de legibilidade."""
+        if self.layout is None or self.width() < 10 or self.height() < 10:
             return
-            
-        root = self.tree_nodes[0]
-        
-        max_depth = self._get_max_depth(root)
-        
-        self._calculate_positions(root, 0, max_depth)
-        
-    def _get_max_depth(self, node, depth=0):
-        
-        if node.is_leaf:
-            return depth
-        
-        left_depth = self._get_max_depth(node.left, depth + 1) if node.left else depth
-        right_depth = self._get_max_depth(node.right, depth + 1) if node.right else depth
-        
-        return max(left_depth, right_depth)
-    
-    def _calculate_positions(self, node, level, max_depth):
-        
-        if node.is_leaf:
-            node.x = 0
-            node.y = level * self.level_height
-            return 0
-        
-        left_modifier = self._calculate_positions(node.left, level + 1, max_depth)
-        right_modifier = self._calculate_positions(node.right, level + 1, max_depth)
-        
-        node.x = (node.left.x + node.right.x) / 2
-        node.y = level * self.level_height
-        
-        separation = self.min_node_spacing
-        if node.right.x - node.left.x < separation:
-            shift = (separation - (node.right.x - node.left.x)) / 2
-            self._shift_subtree(node.left, -shift)
-            self._shift_subtree(node.right, shift)
-        
-        return left_modifier
-    
-    def _shift_subtree(self, node, shift):
-        
-        if node:
-            node.x += shift
-            self._shift_subtree(node.left, shift)
-            self._shift_subtree(node.right, shift)
-    
-    def _calculate_tree_bounds(self):
-        
-        if not self.tree_nodes:
+        x0, y0, x1, y1 = self._world_bbox()
+        bw, bh = max(1.0, x1 - x0), max(1.0, y1 - y0)
+        zoom = min((self.width() - 2 * margin) / bw, (self.height() - 2 * margin) / bh)
+        zoom = min(zoom, self.layout.params.initial_zoom_cap)
+        floor_applied = False
+        if legible and zoom < self.layout.params.min_legible_zoom:
+            zoom, floor_applied = self.layout.params.min_legible_zoom, True
+        self.zoom_factor = max(MIN_ZOOM, min(MAX_ZOOM, zoom))
+        cx = (x0 + x1) / 2
+        self.offset_x = self.width() / 2 - cx * self.zoom_factor
+        if floor_applied:  # árvore grande: topo da árvore visível, resto por pan
+            self.offset_y = margin - y0 * self.zoom_factor
+        else:
+            self.offset_y = self.height() / 2 - (y0 + y1) / 2 * self.zoom_factor
+        self.view_changed.emit(); self.update()
+
+    def initial_view(self):
+        self.fit_tree_to_view(legible=True)
+
+    def reset_zoom(self):
+        self.fit_tree_to_view(legible=False)
+
+    def reset_view(self):
+        """Restaura zoom, pan e selecção sem reconstruir a árvore."""
+        self.selected_id = None; self.selected_edge = None
+        self.selection_changed.emit(None)
+        self.initial_view()
+
+    def center_on_node(self, node_id):
+        if self.layout is None or node_id not in self.layout.nodes:
             return
-            
-        min_x = min(node.x for node in self.tree_nodes.values())
-        max_x = max(node.x for node in self.tree_nodes.values())
-        min_y = min(node.y for node in self.tree_nodes.values())
-        max_y = max(node.y for node in self.tree_nodes.values())
-        
-        margin_x = self.node_radius * 4  
-        margin_y = self.node_radius * 3  
-        
-        self.tree_min_x = min_x - margin_x
-        self.tree_max_x = max_x + margin_x
-        self.tree_min_y = min_y - margin_y
-        self.tree_max_y = max_y + margin_y
-        
-        self.tree_width = self.tree_max_x - self.tree_min_x
-        self.tree_height = self.tree_max_y - self.tree_min_y
-    
-    def _auto_fit_tree(self):
-        
-        if not self.tree_nodes or self.tree_width == 0 or self.tree_height == 0:
+        sh = self.layout.nodes[node_id]
+        self.offset_x = self.width() / 2 - sh.cx * self.zoom_factor
+        self.offset_y = self.height() / 2 - sh.cy * self.zoom_factor
+        self.view_changed.emit(); self.update()
+
+    def center_root(self):
+        if self.model is not None:
+            sh = self.layout.nodes[self.model.root_id]
+            self.offset_x = self.width() / 2 - sh.cx * self.zoom_factor
+            self.offset_y = 40 - (sh.cy - sh.ry) * self.zoom_factor
+            self.view_changed.emit(); self.update()
+
+    def center_selected(self):
+        if self.selected_id is not None:
+            self.center_on_node(self.selected_id)
+
+    def center_tree(self):  # compat: "Centrar" = ajustar à vista
+        self.fit_tree_to_view(legible=False)
+
+    def _zoom_about(self, factor, sx, sy):
+        new = max(MIN_ZOOM, min(MAX_ZOOM, self.zoom_factor * factor))
+        if new == self.zoom_factor:
             return
-            
-        margin_factor = 0.85  
-        zoom_x = (self.width() * margin_factor) / self.tree_width
-        zoom_y = (self.height() * margin_factor) / self.tree_height
-        
-        # Usa o menor zoom para garantir que toda a árvore caiba
-        self.zoom_factor = min(zoom_x, zoom_y, 1.0)  # Não aumenta além de 1.0
-        
-        # Garante zoom mínimo para legibilidade
-        self.zoom_factor = max(self.zoom_factor, 0.1)
-        
-        # Centraliza a árvore perfeitamente
-        center_x = (self.tree_min_x + self.tree_max_x) / 2
-        center_y = (self.tree_min_y + self.tree_max_y) / 2
-        
-        # Calcula posição para centralizar considerando o zoom
-        self.pan_x = (self.width() / 2) / self.zoom_factor - center_x
-        self.pan_y = (self.height() / 2) / self.zoom_factor - center_y
-        
+        wx, wy = (sx - self.offset_x) / self.zoom_factor, (sy - self.offset_y) / self.zoom_factor
+        self.zoom_factor = new
+        self.offset_x, self.offset_y = sx - wx * new, sy - wy * new
+        self.view_changed.emit(); self.update()
+
+    def zoom_in(self):
+        self._zoom_about(1.2, self.width() / 2, self.height() / 2)
+
+    def zoom_out(self):
+        self._zoom_about(1 / 1.2, self.width() / 2, self.height() / 2)
+
+    def to_world(self, sx, sy):
+        return (sx - self.offset_x) / self.zoom_factor, (sy - self.offset_y) / self.zoom_factor
+
+    # ---------------------------------------------------------------- visual options (never touch the tree)
+    def toggle_uncertainty_display(self):
+        self.show_uncertainty = not self.show_uncertainty
+        self._relayout(); self.update()
+
+    def set_scientific_view(self, on: bool):
+        self.scientific_view = bool(on); self._relayout(); self.update()
+
+    def set_show_node_ids(self, on: bool):
+        self.show_node_ids = bool(on); self._relayout(); self.update()
+
+    def set_complexity_filter(self, min_samples, max_depth):
+        """Filtro SÓ VISUAL (esconde/colapsa; indicado como '+N nós'). Não executa pruning."""
+        self.min_samples_threshold = min_samples if (min_samples or 0) > 0 else None
+        self.max_depth_display = max_depth if (max_depth is not None and max_depth >= 0) else None
+        self._relayout(); self.update()
+
+    def clear_filters(self):
+        self.min_samples_threshold = None; self.max_depth_display = None; self.collapsed.clear()
+        self._relayout(); self.update()
+
+    def toggle_collapse(self, node_id=None):
+        nid = self.selected_id if node_id is None else node_id
+        if nid is None or self.model is None or not self.model.nodes[nid].children:
+            return
+        self.collapsed.symmetric_difference_update({nid})
+        self._relayout(); self.update()
+
+    def expand_all(self):
+        self.collapsed.clear(); self._relayout(); self.update()
+
+    def search(self, text):
+        """Nós cuja feature (completa), classe, id ou condição contém ``text``."""
+        if self.model is None or not str(text).strip():
+            return []
+        q = str(text).strip().lower()
+        out = []
+        for nid in self.model.preorder():
+            n = self.model.nodes[nid]
+            hay = [str(n.node_id), (n.feature_full or ''), (n.class_prediction or '')] + [c['text_full'] for c in n.conditions]
+            if any(q in h.lower() for h in hay):
+                out.append(nid)
+        return out
+
+    def _reveal(self, node_id):
+        """Expande ancestrais colapsados para tornar o nó visível (só visual)."""
+        changed = False
+        for anc in self.model.path_to(node_id)[:-1]:
+            if anc in self.collapsed:
+                self.collapsed.discard(anc); changed = True
+        if self.max_depth_display is not None and self.model.nodes[node_id].depth > self.max_depth_display:
+            self.max_depth_display = None; changed = True
+        if self.min_samples_threshold is not None:
+            self.min_samples_threshold = None; changed = True
+        if changed:
+            self._relayout()
+
+    def select_node(self, node_id, center=False):
+        if self.model is None or node_id not in self.model.nodes:
+            return
+        self._reveal(node_id)
+        self.selected_id, self.selected_edge = node_id, None
+        node = self.model.nodes[node_id]
+        if center:
+            self.center_on_node(node_id)
+        self.node_clicked.emit(node)
+        self.selection_changed.emit(node)
         self.update()
-    
+
+    def selected_object(self):
+        if self.model is None:
+            return None
+        if self.selected_edge is not None:
+            return self.model.edge(*self.selected_edge)
+        return self.model.nodes.get(self.selected_id) if self.selected_id is not None else None
+
+    def path_ids(self):
+        if not self.highlight_path or self.model is None:
+            return set()
+        if self.selected_id is not None:
+            return set(self.model.path_to(self.selected_id))
+        if self.selected_edge is not None:
+            return set(self.model.path_to(self.selected_edge[1]))
+        return set()
+
+    def toggle_highlight_path(self):
+        self.highlight_path = not self.highlight_path; self.update()
+
+    # ---------------------------------------------------------------- diagnostics / export
+    def diagnostic(self):
+        if self.model is None or self.layout is None:
+            return {"error": self.error}
+        d = diagnostics(self.model, self.layout)
+        d["zoom"] = round(self.zoom_factor, 3)
+        d["selected_tree_signature"] = tree_signature(self.tree_model) if self.tree_model is not None else None
+        return d
+
+    def hidden_notice(self):
+        if self.layout is None or not self.layout.hidden_count:
+            return ""
+        return tr("hidden_notice", shown=self.layout.rendered_node_count, total=self.model.logical_node_count,
+                  hidden=self.layout.hidden_count)
+
+    def export(self, path, fmt=None, title=None, write_json=False, metadata=None):
+        if self.model is None:
+            raise TreeVisualizationError("NO_TREE", self.error or tr("no_tree"))
+        return export_tree(self.model, path, fmt=fmt, title=title, scientific=self.scientific_view,
+                           show_ids=self.show_node_ids, metadata=metadata, write_json=write_json)
+
+    # ---------------------------------------------------------------- painting
     def paintEvent(self, event):
-        
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        
-        # Fundo
-        painter.fillRect(self.rect(), QColor(240, 240, 240))
-        
-        if not self.tree_nodes:
+        painter.fillRect(self.rect(), QColor("#FAFAFA"))
+        if self.model is None or self.layout is None:
+            painter.setPen(QPen(QColor("#444444")))
+            painter.setFont(QFont("Sans Serif", 11))
+            msg = f"{tr('no_tree')}\n{tr('reason')}: {self.error or tr('reason_untrained')}"
+            painter.drawText(self.rect().adjusted(24, 24, -24, -24), Qt.AlignmentFlag.AlignCenter | Qt.TextFlag.TextWordWrap, msg)
+            painter.end()
             return
-        
-        # Desenha conexões primeiro
-        self._draw_connections(painter)
-        
-        # Desenha nós
-        self._draw_nodes(painter)
-    
-    def _draw_connections(self, painter):
-        
-        for node in self.tree_nodes.values():
-            if not node.is_leaf:
-                # Linha para filho esquerdo
-                if node.left:
-                    self._draw_connection(painter, node, node.left, node.false_label)
-                
-                # Linha para filho direito
-                if node.right:
-                    self._draw_connection(painter, node, node.right, node.true_label)
-    
-    def _draw_connection(self, painter, parent, child, condition):
-        
-        # Aplica transformações de zoom e pan
-        start_x = (parent.x + self.pan_x) * self.zoom_factor
-        start_y = (parent.y + self.pan_y) * self.zoom_factor
-        end_x = (child.x + self.pan_x) * self.zoom_factor
-        end_y = (child.y + self.pan_y) * self.zoom_factor
-        
-        # Cor baseada na condição
-        if condition in {"≤", "não"}:
-            painter.setPen(QPen(QColor(51, 153, 204), max(1, 2 * self.zoom_factor)))
-        else:
-            painter.setPen(QPen(QColor(204, 102, 51), max(1, 2 * self.zoom_factor)))
-        
-        # Desenha linha
-        painter.drawLine(int(start_x), int(start_y), int(end_x), int(end_y))
-        
-        # Só desenha label se o zoom for suficiente para legibilidade
-        if self.zoom_factor > 0.5:
-            self._draw_edge_label(painter, parent, child, condition, start_x, start_y, end_x, end_y)
-    
-    def _draw_edge_label(self, painter, parent, child, condition, start_x, start_y, end_x, end_y):
-            
-        mid_x = (start_x + end_x) / 2
-        mid_y = (start_y + end_y) / 2
-        
-        if parent.condition_text:
-            condition_text = condition
-        else:
-            feature_name = self._feature_name_at(parent.feature)[:12]
-            threshold_text = f"{parent.threshold:.3g}" if parent.threshold is not None else "?"
-            condition_text = f"{feature_name} {condition} {threshold_text}"
+        colors = class_color_map(self.model.class_labels())
+        opts = RenderOptions(self.show_uncertainty, self.scientific_view, self.show_node_ids, self.show_semantic,
+                             self.selected_id, self.selected_edge, self.path_ids(), self.hovered_node)
+        painter.save()
+        painter.translate(self.offset_x, self.offset_y)
+        painter.scale(self.zoom_factor, self.zoom_factor)
+        draw_scene(painter, self.model, self.layout, opts, colors)
+        painter.restore()
+        if self.show_legend:
+            draw_legend(painter, self.model, colors, 10, 10, 11.0)
+        notice = self.hidden_notice()
+        if notice:
+            painter.setPen(QPen(QColor("#8A3B00")))
+            painter.setFont(QFont("Sans Serif", 9))
+            painter.drawText(self.rect().adjusted(10, 0, -10, -8), Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight, notice)
+        painter.end()
 
-        angle = math.atan2(end_y - start_y, end_x - start_x)
+    # ---------------------------------------------------------------- interaction
+    def _node_at(self, sx, sy):
+        if self.layout is None:
+            return None
+        wx, wy = self.to_world(sx, sy)
+        for nid, sh in self.layout.nodes.items():
+            if ((wx - sh.cx) / sh.rx) ** 2 + ((wy - sh.cy) / sh.ry) ** 2 <= 1.0:
+                return nid
+        return None
 
-        offset_distance = 20 * self.zoom_factor
-        
-        perp_x = -math.sin(angle) * offset_distance
-        perp_y = math.cos(angle) * offset_distance
-        
-        label_x = mid_x + perp_x
-        label_y = mid_y + perp_y
-        
-        font = QFont()
-        font.setPointSize(max(8, int(10 * self.zoom_factor)))
-        painter.setFont(font)
-        
-        metrics = QFontMetrics(font)
-        text_rect = metrics.boundingRect(condition_text)
-        
-        # Fundo com borda
-        bg_rect = QRect(
-            int(label_x - text_rect.width()/2 - 4),
-            int(label_y - text_rect.height()/2 - 2),
-            text_rect.width() + 8,
-            text_rect.height() + 4
-        )
-        
-        # Fundo branco com transparência
-        painter.fillRect(bg_rect, QColor(255, 255, 255, 240))
-        
-        # Borda sutil
-        painter.setPen(QPen(QColor(200, 200, 200), 1))
-        painter.drawRect(bg_rect)
-        
-        # Texto
-        painter.setPen(QPen(QColor(0, 0, 0)))
-        painter.drawText(bg_rect, Qt.AlignmentFlag.AlignCenter, condition_text)
-    
-    def _draw_nodes(self, painter):
-        
-        for node in self.tree_nodes.values():
-            self._draw_node(painter, node)
-    
-    def _draw_node(self, painter, node):
-        
-        # Aplica transformações
-        x = (node.x + self.pan_x) * self.zoom_factor
-        y = (node.y + self.pan_y) * self.zoom_factor
-        
-        radius = self.node_radius * self.zoom_factor
-        
-        if node.is_leaf:
-            class_colors = [
-                QColor(51, 204, 51),   # Verde
-                QColor(204, 51, 51),   # Vermelho
-                QColor(51, 51, 204),   # Azul
-                QColor(204, 204, 51),  # Amarelo
-                QColor(204, 51, 204),  # Magenta
-            ]
-            class_idx = hash(str(node.class_name)) % len(class_colors) if node.class_name else 0
-            painter.setBrush(QBrush(class_colors[class_idx]))
-        else:
-            uncertainty_color = 1.0 - node.uncertainty
-            color = QColor(int(uncertainty_color * 255), int(uncertainty_color * 255), 204)
-            painter.setBrush(QBrush(color))
-        
-        painter.setPen(QPen(QColor(0, 0, 0), max(1, int(2 * self.zoom_factor))))
-        painter.drawEllipse(int(x - radius), int(y - radius), int(radius * 2), int(radius * 2))
-        
-        node_text = self._get_node_text(node)
-        font = QFont()
-        font.setPointSize(max(7, int(9 * self.zoom_factor)))
-        painter.setFont(font)
-        
-        painter.setPen(QPen(QColor(0, 0, 0)))
-        text_rect = QRect(int(x - radius), int(y - radius), int(radius * 2), int(radius * 2))
-        painter.drawText(text_rect, Qt.AlignmentFlag.AlignCenter, node_text)
-    
-    def _get_node_text(self, node):
-        
-        if node.is_leaf:
-            class_name = str(node.class_name)[:6] if node.class_name else "?"
-            return f"{class_name}\n({node.samples})"
-        else:
-            if node.condition_text:
-                label = node.condition_text
-                if len(label) > 22:
-                    label = label[:19] + "..."
-                return f"{label}\n({node.samples})"
-            feature_name = self._feature_name_at(node.feature)[:10]
-            return f"{feature_name}\n({node.samples})"
-    
+    def _edge_at(self, sx, sy):
+        if self.layout is None:
+            return None
+        wx, wy = self.to_world(sx, sy)
+        tol = 6.0 / self.zoom_factor
+        for e in self.layout.edges:
+            r = e.label_rect
+            if r[0] <= wx <= r[2] and r[1] <= wy <= r[3]:
+                return (e.parent_id, e.child_id)
+            (ax, ay), (bx, by) = e.p0, e.p1
+            dx, dy = bx - ax, by - ay
+            L2 = dx * dx + dy * dy
+            t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((wx - ax) * dx + (wy - ay) * dy) / L2))
+            if math.hypot(wx - (ax + t * dx), wy - (ay + t * dy)) <= tol:
+                return (e.parent_id, e.child_id)
+        return None
+
     def mousePressEvent(self, event):
-        
         if event.button() == Qt.MouseButton.LeftButton:
-            tree_x = (event.position().x() - self.pan_x) / self.zoom_factor
-            tree_y = (event.position().y() - self.pan_y) / self.zoom_factor
-            
-            clicked_node = self._find_node_at_position(tree_x, tree_y)
-            if clicked_node:
-                self.node_clicked.emit(clicked_node)
-                self._show_node_tooltip(clicked_node, event.position())
-                return
-            else:
-                self.dragging = True
-                self.last_pan_x = event.position().x()
-                self.last_pan_y = event.position().y()
-                self.setCursor(Qt.CursorShape.ClosedHandCursor)
-        
+            pos = event.position()
+            self._press_pos = (pos.x(), pos.y())
+            self.dragging = True
+            self._last = (pos.x(), pos.y())
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
         super().mousePressEvent(event)
-    
-    def mouseMoveEvent(self, event):
 
+    def mouseMoveEvent(self, event):
+        pos = event.position()
         if self.dragging:
-            dx = event.position().x() - self.last_pan_x
-            dy = event.position().y() - self.last_pan_y
-            
-            self.pan_x += dx
-            self.pan_y += dy
-            
-            self.last_pan_x = event.position().x()
-            self.last_pan_y = event.position().y()
-            
+            self.offset_x += pos.x() - self._last[0]
+            self.offset_y += pos.y() - self._last[1]
+            self._last = (pos.x(), pos.y())
             self.update()
-        
+        else:
+            nid = self._node_at(pos.x(), pos.y())
+            if nid != self.hovered_node:
+                self.hovered_node = nid
+                self.update()
+            if nid is not None and self.model is not None:
+                QToolTip.showText(event.globalPosition().toPoint(), _details.node_tooltip(self.model, nid), self)
+            else:
+                QToolTip.hideText()
         super().mouseMoveEvent(event)
-    
+
     def mouseReleaseEvent(self, event):
-        
         if event.button() == Qt.MouseButton.LeftButton:
+            pos = event.position()
+            moved = self._press_pos is not None and math.hypot(pos.x() - self._press_pos[0], pos.y() - self._press_pos[1]) > 4
             self.dragging = False
             self.setCursor(Qt.CursorShape.OpenHandCursor)
-        
+            if not moved and self.model is not None:
+                nid = self._node_at(pos.x(), pos.y())
+                if nid is not None:
+                    self.select_node(nid)
+                else:
+                    edge = self._edge_at(pos.x(), pos.y())
+                    if edge is not None:
+                        self.selected_edge, self.selected_id = edge, None
+                        self.selection_changed.emit(self.model.edge(*edge)); self.update()
+                    elif self.selected_id is not None or self.selected_edge is not None:
+                        self.selected_id = self.selected_edge = None
+                        self.selection_changed.emit(None); self.update()
         super().mouseReleaseEvent(event)
-    
-    def _find_node_at_position(self, x, y):
-        
-        for node in self.tree_nodes.values():
-            distance = math.sqrt((x - node.x)**2 + (y - node.y)**2)
-            if distance <= self.node_radius:
-                return node
-        return None
-    
-    def _show_node_tooltip(self, node, pos):
-        
-        # Cria conteúdo do tooltip
-        info_text = f"Nodo {node.node_id}\n\n"
-        
-        if node.is_leaf:
-            info_text += f"Hoja\nClase: {node.class_name}\nMuestras: {node.samples}"
-            if node.values is not None and len(node.values) > 0:
-                info_text += f"\nDistribución: {node.values}"
-        else:
-            if node.condition_text:
-                info_text += f"Nó de decisão TREPAN\nTeste: {node.condition_text}\nAmostras reais: {node.samples}"
-            else:
-                feature_name = self._feature_name_at(node.feature)
-                info_text += f"Nó de decisão\nCaracterística: {feature_name}\nLimiar: {node.threshold:.2f}\nAmostras: {node.samples}"
-            if self.show_uncertainty:
-                info_text += f"\nIncerteza: {node.uncertainty:.2f}"
-        
-        QMessageBox.information(self, "Detalhes do nó", info_text)
-    
-    def zoom_in(self):
-        
-        self.zoom_factor = min(self.zoom_factor * 1.2, 3.0)
-        self.center_tree()
-    
-    def zoom_out(self):
-        
-        self.zoom_factor = max(self.zoom_factor / 1.2, 0.3)
-        self.center_tree()
-    
-    def reset_zoom(self):
-        
-        # Recalcula bounds para garantir precisão
-        self._calculate_tree_bounds()
-        self._auto_fit_tree()
-    
-    def center_tree(self):
-        
-        if not self.tree_nodes or self.tree_width == 0 or self.tree_height == 0:
-            return
-            
-        center_x = (self.tree_min_x + self.tree_max_x) / 2
-        center_y = (self.tree_min_y + self.tree_max_y) / 2
-        
-        self.pan_x = (self.width() / 2) / self.zoom_factor - center_x
-        self.pan_y = (self.height() / 2) / self.zoom_factor - center_y
-        
-        self.update()
-    
-    def toggle_uncertainty_display(self):
 
-        self.show_uncertainty = not self.show_uncertainty
-        self.update()
-    
-    def set_complexity_filter(self, min_samples, max_depth):
-        
-        self.min_samples_threshold = min_samples
-        self.max_depth_display = max_depth
-        self._filter_tree()
-        self.update()
-    
-    def _filter_tree(self):
-        
-        # Remove nós com poucas amostras ou muito profundos
-        nodes_to_hide = []
-        for node in self.tree_nodes.values():
-            if (node.samples < self.min_samples_threshold or 
-                self._get_node_depth(node) > self.max_depth_display):
-                nodes_to_hide.append(node)
-        
-        pass
-    
-    def _get_node_depth(self, node):
-        
-        depth = 0
-        current = node
-        while current.node_id != 0:  
-            for parent in self.tree_nodes.values():
-                if (parent.left == current or parent.right == current):
-                    current = parent
-                    depth += 1
-                    break
-            else:
-                break
-        return depth
-    
+    def mouseDoubleClickEvent(self, event):
+        nid = self._node_at(event.position().x(), event.position().y())
+        if nid is not None:
+            self.toggle_collapse(nid)
+        super().mouseDoubleClickEvent(event)
+
     def wheelEvent(self, event):
-        
-        # Obtém o fator de zoom baseado na direção do scroll
-        zoom_factor = 1.15 if event.angleDelta().y() > 0 else 1/1.15
-        
-        old_zoom = self.zoom_factor
-        new_zoom = self.zoom_factor * zoom_factor
-        
-        new_zoom = max(0.1, min(5.0, new_zoom))
-        
-        if new_zoom != old_zoom:
-            mouse_x = event.position().x()
-            mouse_y = event.position().y()
-            
-            tree_x = (mouse_x - self.pan_x) / old_zoom
-            tree_y = (mouse_y - self.pan_y) / old_zoom
-            
-            self.zoom_factor = new_zoom
-            
-            self.pan_x = mouse_x - tree_x * new_zoom
-            self.pan_y = mouse_y - tree_y * new_zoom
-            
-            self.update()
-    
+        factor = 1.15 if event.angleDelta().y() > 0 else 1 / 1.15
+        self._zoom_about(factor, event.position().x(), event.position().y())
+
     def resizeEvent(self, event):
-        
+        old = (event.oldSize().width(), event.oldSize().height())
         super().resizeEvent(event)
-        self._auto_fit_tree()
+        if old[0] <= 0 or old[1] <= 0:
+            self.initial_view()
+        else:  # mantém o centro da vista ao redimensionar
+            self.offset_x += (self.width() - old[0]) / 2
+            self.offset_y += (self.height() - old[1]) / 2
