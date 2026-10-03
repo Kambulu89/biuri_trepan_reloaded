@@ -177,6 +177,8 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.single_seed": "Resultado de uma única seed ({seed}). Não mede variabilidade.",
         "msg.weak_evidence": "Enriquecimento aceite com evidência fraca (IC da utilidade inclui zero).",
         "msg.small_tree": "{tree}: árvore com {nodes} nós. Abra o diagnóstico para ver a razão.",
+        "msg.budget_limited": "{tree}: a árvore parou por esgotamento do orçamento de queries ({used}/{budget}) com apenas {nodes} nós; "
+                              "não reflete a capacidade do método. Aumente o orçamento de queries ou reduza a amostra mínima por nó.",
         "msg.stale": "Resultados anteriores marcados como desatualizados: {reasons}.",
         "msg.cancelled": "Operação cancelada pelo utilizador.",
         # --- erros

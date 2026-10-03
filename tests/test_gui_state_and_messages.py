@@ -144,3 +144,16 @@ def test_message_log_filters_and_capacity():
     assert all(m.experiment_id == "A" for m in log.items(experiment_id="A"))
     lines = log.format_lines()
     assert len(lines) == 3 and all("[ERRO]" in line for line in lines)
+
+
+def test_budget_exhausted_stump_gets_a_scientific_warning_naming_the_cause():
+    diag = TreeDiagnostics(tree="trepan_original", logical_nodes=Measure.of(3), queries_used=Measure.of(2000),
+                           query_budget=Measure.of(2000), query_budget_exhausted=True,
+                           stop_reasons={"STOP_QUERY_BUDGET_EXHAUSTED": 1, "STOP_PURE_NODE": 1}, available=True)
+    msgs = derive_messages(_result(trees={"trepan_original": diag}))
+    w = [m for m in msgs if m.code == "budget_limited"]
+    assert w and w[0].level == Level.SCIENTIFIC_WARNING.value
+    assert "2000/2000" in w[0].text and "TREPAN Original" in w[0].text and "3 nós" in w[0].text
+    ok = TreeDiagnostics(tree="trepan_original", logical_nodes=Measure.of(15), query_budget_exhausted=False,
+                         stop_reasons={"STOP_PURE_NODE": 4}, available=True)
+    assert not [m for m in derive_messages(_result(trees={"trepan_original": ok})) if m.code == "budget_limited"]
