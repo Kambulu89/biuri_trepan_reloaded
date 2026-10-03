@@ -528,6 +528,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.split_audit_: list[dict] = []
         self.expansion_order_: list[int] = []
         self.local_model_count_ = 0
+        # Observabilidade (só regista; não altera nenhuma decisão do algoritmo).
+        self.stop_reasons_: dict[str, int] = {}
+        self.stop_summary_: dict = {}
+
+        def _stop(entry: dict, reason: str) -> None:
+            entry["stop_reason"] = reason
+            self.stop_reasons_[reason] = self.stop_reasons_.get(reason, 0) + 1
 
         root_dist = self._distribution(y_oracle)
         root_pred = self.classes_[int(np.argmax(root_dist))]
@@ -560,6 +567,7 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         while queue and node_count + 2 <= self.max_nodes:
             _, _, node = heapq.heappop(queue)
             if self.max_depth is not None and node.depth >= self.max_depth:
+                _stop(self._node_entry(node), "max_depth")
                 continue
             decision_X, decision_y, local_model = self._decision_sample(node)
             node.distribution = self._distribution(decision_y)
@@ -578,6 +586,8 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
                     "expanded": False,
                     "stop_reason": "query_budget_before_min_sample",
                 })
+                self.stop_reasons_["query_budget_before_min_sample"] = (
+                    self.stop_reasons_.get("query_budget_before_min_sample", 0) + 1)
                 continue
             audit = {
                 "node_id": node.node_id,
@@ -593,14 +603,17 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             # substitui a entrada preliminar pela versão de decisão
             self.node_audit_.append(audit)
             if len(np.unique(decision_y)) < 2 or self._is_statistically_pure(decision_y):
+                _stop(audit, "pure_node")
                 continue
             best = self._best_mofn(decision_X, decision_y)
             if best is None:
+                _stop(audit, "no_valid_split")
                 continue
             test, gain = best
             real_mask = test.evaluate(node.real_X)
             dec_mask = test.evaluate(decision_X)
             if dec_mask.sum() < self.min_samples_leaf or (~dec_mask).sum() < self.min_samples_leaf:
+                _stop(audit, "min_samples_leaf")
                 continue
             # reach é estimado pela frequência do ramo no conjunto de decisão do nó.
             p_true = float(np.mean(dec_mask)); p_false = 1.0 - p_true
@@ -647,14 +660,40 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.best_first_ = True
         self.m_of_n_ = any(s["n"] > 1 for s in self.split_audit_)
         self.oracle_query_count_ = int(len(X) + self.membership_queries_)
+        nodes_before_pruning = int(node_count)
+        # Por que o ciclo terminou (sem alterar a lógica): orçamento de nós ou fila esgotada.
+        node_budget_reached = bool(queue) and node_count + 2 > self.max_nodes
+        unexpanded_in_queue = len(queue)
         self._prune_identical_subtrees(self.root_)
         self.node_count_ = self._count_nodes(self.root_)
+        self.stop_summary_ = {
+            "loop_end_reason": "node_budget_exhausted" if node_budget_reached else "no_expandable_nodes_left",
+            "node_budget": int(self.max_nodes),
+            "nodes_before_pruning": nodes_before_pruning,
+            "nodes_after_pruning": int(self.node_count_),
+            "unexpanded_nodes_waiting": int(unexpanded_in_queue),
+            "query_budget": int(self.max_queries),
+            "queries_used": int(self.membership_queries_),
+            "query_budget_exhausted": bool(self.membership_queries_ >= int(self.max_queries)),
+            "max_depth": None if self.max_depth is None else int(self.max_depth),
+            "stop_reasons": dict(self.stop_reasons_),
+        }
         # O oráculo só é necessário durante a extracção. Não o persistir evita
         # acoplar o artefacto final ao MLP, ao extractor/GUI ou a callbacks de
         # treino, e permite carregar a árvore em qualquer directório/processo.
         self.oracle_ = None
         self.oracle_attached_ = False
         return self
+
+    def _node_entry(self, node: "_Node") -> dict:
+        """Entrada de auditoria do nó (a mais recente); cria-a se ainda não existir."""
+        for entry in reversed(self.node_audit_):
+            if entry.get("node_id") == node.node_id:
+                return entry
+        entry = {"node_id": node.node_id, "depth": node.depth, "reach": float(node.reach),
+                 "fidelity": float(node.fidelity), "expanded": False}
+        self.node_audit_.append(entry)
+        return entry
 
     def _prune_identical_subtrees(self, node: _Node) -> Any:
         if node.is_leaf:
@@ -902,6 +941,8 @@ class TrepanOriginalExtractor:
             'configuration_selection_scope': 'training_only',
             'final_test_used_for_selection': False,
             'split_audit': list(getattr(model, 'split_audit_', [])),
+            'node_audit': list(getattr(model, 'node_audit_', [])),
+            'stop_summary': dict(getattr(model, 'stop_summary_', {}) or {}),
             'expansion_order': list(getattr(model, 'expansion_order_', [])),
             'extra_seed_samples': extra_seed_samples,
         }
