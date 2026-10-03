@@ -42,6 +42,19 @@ def format_optional(value: Any, fmt: str = "{}") -> str:
     return tr("misc.none") if value is None else fmt.format(value)
 
 
+def fidelity_label_text(kind: Optional[str], value: Optional[float]) -> str:
+    """Rótulo de fidelidade para o visualizador legado (valor já em %, nunca recalculado).
+
+    ``oracle``: fidelidade ao Oracle; ``agreement``: concordância com o MLP (C4.5, diagnóstico);
+    ``None``: o modelo não tem Oracle -> "Não aplicável", nunca 0.0%.
+    """
+    if kind == "oracle" and value is not None:
+        return f"{term('fidelity')}: {value:.1f}%"
+    if kind == "agreement" and value is not None:
+        return f"{tr('field.agreement')}: {value:.1f}%"
+    return f"{term('fidelity')}: {na_text(Reason.NO_ORACLE)}"
+
+
 def yes_no(flag: Optional[bool]) -> str:
     return tr("misc.none") if flag is None else tr("status.yes" if flag else "status.no")
 

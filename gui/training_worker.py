@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import traceback
 
 from PyQt6.QtCore import QThread, pyqtSignal
 from core.training_config import enforce_scientific_preset
@@ -13,6 +14,7 @@ class TrainingWorker(QThread):
     progress = pyqtSignal(str, int, str)  # stage, percent, message
     finished_ok = pyqtSignal(dict)
     failed = pyqtSignal(str)
+    failed_detail = pyqtSignal(str, str)  # mensagem, traceback (emitido antes de ``failed``)
 
     def __init__(self, app, preset):
         super().__init__()
@@ -44,4 +46,5 @@ class TrainingWorker(QThread):
             self.failed.emit("Treino cancelado pelo utilizador.")
         except Exception as exc:
             logger.exception("Falha no treino científico BIURI")
+            self.failed_detail.emit(str(exc), traceback.format_exc())
             self.failed.emit(str(exc))

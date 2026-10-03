@@ -20,11 +20,17 @@ def build_tree_export_basename(dataset_name, model_name):
     return f"{_sanitize_filename_part(dataset_stem)}{_sanitize_filename_part(model_name)}"
 
 
-def export_tree_png(tree_model, feature_names, class_names, output_base):
-    """Exporta sklearn ou TREPAN histórico sem converter m-of-n para CART."""
+def export_tree_png(tree_model, feature_names, class_names, output_base, fmt='png'):
+    """Exporta sklearn ou TREPAN histórico sem converter m-of-n para CART.
+
+    ``fmt`` aceita ``png`` (omissão), ``svg`` ou ``pdf``; só muda o formato da imagem.
+    """
     import matplotlib.pyplot as plt
 
-    output_path = output_base if output_base.lower().endswith('.png') else f'{output_base}.png'
+    fmt = (fmt or 'png').lower().lstrip('.')
+    if fmt not in ('png', 'svg', 'pdf'):
+        raise ValueError(f"Formato de imagem não suportado: {fmt}")
+    output_path = output_base if output_base.lower().endswith(f'.{fmt}') else f'{output_base}.{fmt}'
     feature_names_list = list(feature_names) if feature_names else None
 
     if hasattr(tree_model, 'root_') and hasattr(tree_model, 'export_text'):
@@ -37,7 +43,7 @@ def export_tree_png(tree_model, feature_names, class_names, output_base):
             adapter.export_tree_image(feature_names_list, class_names, dot_path, open_image=False)
             dot_data = Path(dot_path).read_text(encoding='utf-8')
             rendered = graphviz.Source(dot_data).render(
-                filename=output_base, format='png', cleanup=True
+                filename=output_base, format=fmt, cleanup=True
             )
             return os.path.abspath(rendered)
         except (ImportError, OSError, RuntimeError):

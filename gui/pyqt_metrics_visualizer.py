@@ -76,8 +76,10 @@ class MetricsVisualizer(QWidget):
                        balanced_accuracy=None, macro_f1=None, oracle=None,
                        feature_space=None, canonical=True,
                        fidelity_to_active_oracle=None,
-                       fidelity_to_mlp_original=None):
+                       fidelity_to_mlp_original=None, fidelity_kind='oracle'):
+        # fidelity_kind: 'oracle' | 'agreement' (C4.5 vs MLP, diagnóstico) | None (sem Oracle)
         self.models_data[model_name] = {
+            'fidelity_kind': fidelity_kind,
             'precision': precision,
             'fidelity': fidelity,
             'accuracy': accuracy,
@@ -203,7 +205,7 @@ class MetricsVisualizer(QWidget):
             print(
                 f"  {name}: Precisão Macro={data['precision']:.1f}%, "
                 f"Exatidão(auditoria)={float(data.get('accuracy') or 0):.1f}%, "
-                f"Fidelidad={data['fidelity']:.1f}%"
+                f"Fidelity={data['fidelity']:.1f}%"
             )
 
         precision_order = [
@@ -495,9 +497,11 @@ As fidelidades só são comparadas diretamente quando usam a mesma referência d
                     f"{data['fidelity_to_mlp_original']:.1f}%"
                 )
         else:
-            fidelity_text = f"Fidelidade: {data['fidelity']:.1f}%"
+            from gui.result_presenter import fidelity_label_text
+            kind = data.get('fidelity_kind', 'oracle')
+            fidelity_text = fidelity_label_text(kind, data['fidelity'] if kind else None)
         fidelity_label = QLabel(
-            f"{fidelity_text}  |  Oráculo: {data.get('oracle') or 'n/a'}  |  "
+            f"{fidelity_text}  |  Oracle: {data.get('oracle') or 'n/a'}  |  "
             f"Espaço: {data.get('feature_space') or 'n/a'}"
         )
         fidelity_label.setFont(QFont("Arial", 12))
