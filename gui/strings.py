@@ -201,6 +201,7 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "col.semantic_contribution": "Contribuição semântica", "col.arm": "Braço", "col.runs": "Execuções",
         "col.mean_std": "Média ± desvio", "col.metric": "Métrica", "col.value": "Valor",
         "arm.no_semantics": "Sem semântica", "arm.real_owl": "OWL real", "arm.shuffled_owl": "OWL baralhada",
+        "arm.random_control": "Controlo aleatório (features derivadas aleatórias)",
         "summary.dataset": "Dataset ativo", "summary.owl": "OWL carregada", "summary.build": "Build",
         "summary.mlp": "MLP selecionado", "summary.ontology_valid": "Ontologia validada?",
         "summary.enrichment": "Enriquecimento aceite?", "summary.oracle_original": "Oracle do TREPAN Original",

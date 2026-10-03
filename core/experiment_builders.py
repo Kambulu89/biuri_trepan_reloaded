@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 from core.build_info import get_build_info
 from core.model_cache import compute_semantic_config_hash
 from core.experiment_result import (
-    DatasetInfo, EnrichmentInfo, ExperimentResult, ExperimentState, Measure, Message, ModelCard,
+    ControlRow, DatasetInfo, EnrichmentInfo, ExperimentResult, ExperimentState, Measure, Message, ModelCard,
     OntologyInfo, Provenance, Reason, SemanticFeatureRow, SemanticSplitRow, TreeDiagnostics,
 )
 
@@ -274,9 +274,36 @@ def from_production_report(report: Mapping[str, Any]) -> ExperimentResult:
         enrichment=enrich, models=models, trees=trees,
         semantic_features=semantic_features_from_audit(enrichment),
         semantic_splits=semantic_splits_from_audit(ev.get("semantic_split_audit")),
+        controls=controls_from_report(models_ev, attribution),
         config={k: cfg.get(k) for k in ("max_nodes", "max_depth", "max_queries", "min_sample", "random_state") if k in cfg},
     )
     return result
+
+
+def controls_from_report(models_ev: Optional[Mapping[str, Any]], attribution: Optional[Mapping[str, Any]]) -> List[ControlRow]:
+    """Controlo negativo lado a lado: sem semântica / OWL real / controlo aleatório (teste final, só relatado).
+
+    Só existe quando o gate de atribuição correu. ``random_control`` são as features derivadas aleatórias
+    do próprio gate (não uma OWL baralhada); a precisão não é reportada para esse braço e fica 'não reportada'.
+    """
+    test = (attribution or {}).get("test_attribution")
+    if not attribution or not test:
+        return []
+    models_ev = dict(models_ev or {})
+    rows: List[ControlRow] = []
+    orig, rel = models_ev.get("original"), models_ev.get("reloaded")
+    if orig:
+        rows.append(ControlRow("no_semantics", accuracy=Measure.of(orig.get("accuracy")), fidelity=Measure.of(orig.get("oracle_fidelity")),
+                               nodes=Measure.of(orig.get("nodes"))))
+    if rel:
+        rows.append(ControlRow("real_owl", accuracy=Measure.of(rel.get("accuracy")), fidelity=Measure.of(rel.get("oracle_fidelity")),
+                               nodes=Measure.of(rel.get("nodes"))))
+    ctrls = list(test.get("controls") or [])
+    if ctrls:
+        fid = sum(c.get("oracle_fidelity", 0.0) for c in ctrls) / len(ctrls)
+        rows.append(ControlRow("random_control", accuracy=Measure.na(Reason.NOT_REPORTED), fidelity=Measure.of(fid),
+                               nodes=Measure.na(Reason.NOT_REPORTED), n_runs=len(ctrls)))
+    return rows
 
 
 def reloaded_space_mode(ev: Mapping[str, Any]) -> Optional[str]:

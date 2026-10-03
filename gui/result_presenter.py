@@ -320,7 +320,7 @@ def semantic_splits_table(result: ExperimentResult) -> Table:
 
 
 def controls_table(result: ExperimentResult) -> Table:
-    order = {"no_semantics": 0, "real_owl": 1, "shuffled_owl": 2}
+    order = {"no_semantics": 0, "real_owl": 1, "shuffled_owl": 2, "random_control": 3}
     rows = [[tr(f"arm.{c.arm}") if tr(f"arm.{c.arm}") != f"arm.{c.arm}" else c.arm, format_measure(c.accuracy),
              format_measure(c.fidelity), format_measure(c.nodes, integer=True), str(c.n_runs)]
             for c in sorted(result.controls, key=lambda c: order.get(c.arm, 9))]

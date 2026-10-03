@@ -95,3 +95,15 @@ def test_semantic_tables_are_populated_from_backend_audits(result, report):
     assert any(f.selected for f in result.semantic_features)
     assert len(result.semantic_splits) == len(report["evaluation"]["semantic_split_audit"])
     assert all(r.final_score.available for r in result.semantic_splits)
+
+
+def test_controls_from_report_separates_arms_and_needs_attribution():
+    from core.experiment_builders import controls_from_report
+    models_ev = {"original": {"accuracy": .8, "oracle_fidelity": .9, "nodes": 9},
+                 "reloaded": {"accuracy": .82, "oracle_fidelity": .93, "nodes": 11}}
+    attribution = {"test_attribution": {"controls": [{"oracle_fidelity": .88}, {"oracle_fidelity": .90}]}}
+    rows = {r.arm: r for r in controls_from_report(models_ev, attribution)}
+    assert set(rows) == {"no_semantics", "real_owl", "random_control"}
+    assert rows["real_owl"].fidelity.value == .93 and rows["random_control"].fidelity.value == pytest.approx(.89)
+    assert rows["random_control"].accuracy.reason == Reason.NOT_REPORTED and rows["random_control"].n_runs == 2
+    assert controls_from_report(models_ev, None) == [] and controls_from_report(models_ev, {"status": "x"}) == []
