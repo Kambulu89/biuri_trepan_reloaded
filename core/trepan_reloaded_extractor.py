@@ -1,3 +1,4 @@
+from core.tree_stop_summary import stop_summary_of
 import graphviz
 import logging
 import os
@@ -1156,6 +1157,9 @@ class TrepanReloadedExtractor:
             'semantic_relation_edges': int(np.sum(semantic_relatedness > 0.0) - len(semantic_relatedness)),
             'scientific_semantic_tuning': semantic_tuning,
             'splits': model.split_audit_,
+            'node_audit': list(getattr(model, 'node_audit_', []) or []),
+            'stop_summary': stop_summary_of(model),
+            'semantic_split_audit': list(getattr(model, 'semantic_split_audit_', []) or []),
             'semantic_audit_summary': dict(getattr(model, 'semantic_audit_summary_', {}) or {}),
             'error_region_audit': list(getattr(model, 'error_region_audit_', []) or []),
             'error_focused_refinement': True,
@@ -1512,19 +1516,15 @@ class TrepanReloadedExtractor:
             return 'general'
     
     def _group_by_semantics(self, name):
-        
-        name_lower = name.lower()
-        
-        if any(word in name_lower for word in ['medical', 'health', 'saúde', 'medical']):
-            return 'medical'
-        elif any(word in name_lower for word in ['financial', 'finance', 'money', 'dinheiro']):
-            return 'financial'
-        elif any(word in name_lower for word in ['social', 'society', 'social']):
-            return 'social'
-        elif any(word in name_lower for word in ['technical', 'tech', 'system', 'sistema']):
-            return 'technical'
-        else:
-            return 'general'
+        """Grupo semântico de uma feature SEM ontologia: nenhum.
+
+        Antes adivinhava domínios (medical/financial/social/technical) por palavras no
+        nome da feature. Esse "conhecimento" não vem da ontologia e chegava ao bónus de
+        coesão de grupo do TREPAN. Os grupos reais vêm do grafo OWL
+        (``OntologySemanticGraph.primary_group``) ou dos pais do conceito casado;
+        sem isso a feature fica em ``general``, que o TREPAN ignora.
+        """
+        return 'general'
 
     def _get_ontology_entity_type(self, entity):
         """Tipo OWL: class, datatype_property ou object_property."""

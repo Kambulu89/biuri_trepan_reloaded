@@ -48,6 +48,9 @@ from gui.counterfactual_panel import CounterfactualPanel
 from gui.surrogate_improvement_dialog import SurrogateImprovementDialog
 from gui.metrics_worker import MetricsWorker
 from gui import theme
+from gui.audit_panel import AuditPanel
+from gui.audit_controller import AuditController, dataset_fingerprint_of, progress_text
+from gui.strings import tr
 from core.training_config import (
     get_training_preset, TRAINING_PRESETS, enforce_scientific_preset,
     resolve_trepan_structure_limits, PRODUCTION_TRAINING_PRESET,
@@ -754,9 +757,13 @@ class MetricsComparisonWidget(QWidget):
 
             prec_val = (prec_data.get('precision_macro') if prec_data.get('precision_macro') is not None else prec_data.get('precision') or 0) * 100
             accuracy_val = (prec_data.get('accuracy') or 0) * 100
+            # Fidelity só existe com Oracle (TREPAN). O C4.5 mostra concordância com o MLP (diagnóstico);
+            # MLPs não têm fidelity: nunca se apresenta 0.0% como se fosse um valor medido.
             fid_val = 0.0
-            if fid_key and fidelity.get(fid_key):
-                fid_val = (fidelity[fid_key].get('overall_fidelity') or 0) * 100
+            fid_raw = (fidelity.get(fid_key) or {}).get('overall_fidelity') if fid_key else None
+            if fid_raw is not None:
+                fid_val = fid_raw * 100
+            fid_kind = None if fid_raw is None else ('agreement' if fid_key == 'c45_j48' else 'oracle')
             fid_block = (fidelity.get(fid_key) or {}) if fid_key else {}
 
             print(
@@ -772,6 +779,7 @@ class MetricsComparisonWidget(QWidget):
                 sample_size=n_samples,
                 balanced_accuracy=(prec_data.get('balanced_accuracy') or 0) * 100,
                 macro_f1=(prec_data.get('f1_macro') or 0) * 100,
+                fidelity_kind=fid_kind,
                 oracle=(fidelity.get(fid_key) or {}).get('fidelity_reference') if fid_key else 'rótulo real',
                 feature_space=(fidelity.get(fid_key) or {}).get('feature_space', 'original') if fid_key else 'original',
                 canonical=True,
@@ -851,9 +859,19 @@ class BiuriApp(QMainWindow):
         self._metrics_worker = None
         self._metrics_progress_dialog = None
         self._counterfactual_modules_loaded = False
+        # Camada de auditoria (observabilidade): só lê o estado; nunca recalcula resultados.
+        self.current_seed = 42  # seed fixa usada pelo pipeline da GUI (random_state=42)
+        self.dataset_info = {}
+        self.dataset_fingerprint = None
+        self._last_cache_info = None
+        self._last_training_preset = None
+        self._pending_failure_detail = None
+        self.audit = None
 
         self.setup_ui()
         self.setup_connections()
+        self.audit = AuditController(self, self.audit_panel)
+        self.audit.apply_buttons()
         self._set_status(
             "BIURI traduce redes opacas en árboles legibles. Empiece cargando un ARFF."
         )
@@ -1216,7 +1234,10 @@ class BiuriApp(QMainWindow):
             "📈 Melhorar árvore substituta", "📈", theme.ACTION_IMPROVE, compact=True
         )
         self.btn_export_results = ActionButton(
-            "💾 Exportar resultados", "💾", theme.ACTION_EXPORT, compact=True
+            "💾 " + tr("action.export_results"), "💾", theme.ACTION_EXPORT, compact=True
+        )
+        self.btn_export_tree = ActionButton(
+            "🖼 " + tr("action.export_tree"), "🖼", theme.ACTION_EXPORT, compact=True
         )
 
         for btn in (
@@ -1226,6 +1247,7 @@ class BiuriApp(QMainWindow):
             self.btn_generate_counterfactuals,
             self.btn_improve_surrogate,
             self.btn_export_results,
+            self.btn_export_tree,
         ):
             advanced_layout.addWidget(btn)
 
@@ -1234,7 +1256,8 @@ class BiuriApp(QMainWindow):
         self.btn_natural_explanations.setAccessibleName("Explicaciones en lenguaje natural")
         self.btn_generate_counterfactuals.setAccessibleName("Generar contrafactuales")
         self.btn_improve_surrogate.setAccessibleName("Mejorar árbol sustituto")
-        self.btn_export_results.setAccessibleName("Exportar resultados")
+        self.btn_export_results.setAccessibleName(tr("action.export_results"))
+        self.btn_export_tree.setAccessibleName(tr("action.export_tree"))
         self.advanced_toggle.setAccessibleName("Ferramentas avançadas")
         self.onto_bias_slider.setAccessibleName("Peso de sesgo ontológico")
         self.onto_bias_spin.setAccessibleName("Peso de sesgo ontológico numérico")
@@ -1300,6 +1323,9 @@ class BiuriApp(QMainWindow):
         self.metrics_tab = QWidget()
         self.setup_metrics_tab()
         self.content_tabs.addTab(self.metrics_tab, "📊 Métricas")
+
+        self.audit_panel = AuditPanel()
+        self.content_tabs.addTab(self.audit_panel, "🔍 " + tr("tab.audit"))
 
         self.counterfactual_tab = CounterfactualPanel()
         self.counterfactual_tab.configure(
@@ -1385,6 +1411,7 @@ que la red se vuelve interpretable.
         self.btn_compare_metrics.clicked.connect(self.compare_metrics)
         self.btn_natural_explanations.clicked.connect(self.show_natural_explanations)
         self.btn_export_results.clicked.connect(self.export_results)
+        self.btn_export_tree.clicked.connect(self.export_tree)
         self.btn_generate_counterfactuals.clicked.connect(self.generate_counterfactuals_action)
         self.btn_improve_surrogate.clicked.connect(self.improve_surrogate_action)
         self.counterfactual_tab.generate_requested.connect(
@@ -1544,6 +1571,7 @@ que la red se vuelve interpretable.
             self.trepan.extractor.set_onto_feature_bias_weight(value)
         if self._ontology_matcher is not None:
             self._ontology_matcher.set_onto_feature_bias_weight(value)
+        self._audit_check_stale()
 
     def _on_onto_bias_spin_changed(self, value):
         self._sync_onto_bias_controls_from_value(value)
@@ -2456,6 +2484,37 @@ que la red se vuelve interpretable.
         return augmentation
 
     def load_data_from_file(self, file_path):
+        result = self._load_data_from_file_impl(file_path)
+        self._on_dataset_loaded(file_path)
+        return result
+
+    def _on_dataset_loaded(self, file_path):
+        """Regista identidade do dataset e atualiza o estado (nunca bloqueia o carregamento)."""
+        try:
+            meta = getattr(self, 'arff_meta', None) or {}
+            X, y = self.original_data
+            classes = list(meta.get('classes') or [])
+            self.dataset_info = {
+                'name': meta.get('file_name') or os.path.basename(file_path), 'path': file_path,
+                'rows': int(len(y)), 'features': len(meta.get('original_features') or []),
+                'classes': len(classes), 'class_names': [str(c) for c in classes], 'target': meta.get('target'),
+            }
+            self.dataset_fingerprint = dataset_fingerprint_of(X, y)
+            if self.audit is not None:
+                self.audit.on_data_loaded()
+        except Exception as exc:  # a observabilidade nunca impede o carregamento
+            import logging
+            logging.getLogger("biuri.gui").warning("Registo do dataset falhou: %s", exc)
+
+    def _audit_check_stale(self):
+        if getattr(self, 'audit', None) is not None:
+            try:
+                self.audit.check_stale()
+            except Exception as exc:
+                import logging
+                logging.getLogger("biuri.gui").warning("Verificação de stale falhou: %s", exc)
+
+    def _load_data_from_file_impl(self, file_path):
         
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
@@ -2890,37 +2949,44 @@ Asegúrese de que:
             return
 
         self._training_cancel_flag = False
-        dlg = QProgressDialog("Iniciando entrenamiento...", "Cancelar entrenamiento", 0, 100, self)
-        dlg.setWindowTitle("Entrenamiento BIURI")
+        self._last_training_preset = getattr(preset, 'key', None)
+        self._pending_failure_detail = None
+        self._last_cache_info = None
+        if self.audit is not None:
+            self.audit.on_training_started()
+        # Intervalo (0, 0): indicador de ocupado; não inventamos percentagens.
+        dlg = QProgressDialog(progress_text("init"), tr("progress.cancel"), 0, 0, self)
+        dlg.setWindowTitle(tr("progress.title.training"))
         dlg.setWindowModality(Qt.WindowModality.WindowModal)
         dlg.setMinimumDuration(0)
         dlg.setAutoClose(True)
-        dlg.setValue(0)
         self._training_progress_dialog = dlg
 
         worker = TrainingWorker(self, preset)
         self._training_worker = worker
 
         def on_progress(stage, pct, message):
-            dlg.setValue(max(0, min(100, int(pct))))
-            dlg.setLabelText(message)
+            dlg.setLabelText(progress_text(stage))
 
         def on_cancel():
             self._training_cancel_flag = True
             worker.request_cancel()
-            dlg.setLabelText("Cancelando entrenamiento...")
+            dlg.setLabelText(tr("progress.cancelling"))
 
         dlg.canceled.connect(on_cancel)
         worker.progress.connect(on_progress)
         worker.finished_ok.connect(lambda r: self._on_training_finished(r, dlg))
+        worker.failed_detail.connect(self._store_failure_detail)
         worker.failed.connect(lambda e: self._on_training_failed(e, dlg))
         dlg.show()
         worker.start()
 
     def _on_training_progress(self, stage, pct, message):
         if self._training_progress_dialog is not None:
-            self._training_progress_dialog.setValue(pct)
-            self._training_progress_dialog.setLabelText(message)
+            self._training_progress_dialog.setLabelText(progress_text(stage))
+
+    def _store_failure_detail(self, message, details):
+        self._pending_failure_detail = details
 
     def _on_training_finished(self, result, dlg):
         dlg.close()
@@ -2928,6 +2994,9 @@ Asegúrese de que:
         if result.get('result_text'):
             self.show_results(result['result_text'])
         if result.get('success'):
+            self._refresh_dataset_split_info()
+            if self.audit is not None:
+                self.audit.on_training_finished()
             trees_ready = (
                 self.trepan_original_tree is not None
                 or self.trepan_reloaded_tree is not None
@@ -2945,6 +3014,9 @@ Asegúrese de que:
             if trees_ready:
                 self._unlock_clarity("arbol")
             self._refresh_counterfactual_panel()
+        elif self.audit is not None:
+            self.audit.sm.end()
+            self.audit.apply_buttons()
         perf = result.get('performance_summary')
         if perf and perf.get('stopped_by_timeout'):
             QMessageBox.information(
@@ -2957,10 +3029,42 @@ Asegúrese de que:
     def _on_training_failed(self, error_msg, dlg):
         dlg.close()
         self._training_worker = None
+        details, self._pending_failure_detail = self._pending_failure_detail, None
         if "cancelado" in error_msg.lower():
             self.show_results(f"⚠️ {error_msg}")
+            if self.audit is not None:
+                self.audit.sm.end()
+                self.audit.apply_buttons()
+        elif self.audit is not None:
+            msg = self.audit.on_failure(error_msg, what_key="error.training", where_key="error.training_where",
+                                        action_key="error.action.training", details=details)
+            self._show_structured_error(msg)
+            self.content_tabs.setCurrentWidget(self.audit_panel)
         else:
             QMessageBox.critical(self, "Erro", f"Erro ao treinar o modelo: {error_msg}")
+
+    def _show_structured_error(self, msg):
+        """Diálogo de erro: o que falhou, onde, ação sugerida e ID; traceback em detalhes expansíveis."""
+        box = QMessageBox(self)
+        box.setIcon(QMessageBox.Icon.Critical)
+        box.setWindowTitle(tr("error.title"))
+        box.setText(msg.text)
+        box.setInformativeText(
+            f"{tr('error.where')}: {msg.where or '-'}\n{tr('error.action')}: {msg.action or '-'}\n"
+            f"{tr('error.id')}: {msg.experiment_id or '-'}\n{tr('error.log_hint')}")
+        if msg.details:
+            box.setDetailedText(msg.details)
+        box.exec()
+
+    def _refresh_dataset_split_info(self):
+        """Contagens do split (apenas tamanhos já definidos pelo treino; nada é recalculado)."""
+        split = getattr(self, '_eval_split_original', None) or {}
+        try:
+            if split.get('X_train') is not None and split.get('X_test') is not None:
+                self.dataset_info['train_rows'] = int(len(split['X_train']))
+                self.dataset_info['test_rows'] = int(len(split['X_test']))
+        except Exception:
+            pass
 
     def _has_trained_models_for_cf(self):
         return (
@@ -3688,6 +3792,7 @@ Asegúrese de que:
             message = ""
 
             cache_key = None
+            self._last_cache_info = {'used': False, 'key': None}
             orig_feature_names = self._get_original_feature_names()
             n_orig_features = len(orig_feature_names)
             if preset.use_cache and not has_ontology:
@@ -3711,6 +3816,7 @@ Asegúrese de que:
                     feature_names=orig_feature_names,
                 )
                 if cached is not None:
+                    self._last_cache_info = {'used': True, 'key': cache_key}
                     t_cache = perf.start_stage("MLP Original (cache)")
                     self.trepan.mlp_trainer.model = cached['model']
                     restore_mlp_trainer_state(self.trepan.mlp_trainer, cached['mlp_trainer_state'])
@@ -3761,6 +3867,7 @@ Asegúrese de que:
                     timeout=summary.get('timeout_reached', False),
                 )
                 if preset.use_cache and cache_key:
+                    self._last_cache_info = {'used': False, 'key': cache_key}
                     save_cached_training(cache_key, {
                         'model': model,
                         'X_encoded': X_encoded,
@@ -4597,11 +4704,13 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
             if reply == QMessageBox.StandardButton.No:
                 return
 
-        dlg = QProgressDialog(
-            "Iniciando comparación...", "Cancelar", 0, 100, self
-        )
+        self._pending_failure_detail = None
+        if self.audit is not None:
+            self.audit.sm.begin()
+            self.audit.apply_buttons()
+        dlg = QProgressDialog(progress_text("compare"), tr("progress.cancel"), 0, 0, self)
         dlg.setWindowModality(Qt.WindowModality.WindowModal)
-        dlg.setWindowTitle("Comparando Métricas")
+        dlg.setWindowTitle(tr("progress.title.metrics"))
         dlg.setAutoClose(False)
         dlg.setMinimumDuration(0)
         self._metrics_progress_dialog = dlg
@@ -4610,6 +4719,7 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
         self._metrics_worker = worker
         worker.progress.connect(self._on_metrics_progress)
         worker.finished_ok.connect(lambda r: self._on_metrics_finished(r, dlg))
+        worker.failed_detail.connect(self._store_failure_detail)
         worker.failed.connect(lambda e: self._on_metrics_failed(e, dlg))
         dlg.canceled.connect(worker.request_cancel)
         dlg.show()
@@ -4621,9 +4731,8 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
         dlg = self._metrics_progress_dialog
         if dlg is None:
             return
-        dlg.setValue(pct)
         if self._metrics_progress_dialog is dlg:
-            dlg.setLabelText(message)
+            dlg.setLabelText(progress_text(stage))
 
     def _disconnect_metrics_worker(self):
         worker = self._metrics_worker
@@ -4656,14 +4765,24 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
         self.content_tabs.setCurrentWidget(self.metrics_tab)
         if result.get("result_text"):
             self.show_results(result["result_text"], switch_tab=False)
+        if self.audit is not None:
+            self.audit.on_metrics_finished()
         self._set_status("Comparación completada — pestaña Métricas.")
 
     def _on_metrics_failed(self, error_msg, dlg):
         self._disconnect_metrics_worker()
         dlg.close()
+        details, self._pending_failure_detail = self._pending_failure_detail, None
         if "cancelad" in error_msg.lower():
             self._set_status(error_msg)
             self.show_results(f"⚠ {error_msg}", switch_tab=False)
+            if self.audit is not None:
+                self.audit.sm.end()
+                self.audit.apply_buttons()
+        elif self.audit is not None:
+            msg = self.audit.on_failure(error_msg, what_key="error.comparison", where_key="error.metrics_where",
+                                        action_key="error.action.comparison", details=details)
+            self._show_structured_error(msg)
         else:
             QMessageBox.critical(
                 self,
@@ -5099,6 +5218,9 @@ Use la pestaña Métricas para el detalle visual de fidelidad y precisión.
                 comparison_report_file = os.path.join(
                     directory, f"comparacao_cientifica_{timestamp}.txt"
                 )
+                detailed_report = self.metrics_comparator.generate_comparison_report()
+                if detailed_report is None:
+                    detailed_report = "No fue posible generar informe detallado."
                 with open(comparison_report_file, 'w', encoding='utf-8') as f:
                     f.write(detailed_report)
                 try:
@@ -5120,41 +5242,69 @@ Use la pestaña Métricas para el detalle visual de fidelidad y precisión.
                 except Exception as audit_export_exc:
                     print(f"[WARN] Exportação da evidência de auditoria falhou: {audit_export_exc}")
                 
-                if hasattr(self.trepan.extractor, 'explainer_tree') and self.trepan.extractor.explainer_tree:
-                    try:
-                        meta = self.trepan.mlp_trainer.arff_meta
-                        if meta is None:
-                            feature_names = [f"feature_{i}" for i in range(len(self.trepan.feature_encoders))]
-                            class_names = list(self.trepan.label_encoder.classes_)
-                        else:
-                            feature_names = meta['features']
-                            class_names = list(self.trepan.label_encoder.classes_)
-                        
-                        tree_file = os.path.join(directory, f"arvore_biuri_{timestamp}.png")
-                        self.trepan.extractor.export_tree_image(
-                            feature_names, class_names, output_file=tree_file
-                        )
-                    except Exception as e:
-                        print(f"Error ao exportar árvore: {e}")
-                
+                # Dados estruturados (métricas, relatório semântico, diagnóstico das árvores, manifesto,
+                # configuração). A imagem da árvore é outra ação: "Exportar árvore".
+                structured_note = ""
+                try:
+                    from gui.export_results import export_results as export_structured
+                    from gui.result_builder import build_experiment_result
+                    result = (self.audit.result if self.audit is not None and self.audit.result is not None
+                              else build_experiment_result(self))
+                    target = os.path.join(directory, f"experimento_{result.provenance.experiment_id}_{timestamp}")
+                    export_structured(result, target)
+                    structured_note = "\n" + tr("export.results_done", path=target)
+                    if result.stale:
+                        structured_note += "\n" + tr("export.stale_warning")
+                except Exception as structured_exc:
+                    import logging
+                    logging.getLogger("biuri.gui").exception("Exportação estruturada falhou")
+                    structured_note = f"\n{tr('error.export')} ({structured_exc})"
+
                 if self.loaded_ontology and hasattr(self.trepan.extractor, 'save_domain_knowledge'):
                     try:
                         knowledge_file = os.path.join(directory, f"domain_knowledge_{timestamp}.pkl")
                         if self.trepan.extractor.save_domain_knowledge(knowledge_file):
-                            export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}\n💾 Conocimiento ontológico guardado en: domain_knowledge_{timestamp}.pkl"
+                            export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}\n💾 Conocimiento ontológico guardado en: domain_knowledge_{timestamp}.pkl{structured_note}"
                         else:
-                            export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}"
+                            export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}{structured_note}"
                     except Exception as e:
                         print(f"Error ao exportar conhecimento ontológico: {e}")
-                        export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}"
+                        export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}{structured_note}"
                 else:
-                    export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}"
+                    export_msg = f"✅ ¡Resultados exportados con éxito!\n\n📁 Directorio: {directory}\n📄 Archivos guardados con marca de tiempo: {timestamp}{structured_note}"
                 
                 self.show_results(export_msg)
                 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error al exportar resultados: {str(e)}")
             
+    def export_tree(self):
+        """Exporta a árvore como imagem (PNG/SVG/PDF). Ação distinta de "Exportar resultados"."""
+        tree = self.trepan_reloaded_tree if self.trepan_reloaded_tree is not None else self.trepan_original_tree
+        if tree is None:
+            QMessageBox.information(self, tr("export.tree_title"), tr("export.no_tree"))
+            return
+        path, selected = QFileDialog.getSaveFileName(self, tr("export.tree_title"), "arvore_biuri.png", tr("export.tree_filter"))
+        if not path:
+            return
+        try:
+            from gui.pyqt_tree_controls import export_tree_png
+            fmt = os.path.splitext(path)[1].lstrip(".").lower() or "png"
+            if fmt not in ("png", "svg", "pdf"):
+                fmt = "png"
+            base = os.path.splitext(path)[0]
+            names = self._get_original_feature_names() if tree is self.trepan_original_tree else (
+                self.trepan_reloaded_feature_names or self._get_original_feature_names())
+            classes = list(self.trepan.label_encoder.classes_)
+            saved = export_tree_png(tree, names, classes, base, fmt=fmt)
+            self._set_status(tr("export.tree_done", path=saved))
+        except Exception as exc:
+            if self.audit is not None:
+                self._show_structured_error(self.audit.on_failure(exc, what_key="error.export", where_key="export.tree_title",
+                                                                  action_key="error.action.generic"))
+            else:
+                QMessageBox.critical(self, tr("error.title"), str(exc))
+
     def show_progress(self, message):
         # Waiting as status — do not wipe the results log for a spinner line
         self._set_status(message)

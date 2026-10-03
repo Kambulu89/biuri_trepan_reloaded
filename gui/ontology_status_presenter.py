@@ -24,14 +24,101 @@ def _num(value: Any, ndigits: int = 4) -> str:
         return "N/A"
 
 
+def build_semantic_diagnostics_text(
+    quality_report: Optional[Dict[str, Any]],
+    enrichment_report: Optional[Dict[str, Any]],
+) -> str:
+    """Painel completo: ontologia, features semânticas, validação do MLP e TREPAN.
+
+    Nunca mostra apenas o veredicto: cada decisão vem com a causa e os números.
+    """
+    quality = dict(quality_report or {})
+    rep = dict(enrichment_report or {})
+    metrics = dict(quality.get("metrics") or {})
+    stages = dict(rep.get("stages") or {})
+    state = build_ontology_stage_status(quality_report, {}, rep)
+    reasoner = dict(rep.get("reasoner") or quality.get("reasoner") or {})
+    tbox = ((metrics.get("knowledge_split") or {}).get("tbox")) or {}
+    richness = metrics.get("semantic_richness") or {}
+
+    if reasoner.get("reasoner_used") or reasoner.get("executed"):
+        verdict = "CONSISTENTE" if reasoner.get("consistent") else "INCONSISTENTE"
+        reasoner_line = (
+            f"{verdict} ({_num(reasoner.get('duration_seconds'), 2)} s, "
+            f"{reasoner.get('inferred_axioms_count', 0)} axiomas inferidos)"
+        )
+    else:
+        reasoner_line = "NÃO EXECUTADO — fallback: " + str(reasoner.get("fallback") or "axiomas explícitos")
+
+    lines = [
+        "ONTOLOGIA",
+        f"   Estado estrutural: {state['ontology_structural_status']}",
+        f"   Reasoner: {reasoner_line}",
+        f"   ARFF ↔ OWL: {state['mapped_features']} / {state['total_features']} "
+        f"({_pct(state['feature_coverage'])}) — estado do mapeamento: {state['mapping_status']}",
+        f"   Ambíguos: {metrics.get('ambiguous_matches', 'N/A')} | colisões: {metrics.get('entity_collisions', 'N/A')} "
+        f"| razão genérica: {_pct(metrics.get('generic_match_ratio'))}",
+        f"   TBox: {tbox.get('classes', 'N/A')} classes, {tbox.get('datatype_properties', 'N/A')} propriedades de dados, "
+        f"{tbox.get('object_properties', 'N/A')} de objeto",
+        f"   ABox: {state['abox_status']}",
+        f"   Riqueza semântica: {richness.get('level', 'N/A')}"
+        + (f" ({', '.join(richness.get('knowledge_sources') or []) or 'só taxonomia'})" if richness else ""),
+    ]
+    novelty = stages.get("B_novelty") or {}
+    screening = stages.get("C_screening") or {}
+    if novelty:
+        removed = {k[8:]: v for k, v in novelty.items() if k.startswith("removed_") and v}
+        lines += [
+            "",
+            "FEATURES SEMÂNTICAS",
+            f"   Geradas: {novelty.get('generated', 'N/A')}",
+            "   Removidas: " + (", ".join(f"{k}={v}" for k, v in removed.items()) or "nenhuma"),
+            f"   Retidas (novidade): {novelty.get('retained', 'N/A')} "
+            f"(OWL: {novelty.get('retained_ontology_knowledge', 'N/A')}, "
+            f"estatísticas: {novelty.get('retained_statistical', 'N/A')})",
+            f"   Estáveis: {len(screening.get('stable_features') or [])}",
+            f"   Selecionadas: {len(rep.get('selected_semantic_features') or [])}",
+        ]
+    cmp = stages.get("D_mlp_comparison")
+    if cmp:
+        base, onto, delta = cmp["base"], cmp["with_owl"], cmp["delta"]
+        ci = cmp.get("utility_gain_ci") or [None, None]
+        lines += ["", "VALIDAÇÃO SEMÂNTICA DO MLP", f"   {'':24}{'Base':>10}{'+ OWL':>10}{'Δ':>10}"]
+        for label, key in (("Accuracy", "accuracy"), ("Balanced Accuracy", "balanced_accuracy"),
+                           ("Macro-F1", "macro_f1"), ("Recall macro", "recall_macro"),
+                           ("Recall minoritária", "minority_recall"), ("Precisão macro", "precision_macro")):
+            lines.append(f"   {label:24}{_num(base[key], 3):>10}{_num(onto[key], 3):>10}{_num(delta[key], 3):>10}")
+        lines += [
+            f"   {'Utilidade':24}{_num(base['utility'], 3):>10}{_num(onto['utility'], 3):>10}"
+            f"{_num(cmp['utility_gain'], 3):>10}",
+            f"   Ganho líquido: {_num(cmp['utility_gain'], 4)} "
+            f"(IC {_pct(cmp.get('confidence'))}: [{_num(ci[0], 4)}; {_num(ci[1], 4)}])",
+        ]
+    if rep:
+        lines += ["", f"   Decisão: {rep.get('decision')}", f"   Causa: {rep.get('decision_reason')}"]
+    lines += [
+        "",
+        "SEMÂNTICA PARA O TREPAN",
+        f"   Disponível: {'SIM' if state['semantic_trepan_available'] else 'NÃO'} "
+        f"({state['semantic_trepan_reason']})",
+        f"   Relações inferidas pelo reasoner: {reasoner.get('inferred_axioms_count', 'N/A')}",
+        f"   Conhecimento ontológico explorável: "
+        f"{'SIM' if rep.get('ontology_knowledge_available_for_trepan') else 'NÃO / N/A'}",
+        f"   MLP com OWL aceite: {'SIM' if state['semantic_mlp_accepted'] else 'NÃO'} "
+        "(independente da disponibilidade para o TREPAN)",
+    ]
+    return "\n".join(lines)
+
+
 def build_ontology_status_text(
     quality_report: Optional[Dict[str, Any]],
     acceptance: Optional[Dict[str, Any]],
     *,
     selected_oracle_label: str = "MLP Original",
+    enrichment_report: Optional[Dict[str, Any]] = None,
 ) -> str:
     acc = dict(acceptance or {})
-    state = build_ontology_stage_status(quality_report, acc)
+    state = build_ontology_stage_status(quality_report, acc, enrichment_report)
     mapped = state["mapped_features"]
     total = state["total_features"]
     coverage = state["feature_coverage"]
@@ -93,7 +180,10 @@ def build_ontology_status_text(
     issues = state.get("quality_issues") or []
     if issues:
         lines.append("   Problemas da OWL: " + " | ".join(map(str, issues)))
+    if enrichment_report:
+        lines.append("")
+        lines.append(build_semantic_diagnostics_text(quality_report, enrichment_report))
     return "\n".join(lines)
 
 
-__all__ = ["build_ontology_status_text"]
+__all__ = ["build_ontology_status_text", "build_semantic_diagnostics_text"]

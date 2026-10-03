@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from core.ontology_quality import OntologyQualityGate, entity_kind, ontology_entities
+from core.ontology_semantic_graph import _explicit_entity_bounds
 
 
 class OntologyNotFittedError(RuntimeError):
@@ -36,11 +37,30 @@ class OntologyProcessor:
         *,
         quality_gate: Optional[OntologyQualityGate] = None,
         allow_train_calibrated_bounds: bool = False,
+        drop_linear_redundant: bool = False,
+        linear_redundancy_threshold: float = 0.999,
+        near_duplicate_correlation: float = 0.9999,
+        low_variance_rate: float = 0.999,
+        reasoner_report: Optional[Dict[str, Any]] = None,
     ):
         self.ontology = ontology
         self.matcher = matcher
         self.quality_gate = quality_gate or OntologyQualityGate()
         self.allow_train_calibrated_bounds = bool(allow_train_calibrated_bounds)
+        # Por omissão a redundância linear só é auditada; descartar é opt-in porque
+        # os agregados de grupo são, por construção, combinações lineares.
+        self.drop_linear_redundant = bool(drop_linear_redundant)
+        self.linear_redundancy_threshold = float(linear_redundancy_threshold)
+        # Filtros de novidade: acima destes limiares a feature não traz informação.
+        self.near_duplicate_correlation = float(near_duplicate_correlation)
+        self.low_variance_rate = float(low_variance_rate)
+        self.reasoner_report = dict(reasoner_report or {})
+        self._inferred_subclass_pairs = {
+            (str(pair[0]), str(pair[1]))
+            for pair in self.reasoner_report.get("inferred_subclass_relations", []) or []
+            if len(pair) == 2
+        }
+        self.generation_summary_: Dict[str, Any] = {}
         self.is_fitted_ = False
         self.input_features_: List[str] = []
         self.output_features_: List[str] = []
@@ -122,6 +142,26 @@ class OntologyProcessor:
             "feature_audit": list(self.feature_audit_),
             "total_training_features": transformed.shape[1],
             "dropped_duplicate_or_constant": len(candidates) - len(self.feature_specs_),
+            "generation_summary": dict(self.generation_summary_),
+            "statistical_feature_names": [
+                row["feature"] for row in self.feature_audit_
+                if row["accepted"] and row["knowledge_source"] == "statistical"
+            ],
+            "ontology_knowledge_feature_names": [
+                row["feature"] for row in self.feature_audit_
+                if row["accepted"] and row["knowledge_source"] == "ontology"
+            ],
+            "reasoner_inferred_feature_names": [
+                row["feature"] for row in self.feature_audit_
+                if row["accepted"] and row.get("reasoner_inferred")
+            ],
+            "linear_redundancy_threshold": self.linear_redundancy_threshold,
+            "linear_redundant_features": [
+                row["feature"] for row in self.feature_audit_
+                if row.get("accepted")
+                and row.get("linear_redundancy_r2") is not None
+                and row["linear_redundancy_r2"] >= self.linear_redundancy_threshold
+            ],
         }
         if log:
             self.log_feature_engineering_summary(self.last_engineering_stats)
@@ -360,6 +400,7 @@ class OntologyProcessor:
 
     def _fit_hierarchical_specs(self, train: pd.DataFrame) -> List[Dict[str, Any]]:
         by_name = self._entity_by_name()
+        inferred_parents: set = set()
         parent_columns: Dict[str, List[str]] = defaultdict(list)
         for column, entity_name in self.column_entity_map_.items():
             entity = by_name.get(entity_name)
@@ -380,6 +421,8 @@ class OntologyProcessor:
             for parent in parents:
                 if parent and parent not in ("Thing", "DatatypeProperty", "ObjectProperty"):
                     parent_columns[parent].append(column)
+                    if (entity_name, parent) in self._inferred_subclass_pairs:
+                        inferred_parents.add(parent)
         specs = []
         for parent, columns in parent_columns.items():
             sources = list(dict.fromkeys(columns))
@@ -395,6 +438,7 @@ class OntologyProcessor:
                 "kind": "hierarchical_aggregate",
                 "name": f"{self.ONTO_PREFIX}{parent}_aggregate",
                 "sources": sources,
+                "reasoner_inferred": parent in inferred_parents,
                 "method": "standardized_mean",
                 "centers": {name: float(centers[name]) for name in sources},
                 "scales": {name: float(safe_scales[name]) for name in sources},
@@ -528,6 +572,33 @@ class OntologyProcessor:
                     "owl_entities": [entities["worst"], entities["mean"]],
                     "provenance": "owl_measurement_family_role",
                 })
+            if "mean" in roles and "worst" in roles:
+                specs.append({
+                    "kind": "relational",
+                    "name": f"{self.ONTO_PREFIX}{token}_family_contrast",
+                    "operation": "contrast",
+                    "left": roles["worst"],
+                    "right": roles["mean"],
+                    "sources": [roles["worst"], roles["mean"]],
+                    "family": family,
+                    "roles": ["worst", "mean"],
+                    "owl_entities": [entities["worst"], entities["mean"]],
+                    "provenance": "owl_measurement_family_role",
+                })
+            if "mean" in roles and "worst" in roles and "error" in roles:
+                specs.append({
+                    "kind": "relational",
+                    "name": f"{self.ONTO_PREFIX}{token}_normalized_error",
+                    "operation": "normalized_error",
+                    "left": roles["error"],
+                    "right": roles["mean"],
+                    "denominator": roles["worst"],
+                    "sources": [roles["error"], roles["mean"], roles["worst"]],
+                    "family": family,
+                    "roles": ["error", "mean", "worst"],
+                    "owl_entities": [entities["error"], entities["mean"], entities["worst"]],
+                    "provenance": "owl_measurement_family_role",
+                })
             if "mean" in roles and "error" in roles:
                 specs.append({
                     "kind": "relational",
@@ -563,6 +634,16 @@ class OntologyProcessor:
                     bounds[key] = float(value[0] if isinstance(value, list) else value)
                 except (TypeError, ValueError):
                     pass
+        # Formato OWL padrão: facetas xsd:min/maxInclusive num rdfs:range
+        # (ConstrainedDatatype), já lidas pelo grafo semântico.
+        try:
+            low, high = _explicit_entity_bounds(entity)
+        except Exception:
+            low = high = None
+        if bounds["low"] is None and low is not None:
+            bounds["low"] = float(low)
+        if bounds["high"] is None and high is not None:
+            bounds["high"] = float(high)
         return bounds
 
     def _fit_constraint_specs(self, train: pd.DataFrame) -> List[Dict[str, Any]]:
@@ -678,6 +759,16 @@ class OntologyProcessor:
                     )
                 if op == "ratio":
                     return f"{spec.get('left')} / abs({spec.get('denominator')})"
+                if op == "contrast":
+                    return (
+                        f"({spec.get('left')} - {spec.get('right')}) / "
+                        f"(abs({spec.get('left')}) + abs({spec.get('right')}))"
+                    )
+                if op == "normalized_error":
+                    return (
+                        f"abs({spec.get('left')}) / "
+                        f"(abs({spec.get('right')}) + abs({spec.get('denominator')}))"
+                    )
                 return f"relational:{op}"
             if spec.get("kind") == "constraint":
                 op = ">=" if spec.get("operator") == "ge" else "<="
@@ -716,6 +807,14 @@ class OntologyProcessor:
                 "constant_rate": None,
                 "effect_on_metrics": None,
                 "fold_stability": None,
+                "linear_redundancy_r2": None,
+                # OWL = conhecimento declarado na ontologia; statistical = limiar/valor
+                # aprendido nos dados de treino (não pode ser apresentado como OWL).
+                "knowledge_source": (
+                    "ontology" if str(spec.get("provenance") or "").startswith("owl")
+                    else "statistical"
+                ),
+                "reasoner_inferred": bool(spec.get("reasoner_inferred", False)),
             }
             if spec["name"] in names:
                 audit_row["rejection_reason"] = "name_collision"
@@ -731,6 +830,10 @@ class OntologyProcessor:
             audit_row["constant_rate"] = float(value_counts.max()) if len(value_counts) else 1.0
             if series.nunique(dropna=False) <= 1:
                 audit_row["rejection_reason"] = "constant"
+                self.feature_audit_.append(audit_row)
+                continue
+            if audit_row["constant_rate"] >= self.low_variance_rate:
+                audit_row["rejection_reason"] = "low_variance"
                 self.feature_audit_.append(audit_row)
                 continue
             duplicate = False
@@ -754,7 +857,24 @@ class OntologyProcessor:
                 except Exception:
                     pass
             if not duplicate:
-                accepted.append(dict(spec))
+                near = self._near_duplicate_of(series, existing_names, existing)
+                if near is not None:
+                    audit_row["rejection_reason"] = "near_duplicate"
+                    audit_row["duplicate_of"] = near
+                    self.feature_audit_.append(audit_row)
+                    continue
+            if not duplicate:
+                r2 = self._linear_redundancy(train, spec, series)
+                audit_row["linear_redundancy_r2"] = r2
+                if (
+                    self.drop_linear_redundant
+                    and r2 is not None
+                    and r2 >= self.linear_redundancy_threshold
+                ):
+                    audit_row["rejection_reason"] = "linear_combination_of_sources"
+                    self.feature_audit_.append(audit_row)
+                    continue
+                accepted.append({**spec, "knowledge_source": audit_row["knowledge_source"]})
                 existing.append(series)
                 existing_names.append(spec["name"])
                 names.add(spec["name"])
@@ -764,7 +884,83 @@ class OntologyProcessor:
                 audit_row["rejection_reason"] = "deterministic_duplicate"
                 audit_row["duplicate_of"] = duplicate_of
             self.feature_audit_.append(audit_row)
+        reasons = defaultdict(int)
+        for row in self.feature_audit_:
+            if row.get("rejection_reason"):
+                reasons[row["rejection_reason"]] += 1
+        self.generation_summary_ = {
+            "generated": len(specs),
+            "removed_constant": reasons["constant"],
+            "removed_low_variance": reasons["low_variance"],
+            "removed_duplicate": reasons["deterministic_duplicate"],
+            "removed_near_duplicate": reasons["near_duplicate"],
+            "removed_linear_redundant": reasons["linear_combination_of_sources"],
+            "removed_name_collision": reasons["name_collision"],
+            "removed_derivation_error": sum(
+                n for k, n in reasons.items() if k.startswith("derivation_error")
+            ),
+            "retained": len(accepted),
+            "retained_ontology_knowledge": sum(
+                1 for r in self.feature_audit_ if r["accepted"] and r["knowledge_source"] == "ontology"
+            ),
+            "retained_statistical": sum(
+                1 for r in self.feature_audit_ if r["accepted"] and r["knowledge_source"] == "statistical"
+            ),
+        }
         return accepted
+
+    def _near_duplicate_of(self, series, existing_names, existing) -> Optional[str]:
+        """Nome da feature existente com |correlação| ≥ limiar (quase duplicada)."""
+        try:
+            a = pd.to_numeric(pd.Series(series).reset_index(drop=True), errors="raise").to_numpy(dtype=float)
+        except (TypeError, ValueError):
+            return None
+        if not np.isfinite(a).all() or a.std() <= 0:
+            return None
+        for name, other in zip(existing_names, existing):
+            try:
+                b = pd.to_numeric(pd.Series(other).reset_index(drop=True), errors="raise").to_numpy(dtype=float)
+            except (TypeError, ValueError):
+                continue
+            if len(b) != len(a) or not np.isfinite(b).all() or b.std() <= 0:
+                continue
+            corr = abs(float(np.corrcoef(a, b)[0, 1]))
+            if np.isfinite(corr) and corr >= self.near_duplicate_correlation:
+                return str(name)
+        return None
+
+    def _linear_redundancy(
+        self, train: pd.DataFrame, spec: Dict[str, Any], series: pd.Series
+    ) -> Optional[float]:
+        """R² da feature derivada contra as suas fontes (regressão linear com intercepto).
+
+        Só faz sentido para agregados e relações numéricas; restrições e grupos
+        categóricos são não lineares por natureza e devolvem ``None``. Usa apenas
+        o treino. R² ≈ 1 significa que a feature não traz informação nova a um
+        modelo linear.
+        """
+        if spec.get("kind") not in {"hierarchical_aggregate", "relational"}:
+            return None
+        sources = [str(c) for c in (spec.get("sources") or []) if c in train.columns]
+        if not sources:
+            return None
+        try:
+            design = train[sources].apply(pd.to_numeric, errors="raise").to_numpy(dtype=float)
+            target = pd.to_numeric(pd.Series(series).reset_index(drop=True), errors="raise").to_numpy(dtype=float)
+        except (TypeError, ValueError):
+            return None
+        keep = np.isfinite(design).all(axis=1) & np.isfinite(target)
+        if keep.sum() <= len(sources) + 1:
+            return None
+        design, target = design[keep], target[keep]
+        total = float(((target - target.mean()) ** 2).sum())
+        if total <= 0.0:
+            return None
+        coef, *_ = np.linalg.lstsq(
+            np.column_stack([np.ones(len(design)), design]), target, rcond=None
+        )
+        residual = target - np.column_stack([np.ones(len(design)), design]) @ coef
+        return float(max(0.0, 1.0 - float((residual ** 2).sum()) / total))
 
     def _apply_spec(self, frame: pd.DataFrame, spec: Dict[str, Any]) -> pd.Series:
         kind = spec["kind"]
@@ -816,6 +1012,10 @@ class OntologyProcessor:
             if operation == "ratio":
                 denom = denominator.abs().clip(lower=1e-12)
                 return left / denom
+            if operation == "contrast":
+                return (left - right) / (left.abs() + right.abs()).clip(lower=1e-12)
+            if operation == "normalized_error":
+                return left.abs() / (right.abs() + denominator.abs()).clip(lower=1e-12)
             raise OntologySchemaError(
                 f"Operação relacional desconhecida em {spec['name']}: {operation}"
             )

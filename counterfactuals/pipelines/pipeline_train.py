@@ -31,6 +31,8 @@ from sklearn.metrics import accuracy_score
 from counterfactuals.dataset_config import get_dataset_config, ALL_DATASETS
 from counterfactuals._paths import experiment_dir, models_dir, ensure_dirs
 
+BASE_SEED = 42  # mesma semente base de pipeline_improve.py
+
 # ============================================================================
 # Configuración de Datasets — ver counterfactuals/dataset_config.py
 # ============================================================================

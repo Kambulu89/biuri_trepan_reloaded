@@ -1,0 +1,211 @@
+{
+  "summary": {
+    "dataset": "iris",
+    "n_seeds": 6,
+    "controls_per_seed": 4,
+    "mean_gain_real_vs_original": -0.013176638176638203,
+    "mean_attributable_to_ontology": -0.0023148148148148064,
+    "attributable_ci95": [
+      -0.00694444444444442,
+      0.0
+    ],
+    "seeds_attributable_positive": 0,
+    "seeds_attributable_negative": 1,
+    "controls_ge_real_total": 24,
+    "controls_total": 24
+  },
+  "runs": [
+    {
+      "seed": 1,
+      "ba_original": 0.9743589743589745,
+      "ba_reloaded_real": 0.9743589743589745,
+      "ba_reloaded_shuffled": [
+        0.9743589743589745,
+        0.9743589743589745,
+        0.9743589743589745,
+        0.9743589743589745
+      ],
+      "fid_original": 0.9736842105263158,
+      "fid_reloaded_real": 0.9210526315789473,
+      "fid_reloaded_shuffled": [
+        0.9210526315789473,
+        0.9210526315789473,
+        0.9210526315789473,
+        0.9210526315789473
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 0.6666666666666666,
+      "real_decision_impact": 0.3333333333333333,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": 0.0,
+      "gain_shuffled_mean": 0.0,
+      "attributable": 0.0,
+      "controls_ge_real": 4
+    },
+    {
+      "seed": 2,
+      "ba_original": 1.0,
+      "ba_reloaded_real": 1.0,
+      "ba_reloaded_shuffled": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "fid_original": 1.0,
+      "fid_reloaded_real": 1.0,
+      "fid_reloaded_shuffled": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 0.8333333333333334,
+      "real_decision_impact": 0.5,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": 0.0,
+      "gain_shuffled_mean": 0.0,
+      "attributable": 0.0,
+      "controls_ge_real": 4
+    },
+    {
+      "seed": 3,
+      "ba_original": 0.9188034188034188,
+      "ba_reloaded_real": 0.9188034188034188,
+      "ba_reloaded_shuffled": [
+        0.9188034188034188,
+        0.9188034188034188,
+        0.9188034188034188,
+        0.9188034188034188
+      ],
+      "fid_original": 0.9736842105263158,
+      "fid_reloaded_real": 0.9736842105263158,
+      "fid_reloaded_shuffled": [
+        0.9736842105263158,
+        0.9736842105263158,
+        0.9736842105263158,
+        0.9736842105263158
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 0.6,
+      "real_decision_impact": 0.6,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": 0.0,
+      "gain_shuffled_mean": 0.0,
+      "attributable": 0.0,
+      "controls_ge_real": 4
+    },
+    {
+      "seed": 4,
+      "ba_original": 0.9722222222222222,
+      "ba_reloaded_real": 0.9188034188034188,
+      "ba_reloaded_shuffled": [
+        0.9465811965811964,
+        0.9465811965811964,
+        0.9188034188034188,
+        0.9188034188034188
+      ],
+      "fid_original": 0.9736842105263158,
+      "fid_reloaded_real": 0.9736842105263158,
+      "fid_reloaded_shuffled": [
+        1.0,
+        1.0,
+        0.9736842105263158,
+        0.9736842105263158
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 0.8333333333333334,
+      "real_decision_impact": 0.6666666666666666,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": -0.05341880341880345,
+      "gain_shuffled_mean": -0.03952991452991461,
+      "attributable": -0.01388888888888884,
+      "controls_ge_real": 4
+    },
+    {
+      "seed": 5,
+      "ba_original": 0.9487179487179488,
+      "ba_reloaded_real": 0.923076923076923,
+      "ba_reloaded_shuffled": [
+        0.923076923076923,
+        0.923076923076923,
+        0.923076923076923,
+        0.923076923076923
+      ],
+      "fid_original": 1.0,
+      "fid_reloaded_real": 0.9736842105263158,
+      "fid_reloaded_shuffled": [
+        0.9736842105263158,
+        0.9736842105263158,
+        0.9736842105263158,
+        0.9736842105263158
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 0.8333333333333334,
+      "real_decision_impact": 0.8333333333333334,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": -0.025641025641025772,
+      "gain_shuffled_mean": -0.025641025641025772,
+      "attributable": 0.0,
+      "controls_ge_real": 4
+    },
+    {
+      "seed": 6,
+      "ba_original": 0.923076923076923,
+      "ba_reloaded_real": 0.923076923076923,
+      "ba_reloaded_shuffled": [
+        0.923076923076923,
+        0.923076923076923,
+        0.923076923076923,
+        0.923076923076923
+      ],
+      "fid_original": 0.9473684210526315,
+      "fid_reloaded_real": 0.9473684210526315,
+      "fid_reloaded_shuffled": [
+        0.9473684210526315,
+        0.9473684210526315,
+        0.9473684210526315,
+        0.9473684210526315
+      ],
+      "real_mirror_applied": false,
+      "real_usage_rate": 1.0,
+      "real_decision_impact": 0.8333333333333334,
+      "shuffled_mirror_applied": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "gain_real": 0.0,
+      "gain_shuffled_mean": 0.0,
+      "attributable": 0.0,
+      "controls_ge_real": 4
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import importlib
 import os
 from pathlib import Path
 import shutil
+import time
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Dict, List, Mapping, Sequence
 
@@ -28,9 +29,55 @@ class ReasonerReport:
     error_type: str | None = None
     java_executable: str | None = None
     user_message: str | None = None
+    # Observabilidade (V9.3): distingue raciocínio explícito de inferido.
+    reasoner_used: bool = False
+    reasoning_mode: str = "explicit_axioms_only"
+    fallback: str | None = None
+    duration_seconds: float | None = None
+    inferred_axioms_count: int = 0
+    inferred_subclass_relations: List[List[str]] = field(default_factory=list)
+    inferred_equivalences: List[List[str]] = field(default_factory=list)
+    inferred_individual_types: List[List[str]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+def _hierarchy_snapshot(ontology) -> Dict[str, set]:
+    """Axiomas de classes/indivíduos visíveis antes/depois do reasoner."""
+    snapshot: Dict[str, set] = {"subclass": set(), "equivalent": set(), "types": set()}
+    try:
+        classes = list(ontology.classes())
+    except Exception:
+        classes = []
+    class_set = set(classes)
+    for cls in classes:
+        name = getattr(cls, "name", str(cls))
+        for parent in getattr(cls, "is_a", []) or []:
+            if parent in class_set:
+                snapshot["subclass"].add((name, getattr(parent, "name", str(parent))))
+        for other in getattr(cls, "equivalent_to", []) or []:
+            if other in class_set:
+                snapshot["equivalent"].add(tuple(sorted((name, getattr(other, "name", str(other))))))
+    try:
+        individuals = list(ontology.individuals())
+    except Exception:
+        individuals = []
+    for individual in individuals:
+        for typ in getattr(individual, "is_a", []) or []:
+            if typ in class_set:
+                snapshot["types"].add((getattr(individual, "name", str(individual)), getattr(typ, "name", str(typ))))
+    return snapshot
+
+
+def _inferred_since(before: Dict[str, set], after: Dict[str, set], limit: int = 200) -> Dict[str, Any]:
+    new = {key: sorted(after[key] - before[key]) for key in before}
+    return {
+        "inferred_axioms_count": sum(len(values) for values in new.values()),
+        "inferred_subclass_relations": [list(pair) for pair in new["subclass"][:limit]],
+        "inferred_equivalences": [list(pair) for pair in new["equivalent"][:limit]],
+        "inferred_individual_types": [list(pair) for pair in new["types"][:limit]],
+    }
 
 
 def _class_names(values) -> List[str]:
@@ -207,10 +254,13 @@ def run_owl_reasoner(
                 error_type="java_not_found",
                 java_executable=None,
                 user_message=message,
+                fallback="explicit_axioms_only",
             ).to_dict()
 
         from owlready2 import Nothing, sync_reasoner, sync_reasoner_pellet
 
+        before = _hierarchy_snapshot(ontology)
+        started = time.perf_counter()
         if requested == "pellet":
             sync_reasoner_pellet(
                 [ontology],
@@ -224,6 +274,8 @@ def run_owl_reasoner(
                 infer_property_values=infer_property_values,
                 debug=debug,
             )
+        duration = time.perf_counter() - started
+        inferred = _inferred_since(before, _hierarchy_snapshot(ontology))
         inconsistent = []
         try:
             inconsistent = list(ontology.world.inconsistent_classes())
@@ -254,6 +306,10 @@ def run_owl_reasoner(
             inconsistent_classes=inconsistent_names,
             inferred_object_properties=bool(infer_property_values),
             java_executable=java_executable,
+            reasoner_used=True,
+            reasoning_mode="inferred",
+            duration_seconds=float(duration),
+            **inferred,
         ).to_dict()
     except Exception as exc:
         is_missing_java = isinstance(exc, FileNotFoundError)
@@ -265,6 +321,7 @@ def run_owl_reasoner(
             error=f"{type(exc).__name__}: {exc}",
             error_type="java_not_found" if is_missing_java else "reasoner_failed",
             java_executable=locals().get("java_executable"),
+            fallback="explicit_axioms_only",
             user_message=java_required_message() if is_missing_java else (
                 "O reasoner OWL DL falhou. A ontologia não foi ativada; "
                 "verifique a sintaxe OWL, a memória disponível e a instalação Java."

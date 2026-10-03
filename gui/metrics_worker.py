@@ -1,13 +1,19 @@
 """Background worker for metrics comparison — keeps the UI responsive."""
 from __future__ import annotations
 
+import logging
+import traceback
+
 from PyQt6.QtCore import QThread, pyqtSignal
+
+logger = logging.getLogger(__name__)
 
 
 class MetricsWorker(QThread):
     progress = pyqtSignal(str, int, str)  # stage, percent, message
     finished_ok = pyqtSignal(dict)
     failed = pyqtSignal(str)
+    failed_detail = pyqtSignal(str, str)  # mensagem, traceback (emitido antes de ``failed``)
 
     def __init__(self, app, X, y):
         super().__init__()
@@ -40,4 +46,6 @@ class MetricsWorker(QThread):
         except InterruptedError:
             self.failed.emit("Comparación cancelada por el usuario.")
         except Exception as exc:
+            logger.exception("Falha na comparação de métricas")
+            self.failed_detail.emit(str(exc), traceback.format_exc())
             self.failed.emit(str(exc))

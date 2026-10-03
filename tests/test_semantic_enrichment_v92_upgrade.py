@@ -81,7 +81,10 @@ def test_hierarchical_aggregate_is_train_standardized_and_relations_are_owl_driv
     proc, frame = _processor_and_frame()
     stats = proc.last_engineering_stats
     assert stats["hierarchical_features"] >= 1
-    assert stats["relational_features"] == 6
+    # 2 famílias x (diferença, delta relativo, rácio de erro, contraste, erro normalizado)
+    assert stats["relational_features"] == 10
+    assert "onto_radius_family_contrast" in stats["relational_names"]
+    assert "onto_radius_normalized_error" in stats["relational_names"]
     assert "onto_radius_worst_minus_mean" in stats["relational_names"]
     assert "onto_radius_relative_worst_delta" in stats["relational_names"]
     assert "onto_radius_error_ratio" in stats["relational_names"]

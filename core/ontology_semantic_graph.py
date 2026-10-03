@@ -120,6 +120,8 @@ class OntologySemanticGraph:
     parents: Dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
     domains: Dict[str, Set[str]] = field(default_factory=lambda: defaultdict(set))
     entity_bounds: Dict[str, Tuple[Optional[float], Optional[float]]] = field(default_factory=dict)
+    # Entidades de topo OWL/RDF(S)/XSD que não definem grupos semânticos.
+    builtin_nodes: Set[str] = field(default_factory=set)
     integer_entities: Set[str] = field(default_factory=set)
     source_path: Optional[str] = None
     load_error: Optional[str] = None
@@ -217,7 +219,9 @@ class OntologySemanticGraph:
                     tgt = _name(target)
                     if not tgt or tgt == src_name:
                         continue
-                    if not _is_builtin_entity(target):
+                    if _is_builtin_entity(target):
+                        graph.builtin_nodes.add(tgt)
+                    else:
                         if relation == "subsumption":
                             graph.parents[src_name].add(tgt)
                         elif relation == "domain":
@@ -415,8 +419,14 @@ class OntologySemanticGraph:
         for feature, entity in self.feature_to_entity.items():
             candidates = []
             for neighbor in sorted(self.edges.get(entity, set())):
+                # O ``range`` aponta para um tipo de dados (ex. float) e as entidades de
+                # topo W3C (owl:Thing, DatatypeProperty) não distinguem nada: usá-los fazia
+                # todas as features do mesmo tipo partilharem o "grupo" e receberem coesão
+                # sem relação real. Superclasses e superpropriedades continuam a valer.
+                if neighbor in self.builtin_nodes:
+                    continue
                 rels = self.edge_types.get((entity, neighbor), set())
-                if rels & {"subsumption", "domain", "range", "equivalent"}:
+                if rels & {"subsumption", "domain", "equivalent"}:
                     candidates.append(neighbor)
             groups[feature] = candidates or [entity]
         self.feature_groups = groups

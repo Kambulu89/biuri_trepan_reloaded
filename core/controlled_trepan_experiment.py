@@ -28,6 +28,7 @@ from core.evaluation_protocol import (
     classification_metrics,
 )
 from core.trepan_original import TrepanOriginalClassifier
+from core.tree_stop_summary import stop_summary_of
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
 
 
@@ -223,6 +224,64 @@ def oracle_health_gate(
         "test_used": False,
     }
 
+def fit_reloaded_arm(
+    X,
+    *,
+    oracle,
+    feature_names: Sequence[str],
+    config: ControlledTrepanConfig,
+    semantic_feature_weights=None,
+    semantic_feature_groups=None,
+    semantic_relatedness_matrix=None,
+    query_projector: Optional[Callable[[np.ndarray], np.ndarray]] = None,
+    ontology_graph=None,
+    semantic_feature_entities=None,
+) -> TrepanReloadedClassifier:
+    """Ajusta SÓ o braço Reloaded (mesma construção usada no par controlado).
+
+    Permite treinar vários Reloaded (real vs controlos) sem treinar o Original de cada vez.
+    """
+    X = np.asarray(X, dtype=float)
+    common = config.common_tree_kwargs()
+    if semantic_feature_weights is None:
+        semantic_feature_weights = np.ones(X.shape[1], dtype=float)
+    return TrepanReloadedClassifier(
+        **common,
+        semantic_gain_strength=float(config.semantic_gain_strength),
+        semantic_group_strength=float(config.semantic_group_strength),
+        semantic_candidate_budget=int(config.semantic_candidate_budget),
+        semantic_relation_threshold=float(config.semantic_relation_threshold),
+        semantic_active_query_fraction=float(config.semantic_active_query_fraction),
+        semantic_active_pool_multiplier=int(config.semantic_active_pool_multiplier),
+        error_focused_refinement=bool(config.error_focused_refinement),
+        error_focus_min_disagreement=float(config.error_focus_min_disagreement),
+        error_focus_strength=float(config.error_focus_strength),
+        error_focus_semantic_weight=float(config.error_focus_semantic_weight),
+        error_focus_uncertainty_weight=float(config.error_focus_uncertainty_weight),
+        error_focus_min_local_fidelity_gain=float(config.error_focus_min_local_fidelity_gain),
+        error_focus_min_real_fidelity_gain=float(config.error_focus_min_real_fidelity_gain),
+        error_focus_anchor_k=int(config.error_focus_anchor_k),
+        error_focus_top_k=int(config.error_focus_top_k),
+        error_focus_min_regions=int(config.error_focus_min_regions),
+        mirror_when_no_semantic_effect=bool(config.mirror_when_no_semantic_effect),
+        alpha=float(config.alpha),
+        beta=float(config.beta),
+        gain_criterion=str(config.gain_criterion),
+        semantic_query_projection=bool(config.semantic_query_projection),
+        error_focus_fidelity_tolerance=float(config.error_focus_fidelity_tolerance),
+    ).fit(
+        X,
+        oracle=oracle,
+        feature_names=[str(v) for v in feature_names],
+        semantic_feature_weights=semantic_feature_weights,
+        semantic_feature_groups=semantic_feature_groups,
+        semantic_relatedness_matrix=semantic_relatedness_matrix,
+        query_projector=query_projector,
+        ontology_graph=ontology_graph,
+        semantic_feature_entities=semantic_feature_entities,
+    )
+
+
 def fit_controlled_trepan_pair(
     X_train,
     y_train_real,
@@ -239,6 +298,7 @@ def fit_controlled_trepan_pair(
     query_projector: Optional[Callable[[np.ndarray], np.ndarray]] = None,
     run_id: str = "controlled_trepan_pair",
     ontology_graph=None,
+    semantic_feature_entities=None,
 ) -> ControlledTrepanPair:
     """Ajusta os dois braços sem aceitar qualquer conjunto de teste.
 
@@ -293,39 +353,13 @@ def fit_controlled_trepan_pair(
     if semantic_feature_weights is None:
         semantic_feature_weights = np.ones(X_rel.shape[1], dtype=float)
 
-    reloaded = TrepanReloadedClassifier(
-        **common,
-        semantic_gain_strength=float(config.semantic_gain_strength),
-        semantic_group_strength=float(config.semantic_group_strength),
-        semantic_candidate_budget=int(config.semantic_candidate_budget),
-        semantic_relation_threshold=float(config.semantic_relation_threshold),
-        semantic_active_query_fraction=float(config.semantic_active_query_fraction),
-        semantic_active_pool_multiplier=int(config.semantic_active_pool_multiplier),
-        error_focused_refinement=bool(config.error_focused_refinement),
-        error_focus_min_disagreement=float(config.error_focus_min_disagreement),
-        error_focus_strength=float(config.error_focus_strength),
-        error_focus_semantic_weight=float(config.error_focus_semantic_weight),
-        error_focus_uncertainty_weight=float(config.error_focus_uncertainty_weight),
-        error_focus_min_local_fidelity_gain=float(config.error_focus_min_local_fidelity_gain),
-        error_focus_min_real_fidelity_gain=float(config.error_focus_min_real_fidelity_gain),
-        error_focus_anchor_k=int(config.error_focus_anchor_k),
-        error_focus_top_k=int(config.error_focus_top_k),
-        error_focus_min_regions=int(config.error_focus_min_regions),
-        mirror_when_no_semantic_effect=bool(config.mirror_when_no_semantic_effect),
-        alpha=float(config.alpha),
-        beta=float(config.beta),
-        gain_criterion=str(config.gain_criterion),
-        semantic_query_projection=bool(config.semantic_query_projection),
-        error_focus_fidelity_tolerance=float(config.error_focus_fidelity_tolerance),
-    ).fit(
-        X_rel,
-        oracle=reloaded_oracle,
-        feature_names=rel_names,
+    reloaded = fit_reloaded_arm(
+        X_rel, oracle=reloaded_oracle, feature_names=rel_names, config=config,
         semantic_feature_weights=semantic_feature_weights,
         semantic_feature_groups=semantic_feature_groups,
         semantic_relatedness_matrix=semantic_relatedness_matrix,
-        query_projector=query_projector,
-        ontology_graph=ontology_graph,
+        query_projector=query_projector, ontology_graph=ontology_graph,
+        semantic_feature_entities=semantic_feature_entities,
     )
 
     # O professor é o mesmo objecto lógico; no braço enriquecido pode existir
@@ -457,6 +491,11 @@ def evaluate_controlled_trepan_pair(
         "semantic_audit": semantic_audit,
         "semantic_split_audit": list(getattr(pair.reloaded, "semantic_split_audit_", []) or []),
         "error_region_audit": list(getattr(pair.reloaded, "error_region_audit_", []) or []),
+        # Porque cada árvore parou (observabilidade; chave separada para não tocar nas métricas).
+        "tree_diagnostics": {
+            "original": stop_summary_of(pair.original),
+            "reloaded": stop_summary_of(pair.reloaded),
+        },
     }
 
 
@@ -466,5 +505,5 @@ __all__ = [
     "OriginalOracleProjection",
     "fit_controlled_trepan_pair",
     "evaluate_controlled_trepan_pair",
-    "oracle_health_gate",
+    "oracle_health_gate", "fit_reloaded_arm",
 ]
