@@ -212,6 +212,8 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "summary.fidelity_against": "vs Oracle", "summary.no_result": "Sem resultados: treine o modelo.",
         "value.mlp_original_only": "MLP Original", "value.none_selected": "nenhuma",
         "value.not_loaded": "Não carregada", "value.stump": "árvore pequena",
+        "field.semantic_splits_count": "Splits semânticos", "field.semantic_score_total": "Score semântico total (soma dos bónus reportados)",
+        "field.tuning": "Tuning",
         "mode.hint": "O modo só muda o que é mostrado; nunca os cálculos.",
         "progress.training_onto": "A treinar o MLP Ontológico…", "progress.ontology": "A validar a ontologia…",
         "progress.preparing": "A preparar a experiência…", "progress.auditing": "A calcular métricas e auditoria…",

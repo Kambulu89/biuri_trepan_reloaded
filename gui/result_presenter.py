@@ -185,6 +185,17 @@ def model_card_rows(card: Optional[ModelCard], result: ExperimentResult, mode: s
     for k in COMPLEXITY_KEYS:
         if k in card.complexity:
             rows.append((tr(f"field.{k}"), format_measure(card.complexity[k], integer=True)))
+    if card.key in TREE_KEYS:
+        diag = result.trees.get(card.key)
+        if diag is not None and diag.available:
+            rows.append((tr("field.loop_end"), _loop_end_text(diag)))
+            if diag.m_of_n_splits is not None:
+                rows.append((tr("field.m_of_n"), str(diag.m_of_n_splits)))
+    if card.key == "trepan_reloaded":
+        bonuses = [s.semantic_bonus.value for s in result.semantic_splits if s.semantic_bonus.available]
+        rows.append((tr("field.semantic_splits_count"), str(len(result.semantic_splits))
+                     if result.semantic_splits else na_text(Reason.NO_SEMANTIC_FEATURES)))
+        rows.append((tr("field.semantic_score_total"), f"{sum(bonuses):.3f}" if bonuses else na_text(Reason.NO_SEMANTIC_FEATURES)))
     if card.key == "mlp_original" or mode == SCIENTIFIC:
         rows.append((tr("field.cached"), yes_no(card.cached)))
         if card.hyperparameters and mode == SCIENTIFIC:
@@ -248,6 +259,14 @@ def provenance_text(result: ExperimentResult, model_key: str, metric_key: Option
 
 
 # ---------------------------------------------------------------- árvores (Parte 23-24)
+def _loop_end_text(diag: TreeDiagnostics) -> str:
+    code = diag.loop_end_reason
+    if not code:
+        return tr("misc.none")
+    text = tr("stop." + code)
+    return code if text == "stop." + code else text
+
+
 def tree_diagnostic_rows(diag: Optional[TreeDiagnostics]) -> List[Tuple[str, str]]:
     if diag is None or not diag.available:
         return [(tr("section.diagnostics"), na_text(Reason.TREE_NOT_BUILT))]
@@ -261,7 +280,7 @@ def tree_diagnostic_rows(diag: Optional[TreeDiagnostics]) -> List[Tuple[str, str
             (tr("field.node_budget"), format_measure(diag.node_budget, integer=True)),
             (tr("field.nodes_before"), format_measure(diag.nodes_before_pruning, integer=True)),
             (tr("field.nodes_after"), format_measure(diag.nodes_after_pruning, integer=True)),
-            (tr("field.loop_end"), (tr("stop." + diag.loop_end_reason) if diag.loop_end_reason and tr("stop." + diag.loop_end_reason) != "stop." + diag.loop_end_reason else format_optional(diag.loop_end_reason))),
+            (tr("field.loop_end"), _loop_end_text(diag)),
             (tr("field.stop_reasons"), reasons or tr("misc.none"))]
     if diag.m_of_n_splits is not None:
         rows.append((tr("field.m_of_n"), str(diag.m_of_n_splits)))

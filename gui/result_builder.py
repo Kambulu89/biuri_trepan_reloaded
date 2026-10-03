@@ -85,6 +85,35 @@ def _legacy_enrichment(acceptance: Optional[Mapping[str, Any]]):
     return out
 
 
+def _counterfactual_summary(app) -> Optional[Dict[str, Any]]:
+    """Presença/tamanho dos resultados contrafactuais já gerados (sem os recalcular)."""
+    out: Dict[str, Any] = {}
+    for name in ("cf_result", "cf_interactive_result", "cf_global_result", "cf_tree_result", "cf_transfer_result",
+                 "cf_improve_result"):
+        value = getattr(app, name, None)
+        if value is None:
+            continue
+        entry: Dict[str, Any] = {"available": True, "type": type(value).__name__}
+        try:
+            entry["n"] = len(value)
+        except TypeError:
+            pass
+        out[name] = entry
+    return out or None
+
+
+def _mlp_hyperparameters(app) -> Dict[str, Any]:
+    """Tuning reportado pelo treino do MLP (apenas leitura)."""
+    meta = getattr(getattr(getattr(app, "trepan", None), "mlp_trainer", None), "arff_meta", None) or {}
+    opt = meta.get("mlp_optimization") or {}
+    out: Dict[str, Any] = {}
+    if opt.get("method"):
+        out["method"] = opt["method"]
+    for k, v in (opt.get("best_params") or {}).items():
+        out[k] = v
+    return out
+
+
 def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: Optional[str] = None,
                             previous: Optional[ExperimentResult] = None) -> ExperimentResult:
     """Constrói o ``ExperimentResult`` a partir do estado atual da aplicação."""
@@ -137,7 +166,8 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
         key="mlp_original", status="AVAILABLE" if trained else "NOT_AVAILABLE",
         status_reason=None if trained else Reason.NOT_TRAINED,
         metrics=_block_metrics(mlp_block, Reason.NOT_TRAINED if not trained else Reason.COMPARISON_NOT_RUN),
-        evaluation_samples=n_test, cached=prov.cache_used, cache_key=prov.cache_key, fidelity=Measure.na(Reason.NO_ORACLE))
+        evaluation_samples=n_test, cached=prov.cache_used, cache_key=prov.cache_key, fidelity=Measure.na(Reason.NO_ORACLE),
+        hyperparameters=_mlp_hyperparameters(app))
     onto_block = precision.get("mlp_ontological")
     if onto_block:
         models["mlp_ontological"] = ModelCard(key="mlp_ontological", status="ACCEPTED", metrics=_block_metrics(onto_block, Reason.NOT_REPORTED),
@@ -194,7 +224,7 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
     result = ExperimentResult(
         state=state, provenance=prov, dataset=dataset, ontology=ontology, enrichment=enrichment, models=models, trees=trees,
         semantic_features=semantic_features_from_audit(enr_report), semantic_splits=semantic_splits_from_audit(split_rows),
-        config=cfg)
+        config=cfg, counterfactual=_counterfactual_summary(app))
     if previous is not None:
         result.messages = list(previous.messages)
     return result

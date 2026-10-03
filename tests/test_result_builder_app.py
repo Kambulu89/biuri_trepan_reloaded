@@ -89,3 +89,12 @@ def test_builder_does_not_mutate_app_state():
     before = json.dumps(comparison, sort_keys=True)
     build_experiment_result(app)
     assert json.dumps(comparison, sort_keys=True) == before
+
+
+def test_counterfactual_summary_and_mlp_tuning_are_read_only_views():
+    trainer = SimpleNamespace(arff_meta={"mlp_optimization": {"method": "optuna", "best_params": {"hidden": 32}}})
+    app = _app(mlp_model=object(), trepan=SimpleNamespace(mlp_trainer=trainer), cf_result=[1, 2, 3])
+    r = build_experiment_result(app)
+    assert r.counterfactual == {"cf_result": {"available": True, "type": "list", "n": 3}}
+    assert r.models["mlp_original"].hyperparameters == {"method": "optuna", "hidden": 32}
+    assert build_experiment_result(_app()).counterfactual is None

@@ -216,3 +216,15 @@ def test_presenter_does_not_mutate_result():
     before = json.dumps(r.to_dict(), sort_keys=True, default=str)
     rp.summary_rows(r); rp.metrics_tables(r); rp.enrichment_rows(r); rp.render_text(r, rp.SCIENTIFIC)
     assert json.dumps(r.to_dict(), sort_keys=True, default=str) == before
+
+
+def test_reloaded_card_shows_semantic_totals_and_stop_reason():
+    r = make_result(semantic_splits=[
+        SemanticSplitRow(node=1, feature="f", semantic_bonus=Measure.of(.05)),
+        SemanticSplitRow(node=2, feature="g", semantic_bonus=Measure.of(.10))])
+    rows = dict(rp.model_card_rows(r.models["trepan_reloaded"], r))
+    assert rows["Splits semânticos"] == "2" and rows["Score semântico total (soma dos bónus reportados)"] == "0.150"
+    orig = dict(rp.model_card_rows(r.models["trepan_original"], r))
+    assert "orçamento de queries" in orig["Motivo de paragem global"]
+    r2 = make_result()
+    assert dict(rp.model_card_rows(r2.models["trepan_reloaded"], r2))["Splits semânticos"].startswith("Indisponível")
