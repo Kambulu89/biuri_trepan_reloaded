@@ -89,6 +89,17 @@ def explain_decision(result: ExperimentResult) -> str:
     return " ".join(parts) if len(parts) == 1 else f"{parts[0]} ({parts[1]})"
 
 
+def _reason_text(code: Optional[str]) -> str:
+    """Texto humano para um código de decisão/razão; cai para o próprio código se desconhecido."""
+    if not code:
+        return tr("misc.none")
+    for prefix in ("decision.", "reason."):
+        text = tr(prefix + code)
+        if text != prefix + code:
+            return text
+    return str(code)
+
+
 def _oracle_text(card: Optional[ModelCard]) -> str:
     if card is None:
         return na_text(Reason.TREE_NOT_BUILT)
@@ -171,12 +182,16 @@ def enrichment_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
 def model_card_rows(card: Optional[ModelCard], result: ExperimentResult, mode: str = BASIC) -> List[Tuple[str, str]]:
     if card is None:
         return [(tr("field.status"), na_text(Reason.NOT_TRAINED))]
-    rows = [(tr("field.status"), status_text(card.status) + (f" — {card.status_reason}" if card.status_reason else ""))]
+    rows = [(tr("field.status"), status_text(card.status) + (f" — {_reason_text(card.status_reason)}" if card.status_reason else ""))]
     if card.key in TREE_KEYS or card.oracle or card.key == "c45":
         rows.append((tr("field.oracle"), _oracle_text(card)))
     for k in PREDICTIVE_METRICS:
         if k in card.metrics:
             rows.append((term(k), format_measure(card.metrics[k])))
+        elif card.key.startswith("mlp") or card.key == "c45":
+            # nunca silencioso: o valor em falta aparece com a razão (e nunca com o valor do MLP Original)
+            missing = Reason.TEACHER_REJECTED if card.key == "mlp_ontological" else Reason.NOT_TRAINED
+            rows.append((term(k), na_text(missing)))
     if card.key == "c45":
         rows.append((term("fidelity"), na_text(Reason.NO_ORACLE)))
         rows.append((tr("field.agreement"), format_measure(card.agreement_with_mlp)))

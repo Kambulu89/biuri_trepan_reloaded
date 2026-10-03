@@ -228,3 +228,13 @@ def test_reloaded_card_shows_semantic_totals_and_stop_reason():
     assert "orçamento de queries" in orig["Motivo de paragem global"]
     r2 = make_result()
     assert dict(rp.model_card_rows(r2.models["trepan_reloaded"], r2))["Splits semânticos"].startswith("Indisponível")
+
+
+def test_rejected_card_explains_in_human_words_and_lists_metrics_as_na():
+    r = make_result(rejected=True)
+    rows = dict(rp.model_card_rows(r.models["mlp_ontological"], r))
+    assert "REJECT_NO_INFORMATIONAL_GAIN" not in rows["Estado"] and "não melhorou" in rows["Estado"]
+    for metric in ("Accuracy", "Balanced Accuracy", "Macro-F1", "Precision Macro", "Recall Macro"):
+        assert rows[metric].startswith("Não calculado — professor semântico rejeitado")
+    assert rows["Δ utilidade"].startswith("Não calculado")
+    assert rows["Accuracy"] != dict(rp.model_card_rows(r.models["mlp_original"], r))["Accuracy"]

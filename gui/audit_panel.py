@@ -20,35 +20,62 @@ MODEL_KEYS = ("mlp_original", "mlp_ontological", "c45", "trepan_original", "trep
 METRIC_KEY_BY_HEADER_ORDER = {"predictive": rp.PREDICTIVE_METRICS, "fidelity": ("fidelity",), "complexity": rp.COMPLEXITY_KEYS}
 
 
+class FitTable(QTableWidget):
+    """Tabela que ajusta a altura ao conteúdo (sem barras de scroll internas) e re-quebra linhas ao redimensionar."""
+
+    def _fit(self) -> None:
+        self.resizeRowsToContents()
+        header = self.horizontalHeader().height() if self.horizontalHeader().isVisible() else 0
+        height = header + sum(self.rowHeight(r) for r in range(self.rowCount())) + 2 * self.frameWidth() + 2
+        self.setFixedHeight(max(height, 28))
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._fit()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._fit()
+
+
+def _prepare(table: QTableWidget) -> None:
+    table.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    table.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    table.setWordWrap(True)
+    table.setTextElideMode(Qt.TextElideMode.ElideNone)
+
+
 def _kv_table(rows: Sequence[Tuple[str, str]]) -> QTableWidget:
-    table = QTableWidget(len(rows), 2)
+    table = FitTable(len(rows), 2)
+    _prepare(table)
     table.horizontalHeader().setVisible(False)
     table.verticalHeader().setVisible(False)
     table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
     table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-    table.setWordWrap(True)
     table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
     table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
     for i, (k, v) in enumerate(rows):
         table.setItem(i, 0, QTableWidgetItem(k))
         table.setItem(i, 1, QTableWidgetItem(v))
-    table.resizeRowsToContents()
-    table.setMinimumHeight(min(28 * len(rows) + 8, 420))
+    table._fit()
     return table
 
 
 def _grid_table(headers: Sequence[str], rows: Sequence[Sequence[str]]) -> QTableWidget:
-    table = QTableWidget(len(rows), len(headers))
+    table = FitTable(len(rows), len(headers))
+    _prepare(table)
     table.setHorizontalHeaderLabels(list(headers))
     table.verticalHeader().setVisible(False)
     table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
     table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
     table.setAlternatingRowColors(True)
-    table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-    table.horizontalHeader().setStretchLastSection(True)
+    header = table.horizontalHeader()
+    header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+    header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
     for r, row in enumerate(rows):
         for c, value in enumerate(row):
             table.setItem(r, c, QTableWidgetItem(str(value)))
+    table._fit()
     return table
 
 
@@ -100,17 +127,27 @@ class AuditPanel(QWidget):
         root.addWidget(self.error_banner)
 
         self.tabs = QTabWidget()
-        self.tab_pages = {}
+        self.tab_pages = {}   # widget que está no separador (área de scroll, ou a própria página do registo)
+        self._page_layouts = {}
         for key in ("summary", "ontology", "models", "trees", "semantics", "experiment", "log"):
-            page = QWidget()
-            QVBoxLayout(page).setContentsMargins(4, 4, 4, 4)
+            inner = QWidget()
+            lay = QVBoxLayout(inner)
+            lay.setContentsMargins(4, 4, 4, 4)
+            self._page_layouts[key] = lay
+            if key == "log":
+                page = inner
+            else:
+                page = QScrollArea()
+                page.setWidgetResizable(True)
+                page.setFrameShape(QFrame.Shape.NoFrame)
+                page.setWidget(inner)
             self.tab_pages[key] = page
             self.tabs.addTab(page, tr(f"tab.{key}"))
         root.addWidget(self.tabs, 1)
         self.log_view = QPlainTextEdit()
         self.log_view.setReadOnly(True)
         self.log_view.setObjectName("auditLogView")
-        self.tab_pages["log"].layout().addWidget(self.log_view)
+        self._page_layouts["log"].addWidget(self.log_view)
         self._tables = {}
         self.refresh()
 
@@ -128,7 +165,7 @@ class AuditPanel(QWidget):
         label.setVisible(bool(text))
 
     def _clear_page(self, key: str) -> QVBoxLayout:
-        lay = self.tab_pages[key].layout()
+        lay = self._page_layouts[key]
         while lay.count():
             item = lay.takeAt(0)
             w = item.widget()
@@ -204,6 +241,7 @@ class AuditPanel(QWidget):
         lay = self._clear_page("summary")
         lay.addWidget(self._kv("summary", rp.summary_rows(r)))
         lay.addWidget(_section(tr("section.dataset"), self._kv("dataset", rp.dataset_rows(r))))
+        lay.addStretch(1)
 
     def _render_ontology(self, r):
         lay = self._clear_page("ontology")
@@ -224,6 +262,7 @@ class AuditPanel(QWidget):
             box = _section(term(key), self._kv(f"card_{key}", rp.model_card_rows(card, r, self.mode)))
             box.setObjectName(f"card_{key}")
             lay.addWidget(box)
+        lay.addStretch(1)
 
     def _decorate_metric_tooltips(self, grid: QTableWidget, group: str, r: ExperimentResult) -> None:
         keys = METRIC_KEY_BY_HEADER_ORDER[group]
@@ -276,6 +315,7 @@ class AuditPanel(QWidget):
             lay.addWidget(_section(tr("section.ablation"), self._grid("ablation", rp.ablation_table(r))))
         if r.benchmark is not None:
             lay.addWidget(_section(tr("section.benchmark"), self._grid("benchmark", rp.benchmark_table(r))))
+        lay.addStretch(1)
 
     def _render_experiment(self, r):
         lay = self._clear_page("experiment")
