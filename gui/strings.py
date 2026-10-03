@@ -193,6 +193,26 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "export.stale_warning": "Atenção: estes resultados estão marcados como desatualizados.",
         # --- vários
         "misc.not_loaded": "não carregada", "misc.none": "—", "misc.selected_only": "Só selecionadas",
+        # --- colunas de tabelas / linhas de resumo (apresentador)
+        "col.name": "Nome", "col.type": "Tipo", "col.source": "Origem", "col.stability": "Estabilidade",
+        "col.selected": "Selecionada", "col.reason": "Motivo", "col.node": "Nó", "col.feature": "Feature",
+        "col.base_score": "Score base", "col.semantic_bonus": "Bónus semântico", "col.final_score": "Score final",
+        "col.ontology_reason": "Razão ontológica", "col.configuration": "Configuração",
+        "col.semantic_contribution": "Contribuição semântica", "col.arm": "Braço", "col.runs": "Execuções",
+        "col.mean_std": "Média ± desvio", "col.metric": "Métrica", "col.value": "Valor",
+        "arm.no_semantics": "Sem semântica", "arm.real_owl": "OWL real", "arm.shuffled_owl": "OWL baralhada",
+        "summary.dataset": "Dataset ativo", "summary.owl": "OWL carregada", "summary.build": "Build",
+        "summary.mlp": "MLP selecionado", "summary.ontology_valid": "Ontologia validada?",
+        "summary.enrichment": "Enriquecimento aceite?", "summary.oracle_original": "Oracle do TREPAN Original",
+        "summary.oracle_reloaded": "Oracle do TREPAN Reloaded", "summary.nodes": "Nós (Original / Reloaded)",
+        "summary.stop": "Porque parou a árvore", "summary.queries": "Queries (Original / Reloaded)",
+        "summary.accuracy": "Accuracy (Original / Reloaded)", "summary.fidelity": "Fidelity (Original / Reloaded)",
+        "summary.owl_features": "Features OWL selecionadas", "summary.semantic_splits": "Splits semânticos",
+        "summary.cache": "Cache", "summary.seed_config": "Seed / configuração",
+        "summary.fidelity_against": "vs Oracle", "summary.no_result": "Sem resultados: treine o modelo.",
+        "value.mlp_original_only": "MLP Original", "value.none_selected": "nenhuma",
+        "value.not_loaded": "Não carregada", "value.stump": "árvore pequena",
+        "mode.hint": "O modo só muda o que é mostrado; nunca os cálculos.",
         "misc.show_log": "Mostrar registo", "misc.copy_id": "Copiar ID",
     },
     "en": {
@@ -226,7 +246,7 @@ def get_language() -> str:
     return _language
 
 
-def tr(key: str, lang: str | None = None, **fmt) -> str:
+def tr(key: str, /, lang: str | None = None, **fmt) -> str:
     """Texto traduzido; cai para pt e depois para a chave. Nunca lança exceção."""
     language = lang or _language
     text = _CATALOG.get(language, {}).get(key)
