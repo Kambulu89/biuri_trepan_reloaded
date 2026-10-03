@@ -249,6 +249,30 @@ def resolve_trepan_structure_limits(preset: TrainingPreset) -> Dict[str, int]:
     return {"max_nodes": max_nodes, "max_depth": int(max_depth)}
 
 
+def resolve_trepan_min_sample(n_train: int) -> int:
+    """Amostra mínima de decisão por nó (fórmula já usada pela GUI, agora num só sítio)."""
+    n = int(n_train)
+    return max(n, min(1000, max(120, n * 3)))
+
+
+def required_query_budget(max_nodes: int, min_sample: int) -> int:
+    """Orçamento de queries suficiente para expandir todos os nós internos possíveis.
+
+    Cada nó expandido precisa de, no máximo, ``min_sample`` exemplos de decisão (reais + queries);
+    uma árvore binária com ``max_nodes`` nós tem no máximo ``(max_nodes - 1) // 2`` nós internos.
+    É um teto: o TREPAN só gasta as queries de que precisa.
+    """
+    internal = max(1, (int(max_nodes) - 1) // 2)
+    return internal * int(min_sample)
+
+
+def resolve_trepan_query_budget(preset: TrainingPreset, n_train: int) -> int:
+    """Orçamento efetivo de queries: nunca inferior ao do preset, mas suficiente para ``max_nodes``."""
+    structure = resolve_trepan_structure_limits(preset)
+    needed = required_query_budget(structure["max_nodes"], resolve_trepan_min_sample(n_train))
+    return max(int(preset.trepan_max_queries), needed)
+
+
 def grid_param_grid_for_preset(preset: TrainingPreset) -> Optional[Dict[str, List[Any]]]:
     if not preset.run_grid:
         return None
