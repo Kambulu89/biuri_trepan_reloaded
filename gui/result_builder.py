@@ -204,7 +204,9 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
                      "f1_macro": audit.get("macro_f1"), "precision_macro": audit.get("precision_macro", audit.get("precision")),
                      "recall_macro": audit.get("recall_macro", audit.get("recall"))}
         fid = _g(fidelity.get(key), "overall_fidelity") if fidelity.get(key) else audit.get("trepan_fidelity")
-        nodes = _g(audit, "node_count", "nodes")
+        nodes = _g(audit, "node_count", "nodes", "tree_n_nodes")
+        if not nodes:  # auditorias antigas escreviam 0/ausente para árvores TREPAN: ler o atributo da própria árvore
+            nodes = getattr(getattr(app, tree_attr, None), "node_count_", None) or nodes
         depth = audit.get("depth")
         queries = _g(audit, "membership_queries", "oracle_query_count")
         models[key] = ModelCard(

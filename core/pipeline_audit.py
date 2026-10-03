@@ -498,7 +498,8 @@ def _tree_stats(tree) -> Dict[str, Any]:
     if tree is None:
         return {"n_nodes": 0, "n_leaves": 0, "is_trivial": True}
     n_leaves = int(tree.get_n_leaves())
-    n_nodes = int(getattr(getattr(tree, "tree_", None), "node_count", 0) or 0)
+    # sklearn expõe ``tree_.node_count``; o TREPAN histórico expõe ``node_count_``.
+    n_nodes = int(getattr(getattr(tree, "tree_", None), "node_count", 0) or getattr(tree, "node_count_", 0) or 0)
     return {
         "n_nodes": n_nodes,
         "n_leaves": n_leaves,

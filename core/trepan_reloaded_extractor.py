@@ -4123,7 +4123,8 @@ class TrepanReloadedExtractor:
         }
         if self.explainer_tree is not None:
             audit['tree_n_nodes'] = int(
-                getattr(getattr(self.explainer_tree, 'tree_', None), 'node_count', 0) or 0
+                getattr(getattr(self.explainer_tree, 'tree_', None), 'node_count', 0)
+                or getattr(self.explainer_tree, 'node_count_', 0) or 0
             )
             audit['tree_n_leaves'] = int(self.explainer_tree.get_n_leaves())
             audit['tree_is_trivial'] = audit['tree_n_leaves'] <= 1

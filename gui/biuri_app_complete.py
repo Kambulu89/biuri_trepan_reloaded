@@ -769,7 +769,7 @@ class MetricsComparisonWidget(QWidget):
             print(
                 f"[DIAG] GUI -> {display_name}: "
                 f"Precisão Macro={prec_val:.1f}%, Exatidão(auditoria)={accuracy_val:.1f}%, "
-                f"Fidelidade={fid_val:.1f}%"
+                f"Fidelity={'n/a (sem Oracle)' if fid_kind is None else f'{fid_val:.1f}%'}"
             )
             self.metrics_visualizer.add_model_data(
                 display_name,
