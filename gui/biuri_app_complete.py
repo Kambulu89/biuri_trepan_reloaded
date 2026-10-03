@@ -2946,6 +2946,7 @@ Asegúrese de que:
             'max_depth': structure['max_depth'],
             'max_nodes': structure['max_nodes'],
             'min_samples_leaf': preset.trepan_min_samples_leaf,
+            'purity_epsilon': float(getattr(preset, 'trepan_purity_epsilon', 0.05)),
         }
 
     def _launch_training_worker(self, preset):
@@ -4159,6 +4160,7 @@ Asegúrese de que:
                         beam_width=2,
                         max_features_per_node=min(tune_X.shape[1], max(12, min(32, tune_X.shape[1]))),
                         max_queries=int(trepan_limits['max_queries']),
+                        purity_epsilon=float(trepan_limits['purity_epsilon']),
                         random_state=42,
                         semantic_gain_strength=float(getattr(preset, 'semantic_gain_strength', 1.0)),
                         semantic_group_strength=float(getattr(preset, 'semantic_group_strength', 0.15)),
@@ -4197,6 +4199,7 @@ Asegúrese de que:
                         'min_samples_leaf': int(common['min_samples_leaf']),
                         'max_n': int(common['max_n']),
                         'beam_width': int(common['beam_width']),
+                        'purity_epsilon': float(common['purity_epsilon']),
                     })
                     # Propaga a MESMA capacidade ao extractor Reloaded.
                     self.trepan.extractor._training_limits.update({
@@ -4207,6 +4210,7 @@ Asegúrese de que:
                         'historical_min_samples_leaf': int(common['min_samples_leaf']),
                         'canonical_m_of_n_max_n': int(common['max_n']),
                         'historical_beam_width': int(common['beam_width']),
+                        'historical_purity_epsilon': float(common['purity_epsilon']),
                         'historical_max_features_per_node': int(common['max_features_per_node']),
                         'trepan_scientific_tuning': True,
                         'trepan_tuning_cv_folds': int(getattr(preset, 'trepan_tuning_cv_folds', 3)),

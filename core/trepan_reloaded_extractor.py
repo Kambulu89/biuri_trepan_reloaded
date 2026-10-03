@@ -239,6 +239,7 @@ class TrepanReloadedExtractor:
             'canonical_max_nodes': structure['max_nodes'],
             'canonical_max_depth': structure['max_depth'],
             'historical_min_samples_leaf': preset.trepan_min_samples_leaf,
+            'historical_purity_epsilon': float(getattr(preset, 'trepan_purity_epsilon', 0.05)),
             'random_state': 42,
             'hybrid_label_weight': getattr(preset, 'hybrid_label_weight', 0.60),
             'hybrid_teacher_weight': getattr(preset, 'hybrid_teacher_weight', 0.30),

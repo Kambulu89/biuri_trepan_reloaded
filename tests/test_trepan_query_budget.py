@@ -33,3 +33,33 @@ def test_bigger_capacity_candidates_get_proportionally_more_queries():
     for c in _capacity_candidates(base, 30, 6):
         assert c.max_queries >= required_query_budget(c.max_nodes, c.min_sample) or c.max_nodes == base.max_nodes
     assert any(c.max_nodes > base.max_nodes for c in _capacity_candidates(base, 30, 6))
+
+
+def test_scientific_preset_uses_purity_epsilon_001_and_it_reaches_both_extractors():
+    from core.trepan_original import TrepanOriginalExtractor
+    from core.trepan_reloaded_extractor import TrepanReloadedExtractor
+    preset = get_training_preset("scientific")
+    assert preset.trepan_purity_epsilon == 0.01
+    assert get_training_preset("fast").trepan_purity_epsilon == 0.05      # outros presets mantêm o canónico
+    limits = TrepanOriginalExtractor._limits({"purity_epsilon": preset.trepan_purity_epsilon}, 2000, 398)
+    assert limits["purity_epsilon"] == 0.01
+    assert "purity_epsilon" not in TrepanOriginalExtractor._limits({}, 2000, 398)   # omissão = comportamento anterior
+    ext = TrepanReloadedExtractor()
+    ext.apply_training_preset(preset)
+    assert ext._training_limits["historical_purity_epsilon"] == 0.01
+
+
+def test_lower_purity_epsilon_grows_a_bigger_tree_with_enough_budget():
+    from core.trepan_original import TrepanOriginalClassifier
+
+    class Oracle:
+        classes_ = np.array([0, 1])
+        def predict(self, X):
+            X = np.asarray(X, float)
+            return ((X[:, 0] + 0.6 * X[:, 1] * X[:, 2] + 0.2 * np.sin(3 * X[:, 3])) > 0).astype(int)
+
+    X = np.random.default_rng(3).normal(size=(300, 5))
+    kw = dict(max_nodes=31, max_depth=8, min_sample=300, max_queries=20000, max_n=2, beam_width=2, random_state=1)
+    coarse = TrepanOriginalClassifier(purity_epsilon=0.20, **kw).fit(X, oracle=Oracle(), feature_names=list("abcde"))
+    fine = TrepanOriginalClassifier(purity_epsilon=0.01, **kw).fit(X, oracle=Oracle(), feature_names=list("abcde"))
+    assert fine.node_count_ >= coarse.node_count_

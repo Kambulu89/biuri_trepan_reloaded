@@ -62,6 +62,8 @@ class TrainingPreset:
     trepan_fidelity_target: float = 0.90
     trepan_fidelity_early_stop: float = 0.95
     trepan_min_samples_leaf: int = 4
+    # Tolerância de impureza para declarar um nó "puro" e deixar de o expandir (TREPAN: NIPS 1995 usa 0.05).
+    trepan_purity_epsilon: float = 0.05
     trepan_scientific_tuning: bool = True
     trepan_tuning_cv_folds: int = 3
     trepan_tuning_capacity_candidates: int = 6
@@ -198,6 +200,8 @@ TRAINING_PRESETS: Dict[str, TrainingPreset] = {
         trepan_sample_size=2000,
         trepan_max_queries=2000,
         trepan_max_depth=None,
+        # 0.05 (canónico) parava árvores cedo demais: nós quase puros nos dados sintéticos viravam folha.
+        trepan_purity_epsilon=0.01,
         trepan_max_time_seconds=300,
         reloaded_sample_size=5000,
         reloaded_max_time_seconds=300,
