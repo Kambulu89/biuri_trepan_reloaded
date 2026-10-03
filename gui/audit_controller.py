@@ -21,6 +21,7 @@ BUTTON_ATTRS = {
     "load_data": "btn_load_data", "train": "btn_train_model", "explain": "btn_generate_explanation",
     "visualize": "btn_visualize_tree", "compare": "btn_compare_metrics", "natural": "btn_natural_explanations",
     "counterfactual": "btn_generate_counterfactuals", "improve": "btn_improve_surrogate", "export_results": "btn_export_results",
+    "export_tree": "btn_export_tree",
 }
 
 PROGRESS_KEYS = {
