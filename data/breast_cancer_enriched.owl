@@ -1,0 +1,534 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="https://w3id.org/biuri/trepan-reloaded/breast_cancer"
+         xmlns="https://w3id.org/biuri/trepan-reloaded/breast_cancer#">
+
+<owl:Ontology rdf:about="https://w3id.org/biuri/trepan-reloaded/breast_cancer">
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BIURI domain-rich TBox for Breast Cancer Wisconsin Diagnostic</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox/controlled vocabulary only: contains zero dataset rows, patients, samples, split identifiers or learned thresholds.</rdfs:comment>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Feature aliases are schema mappings documented by the data source; they are not test-derived matches.</rdfs:comment>
+  <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic</rdfs:seeAlso>
+  <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">4.0-domain-rich-relational</owl:versionInfo>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Measurements describe cell-nucleus morphology from digitized FNA images.</rdfs:comment>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">v4: adds measurementFamily/statisticRole annotations, per-family and per-concept (size/shape/texture) super-properties. TBox only.</rdfs:comment>
+</owl:Ontology>
+
+<owl:AnnotationProperty rdf:about="#measurementFamily"/>
+<owl:AnnotationProperty rdf:about="#statisticRole"/>
+
+<owl:ObjectProperty rdf:about="#hasDomainOutcome">
+  <rdfs:domain rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:range rdf:resource="#BreastMassDiagnosis"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">has Breast Cancer Wisconsin Diagnostic outcome</rdfs:label>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanNuclearMorphometricValue">
+  <rdfs:domain rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean nuclear morphometry</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNuclearMeasurementErrorValue">
+  <rdfs:domain rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear morphometry standard error</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstNuclearMorphometricValue">
+  <rdfs:domain rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst nuclear morphometry</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasRadiusMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius1</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear radius computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasRadiusMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTextureMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_2</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear texture computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasTextureMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearTextureMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPerimeterMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter1</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear perimeter computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasPerimeterMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAreaMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_4</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear area computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasAreaMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSmoothnessMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_5</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness_mean</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear smoothness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSmoothnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCompactnessMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_6</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness1</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear compactness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasCompactnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavityMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_7</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear concavity computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavityMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavePointsMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_8</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear concave points computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavePointsMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSymmetryMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_9</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear symmetry computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSymmetryMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFractalDimensionMean">
+  <rdfs:subPropertyOf rdf:resource="#hasMeanNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension_mean</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension1</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_10</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean measurement of nuclear fractal dimension computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasFractalDimensionMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasRadiusStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_11</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius_se</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear radius computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasRadiusMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTextureStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_12</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture2</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear texture computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasTextureMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearTextureMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPerimeterStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_13</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter_se</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear perimeter computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasPerimeterMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAreaStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_14</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area2</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear area computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasAreaMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSmoothnessStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_15</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness_se</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear smoothness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSmoothnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCompactnessStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_16</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness2</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear compactness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasCompactnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavityStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_17</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear concavity computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavityMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavePointsStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_18</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points2</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear concave points computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavePointsMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSymmetryStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_19</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry_se</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear symmetry computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSymmetryMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFractalDimensionStandardError">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMeasurementErrorValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension2</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension_se</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_20</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">standarderror measurement of nuclear fractal dimension computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasFractalDimensionMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasRadiusWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_21</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear radius computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasRadiusMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTextureWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_22</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture3</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear texture computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasTextureMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearTextureMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPerimeterWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_23</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter_worst</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear perimeter computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasPerimeterMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAreaWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_24</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area3</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear area computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasAreaMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSmoothnessWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_25</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear smoothness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSmoothnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCompactnessWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_26</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear compactness computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasCompactnessMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavityWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_27</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity_worst</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear concavity computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavityMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavePointsWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_28</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points_worst</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear concave points computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasConcavePointsMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSymmetryWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_29</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry_worst</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry3</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear symmetry computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasSymmetryMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFractalDimensionWorst">
+  <rdfs:subPropertyOf rdf:resource="#hasWorstNuclearMorphometricValue"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">f_30</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension3</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension_worst</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst measurement of nuclear fractal dimension computed from a digitized fine-needle aspirate image</rdfs:comment>
+  <rdfs:subPropertyOf rdf:resource="#hasFractalDimensionMeasurement"/>
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNuclearMorphometricValue">
+  <rdfs:domain rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear morphometric value</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNuclearSizeMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMorphometricValue"/>
+  <rdfs:domain rdf:resource="#NuclearSizeProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear size measurement</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">groups the radius, perimeter, area measurements (Street et al., 1993 feature description)</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNuclearShapeMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMorphometricValue"/>
+  <rdfs:domain rdf:resource="#NuclearShapeProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear shape measurement</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">groups the smoothness, compactness, concavity, concave points, symmetry, fractal dimension measurements (Street et al., 1993 feature description)</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasNuclearTextureMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearMorphometricValue"/>
+  <rdfs:domain rdf:resource="#NuclearTextureProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear texture measurement</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">groups the texture measurements (Street et al., 1993 feature description)</rdfs:comment>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAreaMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCompactnessMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavePointsMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave points measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasConcavityMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasFractalDimensionMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal dimension measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPerimeterMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasRadiusMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearSizeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSmoothnessMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSymmetryMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearShapeMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTextureMeasurement">
+  <rdfs:subPropertyOf rdf:resource="#hasNuclearTextureMeasurement"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture measurement (any statistic)</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#BreastMassCytologyProfile">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">breast-mass nuclear cytology profile</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Semantic subject described by the Breast Cancer Wisconsin Diagnostic feature schema.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#NuclearSizeProfile">
+  <rdfs:subClassOf rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear size profile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#NuclearShapeProfile">
+  <rdfs:subClassOf rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear shape profile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#NuclearTextureProfile">
+  <rdfs:subClassOf rdf:resource="#BreastMassCytologyProfile"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear texture profile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BreastMassDiagnosis">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Breast Cancer Wisconsin Diagnostic outcome</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#MalignantDiagnosis">
+  <rdfs:subClassOf rdf:resource="#BreastMassDiagnosis"/>
+  <owl:disjointWith rdf:resource="#BenignDiagnosis"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">malignant</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BenignDiagnosis">
+  <rdfs:subClassOf rdf:resource="#BreastMassDiagnosis"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">benign</rdfs:label>
+</owl:Class>
+
+
+</rdf:RDF>
