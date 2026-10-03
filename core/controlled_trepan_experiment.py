@@ -490,6 +490,11 @@ def evaluate_controlled_trepan_pair(
         "semantic_audit": semantic_audit,
         "semantic_split_audit": list(getattr(pair.reloaded, "semantic_split_audit_", []) or []),
         "error_region_audit": list(getattr(pair.reloaded, "error_region_audit_", []) or []),
+        # Porque cada árvore parou (observabilidade; chave separada para não tocar nas métricas).
+        "tree_diagnostics": {
+            "original": dict(getattr(pair.original, "stop_summary_", {}) or {}),
+            "reloaded": dict(getattr(pair.reloaded, "stop_summary_", {}) or {}),
+        },
     }
 
 
