@@ -200,6 +200,8 @@ TRAINING_PRESETS: Dict[str, TrainingPreset] = {
         trepan_sample_size=2000,
         trepan_max_queries=2000,
         trepan_max_depth=None,
+        # 63 nós: capacidade do TREPAN de 1996 (o orçamento de queries escala com este valor).
+        trepan_max_nodes=63,
         # 0.05 (canónico) parava árvores cedo demais: nós quase puros nos dados sintéticos viravam folha.
         trepan_purity_epsilon=0.01,
         trepan_max_time_seconds=300,

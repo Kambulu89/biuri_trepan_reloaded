@@ -22,7 +22,7 @@ def test_min_sample_formula_is_unchanged():
 def test_scientific_preset_budget_covers_the_allowed_nodes_and_never_shrinks():
     preset = get_training_preset("scientific")
     assert resolve_trepan_query_budget(preset, 398) >= preset.trepan_max_queries
-    assert resolve_trepan_query_budget(preset, 398) == 15000
+    assert resolve_trepan_query_budget(preset, 398) == 31000   # 63 nós -> 31 internos x 1000
     # amostra pequena: nunca abaixo do orçamento do preset
     assert resolve_trepan_query_budget(preset, 20) >= preset.trepan_max_queries
 
@@ -63,3 +63,10 @@ def test_lower_purity_epsilon_grows_a_bigger_tree_with_enough_budget():
     coarse = TrepanOriginalClassifier(purity_epsilon=0.20, **kw).fit(X, oracle=Oracle(), feature_names=list("abcde"))
     fine = TrepanOriginalClassifier(purity_epsilon=0.01, **kw).fit(X, oracle=Oracle(), feature_names=list("abcde"))
     assert fine.node_count_ >= coarse.node_count_
+
+
+def test_scientific_preset_allows_63_nodes_and_budget_scales_with_it():
+    from core.training_config import resolve_trepan_structure_limits
+    preset = get_training_preset("scientific")
+    assert resolve_trepan_structure_limits(preset)["max_nodes"] == 63
+    assert resolve_trepan_query_budget(preset, 398) == 31 * 1000     # 31 nós internos x min_sample

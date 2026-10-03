@@ -115,7 +115,9 @@ traceback no log), troca de árvores, **ausência de recálculo na UI** (verific
 sklearn/predict/fit/métricas — e teste dinâmico com modelos "armadilha"), exportação, terminologia
 proibida e botões/estado no `BiuriApp` real.
 
-**Suite completa:** 631 passaram, 3 falharam (12 min 42 s). As 3 falhas são **pré-existentes e não
+**Estado final da suite (após os ajustes ao TREPAN e aos 2 testes obsoletos): 808 passaram, 0 falharam.**
+
+Primeira medição (antes desses ajustes): 631 passaram, 3 falharam (12 min 42 s). As 3 falhas são **pré-existentes e não
 relacionadas** com esta tarefa (as duas de `test_scientific_superiority_pipeline_v7` já existiam antes
 de qualquer alteração à GUI; a de `test_counterfactual_gui` só ficou visível por o PyQt6 estar agora
 instalado no ambiente):
