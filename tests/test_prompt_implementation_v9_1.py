@@ -148,7 +148,7 @@ def test_surrogate_gate_rejects_precision_macro_degradation():
 
 def test_gui_comparison_is_precision_macro_not_accuracy():
     text = Path('gui/pyqt_metrics_visualizer.py').read_text(encoding='utf-8')
-    assert "Precisão Macro / Precision Macro" in text
+    assert "ax1.set_title('Precision Macro'" in text      # título simplificado a pedido (sem o prefixo em espanhol/português)
     assert "precision_values.append(self.models_data[key]['precision'])" in text
     # O gráfico principal já não deve usar accuracy como valor primário.
     assert "primary_accuracy = self.models_data[key].get('accuracy')" not in text

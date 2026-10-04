@@ -118,7 +118,19 @@ def derive_messages(result: ExperimentResult) -> List[Message]:
         out.append(make_message(Level.INFO, "enrichment_rejected", "msg.enrichment_rejected", eid,
                                 decision=enr.decision or "-"))
 
+    mlp = result.models.get("mlp_original")
+    mlp_acc = mlp.metrics.get("accuracy") if mlp else None
     for key in ("trepan_original", "trepan_reloaded"):
+        card = result.models.get(key)
+        tree_acc = card.metrics.get("accuracy") if card else None
+        if mlp_acc is not None and mlp_acc.available and tree_acc is not None and tree_acc.available \
+                and tree_acc.value > mlp_acc.value + 1e-12:
+            n_total = (mlp.evaluation_samples or 0)
+            diff = tree_acc.value - mlp_acc.value
+            out.append(make_message(
+                Level.SCIENTIFIC_WARNING, "surrogate_above_oracle", "msg.surrogate_above_oracle", eid, tree=term(key),
+                tree_acc=f"{tree_acc.value:.1%}", mlp_acc=f"{mlp_acc.value:.1%}", diff=f"{diff * 100:.1f}",
+                n_samples=max(1, round(diff * n_total)) if n_total else "?", n_total=n_total or "?"))
         diag = result.trees.get(key)
         if diag is None or not diag.available:
             continue

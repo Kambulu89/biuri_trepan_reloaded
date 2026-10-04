@@ -177,15 +177,6 @@ class MetricsVisualizer(QWidget):
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
-        gate_label = QLabel(self._c45_gate_summary_text())
-        gate_label.setWordWrap(True)
-        gate_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        gate_label.setStyleSheet(
-            "background-color: #f8f9fa; border: 1px solid #b0b0b0; "
-            "padding: 7px; font-weight: bold;"
-        )
-        layout.addWidget(gate_label)
-        
         chart_width = max(400, dialog_width - 30)
         chart_height = max(300, dialog_height - 120)
         figsize = (chart_width / 100, chart_height / 100)
@@ -275,7 +266,6 @@ class MetricsVisualizer(QWidget):
                     fidelity_colors.append('#808080')
         
         fig = Figure(figsize=figsize)
-        fig.suptitle('Comparación de Métricas de los Modelos', fontsize=16, fontweight='bold')
         
         bar_width = 0.8
         
@@ -284,7 +274,7 @@ class MetricsVisualizer(QWidget):
             x_pos1 = np.arange(len(precision_models))
             bars1 = ax1.bar(x_pos1, precision_values, width=bar_width, color=precision_colors_list, 
                            edgecolor='black', linewidth=1.5)
-            ax1.set_title('Precisão Macro / Precision Macro', fontsize=14, fontweight='bold')
+            ax1.set_title('Precision Macro', fontsize=14, fontweight='bold')
             ax1.set_ylabel('Precisão Macro (%)')
             ax1.set_ylim(0, 110)
             ax1.set_facecolor('#F5F5F5')
@@ -300,19 +290,11 @@ class MetricsVisualizer(QWidget):
                     c45_value = float(value)
                     break
             if c45_value is not None:
-                ax1.axhline(
-                    c45_value, linestyle='--', linewidth=1.2, color='black',
-                    alpha=0.65, label=f'Baseline C4.5: {c45_value:.1f}%'
-                )
-                ax1.legend(loc='lower right', fontsize=9)
+                ax1.axhline(c45_value, linestyle='--', linewidth=1.2, color='black', alpha=0.65)
 
             for model_name, bar, value in zip(precision_models, bars1, precision_values):
                 height = bar.get_height()
                 label = f'{value:.1f}%'
-                if c45_value is not None and 'trepan' in model_name.lower():
-                    delta = float(value) - c45_value
-                    status = 'OK C4.5' if delta >= -1e-9 else 'ABAIXO C4.5'
-                    label += f'\n{status} ({delta:+.1f} pp)'
                 ax1.text(
                     bar.get_x() + bar.get_width()/2., height + 1, label,
                     ha='center', va='bottom', fontweight='bold', color='black', fontsize=9
@@ -342,7 +324,7 @@ class MetricsVisualizer(QWidget):
                            edgecolor='black', linewidth=1.5)
             ax2.set_title('Fidelidade de controlo ao MLP Original', fontsize=14, fontweight='bold')
             ax2.set_ylabel('Fidelidad (%)')
-            ax2.set_ylim(0, 100)
+            ax2.set_ylim(0, 110)
             ax2.set_facecolor('#F5F5F5')
             
             if precision_models:

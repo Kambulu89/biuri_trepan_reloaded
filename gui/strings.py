@@ -179,6 +179,9 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.small_tree": "{tree}: árvore com {nodes} nós. Abra o diagnóstico para ver a razão.",
         "msg.budget_limited": "{tree}: a árvore parou por esgotamento do orçamento de queries ({used}/{budget}) com apenas {nodes} nós; "
                               "não reflete a capacidade do método. Aumente o orçamento de queries ou reduza a amostra mínima por nó.",
+        "msg.surrogate_above_oracle": "{tree}: accuracy superior à do MLP Original ({tree_acc} vs {mlp_acc}, +{diff} pp, cerca de {n_samples} de {n_total} "
+                                      "amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o "
+                                      "substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.",
         "msg.stale": "Resultados anteriores marcados como desatualizados: {reasons}.",
         "msg.cancelled": "Operação cancelada pelo utilizador.",
         # --- erros

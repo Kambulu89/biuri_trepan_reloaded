@@ -157,3 +157,16 @@ def test_budget_exhausted_stump_gets_a_scientific_warning_naming_the_cause():
     ok = TreeDiagnostics(tree="trepan_original", logical_nodes=Measure.of(15), query_budget_exhausted=False,
                          stop_reasons={"STOP_PURE_NODE": 4}, available=True)
     assert not [m for m in derive_messages(_result(trees={"trepan_original": ok})) if m.code == "budget_limited"]
+
+
+def test_surrogate_accuracy_above_mlp_is_flagged_not_hidden_or_changed():
+    mlp = ModelCard(key="mlp_original", status="AVAILABLE", evaluation_samples=45, metrics={"accuracy": Measure.of(0.93)})
+    tree = ModelCard(key="trepan_original", status="AVAILABLE", evaluation_samples=45, metrics={"accuracy": Measure.of(0.944)})
+    r = _result(models={"mlp_original": mlp, "trepan_original": tree})
+    w = [m for m in derive_messages(r) if m.code == "surrogate_above_oracle"]
+    assert w and w[0].level == Level.SCIENTIFIC_WARNING.value
+    assert "94.4%" in w[0].text and "93.0%" in w[0].text and "TREPAN Original" in w[0].text and "45" in w[0].text
+    assert tree.metrics["accuracy"].value == 0.944            # o valor medido nunca é alterado
+    tree2 = ModelCard(key="trepan_original", status="AVAILABLE", metrics={"accuracy": Measure.of(0.90)})
+    assert not [m for m in derive_messages(_result(models={"mlp_original": mlp, "trepan_original": tree2}))
+                if m.code == "surrogate_above_oracle"]

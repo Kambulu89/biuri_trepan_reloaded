@@ -133,3 +133,28 @@ def test_metrics_widget_never_shows_zero_fidelity_for_models_without_oracle(qapp
     assert fidelity_label_text(None, None).startswith("Fidelity: Não aplicável")
     assert fidelity_label_text("agreement", 80.0).startswith("Concordância com o MLP (diagnóstico)")
     assert fidelity_label_text("oracle", 95.0) == "Fidelity: 95.0%"
+
+
+def test_comparison_chart_has_no_gate_banner_title_annotations_or_legend(qapp):
+    """Elementos removidos a pedido: título geral, prefixo em espanhol, anotações vs C4.5 e legenda do baseline."""
+    from gui.pyqt_metrics_visualizer import MetricsVisualizer
+    v = MetricsVisualizer()
+    for name, prec, fid, kind in (("MLP Original", 93.0, 0, None), ("Trepan-Original", 94.4, 97.8, "oracle"),
+                                  ("C4.5-Nativo", 89.0, 0, "agreement"), ("Trepan-Reloaded", 93.0, 100.0, "oracle")):
+        v.add_model_data(name, prec, fid, accuracy=prec, sample_size=45, fidelity_kind=kind)
+    res = v._create_bar_chart()
+    fig = getattr(res, "figure", res)
+    texts = [t.get_text() for ax in fig.axes for t in ax.texts] + [ax.get_title() for ax in fig.axes]
+    joined = " ".join(texts)
+    for forbidden in ("OK C4.5", "ABAIXO", "pp)", "Baseline C4.5", "Comparación de Métricas", "Precisão Macro /"):
+        assert forbidden not in joined, forbidden
+    assert fig._suptitle is None or not fig._suptitle.get_text()
+    assert all(ax.get_legend() is None for ax in fig.axes)
+    assert "Precision Macro" in texts and "93.0%" in texts and "94.4%" in texts
+
+
+def test_comparison_dialog_no_longer_builds_the_c45_gate_banner():
+    import inspect
+    from gui.pyqt_metrics_visualizer import MetricsVisualizer
+    src = inspect.getsource(MetricsVisualizer._show_comparison_chart)
+    assert "_c45_gate_summary_text" not in src and "gate_label" not in src
