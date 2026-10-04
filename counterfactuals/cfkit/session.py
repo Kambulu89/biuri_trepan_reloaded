@@ -139,18 +139,45 @@ def to_engine_dict(result: CounterfactualResult, ctx: CFContext, instance: np.nd
     }
 
 
+def _runner_up_target(model: Any, instance: np.ndarray) -> Tuple[Any, Optional[str]]:
+    """Multiclasse sem alvo escolhido (opt-in da GUI): usa a 2.ª classe mais provável do próprio modelo e regista-o.
+
+    Só se aplica com mais de 2 classes; em binário devolve ``None`` (o API usa a classe oposta).
+    """
+    classes = getattr(model, "classes_", None)
+    if classes is None or len(classes) <= 2:
+        return None, None
+    x = np.asarray(instance, dtype=float).reshape(1, -1)
+    try:
+        proba = np.asarray(model.predict_proba(x))[0]
+        pred = model.predict(x)[0]
+        order = [int(i) for i in np.argsort(-proba) if str(classes[int(i)]) != str(pred)]
+    except Exception:
+        pred = model.predict(x)[0]
+        order = [i for i, c in enumerate(classes) if str(c) != str(pred)]
+    target = classes[order[0]]
+    target = target.item() if hasattr(target, "item") else target
+    return target, (f"Classe alvo não indicada: escolhida automaticamente a 2.ª classe mais provável do modelo ({target}). "
+                    "Seleccione uma classe explicitamente para outro alvo.")
+
+
 def generate_with_cfkit(session: Mapping[str, Any], context: Mapping[str, Any], options: Mapping[str, Any], index: int, desired: Any) -> Dict[str, Any]:
     ctx, notes = build_cf_context(session, context, options)
     method = LEGACY_METHOD_MAP[str(options.get("method", "AUTO")).upper().replace("_", "-")]
     seed = int(options.get("seed", 42))
     tree = context.get("global_tree") if method in ("TREE",) or context.get("model_type") == "tree" else None
     X = np.asarray(context["X"], dtype=float)
+    auto_note = None
+    if desired is None and options.get("multiclass_auto_target"):
+        desired, auto_note = _runner_up_target(context["oracle"], X[index])
     result = generate_counterfactual(
         X[index], desired, context["oracle"], method, context=ctx, random_state=seed, n_cfs=int(options.get("total_cfs", 5)),
         max_iterations=int(options.get("max_iterations", 40)), max_time=options.get("max_time", 30.0), instance_id=int(index),
         tree_model=tree if method == "TREE" else None, other_models=options.get("other_models"), require_plausible=bool(options.get("require_plausible", False)),
         local_agreement_samples=int(options.get("local_agreement_samples", 0)))
     result.warnings.extend(notes)
+    if auto_note:
+        result.warnings.append(auto_note)
     out = to_engine_dict(result, ctx, X[index], robustness_samples=int(options.get("robustness_samples", 100)),
                          robustness_epsilon=float(options.get("robustness_epsilon", 0.02)), seed=seed)
     out["warnings"] = list(result.warnings)

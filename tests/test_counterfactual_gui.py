@@ -332,3 +332,29 @@ def test_construir_arvore_cf_end_to_end_worker_to_panel(qapp):
     panel.display_result(tree_result)
     assert panel.candidates_table.rowCount() >= 1
     panel.close()
+
+
+def test_multiclass_without_explicit_target_uses_recorded_runner_up_via_service():
+    """Regressão: multiclasse sem alvo na GUI dava INVALID_TARGET e nenhum CF."""
+    from sklearn.ensemble import RandomForestClassifier
+    from counterfactuals.service import generate_explanation_from_session
+
+    rng = np.random.RandomState(5)
+    X = rng.uniform(-2, 2, size=(400, 3))
+    y = np.digitize(X[:, 0] + 0.3 * X[:, 1], [-0.7, 0.7])
+    oracle = RandomForestClassifier(n_estimators=20, random_state=0).fit(X, y)
+    names = ['f0', 'f1', 'f2']
+    session = {
+        'dataset_name': 'dataset_carregado.arff', 'mlp_oracle': oracle, 'mlp_original': oracle,
+        'X_train_enc': X, 'y_train_enc': y, 'X_train_original': X, 'y_train_original': y,
+        'tree_a': oracle, 'tree_b': oracle, 'transformed_feature_names': names,
+        'feature_names_original': names, 'tree_a_feature_names': names, 'tree_b_feature_names': names,
+    }
+    base = {'method': 'COGS', 'instance_index': 0, 'seed': 1, 'desired_class': None, 'max_time': 10}
+    strict = generate_explanation_from_session(session, dict(base))
+    assert strict['status'] == 'INVALID_TARGET'              # API estrita mantém a regra
+    auto = generate_explanation_from_session(session, dict(base, multiclass_auto_target=True))
+    assert auto['status'] == 'SUCCESS', auto['message']
+    assert auto['desired_class'] != auto['factual_prediction']
+    assert any('2.ª classe mais provável' in w for w in auto['warnings'])
+    assert all(c['metrics']['validity'] for c in auto['candidates'])

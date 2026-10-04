@@ -792,7 +792,7 @@ class CounterfactualPanel(QWidget):
         self._multiclass = len(class_labels) > 2
         if self._multiclass:
             # Multiclasse: nunca se assume "classe oposta". O serviço devolve INVALID_TARGET com as opções válidas.
-            self.desired_combo.addItem("Escolha a classe alvo (obrigatório)", None)
+            self.desired_combo.addItem("Automática (2.ª classe mais provável)", None)
         else:
             self.desired_combo.addItem("Automática (classe oposta)", None)
         for value, label in class_labels.items():
@@ -843,6 +843,7 @@ class CounterfactualPanel(QWidget):
             "max_time": 30.0,
             "max_iterations": 40,
             "pipeline": "cfkit",
+            "multiclass_auto_target": True,
             "show_all_features": self.show_all_checkbox.isChecked(),
         }
 
