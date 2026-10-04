@@ -80,20 +80,32 @@ def run_section(d: dict, full: bool) -> list[str]:
             lines.append(f"| {h['label']} | " + " | ".join(str(r["nodes"]) for r in h["per_split"]) + " |")
         lines.append("")
     sel = t["structure_selection"]; bs = sel["bootstrap"]
-    runner = bs.get("runner_up")
-    lines += [f"**Configuração selecionada:** `{sel['selected_label']}` — estado interno do tuning: **{sel['status']}**.", "",
-              "Robustez interna da política (block bootstrap das repetições; teste não usado):", "",
-              f"- reamostragens: {bs['n_resamples']} (blocos = {bs['n_blocks']} repetições × {plan['folds']} dobras; seed {bs['seed']})",
-              f"- selection_probability do vencedor: **{bs['selection_probability']:.1%}** (intervalo Monte-Carlo 95%: "
-              f"{bs['selection_probability_mc_interval'][0]:.1%}–{bs['selection_probability_mc_interval'][1]:.1%})",
-              f"- segundo colocado: {('`' + runner['label'] + '` ' + format(runner['probability'], '.1%')) if runner else '—'}; "
-              f"margem 1.º−2.º: {format(bs['margin'], '.1%') if bs['margin'] is not None else '—'}",
-              f"- IC bootstrap 95% da fidelity média do vencedor: {('[%.3f, %.3f]' % tuple(bs['winner_fidelity_ci'])) if bs['winner_fidelity_ci'] else '—'}",
+    ru = sel.get("bootstrap_runner_up"); ex = t.get("capacity_expansion") or {}
+    mc = bs.get("selection_probability_mc_interval")
+    lines += [f"**Configuração escolhida pela CV completa:** `{sel['selected_config_full_cv']}` — estado interno do tuning: "
+              f"**{sel['status']}** ({sel.get('status_reason')}).", "",
+              "Expansão adaptativa da capacidade (só CV do treino; mesmas dobras):", "",
+              f"- initial_node_grid: {ex.get('initial_node_grid')}; final_node_grid: {ex.get('final_node_grid')}; "
+              f"capacity_expansion_rounds: {ex.get('capacity_expansion_rounds')}; expansion_triggered: {ex.get('expansion_triggered')}; "
+              f"expansion_stop_reason: `{ex.get('expansion_stop_reason')}`; fraction_at_node_cap (vencedora final): "
+              f"{('%.0f%%' % (100 * ex['fraction_at_node_cap'])) if ex.get('fraction_at_node_cap') is not None else '—'}",
+              *[f"- ronda {r['round']}: {r['from_max_nodes']} → {r['to_max_nodes']} nós (saturadas: {r['saturated_candidates']})"
+                for r in ex.get("rounds", [])], "",
+              "Robustez interna da política (bootstrap de blocos das repetições; teste não usado):", "",
+              f"- bootstrap_method: **{bs['method']}**; bootstrap_samples: {bs['bootstrap_samples']}; avaliações distintas: {bs['bootstrap_evaluations']}"
+              f" (blocos = {bs['n_blocks']} repetições × {plan['folds']} dobras)",
+              f"- selected_config_probability (escolhida pela CV completa): **{bs['selected_config_probability']:.1%}**"
+              + (f" (intervalo Monte-Carlo 95%: {mc[0]:.1%}–{mc[1]:.1%})" if mc else " (exato: sem erro Monte-Carlo)"),
+              f"- bootstrap_modal_config: `{bs['bootstrap_modal_config']}` com probabilidade {bs['bootstrap_modal_probability']:.1%}"
+              f" — selecionada é a moda: **{bs['selected_is_modal']}**" + (" ⚠ **fragilidade FORTE da seleção full-CV**" if bs.get('full_cv_selection_fragile') else ""),
+              f"- bootstrap_runner_up: {('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'}; "
+              f"top1_top2_margin: {format(bs['top1_top2_margin'], '.1%') if bs['top1_top2_margin'] is not None else '—'}",
+              f"- IC bootstrap 95% da fidelity média da escolhida: {('[%.3f, %.3f]' % tuple(bs['winner_fidelity_ci'])) if bs['winner_fidelity_ci'] else '—'}",
               "- distribuição das configurações escolhidas: " + (", ".join(f"`{k}` {v:.1%}" for k, v in bs["distribution"].items()) or "—"),
               f"- vencedora por repetição (apenas informativo; 1 repetição = {plan['folds']} dobras): {sel['per_repeat_winners']}",
-              f"- saturação do vencedor: {sel['node_cap']['node_cap_reached_count']}/{plan['n_splits']} árvores no teto max_nodes={sel['node_cap']['max_nodes']} "
-              f"(fraction_at_node_cap {sel['node_cap']['fraction_at_node_cap']:.0%}); estabilidade estrutural potencialmente censurada: "
-              f"**{sel['node_cap']['structural_stability_censored']}**", ""]
+              f"- saturação da escolhida: {sel['node_cap']['node_cap_reached_count']}/{plan['n_splits']} árvores no teto max_nodes={sel['node_cap']['max_nodes']} "
+              f"(fraction_at_node_cap {sel['node_cap']['fraction_at_node_cap']:.0%}); structural_stability_censored: "
+              f"**{sel['node_cap']['structural_stability_censored']}** (evidência estrutural: {sel['node_cap'].get('structural_stability_evidence')})", ""]
     tm = d.get("test_models") or {}
     o, r = tm.get("original") or {}, tm.get("reloaded") or {}
     lines += [f"Teste (usado uma só vez, depois da escolha): TREPAN Original — nós {o.get('nodes')}, folhas {o.get('leaves')}, "
@@ -151,21 +163,23 @@ def main() -> None:
             continue
         md += [f"## {runs[0]['dataset']} — oráculo `{runs[0].get('oracle_builder', 'factory')}`", "",
                "### 1. Estabilidade interna do tuning (block bootstrap, por seed mestre)", "",
-               "| seed mestre | oracle_id | selecionada | selection_probability | 2.º colocado | margem | reamostragens | tuning |",
-               "|---|---|---|---|---|---|---|---|"]
+               "| seed mestre | oracle_id | escolhida (CV completa) | P(escolhida) | moda do bootstrap | P(moda) | bootstrap_runner_up | top1−top2 | método (amostras) | grelha de nós final (rondas) | tuning |",
+               "|---|---|---|---|---|---|---|---|---|---|---|"]
         picks, n_stable = [], 0
         for d in runs:
-            sel = d["tuning"]["structure_selection"]; bs = sel["bootstrap"]; picks.append(sel["selected_label"]); n_stable += bool(sel["stable"])
-            ru = bs.get("runner_up")
-            md.append(f"| {d['seed']} | `{((d.get('oracle_contract') or {}).get('oracle') or {}).get('oracle_id')}` | `{sel['selected_label']}` | "
-                      f"{bs['selection_probability']:.1%} | {('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'} | "
-                      f"{format(bs['margin'], '.1%') if bs['margin'] is not None else '—'} | {bs['n_resamples']} | {sel['status']} |")
+            sel = d["tuning"]["structure_selection"]; bs = sel["bootstrap"]; picks.append(sel["selected_config_full_cv"]); n_stable += bool(sel["stable"])
+            ru = sel.get("bootstrap_runner_up"); ex = d["tuning"].get("capacity_expansion") or {}
+            md.append(f"| {d['seed']} | `{((d.get('oracle_contract') or {}).get('oracle') or {}).get('oracle_id')}` | `{sel['selected_config_full_cv']}` | "
+                      f"{bs['selected_config_probability']:.1%} | `{bs['bootstrap_modal_config']}` | {bs['bootstrap_modal_probability']:.1%} | "
+                      f"{('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'} | "
+                      f"{format(bs['top1_top2_margin'], '.1%') if bs['top1_top2_margin'] is not None else '—'} | {bs['method']} ({bs['bootstrap_samples']}) | "
+                      f"{ex.get('final_node_grid')} ({ex.get('capacity_expansion_rounds')}) | {sel['status']} |")
         cnt = Counter(picks); modal, n_modal = cnt.most_common(1)[0]
         md += ["", "### 2. Robustez externa entre seeds mestre (evidência empírica; não define `tuning_stable`)", "",
                "| seed mestre | selecionada | nós finais (Original) | accuracy teste (Original) | fidelity teste (Original) | tempo total (s) |", "|---|---|---|---|---|---|"]
         for d in runs:
             sel = d["tuning"]["structure_selection"]; o = (d.get("test_models") or {}).get("original") or {}
-            md.append(f"| {d['seed']} | `{sel['selected_label']}` | {o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
+            md.append(f"| {d['seed']} | `{sel['selected_config_full_cv']}` | {o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
         consensus = n_modal / len(picks)
         md += ["", f"Configurações escolhidas: {dict(cnt)}. **Consenso de seleção = {consensus:.0%} ({n_modal}/{len(picks)}) nas master seeds avaliadas** "
                f"(moda `{modal}`); seeds mestre com `tuning_stable` pelo bootstrap: {n_stable}/{len(picks)}.", ""]

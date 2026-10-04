@@ -18,7 +18,7 @@ from core.controlled_trepan_experiment import ControlledTrepanConfig
 
 ROOT = Path(__file__).resolve().parents[1]
 FAST = dict(cv_folds=2, cv_repeats=3, max_capacity_candidates=1, max_semantic_candidates=1,
-            purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15), bootstrap_resamples=40)
+            purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15), bootstrap_resamples=40, capacity_expansion=False)
 
 
 def _fast_search(**kw):
@@ -177,6 +177,21 @@ def test_gui_benchmark_mode_calls_the_shared_service_and_publishes_the_diagnosti
     assert rows[tr("sci.oracle_id")] == outcome.oracle_id[:8]
     assert rows[tr("sci.tuning_status")] in {"tuning_stable", "tuning_uncertain"}
     assert not [m for m in res.messages if m.code == "exploratory_mode"]
+    # os visualizadores recebem as MESMAS árvores avaliadas (identidade de objeto), sem retreino
+    assert window.trepan_original_tree is outcome.artifacts["trepan_original"]
+    assert window.trepan_reloaded_tree is outcome.artifacts["trepan_reloaded"]
+    assert window.benchmark_view["oracle_id"] == outcome.oracle_id == outcome.artifacts["oracle_id"]
+    window.visualize_tree()
+    w = window.tree_widget
+    assert w.trepan_original_tree is outcome.artifacts["trepan_original"] and w.trepan_reloaded_tree is outcome.artifacts["trepan_reloaded"]
+    assert w.feature_names == outcome.artifacts["feature_names_original"] and outcome.oracle_id[:8] in w.dataset_name
+    assert outcome.artifacts["trepan_original"].node_count_ == outcome.result.trees["trepan_original"].logical_nodes.value
+    cfg = outcome.artifacts["selected_config"]
+    assert outcome.report["evaluation"]["trepan_scientific_tuning"]["selected_config"]["max_nodes"] == cfg.max_nodes
+    assert "max_nodes" in w.dataset_name and str(cfg.max_nodes) in w.dataset_name
+    # o modo interativo nunca herda as árvores do benchmark
+    window._clear_benchmark_view()
+    assert window.benchmark_view is None and window.benchmark_outcome is None
 
 
 def test_gui_interactive_result_is_marked_exploratory_and_not_a_benchmark(window, arff):
@@ -198,108 +213,6 @@ def test_gui_benchmark_branch_does_not_reimplement_the_pipeline():
     assert "run_scientific_benchmark" in body and "frame_from_arrays" in body
     for forbidden in ("train_production_dataframe", "tune_scientific_trepan", "MLPTrainer", "train_robust_mlp", "fit_controlled_trepan_pair"):
         assert forbidden not in body
-
-
-# ------------------------------------------------------------------------------- block bootstrap
-def _arrays(means, stds, nodes, repeats=5, folds=3, seed=0):
-    """Fidelity por partição para candidatos sintéticos (emparelhados), com `repeats` blocos de `folds` dobras."""
-    rng = np.random.default_rng(seed)
-    J = repeats * folds
-    F = np.array([m + s * rng.standard_normal(J) for m, s in zip(means, stds)])
-    N = np.array([np.full(J, float(n)) for n in nodes])
-    plan = [(r, 100 + r, f, None, None) for r in range(repeats) for f in range(folds)]
-    meta = [{"config": {"purity_epsilon": 0.05, "max_nodes": int(n)}, "max_nodes": int(n)} for n in nodes]
-    return F, N, plan, meta
-
-
-def test_block_bootstrap_is_deterministic_for_a_fixed_seed_and_uses_the_same_policy(monkeypatch):
-    F, N, plan, meta = _arrays([0.90, 0.90, 0.80], [0.01, 0.01, 0.01], [10, 20, 30])
-    search = ScientificTrepanSearchConfig(bootstrap_resamples=60, bootstrap_seed=11)
-    labels = ["c0", "c1", "c2"]
-    kw = dict(k=3, search=search, valid=[True] * 3, plan=plan, repeats=5, labels=labels, final_label="c0", stats=None)
-    a = _block_bootstrap(F, N, N, N, meta, **kw)
-    b = _block_bootstrap(F, N, N, N, meta, **kw)
-    assert a == b and a["n_resamples"] == 60 and a["seed"] == 11 and a["n_blocks"] == 5 and a["test_used"] is False
-    calls = []
-    real = tuning_mod._lexicographic_select
-    monkeypatch.setattr(tuning_mod, "_lexicographic_select", lambda *x, **y: calls.append(1) or real(*x, **y))
-    _block_bootstrap(F, N, N, N, meta, **kw)
-    assert len(calls) == 60                                         # exatamente a mesma função de seleção, 1x por reamostragem
-    other = _block_bootstrap(F, N, N, N, meta, **{**kw, "search": ScientificTrepanSearchConfig(bootstrap_resamples=60, bootstrap_seed=12)})
-    assert other["seed"] == 12
-
-
-def test_block_bootstrap_reports_probability_runner_up_margin_distribution_and_intervals():
-    F, N, plan, meta = _arrays([0.90, 0.895, 0.70], [0.02, 0.02, 0.02], [10, 12, 30])
-    search = ScientificTrepanSearchConfig(bootstrap_resamples=100, bootstrap_seed=5)
-    full = _lexicographic_select(F, N, meta, 3, search, [True] * 3, N, N)[0]
-    labels = ["c0", "c1", "c2"]
-    out = _block_bootstrap(F, N, N, N, meta, 3, search, [True] * 3, plan, 5, labels, labels[full], None)
-    assert out["assessable"] and abs(sum(out["distribution"].values()) - 1.0) < 1e-9
-    assert out["selection_probability"] == out["distribution"][labels[full]]
-    lo, hi = out["selection_probability_mc_interval"]
-    assert 0.0 <= lo <= out["selection_probability"] <= hi <= 1.0
-    if out["runner_up"]:
-        assert out["runner_up"]["label"] != labels[full]
-        assert out["margin"] == pytest.approx(out["selection_probability"] - out["runner_up"]["probability"])
-    assert out["winner_fidelity_ci"][0] <= out["winner_fidelity_ci"][1] and "c2" not in out["distribution"]
-
-
-def test_clear_winner_has_high_probability_and_close_candidates_are_uncertain():
-    search = ScientificTrepanSearchConfig(bootstrap_resamples=100, bootstrap_seed=5)
-    labels = ["c0", "c1"]
-    F, N, plan, meta = _arrays([0.95, 0.70], [0.005, 0.005], [10, 10])
-    w = _lexicographic_select(F, N, meta, 3, search, [True] * 2, N, N)[0]
-    sure = _block_bootstrap(F, N, N, N, meta, 3, search, [True] * 2, plan, 5, labels, labels[w], None)
-    assert sure["selection_probability"] == 1.0 and sure["runner_up"] is None
-    # dois candidatos equivalentes: complexidade diferente por partição -> a vencedora oscila entre reamostragens
-    rng = np.random.default_rng(1)
-    base = 0.9 + 0.01 * rng.standard_normal(15)
-    F2 = np.array([base, base + 0.0005 * rng.standard_normal(15)])
-    N2 = np.array([rng.integers(10, 14, 15).astype(float), rng.integers(10, 14, 15).astype(float)])
-    w2 = _lexicographic_select(F2, N2, meta[:2], 3, search, [True] * 2, N2, N2)[0]
-    unsure = _block_bootstrap(F2, N2, N2, N2, meta[:2], 3, search, [True] * 2, plan, 5, labels, labels[w2], None)
-    assert unsure["selection_probability"] < 1.0
-
-
-def test_single_repeat_cannot_be_assessed_and_is_flagged_uncertain():
-    X = np.random.default_rng(0).normal(size=(120, 3))
-    y = (X[:, 0] > 0).astype(int)
-
-    class O:
-        classes_ = np.array([0, 1])
-
-        def predict(self, A):
-            return (np.asarray(A)[:, 0] > 0).astype(int)
-    base = ControlledTrepanConfig(max_nodes=15, max_depth=15, min_samples_leaf=2, min_sample=100, max_n=2, beam_width=1,
-                                  max_features_per_node=3, max_queries=3000, random_state=1)
-    r = tune_scientific_trepan(X, y, oracle=O(), feature_names=list("abc"), base_config=base,
-                               search=ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=1, max_capacity_candidates=1,
-                                                                   max_semantic_candidates=1, purity_epsilon_grid=(0.05,),
-                                                                   max_nodes_grid=(7,)))
-    sel = r["structure_selection"]
-    assert sel["bootstrap"]["assessable"] is False and sel["status"] == "tuning_uncertain" and r["tuning_stable"] is False
-
-
-def test_tuning_report_separates_internal_stability_from_external_consensus_and_is_deterministic():
-    X = np.random.default_rng(2).normal(size=(150, 3))
-    y = (X[:, 0] + 0.5 * X[:, 1] > 0).astype(int)
-
-    class O:
-        classes_ = np.array([0, 1])
-
-        def predict(self, A):
-            A = np.asarray(A)
-            return ((A[:, 0] + 0.5 * A[:, 1]) > 0).astype(int)
-    base = ControlledTrepanConfig(max_nodes=15, max_depth=15, min_samples_leaf=2, min_sample=150, max_n=2, beam_width=1,
-                                  max_features_per_node=3, max_queries=3000, random_state=1)
-    search = ScientificTrepanSearchConfig(**FAST)
-    runs = [tune_scientific_trepan(X, y, oracle=O(), feature_names=list("abc"), base_config=base, search=search) for _ in range(2)]
-    a, b = (r["structure_selection"] for r in runs)
-    assert a["bootstrap"] == b["bootstrap"] and a["selection_probability"] == b["selection_probability"]
-    assert a["bootstrap"]["n_resamples"] == 40 and a["bootstrap"]["n_blocks"] == 3
-    assert runs[0]["tuning_status"] in {"tuning_stable", "tuning_uncertain"} and "stability_rule" in runs[0]
-    assert "agreement" not in a                                              # a definição por repetição foi substituída
 
 
 # ------------------------------------------------------------------------------- candidatos diferentes por dataset

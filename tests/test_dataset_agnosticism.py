@@ -109,7 +109,7 @@ def test_target_metadata_exclusions_are_derived_from_the_observed_class_names():
 # --------------------------------------------------------------------------------- geradores genéricos
 def _search():
     return svc.scientific_search_config(cv_folds=2, cv_repeats=2, max_capacity_candidates=1, max_semantic_candidates=1,
-                                        purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15), bootstrap_resamples=20)
+                                        purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15), bootstrap_resamples=20, capacity_expansion=False)
 
 
 def make_frame(n=150, n_features=5, n_classes=2, class_names=None, target="y", categorical=0, seed=0, feature_prefix="f",
@@ -254,7 +254,7 @@ def test_results_do_not_depend_on_dataset_identity_names_or_labels():
 def test_tuning_grid_is_configuration_not_code():
     X = make_frame(n=120, n_features=3, seed=4)
     custom = svc.scientific_search_config(cv_folds=2, cv_repeats=2, max_capacity_candidates=1, max_semantic_candidates=1,
-                                          purity_epsilon_grid=(0.1, 0.03), max_nodes_grid=(9, 21, 127), bootstrap_resamples=10)
+                                          purity_epsilon_grid=(0.1, 0.03), max_nodes_grid=(9, 21, 127), bootstrap_resamples=10, capacity_expansion=False)
     out = svc.run_scientific_benchmark(X, target="y", seed=2, search=custom)
     labels = {h["label"] for h in out.report["evaluation"]["trepan_scientific_tuning"]["structure_history"]}
     assert "purity_epsilon=0.1, max_nodes=127" in labels and "purity_epsilon=0.03, max_nodes=9" in labels

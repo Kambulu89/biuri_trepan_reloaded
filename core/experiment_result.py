@@ -284,10 +284,21 @@ class ScientificDiagnostics:
     fidelity_std: Measure = field(default_factory=Measure)
     predictive_stability: Measure = field(default_factory=Measure)       # desvio-padrão da fidelity entre partições (menor = mais estável)
     structural_stability: Measure = field(default_factory=Measure)       # índice de instabilidade estrutural (menor = mais estável)
-    selection_probability: Measure = field(default_factory=Measure)
-    selection_runner_up: Optional[str] = None
-    selection_margin: Measure = field(default_factory=Measure)
+    selection_probability: Measure = field(default_factory=Measure)         # P(configuração escolhida pela CV completa)
+    selected_config_full_cv: Optional[str] = None
+    bootstrap_modal_config: Optional[str] = None
+    bootstrap_modal_probability: Measure = field(default_factory=Measure)
+    selection_runner_up: Optional[str] = None                               # 2.º da distribuição bootstrap (<= 1.º)
+    selection_margin: Measure = field(default_factory=Measure)              # top1 − top2 (>= 0)
+    full_cv_selection_fragile: Optional[bool] = None                        # a escolhida pela CV completa não é a moda
+    bootstrap_method: Optional[str] = None                                  # exact / monte_carlo
     selection_resamples: Optional[int] = None
+    structural_stability_evidence: Optional[str] = None                     # observed / censored_by_node_cap
+    expansion_triggered: Optional[bool] = None
+    capacity_expansion_rounds: Optional[int] = None
+    initial_node_grid: List[int] = field(default_factory=list)
+    final_node_grid: List[int] = field(default_factory=list)
+    expansion_stop_reason: Optional[str] = None
     fraction_at_node_cap: Measure = field(default_factory=Measure)
     node_cap_censored: Optional[bool] = None
     queries_used: Measure = field(default_factory=Measure)

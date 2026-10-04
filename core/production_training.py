@@ -186,6 +186,7 @@ def train_production_dataframe(
     trepan_overrides: Optional[Dict[str,Any]]=None,
     semantic_attribution: Optional[AttributionConfig]=None,
     oracle_builder: str='factory',
+    return_artifacts: bool=False,
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -434,6 +435,14 @@ def train_production_dataframe(
     (out/'manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False,default=str),encoding='utf-8')
     report={'manifest':manifest,'contract':contract.to_dict(),'split':{'seed':seed,'train_indices':tr.tolist(),'test_indices':te.tolist()},'evaluation':evaluation,'semantic_graph':graph.to_dict() if graph else None}
     (out/'production_report.json').write_text(json.dumps(report,indent=2,ensure_ascii=False,default=str),encoding='utf-8')
+    if return_artifacts:
+        # Objetos EXATOS avaliados cientificamente (nunca reconstruídos/retreinados): árvores, oráculo congelado e espaços.
+        report['artifacts']={
+            'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,'oracle':oracle,'mlp_original':mlp,
+            'feature_names_original':list(model_names),'feature_names_reloaded':list(names_aug) if augmented else list(model_names),
+            'class_names':[str(c) for c in getattr(mlp,'classes_',[])],'selected_config':cfg,
+            'oracle_id':oracle.oracle_id,'preprocessor':pre,
+        }
     return report
 
 __all__=['train_production_dataframe']

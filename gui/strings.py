@@ -184,8 +184,9 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.surrogate_above_oracle": "{tree}: accuracy superior à do MLP Original ({tree_acc} vs {mlp_acc}, +{diff} pp, cerca de {n_samples} de {n_total} "
                                       "amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o "
                                       "substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.",
-        "msg.tuning_uncertain": "Tuning da estrutura do TREPAN incerto: no block bootstrap das repetições da validação cruzada a configuração "
-                                "escolhida vence apenas {prob} das reamostragens (limiar {threshold}). A escolha é pouco suportada pelos dados.",
+        "msg.tuning_uncertain": "Tuning da estrutura do TREPAN incerto: no bootstrap de blocos das repetições da validação cruzada a configuração "
+                                "escolhida pela CV completa tem probabilidade {prob} (limiar {threshold}) ou não é a moda do bootstrap. "
+                                "A escolha é pouco suportada pelos dados.",
         "msg.exploratory_mode": "Modo INTERACTIVE / EXPLORATORY: estes resultados são exploratórios e não são benchmark científico. "
                                 "Use SCIENTIFIC / BENCHMARK para o pipeline com oráculo congelado e oracle_id.",
         "msg.tuning_failed": "O tuning da estrutura do TREPAN falhou ({reason}); foi usada a configuração canónica.",
@@ -201,8 +202,13 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "sci.cv_plan": "Plano de CV", "sci.selected": "Configuração escolhida", "sci.fidelity": "Fidelity média ± desvio (CV)",
         "sci.predictive_stability": "Estabilidade preditiva (desvio da fidelity)",
         "sci.structural_stability": "Estabilidade estrutural (índice; menor = mais estável)",
-        "sci.selection_probability": "selection_probability (block bootstrap)", "sci.runner_up": "2.º colocado",
-        "sci.margin": "Margem 1.º−2.º", "sci.node_cap": "fraction_at_node_cap", "sci.queries": "queries_used / query_budget",
+        "sci.selection_probability": "selection_probability da escolhida (full-CV)", "sci.runner_up": "bootstrap_runner_up (2.º do bootstrap)",
+        "sci.margin": "Margem top1−top2 (bootstrap)", "sci.full_cv": "Escolhida pela CV completa",
+        "sci.modal": "Moda do bootstrap", "sci.fragile": "Fragilidade da seleção full-CV",
+        "sci.bootstrap_method": "Método do bootstrap", "sci.expansion": "Expansão de capacidade",
+        "sci.fragile.yes": "FORTE: a escolhida pela CV completa não é a moda do bootstrap",
+        "sci.fragile.no": "não: a escolhida é a moda do bootstrap",
+        "sci.censored_weak": "evidência fraca: CV de nós baixo pode vir do teto de nós", "sci.node_cap": "fraction_at_node_cap", "sci.queries": "queries_used / query_budget",
         "sci.budget_exhausted": "budget_exhausted", "sci.test_used": "test_used_for_selection", "sci.tuning_status": "Estado do tuning",
         "sci.status.tuning_stable": "tuning_stable", "sci.status.tuning_uncertain": "tuning_uncertain",
         "sci.status.not_run": "não executado", "sci.status.failed": "falhou (configuração canónica)",

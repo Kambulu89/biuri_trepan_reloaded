@@ -835,6 +835,8 @@ class BiuriApp(QMainWindow):
         self.feature_names_original = None
         self.feature_names_augmented = None
         self.trepan_reloaded_feature_names = None
+        self.benchmark_view = None          # árvores exatas do modo SCIENTIFIC / BENCHMARK (None no modo interativo)
+        self.benchmark_outcome = None
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
         self._ontology_match_cache = {}
@@ -2557,6 +2559,7 @@ que la red se vuelve interpretable.
             self.current_data = self.original_data
             self.trepan_original_tree = None
             self.trepan_reloaded_tree = None
+            self._clear_benchmark_view()
             self.c45_tree = None
             self.trepan_original_audit = None
             self.trepan_reloaded_audit = None
@@ -3757,6 +3760,40 @@ Asegúrese de que:
             ontology=self.loaded_ontology, reasoner_report=self.ontology_reasoner_report or None,
             progress_fn=progress_fn)
 
+    def _clear_benchmark_view(self):
+        """O modo interativo nunca herda árvores do benchmark (e vice-versa)."""
+        if getattr(self, 'benchmark_view', None) is not None:
+            self.benchmark_view = None
+            self.benchmark_outcome = None
+
+    def _benchmark_tree_title(self):
+        view = getattr(self, 'benchmark_view', None) or {}
+        cfg = view.get('selected_config')
+        conf = f"purity_epsilon={getattr(cfg, 'purity_epsilon', '?')}, max_nodes={getattr(cfg, 'max_nodes', '?')}" if cfg is not None else "?"
+        return f"SCIENTIFIC / BENCHMARK · oracle_id={str(view.get('oracle_id'))[:8]} · {conf}"
+
+    def _visualize_benchmark_tree(self):
+        """Visualizadores com as árvores EXATAS devolvidas pelo ScientificBenchmarkService (mesmo oracle_id/configuração)."""
+        view = self.benchmark_view
+        viz = TreeVisualizationWidget(
+            tree_model=view['trepan_original'],
+            feature_names=list(view['feature_names_original'] or []),
+            feature_names_reloaded=list(view['feature_names_reloaded'] or view['feature_names_original'] or []),
+            class_names=list(view['class_names'] or []),
+            trepan_original_tree=view['trepan_original'],
+            trepan_reloaded_tree=view['trepan_reloaded'],
+            c45_tree=None, trepan_original_improved_tree=None, trepan_reloaded_improved_tree=None,
+            dataset_name=self._benchmark_tree_title(), primary_tree_label=self._benchmark_tree_title(),
+        )
+        self.tree_widget = viz
+        layout = self.visualization_tab.layout()
+        if layout:
+            for i in reversed(range(layout.count())):
+                layout.itemAt(i).widget().setParent(None)
+        layout.addWidget(self.tree_widget)
+        self.content_tabs.setCurrentWidget(self.visualization_tab)
+        self._set_status(self._benchmark_tree_title())
+
     def _launch_benchmark_worker(self):
         if self._training_worker is not None and self._training_worker.isRunning():
             QMessageBox.warning(self, "Advertencia", "Ya hay un entrenamiento en curso.")
@@ -3785,6 +3822,12 @@ Asegúrese de que:
         self._training_worker = None
         outcome = payload["outcome"]
         self.benchmark_outcome = outcome
+        # As MESMAS árvores avaliadas cientificamente (nada é reconstruído nem retreinado para as desenhar).
+        view = outcome.tree_view()
+        self.benchmark_view = view
+        self.trepan_original_tree = view["trepan_original"]
+        self.trepan_reloaded_tree = view["trepan_reloaded"]
+        self.trepan_reloaded_feature_names = list(view["feature_names_reloaded"] or [])
         if self.audit is not None:
             self.audit.on_benchmark_finished(outcome.result)
             self.content_tabs.setCurrentWidget(self.audit_panel)
@@ -3797,6 +3840,7 @@ Asegúrese de que:
         preset = enforce_scientific_preset(preset)
         if not self._has_loaded_data():
             raise ValueError("Carregue os dados primeiro.")
+        self._clear_benchmark_view()
 
         def progress(stage, pct, msg):
             if progress_fn:
@@ -4710,6 +4754,9 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
         return explanation
         
     def visualize_tree(self):
+        if getattr(self, 'benchmark_view', None) is not None:
+            self._visualize_benchmark_tree()
+            return
         if not self.mlp_model:
             QMessageBox.warning(self, "Advertencia", "¡Entrene un modelo primero!")
             return
@@ -5394,9 +5441,14 @@ Use la pestaña Métricas para el detalle visual de fidelidad y precisión.
             if fmt not in ("png", "svg", "pdf"):
                 fmt = "png"
             base = os.path.splitext(path)[0]
-            names = self._get_original_feature_names() if tree is self.trepan_original_tree else (
-                self.trepan_reloaded_feature_names or self._get_original_feature_names())
-            classes = list(self.trepan.label_encoder.classes_)
+            bench = getattr(self, 'benchmark_view', None)
+            if bench is not None:
+                names = list(bench['feature_names_original'] if tree is self.trepan_original_tree else bench['feature_names_reloaded'])
+                classes = list(bench['class_names'])
+            else:
+                names = self._get_original_feature_names() if tree is self.trepan_original_tree else (
+                    self.trepan_reloaded_feature_names or self._get_original_feature_names())
+                classes = list(self.trepan.label_encoder.classes_)
             saved = export_tree_png(tree, names, classes, base, fmt=fmt)
             self._set_status(tr("export.tree_done", path=saved))
         except Exception as exc:

@@ -397,11 +397,21 @@ def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
         (tr("sci.selected"), d.selected_config or na_text(Reason.TUNING_NOT_RUN)),
         (tr("sci.fidelity"), fid),
         (tr("sci.predictive_stability"), format_measure(d.predictive_stability)),
-        (tr("sci.structural_stability"), format_measure(d.structural_stability, "{:.2f}")),
+        (tr("sci.structural_stability"), format_measure(d.structural_stability, "{:.2f}")
+         + (f" — ⚠ {tr('sci.censored_weak')}" if d.structural_stability_evidence == "censored_by_node_cap" else "")),
+        (tr("sci.full_cv"), d.selected_config_full_cv or na_text(Reason.TUNING_NOT_RUN)),
         (tr("sci.selection_probability"), pct(d.selection_probability)
          + (f" ({d.selection_resamples} reamostragens)" if d.selection_resamples else "")),
+        (tr("sci.modal"), (f"{d.bootstrap_modal_config} ({pct(d.bootstrap_modal_probability)})" if d.bootstrap_modal_config
+                           else na_text(Reason.TUNING_NOT_RUN))),
         (tr("sci.runner_up"), d.selection_runner_up or tr("misc.none")),
         (tr("sci.margin"), pct(d.selection_margin)),
+        (tr("sci.fragile"), tr("sci.fragile.yes") if d.full_cv_selection_fragile else
+         (tr("sci.fragile.no") if d.full_cv_selection_fragile is not None else na_text(Reason.TUNING_NOT_RUN))),
+        (tr("sci.bootstrap_method"), format_optional(d.bootstrap_method)),
+        (tr("sci.expansion"), (f"{'sim' if d.expansion_triggered else 'não'}; rondas {format_optional(d.capacity_expansion_rounds)}; "
+                               f"grelha {d.initial_node_grid} → {d.final_node_grid}; {format_optional(d.expansion_stop_reason)}")
+         if d.initial_node_grid else na_text(Reason.TUNING_NOT_RUN)),
         (tr("sci.node_cap"), cap),
         (tr("sci.queries"), queries),
         (tr("sci.budget_exhausted"), yes_no(d.budget_exhausted)),

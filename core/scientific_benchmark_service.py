@@ -44,6 +44,14 @@ class BenchmarkOutcome:
     report: Mapping[str, Any]
     result: ExperimentResult
     oracle_id: str
+    artifacts: Optional[Mapping[str, Any]] = None   # objetos exatos avaliados (árvores, oráculo congelado, nomes)
+
+    def tree_view(self) -> dict:
+        """Dados para os visualizadores: as MESMAS árvores avaliadas (nunca retreinadas), com oracle_id e configuração."""
+        a = dict(self.artifacts or {})
+        return {"trepan_original": a.get("trepan_original"), "trepan_reloaded": a.get("trepan_reloaded"),
+                "feature_names_original": a.get("feature_names_original"), "feature_names_reloaded": a.get("feature_names_reloaded"),
+                "class_names": a.get("class_names"), "oracle_id": self.oracle_id, "selected_config": a.get("selected_config")}
 
     @property
     def usable_as_benchmark(self) -> bool:
@@ -92,7 +100,7 @@ def run_scientific_benchmark(
         return train_production_dataframe(
             df, target=target, out_dir=directory, seed=seed, owl_path=owl_path, ontology=ontology,
             reasoner_report=reasoner_report, require_reasoner=require_reasoner, scientific_tuning=True,
-            trepan_search=search or scientific_search_config(), oracle_builder=oracle_builder, **production_kwargs)
+            trepan_search=search or scientific_search_config(), oracle_builder=oracle_builder, return_artifacts=True, **production_kwargs)
 
     if out_dir is None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -106,7 +114,10 @@ def run_scientific_benchmark(
     result.provenance.training_mode = ExecutionMode.SCIENTIFIC_BENCHMARK.value
     if progress_fn:
         progress_fn("done", 100, f"oracle_id={oracle_id[:8]}")
-    return BenchmarkOutcome(ExecutionMode.SCIENTIFIC_BENCHMARK.value, report, result, oracle_id)
+    artifacts = report.pop("artifacts", None)         # fora do relatório serializável
+    if artifacts is not None and artifacts.get("oracle_id") != oracle_id:
+        raise OracleContractViolation("As árvores devolvidas não pertencem ao oráculo congelado verificado.")
+    return BenchmarkOutcome(ExecutionMode.SCIENTIFIC_BENCHMARK.value, report, result, oracle_id, artifacts)
 
 
 __all__ = ["BenchmarkOutcome", "SCIENTIFIC_CV_FOLDS", "SCIENTIFIC_CV_REPEATS", "frame_from_arrays",
