@@ -150,7 +150,8 @@ def test_production_uses_semantic_teacher_for_both_arms_when_evidence_is_strong(
     ev = rep["evaluation"]
     assert ev["semantic_enrichment"]["evidence_strength"] == "strong", ev["semantic_enrichment"]["decision"]
     assert ev["semantic_teacher"]["teacher"] == "mlp_semantic"
-    assert isinstance(seen["oracle"], SemanticTeacher)                      # o MESMO professor para os dois braços
+    assert isinstance(seen["oracle"].model, SemanticTeacher)               # o MESMO professor (congelado) para os dois braços
+    assert ev["oracle_contract"]["single_oracle_for_all_trees"] and ev["oracle_contract"]["oracle"]["builder"] == "semantic_teacher"
     assert ev["experiment_audit"]["same_oracle"] is True                  # mesmo professor nos dois braços
     assert ev["experiment_audit"]["reloaded_oracle_adapter"] == "OriginalOracleProjection"
     assert "mlp_semantic" in ev["models"] and "mlp_original" in ev["models"]
