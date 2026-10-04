@@ -107,3 +107,12 @@ def test_robust_builder_handles_string_labels_and_is_a_valid_frozen_oracle():
     f = build_frozen_oracle(X, labels, seed=1, builder="robust")
     assert set(f.predict(X)) <= {"pos", "neg"} and list(f.classes_) == ["neg", "pos"]
     assert f.identity.builder == "robust" and f.verify_unchanged()
+
+
+def test_robust_oracle_is_a_cloneable_estimator_usable_by_the_health_gate():
+    from sklearn.base import clone
+    from sklearn.model_selection import cross_val_score
+    X, y = _data(6)
+    labels = np.where(y == 1, "pos", "neg")
+    f = build_frozen_oracle(X, labels, seed=1, builder="robust")
+    assert len(cross_val_score(clone(f.model), X, labels, cv=2)) == 2

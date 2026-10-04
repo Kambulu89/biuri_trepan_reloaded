@@ -20,6 +20,7 @@ from dataclasses import asdict, dataclass
 from typing import Any, Callable, Dict, Iterator, Mapping, Optional
 
 import numpy as np
+from sklearn.base import BaseEstimator, ClassifierMixin, clone
 
 
 class OracleContractViolation(RuntimeError):
@@ -198,12 +199,19 @@ def _build_factory(Z, y, seed: int):
     return mlp
 
 
-class _LabelDecoded:
-    """Modelo treinado sobre rótulos inteiros que expõe os rótulos originais (a GUI codifica o alvo antes de treinar)."""
+class _LabelDecoded(ClassifierMixin, BaseEstimator):
+    """Estimador treinado sobre rótulos inteiros que expõe os rótulos originais (a GUI codifica o alvo antes de treinar).
 
-    def __init__(self, estimator, classes):
-        self.estimator_ = estimator
-        self.classes_ = np.asarray(classes)
+    É um estimador scikit-learn válido (``clone``/``fit``), logo serve também para validação cruzada e portas de saúde.
+    """
+
+    def __init__(self, estimator=None):
+        self.estimator = estimator
+
+    def fit(self, X, y):
+        self.classes_, y_int = np.unique(np.asarray(y), return_inverse=True)
+        self.estimator_ = clone(self.estimator).fit(X, y_int)
+        return self
 
     def predict(self, X):
         return self.classes_[np.asarray(self.estimator_.predict(X)).astype(int)]
@@ -217,7 +225,10 @@ def _build_robust(Z, y, seed: int):
     from core.mlp_optimizer import train_robust_mlp_original
     classes, y_int = np.unique(np.asarray(y), return_inverse=True)
     result = train_robust_mlp_original(Z, y_int, Z, y_int, mode="balanced")   # X_test=treino: só relato, nunca teste externo
-    return _LabelDecoded(result["model"], classes)
+    wrapper = _LabelDecoded(estimator=result["model"])
+    wrapper.classes_ = classes                      # o modelo já está ajustado: não se reajusta
+    wrapper.estimator_ = result["model"]
+    return wrapper
 
 
 ORACLE_BUILDERS: Dict[str, Callable[[Any, Any, int], Any]] = {"factory": _build_factory, "robust": _build_robust}
