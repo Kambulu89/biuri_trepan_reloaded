@@ -99,3 +99,11 @@ def test_production_report_proves_single_oracle_for_original_and_reloaded():
     assert oc["single_oracle_for_all_trees"] and oc["unchanged_after"]
     assert {"tuning", "trepan_pair"} <= set(oc["trees"])
     assert rep["evaluation"]["trepan_scientific_tuning"]["budget_check"]["any_budget_exhausted"] is False
+
+
+def test_robust_builder_handles_string_labels_and_is_a_valid_frozen_oracle():
+    X, y = _data(5)
+    labels = np.where(y == 1, "pos", "neg")
+    f = build_frozen_oracle(X, labels, seed=1, builder="robust")
+    assert set(f.predict(X)) <= {"pos", "neg"} and list(f.classes_) == ["neg", "pos"]
+    assert f.identity.builder == "robust" and f.verify_unchanged()

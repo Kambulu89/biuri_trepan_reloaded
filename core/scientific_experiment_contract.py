@@ -198,11 +198,26 @@ def _build_factory(Z, y, seed: int):
     return mlp
 
 
+class _LabelDecoded:
+    """Modelo treinado sobre rótulos inteiros que expõe os rótulos originais (a GUI codifica o alvo antes de treinar)."""
+
+    def __init__(self, estimator, classes):
+        self.estimator_ = estimator
+        self.classes_ = np.asarray(classes)
+
+    def predict(self, X):
+        return self.classes_[np.asarray(self.estimator_.predict(X)).astype(int)]
+
+    def predict_proba(self, X):
+        return self.estimator_.predict_proba(X)
+
+
 def _build_robust(Z, y, seed: int):
     """MLP robusto (busca com holdout interno só no treino), o mesmo caminho de treino usado pela GUI."""
     from core.mlp_optimizer import train_robust_mlp_original
-    result = train_robust_mlp_original(Z, y, Z, y, mode="balanced")   # X_test=treino: só relato, nunca teste externo
-    return result["model"]
+    classes, y_int = np.unique(np.asarray(y), return_inverse=True)
+    result = train_robust_mlp_original(Z, y_int, Z, y_int, mode="balanced")   # X_test=treino: só relato, nunca teste externo
+    return _LabelDecoded(result["model"], classes)
 
 
 ORACLE_BUILDERS: Dict[str, Callable[[Any, Any, int], Any]] = {"factory": _build_factory, "robust": _build_robust}
