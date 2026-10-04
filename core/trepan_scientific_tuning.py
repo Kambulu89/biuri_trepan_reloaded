@@ -26,7 +26,7 @@ class ScientificTrepanSearchConfig:
     cv_folds: int = 3
     # Repeated Stratified K-Fold no TREINO: ``cv_repeats`` repetições, cada uma com a sua seed determinística
     # (``cv_seeds`` explícitas, ou derivadas de ``base_config.random_state``). Nunca vê o conjunto de teste.
-    cv_repeats: int = 3
+    cv_repeats: int = 5                       # configuração científica principal: 5 repetições × 3 dobras
     cv_seeds: Optional[tuple] = None
     max_capacity_candidates: int = 6
     max_semantic_candidates: int = 6
@@ -51,7 +51,14 @@ class ScientificTrepanSearchConfig:
     # que nunca limita nenhum deles (budget_exhausted == False por construção), para que o orçamento não seja uma
     # variável de confusão. "required": orçamento mínimo por candidato (comportamento anterior, pode esgotar).
     query_budget_policy: str = "non_binding"
-    min_selection_agreement: float = 0.6      # fração de repetições cuja vencedora coincide com a final
+    # Robustez interna da seleção: block bootstrap das repetições da CV (cada repetição = 1 bloco que preserva as suas
+    # dobras), com a MESMA política de seleção em cada reamostragem. Não introduz política nova: mede a política.
+    bootstrap_resamples: int = 200
+    bootstrap_seed: Optional[int] = None      # None -> derivada da seed base (determinística)
+    min_selection_probability: float = 0.6    # abaixo disto o tuning é marcado "incerto" (limiar configurável, não prova)
+    # Saturação: se a fração de árvores que param por atingir max_nodes for >= isto, a estabilidade estrutural
+    # desse candidato é sinalizada como potencialmente censurada pelo teto (só diagnóstico; não altera a seleção).
+    node_cap_censoring_threshold: float = 0.5
 
 
 def _cv_plan(y, search: "ScientificTrepanSearchConfig", base_seed: int):
@@ -303,6 +310,11 @@ def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig",
                            "text": (f"PERDE o desempate: empate real em fidelity, estabilidades e nós; "
                                     f"prevalece a configuração mais simples ({wl}).")}
         verdicts[i]["structural_instability"] = struct[i]
+        cens = bool(meta[i].get("censored"))
+        verdicts[i]["structural_stability_censored"] = cens
+        if cens:
+            verdicts[i]["text"] += (" ⚠ estabilidade estrutural potencialmente CENSURADA pelo teto de nós "
+                                    f"(max_nodes={meta[i]['max_nodes']}): a baixa variância pode vir do limite, não dos dados.")
     return winner, verdicts, {"best_fidelity_candidate": best, "t_critical": t_crit, "n_splits": J,
                               "indistinguishable": indist, "stable": stable, "structural": structural,
                               "simplest": simplest, "structural_instability": struct}
@@ -368,7 +380,7 @@ def _structure_diagnostics(rows, feature_names) -> dict:
     }
 
 
-def _split_stats(rows, candidate, repeats: int, feature_names=()):
+def _split_stats(rows, candidate, repeats: int, feature_names=(), search: Optional["ScientificTrepanSearchConfig"] = None):
     """Estatísticas de um candidato a partir das linhas por partição (todas calculadas só no treino)."""
     fid = np.array([r["fidelity"] for r in rows], dtype=float)
     nodes = np.array([r["nodes"] for r in rows], dtype=float)
@@ -394,7 +406,12 @@ def _split_stats(rows, candidate, repeats: int, feature_names=()):
         "leaves_cv": _cv([r["leaves"] for r in rows]),
         "structural_instability": structural_instability([r["nodes"] for r in rows], [r["depth"] for r in rows],
                                                          [r["leaves"] for r in rows]),
-        "max_nodes_reached_fraction": float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows])),
+        "max_nodes": int(candidate.max_nodes),
+        "node_cap_reached_count": int(sum(1 for r in rows if r.get("max_nodes_reached"))),
+        "fraction_at_node_cap": float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows])),
+        "structural_stability_censored": bool(
+            float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows]))
+            >= float((search or ScientificTrepanSearchConfig()).node_cap_censoring_threshold)),
         "time_mean_s": float(np.mean([r["time_s"] for r in rows])), "time_total_s": float(np.sum([r["time_s"] for r in rows])),
         "query_budget": int(candidate.max_queries),
         "queries_used_mean": float(np.mean([r["queries_used"] for r in rows])),
@@ -405,6 +422,61 @@ def _split_stats(rows, candidate, repeats: int, feature_names=()):
         "macro_f1_mean": float(np.mean([r["macro_f1"] for r in rows])),
         "structure_diagnostics": _structure_diagnostics(rows, feature_names),
     }
+
+
+def _wilson(k: int, n: int, z: float = 1.959964):
+    if n <= 0:
+        return [0.0, 1.0]
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return [float(max(0.0, c - h)), float(min(1.0, c + h))]
+
+
+def _block_bootstrap(F, N, D, L, meta, k, search, valid, plan, repeats, labels, final_label, stats):
+    """Robustez interna da política de seleção por block bootstrap das repetições da CV.
+
+    Cada repetição (com as suas ``k`` dobras) é um bloco; reamostram-se ``repeats`` blocos com reposição, de forma
+    determinística, e em cada reamostragem corre-se EXATAMENTE a mesma ``_lexicographic_select``. Só usa resultados
+    de CV do treino (o teste nunca entra). Com menos de 2 blocos não é avaliável.
+    """
+    B = int(search.bootstrap_resamples)
+    out = {"method": "block bootstrap das repetições da CV (dobras de cada repetição preservadas)",
+           "n_blocks": int(repeats), "n_resamples": 0, "assessable": False, "seed": None,
+           "selection_probability": 0.0, "selection_probability_mc_interval": [0.0, 1.0],
+           "runner_up": None, "margin": None, "distribution": {}, "modal_config": None,
+           "selected_is_modal": None, "winner_fidelity_ci": None, "test_used": False}
+    if repeats < 2 or B < 1:
+        out["reason"] = "menos de 2 repetições (blocos)" if repeats < 2 else "bootstrap_resamples < 1"
+        return out
+    seed = int(search.bootstrap_seed) if search.bootstrap_seed is not None else int(plan[0][1]) + 7919
+    rng = np.random.default_rng(seed)
+    blocks = [[j for j, (rr, *_r) in enumerate(plan) if rr == r] for r in range(repeats)]
+    wins: dict = {}
+    winner_fid = []
+    final_idx = labels.index(final_label)
+    for _ in range(B):
+        picks = rng.integers(0, repeats, size=repeats)
+        cols = [j for p in picks for j in blocks[p]]
+        w, _v, _i = _lexicographic_select(F[:, cols], N[:, cols], meta, k, search, valid, D[:, cols], L[:, cols])
+        if w is None:
+            continue
+        wins[labels[w]] = wins.get(labels[w], 0) + 1
+        winner_fid.append(float(F[final_idx, cols].mean()))
+    n = sum(wins.values())
+    dist = {lab: c / n for lab, c in sorted(wins.items(), key=lambda kv: (-kv[1], labels.index(kv[0])))} if n else {}
+    p_final = wins.get(final_label, 0) / n if n else 0.0
+    others = [(lab, c) for lab, c in sorted(wins.items(), key=lambda kv: (-kv[1], labels.index(kv[0]))) if lab != final_label]
+    runner = {"label": others[0][0], "probability": others[0][1] / n} if others and n else None
+    out.update({
+        "assessable": bool(n), "n_resamples": int(n), "seed": seed, "selection_probability": float(p_final),
+        "selection_probability_mc_interval": _wilson(wins.get(final_label, 0), n),
+        "runner_up": runner, "margin": float(p_final - (runner["probability"] if runner else 0.0)),
+        "distribution": dist, "modal_config": next(iter(dist), None), "selected_is_modal": bool(next(iter(dist), None) == final_label),
+        "winner_fidelity_ci": [float(np.percentile(winner_fid, 2.5)), float(np.percentile(winner_fid, 97.5))] if winner_fid else None,
+    })
+    return out
 
 
 def _budget_check(history) -> dict:
@@ -464,7 +536,7 @@ def tune_scientific_trepan(
                     failed = str(exc); break
             if rows and failed is None:
                 mean = _mean_metrics(rows)
-                stats = _split_stats(rows, candidate, repeats, feature_names)
+                stats = _split_stats(rows, candidate, repeats, feature_names, search)
             else:
                 mean = {"score": float("-inf"), "fidelity": 0.0, "balanced_accuracy": 0.0, "macro_f1": 0.0, "complexity": 1.0}
                 stats = None
@@ -479,28 +551,38 @@ def tune_scientific_trepan(
             for h in history:
                 h["verdict"] = {"status": "FAILED", "stage": 0, "reason_code": "FIT_FAILED", "text": "falhou na CV."}
             return fallback, {"selected": asdict(fallback), "fallback": "all_candidates_failed", "stable": False,
-                              "agreement": 0.0, "per_seed_winners": [], "threshold": float(search.min_selection_agreement)}
+                              "status": "tuning_uncertain", "selection_probability": 0.0, "per_repeat_winners": [],
+                              "threshold": float(search.min_selection_probability)}
         J = len(plan)
         F = np.array([[r["fidelity"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
         Nn = np.array([[r["nodes"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
         Dd = np.array([[r["depth"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
         Ll = np.array([[r["leaves"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
-        meta = [{"config": h["config"], "max_nodes": int(h["config"]["max_nodes"])} for h in history]
+        meta = [{"config": h["config"], "max_nodes": int(h["config"]["max_nodes"]),
+                 "censored": bool(h["stats"] and h["stats"]["structural_stability_censored"])} for h in history]
         winner, verdicts, info = _lexicographic_select(F, Nn, meta, folds, search, valid, Dd, Ll)
         for h, v in zip(history, verdicts):
             h["verdict"] = v
-        # Estabilidade: a vencedora de cada repetição (mesma regra, só com as partições dessa repetição).
-        winners = []
+        final = history[winner]["label"]
+        # Vencedora por repetição: só informativa (3 dobras por repetição são poucas para medir estabilidade).
+        per_repeat = []
         for r in range(repeats):
             cols = [j for j, (rr, *_rest) in enumerate(plan) if rr == r]
             w, _v, _i = _lexicographic_select(F[:, cols], Nn[:, cols], meta, folds, search, valid, Dd[:, cols], Ll[:, cols])
-            winners.append(None if w is None else history[w]["label"])
-        final = history[winner]["label"]
-        agreement = float(np.mean([1.0 if w == final else 0.0 for w in winners])) if winners else 1.0
-        stable = bool(agreement >= float(search.min_selection_agreement))
-        selection = {"selected": history[winner]["config"], "selected_label": final, "per_seed_winners": winners,
-                     "seeds": [int(v) for v in seeds], "agreement": agreement, "stable": stable,
-                     "distinct_winners": len({w for w in winners if w}), "threshold": float(search.min_selection_agreement),
+            per_repeat.append(None if w is None else history[w]["label"])
+        boot = _block_bootstrap(F, Nn, Dd, Ll, meta, folds, search, valid, plan, repeats,
+                                [h["label"] for h in history], final, [h["stats"] for h in history])
+        stable = bool(boot["assessable"] and boot["selection_probability"] >= float(search.min_selection_probability))
+        w_stats = history[winner]["stats"]
+        selection = {"selected": history[winner]["config"], "selected_label": final,
+                     "per_repeat_winners": per_repeat, "seeds": [int(v) for v in seeds],
+                     "bootstrap": boot, "selection_probability": boot["selection_probability"],
+                     "stable": stable, "status": "tuning_stable" if stable else "tuning_uncertain",
+                     "distinct_winners": len({w for w in per_repeat if w}),
+                     "threshold": float(search.min_selection_probability),
+                     "node_cap": {"max_nodes": w_stats["max_nodes"], "fraction_at_node_cap": w_stats["fraction_at_node_cap"],
+                                  "node_cap_reached_count": w_stats["node_cap_reached_count"],
+                                  "structural_stability_censored": w_stats["structural_stability_censored"]},
                      "t_critical": info.get("t_critical"), "n_splits": info.get("n_splits")}
         return ControlledTrepanConfig(**history[winner]["config"]), selection
 
@@ -588,6 +670,7 @@ def tune_scientific_trepan(
         "cv_plan":{"scheme":"RepeatedStratifiedKFold (conjunto de treino apenas)","folds":int(folds),"repeats":int(repeats),
                    "seeds":[int(v) for v in seeds],"n_splits":len(plan),"test_set_used":False},
         "selection_rule":"lexicográfica: fidelity -> estabilidade da fidelity (se indistinguíveis) -> estabilidade estrutural -> complexidade -> desempate canónico (mais simples)",
+        "stability_rule":"block bootstrap das repetições da CV (mesma política em cada reamostragem); tuning_stable se selection_probability >= min_selection_probability",
         "query_budget_policy":str(search.query_budget_policy),
         "budget_check":_budget_check(structure_history),
         "structure_history":structure_history,
@@ -595,6 +678,7 @@ def tune_scientific_trepan(
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},
         "capacity_selection":capacity_selection,
         "tuning_stable":bool(all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel)) if (structure_selection or capacity_selection) else True,
+        "tuning_status":("tuning_stable" if all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel) else "tuning_uncertain") if (structure_selection or capacity_selection) else "not_assessed",
         "capacity_history":capacity_history,
         "semantic_history":semantic_history,
     }

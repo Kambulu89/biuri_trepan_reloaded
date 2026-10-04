@@ -166,7 +166,7 @@ def test_every_candidate_records_stats_and_a_verdict_and_exactly_one_wins():
     assert sum(h["verdict"]["status"] == "WINNER" for h in hist) == 1
     sel = r["structure_selection"]
     assert sel["selected_label"] == [h["label"] for h in hist if h["verdict"]["status"] == "WINNER"][0]
-    assert len(sel["per_seed_winners"]) == 2 and len(sel["seeds"]) == 2 and 0.0 <= sel["agreement"] <= 1.0
+    assert len(sel["per_repeat_winners"]) == 2 and len(sel["seeds"]) == 2 and 0.0 <= sel["selection_probability"] <= 1.0
     assert r["cv_plan"]["n_splits"] == 4 and r["cv_plan"]["repeats"] == 2
 
 
@@ -178,14 +178,14 @@ def test_tuning_is_deterministic():
     assert f[0] == f[1] and runs[0]["structure_selected"] == runs[1]["structure_selected"]
 
 
-def test_tuning_is_flagged_unstable_when_seeds_disagree_with_the_final_choice():
+def test_tuning_is_flagged_uncertain_when_selection_probability_is_below_the_threshold():
     X, y = _data()
     strict = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(),
-                                    search=_fast(min_selection_agreement=1.01))       # exigência impossível
+                                    search=_fast(min_selection_probability=1.01))       # exigência impossível
     lax = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(),
-                                 search=_fast(min_selection_agreement=0.0))
-    assert strict["tuning_stable"] is False and strict["structure_selection"]["stable"] is False
-    assert lax["tuning_stable"] is True
+                                 search=_fast(min_selection_probability=0.0))
+    assert strict["tuning_stable"] is False and strict["structure_selection"]["status"] == "tuning_uncertain"
+    assert lax["tuning_stable"] is True and lax["structure_selection"]["status"] == "tuning_stable"
 
 
 def test_tuning_off_or_failing_keeps_the_canonical_base():
