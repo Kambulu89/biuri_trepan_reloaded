@@ -163,7 +163,7 @@ def test_arbitrary_schema_runs_end_to_end_with_the_same_pipeline_and_one_oracle(
     ids = ev["oracle_contract"]["tree_oracle_ids"]
     assert ids["trepan_original"] == ids["trepan_reloaded"] == out.oracle_id
     t = ev["trepan_scientific_tuning"]
-    assert t["test_used_for_selection"] is False and t["structure_selection"]["bootstrap"]["n_resamples"] > 0
+    assert t["test_used_for_selection"] is False and t["structure_selection"]["bootstrap"]["bootstrap_samples"] > 0 and t["structure_selection"]["bootstrap"]["method"] in ("exact", "monte_carlo")
     assert set(map(str, out.result.dataset.class_names)) == set(map(str, df[target].unique()))
     assert out.result.dataset.target == target
     assert out.result.dataset.classes == kw.get("n_classes", 2)
