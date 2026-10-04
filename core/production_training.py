@@ -20,6 +20,7 @@ from sklearn.model_selection import train_test_split
 from core.data_contract import build_data_contract
 from core.preprocessing import DataPreprocessor
 from core.mlp_factory import build_mlp_for_data
+from core.scientific_experiment_contract import freeze_oracle, oracle_id_of, OracleContractViolation, ORACLE_BUILDERS
 from core.mlp_convergence import fit_with_convergence, extract_mlp_convergence
 from core.c45_j48_tree import C45Classifier
 from core.evaluation_protocol import classification_metrics
@@ -184,6 +185,7 @@ def train_production_dataframe(
     semantic_control_seed: int=0,
     trepan_overrides: Optional[Dict[str,Any]]=None,
     semantic_attribution: Optional[AttributionConfig]=None,
+    oracle_builder: str='factory',
 ) -> Dict[str,Any]:
     out=Path(out_dir); out.mkdir(parents=True,exist_ok=True)
     contract=build_data_contract(df,target)
@@ -198,7 +200,12 @@ def train_production_dataframe(
     pre=DataPreprocessor(contract,scale_numeric=False).fit(Xtr,ytr)
     Ztr,Zte=pre.transform(Xtr),pre.transform(Xte); model_names=list(map(str,pre.get_feature_names_out()))
     model_names_original=list(model_names)
-    mlp=build_mlp_for_data(Ztr,ytr,random_state=seed); fit_with_convergence(mlp,Ztr,ytr)
+    # Construtor do MLP registado no contrato científico ('factory' = produção; 'robust' = caminho robusto usado pela GUI).
+    if oracle_builder=='factory':
+        mlp=build_mlp_for_data(Ztr,ytr,random_state=seed); fit_with_convergence(mlp,Ztr,ytr)
+    else:
+        if oracle_builder not in ORACLE_BUILDERS: raise ValueError(f"oracle_builder desconhecido: {oracle_builder!r}")
+        mlp=ORACLE_BUILDERS[oracle_builder](Ztr,ytr,seed)
     health=oracle_health_gate(mlp,Ztr,ytr,random_state=seed)
     c45=C45Classifier(random_state=seed).fit(Xtr.to_numpy(dtype=object),ytr)
 
@@ -268,18 +275,22 @@ def train_production_dataframe(
             else:
                 teacher_report={'teacher':'mlp_original','reason':avail.reason,**avail.details}
 
+    # Contrato científico: o oráculo é CONGELADO aqui e é exatamente este objeto que o tuning e todas as árvores
+    # (Original, Reloaded e variantes) consultam; o ``oracle_id`` fica no relatório como prova.
+    oracle=freeze_oracle(oracle,Ztr,builder='semantic_teacher' if teacher is not None else oracle_builder)
     tuning_report = None
     if scientific_tuning:
         try:
-            tuning_report = tune_scientific_trepan(
-                Ztr, ytr, oracle=oracle, feature_names=model_names, base_config=cfg,
-                semantic_feature_weights=semantic_weights,
-                semantic_feature_groups=semantic_groups,
-                semantic_relatedness_matrix=relation_matrix,
-                search=trepan_search or ScientificTrepanSearchConfig(),
-                ontology_graph=graph,
-                semantic_feature_entities=semantic_entities,
-            )
+            with oracle.scope('tuning'):
+                tuning_report = tune_scientific_trepan(
+                    Ztr, ytr, oracle=oracle, feature_names=model_names, base_config=cfg,
+                    semantic_feature_weights=semantic_weights,
+                    semantic_feature_groups=semantic_groups,
+                    semantic_relatedness_matrix=relation_matrix,
+                    search=trepan_search or ScientificTrepanSearchConfig(),
+                    ontology_graph=graph,
+                    semantic_feature_entities=semantic_entities,
+                )
             cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
         except Exception as exc:  # tuning falhou: configuração base canónica, com a falha registada (não escondida)
             logging.getLogger(__name__).warning("Tuning científico do TREPAN falhou (%s: %s); configuração canónica.",
@@ -333,16 +344,21 @@ def train_production_dataframe(
             semantic_weights,semantic_groups,relation_matrix,semantic_entities)
         if teacher is not None and not augment_reloaded_space:
             reloaded_space['reason']='augment_reloaded_space_disabled'
-    pair=fit_controlled_trepan_pair(
-        Ztr,ytr,oracle=oracle,feature_names=model_names,config=pair_cfg,
-        semantic_feature_weights=semantic_weights_pair,
-        semantic_feature_groups=semantic_groups_pair,
-        semantic_relatedness_matrix=relation_pair,
-        run_id=f"production_v9_2_seed_{seed}",
-        ontology_graph=None if reloaded_mode=='neutral' else graph,
-        semantic_feature_entities=entities_pair,
-        **pair_kwargs,
-    )
+    with oracle.scope('trepan_pair'):
+      pair=fit_controlled_trepan_pair(
+          Ztr,ytr,oracle=oracle,feature_names=model_names,config=pair_cfg,
+          semantic_feature_weights=semantic_weights_pair,
+          semantic_feature_groups=semantic_groups_pair,
+          semantic_relatedness_matrix=relation_pair,
+          run_id=f"production_v9_2_seed_{seed}",
+          ontology_graph=None if reloaded_mode=='neutral' else graph,
+          semantic_feature_entities=entities_pair,
+          **pair_kwargs,
+      )
+    oracle_ids={'trepan_original':oracle_id_of(pair.base_oracle),
+                'trepan_reloaded':oracle_id_of(pair.reloaded_oracle_for_audit)}
+    if len(set(oracle_ids.values()))!=1 or None in oracle_ids.values() or oracle_ids['trepan_original']!=oracle.oracle_id:
+        raise OracleContractViolation(f"Original e Reloaded não consultaram o mesmo oráculo congelado: {oracle_ids}")
     evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte,reloaded_X_test=Zte_rel if augmented else None)
     mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
     teacher_pred=oracle.predict(Zte)  # referência de fidelidade = professor realmente usado
@@ -359,6 +375,7 @@ def train_production_dataframe(
         }, random_state=seed, n_bootstrap=1000,
     )
     evaluation['oracle_health']=health
+    evaluation['oracle_contract']={**oracle.report(),'tree_oracle_ids':oracle_ids,'single_oracle_for_all_trees':True}
     evaluation['trepan_scientific_tuning']=tuning_report
     evaluation['ontology_quality']=quality
     evaluation['semantic_graph']=graph.summary() if graph else None
