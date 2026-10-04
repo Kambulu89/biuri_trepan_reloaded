@@ -239,6 +239,7 @@ class TrepanReloadedExtractor:
             'canonical_max_nodes': structure['max_nodes'],
             'canonical_max_depth': structure['max_depth'],
             'historical_min_samples_leaf': preset.trepan_min_samples_leaf,
+            'historical_purity_epsilon': float(getattr(preset, 'trepan_purity_epsilon', 0.05)),
             'random_state': 42,
             'hybrid_label_weight': getattr(preset, 'hybrid_label_weight', 0.60),
             'hybrid_teacher_weight': getattr(preset, 'hybrid_teacher_weight', 0.30),
@@ -4123,7 +4124,8 @@ class TrepanReloadedExtractor:
         }
         if self.explainer_tree is not None:
             audit['tree_n_nodes'] = int(
-                getattr(getattr(self.explainer_tree, 'tree_', None), 'node_count', 0) or 0
+                getattr(getattr(self.explainer_tree, 'tree_', None), 'node_count', 0)
+                or getattr(self.explainer_tree, 'node_count_', 0) or 0
             )
             audit['tree_n_leaves'] = int(self.explainer_tree.get_n_leaves())
             audit['tree_is_trivial'] = audit['tree_n_leaves'] <= 1

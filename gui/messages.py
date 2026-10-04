@@ -123,6 +123,11 @@ def derive_messages(result: ExperimentResult) -> List[Message]:
         if diag is None or not diag.available:
             continue
         nodes = diag.logical_nodes.value
+        starved = "STOP_QUERY_BUDGET_EXHAUSTED" in (diag.stop_reasons or {}) or "query_budget_before_min_sample" in (diag.stop_reasons or {})
+        if diag.query_budget_exhausted and starved:
+            out.append(make_message(Level.SCIENTIFIC_WARNING, "budget_limited", "msg.budget_limited", eid, tree=term(key),
+                                    used=int(diag.queries_used.value or 0), budget=int(diag.query_budget.value or 0),
+                                    nodes=int(nodes) if nodes is not None else 0))
         if nodes is not None and nodes <= STUMP_MAX_NODES:
             # Uma árvore pequena é um diagnóstico, nunca um "erro de árvore" (Parte 24).
             out.append(make_message(Level.INFO, "small_tree", "msg.small_tree", eid, tree=term(key), nodes=int(nodes)))

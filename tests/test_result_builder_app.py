@@ -98,3 +98,15 @@ def test_counterfactual_summary_and_mlp_tuning_are_read_only_views():
     assert r.counterfactual == {"cf_result": {"available": True, "type": "list", "n": 3}}
     assert r.models["mlp_original"].hyperparameters == {"method": "optuna", "hidden": 32}
     assert build_experiment_result(_app()).counterfactual is None
+
+
+def test_node_count_falls_back_to_the_tree_attribute_when_audit_has_none():
+    tree = SimpleNamespace(node_count_=3)
+    app = _app(mlp_model=object(), trepan_original_tree=tree, trepan_original_audit={"node_count": 0})
+    assert build_experiment_result(app).models["trepan_original"].complexity["nodes"].value == 3
+
+
+def test_pipeline_audit_counts_trepan_nodes():
+    from core.pipeline_audit import _tree_stats
+    t = SimpleNamespace(node_count_=3, get_n_leaves=lambda: 2)
+    assert _tree_stats(t) == {"n_nodes": 3, "n_leaves": 2, "is_trivial": False}

@@ -205,7 +205,7 @@ class MetricsVisualizer(QWidget):
             print(
                 f"  {name}: Precisão Macro={data['precision']:.1f}%, "
                 f"Exatidão(auditoria)={float(data.get('accuracy') or 0):.1f}%, "
-                f"Fidelity={data['fidelity']:.1f}%"
+                f"Fidelity={'n/a (sem Oracle)' if data.get('fidelity_kind', 'oracle') is None else format(data['fidelity'], '.1f') + '%'}"
             )
 
         precision_order = [

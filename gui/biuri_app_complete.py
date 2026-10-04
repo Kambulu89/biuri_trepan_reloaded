@@ -53,7 +53,8 @@ from gui.audit_controller import AuditController, dataset_fingerprint_of, progre
 from gui.strings import tr
 from core.training_config import (
     get_training_preset, TRAINING_PRESETS, enforce_scientific_preset,
-    resolve_trepan_structure_limits, PRODUCTION_TRAINING_PRESET,
+    resolve_trepan_structure_limits, resolve_trepan_query_budget, resolve_trepan_min_sample,
+    PRODUCTION_TRAINING_PRESET,
 )
 from core.performance_logger import PerformanceLogger
 from core.model_cache import (
@@ -769,7 +770,7 @@ class MetricsComparisonWidget(QWidget):
             print(
                 f"[DIAG] GUI -> {display_name}: "
                 f"Precisão Macro={prec_val:.1f}%, Exatidão(auditoria)={accuracy_val:.1f}%, "
-                f"Fidelidade={fid_val:.1f}%"
+                f"Fidelity={'n/a (sem Oracle)' if fid_kind is None else f'{fid_val:.1f}%'}"
             )
             self.metrics_visualizer.add_model_data(
                 display_name,
@@ -2931,16 +2932,21 @@ Asegúrese de que:
             use_cache=self.training_cache_checkbox.isChecked()
         )
 
-    def _trepan_training_limits(self, preset):
+    def _trepan_training_limits(self, preset, n_train=None):
         structure = resolve_trepan_structure_limits(preset)
+        # Com o tamanho do treino conhecido, o orçamento de queries acompanha o nº de nós permitido
+        # (sem isto, 2000 queries chegavam para ~3 nós e a árvore ficava truncada).
+        max_queries = (resolve_trepan_query_budget(preset, n_train) if n_train
+                       else preset.trepan_max_queries)
         return {
             'fidelity_target': preset.trepan_fidelity_target,
             'fidelity_early_stop': preset.trepan_fidelity_early_stop,
-            'max_queries': preset.trepan_max_queries,
+            'max_queries': max_queries,
             'max_time_seconds': preset.trepan_max_time_seconds,
             'max_depth': structure['max_depth'],
             'max_nodes': structure['max_nodes'],
             'min_samples_leaf': preset.trepan_min_samples_leaf,
+            'purity_epsilon': float(getattr(preset, 'trepan_purity_epsilon', 0.05)),
         }
 
     def _launch_training_worker(self, preset):
@@ -4119,7 +4125,11 @@ Asegúrese de que:
                 t_trep_o = perf.start_stage("Trepan Original")
                 from core.trepan_original import TrepanOriginalExtractor
                 original_extractor = TrepanOriginalExtractor()
-                trepan_limits = self._trepan_training_limits(preset)
+                _split_for_limits = self._eval_split_original
+                _n_train_limits = int(len(
+                    _split_for_limits['X_train'] if _split_for_limits is not None else X_encoded
+                ))
+                trepan_limits = self._trepan_training_limits(preset, n_train=_n_train_limits)
 
                 # Modo Científico: selecciona a capacidade COMUM do TREPAN
                 # exclusivamente por CV interna do treino. O mesmo orçamento
@@ -4145,11 +4155,12 @@ Asegúrese de que:
                         max_nodes=int(trepan_limits['max_nodes']),
                         max_depth=int(trepan_limits['max_depth']),
                         min_samples_leaf=int(trepan_limits['min_samples_leaf']),
-                        min_sample=max(len(tune_X), min(1000, max(120, len(tune_X) * 3))),
+                        min_sample=resolve_trepan_min_sample(len(tune_X), cap=getattr(preset, 'trepan_min_sample_cap', 5000)),
                         max_n=int(getattr(preset, 'canonical_m_of_n_max_n', 3)),
                         beam_width=2,
                         max_features_per_node=min(tune_X.shape[1], max(12, min(32, tune_X.shape[1]))),
                         max_queries=int(trepan_limits['max_queries']),
+                        purity_epsilon=float(trepan_limits['purity_epsilon']),
                         random_state=42,
                         semantic_gain_strength=float(getattr(preset, 'semantic_gain_strength', 1.0)),
                         semantic_group_strength=float(getattr(preset, 'semantic_group_strength', 0.15)),
@@ -4188,6 +4199,7 @@ Asegúrese de que:
                         'min_samples_leaf': int(common['min_samples_leaf']),
                         'max_n': int(common['max_n']),
                         'beam_width': int(common['beam_width']),
+                        'purity_epsilon': float(common['purity_epsilon']),
                     })
                     # Propaga a MESMA capacidade ao extractor Reloaded.
                     self.trepan.extractor._training_limits.update({
@@ -4198,6 +4210,7 @@ Asegúrese de que:
                         'historical_min_samples_leaf': int(common['min_samples_leaf']),
                         'canonical_m_of_n_max_n': int(common['max_n']),
                         'historical_beam_width': int(common['beam_width']),
+                        'historical_purity_epsilon': float(common['purity_epsilon']),
                         'historical_max_features_per_node': int(common['max_features_per_node']),
                         'trepan_scientific_tuning': True,
                         'trepan_tuning_cv_folds': int(getattr(preset, 'trepan_tuning_cv_folds', 3)),

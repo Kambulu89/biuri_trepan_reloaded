@@ -1033,6 +1033,7 @@ class TrepanOriginalExtractor:
             'min_samples_leaf': int(limits.get('min_samples_leaf', 4)),
             'max_n': int(limits.get('max_n', limits.get('m_of_n_max_n', 3))),
             'beam_width': int(limits.get('beam_width', 2)),
+            **({'purity_epsilon': float(limits['purity_epsilon'])} if limits.get('purity_epsilon') is not None else {}),
         }
 
     def _build_classifier(self, *, training_limits, sample_size, n_train):

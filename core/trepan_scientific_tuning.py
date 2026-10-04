@@ -13,6 +13,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 
+from core.training_config import DEFAULT_QUERY_BUDGET_CAP, required_query_budget
 from core.controlled_trepan_experiment import ControlledTrepanConfig
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
@@ -55,7 +56,10 @@ def _objective(model, X_val, y_val, oracle, cfg: ControlledTrepanConfig, search:
 
 def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int):
     def cfg(**kw):
-        return replace(base, **kw)
+        c = replace(base, **kw)
+        # Mais nós permitidos exigem mais queries: sem isto o candidato "maior" ficava truncado pelo orçamento.
+        need = required_query_budget(c.max_nodes, c.min_sample, cap=max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP))
+        return replace(c, max_queries=max(int(c.max_queries), need)) if c.max_nodes != base.max_nodes else c
     q2 = max(int(base.max_queries), min(12000, max(int(base.max_queries) * 2, 1000)))
     nodes2 = max(int(base.max_nodes), min(127, max(31, int(base.max_nodes) * 2 - 1)))
     depth2 = max(int(base.max_depth), min(nodes2, max(int(base.max_depth), 12)))
