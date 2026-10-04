@@ -251,9 +251,16 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
         sel = tuning.get("structure_selection") or {}
         result.config = {**result.config, "trepan_tuning": {
             "selected": tuning.get("structure_selected"), "stable": tuning.get("tuning_stable"),
-            "agreement": sel.get("agreement"), "threshold": sel.get("threshold"),
-            "per_seed_winners": sel.get("per_seed_winners"), "failed": tuning.get("failed"),
-            "fallback": tuning.get("fallback"), "n_splits": (tuning.get("cv_plan") or {}).get("n_splits")}}
+            "status": tuning.get("tuning_status"), "selection_probability": sel.get("selection_probability"),
+            "threshold": sel.get("threshold"), "per_repeat_winners": sel.get("per_repeat_winners"),
+            "failed": tuning.get("failed"), "fallback": tuning.get("fallback"),
+            "n_splits": (tuning.get("cv_plan") or {}).get("n_splits")}}
+    # Modo normal da GUI: INTERACTIVE / EXPLORATORY. Sem contrato do oráculo congelado, nunca elegível como benchmark.
+    from core.execution_mode import ExecutionMode
+    from core.experiment_builders import scientific_diagnostics_from_tuning
+    result.provenance.execution_mode = ExecutionMode.INTERACTIVE_EXPLORATORY.value
+    result.scientific = scientific_diagnostics_from_tuning(
+        tuning, None, seed=result.provenance.seed, execution_mode=ExecutionMode.INTERACTIVE_EXPLORATORY.value)
     if previous is not None:
         result.messages = list(previous.messages)
     return result

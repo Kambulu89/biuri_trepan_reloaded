@@ -42,7 +42,8 @@ from gui.pyqt_tree_widget import InteractiveTreeWidget, TreeDetailsPanel
 from gui.pyqt_tree_controls import TreeControlsWidget
 from gui.pyqt_explanation_widget import ExplanationWidget
 from gui.pyqt_metrics_visualizer import MetricsVisualizer
-from gui.training_worker import TrainingWorker
+from gui.training_worker import BenchmarkWorker, TrainingWorker
+from core.execution_mode import ExecutionMode, DEFAULT_MODE
 from gui.counterfactual_worker import CounterfactualWorker
 from gui.counterfactual_panel import CounterfactualPanel
 from gui.surrogate_improvement_dialog import SurrogateImprovementDialog
@@ -1062,6 +1063,18 @@ class BiuriApp(QMainWindow):
         train_cluster_layout.setContentsMargins(0, 0, 0, 0)
         train_cluster_layout.setSpacing(4)
 
+        # Modo de execução: o normal é INTERACTIVE / EXPLORATORY; SCIENTIFIC / BENCHMARK usa o pipeline científico único.
+        self.execution_mode_combo = QComboBox()
+        self.execution_mode_combo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        for mode, tip_key in ((ExecutionMode.INTERACTIVE_EXPLORATORY, "mode.interactive.tip"),
+                              (ExecutionMode.SCIENTIFIC_BENCHMARK, "mode.benchmark.tip")):
+            self.execution_mode_combo.addItem(mode.label, mode.value)
+            self.execution_mode_combo.setItemData(self.execution_mode_combo.count() - 1, tr(tip_key),
+                                                  Qt.ItemDataRole.ToolTipRole)
+        self.execution_mode_combo.setCurrentIndex(self.execution_mode_combo.findData(DEFAULT_MODE.value))
+        self.execution_mode_combo.setToolTip(tr("mode.label"))
+        self.execution_mode_combo.setAccessibleName(tr("mode.label"))
+
         self.training_mode_combo = QComboBox()
         self.training_mode_combo.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
@@ -1085,6 +1098,7 @@ class BiuriApp(QMainWindow):
         )
 
         train_cluster_layout.addWidget(self.btn_train_model)
+        train_cluster_layout.addWidget(self.execution_mode_combo)
         train_cluster_layout.addWidget(self.training_mode_combo)
         train_cluster_layout.addWidget(self.training_cache_checkbox)
         pipeline_layout.addWidget(train_cluster)
@@ -3713,8 +3727,69 @@ Asegúrese de que:
             return
         if self._warn_if_busy("entrenar"):
             return
+        if self._get_execution_mode() is ExecutionMode.SCIENTIFIC_BENCHMARK:
+            self._launch_benchmark_worker()
+            return
         preset = self._get_selected_training_preset()
         self._launch_training_worker(preset)
+
+    def _get_execution_mode(self):
+        combo = getattr(self, 'execution_mode_combo', None)
+        if combo is None:
+            return DEFAULT_MODE
+        return ExecutionMode(combo.currentData() or DEFAULT_MODE.value)
+
+    def _execute_benchmark_pipeline(self, progress_fn=None):
+        """SCIENTIFIC / BENCHMARK: chama o MESMO serviço da produção (core.scientific_benchmark_service).
+
+        Dataset -> split -> treino do MLP -> FrozenOracle -> oracle_id -> tuning -> TREPAN Original/Reloaded -> avaliação.
+        A GUI não reimplementa nenhum passo; só entrega os dados carregados e apresenta o ExperimentResult devolvido.
+        """
+        from core.scientific_benchmark_service import frame_from_arrays, run_scientific_benchmark
+        if not self._has_loaded_data():
+            raise ValueError("Carregue os dados primeiro.")
+        X, y = self._get_original_xy()
+        names = self._get_original_feature_names()
+        target = (getattr(self, 'arff_meta', None) or {}).get('target') or 'target'
+        df = frame_from_arrays(X, y, names, target)
+        return run_scientific_benchmark(
+            df, target=str(target), seed=int(getattr(self, 'benchmark_seed', 42)),
+            ontology=self.loaded_ontology, reasoner_report=self.ontology_reasoner_report or None,
+            progress_fn=progress_fn)
+
+    def _launch_benchmark_worker(self):
+        if self._training_worker is not None and self._training_worker.isRunning():
+            QMessageBox.warning(self, "Advertencia", "Ya hay un entrenamiento en curso.")
+            return
+        self._pending_failure_detail = None
+        if self.audit is not None:
+            self.audit.on_training_started()
+        dlg = QProgressDialog(progress_text("init"), tr("progress.cancel"), 0, 0, self)
+        dlg.setWindowTitle(tr("progress.title.training"))
+        dlg.setWindowModality(Qt.WindowModality.WindowModal)
+        dlg.setMinimumDuration(0)
+        dlg.setAutoClose(True)
+        self._training_progress_dialog = dlg
+        worker = BenchmarkWorker(self)
+        self._training_worker = worker
+        dlg.canceled.connect(worker.request_cancel)
+        worker.progress.connect(lambda stage, pct, message: dlg.setLabelText(progress_text(stage)))
+        worker.finished_ok.connect(lambda r: self._on_benchmark_finished(r, dlg))
+        worker.failed_detail.connect(self._store_failure_detail)
+        worker.failed.connect(lambda e: self._on_training_failed(e, dlg))
+        dlg.show()
+        worker.start()
+
+    def _on_benchmark_finished(self, payload, dlg):
+        dlg.close()
+        self._training_worker = None
+        outcome = payload["outcome"]
+        self.benchmark_outcome = outcome
+        if self.audit is not None:
+            self.audit.on_benchmark_finished(outcome.result)
+            self.content_tabs.setCurrentWidget(self.audit_panel)
+        from gui.result_presenter import SCIENTIFIC, render_text
+        self.show_results(render_text(outcome.result, SCIENTIFIC))
 
     def _execute_training_pipeline(self, preset, progress_fn=None, cancel_fn=None):
         # Defesa em profundidade: mesmo chamadas programáticas são normalizadas

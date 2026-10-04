@@ -253,7 +253,7 @@ def test_legacy_ontology_decision_code_is_translated():
 
 
 def test_experiment_rows_show_the_tuned_structure_and_its_stability():
-    r = make_result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.05, "max_nodes": 63}, "stable": False, "agreement": 0.33}})
+    r = make_result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.05, "max_nodes": 63}, "stable": False, "selection_probability": 0.33}})
     rows = dict(rp.experiment_rows(r))
-    assert "purity_epsilon=0.05, max_nodes=63" in rows["Estrutura do TREPAN (tuning)"] and "INSTÁVEL" in rows["Estrutura do TREPAN (tuning)"]
+    assert "purity_epsilon=0.05, max_nodes=63" in rows["Estrutura do TREPAN (tuning)"] and "tuning_uncertain" in rows["Estrutura do TREPAN (tuning)"] and "33%" in rows["Estrutura do TREPAN (tuning)"]
     assert "Estrutura do TREPAN (tuning)" not in dict(rp.experiment_rows(make_result()))

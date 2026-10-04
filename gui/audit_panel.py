@@ -319,5 +319,8 @@ class AuditPanel(QWidget):
 
     def _render_experiment(self, r):
         lay = self._clear_page("experiment")
+        sci = rp.scientific_rows(r)
+        if sci:
+            lay.addWidget(_section(tr("section.scientific"), self._kv("scientific", sci)))
         lay.addWidget(self._kv("experiment", rp.experiment_rows(r)))
         lay.addStretch(1)

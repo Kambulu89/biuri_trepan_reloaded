@@ -122,8 +122,10 @@ def derive_messages(result: ExperimentResult) -> List[Message]:
     if tuning.get("failed"):
         out.append(make_message(Level.WARNING, "tuning_failed", "msg.tuning_failed", eid, reason=str(tuning["failed"])[:160]))
     elif tuning.get("stable") is False:
-        out.append(make_message(Level.SCIENTIFIC_WARNING, "tuning_unstable", "msg.tuning_unstable", eid,
-                                agreement=f"{(tuning.get('agreement') or 0):.0%}", threshold=f"{(tuning.get('threshold') or 0):.0%}"))
+        out.append(make_message(Level.SCIENTIFIC_WARNING, "tuning_uncertain", "msg.tuning_uncertain", eid,
+                                prob=f"{(tuning.get('selection_probability') or 0):.0%}", threshold=f"{(tuning.get('threshold') or 0):.0%}"))
+    if result.provenance.execution_mode == "INTERACTIVE_EXPLORATORY":
+        out.append(make_message(Level.INFO, "exploratory_mode", "msg.exploratory_mode", eid))
     mlp = result.models.get("mlp_original")
     mlp_acc = mlp.metrics.get("accuracy") if mlp else None
     for key in ("trepan_original", "trepan_reloaded"):

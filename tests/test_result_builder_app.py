@@ -141,7 +141,7 @@ def test_builder_exposes_the_tuning_selection_and_stability_without_changing_the
     h0 = build_experiment_result(base).provenance.config_hash
     app = _app(mlp_model=object(), _trepan_scientific_tuning={
         "structure_selected": {"purity_epsilon": 0.02, "max_nodes": 31}, "tuning_stable": False,
-        "structure_selection": {"agreement": 0.33, "threshold": 0.6, "per_seed_winners": ["a", "b", "a"]},
+        "structure_selection": {"selection_probability": 0.33, "threshold": 0.6, "per_repeat_winners": ["a", "b", "a"]},
         "cv_plan": {"n_splits": 9}})
     r = build_experiment_result(app)
     t = r.config["trepan_tuning"]

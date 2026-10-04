@@ -356,14 +356,58 @@ def experiment_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
         if tuning.get("failed"):
             text = f"fallback canónico: {tuning['failed']}"
         else:
-            state = "estável" if tuning.get("stable") else "INSTÁVEL"
+            state = "tuning_stable" if tuning.get("stable") else "tuning_uncertain"
             text = (f"purity_epsilon={sel.get('purity_epsilon')}, max_nodes={sel.get('max_nodes')} — {state} "
-                    f"(concordância {format_optional(tuning.get('agreement'), '{:.0%}')} entre seeds)")
+                    f"(selection_probability {format_optional(tuning.get('selection_probability'), '{:.0%}')} no block bootstrap)")
         tuning_row = [(tr("field.trepan_tuning"), text)]
-    return [(tr("field.experiment_id"), p.experiment_id), (tr("field.seed"), format_optional(p.seed)),
+    mode_row = [(tr("field.execution_mode"), _mode_text(result))] if p.execution_mode else []
+    return mode_row + [(tr("field.experiment_id"), p.experiment_id), (tr("field.seed"), format_optional(p.seed)),
             (tr("field.dataset_hash"), format_optional(p.dataset_hash)), (tr("field.owl_hash"), format_optional(p.owl_hash)),
             (tr("field.config_hash"), format_optional(p.config_hash))] + tuning_row + build_rows(result) + [
             (tr("field.timestamp"), stamp), (tr("field.cache"), cache_text(result))]
+
+
+def _mode_text(result: ExperimentResult) -> str:
+    mode = result.provenance.execution_mode
+    label = tr("mode.benchmark") if mode == "SCIENTIFIC_BENCHMARK" else tr("mode.interactive")
+    ok = bool(result.scientific and result.scientific.benchmark_eligible)
+    return f"{label} — {tr('mode.benchmark_ok') if ok else tr('mode.not_benchmark')}"
+
+
+def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
+    """Diagnóstico científico do tuning e do oráculo; só apresenta o que o backend já calculou."""
+    d = result.scientific
+    if d is None:
+        return []
+
+    def pct(m):
+        return format_measure(m, "{:.1%}")
+
+    oid = (d.oracle_id or "")[:8]
+    fid = (f"{format_measure(d.fidelity_mean)} ± {format_measure(d.fidelity_std)}")
+    queries = f"{format_measure(d.queries_used, integer=True)} / {format_measure(d.query_budget, integer=True)}"
+    cap = pct(d.fraction_at_node_cap) + (f" — ⚠ {tr('sci.censored')}" if d.node_cap_censored else "")
+    return [
+        (tr("field.execution_mode"), _mode_text(result)),
+        (tr("sci.oracle_id"), oid if oid else na_text(Reason.NO_ORACLE_CONTRACT)),
+        (tr("sci.same_oracle"), yes_no(d.same_oracle_original_reloaded) if d.same_oracle_original_reloaded is not None
+         else na_text(Reason.NO_ORACLE_CONTRACT)),
+        (tr("sci.seed"), format_optional(d.seed)),
+        (tr("sci.cv_plan"), d.cv_plan or na_text(Reason.TUNING_NOT_RUN)),
+        (tr("sci.selected"), d.selected_config or na_text(Reason.TUNING_NOT_RUN)),
+        (tr("sci.fidelity"), fid),
+        (tr("sci.predictive_stability"), format_measure(d.predictive_stability)),
+        (tr("sci.structural_stability"), format_measure(d.structural_stability, "{:.2f}")),
+        (tr("sci.selection_probability"), pct(d.selection_probability)
+         + (f" ({d.selection_resamples} reamostragens)" if d.selection_resamples else "")),
+        (tr("sci.runner_up"), d.selection_runner_up or tr("misc.none")),
+        (tr("sci.margin"), pct(d.selection_margin)),
+        (tr("sci.node_cap"), cap),
+        (tr("sci.queries"), queries),
+        (tr("sci.budget_exhausted"), yes_no(d.budget_exhausted)),
+        (tr("sci.test_used"), yes_no(d.test_used_for_selection)),
+        (tr("sci.tuning_status"), tr(f"sci.status.{d.tuning_status}")),
+    ]
 
 
 def cache_text(result: ExperimentResult) -> str:
@@ -438,7 +482,8 @@ def render_text(result: ExperimentResult, mode: str = BASIC) -> str:
     blocks = [(tr("tab.summary"), summary_rows(result))]
     if mode == SCIENTIFIC:
         blocks += [(tr("section.dataset"), dataset_rows(result)), (tr("section.ontology"), ontology_rows(result)),
-                   (tr("section.enrichment"), enrichment_rows(result)), (tr("section.experiment"), experiment_rows(result))]
+                   (tr("section.enrichment"), enrichment_rows(result)),
+                   (tr("section.scientific"), scientific_rows(result)), (tr("section.experiment"), experiment_rows(result))]
     out = []
     for title, rows in blocks:
         out.append(f"== {title} ==")

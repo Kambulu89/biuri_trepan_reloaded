@@ -184,10 +184,30 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.surrogate_above_oracle": "{tree}: accuracy superior à do MLP Original ({tree_acc} vs {mlp_acc}, +{diff} pp, cerca de {n_samples} de {n_total} "
                                       "amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o "
                                       "substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.",
-        "msg.tuning_unstable": "Tuning da estrutura do TREPAN instável: a configuração vencedora muda entre seeds da validação cruzada "
-                               "(concordância {agreement}, limiar {threshold}). A escolha é pouco suportada pelos dados.",
+        "msg.tuning_uncertain": "Tuning da estrutura do TREPAN incerto: no block bootstrap das repetições da validação cruzada a configuração "
+                                "escolhida vence apenas {prob} das reamostragens (limiar {threshold}). A escolha é pouco suportada pelos dados.",
+        "msg.exploratory_mode": "Modo INTERACTIVE / EXPLORATORY: estes resultados são exploratórios e não são benchmark científico. "
+                                "Use SCIENTIFIC / BENCHMARK para o pipeline com oráculo congelado e oracle_id.",
         "msg.tuning_failed": "O tuning da estrutura do TREPAN falhou ({reason}); foi usada a configuração canónica.",
         "field.trepan_tuning": "Estrutura do TREPAN (tuning)",
+        "field.execution_mode": "Modo de execução", "mode.benchmark_ok": "elegível como benchmark (contrato do oráculo cumprido)",
+        "mode.not_benchmark": "exploratório: não utilizar como benchmark científico",
+        "mode.label": "Modo de execução",
+        "mode.interactive": "INTERACTIVE / EXPLORATORY", "mode.benchmark": "SCIENTIFIC / BENCHMARK",
+        "mode.interactive.tip": "Modo normal (MLP com Optuna, cache, interação). Resultados exploratórios: não são benchmark científico.",
+        "mode.benchmark.tip": "Pipeline científico único: split -> MLP -> FrozenOracle -> oracle_id -> tuning (CV 5×3) -> Original e Reloaded -> avaliação.",
+        "section.scientific": "Diagnóstico científico",
+        "sci.oracle_id": "oracle_id", "sci.same_oracle": "Original e Reloaded com o mesmo oracle_id", "sci.seed": "Seed",
+        "sci.cv_plan": "Plano de CV", "sci.selected": "Configuração escolhida", "sci.fidelity": "Fidelity média ± desvio (CV)",
+        "sci.predictive_stability": "Estabilidade preditiva (desvio da fidelity)",
+        "sci.structural_stability": "Estabilidade estrutural (índice; menor = mais estável)",
+        "sci.selection_probability": "selection_probability (block bootstrap)", "sci.runner_up": "2.º colocado",
+        "sci.margin": "Margem 1.º−2.º", "sci.node_cap": "fraction_at_node_cap", "sci.queries": "queries_used / query_budget",
+        "sci.budget_exhausted": "budget_exhausted", "sci.test_used": "test_used_for_selection", "sci.tuning_status": "Estado do tuning",
+        "sci.status.tuning_stable": "tuning_stable", "sci.status.tuning_uncertain": "tuning_uncertain",
+        "sci.status.not_run": "não executado", "sci.status.failed": "falhou (configuração canónica)",
+        "sci.censored": "estabilidade estrutural potencialmente censurada pelo teto de nós",
+        "reason.tuning_not_run": "tuning científico não executado", "reason.no_oracle_contract": "sem contrato do oráculo (modo exploratório)",
         "msg.stale": "Resultados anteriores marcados como desatualizados: {reasons}.",
         "msg.cancelled": "Operação cancelada pelo utilizador.",
         # --- erros

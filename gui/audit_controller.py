@@ -132,6 +132,29 @@ class AuditController:
         self._publish(final=True)
         return self.result
 
+    def on_benchmark_finished(self, result: ExperimentResult) -> ExperimentResult:
+        """Publica um resultado SCIENTIFIC / BENCHMARK já montado pelo serviço científico (nada é recalculado na GUI)."""
+        self.sm.end()
+        if self.sm.state == S.ERROR:
+            self.sm.recover()
+        if self.sm.state == S.NO_DATA:
+            self._transition(S.DATA_LOADED)
+        for target in (S.MODEL_TRAINED, S.TREES_BUILT, S.RESULTS_READY):
+            self._transition(target)
+        self.experiment_id = result.provenance.experiment_id
+        result.messages.extend(m for m in derive_messages(result) if m.code not in {x.code for x in result.messages})
+        self.result = result
+        self.stale.mark_result(current_fingerprint(self.app))
+        self._stale_reasons = ()
+        for m in result.messages:
+            if m not in self.log.items():
+                self.log.add(m)
+        if self.panel is not None:
+            self.panel.set_result(result)
+            self.panel.set_log_lines(self.log.format_lines())
+        self.apply_buttons()
+        return result
+
     def on_metrics_finished(self) -> ExperimentResult:
         self.sm.end()
         if self._has_trees() and not self.sm.reached(S.TREES_BUILT):
