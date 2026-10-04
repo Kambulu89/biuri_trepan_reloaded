@@ -53,9 +53,19 @@ class ScientificTrepanSearchConfig:
     query_budget_policy: str = "non_binding"
     # Robustez interna da seleção: block bootstrap das repetições da CV (cada repetição = 1 bloco que preserva as suas
     # dobras), com a MESMA política de seleção em cada reamostragem. Não introduz política nova: mede a política.
-    bootstrap_resamples: int = 200
+    bootstrap_resamples: int = 1000           # só para o Monte Carlo (quando a enumeração exata é impraticável)
+    bootstrap_exact_limit: int = 20000        # enumeração exata se o nº de composições distintas (multisets) <= isto
     bootstrap_seed: Optional[int] = None      # None -> derivada da seed base (determinística)
     min_selection_probability: float = 0.6    # abaixo disto o tuning é marcado "incerto" (limiar configurável, não prova)
+    # Expansão adaptativa da capacidade (genérica; só resultados da CV do treino): se os candidatos competitivos de maior
+    # capacidade atingem o teto max_nodes numa fração >= ao limiar, a grelha de nós cresce geometricamente
+    # (next = int(factor * atual) + 1, ex. 31 -> 63 -> 127 -> 255), avaliada nas MESMAS dobras, até a saturação deixar
+    # de ser relevante ou se atingir o limite de segurança / nº máximo de rondas. purity_epsilon não é alterado.
+    capacity_expansion: bool = True
+    capacity_expansion_factor: float = 2.0
+    capacity_expansion_saturation_threshold: float = 0.5
+    max_capacity_expansion_rounds: int = 3
+    max_nodes_safety_limit: int = 255
     # Saturação: se a fração de árvores que param por atingir max_nodes for >= isto, a estabilidade estrutural
     # desse candidato é sinalizada como potencialmente censurada pelo teto (só diagnóstico; não altera a seleção).
     node_cap_censoring_threshold: float = 0.5
@@ -103,16 +113,37 @@ def _scaled(base: ControlledTrepanConfig, **kw) -> ControlledTrepanConfig:
     return replace(c, max_queries=max(int(c.max_queries), need)) if c.max_nodes != base.max_nodes else c
 
 
+def _node_depth_limit(base: ControlledTrepanConfig, nodes: int) -> int:
+    """A profundidade nunca limita antes do teto de nós (uma árvore binária com N nós tem profundidade <= (N-1)//2)."""
+    return max(int(base.max_depth), 6, (int(nodes) - 1) // 2)
+
+
+def _common_query_budget(base: ControlledTrepanConfig, search: "ScientificTrepanSearchConfig", max_nodes: int) -> int:
+    """Orçamento comum e não limitante (majora o consumo possível até ao maior nº de nós que a pesquisa pode atingir)."""
+    top = int(max_nodes)
+    if search.capacity_expansion:
+        top = max(top, int(search.max_nodes_safety_limit))
+    return max(int(base.max_queries), non_binding_query_budget(top, base.min_sample))
+
+
+def _structure_point(base, search, eps, nodes, common):
+    c = replace(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=_node_depth_limit(base, nodes))
+    if common is not None:
+        return replace(c, max_queries=common)
+    cap = max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP)
+    need = required_query_budget(c.max_nodes, c.min_sample, cap=cap)
+    return replace(c, max_queries=max(int(base.max_queries), need))
+
+
 def _structure_candidates(base: ControlledTrepanConfig, search: "ScientificTrepanSearchConfig"):
     """Grelha purity_epsilon x max_nodes. O primeiro candidato é sempre o ponto canónico da base.
 
     Equidade computacional (``query_budget_policy``):
-    - "non_binding" (omissão): TODOS os candidatos recebem o mesmo orçamento comum, calculado para o maior
-      ``max_nodes`` da grelha com ``non_binding_query_budget`` (majorante do consumo possível). O orçamento nunca
-      limita nenhum candidato, logo não pode explicar diferenças entre eles.
+    - "non_binding" (omissão): TODOS os candidatos recebem o mesmo orçamento comum, calculado com
+      ``non_binding_query_budget`` (majorante do consumo possível, incluindo a capacidade que a expansão adaptativa
+      pode atingir). O orçamento nunca limita nenhum candidato, logo não pode explicar diferenças entre eles.
     - "required": cada candidato recebe o orçamento necessário para os seus próprios nós (pode esgotar).
     """
-    cap = max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP)
     pairs = [(float(base.purity_epsilon), int(base.max_nodes))]
     for nodes in search.max_nodes_grid:
         for eps in search.purity_epsilon_grid:
@@ -121,16 +152,37 @@ def _structure_candidates(base: ControlledTrepanConfig, search: "ScientificTrepa
                 pairs.append(key)
     common = None
     if str(search.query_budget_policy) == "non_binding":
-        common = max(int(base.max_queries), non_binding_query_budget(max(n for _e, n in pairs), base.min_sample))
+        common = _common_query_budget(base, search, max(n for _e, n in pairs))
+    return [_structure_point(base, search, eps, nodes, common) for eps, nodes in pairs]
 
-    def point(eps, nodes):
-        c = replace(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6))
-        if common is not None:
-            return replace(c, max_queries=common)
-        need = required_query_budget(c.max_nodes, c.min_sample, cap=cap)
-        return replace(c, max_queries=max(int(base.max_queries), need))
 
-    return [point(eps, nodes) for eps, nodes in pairs]
+def _expansion_candidates(base, search, nodes: int, existing):
+    """Candidatos da capacidade expandida: a MESMA grelha de purity_epsilon, só com o novo teto de nós."""
+    common = None
+    if str(search.query_budget_policy) == "non_binding":
+        common = _common_query_budget(base, search, nodes)
+    have = {(float(c["purity_epsilon"]), int(c["max_nodes"])) for c in existing}
+    out = []
+    for eps in search.purity_epsilon_grid:
+        if (float(eps), int(nodes)) not in have:
+            out.append(_structure_point(base, search, eps, nodes, common))
+    return out
+
+
+def _saturation_state(history, search: "ScientificTrepanSearchConfig") -> dict:
+    """Os candidatos competitivos de maior capacidade estão saturados no teto de nós? (só estatísticas da CV do treino)"""
+    valid = [h for h in history if h.get("stats")]
+    competitive = [h for h in valid if (h.get("verdict") or {}).get("reason_code") not in ("LOST_FIDELITY", "FIT_FAILED")]
+    if not valid or not competitive:
+        return {"triggered": False, "reason": "no_competitive_candidates", "top_nodes": None, "competitive_at_top": {}, "saturated": []}
+    top = max(h["stats"]["max_nodes"] for h in valid)
+    at_top = {h["label"]: float(h["stats"]["fraction_at_node_cap"]) for h in competitive if h["stats"]["max_nodes"] == top}
+    if not at_top:
+        return {"triggered": False, "reason": "no_competitive_at_max_capacity", "top_nodes": int(top), "competitive_at_top": {}, "saturated": []}
+    thr = float(search.capacity_expansion_saturation_threshold)
+    saturated = [lab for lab, f in at_top.items() if f >= thr]
+    return {"triggered": bool(saturated), "reason": "saturated" if saturated else "not_saturated", "top_nodes": int(top),
+            "competitive_at_top": at_top, "saturated": saturated}
 
 
 def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int, grow_nodes: bool = True):
@@ -314,7 +366,8 @@ def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig",
         verdicts[i]["structural_stability_censored"] = cens
         if cens:
             verdicts[i]["text"] += (" ⚠ estabilidade estrutural potencialmente CENSURADA pelo teto de nós "
-                                    f"(max_nodes={meta[i]['max_nodes']}): a baixa variância pode vir do limite, não dos dados.")
+                                    f"(max_nodes={meta[i]['max_nodes']}): a baixa variância pode vir do limite, não dos dados; "
+                                    "o CV de nós baixo não é evidência forte de estabilidade estrutural.")
     return winner, verdicts, {"best_fidelity_candidate": best, "t_critical": t_crit, "n_splits": J,
                               "indistinguishable": indist, "stable": stable, "structural": structural,
                               "simplest": simplest, "structural_instability": struct}
@@ -409,6 +462,8 @@ def _split_stats(rows, candidate, repeats: int, feature_names=(), search: Option
         "max_nodes": int(candidate.max_nodes),
         "node_cap_reached_count": int(sum(1 for r in rows if r.get("max_nodes_reached"))),
         "fraction_at_node_cap": float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows])),
+        "structural_stability_evidence": "censored_by_node_cap" if float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows]))
+        >= float((search or ScientificTrepanSearchConfig()).node_cap_censoring_threshold) else "observed",
         "structural_stability_censored": bool(
             float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows]))
             >= float((search or ScientificTrepanSearchConfig()).node_cap_censoring_threshold)),
@@ -434,47 +489,102 @@ def _wilson(k: int, n: int, z: float = 1.959964):
     return [float(max(0.0, c - h)), float(min(1.0, c + h))]
 
 
-def _block_bootstrap(F, N, D, L, meta, k, search, valid, plan, repeats, labels, final_label, stats):
-    """Robustez interna da política de seleção por block bootstrap das repetições da CV.
+def _weighted_percentile(values, weights, q):
+    order = np.argsort(values)
+    v = np.asarray(values, dtype=float)[order]
+    w = np.asarray(weights, dtype=float)[order]
+    cum = np.cumsum(w) / w.sum()
+    return float(v[min(int(np.searchsorted(cum, q / 100.0)), len(v) - 1)])
 
-    Cada repetição (com as suas ``k`` dobras) é um bloco; reamostram-se ``repeats`` blocos com reposição, de forma
-    determinística, e em cada reamostragem corre-se EXATAMENTE a mesma ``_lexicographic_select``. Só usa resultados
-    de CV do treino (o teste nunca entra). Com menos de 2 blocos não é avaliável.
+
+def _block_bootstrap(F, N, D, L, meta, k, search, valid, plan, repeats, labels, final_label, stats):
+    """Robustez interna da política de seleção por bootstrap de blocos das repetições da CV.
+
+    Cada repetição (com as suas ``k`` dobras) é um bloco; reamostram-se ``repeats`` blocos com reposição e em cada
+    reamostragem corre-se EXATAMENTE a mesma ``_lexicographic_select`` sobre resultados já calculados (nada é treinado de
+    novo; o teste nunca entra). A política só depende do MULTISET de blocos (médias, desvios e testes emparelhados são
+    invariantes à ordem das colunas), logo:
+
+    - ``exact``: enumeram-se todos os multisets (C(2B-1, B)) com o seu peso multinomial, o que equivale a avaliar as
+      B^B reamostragens ordenadas (3125 para B=5) com apenas C(2B-1,B) avaliações (126 para B=5);
+    - ``monte_carlo``: se C(2B-1,B) > ``bootstrap_exact_limit``, ``bootstrap_resamples`` reamostragens determinísticas.
+
+    Distingue a configuração escolhida pela CV completa da moda do bootstrap: ``selection_probability`` é a da escolhida;
+    ``bootstrap_runner_up`` é o 2.º da distribuição (nunca com probabilidade superior ao 1.º).
     """
-    B = int(search.bootstrap_resamples)
-    out = {"method": "block bootstrap das repetições da CV (dobras de cada repetição preservadas)",
-           "n_blocks": int(repeats), "n_resamples": 0, "assessable": False, "seed": None,
-           "selection_probability": 0.0, "selection_probability_mc_interval": [0.0, 1.0],
-           "runner_up": None, "margin": None, "distribution": {}, "modal_config": None,
-           "selected_is_modal": None, "winner_fidelity_ci": None, "test_used": False}
-    if repeats < 2 or B < 1:
-        out["reason"] = "menos de 2 repetições (blocos)" if repeats < 2 else "bootstrap_resamples < 1"
+    import itertools
+    import math
+    B = int(repeats)
+    out = {"method": None, "bootstrap_samples": 0, "bootstrap_evaluations": 0, "n_blocks": B, "assessable": False, "seed": None,
+           "selected_config_full_cv": final_label, "selected_config_probability": 0.0, "selection_probability": 0.0,
+           "bootstrap_modal_config": None, "bootstrap_modal_probability": None, "bootstrap_runner_up": None,
+           "top1_top2_margin": None, "selected_is_modal": None, "full_cv_vs_modal_gap": None,
+           "full_cv_selection_fragile": None, "selection_probability_mc_interval": None, "distribution": {},
+           "winner_fidelity_ci": None, "test_used": False}
+    if B < 2:
+        out["reason"] = "menos de 2 repetições (blocos)"
         return out
-    seed = int(search.bootstrap_seed) if search.bootstrap_seed is not None else int(plan[0][1]) + 7919
-    rng = np.random.default_rng(seed)
-    blocks = [[j for j, (rr, *_r) in enumerate(plan) if rr == r] for r in range(repeats)]
-    wins: dict = {}
-    winner_fid = []
+    blocks = [[j for j, (rr, *_r) in enumerate(plan) if rr == r] for r in range(B)]
     final_idx = labels.index(final_label)
-    for _ in range(B):
-        picks = rng.integers(0, repeats, size=repeats)
-        cols = [j for p in picks for j in blocks[p]]
-        w, _v, _i = _lexicographic_select(F[:, cols], N[:, cols], meta, k, search, valid, D[:, cols], L[:, cols])
-        if w is None:
-            continue
-        wins[labels[w]] = wins.get(labels[w], 0) + 1
-        winner_fid.append(float(F[final_idx, cols].mean()))
-    n = sum(wins.values())
-    dist = {lab: c / n for lab, c in sorted(wins.items(), key=lambda kv: (-kv[1], labels.index(kv[0])))} if n else {}
-    p_final = wins.get(final_label, 0) / n if n else 0.0
-    others = [(lab, c) for lab, c in sorted(wins.items(), key=lambda kv: (-kv[1], labels.index(kv[0]))) if lab != final_label]
-    runner = {"label": others[0][0], "probability": others[0][1] / n} if others and n else None
+    block_fid = np.array([float(F[final_idx, blk].mean()) for blk in blocks])
+    n_multisets = math.comb(2 * B - 1, B)
+    exact = n_multisets <= int(search.bootstrap_exact_limit)
+    cache: dict = {}
+
+    def evaluate(multiset):
+        key = tuple(multiset)
+        if key not in cache:
+            cols = [j for p in key for j in blocks[p]]
+            w, _v, _i = _lexicographic_select(F[:, cols], N[:, cols], meta, k, search, valid, D[:, cols], L[:, cols])
+            cache[key] = None if w is None else labels[w]
+        return cache[key]
+
+    wins: dict = {}
+    fid_vals, fid_w = [], []
+    if exact:
+        total = float(B ** B)
+        for ms in itertools.combinations_with_replacement(range(B), B):
+            counts = np.bincount(ms, minlength=B)
+            weight = math.factorial(B) / float(np.prod([math.factorial(int(c)) for c in counts]))
+            lab = evaluate(ms)
+            if lab is None:
+                continue
+            wins[lab] = wins.get(lab, 0.0) + weight
+            fid_vals.append(float(counts @ block_fid / B)); fid_w.append(weight)
+        n_total = sum(wins.values())
+        samples = int(round(total))
+        out.update({"method": "exact", "bootstrap_samples": samples})
+    else:
+        seed = int(search.bootstrap_seed) if search.bootstrap_seed is not None else int(plan[0][1]) + 7919
+        rng = np.random.default_rng(seed)
+        n = int(search.bootstrap_resamples)
+        for _ in range(n):
+            ms = tuple(sorted(int(x) for x in rng.integers(0, B, size=B)))
+            lab = evaluate(ms)
+            if lab is None:
+                continue
+            wins[lab] = wins.get(lab, 0.0) + 1.0
+            counts = np.bincount(ms, minlength=B)
+            fid_vals.append(float(counts @ block_fid / B)); fid_w.append(1.0)
+        n_total = sum(wins.values())
+        out.update({"method": "monte_carlo", "bootstrap_samples": int(n_total), "seed": seed})
+    out["bootstrap_evaluations"] = int(len(cache))
+    if not n_total:
+        out["reason"] = "nenhuma reamostragem avaliável"
+        return out
+    order = sorted(wins.items(), key=lambda kv: (-kv[1], labels.index(kv[0])))
+    dist = {lab: c / n_total for lab, c in order}
+    modal, p_modal = order[0][0], order[0][1] / n_total
+    runner = {"label": order[1][0], "probability": order[1][1] / n_total} if len(order) > 1 else None
+    p_final = wins.get(final_label, 0.0) / n_total
     out.update({
-        "assessable": bool(n), "n_resamples": int(n), "seed": seed, "selection_probability": float(p_final),
-        "selection_probability_mc_interval": _wilson(wins.get(final_label, 0), n),
-        "runner_up": runner, "margin": float(p_final - (runner["probability"] if runner else 0.0)),
-        "distribution": dist, "modal_config": next(iter(dist), None), "selected_is_modal": bool(next(iter(dist), None) == final_label),
-        "winner_fidelity_ci": [float(np.percentile(winner_fid, 2.5)), float(np.percentile(winner_fid, 97.5))] if winner_fid else None,
+        "assessable": True, "selected_config_probability": float(p_final), "selection_probability": float(p_final),
+        "bootstrap_modal_config": modal, "bootstrap_modal_probability": float(p_modal), "bootstrap_runner_up": runner,
+        "top1_top2_margin": float(p_modal - (runner["probability"] if runner else 0.0)),
+        "selected_is_modal": bool(modal == final_label), "full_cv_vs_modal_gap": float(p_modal - p_final),
+        "full_cv_selection_fragile": bool(modal != final_label), "distribution": dist,
+        "selection_probability_mc_interval": None if exact else _wilson(int(wins.get(final_label, 0)), int(n_total)),
+        "winner_fidelity_ci": [_weighted_percentile(fid_vals, fid_w, 2.5), _weighted_percentile(fid_vals, fid_w, 97.5)] if fid_vals else None,
     })
     return out
 
@@ -544,7 +654,7 @@ def tune_scientific_trepan(
                             "mean": mean, "stats": stats, "per_split": rows if failed is None else [], "failed": failed})
         return history
 
-    def select(history, fallback):
+    def select(history, fallback, with_bootstrap=True):
         """Seleção lexicográfica + estabilidade da seleção entre repetições (seeds). Escreve veredictos no histórico."""
         valid = [bool(h["stats"]) for h in history]
         if not any(valid):
@@ -570,19 +680,37 @@ def tune_scientific_trepan(
             cols = [j for j, (rr, *_rest) in enumerate(plan) if rr == r]
             w, _v, _i = _lexicographic_select(F[:, cols], Nn[:, cols], meta, folds, search, valid, Dd[:, cols], Ll[:, cols])
             per_repeat.append(None if w is None else history[w]["label"])
-        boot = _block_bootstrap(F, Nn, Dd, Ll, meta, folds, search, valid, plan, repeats,
-                                [h["label"] for h in history], final, [h["stats"] for h in history])
-        stable = bool(boot["assessable"] and boot["selection_probability"] >= float(search.min_selection_probability))
+        if with_bootstrap:
+            boot = _block_bootstrap(F, Nn, Dd, Ll, meta, folds, search, valid, plan, repeats,
+                                    [h["label"] for h in history], final, [h["stats"] for h in history])
+        else:
+            boot = {"assessable": False, "selection_probability": 0.0, "method": None, "deferred": True}
+        if not boot["assessable"]:
+            status_reason = "bootstrap_not_assessable"
+        elif not boot["selected_is_modal"]:
+            status_reason = "full_cv_selection_not_bootstrap_modal"
+        elif boot["selection_probability"] < float(search.min_selection_probability):
+            status_reason = "selection_probability_below_threshold"
+        else:
+            status_reason = "ok"
+        # tuning_stable exige que a escolhida pela CV completa seja a moda do bootstrap E tenha probabilidade suficiente.
+        stable = bool(status_reason == "ok")
         w_stats = history[winner]["stats"]
         selection = {"selected": history[winner]["config"], "selected_label": final,
+                     "selected_config_full_cv": final, "selected_config_probability": boot.get("selected_config_probability", 0.0),
+                     "bootstrap_modal_config": boot.get("bootstrap_modal_config"),
+                     "bootstrap_modal_probability": boot.get("bootstrap_modal_probability"),
+                     "bootstrap_runner_up": boot.get("bootstrap_runner_up"), "top1_top2_margin": boot.get("top1_top2_margin"),
+                     "full_cv_selection_fragile": boot.get("full_cv_selection_fragile"),
                      "per_repeat_winners": per_repeat, "seeds": [int(v) for v in seeds],
                      "bootstrap": boot, "selection_probability": boot["selection_probability"],
-                     "stable": stable, "status": "tuning_stable" if stable else "tuning_uncertain",
+                     "stable": stable, "status": "tuning_stable" if stable else "tuning_uncertain", "status_reason": status_reason,
                      "distinct_winners": len({w for w in per_repeat if w}),
                      "threshold": float(search.min_selection_probability),
                      "node_cap": {"max_nodes": w_stats["max_nodes"], "fraction_at_node_cap": w_stats["fraction_at_node_cap"],
                                   "node_cap_reached_count": w_stats["node_cap_reached_count"],
-                                  "structural_stability_censored": w_stats["structural_stability_censored"]},
+                                  "structural_stability_censored": w_stats["structural_stability_censored"],
+                                  "structural_stability_evidence": w_stats["structural_stability_evidence"]},
                      "t_critical": info.get("t_critical"), "n_splits": info.get("n_splits")}
         return ControlledTrepanConfig(**history[winner]["config"]), selection
 
@@ -591,9 +719,44 @@ def tune_scientific_trepan(
     structure_history = []
     structure_selection = None
     structure_base = base_config
+    expansion = {"enabled": bool(search.capacity_expansion), "initial_node_grid": [], "final_node_grid": [],
+                 "capacity_expansion_rounds": 0, "expansion_triggered": False, "expansion_stop_reason": "structure_not_tuned",
+                 "fraction_at_node_cap": None, "safety_limit": int(search.max_nodes_safety_limit),
+                 "factor": float(search.capacity_expansion_factor),
+                 "saturation_threshold": float(search.capacity_expansion_saturation_threshold), "rounds": []}
     if search.tune_structure and search.purity_epsilon_grid and search.max_nodes_grid:
         structure_history = evaluate(_structure_candidates(base_config, search), "structure")
-        structure_base, structure_selection = select(structure_history, base_config)
+        expansion["initial_node_grid"] = sorted({int(h["config"]["max_nodes"]) for h in structure_history})
+        structure_base, structure_selection = select(structure_history, base_config, with_bootstrap=False)
+        reason = "expansion_disabled" if not search.capacity_expansion else "not_triggered"
+        while search.capacity_expansion:
+            state = _saturation_state(structure_history, search)
+            rounds_done = expansion["capacity_expansion_rounds"]
+            if not state["triggered"]:
+                reason = "saturation_resolved" if rounds_done else (
+                    state["reason"] if state["reason"] in ("no_competitive_candidates", "no_competitive_at_max_capacity") else "not_triggered")
+                break
+            expansion["expansion_triggered"] = True
+            nxt = int(float(search.capacity_expansion_factor) * int(state["top_nodes"])) + 1
+            if nxt <= int(state["top_nodes"]):
+                reason = "invalid_expansion_factor"; break
+            if nxt > int(search.max_nodes_safety_limit):
+                reason = "safety_limit_reached"; break
+            if rounds_done >= int(search.max_capacity_expansion_rounds):
+                reason = "max_rounds_reached"; break
+            new_candidates = _expansion_candidates(base_config, search, nxt, [h["config"] for h in structure_history])
+            if not new_candidates:
+                reason = "no_new_candidates"; break
+            structure_history += evaluate(new_candidates, "structure")
+            expansion["capacity_expansion_rounds"] = rounds_done + 1
+            expansion["rounds"].append({"round": rounds_done + 1, "from_max_nodes": int(state["top_nodes"]), "to_max_nodes": nxt,
+                                        "saturated_candidates": list(state["saturated"]),
+                                        "fraction_at_node_cap_before": dict(state["competitive_at_top"])})
+            structure_base, structure_selection = select(structure_history, base_config, with_bootstrap=False)
+        expansion["expansion_stop_reason"] = reason
+        expansion["final_node_grid"] = sorted({int(h["config"]["max_nodes"]) for h in structure_history})
+        structure_base, structure_selection = select(structure_history, base_config)        # bootstrap sobre a pesquisa final
+        expansion["fraction_at_node_cap"] = (structure_selection.get("node_cap") or {}).get("fraction_at_node_cap")
 
     # Etapa 2: restantes eixos de capacidade à volta da estrutura escolhida. O nº de nós só varia na grelha da
     # etapa 1 (ou fica o da base, canónico, se a grelha estiver desligada): não há crescimento arbitrário de nós.
@@ -673,6 +836,10 @@ def tune_scientific_trepan(
         "stability_rule":"block bootstrap das repetições da CV (mesma política em cada reamostragem); tuning_stable se selection_probability >= min_selection_probability",
         "query_budget_policy":str(search.query_budget_policy),
         "budget_check":_budget_check(structure_history),
+        "capacity_expansion":expansion,
+        "initial_node_grid":expansion["initial_node_grid"], "final_node_grid":expansion["final_node_grid"],
+        "capacity_expansion_rounds":expansion["capacity_expansion_rounds"], "expansion_triggered":expansion["expansion_triggered"],
+        "expansion_stop_reason":expansion["expansion_stop_reason"], "fraction_at_node_cap":expansion["fraction_at_node_cap"],
         "structure_history":structure_history,
         "structure_selection":structure_selection,
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},

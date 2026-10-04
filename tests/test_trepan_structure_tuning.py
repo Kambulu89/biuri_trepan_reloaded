@@ -32,7 +32,7 @@ def _base(**kw):
 
 def _fast(**kw):
     values = dict(cv_folds=2, cv_repeats=2, max_capacity_candidates=1, max_semantic_candidates=1,
-                  purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15))
+                  purity_epsilon_grid=(0.05, 0.01), max_nodes_grid=(7, 15), capacity_expansion=False)
     values.update(kw)
     return ScientificTrepanSearchConfig(**values)
 
