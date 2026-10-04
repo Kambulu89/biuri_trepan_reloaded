@@ -122,6 +122,8 @@ _CATALOG: Dict[str, Dict[str, str]] = {
             "Um subconjunto estável de features semânticas melhorou a utilidade OOF.",
         "decision.ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN":
             "Não-inferior ao MLP base, com ganho numa métrica secundária (evidência fraca).",
+        "decision.ONTOLOGY_VALID_BUT_NO_PREDICTIVE_UTILITY":
+            "A ontologia é válida, mas as features semânticas não mostraram utilidade preditiva validada em validação interna.",
         "decision.NOT_EVALUATED": "O enriquecimento não foi avaliado nesta experiência.",
         "decision.unknown": "Decisão técnica: {code}.",
         "enrichment.nothing_to_show": "Sem relatório de enriquecimento para esta experiência.",

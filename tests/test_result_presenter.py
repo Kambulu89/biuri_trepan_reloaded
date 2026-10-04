@@ -244,3 +244,9 @@ def test_trepan_semantics_reason_is_humanised_not_a_raw_code():
     r = make_result(enrichment=EnrichmentInfo(mlp_status="NOT_AVAILABLE", trepan_semantics_available=False,
                                               trepan_semantics_reason="no_ontology"))
     assert dict(rp.enrichment_rows(r))["Semântica no TREPAN"] == "INDISPONÍVEL — ontologia não carregada"
+
+
+def test_legacy_ontology_decision_code_is_translated():
+    r = make_result(enrichment=EnrichmentInfo(mlp_status="REJECTED", decision="ONTOLOGY_VALID_BUT_NO_PREDICTIVE_UTILITY"))
+    text = rp.explain_decision(r)
+    assert "ONTOLOGY_VALID" not in text and "utilidade preditiva" in text

@@ -38,8 +38,13 @@ def test_building_presenting_and_exporting_never_touch_models(tmp_path):
     from gui.result_builder import build_experiment_result
 
     class Tripwire:
+        """Falha se a interface tentar CALCULAR com o modelo; ler estado já registado (node_count_, root_) é permitido."""
+        COMPUTE = ("predict", "fit", "score", "transform", "decision_function", "evaluate", "partial_fit")
+
         def __getattr__(self, item):
-            raise AssertionError(f"a interface chamou o modelo: {item}")
+            if item.startswith(self.COMPUTE):
+                raise AssertionError(f"a interface chamou o modelo: {item}")
+            raise AttributeError(item)      # atributo inexistente: leitura devolve o valor por omissão
 
     comparison = {"precision": {"mlp": {"accuracy": .9}, "trepan_original": {"accuracy": .8}}, "fidelity": {"trepan_original": {"overall_fidelity": .9}}}
     snapshot = json.dumps(comparison, sort_keys=True)
