@@ -170,3 +170,15 @@ def test_surrogate_accuracy_above_mlp_is_flagged_not_hidden_or_changed():
     tree2 = ModelCard(key="trepan_original", status="AVAILABLE", metrics={"accuracy": Measure.of(0.90)})
     assert not [m for m in derive_messages(_result(models={"mlp_original": mlp, "trepan_original": tree2}))
                 if m.code == "surrogate_above_oracle"]
+
+
+def test_unstable_or_failed_structure_tuning_is_flagged():
+    unstable = _result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.02, "max_nodes": 31}, "stable": False,
+                                                 "agreement": 0.33, "threshold": 0.6}})
+    w = [m for m in derive_messages(unstable) if m.code == "tuning_unstable"]
+    assert w and w[0].level == Level.SCIENTIFIC_WARNING.value and "33%" in w[0].text and "60%" in w[0].text
+    failed = _result(config={"trepan_tuning": {"failed": "RuntimeError: boom", "fallback": "canonical_defaults"}})
+    f = [m for m in derive_messages(failed) if m.code == "tuning_failed"]
+    assert f and f[0].level == Level.WARNING.value and "canónica" in f[0].text
+    ok = _result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.05, "max_nodes": 31}, "stable": True, "agreement": 1.0}})
+    assert not [m for m in derive_messages(ok) if m.code in {"tuning_unstable", "tuning_failed"}]

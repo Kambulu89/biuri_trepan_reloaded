@@ -17,7 +17,7 @@ from core.ontology_quality import OntologyQualityGate
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig
 
 CFG = EnrichmentConfig(cv_folds=3, tuning_candidates=2, tuning_inner_folds=2, max_iter=150, n_bootstrap=200, random_state=5)
-FAST_TREPAN = ScientificTrepanSearchConfig(cv_folds=2, max_capacity_candidates=1, max_semantic_candidates=1)
+FAST_TREPAN = ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=1, tune_structure=False, max_capacity_candidates=1, max_semantic_candidates=1)
 
 
 def _onto(noise=0, name="teach"):

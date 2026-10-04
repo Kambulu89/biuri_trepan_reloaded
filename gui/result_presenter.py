@@ -349,9 +349,20 @@ def benchmark_table(result: ExperimentResult) -> Table:
 def experiment_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
     p = result.provenance
     stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.timestamp))
+    tuning = (result.config or {}).get("trepan_tuning") or {}
+    tuning_row = []
+    if tuning:
+        sel = tuning.get("selected") or {}
+        if tuning.get("failed"):
+            text = f"fallback canónico: {tuning['failed']}"
+        else:
+            state = "estável" if tuning.get("stable") else "INSTÁVEL"
+            text = (f"purity_epsilon={sel.get('purity_epsilon')}, max_nodes={sel.get('max_nodes')} — {state} "
+                    f"(concordância {format_optional(tuning.get('agreement'), '{:.0%}')} entre seeds)")
+        tuning_row = [(tr("field.trepan_tuning"), text)]
     return [(tr("field.experiment_id"), p.experiment_id), (tr("field.seed"), format_optional(p.seed)),
             (tr("field.dataset_hash"), format_optional(p.dataset_hash)), (tr("field.owl_hash"), format_optional(p.owl_hash)),
-            (tr("field.config_hash"), format_optional(p.config_hash))] + build_rows(result) + [
+            (tr("field.config_hash"), format_optional(p.config_hash))] + tuning_row + build_rows(result) + [
             (tr("field.timestamp"), stamp), (tr("field.cache"), cache_text(result))]
 
 

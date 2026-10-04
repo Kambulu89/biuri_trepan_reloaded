@@ -1086,6 +1086,8 @@ class TrepanReloadedExtractor:
                 search=ScientificTrepanSearchConfig(
                     cv_folds=int(limits.get('trepan_tuning_cv_folds', 3)),
                     max_capacity_candidates=1,  # capacidade já comum ao Original
+                    tune_structure=False,       # a estrutura já foi escolhida (no Original); não se volta a afinar
+                    cv_repeats=1,
                     max_semantic_candidates=int(limits.get('semantic_tuning_candidates', 6)),
                     fidelity_target=float(limits.get('trepan_fidelity_tuning_target', 0.95)),
                 ),

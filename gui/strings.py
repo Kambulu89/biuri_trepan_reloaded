@@ -184,6 +184,10 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.surrogate_above_oracle": "{tree}: accuracy superior à do MLP Original ({tree_acc} vs {mlp_acc}, +{diff} pp, cerca de {n_samples} de {n_total} "
                                       "amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o "
                                       "substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.",
+        "msg.tuning_unstable": "Tuning da estrutura do TREPAN instável: a configuração vencedora muda entre seeds da validação cruzada "
+                               "(concordância {agreement}, limiar {threshold}). A escolha é pouco suportada pelos dados.",
+        "msg.tuning_failed": "O tuning da estrutura do TREPAN falhou ({reason}); foi usada a configuração canónica.",
+        "field.trepan_tuning": "Estrutura do TREPAN (tuning)",
         "msg.stale": "Resultados anteriores marcados como desatualizados: {reasons}.",
         "msg.cancelled": "Operação cancelada pelo utilizador.",
         # --- erros

@@ -118,6 +118,12 @@ def derive_messages(result: ExperimentResult) -> List[Message]:
         out.append(make_message(Level.INFO, "enrichment_rejected", "msg.enrichment_rejected", eid,
                                 decision=enr.decision or "-"))
 
+    tuning = (result.config or {}).get("trepan_tuning") or {}
+    if tuning.get("failed"):
+        out.append(make_message(Level.WARNING, "tuning_failed", "msg.tuning_failed", eid, reason=str(tuning["failed"])[:160]))
+    elif tuning.get("stable") is False:
+        out.append(make_message(Level.SCIENTIFIC_WARNING, "tuning_unstable", "msg.tuning_unstable", eid,
+                                agreement=f"{(tuning.get('agreement') or 0):.0%}", threshold=f"{(tuning.get('threshold') or 0):.0%}"))
     mlp = result.models.get("mlp_original")
     mlp_acc = mlp.metrics.get("accuracy") if mlp else None
     for key in ("trepan_original", "trepan_reloaded"):

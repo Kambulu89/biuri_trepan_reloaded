@@ -246,6 +246,14 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
         state=state, provenance=prov, dataset=dataset, ontology=ontology, enrichment=enrichment, models=models, trees=trees,
         semantic_features=semantic_features_from_audit(enr_report), semantic_splits=semantic_splits_from_audit(split_rows),
         config=cfg, counterfactual=_counterfactual_summary(app))
+    tuning = getattr(app, "_trepan_scientific_tuning", None)
+    if tuning:
+        sel = tuning.get("structure_selection") or {}
+        result.config = {**result.config, "trepan_tuning": {
+            "selected": tuning.get("structure_selected"), "stable": tuning.get("tuning_stable"),
+            "agreement": sel.get("agreement"), "threshold": sel.get("threshold"),
+            "per_seed_winners": sel.get("per_seed_winners"), "failed": tuning.get("failed"),
+            "fallback": tuning.get("fallback"), "n_splits": (tuning.get("cv_plan") or {}).get("n_splits")}}
     if previous is not None:
         result.messages = list(previous.messages)
     return result

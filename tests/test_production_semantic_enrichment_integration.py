@@ -11,7 +11,7 @@ from core.production_training import train_production_dataframe
 from core.semantic_enrichment import EnrichmentConfig
 from core.trepan_scientific_tuning import ScientificTrepanSearchConfig
 
-FAST_TREPAN = ScientificTrepanSearchConfig(cv_folds=2, max_capacity_candidates=1, max_semantic_candidates=1)
+FAST_TREPAN = ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=1, tune_structure=False, max_capacity_candidates=1, max_semantic_candidates=1)
 FAST_ENRICH = EnrichmentConfig(cv_folds=3, tuning_candidates=2, tuning_inner_folds=2, max_iter=120, n_bootstrap=100)
 
 

@@ -76,6 +76,8 @@ def test_scientific_tuner_selects_common_capacity_and_semantic_params_using_trai
     )
     search = ScientificTrepanSearchConfig(
         cv_folds=2,
+        cv_repeats=1,
+        tune_structure=False,
         max_capacity_candidates=2,
         max_semantic_candidates=2,
         fidelity_target=0.85,
@@ -126,7 +128,7 @@ def test_production_report_records_train_only_scientific_tuning(tmp_path):
     df['target'] = np.where(y == 1, 'yes', 'no')
     report = train_production_dataframe(
         df, target='target', out_dir=tmp_path, seed=51,
-        trepan_search=ScientificTrepanSearchConfig(cv_folds=2, max_capacity_candidates=1, max_semantic_candidates=1),
+        trepan_search=ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=1, tune_structure=False, max_capacity_candidates=1, max_semantic_candidates=1),
     )
     tuning = report['evaluation']['trepan_scientific_tuning']
     assert tuning['selection_scope'] == 'training_cv_only'

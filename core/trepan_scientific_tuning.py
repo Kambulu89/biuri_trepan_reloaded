@@ -6,10 +6,12 @@ essa capacidade, selecciona apenas parâmetros da extensão semântica do Reload
 """
 from __future__ import annotations
 
+import time
 from dataclasses import asdict, dataclass, replace
 from typing import Any, Optional, Sequence
 
 import numpy as np
+from scipy import stats as _scipy_stats
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 
@@ -22,26 +24,47 @@ from core.trepan_reloaded_historical import TrepanReloadedClassifier
 @dataclass(frozen=True)
 class ScientificTrepanSearchConfig:
     cv_folds: int = 3
+    # Repeated Stratified K-Fold no TREINO: ``cv_repeats`` repetições, cada uma com a sua seed determinística
+    # (``cv_seeds`` explícitas, ou derivadas de ``base_config.random_state``). Nunca vê o conjunto de teste.
+    cv_repeats: int = 3
+    cv_seeds: Optional[tuple] = None
     max_capacity_candidates: int = 6
     max_semantic_candidates: int = 6
-    fidelity_target: float = 0.95
+    fidelity_target: float = 0.95            # legado: já não intervém na seleção (agora lexicográfica)
     fidelity_weight: float = 0.65
     balanced_accuracy_weight: float = 0.20
     macro_f1_weight: float = 0.15
     complexity_penalty: float = 0.015
     # Grelha de estrutura (literatura do TREPAN: NIPS 1995 usa 0.05 e 31 nós; a tese de 1996 usa 63 nós).
-    # Escolhida por CV interna, só no treino. Só corre quando há pesquisa de capacidade (max_capacity_candidates > 1);
-    # grelhas vazias ou tune_structure=False desativam-na e ficam os valores canónicos da configuração base.
+    # Escolhida por CV interna repetida, só no treino. Grelhas vazias ou tune_structure=False desativam-na e ficam
+    # os valores canónicos da configuração base. A grelha é configurável/extensível (qualquer tuplo de valores).
     tune_structure: bool = True
     purity_epsilon_grid: tuple = (0.05, 0.02, 0.01)
     max_nodes_grid: tuple = (31, 63)
+    # Seleção lexicográfica (ver ``_lexicographic_select``): 1) fidelity; 2) estabilidade entre candidatos
+    # estatisticamente indistinguíveis; 3) complexidade; 4) empate real -> a mais simples.
+    significance_alpha: float = 0.05          # teste t reamostrado corrigido (Nadeau & Bengio, 2003), unilateral
+    stability_tolerance: float = 0.005        # diferença de desvio-padrão da fidelity tratada como empate
+    min_selection_agreement: float = 0.6      # fração de repetições cuja vencedora coincide com a final
 
 
-def _folds(y, requested: int, seed: int):
+def _cv_plan(y, search: "ScientificTrepanSearchConfig", base_seed: int):
+    """Plano de Repeated Stratified K-Fold no treino: lista de (repetição, seed, dobra, treino, validação).
+
+    Determinístico: as seeds são explícitas (``search.cv_seeds``) ou derivadas da seed base. O mesmo plano é usado
+    por todos os candidatos, o que permite comparações emparelhadas.
+    """
     y = np.asarray(y)
     _, counts = np.unique(y, return_counts=True)
-    n = max(2, min(int(requested), int(counts.min())))
-    return StratifiedKFold(n_splits=n, shuffle=True, random_state=int(seed)), n
+    k = max(2, min(int(search.cv_folds), int(counts.min())))
+    seeds = tuple(int(v) for v in search.cv_seeds) if search.cv_seeds else \
+        tuple(int(base_seed) + 1009 * i for i in range(max(1, int(search.cv_repeats))))
+    X_index = np.zeros(len(y))
+    plan = []
+    for r, seed in enumerate(seeds):
+        for f, (tr, va) in enumerate(StratifiedKFold(n_splits=k, shuffle=True, random_state=seed).split(X_index, y)):
+            plan.append((r, seed, f, tr, va))
+    return plan, k, seeds
 
 
 def _objective(model, X_val, y_val, oracle, cfg: ControlledTrepanConfig, search: ScientificTrepanSearchConfig):
@@ -68,17 +91,26 @@ def _scaled(base: ControlledTrepanConfig, **kw) -> ControlledTrepanConfig:
 
 
 def _structure_candidates(base: ControlledTrepanConfig, search: "ScientificTrepanSearchConfig"):
-    """Grelha purity_epsilon x max_nodes. O primeiro candidato é sempre a configuração base (canónica por omissão)."""
-    out = [base]
+    """Grelha purity_epsilon x max_nodes. O primeiro candidato é sempre o ponto canónico da base.
+
+    Equidade: TODOS os candidatos recebem o orçamento de queries necessário para os seus próprios nós
+    (``required_query_budget``, com teto), para que o orçamento não seja uma variável de confusão entre eles.
+    """
+    cap = max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP)
+
+    def point(eps, nodes):
+        c = replace(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6))
+        need = required_query_budget(c.max_nodes, c.min_sample, cap=cap)
+        return replace(c, max_queries=max(int(base.max_queries), need))
+
+    out = [point(base.purity_epsilon, base.max_nodes)]
     seen = {(float(base.purity_epsilon), int(base.max_nodes))}
     for nodes in search.max_nodes_grid:
         for eps in search.purity_epsilon_grid:
             key = (float(eps), int(nodes))
-            if key in seen:
-                continue
-            seen.add(key)
-            # a profundidade acompanha os nós (6 níveis chegam para 63 nós); nunca reduz a da base
-            out.append(_scaled(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6)))
+            if key not in seen:
+                seen.add(key)
+                out.append(point(eps, nodes))
     return out
 
 
@@ -141,6 +173,122 @@ def _mean_metrics(rows):
     return {k: float(np.mean([r[k] for r in rows])) for k in keys}
 
 
+def _label(cfg: dict) -> str:
+    return f"purity_epsilon={cfg['purity_epsilon']:g}, max_nodes={cfg['max_nodes']}"
+
+
+def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig", valid):
+    """Seleção multiobjetivo lexicográfica sobre resultados EMPARELHADOS (mesmas partições para todos).
+
+    1. Maximizar a fidelity média. Os candidatos cuja diferença para o melhor não é significativa (teste t
+       reamostrado corrigido, Nadeau & Bengio 2003, unilateral, ``significance_alpha``) ficam "indistinguíveis".
+    2. Entre os indistinguíveis, privilegiar a estabilidade (menor desvio-padrão da fidelity entre partições,
+       com tolerância ``stability_tolerance``).
+    3. Só depois, a complexidade (menos nós médios).
+    4. Empate real: a configuração mais simples (menos ``max_nodes``) e, por fim, a ordem canónica da grelha.
+
+    Não há preferência por capacidade maior: a complexidade só intervém depois da fidelity e da estabilidade e
+    favorece sempre a mais simples. Devolve o índice vencedor e um veredicto (com números) por candidato.
+    """
+    C, J = F.shape
+    verdicts = [None] * C
+    idx = [i for i in range(C) if valid[i]]
+    for i in range(C):
+        if not valid[i]:
+            verdicts[i] = {"status": "FAILED", "stage": 0, "reason_code": "FIT_FAILED",
+                           "text": "falhou durante a validação cruzada (candidato descartado)."}
+    if not idx:
+        return None, verdicts, {}
+    means = F.mean(axis=1)
+    best = max(idx, key=lambda i: (means[i], -i))
+    t_crit = float(_scipy_stats.t.ppf(1.0 - float(search.significance_alpha), J - 1)) if J > 1 else float("inf")
+    ratio = 1.0 / max(1, k - 1)                       # n_validação / n_treino numa K-fold
+    detail = {}
+    indist = []
+    for i in idx:
+        if i == best:
+            indist.append(i); detail[i] = {"delta": 0.0, "t": 0.0}; continue
+        d = F[best] - F[i]
+        m = float(d.mean())
+        var = float(d.var(ddof=1)) if J > 1 else 0.0
+        denom = float(np.sqrt((1.0 / J + ratio) * var))
+        if denom <= 0.0:
+            t = 0.0 if m <= 1e-12 else float("inf")
+        else:
+            t = m / denom
+        detail[i] = {"delta": m, "t": float(t)}
+        if t <= t_crit:
+            indist.append(i)
+    stds = {i: (float(F[i].std(ddof=1)) if J > 1 else 0.0) for i in idx}
+    min_std = min(stds[i] for i in indist)
+    stable = [i for i in indist if stds[i] <= min_std + float(search.stability_tolerance)]
+    nodes = {i: float(N[i].mean()) for i in idx}
+    min_nodes = min(nodes[i] for i in stable)
+    simplest = [i for i in stable if nodes[i] <= min_nodes + 1e-9]
+    winner = min(simplest, key=lambda i: (meta[i]["max_nodes"], i))
+    wl = _label(meta[winner]["config"])
+    for i in idx:
+        lab = _label(meta[i]["config"])
+        if i == winner:
+            verdicts[i] = {"status": "WINNER", "stage": 4 if len(simplest) > 1 else 3 if len(stable) > 1 else
+                           2 if len(indist) > 1 else 1, "reason_code": "WINNER",
+                           "text": (f"VENCE: fidelity média {means[i]:.3f}"
+                                    + (" (a melhor)" if i == best else f"; indistinguível da melhor ({_label(meta[best]['config'])}, "
+                                       f"Δ={detail[i]['delta']:.3f}, t={detail[i]['t']:.2f} ≤ {t_crit:.2f})")
+                                    + f". {len(indist)} indistinguível(eis) em fidelity -> {len(stable)} após estabilidade "
+                                      f"-> {len(simplest)} após complexidade"
+                                    + ("; empate real resolvido pela configuração mais simples." if len(simplest) > 1 else "."))}
+        elif i not in indist:
+            verdicts[i] = {"status": "LOST", "stage": 1, "reason_code": "LOST_FIDELITY",
+                           "text": (f"PERDE em fidelity: média {means[i]:.3f} é significativamente inferior à melhor "
+                                    f"{means[best]:.3f} ({_label(meta[best]['config'])}): Δ={detail[i]['delta']:.3f}, "
+                                    f"t={detail[i]['t']:.2f} > t_crítico={t_crit:.2f} (α={search.significance_alpha}).")}
+        elif i not in stable:
+            verdicts[i] = {"status": "LOST", "stage": 2, "reason_code": "LOST_STABILITY",
+                           "text": (f"PERDE em estabilidade: indistinguível em fidelity (Δ={detail[i]['delta']:.3f}, "
+                                    f"t={detail[i]['t']:.2f} ≤ {t_crit:.2f}), mas desvio-padrão {stds[i]:.3f} > "
+                                    f"{min_std:.3f} + tolerância {search.stability_tolerance}.")}
+        elif i not in simplest:
+            verdicts[i] = {"status": "LOST", "stage": 3, "reason_code": "LOST_COMPLEXITY",
+                           "text": (f"PERDE em complexidade: indistinguível em fidelity e estabilidade, mas com "
+                                    f"{nodes[i]:.1f} nós médios vs {min_nodes:.1f} de {wl}.")}
+        else:
+            verdicts[i] = {"status": "LOST", "stage": 4, "reason_code": "LOST_TIE",
+                           "text": (f"PERDE o desempate: empate real em fidelity, estabilidade e nós; "
+                                    f"prevalece a configuração mais simples ({wl}).")}
+    return winner, verdicts, {"best_fidelity_candidate": best, "t_critical": t_crit, "n_splits": J,
+                              "indistinguishable": indist, "stable": stable, "simplest": simplest}
+
+
+def _split_stats(rows, candidate, repeats: int):
+    """Estatísticas de um candidato a partir das linhas por partição (todas calculadas só no treino)."""
+    fid = np.array([r["fidelity"] for r in rows], dtype=float)
+    nodes = np.array([r["nodes"] for r in rows], dtype=float)
+    per_repeat = [float(np.mean([r["fidelity"] for r in rows if r["repeat"] == i])) for i in range(repeats)]
+    within = [float(np.std([r["fidelity"] for r in rows if r["repeat"] == i], ddof=1))
+              for i in range(repeats) if sum(1 for r in rows if r["repeat"] == i) > 1]
+    return {
+        "n_splits": int(len(rows)),
+        "fidelity_mean": float(fid.mean()), "fidelity_std": float(fid.std(ddof=1)) if len(fid) > 1 else 0.0,
+        "fidelity_min": float(fid.min()), "fidelity_max": float(fid.max()),
+        "fidelity_per_seed_mean": per_repeat,
+        "between_seed_std": float(np.std(per_repeat, ddof=1)) if len(per_repeat) > 1 else 0.0,
+        "within_seed_fold_std_mean": float(np.mean(within)) if within else 0.0,
+        "nodes_mean": float(nodes.mean()), "nodes_std": float(nodes.std(ddof=1)) if len(nodes) > 1 else 0.0,
+        "nodes_min": float(nodes.min()), "nodes_max": float(nodes.max()),
+        "nodes_cv": float(nodes.std(ddof=1) / nodes.mean()) if len(nodes) > 1 and nodes.mean() > 0 else 0.0,
+        "depth_mean": float(np.mean([r["depth"] for r in rows])),
+        "depth_max": float(np.max([r["depth"] for r in rows])),
+        "leaves_mean": float(np.mean([r["leaves"] for r in rows])),
+        "time_mean_s": float(np.mean([r["time_s"] for r in rows])), "time_total_s": float(np.sum([r["time_s"] for r in rows])),
+        "query_budget": int(candidate.max_queries),
+        "queries_used_mean": float(np.mean([r["queries_used"] for r in rows])),
+        "budget_exhausted_fraction": float(np.mean([1.0 if r.get("budget_exhausted") else 0.0 for r in rows])),
+        "balanced_accuracy_mean": float(np.mean([r["balanced_accuracy"] for r in rows])),
+        "macro_f1_mean": float(np.mean([r["macro_f1"] for r in rows])),
+    }
+
+
 def tune_scientific_trepan(
     X_train,
     y_train,
@@ -159,54 +307,89 @@ def tune_scientific_trepan(
     X=np.asarray(X_train,dtype=float); y=np.asarray(y_train)
     if X.ndim != 2 or len(X)!=len(y):
         raise ValueError("X_train/y_train inválidos para tuning científico TREPAN.")
-    cv, folds = _folds(y, search.cv_folds, base_config.random_state)
-    splits=list(cv.split(X,y))
+    # Garantia de isolamento: esta função NÃO recebe teste (assinatura sem X_test/y_test) e só particiona o treino.
+    plan, folds, seeds = _cv_plan(y, search, base_config.random_state)
+    splits = [(tr, va) for (r, _seed, _f, tr, va) in plan if r == 0]      # etapa semântica: 1.ª repetição
+    repeats = len(seeds)
 
-    def evaluate(candidates):
+    def evaluate(candidates, label_stage):
         history = []
         for candidate in candidates:
             rows = []; failed = None
-            for tr, va in splits:
+            for (r, seed, f, tr, va) in plan:
                 try:
-                    model = TrepanOriginalClassifier(**candidate.common_tree_kwargs()).fit(
-                        X[tr], oracle=oracle, feature_names=feature_names
-                    )
-                    rows.append(_objective(model, X[va], y[va], oracle, candidate, search))
+                    kwargs = candidate.common_tree_kwargs()
+                    kwargs["random_state"] = int(seed)          # a aleatoriedade das queries varia com a seed da repetição
+                    t0 = time.perf_counter()
+                    model = TrepanOriginalClassifier(**kwargs).fit(X[tr], oracle=oracle, feature_names=feature_names)
+                    elapsed = time.perf_counter() - t0
+                    obj = _objective(model, X[va], y[va], oracle, candidate, search)
+                    rows.append({"repeat": r, "seed": int(seed), "fold": f, **obj,
+                                 "nodes": int(getattr(model, "node_count_", 0)), "depth": int(model.get_depth()),
+                                 "leaves": int(model.get_n_leaves()), "time_s": float(elapsed),
+                                 "queries_used": int(getattr(model, "membership_queries_", 0)),
+                                 "budget_exhausted": bool(getattr(model, "query_budget_exhausted_", False))})
                 except (ValueError, RuntimeError) as exc:
                     failed = str(exc); break
             if rows and failed is None:
                 mean = _mean_metrics(rows)
+                stats = _split_stats(rows, candidate, repeats)
             else:
                 mean = {"score": float("-inf"), "fidelity": 0.0, "balanced_accuracy": 0.0, "macro_f1": 0.0, "complexity": 1.0}
-            history.append({"config": asdict(candidate), "mean": mean, "failed": failed})
+                stats = None
+            history.append({"config": asdict(candidate), "label": _label(asdict(candidate)), "stage": label_stage,
+                            "mean": mean, "stats": stats, "per_split": rows if failed is None else [], "failed": failed})
         return history
 
-    def choose(history, fallback):
-        valid = [r for r in history if np.isfinite(r["mean"]["score"])]
-        if not valid:
-            return fallback
-        # Preferir a configuração mais simples que alcance a meta de fidelidade;
-        # caso contrário, maior score composto.
-        target = [r for r in valid if r["mean"]["fidelity"] >= search.fidelity_target]
-        if target:
-            chosen = min(target, key=lambda r: (r["config"]["max_nodes"], r["config"]["max_queries"], -r["mean"]["score"]))
-        else:
-            chosen = max(valid, key=lambda r: r["mean"]["score"])
-        return ControlledTrepanConfig(**chosen["config"])
+    def select(history, fallback):
+        """Seleção lexicográfica + estabilidade da seleção entre repetições (seeds). Escreve veredictos no histórico."""
+        valid = [bool(h["stats"]) for h in history]
+        if not any(valid):
+            for h in history:
+                h["verdict"] = {"status": "FAILED", "stage": 0, "reason_code": "FIT_FAILED", "text": "falhou na CV."}
+            return fallback, {"selected": asdict(fallback), "fallback": "all_candidates_failed", "stable": False,
+                              "agreement": 0.0, "per_seed_winners": [], "threshold": float(search.min_selection_agreement)}
+        J = len(plan)
+        F = np.array([[r["fidelity"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
+        Nn = np.array([[r["nodes"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
+        meta = [{"config": h["config"], "max_nodes": int(h["config"]["max_nodes"])} for h in history]
+        winner, verdicts, info = _lexicographic_select(F, Nn, meta, folds, search, valid)
+        for h, v in zip(history, verdicts):
+            h["verdict"] = v
+        # Estabilidade: a vencedora de cada repetição (mesma regra, só com as partições dessa repetição).
+        winners = []
+        for r in range(repeats):
+            cols = [j for j, (rr, *_rest) in enumerate(plan) if rr == r]
+            w, _v, _i = _lexicographic_select(F[:, cols], Nn[:, cols], meta, folds, search, valid)
+            winners.append(None if w is None else history[w]["label"])
+        final = history[winner]["label"]
+        agreement = float(np.mean([1.0 if w == final else 0.0 for w in winners])) if winners else 1.0
+        stable = bool(agreement >= float(search.min_selection_agreement))
+        selection = {"selected": history[winner]["config"], "selected_label": final, "per_seed_winners": winners,
+                     "seeds": [int(v) for v in seeds], "agreement": agreement, "stable": stable,
+                     "distinct_winners": len({w for w in winners if w}), "threshold": float(search.min_selection_agreement),
+                     "t_critical": info.get("t_critical"), "n_splits": info.get("n_splits")}
+        return ControlledTrepanConfig(**history[winner]["config"]), selection
 
-    # Etapa 1: estrutura (purity_epsilon x max_nodes), só no treino. Sem pesquisa de capacidade
-    # (max_capacity_candidates <= 1) não se re-afina a estrutura: ficam os valores canónicos da base.
+    # Etapa 1: estrutura (purity_epsilon x max_nodes), só no treino, CV repetida. Sem grelha ou com
+    # ``tune_structure=False`` ficam os valores canónicos da base.
     structure_history = []
+    structure_selection = None
     structure_base = base_config
-    if search.tune_structure and int(search.max_capacity_candidates) > 1 and search.purity_epsilon_grid and search.max_nodes_grid:
-        structure_history = evaluate(_structure_candidates(base_config, search))
-        structure_base = choose(structure_history, base_config)
+    if search.tune_structure and search.purity_epsilon_grid and search.max_nodes_grid:
+        structure_history = evaluate(_structure_candidates(base_config, search), "structure")
+        structure_base, structure_selection = select(structure_history, base_config)
 
     # Etapa 2: restantes eixos de capacidade à volta da estrutura escolhida. O nº de nós só varia na grelha da
     # etapa 1 (ou fica o da base, canónico, se a grelha estiver desligada): não há crescimento arbitrário de nós.
-    capacity_history = evaluate(_capacity_candidates(
-        structure_base, X.shape[1], search.max_capacity_candidates, grow_nodes=False))
-    common = choose(capacity_history, structure_base)
+    capacity_selection = None
+    if structure_history and int(search.max_capacity_candidates) <= 1:
+        capacity_history = structure_history              # sem eixos adicionais: a vencedora da etapa 1 é a comum
+        common = structure_base
+    else:
+        capacity_history = evaluate(_capacity_candidates(
+            structure_base, X.shape[1], search.max_capacity_candidates, grow_nodes=False), "capacity")
+        common, capacity_selection = select(capacity_history, structure_base)
 
     semantic_history=[]
     weights=np.ones(X.shape[1],dtype=float) if semantic_feature_weights is None else np.asarray(semantic_feature_weights,dtype=float)
@@ -265,11 +448,18 @@ def tune_scientific_trepan(
         "selection_scope":"training_cv_only",
         "test_used_for_selection":False,
         "cv_folds":int(folds),
+        "cv_repeats":int(repeats),
         "search_config":asdict(search),
         "common_capacity":asdict(common),
         "selected_config":asdict(selected),
+        "cv_plan":{"scheme":"RepeatedStratifiedKFold (conjunto de treino apenas)","folds":int(folds),"repeats":int(repeats),
+                   "seeds":[int(v) for v in seeds],"n_splits":len(plan),"test_set_used":False},
+        "selection_rule":"lexicográfica: fidelity -> estabilidade (se indistinguíveis) -> complexidade -> mais simples",
         "structure_history":structure_history,
+        "structure_selection":structure_selection,
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},
+        "capacity_selection":capacity_selection,
+        "tuning_stable":bool(all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel)) if (structure_selection or capacity_selection) else True,
         "capacity_history":capacity_history,
         "semantic_history":semantic_history,
     }
