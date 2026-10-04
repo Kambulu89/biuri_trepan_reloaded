@@ -22,3 +22,8 @@ nomes das classes observados (`set_target_metadata`), com vocabulário genérico
 5. nomes de alvo arbitrários (incl. unicode e alvo na 1.ª coluna); 6. nomes e números de classes arbitrários;
 7. ontologia presente ou ausente; 8. um novo ARFF compatível funciona sem alterar o código-fonte (hash dos fontes inalterado);
 9. renomear colunas/alvo/classes dá a mesma seleção e as mesmas estatísticas; a grelha é só configuração.
+
+## Caminhos movidos
+Relatórios históricos (`IMPLEMENTATION_REPORT_*`, `METRICS_AUDIT.md`, READMEs de `counterfactuals/`) ainda citam os caminhos antigos:
+`counterfactuals/pipelines/pipeline_{train,improve}.py`, `counterfactuals/analisis/`, `counterfactuals/datasets/`, `core/ablation_study.py`
+e `core/benchmark_ontologies.py` vivem agora em `validation/` (e `core/benchmark/domain_tbox.py` para a geração genérica de TBoxes).

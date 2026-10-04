@@ -83,8 +83,8 @@ def test_primary_integration_paths_do_not_import_legacy_trepan_extractor():
     paths = [
         ROOT / 'gui' / 'biuri_app_complete.py',
         ROOT / 'counterfactuals' / 'service.py',
-        ROOT / 'counterfactuals' / 'pipelines' / 'pipeline_train.py',
-        ROOT / 'counterfactuals' / 'pipelines' / 'pipeline_improve.py',
+        ROOT / 'validation' / 'counterfactual_research' / 'pipeline_train.py',
+        ROOT / 'validation' / 'counterfactual_research' / 'pipeline_improve.py',
         ROOT / 'core' / 'trepan_reloaded_extractor.py',
     ]
     for path in paths:
