@@ -3,7 +3,7 @@
 Usa o pipeline de produção: split estratificado -> MLP no treino -> tuning (Repeated Stratified K-Fold, SÓ treino) ->
 ajuste final -> avaliação no teste UMA vez, depois de escolhida a configuração. Guarda o relatório completo em JSON.
 
-Uso: python scripts/run_trepan_tuning_experiment.py DATASET.arff SEED SAIDA.json [--target COLUNA] [--oracle factory|robust]
+Uso: python scripts/run_trepan_tuning_experiment.py DATASET.arff SEED SAIDA.json [--target COLUNA] [--oracle factory|robust] [--repeats N]
 """
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ def main() -> None:
     ap.add_argument("arff"); ap.add_argument("seed", type=int); ap.add_argument("out")
     ap.add_argument("--target", default=None)
     ap.add_argument("--oracle", default="factory", help="construtor do oráculo registado no contrato científico")
+    ap.add_argument("--repeats", type=int, default=3, help="repetições da Repeated Stratified K-Fold (3 dobras cada)")
     args = ap.parse_args()
     data, _meta = arff.loadarff(args.arff)
     df = pd.DataFrame(data)
@@ -40,7 +41,7 @@ def main() -> None:
     t0 = time.perf_counter()
     with tempfile.TemporaryDirectory() as tmp:
         report = train_production_dataframe(df, target=target, out_dir=tmp, seed=args.seed, scientific_tuning=True,
-                                            trepan_search=ScientificTrepanSearchConfig(), oracle_builder=args.oracle)
+                                            trepan_search=ScientificTrepanSearchConfig(cv_repeats=args.repeats), oracle_builder=args.oracle)
     ev = report["evaluation"]
     out = {"dataset": Path(args.arff).name, "seed": args.seed, "rows": int(len(df)), "target": target,
            "wall_seconds": time.perf_counter() - t0, "oracle_builder": args.oracle, "oracle_contract": ev.get("oracle_contract"),
