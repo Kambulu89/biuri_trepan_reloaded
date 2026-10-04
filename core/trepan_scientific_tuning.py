@@ -29,6 +29,12 @@ class ScientificTrepanSearchConfig:
     balanced_accuracy_weight: float = 0.20
     macro_f1_weight: float = 0.15
     complexity_penalty: float = 0.015
+    # Grelha de estrutura (literatura do TREPAN: NIPS 1995 usa 0.05 e 31 nós; a tese de 1996 usa 63 nós).
+    # Escolhida por CV interna, só no treino. Só corre quando há pesquisa de capacidade (max_capacity_candidates > 1);
+    # grelhas vazias ou tune_structure=False desativam-na e ficam os valores canónicos da configuração base.
+    tune_structure: bool = True
+    purity_epsilon_grid: tuple = (0.05, 0.02, 0.01)
+    max_nodes_grid: tuple = (31, 63)
 
 
 def _folds(y, requested: int, seed: int):
@@ -54,14 +60,36 @@ def _objective(model, X_val, y_val, oracle, cfg: ControlledTrepanConfig, search:
     return {"score": float(score), "fidelity": fidelity, "balanced_accuracy": ba, "macro_f1": f1, "complexity": complexity}
 
 
-def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int):
+def _scaled(base: ControlledTrepanConfig, **kw) -> ControlledTrepanConfig:
+    """Candidato derivado de ``base``; mais nós permitidos exigem mais queries (senão ficaria truncado pelo orçamento)."""
+    c = replace(base, **kw)
+    need = required_query_budget(c.max_nodes, c.min_sample, cap=max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP))
+    return replace(c, max_queries=max(int(c.max_queries), need)) if c.max_nodes != base.max_nodes else c
+
+
+def _structure_candidates(base: ControlledTrepanConfig, search: "ScientificTrepanSearchConfig"):
+    """Grelha purity_epsilon x max_nodes. O primeiro candidato é sempre a configuração base (canónica por omissão)."""
+    out = [base]
+    seen = {(float(base.purity_epsilon), int(base.max_nodes))}
+    for nodes in search.max_nodes_grid:
+        for eps in search.purity_epsilon_grid:
+            key = (float(eps), int(nodes))
+            if key in seen:
+                continue
+            seen.add(key)
+            # a profundidade acompanha os nós (6 níveis chegam para 63 nós); nunca reduz a da base
+            out.append(_scaled(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6)))
+    return out
+
+
+def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int, grow_nodes: bool = True):
     def cfg(**kw):
         c = replace(base, **kw)
         # Mais nós permitidos exigem mais queries: sem isto o candidato "maior" ficava truncado pelo orçamento.
         need = required_query_budget(c.max_nodes, c.min_sample, cap=max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP))
         return replace(c, max_queries=max(int(c.max_queries), need)) if c.max_nodes != base.max_nodes else c
     q2 = max(int(base.max_queries), min(12000, max(int(base.max_queries) * 2, 1000)))
-    nodes2 = max(int(base.max_nodes), min(127, max(31, int(base.max_nodes) * 2 - 1)))
+    nodes2 = max(int(base.max_nodes), min(127, max(31, int(base.max_nodes) * 2 - 1))) if grow_nodes else int(base.max_nodes)
     depth2 = max(int(base.max_depth), min(nodes2, max(int(base.max_depth), 12)))
     n2 = min(5, max(2, int(base.max_n) + 1))
     f2 = min(int(p), max(int(base.max_features_per_node), min(32, max(12, int(base.max_features_per_node) * 2))))
@@ -75,7 +103,7 @@ def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int):
     ]
     out=[]; seen=set()
     for c in candidates:
-        key=(c.max_nodes,c.max_depth,c.max_n,c.max_features_per_node,c.max_queries,c.min_sample,c.beam_width)
+        key=(c.max_nodes,c.max_depth,c.max_n,c.max_features_per_node,c.max_queries,c.min_sample,c.beam_width,c.purity_epsilon)
         if key not in seen:
             seen.add(key); out.append(c)
     return out[:max(1,int(limit))]
@@ -134,35 +162,51 @@ def tune_scientific_trepan(
     cv, folds = _folds(y, search.cv_folds, base_config.random_state)
     splits=list(cv.split(X,y))
 
-    capacity_history=[]
-    for candidate in _capacity_candidates(base_config, X.shape[1], search.max_capacity_candidates):
-        rows=[]; failed=None
-        for tr,va in splits:
-            try:
-                model=TrepanOriginalClassifier(**candidate.common_tree_kwargs()).fit(
-                    X[tr], oracle=oracle, feature_names=feature_names
-                )
-                rows.append(_objective(model,X[va],y[va],oracle,candidate,search))
-            except (ValueError, RuntimeError) as exc:
-                failed=str(exc); break
-        if rows and failed is None:
-            mean=_mean_metrics(rows)
-        else:
-            mean={"score":float("-inf"),"fidelity":0.0,"balanced_accuracy":0.0,"macro_f1":0.0,"complexity":1.0}
-        capacity_history.append({"config":asdict(candidate),"mean":mean,"failed":failed})
+    def evaluate(candidates):
+        history = []
+        for candidate in candidates:
+            rows = []; failed = None
+            for tr, va in splits:
+                try:
+                    model = TrepanOriginalClassifier(**candidate.common_tree_kwargs()).fit(
+                        X[tr], oracle=oracle, feature_names=feature_names
+                    )
+                    rows.append(_objective(model, X[va], y[va], oracle, candidate, search))
+                except (ValueError, RuntimeError) as exc:
+                    failed = str(exc); break
+            if rows and failed is None:
+                mean = _mean_metrics(rows)
+            else:
+                mean = {"score": float("-inf"), "fidelity": 0.0, "balanced_accuracy": 0.0, "macro_f1": 0.0, "complexity": 1.0}
+            history.append({"config": asdict(candidate), "mean": mean, "failed": failed})
+        return history
 
-    valid=[r for r in capacity_history if np.isfinite(r["mean"]["score"])]
-    if not valid:
-        common=base_config
-    else:
+    def choose(history, fallback):
+        valid = [r for r in history if np.isfinite(r["mean"]["score"])]
+        if not valid:
+            return fallback
         # Preferir a configuração mais simples que alcance a meta de fidelidade;
         # caso contrário, maior score composto.
-        target=[r for r in valid if r["mean"]["fidelity"] >= search.fidelity_target]
+        target = [r for r in valid if r["mean"]["fidelity"] >= search.fidelity_target]
         if target:
-            chosen=min(target,key=lambda r:(r["config"]["max_nodes"],r["config"]["max_queries"],-r["mean"]["score"]))
+            chosen = min(target, key=lambda r: (r["config"]["max_nodes"], r["config"]["max_queries"], -r["mean"]["score"]))
         else:
-            chosen=max(valid,key=lambda r:r["mean"]["score"])
-        common=ControlledTrepanConfig(**chosen["config"])
+            chosen = max(valid, key=lambda r: r["mean"]["score"])
+        return ControlledTrepanConfig(**chosen["config"])
+
+    # Etapa 1: estrutura (purity_epsilon x max_nodes), só no treino. Sem pesquisa de capacidade
+    # (max_capacity_candidates <= 1) não se re-afina a estrutura: ficam os valores canónicos da base.
+    structure_history = []
+    structure_base = base_config
+    if search.tune_structure and int(search.max_capacity_candidates) > 1 and search.purity_epsilon_grid and search.max_nodes_grid:
+        structure_history = evaluate(_structure_candidates(base_config, search))
+        structure_base = choose(structure_history, base_config)
+
+    # Etapa 2: restantes eixos de capacidade à volta da estrutura escolhida. O nº de nós só varia na grelha da
+    # etapa 1 (ou fica o da base, canónico, se a grelha estiver desligada): não há crescimento arbitrário de nós.
+    capacity_history = evaluate(_capacity_candidates(
+        structure_base, X.shape[1], search.max_capacity_candidates, grow_nodes=False))
+    common = choose(capacity_history, structure_base)
 
     semantic_history=[]
     weights=np.ones(X.shape[1],dtype=float) if semantic_feature_weights is None else np.asarray(semantic_feature_weights,dtype=float)
@@ -224,6 +268,8 @@ def tune_scientific_trepan(
         "search_config":asdict(search),
         "common_capacity":asdict(common),
         "selected_config":asdict(selected),
+        "structure_history":structure_history,
+        "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},
         "capacity_history":capacity_history,
         "semantic_history":semantic_history,
     }

@@ -69,7 +69,8 @@ class TrainingPreset:
     trepan_fidelity_target: float = 0.90
     trepan_fidelity_early_stop: float = 0.95
     trepan_min_samples_leaf: int = 4
-    # Tolerância de impureza para declarar um nó "puro" e deixar de o expandir (TREPAN: NIPS 1995 usa 0.05).
+    # Tolerância de impureza para declarar um nó "puro" e deixar de o expandir. Canónico (NIPS 1995): 0.05.
+    # Valor por omissão e de fallback; o tuning científico pode escolher outro por CV interna no treino.
     trepan_purity_epsilon: float = 0.05
     trepan_scientific_tuning: bool = True
     trepan_tuning_cv_folds: int = 3
@@ -207,10 +208,8 @@ TRAINING_PRESETS: Dict[str, TrainingPreset] = {
         trepan_sample_size=2000,
         trepan_max_queries=2000,
         trepan_max_depth=None,
-        # 63 nós: capacidade do TREPAN de 1996 (o orçamento de queries escala com este valor).
-        trepan_max_nodes=63,
-        # 0.05 (canónico) parava árvores cedo demais: nós quase puros nos dados sintéticos viravam folha.
-        trepan_purity_epsilon=0.01,
+        # Estrutura canónica (31 nós, purity_epsilon 0.05): é o valor por omissão e o de fallback. O tuning científico
+        # escolhe purity_epsilon {0.05, 0.02, 0.01} x max_nodes {31, 63} por CV interna, só no treino.
         trepan_max_time_seconds=300,
         reloaded_sample_size=5000,
         reloaded_max_time_seconds=300,

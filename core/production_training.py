@@ -6,6 +6,7 @@ orçamento e dados permanecem iguais aos do TREPAN Original.
 """
 from __future__ import annotations
 import dataclasses
+import logging
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -269,16 +270,23 @@ def train_production_dataframe(
 
     tuning_report = None
     if scientific_tuning:
-        tuning_report = tune_scientific_trepan(
-            Ztr, ytr, oracle=oracle, feature_names=model_names, base_config=cfg,
-            semantic_feature_weights=semantic_weights,
-            semantic_feature_groups=semantic_groups,
-            semantic_relatedness_matrix=relation_matrix,
-            search=trepan_search or ScientificTrepanSearchConfig(),
-            ontology_graph=graph,
-            semantic_feature_entities=semantic_entities,
-        )
-        cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
+        try:
+            tuning_report = tune_scientific_trepan(
+                Ztr, ytr, oracle=oracle, feature_names=model_names, base_config=cfg,
+                semantic_feature_weights=semantic_weights,
+                semantic_feature_groups=semantic_groups,
+                semantic_relatedness_matrix=relation_matrix,
+                search=trepan_search or ScientificTrepanSearchConfig(),
+                ontology_graph=graph,
+                semantic_feature_entities=semantic_entities,
+            )
+            cfg = ControlledTrepanConfig(**tuning_report['selected_config'])
+        except Exception as exc:  # tuning falhou: configuração base canónica, com a falha registada (não escondida)
+            logging.getLogger(__name__).warning("Tuning científico do TREPAN falhou (%s: %s); configuração canónica.",
+                                                type(exc).__name__, exc)
+            tuning_report = {"selection_scope": "training_cv_only", "test_used_for_selection": False,
+                             "failed": f"{type(exc).__name__}: {exc}", "fallback": "canonical_defaults",
+                             "common_capacity": dataclasses.asdict(cfg), "selected_config": dataclasses.asdict(cfg)}
 
     # Espaço do Reloaded: com professor semântico, o braço Reloaded divide também sobre as
     # features onto_* selecionadas (espaço aumentado). O oráculo continua a ver só as colunas

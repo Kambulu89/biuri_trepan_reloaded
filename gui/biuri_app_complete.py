@@ -48,6 +48,7 @@ from gui.counterfactual_panel import CounterfactualPanel
 from gui.surrogate_improvement_dialog import SurrogateImprovementDialog
 from gui.metrics_worker import MetricsWorker
 from gui import theme
+from dataclasses import asdict
 from gui.audit_panel import AuditPanel
 from gui.audit_controller import AuditController, dataset_fingerprint_of, progress_text
 from gui.strings import tr
@@ -4180,16 +4181,28 @@ Asegúrese de que:
                         error_focus_min_regions=int(getattr(preset, 'error_focus_min_regions', 1)),
                         mirror_when_no_semantic_effect=bool(getattr(preset, 'mirror_when_no_semantic_effect', True)),
                     )
-                    self._trepan_scientific_tuning = tune_scientific_trepan(
-                        tune_X, tune_y, oracle=self.mlp_model, feature_names=feature_names,
-                        base_config=base_cfg,
-                        search=ScientificTrepanSearchConfig(
-                            cv_folds=int(getattr(preset, 'trepan_tuning_cv_folds', 3)),
-                            max_capacity_candidates=int(getattr(preset, 'trepan_tuning_capacity_candidates', 6)),
-                            max_semantic_candidates=1,
-                            fidelity_target=float(getattr(preset, 'trepan_fidelity_tuning_target', 0.95)),
-                        ),
-                    )
+                    try:
+                        self._trepan_scientific_tuning = tune_scientific_trepan(
+                            tune_X, tune_y, oracle=self.mlp_model, feature_names=feature_names,
+                            base_config=base_cfg,
+                            search=ScientificTrepanSearchConfig(
+                                cv_folds=int(getattr(preset, 'trepan_tuning_cv_folds', 3)),
+                                max_capacity_candidates=int(getattr(preset, 'trepan_tuning_capacity_candidates', 6)),
+                                max_semantic_candidates=1,
+                                fidelity_target=float(getattr(preset, 'trepan_fidelity_tuning_target', 0.95)),
+                            ),
+                        )
+                    except Exception as tuning_exc:
+                        # Tuning falhou: valores canónicos do preset (purity_epsilon 0.05, 31 nós), sem esconder a falha.
+                        import logging
+                        logging.getLogger("biuri.gui").warning(
+                            "Tuning científico do TREPAN falhou (%s: %s); a usar a configuração canónica.",
+                            type(tuning_exc).__name__, tuning_exc)
+                        self._trepan_scientific_tuning = {
+                            'selection_scope': 'training_cv_only', 'test_used_for_selection': False,
+                            'failed': f"{type(tuning_exc).__name__}: {tuning_exc}", 'fallback': 'canonical_defaults',
+                            'common_capacity': asdict(base_cfg), 'selected_config': asdict(base_cfg),
+                        }
                     common = self._trepan_scientific_tuning['common_capacity']
                     trepan_limits.update({
                         'max_nodes': int(common['max_nodes']),
