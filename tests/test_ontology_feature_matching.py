@@ -45,7 +45,10 @@ def bcw_extractor():
             pytest.skip(f"OWL Wisconsin indisponível para testes: {exc}")
     else:
         pytest.skip("Fixture Breast Cancer Wisconsin não encontrada")
-    return TrepanReloadedExtractor(ontology=onto)
+    extractor = TrepanReloadedExtractor(ontology=onto)
+    # Como no pipeline: os nomes das classes do alvo vêm dos metadados do dataset (não de uma lista embutida no código).
+    extractor.set_target_metadata(class_names=["benign", "malignant"])
+    return extractor
 
 
 @pytest.fixture(scope="module")

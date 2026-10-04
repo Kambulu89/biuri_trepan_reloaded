@@ -16,9 +16,9 @@ def test_no_bare_except_in_product_code():
 
 def test_no_dataset_names_in_core_gui_outside_benchmark_exceptions():
     pattern=re.compile(r'\b(wine|wdbc|sonar|german|hepatitis|adult|breast_cancer|digits|diabetes)\b',re.I)
-    allowed={'core/benchmark_ontologies.py','core/ablation_study.py','core/confirmatory_benchmark.py'}
+    allowed=set()   # sem exceções: catálogos de datasets vivem em validation/, fora do núcleo científico
     bad=[]
-    for base in ('core','gui'):
+    for base in ('core','gui','counterfactuals'):
         for p in (ROOT/base).rglob('*.py'):
             rel=p.relative_to(ROOT).as_posix()
             if rel in allowed: continue

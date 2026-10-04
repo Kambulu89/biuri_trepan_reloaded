@@ -3,8 +3,8 @@
 import sys
 
 from counterfactuals._bootstrap import setup
-from counterfactuals.dataset_config import ALL_DATASETS
-from counterfactuals.service import improve_surrogates
+from validation.counterfactual_research.dataset_registry import ALL_DATASETS
+from validation.counterfactual_research.service_batch import improve_surrogates
 
 setup()
 

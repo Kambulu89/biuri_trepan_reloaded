@@ -11,7 +11,7 @@ import joblib
 import numpy as np
 
 from counterfactuals._paths import RESULTADOS_CONSOLIDADOS_DIR, models_dir
-from counterfactuals.dataset_config import ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import ALL_DATASETS
 from counterfactuals.transfer import evaluate_transfer_protocol
 
 

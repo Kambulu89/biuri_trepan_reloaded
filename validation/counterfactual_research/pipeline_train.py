@@ -28,7 +28,7 @@ from core.trepan_reloaded_extractor import TrepanReloadedExtractor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-from counterfactuals.dataset_config import get_dataset_config, ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import get_dataset_config, ALL_DATASETS
 from counterfactuals._paths import experiment_dir, models_dir, ensure_dirs
 
 BASE_SEED = 42  # mesma semente base de pipeline_improve.py
@@ -55,10 +55,10 @@ def extract_fidelity_from_report(report):
                 return float(match.group(1)) / 100.0
     return None
 
-def run_training_pipeline(dataset_name):
+def run_training_pipeline(dataset_name, config=None):
     timers = {}
     start_total = time.perf_counter()
-    config = get_dataset_config(dataset_name)
+    config = dict(config) if config is not None else get_dataset_config(dataset_name)
 
     ensure_dirs(dataset_name)
     experiment_dir_path = experiment_dir(dataset_name)
@@ -75,24 +75,19 @@ def run_training_pipeline(dataset_name):
     df.columns = df.columns.str.strip()
     target_col = config['target']
     if target_col not in df.columns:
-        for col in df.columns:
-            if 'class' in col.lower() or 'diagnosis' in col.lower() or 'outcome' in col.lower():
-                target_col = col
-                break
+        generic_roles = ('class', 'target', 'label', 'outcome')
+        target_col = next((c for c in df.columns if any(t in c.lower() for t in generic_roles)), df.columns[-1])
     X_orig = df.drop(columns=[target_col]).copy()
     y_orig = df[target_col].copy()
 
-    # Renombrar categóricas en German Credit
-    if dataset_name == 'german_credit':
-        rename_map = {
-            'attr_1': 'A1_attr_1', 'attr_3': 'A3_attr_3', 'attr_4': 'A4_attr_4',
-            'attr_6': 'A6_attr_6', 'attr_7': 'A7_attr_7', 'attr_9': 'A9_attr_9',
-            'attr_10': 'A10_attr_10', 'attr_12': 'A12_attr_12', 'attr_14': 'A14_attr_14',
-            'attr_15': 'A15_attr_15', 'attr_17': 'A17_attr_17', 'attr_19': 'A19_attr_19',
-            'attr_20': 'A20_attr_20'
-        }
+    # Evita colisões de prefixo entre colunas categóricas (a codificação one-hot usa o nome da coluna como prefixo):
+    # regra genérica, derivada dos nomes observados e sem referência a nenhum dataset.
+    cats = [c for c in config.get('categorical_features', []) if c in X_orig.columns]
+    colliding = [c for c in cats if any(o != c and str(o).startswith(str(c)) for o in X_orig.columns)]
+    if colliding:
+        rename_map = {c: f"A{list(X_orig.columns).index(c) + 1}_{c}" for c in colliding}
         X_orig.rename(columns=rename_map, inplace=True)
-        config['categorical_features'] = list(rename_map.values())
+        config['categorical_features'] = [rename_map.get(c, c) for c in config['categorical_features']]
 
     feature_names = X_orig.columns.tolist()
     class_names = list(config['class_labels'].values())

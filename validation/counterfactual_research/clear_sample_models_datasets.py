@@ -11,7 +11,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Dropout
 from sklearn.model_selection import train_test_split
 # from imblearn.over_sampling import SMOTE
-from . import CLEAR_settings
+from counterfactuals.clear import CLEAR_settings
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'

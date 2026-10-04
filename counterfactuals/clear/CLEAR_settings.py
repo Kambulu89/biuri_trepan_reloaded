@@ -9,7 +9,7 @@ The file 'Input Parameters for CLEAR.pdf' on Github documents the input paramete
 # ============================================================================
 # Declaración de variables globales (necesarias para que otros módulos las importen)
 # ============================================================================
-sample_model = 'Adult'
+sample_model = 'model'
 max_predictors = 15
 first_obs = 1
 last_obs = 1
@@ -29,14 +29,14 @@ centering = True
 no_polynomimals = False
 include_all_numerics = False
 include_features = False
-include_features_list = ['gender']
+include_features_list = []
 binary_decision_boundary = 0.5
-multi_class_focus = 'setosa'
-model_name = 'Adult'
-numeric_features = ['age', 'hoursPerWeek']
-categorical_features = ['marital_status', 'occupation', 'gender', 'workclass', 'education']
-category_prefix = ['mar', 'occ', 'gen', 'wor', 'edu']
-class_labels = {0: '<=$50K', 1: '> $50K'}
+multi_class_focus = 'All'
+model_name = 'model'
+numeric_features = []
+categorical_features = []
+category_prefix = []
+class_labels = {}
 test_sample = None  # No usado explícitamente, pero se referencia en init()
 use_prev_sensitivity = False  # No usado, pero se referencia en init()
 no_intercept = False   # Si True, se fuerza la regresión sin intercepto
@@ -56,12 +56,12 @@ def init():
         numeric_features, categorical_features, category_prefix, class_labels
 
     # Asignar valores por defecto
-    model_name = 'Adult'
-    numeric_features = ['age', 'hoursPerWeek']
-    categorical_features = ['marital_status', 'occupation', 'gender', 'workclass', 'education']
-    category_prefix = ['mar', 'occ', 'gen', 'wor', 'edu']
-    class_labels = {0: '<=$50K', 1: '> $50K'}
-    sample_model = 'Adult'
+    model_name = 'model'
+    numeric_features = []
+    categorical_features = []
+    category_prefix = []
+    class_labels = {}
+    sample_model = 'model'
     max_predictors = 15
     first_obs = 1
     last_obs = 1
@@ -81,9 +81,9 @@ def init():
     no_polynomimals = False
     include_all_numerics = False
     include_features = False
-    include_features_list = ['gender']
+    include_features_list = []
     binary_decision_boundary = 0.5
-    multi_class_focus = 'setosa'
+    multi_class_focus = 'All'
     test_sample = None
     use_prev_sensitivity = False
     no_intercept = False
@@ -101,8 +101,6 @@ def check_input_parameters():
         error_msg = "logistic regression and score type combination incorrectly specified"
     elif regression_type == 'multiple' and score_type == 'prsquared':
         error_msg = "McFadden Pseudo R-squared cannot be used with multiple regression"
-    elif sample_model not in ['Adult', 'PIMA', 'Credit Card', 'BreastC', 'IRIS', 'German Credit']:
-        error_msg = "Sample dataset incorrectly specified"
     elif regression_type not in ['multiple', 'logistic']:
         error_msg = "Regression type misspecified"
     elif neighbourhood_algorithm not in ['Balanced', 'Unbalanced']:

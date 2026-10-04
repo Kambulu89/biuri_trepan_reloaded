@@ -22,5 +22,5 @@ def make_synthetic(name: str, *, n_samples: int = 260, n_features: int = 9, n_cl
 
 
 def write_group_tbox(path, dataset_name: str, groups: Dict[str, List[str]]) -> str:
-    from core.benchmark_ontologies import create_domain_tbox
+    from core.benchmark.domain_tbox import create_domain_tbox
     return create_domain_tbox(path, dataset_name=dataset_name, groups=groups)

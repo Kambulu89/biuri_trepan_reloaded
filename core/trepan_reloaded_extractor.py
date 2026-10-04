@@ -112,15 +112,13 @@ class TrepanReloadedExtractor:
     MAPPED_FEATURE_GAIN_BOOST = 1.2
     FEATURE_PREFIXES = ('val_', 'feat_', 'feature_', 'attr_', 'f_', 'x_')
     FEATURE_SUFFIXES = ('_score', '_value', '_val', '_feat', '_attr', '_num')
-    # Classes/alvo genéricas — nunca usadas no matching de features (agnóstico ao dataset)
+    # Papéis genéricos de alvo/classe — nunca usados no matching de features. Só vocabulário neutro quanto ao domínio:
+    # os nomes do alvo e das classes REAIS do dataset vêm dos metadados em tempo de execução (``set_target_metadata``).
     FEATURE_MATCH_EXCLUDED_NAMES = frozenset({
-        'benign', 'malignant', 'diagnosisclass', 'class', 'diagnosis',
-        'targetclass', 'target', 'labelclass', 'outcome', 'classlabel',
+        'class', 'targetclass', 'target', 'labelclass', 'outcome', 'classlabel', 'label',
         'negative', 'positive',  # rótulos binários frequentes
     })
-    FEATURE_MATCH_EXCLUDED_OBJECT_PROPERTIES = frozenset({
-        'hasdiagnosis',
-    })
+    FEATURE_MATCH_EXCLUDED_OBJECT_PROPERTIES = frozenset()
     DOMINANCE_MARGIN = 0.001
     DOMINANCE_CHECK_ENABLED = False
     PRECISION_MARGIN = 0.002
@@ -369,7 +367,7 @@ class TrepanReloadedExtractor:
     def load_ontology_file(file_path):
         """
         Carrega OWL/RDF local (RDF/XML ou Turtle). Para Turtle, usa o namespace
-        declarado no ficheiro (ex.: http://example.org/breast-cancer-wisconsin#).
+        declarado no ficheiro (ex.: http://example.org/dominio#).
         """
         if get_ontology is None:
             raise ImportError(
@@ -1304,6 +1302,7 @@ class TrepanReloadedExtractor:
         
         try:
             self.unmapped_features = []
+            self.set_target_metadata(class_names)          # exclusões do alvo derivadas dos metadados observados
             ontology_classes = list(self.ontology.classes())
             ontology_properties = self._collect_ontology_properties()
             matching_pairs, entity_stats = self._get_ontology_matching_entities()
@@ -1559,28 +1558,64 @@ class TrepanReloadedExtractor:
                 pass
         return 'unknown'
 
+    def set_target_metadata(self, class_names=None, target_name=None):
+        """Regista, a partir dos METADADOS do dataset, os nomes que representam o alvo e as suas classes.
+
+        Entidades OWL com esses nomes, os seus pais diretos (o conceito "alvo") e os irmãos (outros valores do alvo)
+        deixam de ser candidatas a features. Nada aqui depende da identidade do dataset.
+        """
+        names = {self._normalize_name(str(n)) for n in (class_names or []) if str(n)}
+        if target_name:
+            names.add(self._normalize_name(str(target_name)))
+        names.discard('')
+        self._target_metadata_names = names
+        self._target_exclusion_names = set(names)
+        onto = getattr(self, 'ontology', None)
+        if onto is None or not names:
+            return
+        try:
+            for cls in onto.classes():
+                if self._normalize_name(getattr(cls, 'name', '') or '') not in names:
+                    continue
+                for parent in getattr(cls, 'is_a', []):
+                    pname = getattr(parent, 'name', None)
+                    if not pname or pname == 'Thing' or not hasattr(parent, 'subclasses'):
+                        continue
+                    self._target_exclusion_names.add(self._normalize_name(pname))
+                    for sibling in parent.subclasses():
+                        self._target_exclusion_names.add(self._normalize_name(getattr(sibling, 'name', '') or ''))
+        except Exception:  # a derivação é um reforço: nunca impede o pipeline
+            pass
+        self._target_exclusion_names.discard('')
+
     def _is_excluded_from_feature_matching(self, entity):
-        """Exclui classes de diagnóstico/alvo e propriedades de ligação ao alvo."""
+        """Exclui classes de alvo (genéricas ou derivadas dos metadados) e propriedades que ligam ao alvo."""
         if entity is None:
             return True
         name = getattr(entity, 'name', '') or ''
         norm = self._normalize_name(name)
-        if norm in self.FEATURE_MATCH_EXCLUDED_NAMES:
+        runtime = getattr(self, '_target_exclusion_names', set())
+        if norm in self.FEATURE_MATCH_EXCLUDED_NAMES or norm in runtime:
             return True
         if norm in self.FEATURE_MATCH_EXCLUDED_OBJECT_PROPERTIES:
             return True
         entity_type = self._get_ontology_entity_type(entity)
-        if entity_type == 'object_property' and any(
-            token in norm for token in ('diagnosis', 'target', 'classlabel', 'label')
-        ):
-            return True
+        if entity_type == 'object_property':
+            if any(token in norm for token in ('target', 'classlabel', 'label')):
+                return True
+            try:  # propriedade cujo domínio/contradomínio é um conceito de alvo
+                linked = list(getattr(entity, 'range', []) or []) + list(getattr(entity, 'domain', []) or [])
+                if any(self._normalize_name(getattr(c, 'name', '') or '') in runtime for c in linked):
+                    return True
+            except Exception:
+                pass
         if entity_type != 'class':
             return False
         try:
-            diagnosis_norms = self.FEATURE_MATCH_EXCLUDED_NAMES | {'diagnosisclass'}
+            blocked = self.FEATURE_MATCH_EXCLUDED_NAMES | runtime
             for parent in getattr(entity, 'is_a', []):
                 parent_name = getattr(parent, 'name', None)
-                if parent_name and self._normalize_name(parent_name) in diagnosis_norms:
+                if parent_name and self._normalize_name(parent_name) in blocked:
                     return True
         except Exception:
             pass

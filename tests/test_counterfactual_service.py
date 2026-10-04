@@ -10,9 +10,10 @@ from counterfactuals._bootstrap import setup
 setup()
 
 from counterfactuals.improve_surrogate import improve_surrogate, evaluate_improvement
-from counterfactuals.dataset_config import get_dataset_config, build_config_from_arff_meta, ALL_DATASETS
+from counterfactuals.dataset_config import build_config_from_arff_meta
+from validation.counterfactual_research.dataset_registry import get_dataset_config, ALL_DATASETS
+from validation.counterfactual_research.service_batch import evaluate_consistency
 from counterfactuals.service import (
-    evaluate_consistency,
     generate_counterfactuals_from_session,
     _select_instances_stratified,
 )

@@ -11,8 +11,8 @@ y consolida resultados.
 - CLEAR guarda el vector codificado completo (cf_vector) para evitar reconstrucción frágil.
 - Manejo de excepciones en COGS.
 - Logging estructurado.
-- Parámetros de CLEAR optimizados por dataset (max_predictors, neighbourhood_algorithm='Unbalanced').
-- German Credit con clear_num_samples=600, clear_regression_sample_size=60 para velocidad.(la alta dimensionalidad produce tiempos extremadamente amplios en generacion de cf con clear)
+- Parámetros de CLEAR tomados de la configuración recibida (max_predictors, neighbourhood_algorithm='Unbalanced').
+- clear_num_samples / clear_regression_sample_size vienen de la configuración (metadatos), no de reglas por dataset.
 """
 
 import sys, os, time, json
@@ -48,7 +48,6 @@ except ImportError as exc:
 from cogs.evolution import Evolution
 from cogs.fitness import gower_fitness_function
 
-from counterfactuals.dataset_config import get_dataset_config, ALL_DATASETS
 from counterfactuals._paths import (
     models_dir, results_dir, clear_output_dir,
     RESULTADOS_CONSOLIDADOS_DIR, ensure_dirs,
@@ -242,10 +241,11 @@ guarda el vector codificado completo (cf_vector) en el DataFrame de salida.
     return pd.concat(all_cfs, ignore_index=True) if all_cfs else pd.DataFrame()
 
 
-def run_cf_pipeline(dataset_name):
+def run_cf_pipeline(dataset_name, config):
+    """Pipeline de CFs para um dataset já treinado; ``config`` vem dos metadados (ou do registo de validação)."""
     timers = {}
     start_total = time.perf_counter()
-    config = get_dataset_config(dataset_name)
+    config = dict(config)
 
     ensure_dirs(dataset_name)
     models_dir_path = models_dir(dataset_name)
@@ -472,58 +472,3 @@ def run_cf_pipeline(dataset_name):
         logging.info(f"  {key}: {value:.2f}s")
     logging.info(f"\n✅ CFs de {dataset_name} completados.\n")
     return df_consistency, summary
-
-
-# ---------------------------------------------------------------------------
-# Ejecución principal y consolidación
-# ---------------------------------------------------------------------------
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        datasets_to_run = [sys.argv[1]]
-        if sys.argv[1] not in ALL_DATASETS:
-            logging.error(f"Dataset '{sys.argv[1]}' no reconocido. Opciones: {ALL_DATASETS}")
-            sys.exit(1)
-    else:
-        datasets_to_run = ALL_DATASETS
-
-    all_results = []
-    all_summaries = []
-    for ds in datasets_to_run:
-        try:
-            df, summary = run_cf_pipeline(ds)
-            all_results.append(df)
-            all_summaries.append(summary)
-        except Exception as e:
-            logging.error(f"Error en {ds}: {e}")
-            import traceback
-            traceback.print_exc()
-            all_summaries.append({'dataset': ds, 'error': str(e)})
-
-    RESULTADOS_CONSOLIDADOS_DIR.mkdir(parents=True, exist_ok=True)
-
-    if all_results:
-        df_all = pd.concat(all_results, ignore_index=True)
-        df_all.to_csv(RESULTADOS_CONSOLIDADOS_DIR / 'consistency_results_all.csv', index=False)
-        logging.info("\n" + "="*70)
-        logging.info("📊 RESULTADOS CONSOLIDADOS (TODOS LOS DATASETS)")
-        logging.info("="*70)
-        logging.info(df_all.to_string(index=False))
-        logging.info(f"\n✅ Archivo guardado: {RESULTADOS_CONSOLIDADOS_DIR / 'consistency_results_all.csv'}")
-
-    with open(RESULTADOS_CONSOLIDADOS_DIR / 'summary_all.json', 'w') as f:
-        json.dump(all_summaries, f, indent=2,
-                  default=lambda x: float(x) if isinstance(x, (np.int64, np.float64)) else x)
-    logging.info(f"✅ Resumen guardado: {RESULTADOS_CONSOLIDADOS_DIR / 'summary_all.json'}")
-
-    if all_results:
-        logging.info("\n" + "="*70)
-        logging.info("📋 TABLA DE RESULTADOS (copiar a la tesis)")
-        logging.info("="*70)
-        table = df_all[['dataset', 'metodo_CF', 'tipo_sustituto', 'indicador_a', 'indicador_b',
-                        'total_CFs_validos_MLP', 'total_CFs_validos_sustituto']].copy()
-        table['indicador_a'] = table['indicador_a'].apply(lambda x: f"{x:.3f}" if not pd.isna(x) else "NaN")
-        table['indicador_b'] = table['indicador_b'].apply(lambda x: f"{x:.3f}" if not pd.isna(x) else "NaN")
-        logging.info(table.to_string(index=False))
-        table.to_csv(RESULTADOS_CONSOLIDADOS_DIR / 'table_for_thesis.csv', index=False)
-
-    logging.info("\n🏁 Fin del pipeline de contrafactuales.")

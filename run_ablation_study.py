@@ -1,7 +1,7 @@
 """Executa o benchmark científico multi-dataset fora da interface gráfica."""
 from pathlib import Path
 
-from core.ablation_study import AblationConfig, run_builtin_ablation, save_ablation_results
+from validation.ablation_study import AblationConfig, run_builtin_ablation, save_ablation_results
 
 
 if __name__ == "__main__":
