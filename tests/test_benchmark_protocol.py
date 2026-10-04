@@ -355,7 +355,10 @@ def test_aggregation_keeps_raw_and_reports_mean_std_ci(result):
     assert {"mean", "std", "median", "min", "max", "ci_low", "ci_high", "n"} <= set(agg.columns)
     row = agg[(agg["arm"] == "trepan_original") & (agg["metric"] == "fidelity_to_oracle")].iloc[0]
     vals = df[df["arm"] == "trepan_original"]["fidelity_to_oracle"]
-    assert row["mean"] == pytest.approx(vals.mean()) and row["n"] == len(vals) and len(df) >= len(agg) / 10
+    assert row["mean"] == pytest.approx(vals.mean()) and row["n"] == len(vals)
+    # invariante robusta ao ambiente: a agregação nunca inventa linhas (no máx. uma por linha bruta x métrica agregada) e a tabela bruta é
+    # preservada (antes comparava-se o nº de linhas brutas com o nº de métricas disponíveis, que depende do ambiente: ex. tempos do reasoner)
+    assert len(agg) <= len(df) * len(an.AGG_METRICS) and len(df) == df.groupby(["arm", "oracle_name"], dropna=False).size().sum()
 
 
 # ------------------------------------------------------------------ manifest / persistência / relatórios
