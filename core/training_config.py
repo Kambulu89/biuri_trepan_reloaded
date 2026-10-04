@@ -18,6 +18,9 @@ PRODUCTION_TRAINING_PRESET = "scientific"
 SCIENTIFIC_TRAINING_ONLY = True
 
 
+DEFAULT_QUERY_BUDGET_CAP = 250_000
+DEFAULT_MIN_SAMPLE_CAP = 5000
+
 @dataclass
 class TrainingPreset:
     """Configuração unificada de treino — MLP, Trepan e ontologia."""
@@ -56,6 +59,10 @@ class TrainingPreset:
     # Trepan Original
     trepan_sample_size: int = 2000
     trepan_max_queries: int = 2000
+    # Teto do orçamento de queries escalado com o nº de nós: mantém datasets grandes tratáveis (agnóstico ao tamanho).
+    trepan_query_budget_cap: int = 250_000
+    # Teto da amostra de decisão por nó (o TREPAN original usa 1000-10000); 'n_train' sem limite não escala.
+    trepan_min_sample_cap: int = 5000
     trepan_max_depth: Optional[int] = None
     trepan_max_nodes: Optional[int] = None
     trepan_max_time_seconds: Optional[int] = None
@@ -255,13 +262,17 @@ def resolve_trepan_structure_limits(preset: TrainingPreset) -> Dict[str, int]:
     return {"max_nodes": max_nodes, "max_depth": int(max_depth)}
 
 
-def resolve_trepan_min_sample(n_train: int) -> int:
-    """Amostra mínima de decisão por nó (fórmula já usada pela GUI, agora num só sítio)."""
+def resolve_trepan_min_sample(n_train: int, cap: Optional[int] = DEFAULT_MIN_SAMPLE_CAP) -> int:
+    """Amostra mínima de decisão por nó: fórmula da GUI (>= n_train), limitada por ``cap``.
+
+    Até ``cap`` linhas de treino o resultado é o de sempre; acima disso a amostra deixa de crescer com o dataset.
+    """
     n = int(n_train)
-    return max(n, min(1000, max(120, n * 3)))
+    value = max(n, min(1000, max(120, n * 3)))
+    return value if cap is None else min(value, int(cap))
 
 
-def required_query_budget(max_nodes: int, min_sample: int) -> int:
+def required_query_budget(max_nodes: int, min_sample: int, cap: Optional[int] = None) -> int:
     """Orçamento de queries suficiente para expandir todos os nós internos possíveis.
 
     Cada nó expandido precisa de, no máximo, ``min_sample`` exemplos de decisão (reais + queries);
@@ -269,13 +280,19 @@ def required_query_budget(max_nodes: int, min_sample: int) -> int:
     É um teto: o TREPAN só gasta as queries de que precisa.
     """
     internal = max(1, (int(max_nodes) - 1) // 2)
-    return internal * int(min_sample)
+    need = internal * int(min_sample)
+    return need if cap is None else min(need, int(cap))
 
 
 def resolve_trepan_query_budget(preset: TrainingPreset, n_train: int) -> int:
     """Orçamento efetivo de queries: nunca inferior ao do preset, mas suficiente para ``max_nodes``."""
     structure = resolve_trepan_structure_limits(preset)
-    needed = required_query_budget(structure["max_nodes"], resolve_trepan_min_sample(n_train))
+    cap = max(int(preset.trepan_max_queries), int(getattr(preset, "trepan_query_budget_cap", DEFAULT_QUERY_BUDGET_CAP)))
+    needed = required_query_budget(
+        structure["max_nodes"],
+        resolve_trepan_min_sample(n_train, cap=getattr(preset, "trepan_min_sample_cap", DEFAULT_MIN_SAMPLE_CAP)),
+        cap=cap,
+    )
     return max(int(preset.trepan_max_queries), needed)
 
 

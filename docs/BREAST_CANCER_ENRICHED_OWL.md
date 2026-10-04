@@ -29,6 +29,10 @@ TREPAN com capacidade ajustada (63 nós, purity_epsilon 0,01, 31 000 queries): 5
 influencia 26–29 de 31 splits (impacto na decisão 16–26%), mas as diferenças Reloaded vs Original são de ~1 amostra
 de teste (1/171 ≈ 0,006) e mudam de sinal entre seeds. **Não há evidência de ganho do Reloaded devido à ontologia.**
 
+## Âmbito
+Esta OWL e o gerador são um **artefacto de teste específico deste dataset** (`data/` e `scripts/`); a aplicação não os referencia
+e continua agnóstica ao dataset: o processador deriva features de qualquer OWL que declare hierarquia, família/papel ou limites.
+
 ## Limitações
 Duas seeds e um split; dataset com MLP perto do teto (~96–97% OOF) e n=569, onde um ganho < ~1,5 pp não é detetável.
 Os resultados da OWL enriquecida usam conhecimento de domínio declarado, não ajustado aos dados.

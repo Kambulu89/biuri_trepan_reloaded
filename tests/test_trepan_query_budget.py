@@ -17,6 +17,7 @@ def test_min_sample_formula_is_unchanged():
     assert resolve_trepan_min_sample(398) == 1000        # o que a GUI já calculava
     assert resolve_trepan_min_sample(50) == 150
     assert resolve_trepan_min_sample(5000) == 5000
+    assert resolve_trepan_min_sample(60_000) == 5000 and resolve_trepan_min_sample(60_000, cap=None) == 60_000
 
 
 def test_scientific_preset_budget_covers_the_allowed_nodes_and_never_shrinks():
@@ -70,3 +71,16 @@ def test_scientific_preset_allows_63_nodes_and_budget_scales_with_it():
     preset = get_training_preset("scientific")
     assert resolve_trepan_structure_limits(preset)["max_nodes"] == 63
     assert resolve_trepan_query_budget(preset, 398) == 31 * 1000     # 31 nós internos x min_sample
+
+
+def test_budget_is_capped_so_large_datasets_stay_tractable():
+    preset = get_training_preset("scientific")
+    for n in (34_000, 200_000):
+        assert resolve_trepan_min_sample(n, cap=preset.trepan_min_sample_cap) == 5000     # amostra por nó deixa de crescer
+        assert resolve_trepan_query_budget(preset, n) == 31 * 5000                         # 155 000 < teto 250 000
+    assert preset.trepan_query_budget_cap == 250_000
+    assert resolve_trepan_query_budget(preset, 398) == 31_000          # datasets pequenos: sem cap
+    assert required_query_budget(63, 34_000, cap=100_000) == 100_000
+    base = ControlledTrepanConfig(max_nodes=63, max_depth=63, min_samples_leaf=4, min_sample=34_000, max_n=3, beam_width=2,
+                                  max_features_per_node=12, max_queries=100_000, random_state=42)
+    assert max(c.max_queries for c in _capacity_candidates(base, 30, 6)) <= 250_000

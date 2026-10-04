@@ -4155,7 +4155,7 @@ Asegúrese de que:
                         max_nodes=int(trepan_limits['max_nodes']),
                         max_depth=int(trepan_limits['max_depth']),
                         min_samples_leaf=int(trepan_limits['min_samples_leaf']),
-                        min_sample=resolve_trepan_min_sample(len(tune_X)),
+                        min_sample=resolve_trepan_min_sample(len(tune_X), cap=getattr(preset, 'trepan_min_sample_cap', 5000)),
                         max_n=int(getattr(preset, 'canonical_m_of_n_max_n', 3)),
                         beam_width=2,
                         max_features_per_node=min(tune_X.shape[1], max(12, min(32, tune_X.shape[1]))),
