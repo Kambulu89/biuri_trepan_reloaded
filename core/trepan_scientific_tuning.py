@@ -15,7 +15,7 @@ from scipy import stats as _scipy_stats
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 
-from core.training_config import DEFAULT_QUERY_BUDGET_CAP, required_query_budget
+from core.training_config import DEFAULT_QUERY_BUDGET_CAP, non_binding_query_budget, required_query_budget
 from core.controlled_trepan_experiment import ControlledTrepanConfig
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
@@ -41,10 +41,16 @@ class ScientificTrepanSearchConfig:
     tune_structure: bool = True
     purity_epsilon_grid: tuple = (0.05, 0.02, 0.01)
     max_nodes_grid: tuple = (31, 63)
-    # Seleção lexicográfica (ver ``_lexicographic_select``): 1) fidelity; 2) estabilidade entre candidatos
-    # estatisticamente indistinguíveis; 3) complexidade; 4) empate real -> a mais simples.
+    # Seleção lexicográfica (ver ``_lexicographic_select``): 1) fidelity; 2) estabilidade da fidelity entre
+    # candidatos estatisticamente indistinguíveis; 3) estabilidade estrutural; 4) complexidade; 5) empate real ->
+    # a mais simples.
     significance_alpha: float = 0.05          # teste t reamostrado corrigido (Nadeau & Bengio, 2003), unilateral
     stability_tolerance: float = 0.005        # diferença de desvio-padrão da fidelity tratada como empate
+    structural_stability_tolerance: float = 0.05   # diferença do índice de instabilidade estrutural (CV) tratada como empate
+    # Orçamento de queries da grelha de estrutura. "non_binding": todos os candidatos recebem o MESMO orçamento comum,
+    # que nunca limita nenhum deles (budget_exhausted == False por construção), para que o orçamento não seja uma
+    # variável de confusão. "required": orçamento mínimo por candidato (comportamento anterior, pode esgotar).
+    query_budget_policy: str = "non_binding"
     min_selection_agreement: float = 0.6      # fração de repetições cuja vencedora coincide com a final
 
 
@@ -93,25 +99,31 @@ def _scaled(base: ControlledTrepanConfig, **kw) -> ControlledTrepanConfig:
 def _structure_candidates(base: ControlledTrepanConfig, search: "ScientificTrepanSearchConfig"):
     """Grelha purity_epsilon x max_nodes. O primeiro candidato é sempre o ponto canónico da base.
 
-    Equidade: TODOS os candidatos recebem o orçamento de queries necessário para os seus próprios nós
-    (``required_query_budget``, com teto), para que o orçamento não seja uma variável de confusão entre eles.
+    Equidade computacional (``query_budget_policy``):
+    - "non_binding" (omissão): TODOS os candidatos recebem o mesmo orçamento comum, calculado para o maior
+      ``max_nodes`` da grelha com ``non_binding_query_budget`` (majorante do consumo possível). O orçamento nunca
+      limita nenhum candidato, logo não pode explicar diferenças entre eles.
+    - "required": cada candidato recebe o orçamento necessário para os seus próprios nós (pode esgotar).
     """
     cap = max(int(base.max_queries), DEFAULT_QUERY_BUDGET_CAP)
-
-    def point(eps, nodes):
-        c = replace(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6))
-        need = required_query_budget(c.max_nodes, c.min_sample, cap=cap)
-        return replace(c, max_queries=max(int(base.max_queries), need))
-
-    out = [point(base.purity_epsilon, base.max_nodes)]
-    seen = {(float(base.purity_epsilon), int(base.max_nodes))}
+    pairs = [(float(base.purity_epsilon), int(base.max_nodes))]
     for nodes in search.max_nodes_grid:
         for eps in search.purity_epsilon_grid:
             key = (float(eps), int(nodes))
-            if key not in seen:
-                seen.add(key)
-                out.append(point(eps, nodes))
-    return out
+            if key not in pairs:
+                pairs.append(key)
+    common = None
+    if str(search.query_budget_policy) == "non_binding":
+        common = max(int(base.max_queries), non_binding_query_budget(max(n for _e, n in pairs), base.min_sample))
+
+    def point(eps, nodes):
+        c = replace(base, purity_epsilon=float(eps), max_nodes=int(nodes), max_depth=max(int(base.max_depth), 6))
+        if common is not None:
+            return replace(c, max_queries=common)
+        need = required_query_budget(c.max_nodes, c.min_sample, cap=cap)
+        return replace(c, max_queries=max(int(base.max_queries), need))
+
+    return [point(eps, nodes) for eps, nodes in pairs]
 
 
 def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int, grow_nodes: bool = True):
@@ -177,18 +189,42 @@ def _label(cfg: dict) -> str:
     return f"purity_epsilon={cfg['purity_epsilon']:g}, max_nodes={cfg['max_nodes']}"
 
 
-def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig", valid):
+def _cv(values) -> float:
+    """Coeficiente de variação amostral (sem escala: não favorece árvores maiores nem menores por si só)."""
+    v = np.asarray(values, dtype=float)
+    if len(v) < 2 or v.mean() <= 0:
+        return 0.0
+    return float(v.std(ddof=1) / v.mean())
+
+
+def structural_instability(nodes, depth=None, leaves=None) -> float:
+    """Índice de instabilidade estrutural: o pior (maior) coeficiente de variação entre nós, profundidade e folhas.
+
+    Um candidato que produz árvores 3,3,3,3,27 tem índice alto; um que produz tamanhos próximos em todas as partições
+    tem índice baixo. Usa só as árvores ajustadas no treino (CV); nunca o teste.
+    """
+    parts = [_cv(nodes)]
+    if depth is not None:
+        parts.append(_cv(depth))
+    if leaves is not None:
+        parts.append(_cv(leaves))
+    return float(max(parts))
+
+
+def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig", valid, D=None, L=None):
     """Seleção multiobjetivo lexicográfica sobre resultados EMPARELHADOS (mesmas partições para todos).
 
     1. Maximizar a fidelity média. Os candidatos cuja diferença para o melhor não é significativa (teste t
        reamostrado corrigido, Nadeau & Bengio 2003, unilateral, ``significance_alpha``) ficam "indistinguíveis".
-    2. Entre os indistinguíveis, privilegiar a estabilidade (menor desvio-padrão da fidelity entre partições,
+    2. Entre os indistinguíveis, privilegiar a estabilidade da fidelity (menor desvio-padrão entre partições,
        com tolerância ``stability_tolerance``).
-    3. Só depois, a complexidade (menos nós médios).
-    4. Empate real: a configuração mais simples (menos ``max_nodes``) e, por fim, a ordem canónica da grelha.
+    3. Estabilidade estrutural: menor índice de instabilidade (CV de nós, profundidade e folhas, ver
+       ``structural_instability``), com tolerância ``structural_stability_tolerance``.
+    4. Só depois, a complexidade (menos nós médios).
+    5. Empate real: a configuração mais simples (menos ``max_nodes``) e, por fim, a ordem canónica da grelha.
 
-    Não há preferência por capacidade maior: a complexidade só intervém depois da fidelity e da estabilidade e
-    favorece sempre a mais simples. Devolve o índice vencedor e um veredicto (com números) por candidato.
+    Não há preferência por capacidade maior nem menor: a complexidade só intervém depois de fidelity e estabilidades
+    e favorece sempre a mais simples. Devolve o índice vencedor e um veredicto (com números) por candidato.
     """
     C, J = F.shape
     verdicts = [None] * C
@@ -222,20 +258,25 @@ def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig",
     stds = {i: (float(F[i].std(ddof=1)) if J > 1 else 0.0) for i in idx}
     min_std = min(stds[i] for i in indist)
     stable = [i for i in indist if stds[i] <= min_std + float(search.stability_tolerance)]
+    struct = {i: structural_instability(N[i], None if D is None else D[i], None if L is None else L[i]) for i in idx}
+    min_struct = min(struct[i] for i in stable)
+    tol_s = float(search.structural_stability_tolerance)
+    structural = [i for i in stable if struct[i] <= min_struct + tol_s]
     nodes = {i: float(N[i].mean()) for i in idx}
-    min_nodes = min(nodes[i] for i in stable)
-    simplest = [i for i in stable if nodes[i] <= min_nodes + 1e-9]
+    min_nodes = min(nodes[i] for i in structural)
+    simplest = [i for i in structural if nodes[i] <= min_nodes + 1e-9]
     winner = min(simplest, key=lambda i: (meta[i]["max_nodes"], i))
     wl = _label(meta[winner]["config"])
     for i in idx:
-        lab = _label(meta[i]["config"])
         if i == winner:
-            verdicts[i] = {"status": "WINNER", "stage": 4 if len(simplest) > 1 else 3 if len(stable) > 1 else
-                           2 if len(indist) > 1 else 1, "reason_code": "WINNER",
+            stage = 5 if len(simplest) > 1 else 4 if len(structural) > 1 else 3 if len(stable) > 1 else \
+                2 if len(indist) > 1 else 1
+            verdicts[i] = {"status": "WINNER", "stage": stage, "reason_code": "WINNER",
                            "text": (f"VENCE: fidelity média {means[i]:.3f}"
                                     + (" (a melhor)" if i == best else f"; indistinguível da melhor ({_label(meta[best]['config'])}, "
                                        f"Δ={detail[i]['delta']:.3f}, t={detail[i]['t']:.2f} ≤ {t_crit:.2f})")
-                                    + f". {len(indist)} indistinguível(eis) em fidelity -> {len(stable)} após estabilidade "
+                                    + f". {len(indist)} indistinguível(eis) em fidelity -> {len(stable)} após estabilidade da "
+                                      f"fidelity -> {len(structural)} após estabilidade estrutural (índice {struct[i]:.2f}) "
                                       f"-> {len(simplest)} após complexidade"
                                     + ("; empate real resolvido pela configuração mais simples." if len(simplest) > 1 else "."))}
         elif i not in indist:
@@ -245,22 +286,89 @@ def _lexicographic_select(F, N, meta, k, search: "ScientificTrepanSearchConfig",
                                     f"t={detail[i]['t']:.2f} > t_crítico={t_crit:.2f} (α={search.significance_alpha}).")}
         elif i not in stable:
             verdicts[i] = {"status": "LOST", "stage": 2, "reason_code": "LOST_STABILITY",
-                           "text": (f"PERDE em estabilidade: indistinguível em fidelity (Δ={detail[i]['delta']:.3f}, "
+                           "text": (f"PERDE em estabilidade da fidelity: indistinguível em fidelity (Δ={detail[i]['delta']:.3f}, "
                                     f"t={detail[i]['t']:.2f} ≤ {t_crit:.2f}), mas desvio-padrão {stds[i]:.3f} > "
                                     f"{min_std:.3f} + tolerância {search.stability_tolerance}.")}
+        elif i not in structural:
+            verdicts[i] = {"status": "LOST", "stage": 3, "reason_code": "LOST_STRUCTURAL_STABILITY",
+                           "text": (f"PERDE em estabilidade estrutural: indistinguível em fidelity e estável nela, mas índice de "
+                                    f"instabilidade estrutural {struct[i]:.2f} (CV de nós {_cv(N[i]):.2f}; nós "
+                                    f"{int(N[i].min())}–{int(N[i].max())}) > {min_struct:.2f} + tolerância {tol_s}.")}
         elif i not in simplest:
-            verdicts[i] = {"status": "LOST", "stage": 3, "reason_code": "LOST_COMPLEXITY",
-                           "text": (f"PERDE em complexidade: indistinguível em fidelity e estabilidade, mas com "
+            verdicts[i] = {"status": "LOST", "stage": 4, "reason_code": "LOST_COMPLEXITY",
+                           "text": (f"PERDE em complexidade: indistinguível em fidelity e estável (fidelity e estrutura), mas com "
                                     f"{nodes[i]:.1f} nós médios vs {min_nodes:.1f} de {wl}.")}
         else:
-            verdicts[i] = {"status": "LOST", "stage": 4, "reason_code": "LOST_TIE",
-                           "text": (f"PERDE o desempate: empate real em fidelity, estabilidade e nós; "
+            verdicts[i] = {"status": "LOST", "stage": 5, "reason_code": "LOST_TIE",
+                           "text": (f"PERDE o desempate: empate real em fidelity, estabilidades e nós; "
                                     f"prevalece a configuração mais simples ({wl}).")}
+        verdicts[i]["structural_instability"] = struct[i]
     return winner, verdicts, {"best_fidelity_candidate": best, "t_critical": t_crit, "n_splits": J,
-                              "indistinguishable": indist, "stable": stable, "simplest": simplest}
+                              "indistinguishable": indist, "stable": stable, "structural": structural,
+                              "simplest": simplest, "structural_instability": struct}
 
 
-def _split_stats(rows, candidate, repeats: int):
+def _tree_structure(model, feature_scale) -> dict:
+    """Resumo semântico/estrutural da árvore ajustada: features da raiz, features usadas e assinaturas dos splits.
+
+    A assinatura de um split é (feature, intervalo do limiar discretizado em meios desvios-padrão da feature no
+    treino): dois splits do mesmo atributo com limiares próximos contam como a mesma regra. Só diagnóstico.
+    """
+    root = model.root_
+    root_features = [] if root.is_leaf else sorted({int(l.feature) for l in root.test.literals})
+    features, splits = set(), set()
+    for _node, test in model.iter_splits():
+        for lit in test.literals:
+            j = int(lit.feature)
+            features.add(j)
+            step = 0.5 * float(feature_scale[j]) if j < len(feature_scale) and feature_scale[j] > 0 else 1.0
+            splits.add((j, int(np.floor(float(lit.threshold) / step))))
+    return {"root_features": root_features, "features": sorted(features),
+            "splits": sorted([list(sp) for sp in splits])}
+
+
+def _jaccard(a, b) -> float:
+    a, b = set(a), set(b)
+    return 1.0 if not a and not b else float(len(a & b) / len(a | b))
+
+
+def _structure_diagnostics(rows, feature_names) -> dict:
+    """Estabilidade semântica/estrutural entre as árvores de um candidato (diagnóstico; não entra na seleção)."""
+    names = list(feature_names)
+
+    def nm(j):
+        return str(names[j]) if j < len(names) else f"x{j}"
+
+    n = len(rows)
+    root_counts, use_counts = {}, {}
+    for r in rows:
+        for j in r.get("root_features", []):
+            root_counts[nm(j)] = root_counts.get(nm(j), 0) + 1
+        for j in r.get("features", []):
+            use_counts[nm(j)] = use_counts.get(nm(j), 0) + 1
+    fsets = [tuple(r.get("features", [])) for r in rows]
+    ssets = [tuple(tuple(sp) for sp in r.get("splits", [])) for r in rows]
+    pairs = [(a, b) for a in range(n) for b in range(a + 1, n)]
+    feat_j = [_jaccard(fsets[a], fsets[b]) for a, b in pairs]
+    split_j = [_jaccard(ssets[a], ssets[b]) for a, b in pairs]
+    same = [_jaccard(fsets[a], fsets[b]) for a, b in pairs if rows[a]["nodes"] == rows[b]["nodes"]]
+    same_split = [_jaccard(ssets[a], ssets[b]) for a, b in pairs if rows[a]["nodes"] == rows[b]["nodes"]]
+    root_top = sorted(root_counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return {
+        "n_trees": int(n),
+        "root_feature_freq": {k: v / n for k, v in root_top},
+        "root_feature_modal_share": float(root_top[0][1] / n) if root_top else 0.0,
+        "feature_usage_freq": {k: v / n for k, v in sorted(use_counts.items(), key=lambda kv: (-kv[1], kv[0]))[:8]},
+        "feature_set_jaccard_mean": float(np.mean(feat_j)) if feat_j else 1.0,
+        "split_signature_jaccard_mean": float(np.mean(split_j)) if split_j else 1.0,
+        "same_size_pairs": int(len(same)),
+        "same_size_feature_jaccard_mean": float(np.mean(same)) if same else None,
+        "same_size_split_jaccard_mean": float(np.mean(same_split)) if same_split else None,
+        "stump_fraction": float(np.mean([1.0 if r["nodes"] <= 3 else 0.0 for r in rows])),
+    }
+
+
+def _split_stats(rows, candidate, repeats: int, feature_names=()):
     """Estatísticas de um candidato a partir das linhas por partição (todas calculadas só no treino)."""
     fid = np.array([r["fidelity"] for r in rows], dtype=float)
     nodes = np.array([r["nodes"] for r in rows], dtype=float)
@@ -279,14 +387,34 @@ def _split_stats(rows, candidate, repeats: int):
         "nodes_cv": float(nodes.std(ddof=1) / nodes.mean()) if len(nodes) > 1 and nodes.mean() > 0 else 0.0,
         "depth_mean": float(np.mean([r["depth"] for r in rows])),
         "depth_max": float(np.max([r["depth"] for r in rows])),
+        "depth_std": float(np.std([r["depth"] for r in rows], ddof=1)) if len(rows) > 1 else 0.0,
+        "depth_cv": _cv([r["depth"] for r in rows]),
         "leaves_mean": float(np.mean([r["leaves"] for r in rows])),
+        "leaves_std": float(np.std([r["leaves"] for r in rows], ddof=1)) if len(rows) > 1 else 0.0,
+        "leaves_cv": _cv([r["leaves"] for r in rows]),
+        "structural_instability": structural_instability([r["nodes"] for r in rows], [r["depth"] for r in rows],
+                                                         [r["leaves"] for r in rows]),
+        "max_nodes_reached_fraction": float(np.mean([1.0 if r.get("max_nodes_reached") else 0.0 for r in rows])),
         "time_mean_s": float(np.mean([r["time_s"] for r in rows])), "time_total_s": float(np.sum([r["time_s"] for r in rows])),
         "query_budget": int(candidate.max_queries),
         "queries_used_mean": float(np.mean([r["queries_used"] for r in rows])),
+        "queries_used_max": int(np.max([r["queries_used"] for r in rows])),
+        "budget_exhausted_count": int(sum(1 for r in rows if r.get("budget_exhausted"))),
         "budget_exhausted_fraction": float(np.mean([1.0 if r.get("budget_exhausted") else 0.0 for r in rows])),
         "balanced_accuracy_mean": float(np.mean([r["balanced_accuracy"] for r in rows])),
         "macro_f1_mean": float(np.mean([r["macro_f1"] for r in rows])),
+        "structure_diagnostics": _structure_diagnostics(rows, feature_names),
     }
+
+
+def _budget_check(history) -> dict:
+    """O orçamento deixou de ser variável de confusão? Mostra orçamento comum, consumo e esgotamentos por candidato."""
+    rows = [h for h in history if h.get("stats")]
+    budgets = sorted({int(h["stats"]["query_budget"]) for h in rows})
+    return {"common_budget": budgets[0] if len(budgets) == 1 else None, "budgets": budgets,
+            "all_candidates_same_budget": len(budgets) == 1,
+            "any_budget_exhausted": any(h["stats"]["budget_exhausted_count"] > 0 for h in rows),
+            "max_queries_used": max((h["stats"]["queries_used_max"] for h in rows), default=0)}
 
 
 def tune_scientific_trepan(
@@ -311,6 +439,7 @@ def tune_scientific_trepan(
     plan, folds, seeds = _cv_plan(y, search, base_config.random_state)
     splits = [(tr, va) for (r, _seed, _f, tr, va) in plan if r == 0]      # etapa semântica: 1.ª repetição
     repeats = len(seeds)
+    feature_scale = np.nan_to_num(X.std(axis=0), nan=0.0)
 
     def evaluate(candidates, label_stage):
         history = []
@@ -328,12 +457,14 @@ def tune_scientific_trepan(
                                  "nodes": int(getattr(model, "node_count_", 0)), "depth": int(model.get_depth()),
                                  "leaves": int(model.get_n_leaves()), "time_s": float(elapsed),
                                  "queries_used": int(getattr(model, "membership_queries_", 0)),
-                                 "budget_exhausted": bool(getattr(model, "query_budget_exhausted_", False))})
+                                 "budget_exhausted": bool(getattr(model, "query_budget_exhausted_", False)),
+                                 "max_nodes_reached": bool(getattr(model, "max_nodes_reached_", False)),
+                                 **_tree_structure(model, feature_scale)})
                 except (ValueError, RuntimeError) as exc:
                     failed = str(exc); break
             if rows and failed is None:
                 mean = _mean_metrics(rows)
-                stats = _split_stats(rows, candidate, repeats)
+                stats = _split_stats(rows, candidate, repeats, feature_names)
             else:
                 mean = {"score": float("-inf"), "fidelity": 0.0, "balanced_accuracy": 0.0, "macro_f1": 0.0, "complexity": 1.0}
                 stats = None
@@ -352,15 +483,17 @@ def tune_scientific_trepan(
         J = len(plan)
         F = np.array([[r["fidelity"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
         Nn = np.array([[r["nodes"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
+        Dd = np.array([[r["depth"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
+        Ll = np.array([[r["leaves"] for r in h["per_split"]] if h["stats"] else [0.0] * J for h in history], dtype=float)
         meta = [{"config": h["config"], "max_nodes": int(h["config"]["max_nodes"])} for h in history]
-        winner, verdicts, info = _lexicographic_select(F, Nn, meta, folds, search, valid)
+        winner, verdicts, info = _lexicographic_select(F, Nn, meta, folds, search, valid, Dd, Ll)
         for h, v in zip(history, verdicts):
             h["verdict"] = v
         # Estabilidade: a vencedora de cada repetição (mesma regra, só com as partições dessa repetição).
         winners = []
         for r in range(repeats):
             cols = [j for j, (rr, *_rest) in enumerate(plan) if rr == r]
-            w, _v, _i = _lexicographic_select(F[:, cols], Nn[:, cols], meta, folds, search, valid)
+            w, _v, _i = _lexicographic_select(F[:, cols], Nn[:, cols], meta, folds, search, valid, Dd[:, cols], Ll[:, cols])
             winners.append(None if w is None else history[w]["label"])
         final = history[winner]["label"]
         agreement = float(np.mean([1.0 if w == final else 0.0 for w in winners])) if winners else 1.0
@@ -454,7 +587,9 @@ def tune_scientific_trepan(
         "selected_config":asdict(selected),
         "cv_plan":{"scheme":"RepeatedStratifiedKFold (conjunto de treino apenas)","folds":int(folds),"repeats":int(repeats),
                    "seeds":[int(v) for v in seeds],"n_splits":len(plan),"test_set_used":False},
-        "selection_rule":"lexicográfica: fidelity -> estabilidade (se indistinguíveis) -> complexidade -> mais simples",
+        "selection_rule":"lexicográfica: fidelity -> estabilidade da fidelity (se indistinguíveis) -> estabilidade estrutural -> complexidade -> desempate canónico (mais simples)",
+        "query_budget_policy":str(search.query_budget_policy),
+        "budget_check":_budget_check(structure_history),
         "structure_history":structure_history,
         "structure_selection":structure_selection,
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},

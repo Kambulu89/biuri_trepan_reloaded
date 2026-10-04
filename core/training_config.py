@@ -283,6 +283,16 @@ def required_query_budget(max_nodes: int, min_sample: int, cap: Optional[int] = 
     return need if cap is None else min(need, int(cap))
 
 
+def non_binding_query_budget(max_nodes: int, min_sample: int) -> int:
+    """Orçamento de queries que NUNCA limita um TREPAN com ``max_nodes`` nós.
+
+    Todo nó retirado da fila (expandido ou não) consome, no máximo, ``min_sample`` queries e nunca são retirados
+    mais nós do que os criados (<= ``max_nodes``). Logo ``max_nodes * min_sample`` é um majorante do consumo;
+    o ``+ 1`` garante que o orçamento nunca é atingido (``budget_exhausted`` fica falso por construção).
+    """
+    return int(max_nodes) * int(min_sample) + 1
+
+
 def resolve_trepan_query_budget(preset: TrainingPreset, n_train: int) -> int:
     """Orçamento efetivo de queries: nunca inferior ao do preset, mas suficiente para ``max_nodes``."""
     structure = resolve_trepan_structure_limits(preset)

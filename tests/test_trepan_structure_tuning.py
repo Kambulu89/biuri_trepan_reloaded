@@ -222,3 +222,91 @@ def test_no_dataset_specific_logic_in_the_tuning_module():
     src = inspect.getsource(mod).lower()
     for name in ("breast", "iris", "wdbc", "wisconsin", "adult", "german"):
         assert name not in src
+
+
+# ------------------------------------------------------------------------------- orçamento não limitante
+def test_non_binding_budget_is_common_to_all_candidates_and_never_exhausted():
+    from core.training_config import non_binding_query_budget
+    search = _fast()
+    cands = _structure_candidates(_base(), search)
+    budgets = {c.max_queries for c in cands}
+    assert len(budgets) == 1                                                            # condições computacionais iguais
+    assert budgets.pop() >= non_binding_query_budget(15, 300) > 15 * 300               # majora o consumo do maior candidato
+    X, y = _data()
+    r = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(), search=search)
+    assert r["query_budget_policy"] == "non_binding"
+    chk = r["budget_check"]
+    assert chk["all_candidates_same_budget"] and chk["any_budget_exhausted"] is False
+    for h in r["structure_history"]:
+        s = h["stats"]
+        assert s["budget_exhausted_count"] == 0 and s["budget_exhausted_fraction"] == 0.0
+        assert s["queries_used_mean"] <= s["query_budget"] and s["query_budget"] == chk["common_budget"]
+        assert all(row["queries_used"] < s["query_budget"] and row["budget_exhausted"] is False for row in h["per_split"])
+
+
+def test_required_budget_policy_is_still_available_and_differs_per_candidate():
+    cands = _structure_candidates(_base(), _fast(query_budget_policy="required", max_nodes_grid=(31, 63)))
+    assert len({c.max_queries for c in cands}) > 1
+
+
+# ------------------------------------------------------------------------------- estabilidade estrutural
+def test_structural_stability_beats_complexity_among_fidelity_equivalents():
+    from core.trepan_scientific_tuning import structural_instability
+    same = [0.90, 0.91, 0.89, 0.90, 0.91, 0.89]
+    erratic = [3, 3, 3, 3, 27, 3]                    # 3,3,3,3,27: pequeno na média, mas dependente da amostragem
+    steady = [20, 22, 21, 20, 23, 21]
+    assert structural_instability(erratic) > 3 * structural_instability(steady)
+    w, v, _ = _sel([same, same], [erratic, steady], _meta(31, 31))
+    assert w == 1 and v[0]["reason_code"] == "LOST_STRUCTURAL_STABILITY"
+    assert "estabilidade estrutural" in v[0]["text"] and "3–27" in v[0]["text"]
+
+
+def test_structural_stability_does_not_favour_bigger_or_smaller_trees():
+    same = [0.90, 0.91, 0.89, 0.90, 0.91, 0.89]
+    small = [10, 10, 11, 10, 10, 11]
+    big = [50, 50, 51, 50, 50, 51]
+    w, _v, _ = _sel([same, same], [small, big], _meta(31, 63))
+    assert w == 0                                    # igualmente estáveis: decide a complexidade (a mais simples)
+    w2, _v2, _ = _sel([same, same], [big, small], _meta(63, 31))
+    assert w2 == 1
+
+
+def test_structural_instability_uses_depth_and_leaves_too():
+    from core.trepan_scientific_tuning import structural_instability
+    nodes = [21] * 6
+    assert structural_instability(nodes) == 0.0
+    assert structural_instability(nodes, depth=[2, 2, 2, 12, 2, 2]) > 0.5
+    assert structural_instability(nodes, leaves=[2, 2, 2, 12, 2, 2]) > 0.5
+
+
+def test_fidelity_still_comes_before_structure():
+    good_but_erratic = [0.95, 0.96, 0.94, 0.95, 0.96, 0.94]
+    steady_but_worse = [0.80, 0.81, 0.79, 0.80, 0.81, 0.79]
+    w, v, _ = _sel([good_but_erratic, steady_but_worse], [[3, 3, 3, 3, 27, 3], [20] * 6], _meta(31, 31))
+    assert w == 0 and v[1]["reason_code"] == "LOST_FIDELITY"
+
+
+# ------------------------------------------------------------------------------- diagnóstico semântico/estrutural
+def test_structure_diagnostics_are_recorded_and_not_used_for_selection():
+    X, y = _data()
+    r = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(), search=_fast())
+    for h in r["structure_history"]:
+        g = h["stats"]["structure_diagnostics"]
+        assert {"root_feature_freq", "root_feature_modal_share", "feature_usage_freq", "feature_set_jaccard_mean",
+                "split_signature_jaccard_mean", "same_size_pairs", "same_size_feature_jaccard_mean", "stump_fraction"} <= set(g)
+        assert 0.0 <= g["feature_set_jaccard_mean"] <= 1.0 and 0.0 <= g["root_feature_modal_share"] <= 1.0
+        assert set(g["root_feature_freq"]) <= {"a", "b", "c"}
+        assert {"root_features", "features", "splits"} <= set(h["per_split"][0])
+    import core.trepan_scientific_tuning as mod
+    src = inspect.getsource(mod._lexicographic_select)
+    assert "structure_diagnostics" not in src and "jaccard" not in src.lower()
+
+
+def test_jaccard_and_diagnostics_distinguish_same_size_but_different_explanations():
+    from core.trepan_scientific_tuning import _structure_diagnostics
+    rows = [{"nodes": 5, "root_features": [0], "features": [0, 1], "splits": [[0, 1], [1, 2]]},
+            {"nodes": 5, "root_features": [2], "features": [2, 3], "splits": [[2, 4], [3, 5]]},
+            {"nodes": 5, "root_features": [0], "features": [0, 1], "splits": [[0, 1], [1, 2]]}]
+    g = _structure_diagnostics(rows, list("abcd"))
+    assert g["root_feature_freq"] == {"a": 2 / 3, "c": 1 / 3} and g["same_size_pairs"] == 3
+    assert g["same_size_feature_jaccard_mean"] == pytest.approx((0 + 1 + 0) / 3)    # mesmo nº de nós, explicações diferentes
