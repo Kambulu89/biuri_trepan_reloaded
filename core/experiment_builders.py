@@ -265,12 +265,20 @@ def scientific_diagnostics_from_tuning(
     diag.initial_node_grid = list(ex.get("initial_node_grid") or [])
     diag.final_node_grid = list(ex.get("final_node_grid") or [])
     diag.expansion_stop_reason = ex.get("expansion_stop_reason")
+    diag.expansion_interpretation = ex.get("interpretation")
+    steps = list(ex.get("steps") or [])
+    diag.last_capacity_step = dict(steps[-1]) if steps else {}
+    diag.equivalent_candidate_count = sel.get("equivalent_candidate_count")
+    diag.equivalent_candidate_ids = list(sel.get("equivalent_candidate_ids") or [])
+    diag.equivalent_set_probability = Measure.of(sel.get("equivalent_set_probability") if assessable else None)
+    diag.tree_behavior_unstable = (sel.get("tree_behavior") or {}).get("behavior_unstable")
+    diag.tuning_status_reason = sel.get("status_reason")
     diag.fraction_at_node_cap = Measure.of(stats.get("fraction_at_node_cap"))
     diag.node_cap_censored = bool(stats.get("structural_stability_censored"))
     diag.queries_used = Measure.of(stats.get("queries_used_mean"))
     diag.query_budget = Measure.of(stats.get("query_budget"))
     diag.budget_exhausted = bool(stats.get("budget_exhausted_count", 0) > 0)
-    diag.tuning_status = str(sel.get("status") or ("tuning_stable" if sel.get("stable") else "tuning_uncertain"))
+    diag.tuning_status = str(sel.get("status") or ("stable_exact" if sel.get("stable") else "tuning_uncertain"))
     return diag
 
 

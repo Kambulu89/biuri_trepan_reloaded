@@ -299,13 +299,20 @@ class ScientificDiagnostics:
     initial_node_grid: List[int] = field(default_factory=list)
     final_node_grid: List[int] = field(default_factory=list)
     expansion_stop_reason: Optional[str] = None
+    expansion_interpretation: Optional[str] = None
+    last_capacity_step: Dict[str, Any] = field(default_factory=dict)        # previous/candidate max_nodes, fidelity, delta, teste, ganho
+    equivalent_candidate_count: Optional[int] = None
+    equivalent_candidate_ids: List[str] = field(default_factory=list)
+    equivalent_set_probability: Measure = field(default_factory=Measure)
+    tree_behavior_unstable: Optional[bool] = None
+    tuning_status_reason: Optional[str] = None
     fraction_at_node_cap: Measure = field(default_factory=Measure)
     node_cap_censored: Optional[bool] = None
     queries_used: Measure = field(default_factory=Measure)
     query_budget: Measure = field(default_factory=Measure)
     budget_exhausted: Optional[bool] = None
     test_used_for_selection: Optional[bool] = None
-    tuning_status: str = "not_run"                 # tuning_stable / tuning_uncertain / not_run / failed
+    tuning_status: str = "not_run"                 # stable_exact / stable_equivalent_set / tuning_uncertain / not_run / failed
 
 
 @dataclass

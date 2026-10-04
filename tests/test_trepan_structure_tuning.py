@@ -181,11 +181,11 @@ def test_tuning_is_deterministic():
 def test_tuning_is_flagged_uncertain_when_selection_probability_is_below_the_threshold():
     X, y = _data()
     strict = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(),
-                                    search=_fast(min_selection_probability=1.01))       # exigência impossível
+                                    search=_fast(min_selection_probability=1.01, min_equivalent_set_probability=1.01))       # exigência impossível
     lax = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(),
                                  search=_fast(min_selection_probability=0.0))
     assert strict["tuning_stable"] is False and strict["structure_selection"]["status"] == "tuning_uncertain"
-    assert lax["tuning_stable"] is True and lax["structure_selection"]["status"] == "tuning_stable"
+    assert lax["tuning_stable"] is True and lax["structure_selection"]["status"] in {"stable_exact", "stable_equivalent_set"}
 
 
 def test_tuning_off_or_failing_keeps_the_canonical_base():

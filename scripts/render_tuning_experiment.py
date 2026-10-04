@@ -84,13 +84,23 @@ def run_section(d: dict, full: bool) -> list[str]:
     mc = bs.get("selection_probability_mc_interval")
     lines += [f"**Configuração escolhida pela CV completa:** `{sel['selected_config_full_cv']}` — estado interno do tuning: "
               f"**{sel['status']}** ({sel.get('status_reason')}).", "",
-              "Expansão adaptativa da capacidade (só CV do treino; mesmas dobras):", "",
+              "Expansão de capacidade = SATURAÇÃO + GANHO DE VALIDAÇÃO (só CV do treino; mesmas partições; mesmo purity_epsilon):", "",
               f"- initial_node_grid: {ex.get('initial_node_grid')}; final_node_grid: {ex.get('final_node_grid')}; "
               f"capacity_expansion_rounds: {ex.get('capacity_expansion_rounds')}; expansion_triggered: {ex.get('expansion_triggered')}; "
-              f"expansion_stop_reason: `{ex.get('expansion_stop_reason')}`; fraction_at_node_cap (vencedora final): "
+              f"expansion_stop_reason: `{ex.get('expansion_stop_reason')}`; fraction_at_node_cap (escolhida): "
               f"{('%.0f%%' % (100 * ex['fraction_at_node_cap'])) if ex.get('fraction_at_node_cap') is not None else '—'}",
-              *[f"- ronda {r['round']}: {r['from_max_nodes']} → {r['to_max_nodes']} nós (saturadas: {r['saturated_candidates']})"
-                for r in ex.get("rounds", [])], "",
+              f"- interpretação: {ex.get('interpretation') or '—'}", "",
+              "| previous_max_nodes | candidate_max_nodes | previous_fidelity | candidate_fidelity | fidelity_delta | teste | p-value | IC95 do ganho | capacity_gain_supported | fraction_at_node_cap | decisão |",
+              "|---|---|---|---|---|---|---|---|---|---|---|",
+              *[(lambda st, te: f"| {st['previous_max_nodes']} | {st['candidate_max_nodes']} | "
+                 f"{('%.4f' % st['previous_fidelity']) if st['previous_fidelity'] is not None else '—'} | "
+                 f"{('%.4f' % st['candidate_fidelity']) if st['candidate_fidelity'] is not None else '—'} | "
+                 f"{('%+.4f' % st['fidelity_delta']) if st['fidelity_delta'] is not None else '—'} | "
+                 f"{'Nadeau–Bengio pareado, unilateral' if te.get('available') else '—'} | "
+                 f"{('%.4f' % te['p_value']) if te.get('available') else '—'} | "
+                 f"{('[%+.4f, %+.4f]' % tuple(te['ci95_delta'])) if te.get('available') and te.get('ci95_delta') else '—'} | "
+                 f"{st['capacity_gain_supported']} | {('%.0f%%' % (100 * st['fraction_at_node_cap'])) if st['fraction_at_node_cap'] is not None else '—'} | "
+                 f"{st.get('decision', '—')} |")(st, st.get('statistical_test') or {}) for st in ex.get('steps', [])], "",
               "Robustez interna da política (bootstrap de blocos das repetições; teste não usado):", "",
               f"- bootstrap_method: **{bs['method']}**; bootstrap_samples: {bs['bootstrap_samples']}; avaliações distintas: {bs['bootstrap_evaluations']}"
               f" (blocos = {bs['n_blocks']} repetições × {plan['folds']} dobras)",
@@ -101,6 +111,11 @@ def run_section(d: dict, full: bool) -> list[str]:
               f"- bootstrap_runner_up: {('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'}; "
               f"top1_top2_margin: {format(bs['top1_top2_margin'], '.1%') if bs['top1_top2_margin'] is not None else '—'}",
               f"- IC bootstrap 95% da fidelity média da escolhida: {('[%.3f, %.3f]' % tuple(bs['winner_fidelity_ci'])) if bs['winner_fidelity_ci'] else '—'}",
+              f"- conjunto equivalente (fidelity indistinguível da escolhida): equivalent_candidate_count={sel['equivalent_candidate_count']}; "
+              f"equivalent_set_probability={('%.1f%%' % (100 * sel['equivalent_set_probability'])) if sel['equivalent_set_probability'] is not None else '—'}; "
+              f"exact_selection_probability={sel['exact_selection_probability']:.1%}; bootstrap_modal_probability={bs['bootstrap_modal_probability']:.1%}; "
+              f"ids: {sel['equivalent_candidate_ids']}",
+              f"- comportamento da árvore escolhida: {sel['tree_behavior']}",
               "- distribuição das configurações escolhidas: " + (", ".join(f"`{k}` {v:.1%}" for k, v in bs["distribution"].items()) or "—"),
               f"- vencedora por repetição (apenas informativo; 1 repetição = {plan['folds']} dobras): {sel['per_repeat_winners']}",
               f"- saturação da escolhida: {sel['node_cap']['node_cap_reached_count']}/{plan['n_splits']} árvores no teto max_nodes={sel['node_cap']['max_nodes']} "
@@ -163,8 +178,8 @@ def main() -> None:
             continue
         md += [f"## {runs[0]['dataset']} — oráculo `{runs[0].get('oracle_builder', 'factory')}`", "",
                "### 1. Estabilidade interna do tuning (block bootstrap, por seed mestre)", "",
-               "| seed mestre | oracle_id | escolhida (CV completa) | P(escolhida) | moda do bootstrap | P(moda) | bootstrap_runner_up | top1−top2 | método (amostras) | grelha de nós final (rondas) | tuning |",
-               "|---|---|---|---|---|---|---|---|---|---|---|"]
+               "| seed mestre | oracle_id | escolhida (CV completa) | P(escolhida) | moda do bootstrap | P(moda) | bootstrap_runner_up | top1−top2 | equivalentes (P família) | método (amostras) | grelha final (rondas; paragem) | estado |",
+               "|---|---|---|---|---|---|---|---|---|---|---|---|"]
         picks, n_stable = [], 0
         for d in runs:
             sel = d["tuning"]["structure_selection"]; bs = sel["bootstrap"]; picks.append(sel["selected_config_full_cv"]); n_stable += bool(sel["stable"])
@@ -172,17 +187,18 @@ def main() -> None:
             md.append(f"| {d['seed']} | `{((d.get('oracle_contract') or {}).get('oracle') or {}).get('oracle_id')}` | `{sel['selected_config_full_cv']}` | "
                       f"{bs['selected_config_probability']:.1%} | `{bs['bootstrap_modal_config']}` | {bs['bootstrap_modal_probability']:.1%} | "
                       f"{('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'} | "
-                      f"{format(bs['top1_top2_margin'], '.1%') if bs['top1_top2_margin'] is not None else '—'} | {bs['method']} ({bs['bootstrap_samples']}) | "
-                      f"{ex.get('final_node_grid')} ({ex.get('capacity_expansion_rounds')}) | {sel['status']} |")
+                      f"{format(bs['top1_top2_margin'], '.1%') if bs['top1_top2_margin'] is not None else '—'} | "
+                      f"{sel['equivalent_candidate_count']} ({sel['equivalent_set_probability']:.0%}) | {bs['method']} ({bs['bootstrap_samples']}) | "
+                      f"{ex.get('final_node_grid')} ({ex.get('capacity_expansion_rounds')}; {ex.get('expansion_stop_reason')}) | {sel['status']} |")
         cnt = Counter(picks); modal, n_modal = cnt.most_common(1)[0]
-        md += ["", "### 2. Robustez externa entre seeds mestre (evidência empírica; não define `tuning_stable`)", "",
+        md += ["", "### 2. Robustez externa entre seeds mestre (evidência empírica; não define o estado do tuning)", "",
                "| seed mestre | selecionada | nós finais (Original) | accuracy teste (Original) | fidelity teste (Original) | tempo total (s) |", "|---|---|---|---|---|---|"]
         for d in runs:
             sel = d["tuning"]["structure_selection"]; o = (d.get("test_models") or {}).get("original") or {}
             md.append(f"| {d['seed']} | `{sel['selected_config_full_cv']}` | {o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
         consensus = n_modal / len(picks)
         md += ["", f"Configurações escolhidas: {dict(cnt)}. **Consenso de seleção = {consensus:.0%} ({n_modal}/{len(picks)}) nas master seeds avaliadas** "
-               f"(moda `{modal}`); seeds mestre com `tuning_stable` pelo bootstrap: {n_stable}/{len(picks)}.", ""]
+               f"(moda `{modal}`); seeds mestre com estado estável (`stable_exact` ou `stable_equivalent_set`): {n_stable}/{len(picks)}.", ""]
         if consensus >= 0.6 and n_stable / len(picks) >= 0.6:
             md += ["Leitura: o consenso externo e a reamostragem interna apontam no mesmo sentido; só neste caso se usa o termo *robusto/estável* "
                    "(com a ressalva do número reduzido de master seeds).", ""]

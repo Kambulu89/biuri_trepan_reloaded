@@ -57,6 +57,8 @@ class ScientificTrepanSearchConfig:
     bootstrap_exact_limit: int = 20000        # enumeração exata se o nº de composições distintas (multisets) <= isto
     bootstrap_seed: Optional[int] = None      # None -> derivada da seed base (determinística)
     min_selection_probability: float = 0.6    # abaixo disto o tuning é marcado "incerto" (limiar configurável, não prova)
+    min_equivalent_set_probability: float = 0.6   # P(vencedora do bootstrap ∈ conjunto equivalente) para ``stable_equivalent_set``
+    behavior_instability_threshold: float = 0.5   # índice de instabilidade estrutural acima do qual o comportamento da árvore é instável
     # Expansão adaptativa da capacidade (genérica; só resultados da CV do treino): se os candidatos competitivos de maior
     # capacidade atingem o teto max_nodes numa fração >= ao limiar, a grelha de nós cresce geometricamente
     # (next = int(factor * atual) + 1, ex. 31 -> 63 -> 127 -> 255), avaliada nas MESMAS dobras, até a saturação deixar
@@ -66,6 +68,8 @@ class ScientificTrepanSearchConfig:
     capacity_expansion_saturation_threshold: float = 0.5
     max_capacity_expansion_rounds: int = 3
     max_nodes_safety_limit: int = 255
+    # A expansão exige SATURAÇÃO + GANHO DE VALIDAÇÃO suportado (teste t reamostrado corrigido, as mesmas dobras, mesmo
+    # purity_epsilon em capacidades consecutivas; ver ``capacity_gain_step``); sem ganho -> ``validation_plateau``.
     # Saturação: se a fração de árvores que param por atingir max_nodes for >= isto, a estabilidade estrutural
     # desse candidato é sinalizada como potencialmente censurada pelo teto (só diagnóstico; não altera a seleção).
     node_cap_censoring_threshold: float = 0.5
@@ -169,20 +173,115 @@ def _expansion_candidates(base, search, nodes: int, existing):
     return out
 
 
-def _saturation_state(history, search: "ScientificTrepanSearchConfig") -> dict:
-    """Os candidatos competitivos de maior capacidade estão saturados no teto de nós? (só estatísticas da CV do treino)"""
-    valid = [h for h in history if h.get("stats")]
-    competitive = [h for h in valid if (h.get("verdict") or {}).get("reason_code") not in ("LOST_FIDELITY", "FIT_FAILED")]
-    if not valid or not competitive:
-        return {"triggered": False, "reason": "no_competitive_candidates", "top_nodes": None, "competitive_at_top": {}, "saturated": []}
-    top = max(h["stats"]["max_nodes"] for h in valid)
-    at_top = {h["label"]: float(h["stats"]["fraction_at_node_cap"]) for h in competitive if h["stats"]["max_nodes"] == top}
-    if not at_top:
-        return {"triggered": False, "reason": "no_competitive_at_max_capacity", "top_nodes": int(top), "competitive_at_top": {}, "saturated": []}
-    thr = float(search.capacity_expansion_saturation_threshold)
-    saturated = [lab for lab, f in at_top.items() if f >= thr]
-    return {"triggered": bool(saturated), "reason": "saturated" if saturated else "not_saturated", "top_nodes": int(top),
-            "competitive_at_top": at_top, "saturated": saturated}
+def _nb_paired(diff, k: int, alpha: float):
+    """Teste t reamostrado corrigido (Nadeau & Bengio, 2003) sobre diferenças emparelhadas ``diff`` (unilateral: média > 0)."""
+    d = np.asarray(diff, dtype=float)
+    J = len(d)
+    mean = float(d.mean()) if J else 0.0
+    if J < 2:
+        return {"mean": mean, "t": 0.0, "se": None, "df": 0, "t_critical": float("inf"), "p_value": 1.0, "ci95": None, "significant": False}
+    var = float(d.var(ddof=1))
+    se = float(np.sqrt((1.0 / J + 1.0 / max(1, k - 1)) * var))
+    if se <= 0.0:
+        t = 0.0 if mean <= 1e-12 else float("inf")
+    else:
+        t = mean / se
+    df = J - 1
+    t_crit = float(_scipy_stats.t.ppf(1.0 - float(alpha), df))
+    p = float(_scipy_stats.t.sf(t, df)) if np.isfinite(t) else 0.0
+    t_two = float(_scipy_stats.t.ppf(0.975, df))
+    ci = [mean - t_two * se, mean + t_two * se] if se > 0 else [mean, mean]
+    return {"mean": mean, "t": float(t), "se": se, "df": int(df), "t_critical": t_crit, "p_value": p, "ci95": ci,
+            "significant": bool(t > t_crit)}
+
+
+_GAIN_TEST_NAME = ("teste t emparelhado reamostrado corrigido (Nadeau & Bengio, 2003), unilateral; efeito da capacidade "
+                   "agregado por partição sobre os purity_epsilon comuns")
+
+
+def capacity_gain_step(history, prev_nodes: int, cand_nodes: int, search: "ScientificTrepanSearchConfig", k: int) -> dict:
+    """Compara duas capacidades CONSECUTIVAS nas mesmas partições de CV (só treino) e no MESMO purity_epsilon.
+
+    Para cada partição calcula-se a média, sobre os ``purity_epsilon`` presentes nas duas capacidades, da diferença de
+    fidelity (maior - menor); uma única série emparelhada alimenta um único teste (sem multiplicidade). Devolve também a
+    saturação do nível candidato (fração média de árvores que atingiram o teto) e se o ganho é suportado.
+    """
+    def by_eps(nodes):
+        return {float(h["config"]["purity_epsilon"]): h for h in history
+                if h.get("stats") and int(h["config"]["max_nodes"]) == int(nodes)}
+    lo, hi = by_eps(prev_nodes), by_eps(cand_nodes)
+    common = sorted(set(lo) & set(hi))
+    step = {"previous_max_nodes": int(prev_nodes), "candidate_max_nodes": int(cand_nodes), "paired_purity_epsilon": common,
+            "previous_fidelity": None, "candidate_fidelity": None, "fidelity_delta": None, "statistical_test": None,
+            "capacity_gain_supported": False, "fraction_at_node_cap": None, "saturated": False, "per_epsilon_delta": {}}
+    if hi:
+        step["fraction_at_node_cap"] = float(np.mean([h["stats"]["fraction_at_node_cap"] for h in hi.values()]))
+        step["saturated"] = bool(step["fraction_at_node_cap"] >= float(search.capacity_expansion_saturation_threshold))
+    if not common:
+        step["statistical_test"] = {"name": _GAIN_TEST_NAME, "available": False, "reason": "sem purity_epsilon comum"}
+        return step
+    F_lo = np.array([[r["fidelity"] for r in lo[e]["per_split"]] for e in common])
+    F_hi = np.array([[r["fidelity"] for r in hi[e]["per_split"]] for e in common])
+    diff = (F_hi - F_lo).mean(axis=0)
+    test = _nb_paired(diff, k, float(search.significance_alpha))
+    step.update({"previous_fidelity": float(F_lo.mean()), "candidate_fidelity": float(F_hi.mean()), "fidelity_delta": float(diff.mean()),
+                 "per_epsilon_delta": {e: float((F_hi[i] - F_lo[i]).mean()) for i, e in enumerate(common)},
+                 "statistical_test": {"name": _GAIN_TEST_NAME, "available": True, "alpha": float(search.significance_alpha),
+                                      "t": test["t"], "t_critical": test["t_critical"], "p_value": test["p_value"],
+                                      "ci95_delta": test["ci95"], "n_splits": int(len(diff))},
+                 "capacity_gain_supported": bool(test["significant"] and test["mean"] > 0)})
+    return step
+
+
+def run_capacity_expansion(history, evaluate_level, search: "ScientificTrepanSearchConfig", k: int) -> dict:
+    """Expansão de capacidade que exige SATURAÇÃO + GANHO DE VALIDAÇÃO suportado; só usa resultados da CV do treino.
+
+    Um nível novo só é avaliado se o nível de topo está saturado E já mostrou ganho suportado sobre o nível anterior
+    (mesmas partições, mesmo purity_epsilon). Sem ganho -> ``validation_plateau`` (nenhum nível superior é avaliado).
+    Saturação sem ganho significa que o algoritmo ainda consegue crescer, mas os dados de validação não justificam mais
+    capacidade. ``evaluate_level(nodes)`` devolve as novas entradas de histórico (ajustes nas mesmas dobras).
+    """
+    levels = sorted({int(h["config"]["max_nodes"]) for h in history if h.get("stats")})
+    out = {"initial_node_grid": list(levels), "final_node_grid": list(levels), "capacity_expansion_rounds": 0,
+           "expansion_triggered": False, "expansion_stop_reason": "expansion_disabled", "steps": [], "last_supported_max_nodes": None,
+           "interpretation": None}
+    if not search.capacity_expansion:
+        return out
+    reason = "insufficient_capacity_levels"
+    while len(levels) >= 2:
+        step = capacity_gain_step(history, levels[-2], levels[-1], search, k)
+        out["steps"].append(step)
+        if step["capacity_gain_supported"]:
+            out["last_supported_max_nodes"] = levels[-1]
+        if not step["saturated"]:
+            reason = "not_saturated"; step["decision"] = "stop"; break
+        if not step["capacity_gain_supported"]:
+            reason = "validation_plateau"; step["decision"] = "stop"; break
+        out["expansion_triggered"] = True
+        nxt = int(float(search.capacity_expansion_factor) * levels[-1]) + 1
+        if nxt <= levels[-1]:
+            reason = "invalid_expansion_factor"; step["decision"] = "stop"; break
+        if nxt > int(search.max_nodes_safety_limit):
+            reason = "safety_limit_reached"; step["decision"] = "stop"; break
+        if out["capacity_expansion_rounds"] >= int(search.max_capacity_expansion_rounds):
+            reason = "max_rounds_reached"; step["decision"] = "stop"; break
+        new_entries = evaluate_level(nxt)
+        if not new_entries:
+            reason = "no_new_candidates"; step["decision"] = "stop"; break
+        step["decision"] = "expand"
+        history += new_entries
+        levels.append(nxt)
+        out["capacity_expansion_rounds"] += 1
+    else:
+        reason = "insufficient_capacity_levels"
+    out["expansion_stop_reason"] = reason
+    out["final_node_grid"] = list(levels)
+    if reason == "validation_plateau":
+        out["interpretation"] = ("a expansão de capacidade parou porque a capacidade adicional não melhorou a fidelity de validação "
+                                 "(o algoritmo ainda consegue crescer estruturalmente, mas os dados de validação não justificam mais capacidade).")
+    elif reason == "not_saturated":
+        out["interpretation"] = "os candidatos de maior capacidade não atingem o teto de nós: não há saturação a resolver."
+    return out
 
 
 def _capacity_candidates(base: ControlledTrepanConfig, p: int, limit: int, grow_nodes: bool = True):
@@ -589,6 +688,15 @@ def _block_bootstrap(F, N, D, L, meta, k, search, valid, plan, repeats, labels, 
     return out
 
 
+def _overall_status(selections) -> str:
+    if not selections:
+        return "not_assessed"
+    statuses = [sel["status"] for sel in selections]
+    if "tuning_uncertain" in statuses:
+        return "tuning_uncertain"
+    return "stable_exact" if all(st == "stable_exact" for st in statuses) else "stable_equivalent_set"
+
+
 def _budget_check(history) -> dict:
     """O orçamento deixou de ser variável de confusão? Mostra orçamento comum, consumo e esgotamentos por candidato."""
     rows = [h for h in history if h.get("stats")]
@@ -685,28 +793,65 @@ def tune_scientific_trepan(
                                     [h["label"] for h in history], final, [h["stats"] for h in history])
         else:
             boot = {"assessable": False, "selection_probability": 0.0, "method": None, "deferred": True}
-        if not boot["assessable"]:
-            status_reason = "bootstrap_not_assessable"
-        elif not boot["selected_is_modal"]:
-            status_reason = "full_cv_selection_not_bootstrap_modal"
-        elif boot["selection_probability"] < float(search.min_selection_probability):
-            status_reason = "selection_probability_below_threshold"
-        else:
-            status_reason = "ok"
-        # tuning_stable exige que a escolhida pela CV completa seja a moda do bootstrap E tenha probabilidade suficiente.
-        stable = bool(status_reason == "ok")
         w_stats = history[winner]["stats"]
+        labels = [h["label"] for h in history]
+        # --- Conjunto equivalente: candidatos estatisticamente indistinguíveis da vencedora em fidelity (nos dois sentidos).
+        eq_ids = []
+        for i, h in enumerate(history):
+            if not valid[i]:
+                continue
+            if i == winner:
+                eq_ids.append(h["label"]); continue
+            d = F[winner] - F[i]
+            a_ = _nb_paired(d, folds, search.significance_alpha); b_ = _nb_paired(-d, folds, search.significance_alpha)
+            if not a_["significant"] and not b_["significant"]:
+                eq_ids.append(h["label"])
+        dist = boot.get("distribution") or {}
+        eq_prob = float(sum(dist.get(l, 0.0) for l in eq_ids)) if boot["assessable"] else None
+        # --- Comportamento real da árvore escolhida (C): instabilidade estrutural e alternância tronco/árvore.
+        diag = w_stats.get("structure_diagnostics") or {}
+        stump_frac = float(diag.get("stump_fraction", 0.0))
+        behavior_unstable = bool(float(w_stats["structural_instability"]) > float(search.behavior_instability_threshold)
+                                 or 0.0 < stump_frac < 1.0)
+        tree_behavior = {"fidelity_std": w_stats["fidelity_std"], "between_seed_std": w_stats["between_seed_std"],
+                         "structural_instability": w_stats["structural_instability"], "stump_fraction": stump_frac,
+                         "structural_stability_evidence": w_stats["structural_stability_evidence"],
+                         "behavior_unstable": behavior_unstable}
+        exact_ok = bool(boot["assessable"] and boot["selected_is_modal"]
+                        and boot["selection_probability"] >= float(search.min_selection_probability))
+        family_ok = bool(boot["assessable"] and eq_prob is not None and eq_prob >= float(search.min_equivalent_set_probability)
+                         and not behavior_unstable)
+        if not boot["assessable"]:
+            status, status_reason = "tuning_uncertain", "bootstrap_not_assessable"
+        elif exact_ok and not behavior_unstable:
+            status, status_reason = "stable_exact", "ok"
+        elif family_ok:
+            status = "stable_equivalent_set"
+            status_reason = ("exact_hyperparameter_unstable_but_equivalent_family_stable" if not exact_ok else "ok")
+        else:
+            status = "tuning_uncertain"
+            status_reason = ("tree_behavior_unstable" if behavior_unstable else
+                             "full_cv_selection_not_bootstrap_modal" if not boot["selected_is_modal"] else
+                             "equivalent_family_not_stable" if (eq_prob is not None and eq_prob < float(search.min_equivalent_set_probability)) else
+                             "selection_probability_below_threshold")
+        stable = status != "tuning_uncertain"
         selection = {"selected": history[winner]["config"], "selected_label": final,
                      "selected_config_full_cv": final, "selected_config_probability": boot.get("selected_config_probability", 0.0),
+                     "exact_selection_probability": boot.get("selected_config_probability", 0.0),
                      "bootstrap_modal_config": boot.get("bootstrap_modal_config"),
                      "bootstrap_modal_probability": boot.get("bootstrap_modal_probability"),
                      "bootstrap_runner_up": boot.get("bootstrap_runner_up"), "top1_top2_margin": boot.get("top1_top2_margin"),
                      "full_cv_selection_fragile": boot.get("full_cv_selection_fragile"),
+                     "equivalent_candidate_set": {"ids": eq_ids, "count": len(eq_ids), "probability": eq_prob},
+                     "equivalent_candidate_ids": eq_ids, "equivalent_candidate_count": len(eq_ids), "equivalent_set_probability": eq_prob,
+                     "tree_behavior": tree_behavior,
                      "per_repeat_winners": per_repeat, "seeds": [int(v) for v in seeds],
                      "bootstrap": boot, "selection_probability": boot["selection_probability"],
-                     "stable": stable, "status": "tuning_stable" if stable else "tuning_uncertain", "status_reason": status_reason,
+                     "stable": stable, "stable_exact": status == "stable_exact", "family_stable": status == "stable_equivalent_set",
+                     "status": status, "status_reason": status_reason,
                      "distinct_winners": len({w for w in per_repeat if w}),
                      "threshold": float(search.min_selection_probability),
+                     "equivalent_set_threshold": float(search.min_equivalent_set_probability),
                      "node_cap": {"max_nodes": w_stats["max_nodes"], "fraction_at_node_cap": w_stats["fraction_at_node_cap"],
                                   "node_cap_reached_count": w_stats["node_cap_reached_count"],
                                   "structural_stability_censored": w_stats["structural_stability_censored"],
@@ -723,39 +868,15 @@ def tune_scientific_trepan(
                  "capacity_expansion_rounds": 0, "expansion_triggered": False, "expansion_stop_reason": "structure_not_tuned",
                  "fraction_at_node_cap": None, "safety_limit": int(search.max_nodes_safety_limit),
                  "factor": float(search.capacity_expansion_factor),
-                 "saturation_threshold": float(search.capacity_expansion_saturation_threshold), "rounds": []}
+                 "saturation_threshold": float(search.capacity_expansion_saturation_threshold), "steps": [],
+                 "last_supported_max_nodes": None, "interpretation": None}
     if search.tune_structure and search.purity_epsilon_grid and search.max_nodes_grid:
         structure_history = evaluate(_structure_candidates(base_config, search), "structure")
-        expansion["initial_node_grid"] = sorted({int(h["config"]["max_nodes"]) for h in structure_history})
-        structure_base, structure_selection = select(structure_history, base_config, with_bootstrap=False)
-        reason = "expansion_disabled" if not search.capacity_expansion else "not_triggered"
-        while search.capacity_expansion:
-            state = _saturation_state(structure_history, search)
-            rounds_done = expansion["capacity_expansion_rounds"]
-            if not state["triggered"]:
-                reason = "saturation_resolved" if rounds_done else (
-                    state["reason"] if state["reason"] in ("no_competitive_candidates", "no_competitive_at_max_capacity") else "not_triggered")
-                break
-            expansion["expansion_triggered"] = True
-            nxt = int(float(search.capacity_expansion_factor) * int(state["top_nodes"])) + 1
-            if nxt <= int(state["top_nodes"]):
-                reason = "invalid_expansion_factor"; break
-            if nxt > int(search.max_nodes_safety_limit):
-                reason = "safety_limit_reached"; break
-            if rounds_done >= int(search.max_capacity_expansion_rounds):
-                reason = "max_rounds_reached"; break
-            new_candidates = _expansion_candidates(base_config, search, nxt, [h["config"] for h in structure_history])
-            if not new_candidates:
-                reason = "no_new_candidates"; break
-            structure_history += evaluate(new_candidates, "structure")
-            expansion["capacity_expansion_rounds"] = rounds_done + 1
-            expansion["rounds"].append({"round": rounds_done + 1, "from_max_nodes": int(state["top_nodes"]), "to_max_nodes": nxt,
-                                        "saturated_candidates": list(state["saturated"]),
-                                        "fraction_at_node_cap_before": dict(state["competitive_at_top"])})
-            structure_base, structure_selection = select(structure_history, base_config, with_bootstrap=False)
-        expansion["expansion_stop_reason"] = reason
-        expansion["final_node_grid"] = sorted({int(h["config"]["max_nodes"]) for h in structure_history})
-        structure_base, structure_selection = select(structure_history, base_config)        # bootstrap sobre a pesquisa final
+        expansion.update(run_capacity_expansion(
+            structure_history,
+            lambda nodes: evaluate(_expansion_candidates(base_config, search, nodes, [h["config"] for h in structure_history]), "structure"),
+            search, folds))
+        structure_base, structure_selection = select(structure_history, base_config)
         expansion["fraction_at_node_cap"] = (structure_selection.get("node_cap") or {}).get("fraction_at_node_cap")
 
     # Etapa 2: restantes eixos de capacidade à volta da estrutura escolhida. O nº de nós só varia na grelha da
@@ -840,12 +961,13 @@ def tune_scientific_trepan(
         "initial_node_grid":expansion["initial_node_grid"], "final_node_grid":expansion["final_node_grid"],
         "capacity_expansion_rounds":expansion["capacity_expansion_rounds"], "expansion_triggered":expansion["expansion_triggered"],
         "expansion_stop_reason":expansion["expansion_stop_reason"], "fraction_at_node_cap":expansion["fraction_at_node_cap"],
+        "expansion_steps":expansion["steps"], "capacity_gain_supported":bool(expansion["steps"] and expansion["steps"][-1]["capacity_gain_supported"]),
         "structure_history":structure_history,
         "structure_selection":structure_selection,
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},
         "capacity_selection":capacity_selection,
         "tuning_stable":bool(all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel)) if (structure_selection or capacity_selection) else True,
-        "tuning_status":("tuning_stable" if all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel) else "tuning_uncertain") if (structure_selection or capacity_selection) else "not_assessed",
+        "tuning_status":_overall_status([sel for sel in (structure_selection, capacity_selection) if sel]),
         "capacity_history":capacity_history,
         "semantic_history":semantic_history,
     }

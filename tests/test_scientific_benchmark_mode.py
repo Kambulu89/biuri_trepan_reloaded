@@ -175,7 +175,7 @@ def test_gui_benchmark_mode_calls_the_shared_service_and_publishes_the_diagnosti
                 "sci.test_used", "sci.tuning_status"):
         assert tr(key) in rows, key
     assert rows[tr("sci.oracle_id")] == outcome.oracle_id[:8]
-    assert rows[tr("sci.tuning_status")] in {"tuning_stable", "tuning_uncertain"}
+    assert rows[tr("sci.tuning_status")].split(" ")[0] in {"stable_exact", "stable_equivalent_set", "tuning_uncertain"}
     assert not [m for m in res.messages if m.code == "exploratory_mode"]
     # os visualizadores recebem as MESMAS árvores avaliadas (identidade de objeto), sem retreino
     assert window.trepan_original_tree is outcome.artifacts["trepan_original"]

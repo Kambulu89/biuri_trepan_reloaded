@@ -356,7 +356,7 @@ def experiment_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
         if tuning.get("failed"):
             text = f"fallback canónico: {tuning['failed']}"
         else:
-            state = "tuning_stable" if tuning.get("stable") else "tuning_uncertain"
+            state = tuning.get("status") or ("stable_exact" if tuning.get("stable") else "tuning_uncertain")
             text = (f"purity_epsilon={sel.get('purity_epsilon')}, max_nodes={sel.get('max_nodes')} — {state} "
                     f"(selection_probability {format_optional(tuning.get('selection_probability'), '{:.0%}')} no block bootstrap)")
         tuning_row = [(tr("field.trepan_tuning"), text)]
@@ -372,6 +372,18 @@ def _mode_text(result: ExperimentResult) -> str:
     label = tr("mode.benchmark") if mode == "SCIENTIFIC_BENCHMARK" else tr("mode.interactive")
     ok = bool(result.scientific and result.scientific.benchmark_eligible)
     return f"{label} — {tr('mode.benchmark_ok') if ok else tr('mode.not_benchmark')}"
+
+
+def _capacity_step_text(d) -> str:
+    st = d.last_capacity_step or {}
+    if not st:
+        return d.expansion_interpretation or na_text(Reason.TUNING_NOT_RUN)
+    test = st.get("statistical_test") or {}
+    p = test.get("p_value")
+    text = (f"{st.get('previous_max_nodes')} → {st.get('candidate_max_nodes')} nós: Δfidelity={st.get('fidelity_delta'):.4f} "
+            f"(p={p:.3f}); ganho suportado: {'sim' if st.get('capacity_gain_supported') else 'não'}") if st.get("fidelity_delta") is not None and p is not None else \
+        f"{st.get('previous_max_nodes')} → {st.get('candidate_max_nodes')} nós"
+    return text + (f" — {d.expansion_interpretation}" if d.expansion_interpretation else "")
 
 
 def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
@@ -412,6 +424,11 @@ def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
         (tr("sci.expansion"), (f"{'sim' if d.expansion_triggered else 'não'}; rondas {format_optional(d.capacity_expansion_rounds)}; "
                                f"grelha {d.initial_node_grid} → {d.final_node_grid}; {format_optional(d.expansion_stop_reason)}")
          if d.initial_node_grid else na_text(Reason.TUNING_NOT_RUN)),
+        (tr("sci.equivalent"), (f"{d.equivalent_candidate_count} candidatos; P(família)={pct(d.equivalent_set_probability)}"
+                                if d.equivalent_candidate_count is not None else na_text(Reason.TUNING_NOT_RUN))),
+        (tr("sci.behavior"), tr("sci.behavior.unstable") if d.tree_behavior_unstable else
+         (tr("sci.behavior.stable") if d.tree_behavior_unstable is not None else na_text(Reason.TUNING_NOT_RUN))),
+        (tr("sci.capacity_step"), _capacity_step_text(d)),
         (tr("sci.node_cap"), cap),
         (tr("sci.queries"), queries),
         (tr("sci.budget_exhausted"), yes_no(d.budget_exhausted)),
