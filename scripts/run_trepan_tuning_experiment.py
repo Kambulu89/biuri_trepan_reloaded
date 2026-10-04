@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import tempfile
 import time
 import warnings
 from pathlib import Path
@@ -23,14 +22,13 @@ def main() -> None:
     import pandas as pd
     from scipy.io import arff
 
-    from core.production_training import train_production_dataframe
-    from core.trepan_scientific_tuning import ScientificTrepanSearchConfig
+    from core.scientific_benchmark_service import run_scientific_benchmark, scientific_search_config
 
     ap = argparse.ArgumentParser()
     ap.add_argument("arff"); ap.add_argument("seed", type=int); ap.add_argument("out")
     ap.add_argument("--target", default=None)
     ap.add_argument("--oracle", default="factory", help="construtor do oráculo registado no contrato científico")
-    ap.add_argument("--repeats", type=int, default=3, help="repetições da Repeated Stratified K-Fold (3 dobras cada)")
+    ap.add_argument("--repeats", type=int, default=5, help="repetições da Repeated Stratified K-Fold (3 dobras cada)")
     args = ap.parse_args()
     data, _meta = arff.loadarff(args.arff)
     df = pd.DataFrame(data)
@@ -39,9 +37,10 @@ def main() -> None:
             df[col] = df[col].str.decode("utf-8")
     target = args.target or df.columns[-1]
     t0 = time.perf_counter()
-    with tempfile.TemporaryDirectory() as tmp:
-        report = train_production_dataframe(df, target=target, out_dir=tmp, seed=args.seed, scientific_tuning=True,
-                                            trepan_search=ScientificTrepanSearchConfig(cv_repeats=args.repeats), oracle_builder=args.oracle)
+    # Mesmo serviço que a GUI usa no modo SCIENTIFIC / BENCHMARK (reutilização, não cópia).
+    outcome = run_scientific_benchmark(df, target=target, seed=args.seed, search=scientific_search_config(cv_repeats=args.repeats),
+                                       oracle_builder=args.oracle)
+    report = outcome.report
     ev = report["evaluation"]
     out = {"dataset": Path(args.arff).name, "seed": args.seed, "rows": int(len(df)), "target": target,
            "wall_seconds": time.perf_counter() - t0, "oracle_builder": args.oracle, "oracle_contract": ev.get("oracle_contract"),

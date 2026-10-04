@@ -13,7 +13,7 @@ from core.build_info import get_build_info
 from core.model_cache import compute_semantic_config_hash
 from core.experiment_result import (
     ControlRow, DatasetInfo, EnrichmentInfo, ExperimentResult, ExperimentState, Measure, Message, ModelCard,
-    OntologyInfo, Provenance, Reason, SemanticFeatureRow, SemanticSplitRow, TreeDiagnostics,
+    OntologyInfo, Provenance, Reason, ScientificDiagnostics, SemanticFeatureRow, SemanticSplitRow, TreeDiagnostics,
 )
 
 PREDICTIVE_KEYS = ("accuracy", "balanced_accuracy", "macro_f1", "precision_macro", "recall_macro")
@@ -192,6 +192,75 @@ def predictive_metrics(metrics: Optional[Mapping[str, Any]], *, missing: str = R
     return out
 
 
+# --------------------------------------------------------------------- diagnóstico científico ---
+def _winner_stats(tuning: Mapping[str, Any]):
+    """(rótulo, estatísticas, seleção) do estágio de tuning que decidiu a configuração; None se não houve tuning."""
+    for hist_key, sel_key in (("capacity_history", "capacity_selection"), ("structure_history", "structure_selection")):
+        sel = tuning.get(sel_key)
+        if sel:
+            for h in tuning.get(hist_key) or []:
+                if h.get("label") == sel.get("selected_label") and h.get("stats"):
+                    return sel["selected_label"], h["stats"], sel
+    return None, None, None
+
+
+def scientific_diagnostics_from_tuning(
+    tuning: Optional[Mapping[str, Any]], oracle_contract: Optional[Mapping[str, Any]] = None, *,
+    seed: Optional[int] = None, execution_mode: Optional[str] = None,
+) -> ScientificDiagnostics:
+    """Mapeia o relatório do tuning e do contrato do oráculo para o diagnóstico científico mostrado na GUI."""
+    from core.execution_mode import ExecutionMode
+    contract = dict(oracle_contract or {})
+    oracle = dict(contract.get("oracle") or {})
+    ids = dict(contract.get("tree_oracle_ids") or {})
+    same = (len(set(ids.values())) == 1 and None not in ids.values()) if ids else None
+    benchmark = bool(execution_mode == ExecutionMode.SCIENTIFIC_BENCHMARK.value and oracle.get("oracle_id")
+                     and contract.get("single_oracle_for_all_trees") and same)
+    diag = ScientificDiagnostics(
+        execution_mode=execution_mode, benchmark_eligible=benchmark, oracle_id=oracle.get("oracle_id"),
+        oracle_builder=oracle.get("builder"), same_oracle_original_reloaded=same, seed=seed,
+        test_used_for_selection=None if not tuning else bool(tuning.get("test_used_for_selection", False)),
+    )
+    if not oracle:
+        diag.fidelity_mean = diag.fidelity_std = Measure.na(Reason.NO_ORACLE_CONTRACT)
+    if not tuning:
+        diag.tuning_status = "not_run"
+        for name in ("fidelity_mean", "fidelity_std", "predictive_stability", "structural_stability", "selection_probability",
+                     "selection_margin", "fraction_at_node_cap", "queries_used", "query_budget"):
+            setattr(diag, name, Measure.na(Reason.TUNING_NOT_RUN))
+        return diag
+    if tuning.get("failed"):
+        diag.tuning_status = "failed"
+        return diag
+    label, stats, sel = _winner_stats(tuning)
+    plan = dict(tuning.get("cv_plan") or {})
+    if plan:
+        diag.cv_plan = (f"{plan.get('scheme', 'RepeatedStratifiedKFold')}: {plan.get('repeats')}×{plan.get('folds')} "
+                        f"(seeds {plan.get('seeds')}; {plan.get('n_splits')} partições)")
+    diag.selected_config = label or "; ".join(
+        f"{k}={v}" for k, v in (tuning.get("structure_selected") or {}).items()) or None
+    if not stats:
+        diag.tuning_status = "not_run"
+        return diag
+    bs = dict(sel.get("bootstrap") or {})
+    ru = bs.get("runner_up")
+    diag.fidelity_mean = Measure.of(stats.get("fidelity_mean"))
+    diag.fidelity_std = Measure.of(stats.get("fidelity_std"))
+    diag.predictive_stability = Measure.of(stats.get("fidelity_std"))
+    diag.structural_stability = Measure.of(stats.get("structural_instability"))
+    diag.selection_probability = Measure.of(bs.get("selection_probability") if bs.get("assessable") else None)
+    diag.selection_runner_up = f"{ru['label']} ({ru['probability']:.0%})" if ru else None
+    diag.selection_margin = Measure.of(bs.get("margin") if bs.get("assessable") else None)
+    diag.selection_resamples = bs.get("n_resamples")
+    diag.fraction_at_node_cap = Measure.of(stats.get("fraction_at_node_cap"))
+    diag.node_cap_censored = bool(stats.get("structural_stability_censored"))
+    diag.queries_used = Measure.of(stats.get("queries_used_mean"))
+    diag.query_budget = Measure.of(stats.get("query_budget"))
+    diag.budget_exhausted = bool(stats.get("budget_exhausted_count", 0) > 0)
+    diag.tuning_status = str(sel.get("status") or ("tuning_stable" if sel.get("stable") else "tuning_uncertain"))
+    return diag
+
+
 # ------------------------------------------------------------------- relatório headless ---
 def from_production_report(report: Mapping[str, Any]) -> ExperimentResult:
     """Monta o resultado de uma experiência a partir de ``train_production_dataframe``."""
@@ -277,6 +346,11 @@ def from_production_report(report: Mapping[str, Any]) -> ExperimentResult:
         controls=controls_from_report(models_ev, attribution),
         config={k: cfg.get(k) for k in ("max_nodes", "max_depth", "max_queries", "min_sample", "random_state") if k in cfg},
     )
+    from core.execution_mode import ExecutionMode
+    mode = str(report.get("execution_mode") or ExecutionMode.SCIENTIFIC_BENCHMARK.value)
+    result.provenance.execution_mode = mode
+    result.scientific = scientific_diagnostics_from_tuning(
+        ev.get("trepan_scientific_tuning"), ev.get("oracle_contract"), seed=manifest.get("seed"), execution_mode=mode)
     return result
 
 

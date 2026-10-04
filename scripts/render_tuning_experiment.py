@@ -32,16 +32,17 @@ def run_section(d: dict, full: bool) -> list[str]:
               f"{bc.get('common_budget')} (mesmo para todos: {bc.get('all_candidates_same_budget')}); consumo máximo observado: "
               f"{bc.get('max_queries_used')}; algum ajuste esgotou o orçamento: **{bc.get('any_budget_exhausted')}**.", ""]
     lines += ["| configuração | fid. média | desvio | pior partição | nós (média ± dp) | CV nós | prof. média (CV) | folhas média (CV) | "
-              "instab. estrutural | no teto de nós | query_budget | queries_used (média) | budget_exhausted | fraction_budget_exhausted | tempo/ajuste (s) | resultado |",
-              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+              "instab. estrutural | fraction_at_node_cap (node_cap_reached/n) | max_nodes | censura pelo teto | query_budget | queries_used (média) | budget_exhausted | fraction_budget_exhausted | tempo/ajuste (s) | resultado |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for h in hist:
         s = h["stats"]
         if not s:
-            lines.append(f"| {h['label']} | — | — | — | — | — | — | — | — | — | — | — | — | — | — | {h['verdict']['status']}: {h['verdict']['text']} |"); continue
+            lines.append(f"| {h['label']} | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | {h['verdict']['status']}: {h['verdict']['text']} |"); continue
         lines.append(f"| {h['label']} | {fmt(s['fidelity_mean'])} | {fmt(s['fidelity_std'])} | {fmt(s['fidelity_min'])} | "
                      f"{s['nodes_mean']:.1f} ± {s['nodes_std']:.1f} | {fmt(s['nodes_cv'], 2)} | {s['depth_mean']:.1f} ({fmt(s['depth_cv'], 2)}) | "
                      f"{s['leaves_mean']:.1f} ({fmt(s['leaves_cv'], 2)}) | {fmt(s['structural_instability'], 2)} | "
-                     f"{s['max_nodes_reached_fraction']:.0%} | {s['query_budget']} | {s['queries_used_mean']:.0f} | "
+                     f"{s['fraction_at_node_cap']:.0%} ({s['node_cap_reached_count']}/{s['n_splits']}) | {s['max_nodes']} | "
+                     f"{'⚠ sim' if s['structural_stability_censored'] else 'não'} | {s['query_budget']} | {s['queries_used_mean']:.0f} | "
                      f"{s['budget_exhausted_count']}/{s['n_splits']} | {s['budget_exhausted_fraction']:.0%} | {s['time_mean_s']:.1f} | "
                      f"**{h['verdict']['status']}** — {h['verdict']['text']} |")
     lines.append("")
@@ -78,10 +79,21 @@ def run_section(d: dict, full: bool) -> list[str]:
         for h in hist:
             lines.append(f"| {h['label']} | " + " | ".join(str(r["nodes"]) for r in h["per_split"]) + " |")
         lines.append("")
-    sel = t["structure_selection"]
-    lines += [f"**Configuração selecionada:** `{sel['selected_label']}`. Vencedora por repetição (seed): "
-              f"{list(zip(sel['seeds'], sel['per_seed_winners']))}; concordância {sel['agreement']:.0%} "
-              f"(limiar {sel['threshold']:.0%}) → tuning **{'estável' if sel['stable'] else 'INSTÁVEL'}**.", ""]
+    sel = t["structure_selection"]; bs = sel["bootstrap"]
+    runner = bs.get("runner_up")
+    lines += [f"**Configuração selecionada:** `{sel['selected_label']}` — estado interno do tuning: **{sel['status']}**.", "",
+              "Robustez interna da política (block bootstrap das repetições; teste não usado):", "",
+              f"- reamostragens: {bs['n_resamples']} (blocos = {bs['n_blocks']} repetições × {plan['folds']} dobras; seed {bs['seed']})",
+              f"- selection_probability do vencedor: **{bs['selection_probability']:.1%}** (intervalo Monte-Carlo 95%: "
+              f"{bs['selection_probability_mc_interval'][0]:.1%}–{bs['selection_probability_mc_interval'][1]:.1%})",
+              f"- segundo colocado: {('`' + runner['label'] + '` ' + format(runner['probability'], '.1%')) if runner else '—'}; "
+              f"margem 1.º−2.º: {format(bs['margin'], '.1%') if bs['margin'] is not None else '—'}",
+              f"- IC bootstrap 95% da fidelity média do vencedor: {('[%.3f, %.3f]' % tuple(bs['winner_fidelity_ci'])) if bs['winner_fidelity_ci'] else '—'}",
+              "- distribuição das configurações escolhidas: " + (", ".join(f"`{k}` {v:.1%}" for k, v in bs["distribution"].items()) or "—"),
+              f"- vencedora por repetição (apenas informativo; 1 repetição = {plan['folds']} dobras): {sel['per_repeat_winners']}",
+              f"- saturação do vencedor: {sel['node_cap']['node_cap_reached_count']}/{plan['n_splits']} árvores no teto max_nodes={sel['node_cap']['max_nodes']} "
+              f"(fraction_at_node_cap {sel['node_cap']['fraction_at_node_cap']:.0%}); estabilidade estrutural potencialmente censurada: "
+              f"**{sel['node_cap']['structural_stability_censored']}**", ""]
     tm = d.get("test_models") or {}
     o, r = tm.get("original") or {}, tm.get("reloaded") or {}
     lines += [f"Teste (usado uma só vez, depois da escolha): TREPAN Original — nós {o.get('nodes')}, folhas {o.get('leaves')}, "
@@ -137,18 +149,32 @@ def main() -> None:
         runs = [json.loads((Path(args.dir) / f"{name}_{s}.json").read_text()) for s in seeds if (Path(args.dir) / f"{name}_{s}.json").exists()]
         if not runs:
             continue
-        md += [f"## {runs[0]['dataset']} — oráculo `{runs[0].get('oracle_builder', 'factory')}`", "", "### Estabilidade da configuração entre seeds mestre", "",
-               "| seed mestre | oracle_id | selecionada | concordância interna entre repetições | tuning | nós finais (Original) | accuracy teste (Original) | fidelity teste (Original) | tempo total (s) |",
-               "|---|---|---|---|---|---|---|---|---|"]
-        picks = []
+        md += [f"## {runs[0]['dataset']} — oráculo `{runs[0].get('oracle_builder', 'factory')}`", "",
+               "### 1. Estabilidade interna do tuning (block bootstrap, por seed mestre)", "",
+               "| seed mestre | oracle_id | selecionada | selection_probability | 2.º colocado | margem | reamostragens | tuning |",
+               "|---|---|---|---|---|---|---|---|"]
+        picks, n_stable = [], 0
         for d in runs:
-            sel = d["tuning"]["structure_selection"]; picks.append(sel["selected_label"])
-            o = (d.get("test_models") or {}).get("original") or {}
-            md.append(f"| {d['seed']} | `{((d.get('oracle_contract') or {}).get('oracle') or {}).get('oracle_id')}` | `{sel['selected_label']}` | {sel['agreement']:.0%} | {'estável' if sel['stable'] else '**INSTÁVEL**'} | "
-                      f"{o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
+            sel = d["tuning"]["structure_selection"]; bs = sel["bootstrap"]; picks.append(sel["selected_label"]); n_stable += bool(sel["stable"])
+            ru = bs.get("runner_up")
+            md.append(f"| {d['seed']} | `{((d.get('oracle_contract') or {}).get('oracle') or {}).get('oracle_id')}` | `{sel['selected_label']}` | "
+                      f"{bs['selection_probability']:.1%} | {('`' + ru['label'] + '` ' + format(ru['probability'], '.1%')) if ru else '—'} | "
+                      f"{format(bs['margin'], '.1%') if bs['margin'] is not None else '—'} | {bs['n_resamples']} | {sel['status']} |")
         cnt = Counter(picks); modal, n_modal = cnt.most_common(1)[0]
-        md += ["", f"Configurações escolhidas entre seeds mestre: {dict(cnt)}. Moda `{modal}` em {n_modal}/{len(picks)} "
-               f"({n_modal / len(picks):.0%}) → seleção entre seeds **{'estável' if n_modal / len(picks) >= 0.6 else 'INSTÁVEL'}** (limiar 60%).", ""]
+        md += ["", "### 2. Robustez externa entre seeds mestre (evidência empírica; não define `tuning_stable`)", "",
+               "| seed mestre | selecionada | nós finais (Original) | accuracy teste (Original) | fidelity teste (Original) | tempo total (s) |", "|---|---|---|---|---|---|"]
+        for d in runs:
+            sel = d["tuning"]["structure_selection"]; o = (d.get("test_models") or {}).get("original") or {}
+            md.append(f"| {d['seed']} | `{sel['selected_label']}` | {o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
+        consensus = n_modal / len(picks)
+        md += ["", f"Configurações escolhidas: {dict(cnt)}. **Consenso de seleção = {consensus:.0%} ({n_modal}/{len(picks)}) nas master seeds avaliadas** "
+               f"(moda `{modal}`); seeds mestre com `tuning_stable` pelo bootstrap: {n_stable}/{len(picks)}.", ""]
+        if consensus >= 0.6 and n_stable / len(picks) >= 0.6:
+            md += ["Leitura: o consenso externo e a reamostragem interna apontam no mesmo sentido; só neste caso se usa o termo *robusto/estável* "
+                   "(com a ressalva do número reduzido de master seeds).", ""]
+        else:
+            md += ["Leitura: a evidência de robustez **não** é suficiente (consenso externo e/ou reamostragem interna não a sustentam); "
+                   "usar *incerto*, não *estável*.", ""]
         md += conclusion(runs[0]["dataset"], runs)
         for i, d in enumerate(runs):
             md += run_section(d, full=True)
