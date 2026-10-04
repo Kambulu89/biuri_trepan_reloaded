@@ -206,6 +206,7 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "sci.margin": "Margem top1−top2 (bootstrap)", "sci.full_cv": "Escolhida pela CV completa",
         "sci.modal": "Moda do bootstrap", "sci.fragile": "Fragilidade da seleção full-CV",
         "sci.bootstrap_method": "Método do bootstrap", "sci.equivalent": "Conjunto equivalente (fidelity indistinguível)",
+        "sci.equivalent_all": "a família cobre TODA a grelha: os dados não discriminam os candidatos (estabilidade da família é trivial)",
         "sci.behavior": "Comportamento da árvore escolhida", "sci.behavior.unstable": "INSTÁVEL (estrutura alterna ou varia muito entre partições)",
         "sci.behavior.stable": "estável nas partições de CV", "sci.capacity_step": "Último passo de capacidade", "sci.expansion": "Expansão de capacidade",
         "sci.fragile.yes": "FORTE: a escolhida pela CV completa não é a moda do bootstrap",

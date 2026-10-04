@@ -425,6 +425,7 @@ def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
                                f"grelha {d.initial_node_grid} → {d.final_node_grid}; {format_optional(d.expansion_stop_reason)}")
          if d.initial_node_grid else na_text(Reason.TUNING_NOT_RUN)),
         (tr("sci.equivalent"), (f"{d.equivalent_candidate_count} candidatos; P(família)={pct(d.equivalent_set_probability)}"
+                                + (f" — {tr('sci.equivalent_all')}" if d.equivalent_set_covers_all_candidates else "")
                                 if d.equivalent_candidate_count is not None else na_text(Reason.TUNING_NOT_RUN))),
         (tr("sci.behavior"), tr("sci.behavior.unstable") if d.tree_behavior_unstable else
          (tr("sci.behavior.stable") if d.tree_behavior_unstable is not None else na_text(Reason.TUNING_NOT_RUN))),

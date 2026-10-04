@@ -418,3 +418,10 @@ def test_censored_structural_stability_is_labelled_as_weak_evidence():
             assert "não é evidência forte" in h["verdict"]["text"]
         else:
             assert s["structural_stability_evidence"] == "observed"
+
+
+def test_equivalent_set_flags_when_it_covers_the_whole_grid():
+    r = _run("simple", capacity_expansion=False, purity_epsilon_grid=(0.05, 0.01))
+    sel = r["structure_selection"]
+    n_valid = sum(1 for h in r["structure_history"] if h["stats"])
+    assert sel["equivalent_set_covers_all_candidates"] == (sel["equivalent_candidate_count"] == n_valid)

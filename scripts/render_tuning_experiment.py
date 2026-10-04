@@ -114,7 +114,9 @@ def run_section(d: dict, full: bool) -> list[str]:
               f"- conjunto equivalente (fidelity indistinguível da escolhida): equivalent_candidate_count={sel['equivalent_candidate_count']}; "
               f"equivalent_set_probability={('%.1f%%' % (100 * sel['equivalent_set_probability'])) if sel['equivalent_set_probability'] is not None else '—'}; "
               f"exact_selection_probability={sel['exact_selection_probability']:.1%}; bootstrap_modal_probability={bs['bootstrap_modal_probability']:.1%}; "
-              f"ids: {sel['equivalent_candidate_ids']}",
+              f"ids: {sel['equivalent_candidate_ids']}"
+              + (" — ⚠ a família cobre TODA a grelha: os dados não discriminam os candidatos (estabilidade da família trivial)"
+                 if sel.get("equivalent_set_covers_all_candidates") or sel['equivalent_candidate_count'] == len(t['structure_history']) else ""),
               f"- comportamento da árvore escolhida: {sel['tree_behavior']}",
               "- distribuição das configurações escolhidas: " + (", ".join(f"`{k}` {v:.1%}" for k, v in bs["distribution"].items()) or "—"),
               f"- vencedora por repetição (apenas informativo; 1 repetição = {plan['folds']} dobras): {sel['per_repeat_winners']}",

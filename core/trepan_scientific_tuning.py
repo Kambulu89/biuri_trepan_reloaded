@@ -842,6 +842,7 @@ def tune_scientific_trepan(
                      "bootstrap_modal_probability": boot.get("bootstrap_modal_probability"),
                      "bootstrap_runner_up": boot.get("bootstrap_runner_up"), "top1_top2_margin": boot.get("top1_top2_margin"),
                      "full_cv_selection_fragile": boot.get("full_cv_selection_fragile"),
+                     "equivalent_set_covers_all_candidates": bool(len(eq_ids) == int(sum(1 for v in valid if v))),
                      "equivalent_candidate_set": {"ids": eq_ids, "count": len(eq_ids), "probability": eq_prob},
                      "equivalent_candidate_ids": eq_ids, "equivalent_candidate_count": len(eq_ids), "equivalent_set_probability": eq_prob,
                      "tree_behavior": tree_behavior,

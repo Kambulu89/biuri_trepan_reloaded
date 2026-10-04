@@ -302,6 +302,7 @@ class ScientificDiagnostics:
     expansion_interpretation: Optional[str] = None
     last_capacity_step: Dict[str, Any] = field(default_factory=dict)        # previous/candidate max_nodes, fidelity, delta, teste, ganho
     equivalent_candidate_count: Optional[int] = None
+    equivalent_set_covers_all_candidates: Optional[bool] = None    # família = grelha inteira: os dados não discriminam os candidatos
     equivalent_candidate_ids: List[str] = field(default_factory=list)
     equivalent_set_probability: Measure = field(default_factory=Measure)
     tree_behavior_unstable: Optional[bool] = None
