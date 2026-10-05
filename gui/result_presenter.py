@@ -427,6 +427,7 @@ def scientific_rows(result: ExperimentResult) -> List[Tuple[str, str]]:
         (tr("sci.equivalent"), (f"{d.equivalent_candidate_count} candidatos; P(família)={pct(d.equivalent_set_probability)}"
                                 + (f" — {tr('sci.equivalent_all')}" if d.equivalent_set_covers_all_candidates else "")
                                 if d.equivalent_candidate_count is not None else na_text(Reason.TUNING_NOT_RUN))),
+        (tr("sci.selection_basis"), (tr(f"sci.basis.{d.selection_basis}") if d.selection_basis else na_text(Reason.TUNING_NOT_RUN))),
         (tr("sci.behavior"), tr("sci.behavior.unstable") if d.tree_behavior_unstable else
          (tr("sci.behavior.stable") if d.tree_behavior_unstable is not None else na_text(Reason.TUNING_NOT_RUN))),
         (tr("sci.capacity_step"), _capacity_step_text(d)),

@@ -175,7 +175,7 @@ def test_gui_benchmark_mode_calls_the_shared_service_and_publishes_the_diagnosti
                 "sci.test_used", "sci.tuning_status"):
         assert tr(key) in rows, key
     assert rows[tr("sci.oracle_id")] == outcome.oracle_id[:8]
-    assert rows[tr("sci.tuning_status")].split(" ")[0] in {"stable_exact", "stable_equivalent_set", "tuning_uncertain"}
+    assert rows[tr("sci.tuning_status")].split(" ")[0] in {"stable_exact", "stable_equivalent_subset", "non_discriminative_grid", "tuning_uncertain"}
     assert not [m for m in res.messages if m.code == "exploratory_mode"]
     # os visualizadores recebem as MESMAS árvores avaliadas (identidade de objeto), sem retreino
     assert window.trepan_original_tree is outcome.artifacts["trepan_original"]
@@ -292,3 +292,22 @@ def test_scientific_diagnostics_map_uncertainty_and_missing_tuning():
     assert d.tuning_status == "not_run" and d.benchmark_eligible is False and not d.fidelity_mean.available
     f = scientific_diagnostics_from_tuning({"failed": "boom"}, None, seed=7, execution_mode="SCIENTIFIC_BENCHMARK")
     assert f.tuning_status == "failed" and f.benchmark_eligible is False
+
+
+def test_gui_reports_non_discriminative_grid_with_the_parsimony_explanation():
+    from core.experiment_result import ExperimentResult, ScientificDiagnostics
+    from gui import result_presenter as rp
+    from gui.messages import derive_messages
+    from gui.strings import tr
+    d = ScientificDiagnostics(execution_mode="SCIENTIFIC_BENCHMARK", tuning_status="non_discriminative_grid",
+                              selection_basis="parsimony_tiebreak_among_indistinguishable", equivalent_candidate_count=6,
+                              total_candidate_count=6, equivalent_set_covers_all_candidates=True)
+    r = ExperimentResult(scientific=d)
+    r.provenance.execution_mode = "SCIENTIFIC_BENCHMARK"
+    rows = dict(rp.scientific_rows(r))
+    assert rows[tr("sci.tuning_status")].startswith("non_discriminative_grid")
+    assert "parcimónia/desempate" in rows[tr("sci.selection_basis")] and "não por superioridade demonstrada" in rows[tr("sci.selection_basis")]
+    assert tr("sci.equivalent_all") in rows[tr("sci.equivalent")]
+    msgs = [m for m in derive_messages(r) if m.code == "non_discriminative_grid"]
+    assert len(msgs) == 1 and "não por superioridade demonstrada de fidelity" in msgs[0].text
+    assert not [m for m in derive_messages(r) if m.code == "tuning_uncertain"]

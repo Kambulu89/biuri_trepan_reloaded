@@ -57,7 +57,7 @@ class ScientificTrepanSearchConfig:
     bootstrap_exact_limit: int = 20000        # enumeração exata se o nº de composições distintas (multisets) <= isto
     bootstrap_seed: Optional[int] = None      # None -> derivada da seed base (determinística)
     min_selection_probability: float = 0.6    # abaixo disto o tuning é marcado "incerto" (limiar configurável, não prova)
-    min_equivalent_set_probability: float = 0.6   # P(vencedora do bootstrap ∈ conjunto equivalente) para ``stable_equivalent_set``
+    min_equivalent_set_probability: float = 0.6   # P(vencedora do bootstrap ∈ conjunto equivalente) para ``stable_equivalent_subset``
     behavior_instability_threshold: float = 0.5   # índice de instabilidade estrutural acima do qual o comportamento da árvore é instável
     # Expansão adaptativa da capacidade (genérica; só resultados da CV do treino): se os candidatos competitivos de maior
     # capacidade atingem o teto max_nodes numa fração >= ao limiar, a grelha de nós cresce geometricamente
@@ -688,13 +688,55 @@ def _block_bootstrap(F, N, D, L, meta, k, search, valid, plan, repeats, labels, 
     return out
 
 
+def _classify_tuning_status(boot, eq_ids, n_valid, eq_prob, behavior_unstable, search):
+    """Classifica o tuning (só diagnóstico; nunca altera a configuração escolhida).
+
+    Precedência: bootstrap não avaliável -> comportamento instável -> grelha inteira equivalente (``non_discriminative_grid``)
+    -> ``stable_exact`` -> ``stable_equivalent_subset`` (subconjunto estrito) -> ``tuning_uncertain``.
+    """
+    exact_ok = bool(boot["assessable"] and boot["selected_is_modal"]
+                    and boot["selection_probability"] >= float(search.min_selection_probability))
+    family_ok = bool(boot["assessable"] and eq_prob is not None and eq_prob >= float(search.min_equivalent_set_probability)
+                     and not behavior_unstable)
+    covers_all = bool(n_valid >= 2 and len(eq_ids) == n_valid)
+    if not boot["assessable"]:
+        status, reason = "tuning_uncertain", "bootstrap_not_assessable"
+    elif behavior_unstable:
+        status, reason = "tuning_uncertain", "tree_behavior_unstable"
+    elif covers_all:
+        # Toda a grelha é estatisticamente equivalente: os dados não discriminam os candidatos (a escolha é por parcimónia).
+        status, reason = "non_discriminative_grid", "all_candidates_statistically_equivalent"
+    elif exact_ok:
+        status, reason = "stable_exact", "ok"
+    elif family_ok:
+        status, reason = "stable_equivalent_subset", "exact_hyperparameter_unstable_but_equivalent_subset_stable"
+    else:
+        status = "tuning_uncertain"
+        reason = ("full_cv_selection_not_bootstrap_modal" if not boot["selected_is_modal"] else
+                  "equivalent_family_not_stable" if (eq_prob is not None and eq_prob < float(search.min_equivalent_set_probability)) else
+                  "selection_probability_below_threshold")
+    basis = "parsimony_tiebreak_among_indistinguishable" if covers_all else "fidelity_and_stability_evidence"
+    explanation = {
+        "non_discriminative_grid": ("Os dados de treino/CV não fornecem evidência suficiente para discriminar entre as configurações "
+                                    "avaliadas. A configuração final foi escolhida por parcimónia/desempate entre candidatos "
+                                    "estatisticamente indistinguíveis, e não por superioridade demonstrada de fidelity."),
+        "stable_exact": "Configuração específica robustamente favorecida pelo bootstrap de blocos.",
+        "stable_equivalent_subset": ("Um subconjunto (não toda a grelha) de configurações equivalentes forma uma região robusta; "
+                                     "o hiperparâmetro exato é instável."),
+        "tuning_uncertain": "Instabilidade ou contradição na escolha (ver status_reason).",
+    }[status]
+    return status, reason, basis, explanation, covers_all
+
+
 def _overall_status(selections) -> str:
+    """Estado global = o pior estágio: tuning_uncertain > non_discriminative_grid > stable_equivalent_subset > stable_exact."""
     if not selections:
         return "not_assessed"
-    statuses = [sel["status"] for sel in selections]
-    if "tuning_uncertain" in statuses:
-        return "tuning_uncertain"
-    return "stable_exact" if all(st == "stable_exact" for st in statuses) else "stable_equivalent_set"
+    statuses = {sel["status"] for sel in selections}
+    for worst in ("tuning_uncertain", "non_discriminative_grid", "stable_equivalent_subset"):
+        if worst in statuses:
+            return worst
+    return "stable_exact"
 
 
 def _budget_check(history) -> dict:
@@ -817,24 +859,10 @@ def tune_scientific_trepan(
                          "structural_instability": w_stats["structural_instability"], "stump_fraction": stump_frac,
                          "structural_stability_evidence": w_stats["structural_stability_evidence"],
                          "behavior_unstable": behavior_unstable}
-        exact_ok = bool(boot["assessable"] and boot["selected_is_modal"]
-                        and boot["selection_probability"] >= float(search.min_selection_probability))
-        family_ok = bool(boot["assessable"] and eq_prob is not None and eq_prob >= float(search.min_equivalent_set_probability)
-                         and not behavior_unstable)
-        if not boot["assessable"]:
-            status, status_reason = "tuning_uncertain", "bootstrap_not_assessable"
-        elif exact_ok and not behavior_unstable:
-            status, status_reason = "stable_exact", "ok"
-        elif family_ok:
-            status = "stable_equivalent_set"
-            status_reason = ("exact_hyperparameter_unstable_but_equivalent_family_stable" if not exact_ok else "ok")
-        else:
-            status = "tuning_uncertain"
-            status_reason = ("tree_behavior_unstable" if behavior_unstable else
-                             "full_cv_selection_not_bootstrap_modal" if not boot["selected_is_modal"] else
-                             "equivalent_family_not_stable" if (eq_prob is not None and eq_prob < float(search.min_equivalent_set_probability)) else
-                             "selection_probability_below_threshold")
-        stable = status != "tuning_uncertain"
+        status, status_reason, selection_basis, status_explanation, covers_all = _classify_tuning_status(
+            boot, eq_ids, int(sum(1 for v in valid if v)), eq_prob, behavior_unstable, search)
+        n_valid = int(sum(1 for v in valid if v))
+        stable = status in ("stable_exact", "stable_equivalent_subset")
         selection = {"selected": history[winner]["config"], "selected_label": final,
                      "selected_config_full_cv": final, "selected_config_probability": boot.get("selected_config_probability", 0.0),
                      "exact_selection_probability": boot.get("selected_config_probability", 0.0),
@@ -842,13 +870,14 @@ def tune_scientific_trepan(
                      "bootstrap_modal_probability": boot.get("bootstrap_modal_probability"),
                      "bootstrap_runner_up": boot.get("bootstrap_runner_up"), "top1_top2_margin": boot.get("top1_top2_margin"),
                      "full_cv_selection_fragile": boot.get("full_cv_selection_fragile"),
-                     "equivalent_set_covers_all_candidates": bool(len(eq_ids) == int(sum(1 for v in valid if v))),
+                     "equivalent_set_covers_all_candidates": covers_all, "total_candidate_count": n_valid,
+                     "selection_basis": selection_basis, "status_explanation": status_explanation,
                      "equivalent_candidate_set": {"ids": eq_ids, "count": len(eq_ids), "probability": eq_prob},
                      "equivalent_candidate_ids": eq_ids, "equivalent_candidate_count": len(eq_ids), "equivalent_set_probability": eq_prob,
                      "tree_behavior": tree_behavior,
                      "per_repeat_winners": per_repeat, "seeds": [int(v) for v in seeds],
                      "bootstrap": boot, "selection_probability": boot["selection_probability"],
-                     "stable": stable, "stable_exact": status == "stable_exact", "family_stable": status == "stable_equivalent_set",
+                     "stable": stable, "stable_exact": status == "stable_exact", "family_stable": status == "stable_equivalent_subset", "non_discriminative_grid": status == "non_discriminative_grid",
                      "status": status, "status_reason": status_reason,
                      "distinct_winners": len({w for w in per_repeat if w}),
                      "threshold": float(search.min_selection_probability),
@@ -968,6 +997,7 @@ def tune_scientific_trepan(
         "structure_selected":{"purity_epsilon":float(structure_base.purity_epsilon),"max_nodes":int(structure_base.max_nodes)},
         "capacity_selection":capacity_selection,
         "tuning_stable":bool(all(sel["stable"] for sel in (structure_selection, capacity_selection) if sel)) if (structure_selection or capacity_selection) else True,
+        "non_discriminative_grid":bool(any(sel.get("non_discriminative_grid") for sel in (structure_selection, capacity_selection) if sel)),
         "tuning_status":_overall_status([sel for sel in (structure_selection, capacity_selection) if sel]),
         "capacity_history":capacity_history,
         "semantic_history":semantic_history,

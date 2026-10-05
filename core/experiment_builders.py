@@ -270,6 +270,9 @@ def scientific_diagnostics_from_tuning(
     diag.last_capacity_step = dict(steps[-1]) if steps else {}
     diag.equivalent_candidate_count = sel.get("equivalent_candidate_count")
     diag.equivalent_set_covers_all_candidates = sel.get("equivalent_set_covers_all_candidates")
+    diag.total_candidate_count = sel.get("total_candidate_count")
+    diag.selection_basis = sel.get("selection_basis")
+    diag.status_explanation = sel.get("status_explanation")
     diag.equivalent_candidate_ids = list(sel.get("equivalent_candidate_ids") or [])
     diag.equivalent_set_probability = Measure.of(sel.get("equivalent_set_probability") if assessable else None)
     diag.tree_behavior_unstable = (sel.get("tree_behavior") or {}).get("behavior_unstable")

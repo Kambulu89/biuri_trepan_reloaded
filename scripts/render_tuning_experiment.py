@@ -118,6 +118,8 @@ def run_section(d: dict, full: bool) -> list[str]:
               + (" — ⚠ a família cobre TODA a grelha: os dados não discriminam os candidatos (estabilidade da família trivial)"
                  if sel.get("equivalent_set_covers_all_candidates") or sel['equivalent_candidate_count'] == len(t['structure_history']) else ""),
               f"- comportamento da árvore escolhida: {sel['tree_behavior']}",
+              f"- estado: **{sel['status']}** — {sel.get('status_explanation')} (base da escolha: `{sel.get('selection_basis')}`; "
+              f"candidatos totais: {sel.get('total_candidate_count')})",
               "- distribuição das configurações escolhidas: " + (", ".join(f"`{k}` {v:.1%}" for k, v in bs["distribution"].items()) or "—"),
               f"- vencedora por repetição (apenas informativo; 1 repetição = {plan['folds']} dobras): {sel['per_repeat_winners']}",
               f"- saturação da escolhida: {sel['node_cap']['node_cap_reached_count']}/{plan['n_splits']} árvores no teto max_nodes={sel['node_cap']['max_nodes']} "
@@ -200,7 +202,7 @@ def main() -> None:
             md.append(f"| {d['seed']} | `{sel['selected_config_full_cv']}` | {o.get('nodes')} | {o.get('accuracy')} | {o.get('oracle_fidelity')} | {d['wall_seconds']:.0f} |")
         consensus = n_modal / len(picks)
         md += ["", f"Configurações escolhidas: {dict(cnt)}. **Consenso de seleção = {consensus:.0%} ({n_modal}/{len(picks)}) nas master seeds avaliadas** "
-               f"(moda `{modal}`); seeds mestre com estado estável (`stable_exact` ou `stable_equivalent_set`): {n_stable}/{len(picks)}.", ""]
+               f"(moda `{modal}`); seeds mestre com estado estável (`stable_exact` ou `stable_equivalent_subset`): {n_stable}/{len(picks)}.", ""]
         if consensus >= 0.6 and n_stable / len(picks) >= 0.6:
             md += ["Leitura: o consenso externo e a reamostragem interna apontam no mesmo sentido; só neste caso se usa o termo *robusto/estável* "
                    "(com a ressalva do número reduzido de master seeds).", ""]

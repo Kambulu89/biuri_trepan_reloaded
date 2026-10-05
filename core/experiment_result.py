@@ -302,6 +302,9 @@ class ScientificDiagnostics:
     expansion_interpretation: Optional[str] = None
     last_capacity_step: Dict[str, Any] = field(default_factory=dict)        # previous/candidate max_nodes, fidelity, delta, teste, ganho
     equivalent_candidate_count: Optional[int] = None
+    total_candidate_count: Optional[int] = None
+    selection_basis: Optional[str] = None            # parsimony_tiebreak_among_indistinguishable / fidelity_and_stability_evidence
+    status_explanation: Optional[str] = None
     equivalent_set_covers_all_candidates: Optional[bool] = None    # família = grelha inteira: os dados não discriminam os candidatos
     equivalent_candidate_ids: List[str] = field(default_factory=list)
     equivalent_set_probability: Measure = field(default_factory=Measure)
@@ -313,7 +316,7 @@ class ScientificDiagnostics:
     query_budget: Measure = field(default_factory=Measure)
     budget_exhausted: Optional[bool] = None
     test_used_for_selection: Optional[bool] = None
-    tuning_status: str = "not_run"                 # stable_exact / stable_equivalent_set / tuning_uncertain / not_run / failed
+    tuning_status: str = "not_run"                 # stable_exact / stable_equivalent_subset / non_discriminative_grid / tuning_uncertain / not_run / failed
 
 
 @dataclass

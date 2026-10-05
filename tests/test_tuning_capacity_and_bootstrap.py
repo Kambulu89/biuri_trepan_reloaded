@@ -281,19 +281,61 @@ def test_equivalent_candidate_set_and_probabilities_are_reported():
     assert "tree_behavior" in sel and "behavior_unstable" in sel["tree_behavior"]
 
 
-def test_statuses_distinguish_exact_family_and_uncertain_without_changing_the_selected_config():
+def _boot(selected_prob=0.7, modal=True, assessable=True):
+    return {"assessable": assessable, "selected_is_modal": modal, "selection_probability": selected_prob}
+
+
+def _classify(boot, n_eq, n_total, eq_prob=1.0, behavior=False, **skw):
+    ids = [f"c{i}" for i in range(n_eq)]
+    return tm._classify_tuning_status(boot, ids, n_total, eq_prob, behavior, ScientificTrepanSearchConfig(**skw))
+
+
+def test_status_classification_covers_the_four_states_with_the_required_precedence():
+    # stable_exact: específica robustamente favorecida, subconjunto estrito equivalente
+    assert _classify(_boot(0.9), 3, 6)[0] == "stable_exact"
+    # stable_equivalent_subset: exato instável (não é a moda) mas subconjunto (não toda a grelha) robusto
+    st = _classify(_boot(0.2, modal=False), 3, 6, eq_prob=0.9)
+    assert st[0] == "stable_equivalent_subset" and "subset" in st[1] and st[2] == "fidelity_and_stability_evidence" and st[4] is False
+    # non_discriminative_grid: TODA a grelha equivalente (mesmo com bootstrap "estável")
+    for boot in (_boot(0.95), _boot(0.1, modal=False)):
+        nd = _classify(boot, 6, 6)
+        assert nd[0] == "non_discriminative_grid" and nd[4] is True and nd[2] == "parsimony_tiebreak_among_indistinguishable"
+        assert "não por superioridade demonstrada de fidelity" in nd[3] and "parcimónia/desempate" in nd[3]
+        assert "não fornecem evidência suficiente para discriminar" in nd[3]
+    # tuning_uncertain: contradição real
+    assert _classify(_boot(0.1, modal=False), 3, 6, eq_prob=0.1)[0] == "tuning_uncertain"
+    assert _classify(_boot(0.9), 3, 6, behavior=True)[:2] == ("tuning_uncertain", "tree_behavior_unstable")
+    assert _classify(_boot(assessable=False), 3, 6)[:2] == ("tuning_uncertain", "bootstrap_not_assessable")
+    # comportamento instável tem precedência sobre grelha não discriminativa
+    assert _classify(_boot(0.9), 6, 6, behavior=True)[0] == "tuning_uncertain"
+    # um único candidato válido não é uma "grelha equivalente"
+    assert _classify(_boot(0.9), 1, 1)[0] == "stable_exact"
+
+
+def test_status_thresholds_are_configurable():
+    assert _classify(_boot(0.5), 3, 6, min_selection_probability=0.4)[0] == "stable_exact"
+    assert _classify(_boot(0.5), 3, 6, eq_prob=0.1, min_selection_probability=0.9)[0] == "tuning_uncertain"
+    assert _classify(_boot(0.2, modal=False), 3, 6, eq_prob=0.5, min_equivalent_set_probability=0.4)[0] == "stable_equivalent_subset"
+
+
+def test_non_discriminative_grid_is_reported_end_to_end_without_changing_the_selected_config():
     kw = dict(capacity_expansion=False, purity_epsilon_grid=(0.05, 0.01), behavior_instability_threshold=1e9)
-    exact = _run("simple", min_selection_probability=0.0, **kw)["structure_selection"]
-    assert exact["status"] == "stable_exact" and exact["stable_exact"] is True
-    base = _run("simple", min_selection_probability=1.01, min_equivalent_set_probability=0.0, **kw)["structure_selection"]
-    assert base["status"] == "stable_equivalent_set" and base["family_stable"] is True and base["stable_exact"] is False
-    assert base["status_reason"] == "exact_hyperparameter_unstable_but_equivalent_family_stable"
-    bad = _run("simple", min_selection_probability=1.01, min_equivalent_set_probability=1.01, **kw)["structure_selection"]
-    assert bad["status"] == "tuning_uncertain"
-    assert exact["selected_config_full_cv"] == base["selected_config_full_cv"] == bad["selected_config_full_cv"]   # bootstrap só diagnostica
+    runs = [_run("simple", min_selection_probability=p, min_equivalent_set_probability=q, **kw)
+            for p, q in ((0.0, 0.0), (1.01, 1.01))]
+    sels = [r["structure_selection"] for r in runs]
+    assert sels[0]["selected_config_full_cv"] == sels[1]["selected_config_full_cv"]            # o estado é só diagnóstico
+    assert sels[0]["total_candidate_count"] == sum(1 for h in runs[0]["structure_history"] if h["stats"])
+    for r, sel in zip(runs, sels):
+        if sel["equivalent_set_covers_all_candidates"]:
+            assert sel["status"] == "non_discriminative_grid" and sel["selection_basis"] == "parsimony_tiebreak_among_indistinguishable"
+            assert sel["stable"] is False and sel["non_discriminative_grid"] is True and r["tuning_status"] == "non_discriminative_grid"
+            assert "não por superioridade demonstrada de fidelity" in sel["status_explanation"]
+        else:
+            assert sel["status"] != "non_discriminative_grid" and sel["selection_basis"] == "fidelity_and_stability_evidence"
+    assert sels[0]["status"] == sels[1]["status"] or not sels[0]["equivalent_set_covers_all_candidates"]
 
 
-def test_unstable_tree_behaviour_makes_the_tuning_uncertain_even_if_the_family_is_stable():
+def test_unstable_tree_behaviour_makes_the_tuning_uncertain():
     r = _run("simple", capacity_expansion=False, purity_epsilon_grid=(0.05, 0.01), min_selection_probability=0.0,
              behavior_instability_threshold=-1.0)
     sel = r["structure_selection"]
@@ -304,7 +346,9 @@ def test_unstable_tree_behaviour_makes_the_tuning_uncertain_even_if_the_family_i
 def test_overall_status_aggregates_stage_statuses():
     assert tm._overall_status([]) == "not_assessed"
     assert tm._overall_status([{"status": "stable_exact"}, {"status": "stable_exact"}]) == "stable_exact"
-    assert tm._overall_status([{"status": "stable_exact"}, {"status": "stable_equivalent_set"}]) == "stable_equivalent_set"
+    assert tm._overall_status([{"status": "stable_exact"}, {"status": "stable_equivalent_subset"}]) == "stable_equivalent_subset"
+    assert tm._overall_status([{"status": "stable_equivalent_subset"}, {"status": "non_discriminative_grid"}]) == "non_discriminative_grid"
+    assert tm._overall_status([{"status": "non_discriminative_grid"}, {"status": "tuning_uncertain"}]) == "tuning_uncertain"
     assert tm._overall_status([{"status": "stable_exact"}, {"status": "tuning_uncertain"}]) == "tuning_uncertain"
 
 
@@ -375,35 +419,17 @@ def test_semantics_full_cv_winner_vs_bootstrap_mode_are_distinguished_never_a_ne
     assert "runner_up" not in out and "margin" not in out                  # nomes ambíguos eliminados
 
 
-def test_tuning_is_uncertain_when_the_full_cv_winner_is_not_the_bootstrap_mode(monkeypatch):
-    real = tm._block_bootstrap
-
-    def fake(*a, **k):
-        out = real(*a, **k)
-        labels = a[10]
-        other = [l for l in labels if l != a[11]][0]
-        out.update({"bootstrap_modal_config": other, "bootstrap_modal_probability": 0.65, "selection_probability": 0.12,
-                    "selected_config_probability": 0.12, "selected_is_modal": False, "full_cv_selection_fragile": True,
-                    "bootstrap_runner_up": {"label": a[11], "probability": 0.12}, "top1_top2_margin": 0.53, "full_cv_vs_modal_gap": 0.53})
-        return out
-    monkeypatch.setattr(tm, "_block_bootstrap", fake)
-    r = _run("complex", capacity_expansion=False, min_selection_probability=0.0, min_equivalent_set_probability=1.01,
-             behavior_instability_threshold=1e9)
-    sel = r["structure_selection"]
-    assert sel["status"] == "tuning_uncertain" and sel["status_reason"] == "full_cv_selection_not_bootstrap_modal"
-    fam = _run("complex", capacity_expansion=False, min_selection_probability=0.0, min_equivalent_set_probability=0.0,
-               behavior_instability_threshold=1e9)["structure_selection"]
-    # uma família equivalente estável não esconde a fragilidade do hiperparâmetro exato
-    assert fam["status"] == "stable_equivalent_set" and fam["stable_exact"] is False and fam["full_cv_selection_fragile"] is True
-    assert sel["selected_config_full_cv"] == sel["selected_label"] and sel["bootstrap_modal_config"] != sel["selected_label"]
-    assert r["tuning_stable"] is False and sel["full_cv_selection_fragile"] is True
+def test_tuning_is_uncertain_when_the_full_cv_winner_is_not_the_bootstrap_mode_and_the_family_is_not_stable():
+    boot = {"assessable": True, "selected_is_modal": False, "selection_probability": 0.12}
+    status = tm._classify_tuning_status(boot, ["a", "b"], 6, 0.2, False, ScientificTrepanSearchConfig())
+    assert status[:2] == ("tuning_uncertain", "full_cv_selection_not_bootstrap_modal")
 
 
 def test_stable_requires_modal_and_enough_probability():
     r = _run("simple", capacity_expansion=False, max_nodes_grid=(7,))
     sel = r["structure_selection"]
     if sel["selected_config_full_cv"] == sel["bootstrap_modal_config"] and sel["selection_probability"] >= sel["threshold"]:
-        assert sel["status"] in {"stable_exact", "stable_equivalent_set"}
+        assert sel["status"] in {"stable_exact", "non_discriminative_grid"}
     for key in ("bootstrap_modal_probability", "bootstrap_runner_up", "top1_top2_margin", "selected_config_probability"):
         assert key in sel
     assert sel["bootstrap"]["method"] == "exact" and sel["bootstrap"]["bootstrap_samples"] == 3 ** 3

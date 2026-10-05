@@ -184,8 +184,11 @@ def test_tuning_is_flagged_uncertain_when_selection_probability_is_below_the_thr
                                     search=_fast(min_selection_probability=1.01, min_equivalent_set_probability=1.01))       # exigência impossível
     lax = tune_scientific_trepan(X, y, oracle=Oracle(), feature_names=list("abc"), base_config=_base(),
                                  search=_fast(min_selection_probability=0.0))
-    assert strict["tuning_stable"] is False and strict["structure_selection"]["status"] == "tuning_uncertain"
-    assert lax["tuning_stable"] is True and lax["structure_selection"]["status"] in {"stable_exact", "stable_equivalent_set"}
+    # com exigências impossíveis nunca é "estável"; se toda a grelha for equivalente o estado é non_discriminative_grid
+    assert strict["tuning_stable"] is False and strict["structure_selection"]["status"] in {"tuning_uncertain", "non_discriminative_grid"}
+    st = lax["structure_selection"]["status"]
+    assert st in {"stable_exact", "stable_equivalent_subset", "non_discriminative_grid"}
+    assert lax["tuning_stable"] is (st in {"stable_exact", "stable_equivalent_subset"})
 
 
 def test_tuning_off_or_failing_keeps_the_canonical_base():
