@@ -1,0 +1,97 @@
+"""Executor do benchmark (uma unidade = dataset × master seed, em processo próprio; retomável e sem sobrescrever).
+
+    python -m validation.benchmark.run --smoke  --out results/benchmark_protocol_smoke     # 1 seed (42) × 4 datasets reais
+    python -m validation.benchmark.run --main   --out results/benchmark_main               # 5 master seeds × 4 datasets reais
+    python -m validation.benchmark.run --controlled --out results/benchmark_controlled     # sintéticos (validação controlada)
+    python -m validation.benchmark.run --unit digits 42 --out DIR                          # uma unidade
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+import time
+import warnings
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+warnings.filterwarnings("ignore")
+
+from validation.benchmark import datasets as ds_mod
+from validation.benchmark import manifest as mf
+from validation.benchmark.raw_store import unit_complete, write_unit
+
+
+def benchmark_config(seed: int):
+    """Configuração ÚNICA para todos os datasets: sem hiperparâmetros por dataset (a estrutura vem do tuning congelado)."""
+    from core.benchmark.runner import BenchmarkConfig
+    return BenchmarkConfig(seeds=(int(seed),), scheme=mf.EVALUATION["scheme"], test_size=mf.EVALUATION["test_size"], extra_ablations=False,
+                           different_oracle_experiment=False, structure_tuning=True, n_boot=10000)
+
+
+def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MANIFEST_PATH) -> Path:
+    from core.benchmark.runner import BenchmarkRunner
+    verification = mf.verify_manifest(manifest_path)
+    if not verification["ok"]:
+        raise SystemExit(f"Manifesto inválido: {verification['problems']}")
+    if seed not in mf.MASTER_SEEDS:
+        raise SystemExit(f"Seed {seed} não pertence às master seeds congeladas {mf.MASTER_SEEDS}.")
+    spec = ds_mod.REGISTRY[dataset_id]
+    ds, _target, _classes = spec.load()
+    cfg = benchmark_config(seed)
+    arms = [a for a in __import__("core.benchmark.runner", fromlist=["x"]).default_arms(cfg) if a.group in mf.MAIN_ARM_GROUPS]
+    t0 = time.perf_counter()
+    result = BenchmarkRunner(cfg, arms).run(ds, str(spec.ontology_path) if spec.ontology_path else None)
+    sha = verification["manifest_sha256"]
+    write_unit(result, out, manifest_sha256=sha, labels=list(range(len(_classes))))
+    meta = {"dataset": dataset_id, "seed": seed, "seconds": time.perf_counter() - t0, "frozen_code_drift": verification["frozen_code_drift"],
+            "run_code_commit": verification["current_code_commit"]}
+    (out / "raw" / dataset_id / f"seed{seed}" / "RUN_META.txt").write_text(json.dumps(meta), encoding="utf-8")
+    return out
+
+
+def _spawn(units, out: Path, workers: int) -> int:
+    logs = out / "logs"; logs.mkdir(parents=True, exist_ok=True)
+    pending, running, failed = [u for u in units if not unit_complete(out, *u)], [], 0
+    while pending or running:
+        while pending and len(running) < workers:
+            ds, seed = pending.pop(0)
+            log = open(logs / f"{ds}_seed{seed}.log", "w")
+            p = subprocess.Popen([sys.executable, "-m", "validation.benchmark.run", "--unit", ds, str(seed), "--out", str(out)],
+                                 stdout=log, stderr=subprocess.STDOUT, cwd=str(ROOT))
+            running.append((p, ds, seed, log, time.time()))
+            print(f"[run] iniciada {ds} seed={seed}", flush=True)
+        for item in list(running):
+            p, ds, seed, log, t0 = item
+            if p.poll() is not None:
+                log.close(); running.remove(item)
+                failed += int(p.returncode != 0)
+                print(f"[run] {'OK' if p.returncode == 0 else 'FALHOU'} {ds} seed={seed} ({time.time() - t0:.0f}s)", flush=True)
+        time.sleep(2)
+    return failed
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--smoke", action="store_true"); g.add_argument("--main", action="store_true")
+    g.add_argument("--controlled", action="store_true"); g.add_argument("--unit", nargs=2, metavar=("DATASET", "SEED"))
+    ap.add_argument("--out", required=True); ap.add_argument("--workers", type=int, default=4)
+    a = ap.parse_args()
+    out = Path(a.out)
+    if a.unit:
+        run_unit(a.unit[0], int(a.unit[1]), out)
+        return
+    if a.smoke:
+        units = [(d, mf.MASTER_SEEDS[0]) for d in ds_mod.MAIN_DATASETS]
+    elif a.main:
+        units = [(d, s) for s in mf.MASTER_SEEDS for d in ds_mod.MAIN_DATASETS]
+    else:
+        units = [(d, s) for s in mf.MASTER_SEEDS for d in ds_mod.CONTROLLED_DATASETS]
+    sys.exit(1 if _spawn(units, out, a.workers) else 0)
+
+
+if __name__ == "__main__":
+    main()
