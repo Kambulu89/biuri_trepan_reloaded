@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from counterfactuals.dataset_config import ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import ALL_DATASETS
 from tests.support.counterfactual_multidataset_runner import run_six_dataset_test
 
 

@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
 
 from core.mlp_factory import build_mlp_for_data, signal_capacity_audit
-from core.benchmark_ontologies import ensure_builtin_domain_ontologies
+from validation.benchmark_ontologies import ensure_builtin_domain_ontologies
 from core.c45_j48_tree import C45Classifier
 from core.ontology_processor import OntologyProcessor
 from core.ontology_quality import OntologyQualityGate

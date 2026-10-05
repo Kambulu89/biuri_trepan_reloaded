@@ -110,3 +110,40 @@ def test_pipeline_audit_counts_trepan_nodes():
     from core.pipeline_audit import _tree_stats
     t = SimpleNamespace(node_count_=3, get_n_leaves=lambda: 2)
     assert _tree_stats(t) == {"n_nodes": 3, "n_leaves": 2, "is_trivial": False}
+
+
+def test_legacy_audit_without_stop_summary_queries_or_leaves_reads_them_from_the_tree():
+    """O last_audit do TREPAN Original/Reloaded não traz stop_summary nem (Reloaded) queries: ler da árvore."""
+    import numpy as np
+    from core.trepan_original import TrepanOriginalClassifier
+
+    class Oracle:
+        classes_ = np.array([0, 1])
+        def predict(self, X):
+            return (np.asarray(X, float)[:, 0] > 0).astype(int)
+
+    X = np.random.default_rng(0).normal(size=(120, 3))
+    tree = TrepanOriginalClassifier(max_nodes=11, max_depth=4, min_sample=100, max_queries=3000, max_n=2, beam_width=1,
+                                    random_state=0).fit(X, oracle=Oracle(), feature_names=list("abc"))
+    app = _app(mlp_model=object(), trepan_original_tree=tree, trepan_reloaded_tree=tree,
+               trepan_original_audit={"trepan_accuracy": .9}, trepan_reloaded_audit={"trepan_accuracy": .9})
+    r = build_experiment_result(app)
+    for key in ("trepan_original", "trepan_reloaded"):
+        diag = r.trees[key]
+        assert diag.loop_end_reason in {"node_budget_exhausted", "no_expandable_nodes_left"}
+        assert diag.stop_reasons and diag.queries_used.value == tree.membership_queries_
+        assert r.models[key].complexity["leaves"].value == tree.get_n_leaves()
+        assert r.models[key].complexity["queries"].value == tree.membership_queries_
+
+
+def test_builder_exposes_the_tuning_selection_and_stability_without_changing_the_config_hash():
+    base = _app(mlp_model=object())
+    h0 = build_experiment_result(base).provenance.config_hash
+    app = _app(mlp_model=object(), _trepan_scientific_tuning={
+        "structure_selected": {"purity_epsilon": 0.02, "max_nodes": 31}, "tuning_stable": False,
+        "structure_selection": {"selection_probability": 0.33, "threshold": 0.6, "per_repeat_winners": ["a", "b", "a"]},
+        "cv_plan": {"n_splits": 9}})
+    r = build_experiment_result(app)
+    t = r.config["trepan_tuning"]
+    assert t["selected"] == {"purity_epsilon": 0.02, "max_nodes": 31} and t["stable"] is False and t["n_splits"] == 9
+    assert r.provenance.config_hash == h0                       # o resultado do tuning não entra no hash da configuração

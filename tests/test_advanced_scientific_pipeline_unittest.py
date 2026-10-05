@@ -7,9 +7,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
-from core.ablation_study import AblationConfig, run_dataset_ablation, summarize_ablation
+from validation.ablation_study import AblationConfig, run_dataset_ablation, summarize_ablation
 from core.active_query_engine import ActiveQueryConfig, refine_with_active_queries
-from core.benchmark_ontologies import ensure_builtin_domain_ontologies
+from validation.benchmark_ontologies import ensure_builtin_domain_ontologies
 from core.biomedical_validation import validate_biomedical_model
 from core.metrics_view_model import build_metrics_rows, claim_banner
 from core.multiobjective_tree_selector import select_multiobjective_pruned_tree

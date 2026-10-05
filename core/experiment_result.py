@@ -44,7 +44,12 @@ class Reason:
     NOT_REPORTED = "not_reported_by_backend"       # O backend não reportou este valor
     NO_SEMANTIC_FEATURES = "no_semantic_features"  # Nenhuma feature semântica gerada
 
+    TUNING_NOT_RUN = "tuning_not_run"              # Não executado — tuning científico não corrido
+    NO_ORACLE_CONTRACT = "no_oracle_contract"      # Não aplicável — modo exploratório sem contrato do oráculo
+
     CATEGORY = {
+        TUNING_NOT_RUN: "not_executed",
+        NO_ORACLE_CONTRACT: "not_applicable",
         TEACHER_REJECTED: "not_calculated",
         NO_ORACLE: "not_applicable",
         NO_ONTOLOGY: "not_available",
@@ -260,6 +265,58 @@ class Provenance:
     split: Optional[str] = None
     training_mode: Optional[str] = None
     source: str = "gui"                            # gui / headless
+    execution_mode: Optional[str] = None           # SCIENTIFIC_BENCHMARK / INTERACTIVE_EXPLORATORY (core.execution_mode)
+
+
+@dataclass
+class ScientificDiagnostics:
+    """Diagnóstico científico do tuning e do oráculo (só relata o que o backend calculou; nada é recalculado)."""
+
+    execution_mode: Optional[str] = None
+    benchmark_eligible: bool = False               # só SCIENTIFIC_BENCHMARK com contrato cumprido
+    oracle_id: Optional[str] = None
+    oracle_builder: Optional[str] = None
+    same_oracle_original_reloaded: Optional[bool] = None
+    seed: Optional[int] = None
+    cv_plan: Optional[str] = None
+    selected_config: Optional[str] = None
+    fidelity_mean: Measure = field(default_factory=Measure)
+    fidelity_std: Measure = field(default_factory=Measure)
+    predictive_stability: Measure = field(default_factory=Measure)       # desvio-padrão da fidelity entre partições (menor = mais estável)
+    structural_stability: Measure = field(default_factory=Measure)       # índice de instabilidade estrutural (menor = mais estável)
+    selection_probability: Measure = field(default_factory=Measure)         # P(configuração escolhida pela CV completa)
+    selected_config_full_cv: Optional[str] = None
+    bootstrap_modal_config: Optional[str] = None
+    bootstrap_modal_probability: Measure = field(default_factory=Measure)
+    selection_runner_up: Optional[str] = None                               # 2.º da distribuição bootstrap (<= 1.º)
+    selection_margin: Measure = field(default_factory=Measure)              # top1 − top2 (>= 0)
+    full_cv_selection_fragile: Optional[bool] = None                        # a escolhida pela CV completa não é a moda
+    bootstrap_method: Optional[str] = None                                  # exact / monte_carlo
+    selection_resamples: Optional[int] = None
+    structural_stability_evidence: Optional[str] = None                     # observed / censored_by_node_cap
+    expansion_triggered: Optional[bool] = None
+    capacity_expansion_rounds: Optional[int] = None
+    initial_node_grid: List[int] = field(default_factory=list)
+    final_node_grid: List[int] = field(default_factory=list)
+    expansion_stop_reason: Optional[str] = None
+    expansion_interpretation: Optional[str] = None
+    last_capacity_step: Dict[str, Any] = field(default_factory=dict)        # previous/candidate max_nodes, fidelity, delta, teste, ganho
+    equivalent_candidate_count: Optional[int] = None
+    total_candidate_count: Optional[int] = None
+    selection_basis: Optional[str] = None            # parsimony_tiebreak_among_indistinguishable / fidelity_and_stability_evidence
+    status_explanation: Optional[str] = None
+    equivalent_set_covers_all_candidates: Optional[bool] = None    # família = grelha inteira: os dados não discriminam os candidatos
+    equivalent_candidate_ids: List[str] = field(default_factory=list)
+    equivalent_set_probability: Measure = field(default_factory=Measure)
+    tree_behavior_unstable: Optional[bool] = None
+    tuning_status_reason: Optional[str] = None
+    fraction_at_node_cap: Measure = field(default_factory=Measure)
+    node_cap_censored: Optional[bool] = None
+    queries_used: Measure = field(default_factory=Measure)
+    query_budget: Measure = field(default_factory=Measure)
+    budget_exhausted: Optional[bool] = None
+    test_used_for_selection: Optional[bool] = None
+    tuning_status: str = "not_run"                 # stable_exact / stable_equivalent_subset / non_discriminative_grid / tuning_uncertain / not_run / failed
 
 
 @dataclass
@@ -280,6 +337,7 @@ class ExperimentResult:
     counterfactual: Optional[Dict[str, Any]] = None
     messages: List[Message] = field(default_factory=list)
     config: Dict[str, Any] = field(default_factory=dict)
+    scientific: Optional[ScientificDiagnostics] = None
     stale: bool = False
     stale_reasons: List[str] = field(default_factory=list)
 

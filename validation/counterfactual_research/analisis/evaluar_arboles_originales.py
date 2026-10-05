@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score
 
 from counterfactuals._bootstrap import setup
 from counterfactuals._paths import models_dir, CF_ROOT
-from counterfactuals.dataset_config import ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import ALL_DATASETS
 
 setup()
 

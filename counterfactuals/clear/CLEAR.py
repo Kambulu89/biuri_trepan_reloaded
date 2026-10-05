@@ -1,7 +1,5 @@
 """ This is the main module for CLEAR. CLEAR can either be run with:
-(a) one of the sample models/datasets provided in CLEAR_sample_models_datasets.py .To do this run
-    Run_CLEAR_with_sample_model()
-(b) with a user created model and datasets. In this case run
+with a user created model and datasets. In this case run
      Run_CLEAR(X_train, X_test_sample, model, model_name, numeric_features, categorical_features, category_prefix, class_labels)
      An example of the required inputs is provided at the bottom of this module.
 CLEAR's input parameters are specified in CLEAR_settings.py
@@ -12,7 +10,6 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 from . import (
-    CLEAR_sample_models_datasets,
     CLEAR_perturbations,
     CLEAR_regression,
     CLEAR_settings,
@@ -20,12 +17,6 @@ from . import (
 )
 from ._pandas_compat import df_append
 
-
-def Run_CLEAR_with_sample_model():
-    CLEAR_settings.init()
-    (X_train, X_test_sample, model) =CLEAR_sample_models_datasets.Create_model_dataset()
-    CLEAR_Main(X_train, X_test_sample, model)
-    return()
 
 def Run_CLEAR(X_train, X_test_sample, model):
     CLEAR_settings.init()
@@ -72,11 +63,3 @@ def CLEAR_Main(X_train, X_test_sample, model):
     end_time = time.time()
     print("Total execution time: {}".format(end_time - start_time))
     return()
-
-if __name__ == "__main__":
-    # X_train = pd.read_pickle('D:/Warwick/X_train_Adult')
-    # X_test_sample = pd.read_pickle('D:/Warwick/X_test_sample_Adult')
-    # model = tf.keras.models.load_model('D:/Warwick/CLEAR_Adult.h5')
-    # Run_CLEAR(X_train, X_test_sample, model)
-
-    Run_CLEAR_with_sample_model()

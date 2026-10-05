@@ -99,7 +99,7 @@ def test_final_evaluation_is_paired_and_locked_test_not_used_for_fit():
 
 
 def test_ablation_with_owl_no_longer_changes_oracle_family():
-    import core.ablation_study as module
+    import validation.ablation_study as module
     source = inspect.getsource(module.run_dataset_ablation)
     assert 'ResidualOntologicalOracle' not in source
     assert 'build_oof_residual_feature_matrices' not in source
@@ -108,7 +108,7 @@ def test_ablation_with_owl_no_longer_changes_oracle_family():
 
 
 def test_paired_owl_analysis_aggregates_repeats_by_dataset():
-    from core.ablation_study import paired_owl_analysis
+    from validation.ablation_study import paired_owl_analysis
     rows = []
     for dataset, diffs in {'a': [0.10, 0.30], 'b': [-0.10, -0.10]}.items():
         for repeat, delta in enumerate(diffs):
@@ -145,7 +145,7 @@ def test_oracle_health_gate_compares_dummy_and_c45_only_on_training_cv():
 
 
 def test_paired_analysis_excludes_invalid_oracle_dataset():
-    from core.ablation_study import paired_owl_analysis
+    from validation.ablation_study import paired_owl_analysis
     rows = []
     for dataset, valid, delta in [('good', True, 0.10), ('bad', False, 0.90)]:
         rows.extend([

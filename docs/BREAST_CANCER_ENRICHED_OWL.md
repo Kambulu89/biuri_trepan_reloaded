@@ -25,7 +25,7 @@ A OWL original só tinha 3 agregados (mean / erro padrão / worst); a riqueza se
 **A OWL enriquecida não deu ganho estatisticamente significativo.** Todos os intervalos de confiança incluem zero.
 Mais features não melhoraram o ganho; com seed 42 a enriquecida foi até rejeitada (o MLP já usa estas combinações).
 
-TREPAN com capacidade ajustada (63 nós, purity_epsilon 0,01, 31 000 queries): 51–59 nós, 26–30 folhas; a ontologia
+TREPAN com capacidade fixada à mão para este teste (63 nós, purity_epsilon 0,01, 31 000 queries; não é o padrão do sistema, que agora escolhe isto por tuning): 51–59 nós, 26–30 folhas; a ontologia
 influencia 26–29 de 31 splits (impacto na decisão 16–26%), mas as diferenças Reloaded vs Original são de ~1 amostra
 de teste (1/171 ≈ 0,006) e mudam de sinal entre seeds. **Não há evidência de ganho do Reloaded devido à ontologia.**
 

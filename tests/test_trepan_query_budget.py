@@ -23,7 +23,7 @@ def test_min_sample_formula_is_unchanged():
 def test_scientific_preset_budget_covers_the_allowed_nodes_and_never_shrinks():
     preset = get_training_preset("scientific")
     assert resolve_trepan_query_budget(preset, 398) >= preset.trepan_max_queries
-    assert resolve_trepan_query_budget(preset, 398) == 31000   # 63 nós -> 31 internos x 1000
+    assert resolve_trepan_query_budget(preset, 398) == 15000   # 31 nós canónicos -> 15 internos x 1000
     # amostra pequena: nunca abaixo do orçamento do preset
     assert resolve_trepan_query_budget(preset, 20) >= preset.trepan_max_queries
 
@@ -36,18 +36,19 @@ def test_bigger_capacity_candidates_get_proportionally_more_queries():
     assert any(c.max_nodes > base.max_nodes for c in _capacity_candidates(base, 30, 6))
 
 
-def test_scientific_preset_uses_purity_epsilon_001_and_it_reaches_both_extractors():
+def test_scientific_preset_keeps_canonical_purity_epsilon_and_it_reaches_both_extractors():
     from core.trepan_original import TrepanOriginalExtractor
     from core.trepan_reloaded_extractor import TrepanReloadedExtractor
     preset = get_training_preset("scientific")
-    assert preset.trepan_purity_epsilon == 0.01
-    assert get_training_preset("fast").trepan_purity_epsilon == 0.05      # outros presets mantêm o canónico
-    limits = TrepanOriginalExtractor._limits({"purity_epsilon": preset.trepan_purity_epsilon}, 2000, 398)
-    assert limits["purity_epsilon"] == 0.01
+    assert preset.trepan_purity_epsilon == 0.05                     # canónico (NIPS 1995); o tuning pode escolher outro
+    for key in ("fast", "balanced"):
+        assert get_training_preset(key).trepan_purity_epsilon == 0.05
+    limits = TrepanOriginalExtractor._limits({"purity_epsilon": 0.02}, 2000, 398)
+    assert limits["purity_epsilon"] == 0.02                         # valor escolhido pelo tuning chega ao Original
     assert "purity_epsilon" not in TrepanOriginalExtractor._limits({}, 2000, 398)   # omissão = comportamento anterior
     ext = TrepanReloadedExtractor()
     ext.apply_training_preset(preset)
-    assert ext._training_limits["historical_purity_epsilon"] == 0.01
+    assert ext._training_limits["historical_purity_epsilon"] == 0.05
 
 
 def test_lower_purity_epsilon_grows_a_bigger_tree_with_enough_budget():
@@ -66,21 +67,8 @@ def test_lower_purity_epsilon_grows_a_bigger_tree_with_enough_budget():
     assert fine.node_count_ >= coarse.node_count_
 
 
-def test_scientific_preset_allows_63_nodes_and_budget_scales_with_it():
+def test_scientific_preset_default_is_31_nodes_and_budget_scales_with_nodes():
     from core.training_config import resolve_trepan_structure_limits
     preset = get_training_preset("scientific")
-    assert resolve_trepan_structure_limits(preset)["max_nodes"] == 63
-    assert resolve_trepan_query_budget(preset, 398) == 31 * 1000     # 31 nós internos x min_sample
-
-
-def test_budget_is_capped_so_large_datasets_stay_tractable():
-    preset = get_training_preset("scientific")
-    for n in (34_000, 200_000):
-        assert resolve_trepan_min_sample(n, cap=preset.trepan_min_sample_cap) == 5000     # amostra por nó deixa de crescer
-        assert resolve_trepan_query_budget(preset, n) == 31 * 5000                         # 155 000 < teto 250 000
-    assert preset.trepan_query_budget_cap == 250_000
-    assert resolve_trepan_query_budget(preset, 398) == 31_000          # datasets pequenos: sem cap
-    assert required_query_budget(63, 34_000, cap=100_000) == 100_000
-    base = ControlledTrepanConfig(max_nodes=63, max_depth=63, min_samples_leaf=4, min_sample=34_000, max_n=3, beam_width=2,
-                                  max_features_per_node=12, max_queries=100_000, random_state=42)
-    assert max(c.max_queries for c in _capacity_candidates(base, 30, 6)) <= 250_000
+    assert resolve_trepan_structure_limits(preset)["max_nodes"] == 31          # canónico; 63 só pelo tuning
+    assert required_query_budget(63, 1000) == 31 * 1000                       # o orçamento escala com os nós pedidos

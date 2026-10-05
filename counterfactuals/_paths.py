@@ -6,7 +6,6 @@ from typing import Dict
 
 CF_ROOT = Path(__file__).resolve().parent
 TREPA_ROOT = CF_ROOT.parent
-DATASETS_DIR = CF_ROOT / "datasets"
 EXPERIMENTOS_DIR = CF_ROOT / "experimentos"
 CLEAR_OUTPUT_DIR = CF_ROOT / "clear_output"
 RESULTADOS_CONSOLIDADOS_DIR = CF_ROOT / "resultados_consolidados"

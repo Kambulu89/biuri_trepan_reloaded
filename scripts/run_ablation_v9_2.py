@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from core.ablation_study import builtin_benchmark_datasets
+from validation.ablation_study import builtin_benchmark_datasets
 from core.c45_j48_tree import C45Classifier
 from core.controlled_trepan_experiment import (
     ControlledTrepanConfig,

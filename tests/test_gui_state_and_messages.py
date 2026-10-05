@@ -157,3 +157,28 @@ def test_budget_exhausted_stump_gets_a_scientific_warning_naming_the_cause():
     ok = TreeDiagnostics(tree="trepan_original", logical_nodes=Measure.of(15), query_budget_exhausted=False,
                          stop_reasons={"STOP_PURE_NODE": 4}, available=True)
     assert not [m for m in derive_messages(_result(trees={"trepan_original": ok})) if m.code == "budget_limited"]
+
+
+def test_surrogate_accuracy_above_mlp_is_flagged_not_hidden_or_changed():
+    mlp = ModelCard(key="mlp_original", status="AVAILABLE", evaluation_samples=45, metrics={"accuracy": Measure.of(0.93)})
+    tree = ModelCard(key="trepan_original", status="AVAILABLE", evaluation_samples=45, metrics={"accuracy": Measure.of(0.944)})
+    r = _result(models={"mlp_original": mlp, "trepan_original": tree})
+    w = [m for m in derive_messages(r) if m.code == "surrogate_above_oracle"]
+    assert w and w[0].level == Level.SCIENTIFIC_WARNING.value
+    assert "94.4%" in w[0].text and "93.0%" in w[0].text and "TREPAN Original" in w[0].text and "45" in w[0].text
+    assert tree.metrics["accuracy"].value == 0.944            # o valor medido nunca é alterado
+    tree2 = ModelCard(key="trepan_original", status="AVAILABLE", metrics={"accuracy": Measure.of(0.90)})
+    assert not [m for m in derive_messages(_result(models={"mlp_original": mlp, "trepan_original": tree2}))
+                if m.code == "surrogate_above_oracle"]
+
+
+def test_unstable_or_failed_structure_tuning_is_flagged():
+    unstable = _result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.02, "max_nodes": 31}, "stable": False,
+                                                 "selection_probability": 0.33, "threshold": 0.6}})
+    w = [m for m in derive_messages(unstable) if m.code == "tuning_uncertain"]
+    assert w and w[0].level == Level.SCIENTIFIC_WARNING.value and "33%" in w[0].text and "60%" in w[0].text
+    failed = _result(config={"trepan_tuning": {"failed": "RuntimeError: boom", "fallback": "canonical_defaults"}})
+    f = [m for m in derive_messages(failed) if m.code == "tuning_failed"]
+    assert f and f[0].level == Level.WARNING.value and "canónica" in f[0].text
+    ok = _result(config={"trepan_tuning": {"selected": {"purity_epsilon": 0.05, "max_nodes": 31}, "stable": True, "selection_probability": 1.0}})
+    assert not [m for m in derive_messages(ok) if m.code in {"tuning_uncertain", "tuning_failed"}]

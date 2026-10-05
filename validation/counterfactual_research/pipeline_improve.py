@@ -25,7 +25,7 @@ setup()
 from core.trepan_original import TrepanOriginalExtractor
 from core.trepan_reloaded_extractor import TrepanReloadedExtractor
 from improve_surrogate import improve_surrogate, evaluate_improvement
-from counterfactuals.dataset_config import get_dataset_config, MLP_ACCURACY, ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import get_dataset_config, MLP_ACCURACY, ALL_DATASETS
 from counterfactuals._paths import models_dir, results_dir, mejora_dir, RESULTADOS_MEJORA_DIR
 
 BASE_SEED = 42

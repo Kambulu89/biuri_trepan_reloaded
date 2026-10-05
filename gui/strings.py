@@ -122,6 +122,8 @@ _CATALOG: Dict[str, Dict[str, str]] = {
             "Um subconjunto estável de features semânticas melhorou a utilidade OOF.",
         "decision.ACCEPT_NON_INFERIOR_WITH_SECONDARY_GAIN":
             "Não-inferior ao MLP base, com ganho numa métrica secundária (evidência fraca).",
+        "decision.ONTOLOGY_VALID_BUT_NO_PREDICTIVE_UTILITY":
+            "A ontologia é válida, mas as features semânticas não mostraram utilidade preditiva validada em validação interna.",
         "decision.NOT_EVALUATED": "O enriquecimento não foi avaliado nesta experiência.",
         "decision.unknown": "Decisão técnica: {code}.",
         "enrichment.nothing_to_show": "Sem relatório de enriquecimento para esta experiência.",
@@ -179,6 +181,48 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "msg.small_tree": "{tree}: árvore com {nodes} nós. Abra o diagnóstico para ver a razão.",
         "msg.budget_limited": "{tree}: a árvore parou por esgotamento do orçamento de queries ({used}/{budget}) com apenas {nodes} nós; "
                               "não reflete a capacidade do método. Aumente o orçamento de queries ou reduza a amostra mínima por nó.",
+        "msg.surrogate_above_oracle": "{tree}: accuracy superior à do MLP Original ({tree_acc} vs {mlp_acc}, +{diff} pp, cerca de {n_samples} de {n_total} "
+                                      "amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o "
+                                      "substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.",
+        "msg.tuning_uncertain": "Tuning da estrutura do TREPAN incerto: no bootstrap de blocos das repetições da validação cruzada a configuração "
+                                "escolhida pela CV completa tem probabilidade {prob} (limiar {threshold}) ou não é a moda do bootstrap. "
+                                "A escolha é pouco suportada pelos dados.",
+        "msg.exploratory_mode": "Modo INTERACTIVE / EXPLORATORY: estes resultados são exploratórios e não são benchmark científico. "
+                                "Use SCIENTIFIC / BENCHMARK para o pipeline com oráculo congelado e oracle_id.",
+        "msg.tuning_failed": "O tuning da estrutura do TREPAN falhou ({reason}); foi usada a configuração canónica.",
+        "field.trepan_tuning": "Estrutura do TREPAN (tuning)",
+        "field.execution_mode": "Modo de execução", "mode.benchmark_ok": "elegível como benchmark (contrato do oráculo cumprido)",
+        "mode.not_benchmark": "exploratório: não utilizar como benchmark científico",
+        "mode.label": "Modo de execução",
+        "mode.interactive": "INTERACTIVE / EXPLORATORY", "mode.benchmark": "SCIENTIFIC / BENCHMARK",
+        "mode.interactive.tip": "Modo normal (MLP com Optuna, cache, interação). Resultados exploratórios: não são benchmark científico.",
+        "mode.benchmark.tip": "Pipeline científico único: split -> MLP -> FrozenOracle -> oracle_id -> tuning (CV 5×3) -> Original e Reloaded -> avaliação.",
+        "section.scientific": "Diagnóstico científico",
+        "sci.oracle_id": "oracle_id", "sci.same_oracle": "Original e Reloaded com o mesmo oracle_id", "sci.seed": "Seed",
+        "sci.cv_plan": "Plano de CV", "sci.selected": "Configuração escolhida", "sci.fidelity": "Fidelity média ± desvio (CV)",
+        "sci.predictive_stability": "Estabilidade preditiva (desvio da fidelity)",
+        "sci.structural_stability": "Estabilidade estrutural (índice; menor = mais estável)",
+        "sci.selection_probability": "selection_probability da escolhida (full-CV)", "sci.runner_up": "bootstrap_runner_up (2.º do bootstrap)",
+        "sci.margin": "Margem top1−top2 (bootstrap)", "sci.full_cv": "Escolhida pela CV completa",
+        "sci.modal": "Moda do bootstrap", "sci.fragile": "Fragilidade da seleção full-CV",
+        "sci.bootstrap_method": "Método do bootstrap", "sci.equivalent": "Conjunto equivalente (fidelity indistinguível)",
+        "sci.equivalent_all": "a família cobre TODA a grelha: os dados não discriminam os candidatos",
+        "sci.selection_basis": "Base da escolha",
+        "sci.basis.parsimony_tiebreak_among_indistinguishable": "parcimónia/desempate entre candidatos estatisticamente indistinguíveis (não por superioridade demonstrada de fidelity)",
+        "sci.basis.fidelity_and_stability_evidence": "evidência de fidelity e estabilidade",
+        "msg.non_discriminative_grid": "Tuning da estrutura do TREPAN: os dados de treino/CV não discriminam as configurações avaliadas (toda a grelha é estatisticamente equivalente). A configuração final foi escolhida por parcimónia/desempate entre candidatos indistinguíveis, e não por superioridade demonstrada de fidelity.",
+        "sci.behavior": "Comportamento da árvore escolhida", "sci.behavior.unstable": "INSTÁVEL (estrutura alterna ou varia muito entre partições)",
+        "sci.behavior.stable": "estável nas partições de CV", "sci.capacity_step": "Último passo de capacidade", "sci.expansion": "Expansão de capacidade",
+        "sci.fragile.yes": "FORTE: a escolhida pela CV completa não é a moda do bootstrap",
+        "sci.fragile.no": "não: a escolhida é a moda do bootstrap",
+        "sci.censored_weak": "evidência fraca: CV de nós baixo pode vir do teto de nós", "sci.node_cap": "fraction_at_node_cap", "sci.queries": "queries_used / query_budget",
+        "sci.budget_exhausted": "budget_exhausted", "sci.test_used": "test_used_for_selection", "sci.tuning_status": "Estado do tuning",
+        "sci.status.stable_exact": "stable_exact (hiperparâmetro exato estável)", "sci.status.stable_equivalent_subset": "stable_equivalent_subset (subconjunto equivalente estável)",
+        "sci.status.non_discriminative_grid": "non_discriminative_grid (os dados não discriminam a grelha)",
+        "sci.status.tuning_stable": "tuning_stable", "sci.status.tuning_uncertain": "tuning_uncertain",
+        "sci.status.not_run": "não executado", "sci.status.failed": "falhou (configuração canónica)",
+        "sci.censored": "estabilidade estrutural potencialmente censurada pelo teto de nós",
+        "reason.tuning_not_run": "tuning científico não executado", "reason.no_oracle_contract": "sem contrato do oráculo (modo exploratório)",
         "msg.stale": "Resultados anteriores marcados como desatualizados: {reasons}.",
         "msg.cancelled": "Operação cancelada pelo utilizador.",
         # --- erros

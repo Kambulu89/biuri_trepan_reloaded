@@ -118,7 +118,32 @@ def derive_messages(result: ExperimentResult) -> List[Message]:
         out.append(make_message(Level.INFO, "enrichment_rejected", "msg.enrichment_rejected", eid,
                                 decision=enr.decision or "-"))
 
+    tuning = (result.config or {}).get("trepan_tuning") or {}
+    if tuning.get("failed"):
+        out.append(make_message(Level.WARNING, "tuning_failed", "msg.tuning_failed", eid, reason=str(tuning["failed"])[:160]))
+    elif tuning.get("status") == "non_discriminative_grid":
+        out.append(make_message(Level.SCIENTIFIC_WARNING, "non_discriminative_grid", "msg.non_discriminative_grid", eid))
+    elif tuning.get("stable") is False:
+        out.append(make_message(Level.SCIENTIFIC_WARNING, "tuning_uncertain", "msg.tuning_uncertain", eid,
+                                prob=f"{(tuning.get('selection_probability') or 0):.0%}", threshold=f"{(tuning.get('threshold') or 0):.0%}"))
+    if result.provenance.execution_mode == "INTERACTIVE_EXPLORATORY":
+        out.append(make_message(Level.INFO, "exploratory_mode", "msg.exploratory_mode", eid))
+    sci = getattr(result, "scientific", None)
+    if sci is not None and sci.tuning_status == "non_discriminative_grid" and not any(m.code == "non_discriminative_grid" for m in out):
+        out.append(make_message(Level.SCIENTIFIC_WARNING, "non_discriminative_grid", "msg.non_discriminative_grid", eid))
+    mlp = result.models.get("mlp_original")
+    mlp_acc = mlp.metrics.get("accuracy") if mlp else None
     for key in ("trepan_original", "trepan_reloaded"):
+        card = result.models.get(key)
+        tree_acc = card.metrics.get("accuracy") if card else None
+        if mlp_acc is not None and mlp_acc.available and tree_acc is not None and tree_acc.available \
+                and tree_acc.value > mlp_acc.value + 1e-12:
+            n_total = (mlp.evaluation_samples or 0)
+            diff = tree_acc.value - mlp_acc.value
+            out.append(make_message(
+                Level.SCIENTIFIC_WARNING, "surrogate_above_oracle", "msg.surrogate_above_oracle", eid, tree=term(key),
+                tree_acc=f"{tree_acc.value:.1%}", mlp_acc=f"{mlp_acc.value:.1%}", diff=f"{diff * 100:.1f}",
+                n_samples=max(1, round(diff * n_total)) if n_total else "?", n_total=n_total or "?"))
         diag = result.trees.get(key)
         if diag is None or not diag.available:
             continue

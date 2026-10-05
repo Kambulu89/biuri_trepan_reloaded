@@ -17,7 +17,7 @@ def test_bootstrap_does_not_change_cwd(tmp_path):
 
 
 def test_hepatitis_preparation_uses_first_column_as_target_and_preserves_nan(tmp_path, monkeypatch):
-    from counterfactuals.datasets import preparar_datasets as prep
+    from validation.counterfactual_research.datasets import preparar_datasets as prep
     original = tmp_path / 'originales'
     original.mkdir()
     # classe, f1, histology; inclui ? que não pode ser imputado globalmente.

@@ -349,13 +349,90 @@ def test_evidence_capped_for_small_tests_and_repeated_cv():
     assert set(ident["evidence_level"]) == {"IDENTICAL_RESULTS"}                       # nó constante: diferenças todas 0
 
 
+def _expected_aggregation(df: pd.DataFrame, n_boot: int):
+    """Referência independente (pandas/numpy puros) do que ``aggregate`` deve devolver: uma linha por (grupo, métrica aplicável)."""
+    df = df.copy()
+    df["oracle_name"] = df["oracle_name"].fillna("n/a")
+    expected = {}
+    for (ds, arm, oracle), g in df.groupby(["dataset", "arm", "oracle_name"], sort=False):
+        for m in an.AGG_METRICS:
+            if m not in g or g[m].isna().all():
+                continue
+            v = g[m].astype(float).dropna().to_numpy()
+            expected[(ds, arm, oracle, m)] = v
+    return expected
+
+
+def _assert_aggregation_matches_raw(df: pd.DataFrame, n_boot: int = 200):
+    agg = an.aggregate(df, n_boot=n_boot)
+    keys = ["dataset", "arm", "oracle_name", "metric"]
+    expected = _expected_aggregation(df, n_boot)
+    # 1) cada (grupo, métrica) esperado aparece EXATAMENTE uma vez e nada mais aparece
+    assert not agg.duplicated(keys).any()
+    assert set(map(tuple, agg[keys].to_numpy())) == set(expected)
+    assert len(agg) == len(expected)
+    # 2) todos os grupos presentes nos dados brutos (que tenham alguma métrica) aparecem na agregação
+    raw_groups = {(r.dataset, r.arm, r.oracle_name if isinstance(r.oracle_name, str) else "n/a") for r in df.itertuples()}
+    agg_groups = {(r.dataset, r.arm, r.oracle_name) for r in agg.itertuples()}
+    assert agg_groups <= raw_groups and {g for g in raw_groups if any(k[:3] == g for k in expected)} == agg_groups
+    # 3) nenhuma linha bruta desaparece em silêncio: por métrica, soma dos n == nº de valores brutos não-NaN
+    for m in an.AGG_METRICS:
+        if m in df and df[m].notna().any():
+            assert int(agg[agg["metric"] == m]["n"].sum()) == int(df[m].notna().sum()), m
+    # 4) mean/std/median/min/max/IC correspondem aos valores brutos usados
+    for row in agg.itertuples():
+        v = expected[(row.dataset, row.arm, row.oracle_name, row.metric)]
+        assert row.n == len(v)
+        assert row.mean == pytest.approx(v.mean()) and row.median == pytest.approx(np.median(v))
+        assert row.min == pytest.approx(v.min()) and row.max == pytest.approx(v.max())
+        assert row.std == pytest.approx(v.std(ddof=1) if len(v) > 1 else 0.0)
+        lo, hi = st.bootstrap_ci(v, n_boot=n_boot, alpha=0.05, seed=0)
+        if len(v) < 2:
+            assert np.isnan(row.ci_low) and np.isnan(row.ci_high)
+        else:
+            assert row.ci_low == pytest.approx(lo) and row.ci_high == pytest.approx(hi)
+            assert row.ci_low <= row.mean + 1e-12 <= row.ci_high + 2e-12
+    return agg
+
+
 def test_aggregation_keeps_raw_and_reports_mean_std_ci(result):
     df = result.frame()
-    agg = an.aggregate(df, n_boot=200)
+    agg = _assert_aggregation_matches_raw(df)
     assert {"mean", "std", "median", "min", "max", "ci_low", "ci_high", "n"} <= set(agg.columns)
     row = agg[(agg["arm"] == "trepan_original") & (agg["metric"] == "fidelity_to_oracle")].iloc[0]
     vals = df[df["arm"] == "trepan_original"]["fidelity_to_oracle"]
-    assert row["mean"] == pytest.approx(vals.mean()) and row["n"] == len(vals) and len(df) >= len(agg) / 10
+    assert row["mean"] == pytest.approx(vals.mean()) and row["n"] == len(vals)
+    # a tabela bruta é preservada: nenhuma linha foi alterada/removida pela agregação
+    assert len(df) == df.groupby(["arm", "oracle_name"], dropna=False).size().sum() and len(df) > 0
+    # independente de CPUs/workers: reagregar (e embaralhar as linhas) dá exatamente o mesmo resultado
+    again = an.aggregate(df.sample(frac=1.0, random_state=1).reset_index(drop=True), n_boot=200)
+    cols = ["dataset", "arm", "oracle_name", "metric"]
+    pd.testing.assert_frame_equal(agg.sort_values(cols).reset_index(drop=True)[["n", "mean", "std", "median", "min", "max"]],
+                                  again.sort_values(cols).reset_index(drop=True)[["n", "mean", "std", "median", "min", "max"]],
+                                  check_exact=False, rtol=1e-12)
+
+
+def test_aggregation_on_a_handmade_frame_is_exact_and_independent_of_the_environment():
+    nan = float("nan")
+    df = pd.DataFrame([
+        dict(dataset="d1", arm="a", oracle_name="o1", fidelity_to_oracle=0.8, node_count=5.0, reasoner_time=nan, depth=2.0),
+        dict(dataset="d1", arm="a", oracle_name="o1", fidelity_to_oracle=0.9, node_count=7.0, reasoner_time=nan, depth=3.0),
+        dict(dataset="d1", arm="a", oracle_name="o1", fidelity_to_oracle=1.0, node_count=nan, reasoner_time=nan, depth=4.0),
+        dict(dataset="d1", arm="b", oracle_name=None, fidelity_to_oracle=0.5, node_count=9.0, reasoner_time=0.2, depth=nan),
+        dict(dataset="d2", arm="a", oracle_name="o1", fidelity_to_oracle=0.7, node_count=1.0, reasoner_time=nan, depth=1.0),
+        dict(dataset="d2", arm="a", oracle_name="o1", fidelity_to_oracle=0.9, node_count=3.0, reasoner_time=nan, depth=nan),
+    ])
+    agg = _assert_aggregation_matches_raw(df, n_boot=100)
+    got = {(r.dataset, r.arm, r.oracle_name, r.metric): r for r in agg.itertuples()}
+    assert ("d1", "a", "o1", "reasoner_time") not in got                      # métrica toda NaN -> sem linha
+    assert ("d1", "b", "n/a", "fidelity_to_oracle") in got                    # oráculo ausente agrupa em "n/a"
+    r = got[("d1", "a", "o1", "node_count")]                                  # NaN é ignorado mas contado corretamente
+    assert r.n == 2 and r.mean == pytest.approx(6.0) and r.std == pytest.approx(np.std([5, 7], ddof=1))
+    single = got[("d1", "b", "n/a", "fidelity_to_oracle")]
+    assert single.n == 1 and single.std == 0.0 and np.isnan(single.ci_low) and np.isnan(single.ci_high)
+    assert got[("d1", "a", "o1", "fidelity_to_oracle")].mean == pytest.approx(0.9)
+    # 3 grupos (d1/a/o1, d1/b/n/a, d2/a/o1) x 3 métricas aplicáveis cada = 9 linhas, nem mais nem menos
+    assert len(agg) == len(_expected_aggregation(df, 100)) == 9 and agg.groupby(["dataset", "arm", "oracle_name"]).ngroups == 3
 
 
 # ------------------------------------------------------------------ manifest / persistência / relatórios

@@ -9,7 +9,7 @@ import pytest
 from owlready2 import AllDisjoint, DataProperty, Thing, World
 
 from core.arff_schema import OrderedLabelEncoder, parse_arff_class_order
-from core.benchmark_ontologies import ensure_builtin_domain_ontologies
+from validation.benchmark_ontologies import ensure_builtin_domain_ontologies
 from core.ontology_processor import OntologyProcessor, OntologySchemaError
 from core.ontology_quality import OntologyQualityGate
 from core.ontology_reasoner import run_owl_reasoner

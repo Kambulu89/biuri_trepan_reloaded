@@ -25,7 +25,7 @@ from counterfactuals._paths import (
     CF_ROOT, experiment_dir, models_dir, results_dir, mejora_dir,
     RESULTADOS_MEJORA_DIR,
 )
-from counterfactuals.dataset_config import ALL_DATASETS
+from validation.counterfactual_research.dataset_registry import ALL_DATASETS
 
 setup()
 

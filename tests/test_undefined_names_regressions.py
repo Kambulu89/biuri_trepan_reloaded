@@ -6,7 +6,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 FILES = [
     "gui/biuri_app_complete.py",
-    "counterfactuals/pipelines/pipeline_train.py",
+    "validation/counterfactual_research/pipeline_train.py",
 ]
 
 
@@ -27,6 +27,6 @@ def test_no_undefined_names(rel):
 
 def test_pipeline_train_defines_base_seed():
     pytest.importorskip("sklearn")
-    from counterfactuals.pipelines import pipeline_train
+    from validation.counterfactual_research import pipeline_train
 
     assert pipeline_train.BASE_SEED == 42

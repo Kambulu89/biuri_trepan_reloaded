@@ -18,6 +18,7 @@ from core.experiment_builders import (enrichment_from_reports, ontology_from_qua
 from core.experiment_result import (DatasetInfo, ExperimentResult, ExperimentState, Measure, ModelCard, Provenance,
                                     Reason)
 from core.model_cache import compute_semantic_config_hash
+from core.tree_stop_summary import stop_summary_of
 from gui.experiment_state import Fingerprint
 
 
@@ -204,17 +205,35 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
                      "f1_macro": audit.get("macro_f1"), "precision_macro": audit.get("precision_macro", audit.get("precision")),
                      "recall_macro": audit.get("recall_macro", audit.get("recall"))}
         fid = _g(fidelity.get(key), "overall_fidelity") if fidelity.get(key) else audit.get("trepan_fidelity")
+        tree_obj = getattr(app, tree_attr, None)
+        # Auditorias legadas não trazem tudo (nº de nós 0, sem stop_summary, sem queries): ler da própria árvore (só leitura).
+        stop_summary = audit.get("stop_summary") or stop_summary_of(tree_obj)
         nodes = _g(audit, "node_count", "nodes", "tree_n_nodes")
-        if not nodes:  # auditorias antigas escreviam 0/ausente para árvores TREPAN: ler o atributo da própria árvore
-            nodes = getattr(getattr(app, tree_attr, None), "node_count_", None) or nodes
+        if not nodes:
+            nodes = getattr(tree_obj, "node_count_", None) or nodes
         depth = audit.get("depth")
+        if depth is None and hasattr(tree_obj, "get_depth"):
+            try:
+                depth = tree_obj.get_depth()
+            except Exception:
+                depth = None
         queries = _g(audit, "membership_queries", "oracle_query_count")
+        if queries is None:
+            queries = getattr(tree_obj, "membership_queries_", None)
+        if queries is None:
+            queries = stop_summary.get("queries_used")
+        leaves = audit.get("leaves")
+        if leaves is None and hasattr(tree_obj, "get_n_leaves"):
+            try:
+                leaves = tree_obj.get_n_leaves()
+            except Exception:
+                leaves = None
         models[key] = ModelCard(
             key=key, status="AVAILABLE", oracle=oracle, metrics=_block_metrics(block, Reason.COMPARISON_NOT_RUN),
             fidelity=Measure.of(fid, Reason.COMPARISON_NOT_RUN), evaluation_samples=n_test,
-            complexity={"nodes": Measure.of(nodes), "depth": Measure.of(depth), "leaves": Measure.of(audit.get("leaves")),
+            complexity={"nodes": Measure.of(nodes), "depth": Measure.of(depth), "leaves": Measure.of(leaves),
                         "queries": Measure.of(queries)})
-        trees[key] = tree_diagnostics(key, audit.get("stop_summary"), nodes=nodes, depth=depth, leaves=audit.get("leaves"),
+        trees[key] = tree_diagnostics(key, stop_summary, nodes=nodes, depth=depth, leaves=leaves,
                                       queries=queries, split_audit=audit.get("semantic_split_audit") if key == "trepan_reloaded" else None)
 
     reloaded_audit = dict(getattr(app, "trepan_reloaded_audit", None) or {})
@@ -227,6 +246,21 @@ def build_experiment_result(app, *, experiment_id: Optional[str] = None, state: 
         state=state, provenance=prov, dataset=dataset, ontology=ontology, enrichment=enrichment, models=models, trees=trees,
         semantic_features=semantic_features_from_audit(enr_report), semantic_splits=semantic_splits_from_audit(split_rows),
         config=cfg, counterfactual=_counterfactual_summary(app))
+    tuning = getattr(app, "_trepan_scientific_tuning", None)
+    if tuning:
+        sel = tuning.get("structure_selection") or {}
+        result.config = {**result.config, "trepan_tuning": {
+            "selected": tuning.get("structure_selected"), "stable": tuning.get("tuning_stable"),
+            "status": tuning.get("tuning_status"), "selection_probability": sel.get("selection_probability"),
+            "threshold": sel.get("threshold"), "per_repeat_winners": sel.get("per_repeat_winners"),
+            "failed": tuning.get("failed"), "fallback": tuning.get("fallback"),
+            "n_splits": (tuning.get("cv_plan") or {}).get("n_splits")}}
+    # Modo normal da GUI: INTERACTIVE / EXPLORATORY. Sem contrato do oráculo congelado, nunca elegível como benchmark.
+    from core.execution_mode import ExecutionMode
+    from core.experiment_builders import scientific_diagnostics_from_tuning
+    result.provenance.execution_mode = ExecutionMode.INTERACTIVE_EXPLORATORY.value
+    result.scientific = scientific_diagnostics_from_tuning(
+        tuning, None, seed=result.provenance.seed, execution_mode=ExecutionMode.INTERACTIVE_EXPLORATORY.value)
     if previous is not None:
         result.messages = list(previous.messages)
     return result
