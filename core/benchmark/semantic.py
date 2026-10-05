@@ -227,7 +227,10 @@ class ShuffledSemanticProvider:
         self.seed_offset = int(seed_offset)
 
     def build(self, X_train, feature_names, seed: int = 0) -> SemanticContext:
-        ctx = self.base.build(X_train, feature_names, seed)
+        return self.from_context(self.base.build(X_train, feature_names, seed), seed)
+
+    def from_context(self, ctx: SemanticContext, seed: int = 0) -> SemanticContext:
+        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning)."""
         if not ctx.available:
             ctx.provider = self.name
             return ctx

@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import time
 import warnings
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
@@ -238,6 +238,18 @@ def fit_mlp(X, y, seed: int, trials: int = 0, inner_splits: int = 3):
     return model, info
 
 
+def _enriched(ctx, X, tag: str):
+    """Matriz enriquecida de um contexto semântico, calculada UMA vez por (contexto, partição). A transformação é determinística e
+    o array é entregue só de leitura: qualquer escrita in-place falharia em vez de corromper silenciosamente o valor em cache."""
+    cache = ctx.__dict__.setdefault("_enrich_cache", {})
+    hit = cache.get(tag)
+    if hit is None or hit[0] is not X:
+        out = ctx.enrich(X)
+        out.flags.writeable = False
+        hit = cache[tag] = (X, out)
+    return hit[1]
+
+
 def select_oracle(X_train, X_train_enriched, y_train, *, seed: int, margin: float, inner_splits: int = 3) -> Dict[str, Any]:
     """Gate do professor: usa APENAS treino (CV interna). Não recebe, por construção, nenhum dado de teste."""
     res = {"gate_margin": float(margin), "available": X_train_enriched is not None}
@@ -360,11 +372,14 @@ class BenchmarkRunner:
             max_features_per_node=min(budget["max_features_per_node"], max(1, Xtr.shape[1])), max_queries=budget["max_queries"],
             random_state=seed)
         search = self.cfg.structure_search or ScientificTrepanSearchConfig(cv_folds=3, cv_repeats=5)
+        # ``run_semantic_stage=False`` (abaixo): a etapa semântica do tuning (candidatos Reloaded com pesos neutros) não é consumida pelo
+        # protocolo estrutural, que usa só ``common_capacity`` e as seleções de estrutura/capacidade, calculadas ANTES dela. Ignorá-la
+        # evita ajustes Reloaded sem efeito no resultado. Genérico: não depende do dataset.
         t0 = time.perf_counter()
         try:
             with frozen_oracle.scope("structural_tuning"):
                 tuned = tune_scientific_trepan(Xtr, ytr, oracle=frozen_oracle, feature_names=feature_names, base_config=base,
-                                               search=search)            # SEM semantic_feature_* / ontology_graph
+                                               search=search, run_semantic_stage=False)            # SEM semantic_feature_* / ontology_graph
             common = tuned["common_capacity"]
             budget = {k: (common[k] if k in common else budget[k]) for k in self.STRUCTURE_KEYS}
             sel = tuned.get("structure_selection") or {}
@@ -379,6 +394,8 @@ class BenchmarkRunner:
             hist = {h["label"]: h for h in (tuned.get("structure_history") or [])}
             report["candidate_count"] = int(len(hist))
             report["number_cv_fits"] = int(sum(len(h.get("per_split") or []) for h in (tuned.get("structure_history") or [])))
+            report["number_capacity_fits"] = int(sum(len(h.get("per_split") or []) for h in (tuned.get("capacity_history") or [])
+                                                     if h.get("stage") == "capacity"))
             lab = sel.get("selected_config_full_cv")
             if lab in hist and hist[lab].get("stats"):
                 report["oof_fidelity_mean"] = float(hist[lab]["stats"]["fidelity_mean"])
@@ -404,7 +421,7 @@ class BenchmarkRunner:
         with timer.stage("ontology_total_time"):
             ctx_real = provider.build(Xtr, ds.feature_names, seed)
         with timer.stage("ontology_shuffled_build_time"):
-            ctx_shuf = ShuffledSemanticProvider(provider).build(Xtr, ds.feature_names, seed) if ctx_real.available else ctx_real
+            ctx_shuf = ShuffledSemanticProvider(provider).from_context(ctx_real, seed) if ctx_real.available else ctx_real
         sem = {"split_id": sp.split_id, "provider": ctx_real.provider, "semantic_available": bool(ctx_real.available),
                "ontology_valid": ctx_real.ontology_valid, "reason": ctx_real.reason,
                "n_derived_features": len(ctx_real.onto_idx), "semantic_time": ctx_real.semantic_time,
@@ -489,7 +506,7 @@ class BenchmarkRunner:
         timing["reasoning_time"] = float(ctx_real.reasoner_time)
         sem["timing"] = timing                                    # tempo por estágio (s); serialization_time/total final em run.py
         n_tree_arms = sum(1 for r in rows if r.get("family") in ("trepan_original", "trepan_reloaded"))
-        cv_fits = int(structural.get("number_cv_fits", 0))
+        cv_fits = int(structural.get("number_cv_fits", 0)) + int(structural.get("number_capacity_fits", 0))
         sem["work"] = {
             "n_samples": int(len(ds.y)), "n_train": int(sp.n_train), "n_test": int(sp.n_test), "n_features_raw": int(Xtr.shape[1]),
             "n_features_processed": int(ctx_real.n_features if ctx_real.available else Xtr.shape[1]), "n_classes": int(len(labels)),
@@ -577,7 +594,7 @@ class BenchmarkRunner:
             oracle = fe                              # o oráculo ontológico (outro modelo, congelado) opera no espaço enriquecido
             if not use_enr:
                 raise ValueError("MLP Ontológico só pode ser oráculo de uma árvore no espaço enriquecido.")
-        X_fit = ctx.enrich(Xtr) if use_enr else Xtr
+        X_fit = _enriched(ctx, Xtr, "train") if use_enr else Xtr
         names = ctx.enriched_names if use_enr else ds.feature_names
         common = dict(budget, random_state=seed)
         if spec.max_n is not None:
@@ -607,7 +624,7 @@ class BenchmarkRunner:
                     fit_kw["query_projector"] = ctx.query_projector()
                 tree = TrepanReloadedClassifier(**kw).fit(X_fit, oracle=oracle, feature_names=names, **fit_kw)
         row["tree_training_time"] = time.perf_counter() - t0
-        X_eval = ctx.enrich(Xte) if use_enr else Xte
+        X_eval = _enriched(ctx, Xte, "test") if use_enr else Xte
         if bool(getattr(tree, "semantic_effect_mirror_applied_", False)):
             raise RuntimeError("Espelhamento aplicado num braço científico: o benchmark não pode substituir o Reloaded por um Original.")
         pred = np.asarray(tree.predict(X_eval))
@@ -626,7 +643,7 @@ class BenchmarkRunner:
         sem_splits = sum(1 for r in audit_rows if r.get("ontology_influenced") or abs(r.get("semantic_bonus", 0.0)) > 1e-12)
         row["semantic_decision_changed_count"] = sum(1 for r in audit_rows if r.get("decision_changed"))
         row.update(self._complexity(cx, sem_splits))
-        X_train_eval = ctx.enrich(Xtr) if use_enr else Xtr
+        X_train_eval = _enriched(ctx, Xtr, "train") if use_enr else Xtr
         row["fidelity_train"] = float(np.mean(np.asarray(tree.predict(X_train_eval)) == oracle_train_pred))
         stc = trepan_structure(tree, names, np.std(X_fit, axis=0))
         row.update(structure_columns(stc))
