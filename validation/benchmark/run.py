@@ -7,6 +7,14 @@
 """
 from __future__ import annotations
 
+import os
+
+# Reprodutibilidade numérica entre máquinas (engenharia, não altera o desenho científico): fixa o kernel do OpenBLAS, um único
+# thread de BLAS e desativa as rotas SIMD AVX-512 do NumPy, que dependem do CPU do anfitrião e mudam o último bit dos pesos do MLP.
+for _k, _v in (("OPENBLAS_CORETYPE", "Haswell"), ("OPENBLAS_NUM_THREADS", "1"), ("OMP_NUM_THREADS", "1"), ("MKL_NUM_THREADS", "1"),
+               ("NPY_DISABLE_CPU_FEATURES", "AVX512F AVX512CD AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_KNL AVX512_KNM")):
+    os.environ.setdefault(_k, _v)
+
 import argparse
 import json
 import subprocess
@@ -33,7 +41,7 @@ def benchmark_config(seed: int):
 
 def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MANIFEST_PATH) -> Path:
     from core.benchmark.runner import BenchmarkRunner
-    verification = mf.verify_manifest(manifest_path)
+    verification = mf.verify_manifest(manifest_path, dataset_ids=[dataset_id])
     if not verification["ok"]:
         raise SystemExit(f"Manifesto inválido: {verification['problems']}")
     if seed not in mf.MASTER_SEEDS:
@@ -53,6 +61,7 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MAN
     timing["total_time"] = time.perf_counter() - t0
     meta = {"dataset": dataset_id, "seed": seed, "seconds": timing["total_time"], "frozen_code_drift": verification["frozen_code_drift"],
             "run_code_commit": verification["current_code_commit"], "status": "completed", "timing": timing,
+            "numeric_environment": {k: os.environ.get(k) for k in ("OPENBLAS_CORETYPE", "OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NPY_DISABLE_CPU_FEATURES")},
             "work": split_report.get("work", {})}
     (out / "raw" / dataset_id / f"seed{seed}" / "RUN_META.txt").write_text(json.dumps(meta), encoding="utf-8")
     return out

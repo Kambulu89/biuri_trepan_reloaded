@@ -148,7 +148,7 @@ def load_manifest(path: Path = MANIFEST_PATH) -> Dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def verify_manifest(path: Path = MANIFEST_PATH, *, check_code: bool = True) -> Dict[str, Any]:
+def verify_manifest(path: Path = MANIFEST_PATH, *, check_code: bool = True, dataset_ids=None) -> Dict[str, Any]:
     """Verifica integridade do manifesto, dados e ontologias atuais e deriva do código congelado. Devolve um relatório."""
     m = load_manifest(path)
     problems: List[str] = []
@@ -159,6 +159,8 @@ def verify_manifest(path: Path = MANIFEST_PATH, *, check_code: bool = True) -> D
     except ValueError as exc:
         problems.append(str(exc))
     for e in m["datasets"]:
+        if dataset_ids is not None and e["dataset_id"] not in dataset_ids:
+            continue                                   # uma unidade só precisa de verificar o seu próprio dataset
         spec = ds_mod.REGISTRY.get(e["dataset_id"])
         if spec is None:
             problems.append(f"dataset desconhecido: {e['dataset_id']}")
