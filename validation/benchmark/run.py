@@ -45,9 +45,15 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MAN
     t0 = time.perf_counter()
     result = BenchmarkRunner(cfg, arms).run(ds, str(spec.ontology_path) if spec.ontology_path else None)
     sha = verification["manifest_sha256"]
+    t_ser = time.perf_counter()
     write_unit(result, out, manifest_sha256=sha, labels=list(range(len(_classes))))
-    meta = {"dataset": dataset_id, "seed": seed, "seconds": time.perf_counter() - t0, "frozen_code_drift": verification["frozen_code_drift"],
-            "run_code_commit": verification["current_code_commit"]}
+    serialization = time.perf_counter() - t_ser
+    split_report = result.semantic_report[0]
+    timing = dict(split_report.get("timing", {}), serialization_time=serialization)
+    timing["total_time"] = time.perf_counter() - t0
+    meta = {"dataset": dataset_id, "seed": seed, "seconds": timing["total_time"], "frozen_code_drift": verification["frozen_code_drift"],
+            "run_code_commit": verification["current_code_commit"], "status": "completed", "timing": timing,
+            "work": split_report.get("work", {})}
     (out / "raw" / dataset_id / f"seed{seed}" / "RUN_META.txt").write_text(json.dumps(meta), encoding="utf-8")
     return out
 

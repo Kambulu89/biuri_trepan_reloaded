@@ -160,6 +160,7 @@ class OwlSemanticProvider:
             onto = get_ontology(str(Path(self.ontology_path).resolve())).load()
             r0 = time.perf_counter()
             reasoner = run_owl_reasoner(onto, engine=self.reasoner_engine, infer_property_values=True, debug=0)
+            self.n_reasoner_calls = int(getattr(self, "n_reasoner_calls", 0)) + 1
             reasoner_time = time.perf_counter() - r0
             gate = OntologyQualityGate()
             report = gate.evaluate(names, onto, reasoner_report=reasoner, require_reasoner=True)

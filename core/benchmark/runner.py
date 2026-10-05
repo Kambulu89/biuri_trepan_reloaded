@@ -20,6 +20,7 @@ from core.benchmark.semantic import (
 from core.benchmark.splits import SplitSpec, assert_disjoint, inner_folds, make_splits
 from core.benchmark.ontology_gate import ontology_category, ontology_gate_fields
 from core.benchmark.preprocessing import preprocessing_record
+from core.benchmark.timing import ARM_TIME_KEY, StageTimer
 from core.benchmark.preprocessing import preprocessing_record
 from core.benchmark.structure import c45_structure, structure_columns, trepan_structure
 from core.c45_j48_tree import C45Classifier
@@ -376,6 +377,8 @@ class BenchmarkRunner:
                           cv_plan=tuned.get("cv_plan"), test_used_for_selection=bool(tuned.get("test_used_for_selection", False)),
                           tuning_time_s=time.perf_counter() - t0)
             hist = {h["label"]: h for h in (tuned.get("structure_history") or [])}
+            report["candidate_count"] = int(len(hist))
+            report["number_cv_fits"] = int(sum(len(h.get("per_split") or []) for h in (tuned.get("structure_history") or [])))
             lab = sel.get("selected_config_full_cv")
             if lab in hist and hist[lab].get("stats"):
                 report["oof_fidelity_mean"] = float(hist[lab]["stats"]["fidelity_mean"])
@@ -386,17 +389,22 @@ class BenchmarkRunner:
 
     def _run_split(self, ds: Dataset, sp: SplitSpec, provider):
         cfg = self.cfg
+        timer = StageTimer()
+        reasoner_calls_before = int(getattr(provider, "n_reasoner_calls", 0))
         seed = int(sp.seed) + 1000 * int(sp.repeat) + int(sp.fold)
-        Xtr, ytr = ds.X[sp.train_idx], ds.y[sp.train_idx]
-        Xte, yte = ds.X[sp.test_idx], ds.y[sp.test_idx]
-        labels = ds.class_labels
-        minority = minority_class(ytr, labels)            # só do treino
+        with timer.stage("preprocessing_time"):
+            Xtr, ytr = ds.X[sp.train_idx], ds.y[sp.train_idx]
+            Xte, yte = ds.X[sp.test_idx], ds.y[sp.test_idx]
+            labels = ds.class_labels
+            minority = minority_class(ytr, labels)            # só do treino
         guard = EvaluationProtocolGuard(run_id=f"{ds.name}:{sp.split_id}")
         guard.record_selection(PartitionRole.TRAIN, "fit_all_models_on_train", split_hash=sp.split_hash)
 
         # ---- semântica (ajustada só no treino)
-        ctx_real = provider.build(Xtr, ds.feature_names, seed)
-        ctx_shuf = ShuffledSemanticProvider(provider).build(Xtr, ds.feature_names, seed) if ctx_real.available else ctx_real
+        with timer.stage("ontology_total_time"):
+            ctx_real = provider.build(Xtr, ds.feature_names, seed)
+        with timer.stage("ontology_shuffled_build_time"):
+            ctx_shuf = ShuffledSemanticProvider(provider).build(Xtr, ds.feature_names, seed) if ctx_real.available else ctx_real
         sem = {"split_id": sp.split_id, "provider": ctx_real.provider, "semantic_available": bool(ctx_real.available),
                "ontology_valid": ctx_real.ontology_valid, "reason": ctx_real.reason,
                "n_derived_features": len(ctx_real.onto_idx), "semantic_time": ctx_real.semantic_time,
@@ -405,18 +413,22 @@ class BenchmarkRunner:
                "shuffled_structure_signature": ctx_shuf.structure_signature() if ctx_shuf.available else None}
 
         # ---- MLPs (mesmo procedimento e orçamento)
-        mlp_o, info_o = fit_mlp(Xtr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
+        with timer.stage("mlp_training_time"):
+            mlp_o, info_o = fit_mlp(Xtr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
         mlp_e = info_e = None
         Xtr_enr = Xte_enr = None
         if ctx_real.available and cfg.different_oracle_experiment:
-            Xtr_enr, Xte_enr = ctx_real.enrich(Xtr), ctx_real.enrich(Xte)
-            mlp_e, info_e = fit_mlp(Xtr_enr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
+            with timer.stage("mlp_ontological_training_time"):
+                Xtr_enr, Xte_enr = ctx_real.enrich(Xtr), ctx_real.enrich(Xte)
+                mlp_e, info_e = fit_mlp(Xtr_enr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
         # ---- contrato do oráculo: o MLP é CONGELADO (hash dos pesos = oracle_id) e é exatamente este objeto que todas as
         # árvores do split consultam; o oráculo ontológico (opcional) é outro objeto, identificado como tal.
-        fo = freeze_oracle(mlp_o, Xtr, builder="benchmark_mlp_original")
-        fe = freeze_oracle(mlp_e, Xtr_enr, builder="benchmark_mlp_ontological") if mlp_e is not None else None
+        with timer.stage("oracle_freeze_time"):
+            fo = freeze_oracle(mlp_o, Xtr, builder="benchmark_mlp_original")
+            fe = freeze_oracle(mlp_e, Xtr_enr, builder="benchmark_mlp_ontological") if mlp_e is not None else None
         guard.record_selection(PartitionRole.VALIDATION, "oracle_gate_inner_cv_on_train_only", folds=cfg.inner_cv_splits)
-        gate = select_oracle(Xtr, Xtr_enr, ytr, seed=seed, margin=cfg.oracle_gate_margin, inner_splits=cfg.inner_cv_splits)
+        with timer.stage("oracle_gate_time"):
+            gate = select_oracle(Xtr, Xtr_enr, ytr, seed=seed, margin=cfg.oracle_gate_margin, inner_splits=cfg.inner_cv_splits)
         sem.update(mlp_enrichment_accepted=bool(gate.get("accepted")), oracle_gate=gate,
                    trepan_semantics_available=bool(ctx_real.available))
 
@@ -432,7 +444,8 @@ class BenchmarkRunner:
         selected = "mlp_ontological" if (gate.get("accepted") and mlp_e is not None) else "mlp_original"
         sem["selected_oracle"] = selected
 
-        budget, structural = self._structural_protocol(Xtr, ytr, fo, ds.feature_names, seed, sp.n_train)
+        with timer.stage("tuning_time"):
+            budget, structural = self._structural_protocol(Xtr, ytr, fo, ds.feature_names, seed, sp.n_train)
         sem["structural_protocol"] = structural
         oracle_train_pred = np.asarray(mlp_o.predict(Xtr))                 # fidelity de TREINO (leitura direta, sem contar queries)
         rows, preds, skipped = [], {}, []
@@ -450,6 +463,7 @@ class BenchmarkRunner:
             if spec.needs_semantic and not ctx_real.available:
                 skipped.append({"split_id": sp.split_id, "arm": spec.arm_id, "reason": "semantic_available=false: " + ctx_real.reason})
                 continue
+            t_arm = time.perf_counter()
             try:
                 row, pred = self._run_arm(spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf,
                                           oracle_preds, infos, selected, budget, seed, labels, minority, fo, fe,
@@ -457,6 +471,11 @@ class BenchmarkRunner:
             except Exception as exc:   # um braço falhado não derruba o benchmark: fica registado
                 skipped.append({"split_id": sp.split_id, "arm": spec.arm_id, "reason": f"erro: {type(exc).__name__}: {exc}"})
                 continue
+            arm_seconds = time.perf_counter() - t_arm
+            fit_seconds = float(row.get("tree_training_time") or row.get("mlp_training_time") or 0.0)
+            timer.add(ARM_TIME_KEY.get(spec.arm_id, f"{spec.arm_id}_time"), arm_seconds)
+            timer.add("metrics_time", max(0.0, arm_seconds - fit_seconds))      # avaliação, estrutura, gate (tudo o que não é treino)
+            row["arm_time_s"] = arm_seconds
             row.update(base); row.update(arm=spec.arm_id, family=spec.family, role=spec.role, description=spec.description,
                                          benchmark_group=spec.group, arm_role=spec.role,
                                          semantic_source=(spec.semantic if spec.semantic != "none" else "none"),
@@ -465,6 +484,21 @@ class BenchmarkRunner:
         sem["oracle_contract"] = self._verify_oracle_contract(rows, fo, fe)
         guard.record_final_evaluation(PartitionRole.TEST, "final_metrics_all_arms_once", n_test=sp.n_test)
         sem["protocol_audit"] = guard.audit()
+        timing = timer.report()
+        timing["ontology_mapping_time"] = float(ctx_real.semantic_time)
+        timing["reasoning_time"] = float(ctx_real.reasoner_time)
+        sem["timing"] = timing                                    # tempo por estágio (s); serialization_time/total final em run.py
+        n_tree_arms = sum(1 for r in rows if r.get("family") in ("trepan_original", "trepan_reloaded"))
+        cv_fits = int(structural.get("number_cv_fits", 0))
+        sem["work"] = {
+            "n_samples": int(len(ds.y)), "n_train": int(sp.n_train), "n_test": int(sp.n_test), "n_features_raw": int(Xtr.shape[1]),
+            "n_features_processed": int(ctx_real.n_features if ctx_real.available else Xtr.shape[1]), "n_classes": int(len(labels)),
+            "number_cv_fits": cv_fits, "number_trepan_fits": cv_fits + n_tree_arms, "candidate_count": int(structural.get("candidate_count", 0)),
+            "oracle_queries_per_scope": {k: int(v["queries"]) for k, v in fo.calls.items()},
+            "oracle_calls_per_scope": {k: int(v["calls"]) for k, v in fo.calls.items()},
+            "synthetic_queries_per_arm": {r["arm"]: int(r["membership_queries"]) for r in rows if r.get("membership_queries") is not None},
+            "semantic_feature_count": int(len(ctx_real.onto_idx)),
+            "number_reasoner_calls": int(getattr(provider, "n_reasoner_calls", 0)) - reasoner_calls_before}
         frame = None
         if cfg.save_predictions:
             data = {"dataset": ds.name, "split_id": sp.split_id, "seed": int(sp.seed), "test_row_index": sp.test_idx,
