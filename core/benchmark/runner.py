@@ -18,7 +18,9 @@ from core.benchmark.semantic import (
     NoSemanticProvider, OwlSemanticProvider, SemanticContext, ShuffledSemanticProvider,
 )
 from core.benchmark.splits import SplitSpec, assert_disjoint, inner_folds, make_splits
-from core.benchmark.ontology_gate import ontology_gate_fields
+from core.benchmark.ontology_gate import ontology_category, ontology_gate_fields
+from core.benchmark.preprocessing import preprocessing_record
+from core.benchmark.preprocessing import preprocessing_record
 from core.benchmark.structure import c45_structure, structure_columns, trepan_structure
 from core.c45_j48_tree import C45Classifier
 from core.controlled_trepan_experiment import ControlledTrepanConfig
@@ -74,6 +76,8 @@ class BenchmarkConfig:
     # aplicada a C, D, E e F. ``structure_tuning=False`` usa o TreeBudget fixo (só para testes rápidos).
     structure_tuning: bool = True
     structure_search: Optional[ScientificTrepanSearchConfig] = None      # None -> CV 5x3 científica
+    # False: não treina o MLP ontológico nem corre o gate/braços de OUTRO oráculo (fora de A–F): só o benchmark principal.
+    different_oracle_experiment: bool = True
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -279,7 +283,8 @@ class BenchmarkRunner:
 
     def __init__(self, config: BenchmarkConfig = BenchmarkConfig(), arms: Optional[List[ArmSpec]] = None, verbose: bool = False):
         self.cfg = config
-        self.arms = arms or default_arms(config)
+        self.arms = arms or [a for a in default_arms(config) if config.different_oracle_experiment or a.role != "different_oracle_experiment"]
+        self._ontology_hash = "none"
         self.verbose = verbose
 
     # ----------------------------------------------------------------------------- public
@@ -288,6 +293,7 @@ class BenchmarkRunner:
         ontology_hash = mf.hash_file(ontology) if isinstance(ontology, (str, Path)) else (
             mf.stable_hash({"provider": getattr(ontology, "name", "none")}) if ontology is not None else "none")
         ds_hash = mf.hash_dataset(dataset.X, dataset.y, dataset.feature_names)
+        self._ontology_hash, self._dataset_hash = ontology_hash, ds_hash
         splits = make_splits(dataset.y, scheme=self.cfg.scheme, seeds=self.cfg.seeds, test_size=self.cfg.test_size,
                              n_splits=self.cfg.n_splits, n_repeats=self.cfg.n_repeats, base_seed=self.cfg.base_seed)
         rows: List[Dict[str, Any]] = []
@@ -402,7 +408,7 @@ class BenchmarkRunner:
         mlp_o, info_o = fit_mlp(Xtr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
         mlp_e = info_e = None
         Xtr_enr = Xte_enr = None
-        if ctx_real.available:
+        if ctx_real.available and cfg.different_oracle_experiment:
             Xtr_enr, Xte_enr = ctx_real.enrich(Xtr), ctx_real.enrich(Xte)
             mlp_e, info_e = fit_mlp(Xtr_enr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
         # ---- contrato do oráculo: o MLP é CONGELADO (hash dos pesos = oracle_id) e é exatamente este objeto que todas as
@@ -430,7 +436,14 @@ class BenchmarkRunner:
         sem["structural_protocol"] = structural
         oracle_train_pred = np.asarray(mlp_o.predict(Xtr))                 # fidelity de TREINO (leitura direta, sem contar queries)
         rows, preds, skipped = [], {}, []
-        base = dict(dataset=ds.name, split_id=sp.split_id, seed=int(sp.seed), repeat=sp.repeat, fold=sp.fold, split_hash=sp.split_hash,
+        prep = preprocessing_record(Xtr, ds.feature_names, sp.train_idx)
+        sem["preprocessing"] = prep
+        if ctx_shuf.available and ctx_shuf is not ctx_real:
+            sem["negative_control"] = {k: ctx_shuf.info.get(k) for k in ("shuffle_seed", "original_ontology_hash", "shuffled_ontology_hash",
+                                                                         "counts_before", "counts_after", "n_ontology_graph_nodes")}
+        base = dict(preprocessing_id=prep["preprocessing_id"], base_representation_hash=prep["train_matrix_hash"],
+                    dataset_hash=getattr(self, "_dataset_hash", None), config_hash=mf.stable_hash(cfg.to_dict()),
+                    dataset=ds.name, split_id=sp.split_id, seed=int(sp.seed), repeat=sp.repeat, fold=sp.fold, split_hash=sp.split_hash,
                     scheme=sp.scheme, n_train=sp.n_train, n_test=sp.n_test, minority_label=str(minority))
         c45_model = None
         for spec in self.arms:
@@ -512,7 +525,9 @@ class BenchmarkRunner:
                        feature_space="original", uses_oracle=False, uses_real_labels_for_training=True,
                        oracle_id=None, oracle_scope="no_oracle_real_labels", fidelity_oracle_id=fo.oracle_id,
                        fidelity_train=float(np.mean(np.asarray(model.predict(Xtr)) == oracle_train_pred)),
-                       c45_canonical=True, c45_node_cap=None)
+                       c45_canonical=True, c45_node_cap=None, c45_algorithm=C45Classifier.algorithm_name,
+                       c45_is_native=bool(C45Classifier.is_c45_native), c45_confidence_factor=0.25, c45_min_samples_leaf=2,
+                       c45_pruning="pessimistic_error_subtree_replacement")
             cx = c45_complexity(model)
             row.update(self._complexity(cx, 0))
             row.update(structure_columns(c45_structure(model, ds.feature_names, np.std(Xtr, axis=0))))
@@ -589,6 +604,14 @@ class BenchmarkRunner:
             arm_uses_ontology=bool(spec.family == "trepan_reloaded" and spec.semantic != "none"), control=bool(spec.control), ctx=ctx_real,
             structure=stc, tree=tree, final_audit_rows=audit_rows, semantic_split_count=sem_splits, mirror_applied=False)
         row.update(gate)
+        uses_onto = bool(spec.family == "trepan_reloaded" and spec.semantic != "none")
+        row["ontology_hash"] = (ctx_real.info.get("ontology_hash") or self._ontology_hash) if uses_onto else "none"
+        row["ontology_category"] = ontology_category(gate) if uses_onto else None
+        if spec.semantic == "shuffled":
+            nc = ctx_shuf.info
+            row.update(shuffle_seed=nc.get("shuffle_seed"), original_ontology_hash=nc.get("original_ontology_hash"),
+                       shuffled_ontology_hash=nc.get("shuffled_ontology_hash"),
+                       shuffle_counts_before=json.dumps(nc.get("counts_before")), shuffle_counts_after=json.dumps(nc.get("counts_after")))
         row["non_semantic_mechanisms"] = json.dumps({
             "error_focused_refinement": bool(getattr(tree, "error_focused_refinement", False)),
             "semantic_active_query_fraction": float(getattr(tree, "semantic_active_query_fraction", 0.0)),

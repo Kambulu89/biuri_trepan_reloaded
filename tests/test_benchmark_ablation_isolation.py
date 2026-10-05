@@ -87,7 +87,7 @@ def test_causal_contrasts_are_declared_without_assumed_sign():
     assert names["incremental_ontology"] == ("reloaded_owl_full", "reloaded_core")
     assert names["NEGATIVE_CONTROL_real_vs_shuffled"] == ("reloaded_owl_full", "reloaded_owl_shuffled")
     assert names["total_reloaded_vs_original"] == ("reloaded_owl_full", "trepan_original")
-    assert names["c45_vs_trepan_original"] == ("c45", "trepan_original") and names["c45_vs_reloaded_owl"] == ("c45", "reloaded_owl_full")
+    assert names["trepan_original_vs_c45"] == ("trepan_original", "c45") and names["reloaded_owl_vs_c45"] == ("reloaded_owl_full", "c45")
     assert all(c.group == "different_oracle_experiment" for c in DEFAULT_CONTRASTS if c.arm_a in ("reloaded_e2e", "mlp_ontological"))
 
 

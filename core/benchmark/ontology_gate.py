@@ -61,3 +61,16 @@ def ontology_gate_fields(*, arm_uses_ontology: bool, control: bool, ctx, structu
         ontology_effectively_used=bool(evidence and not mirror_applied and base["ontology_valid"] and not control),
     )
     return base
+
+
+ONTOLOGY_CATEGORIES = ("ontology_effectively_used", "ontology_available_but_not_effective", "ontology_invalid_or_unmapped")
+
+
+def ontology_category(gate: Dict[str, Any]) -> str:
+    """Classifica a execução de um braço com ontologia. Só ``ontology_effectively_used`` é evidência (positiva ou negativa)
+    sobre o efeito da ontologia; as outras duas significam «sem evidência de utilização semântica», não «não melhora»."""
+    if bool(gate.get("ontology_effectively_used")):
+        return "ontology_effectively_used"
+    unmapped = (not bool(gate.get("ontology_valid"))) or (int(gate.get("mapped_feature_count", 0) or 0) == 0
+                                                          and int(gate.get("semantic_features_generated", 0) or 0) == 0)
+    return "ontology_invalid_or_unmapped" if unmapped else "ontology_available_but_not_effective"
