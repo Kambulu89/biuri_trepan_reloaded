@@ -21,6 +21,7 @@ from core.c45_j48_tree import C45Classifier
 from core.controlled_trepan_experiment import OriginalOracleProjection
 from core.evaluation_protocol import EvaluationProtocolGuard, PartitionRole
 from core.mlp_factory import build_mlp_for_data
+from core.scientific_experiment_contract import OracleContractViolation, freeze_oracle
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
 from core.tree_build_report import c45_complexity, trepan_complexity
@@ -338,6 +339,10 @@ class BenchmarkRunner:
         if ctx_real.available:
             Xtr_enr, Xte_enr = ctx_real.enrich(Xtr), ctx_real.enrich(Xte)
             mlp_e, info_e = fit_mlp(Xtr_enr, ytr, seed, cfg.mlp_trials, cfg.inner_cv_splits)
+        # ---- contrato do oráculo: o MLP é CONGELADO (hash dos pesos = oracle_id) e é exatamente este objeto que todas as
+        # árvores do split consultam; o oráculo ontológico (opcional) é outro objeto, identificado como tal.
+        fo = freeze_oracle(mlp_o, Xtr, builder="benchmark_mlp_original")
+        fe = freeze_oracle(mlp_e, Xtr_enr, builder="benchmark_mlp_ontological") if mlp_e is not None else None
         guard.record_selection(PartitionRole.VALIDATION, "oracle_gate_inner_cv_on_train_only", folds=cfg.inner_cv_splits)
         gate = select_oracle(Xtr, Xtr_enr, ytr, seed=seed, margin=cfg.oracle_gate_margin, inner_splits=cfg.inner_cv_splits)
         sem.update(mlp_enrichment_accepted=bool(gate.get("accepted")), oracle_gate=gate,
@@ -347,11 +352,11 @@ class BenchmarkRunner:
         oracle_preds = {"mlp_original": np.asarray(mlp_o.predict(Xte))}
         acc_o = float(np.mean(oracle_preds["mlp_original"] == yte))
         infos = {"mlp_original": OracleInfo(ORACLE_ORIGINAL, "MLPClassifier(original features)", Xtr.shape[1],
-                                            f"sklearn-pipeline;seed={seed}", acc_o)}
+                                            f"sklearn-pipeline;seed={seed};oracle_id={fo.oracle_id}", acc_o)}
         if mlp_e is not None:
             oracle_preds["mlp_ontological"] = np.asarray(mlp_e.predict(Xte_enr))
             infos["mlp_ontological"] = OracleInfo(ORACLE_ONTOLOGICAL, "MLPClassifier(enriched features)", Xtr_enr.shape[1],
-                                                  f"sklearn-pipeline;seed={seed}", float(np.mean(oracle_preds["mlp_ontological"] == yte)))
+                                                  f"sklearn-pipeline;seed={seed};oracle_id={fe.oracle_id}", float(np.mean(oracle_preds["mlp_ontological"] == yte)))
         selected = "mlp_ontological" if (gate.get("accepted") and mlp_e is not None) else "mlp_original"
         sem["selected_oracle"] = selected
 
@@ -366,7 +371,7 @@ class BenchmarkRunner:
                 continue
             try:
                 row, pred = self._run_arm(spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf,
-                                          oracle_preds, infos, selected, budget, seed, labels, minority)
+                                          oracle_preds, infos, selected, budget, seed, labels, minority, fo, fe)
             except Exception as exc:   # um braço falhado não derruba o benchmark: fica registado
                 skipped.append({"split_id": sp.split_id, "arm": spec.arm_id, "reason": f"erro: {type(exc).__name__}: {exc}"})
                 continue
@@ -374,6 +379,7 @@ class BenchmarkRunner:
                                          semantic_source=(spec.semantic if spec.semantic != "none" else "none"),
                                          semantic_available=bool(ctx_real.available), mlp_enrichment_accepted=sem["mlp_enrichment_accepted"])
             rows.append(row); preds[spec.arm_id] = pred
+        sem["oracle_contract"] = self._verify_oracle_contract(rows, fo, fe)
         guard.record_final_evaluation(PartitionRole.TEST, "final_metrics_all_arms_once", n_test=sp.n_test)
         sem["protocol_audit"] = guard.audit()
         # paridade de predições Original vs Reloaded λ=0 (verificação do mirror)
@@ -392,8 +398,23 @@ class BenchmarkRunner:
             frame = pd.DataFrame(data)
         return rows, frame, sem, skipped
 
+    @staticmethod
+    def _verify_oracle_contract(rows, fo, fe) -> Dict[str, Any]:
+        """Prova, por split, que todas as árvores do oráculo partilhado consultaram EXATAMENTE o mesmo modelo congelado."""
+        shared = [r for r in rows if r.get("oracle_scope") == "shared_frozen_oracle"]
+        ids = {r["oracle_id"] for r in shared}
+        if ids and ids != {fo.oracle_id}:
+            raise OracleContractViolation(f"Árvores do oráculo partilhado com oracle_id distintos: {sorted(ids)}")
+        fo.verify_unchanged()
+        if fe is not None:
+            fe.verify_unchanged()
+        return {"oracle_id_original": fo.oracle_id, "oracle_id_ontological": None if fe is None else fe.oracle_id,
+                "shared_oracle_arms": sorted(r["arm"] if "arm" in r else "?" for r in shared),
+                "single_oracle_for_shared_arms": True, "unchanged_after": True,
+                "queries_per_scope": {k: v["queries"] for k, v in fo.calls.items()}}
+
     def _run_arm(self, spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf,
-                 oracle_preds, infos, selected, budget, seed, labels, minority):
+                 oracle_preds, infos, selected, budget, seed, labels, minority, fo=None, fe=None):
         cfg = self.cfg
         row: Dict[str, Any] = {"mlp_training_time": None, "tree_training_time": None, "query_time": None,
                                "semantic_processing_time": 0.0, "reasoner_time": 0.0, "counterfactual_time": None}
@@ -404,7 +425,9 @@ class BenchmarkRunner:
             row.update(evaluate_model(y_real=yte, prediction=pred, labels=labels, minority_label=minority))
             row.update(oracle_name=None, oracle_type=None, oracle_feature_space=None, oracle_version=None,
                        oracle_accuracy_real_labels=None, mlp_training_time=info["train_time"], mlp_selection=info["selection"],
-                       mlp_trials=info["trials"], feature_space="enriched" if spec.arm_id == "mlp_ontological" else "original")
+                       mlp_trials=info["trials"], feature_space="enriched" if spec.arm_id == "mlp_ontological" else "original",
+                       oracle_id=(fo.oracle_id if spec.arm_id == "mlp_original" else getattr(fe, "oracle_id", None)),
+                       oracle_scope="frozen_oracle_model_itself")
             if spec.arm_id == "mlp_ontological":
                 row["semantic_processing_time"], row["reasoner_time"] = ctx_real.semantic_time, ctx_real.reasoner_time
             return row, pred
@@ -415,7 +438,8 @@ class BenchmarkRunner:
             pred = np.asarray(model.predict(Xte))
             row.update(evaluate_model(y_real=yte, prediction=pred, labels=labels, minority_label=minority))
             row.update(oracle_name=None, oracle_type=None, oracle_feature_space=None, oracle_version=None,
-                       oracle_accuracy_real_labels=None, feature_space="original", uses_oracle=False, uses_real_labels_for_training=True)
+                       oracle_accuracy_real_labels=None, feature_space="original", uses_oracle=False, uses_real_labels_for_training=True,
+                       oracle_id=None, oracle_scope="no_oracle_real_labels")
             cx = c45_complexity(model)
             row.update(self._complexity(cx, 0))
             return row, pred
@@ -425,9 +449,9 @@ class BenchmarkRunner:
         info = infos[key]
         use_enr = spec.tree_space == "enr"
         if key == "mlp_original":
-            oracle = OriginalOracleProjection(mlp_o, ctx.orig_idx) if use_enr else mlp_o
+            oracle = OriginalOracleProjection(fo, ctx.orig_idx) if use_enr else fo      # oráculo CONGELADO e partilhado
         else:
-            oracle = mlp_e                           # o oráculo ontológico opera no espaço enriquecido
+            oracle = fe                              # o oráculo ontológico (outro modelo, congelado) opera no espaço enriquecido
             if not use_enr:
                 raise ValueError("MLP Ontológico só pode ser oráculo de uma árvore no espaço enriquecido.")
         X_fit = ctx.enrich(Xtr) if use_enr else Xtr
@@ -435,24 +459,27 @@ class BenchmarkRunner:
         common = dict(budget, random_state=seed)
         if spec.max_n is not None:
             common["max_n"] = spec.max_n
+        frozen = fo if key == "mlp_original" else fe
+        scope_cm = frozen.scope(spec.arm_id)
         t0 = time.perf_counter()
-        if spec.family == "trepan_original":
-            tree = TrepanOriginalClassifier(**common).fit(X_fit, oracle=oracle, feature_names=names)
-        else:
-            # λ escala TODOS os canais semânticos (alpha, beta, expoente do peso, força de grupo): λ=0 => semântica OFF
-            kw = dict(common, alpha=cfg.alpha * spec.lam, beta=cfg.beta * spec.lam, error_focused_refinement=bool(spec.error_focus),
-                      semantic_gain_strength=float(spec.lam), semantic_group_strength=0.15 * float(spec.lam),
-                      semantic_active_query_fraction=0.65 if spec.active_queries else 0.0)
-            fit_kw: Dict[str, Any] = {}
-            if spec.lam > 0 and spec.semantic != "none":
-                sl = ctx.orig_idx if not use_enr else list(range(ctx.n_features))
-                fit_kw.update(semantic_feature_weights=np.asarray(ctx.weights)[sl],
-                              semantic_feature_groups=[ctx.groups[i] for i in sl],
-                              semantic_relatedness_matrix=np.asarray(ctx.relatedness)[np.ix_(sl, sl)],
-                              semantic_feature_depths=np.asarray(ctx.depths)[sl])
-            if use_enr:
-                fit_kw["query_projector"] = ctx.query_projector()
-            tree = TrepanReloadedClassifier(**kw).fit(X_fit, oracle=oracle, feature_names=names, **fit_kw)
+        with scope_cm:
+            if spec.family == "trepan_original":
+                tree = TrepanOriginalClassifier(**common).fit(X_fit, oracle=oracle, feature_names=names)
+            else:
+                # λ escala TODOS os canais semânticos (alpha, beta, expoente do peso, força de grupo): λ=0 => semântica OFF
+                kw = dict(common, alpha=cfg.alpha * spec.lam, beta=cfg.beta * spec.lam, error_focused_refinement=bool(spec.error_focus),
+                          semantic_gain_strength=float(spec.lam), semantic_group_strength=0.15 * float(spec.lam),
+                          semantic_active_query_fraction=0.65 if spec.active_queries else 0.0)
+                fit_kw: Dict[str, Any] = {}
+                if spec.lam > 0 and spec.semantic != "none":
+                    sl = ctx.orig_idx if not use_enr else list(range(ctx.n_features))
+                    fit_kw.update(semantic_feature_weights=np.asarray(ctx.weights)[sl],
+                                  semantic_feature_groups=[ctx.groups[i] for i in sl],
+                                  semantic_relatedness_matrix=np.asarray(ctx.relatedness)[np.ix_(sl, sl)],
+                                  semantic_feature_depths=np.asarray(ctx.depths)[sl])
+                if use_enr:
+                    fit_kw["query_projector"] = ctx.query_projector()
+                tree = TrepanReloadedClassifier(**kw).fit(X_fit, oracle=oracle, feature_names=names, **fit_kw)
         row["tree_training_time"] = time.perf_counter() - t0
         X_eval = ctx.enrich(Xte) if use_enr else Xte
         pred = np.asarray(tree.predict(X_eval))
@@ -460,7 +487,9 @@ class BenchmarkRunner:
                                   oracle_prediction=oracle_preds[key]))
         row.update(oracle_name=info.name, oracle_type=info.type, oracle_feature_space=info.feature_space,
                    oracle_version=info.version, oracle_accuracy_real_labels=info.accuracy_real_labels,
-                   feature_space="enriched" if use_enr else "original", uses_oracle=True, uses_real_labels_for_training=False)
+                   feature_space="enriched" if use_enr else "original", uses_oracle=True, uses_real_labels_for_training=False,
+                   oracle_id=frozen.oracle_id, oracle_queries=int(frozen.calls.get(spec.arm_id, {}).get("queries", 0)),
+                   oracle_scope="shared_frozen_oracle" if key == "mlp_original" else "ontological_oracle_separate")
         cx = trepan_complexity(tree)
         # SÓ splits presentes na árvore FINAL (a auditoria cobre a árvore bruta, incluindo subárvores podadas)
         final_internal = {n.node_id for n in tree.iter_nodes() if not n.is_leaf}
