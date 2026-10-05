@@ -6,6 +6,8 @@ Duas famílias que NUNCA se misturam:
 """
 from __future__ import annotations
 
+import json
+
 from dataclasses import asdict, dataclass
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
@@ -91,17 +93,50 @@ def classification_bundle(y_true, y_pred, *, labels: Optional[Sequence] = None, 
     return out
 
 
+def per_class_real_labels(y_true, y_pred, labels: Sequence) -> Dict[str, Dict[str, float]]:
+    """Precision/recall/F1/suporte por classe contra os RÓTULOS REAIS (ordem de ``labels`` fixa)."""
+    y_true, y_pred = _arr(y_true), _arr(y_pred)
+    labs = list(labels)
+    p = precision_score(y_true, y_pred, labels=labs, average=None, zero_division=0)
+    r = recall_score(y_true, y_pred, labels=labs, average=None, zero_division=0)
+    f = f1_score(y_true, y_pred, labels=labs, average=None, zero_division=0)
+    return {str(l): {"precision": float(p[i]), "recall": float(r[i]), "f1": float(f[i]), "support": int(np.sum(y_true == l))}
+            for i, l in enumerate(labs)}
+
+
+def fidelity_detail(oracle_prediction, surrogate_prediction, labels: Sequence) -> Dict[str, Any]:
+    """Concordância com o ORÁCULO em detalhe (nunca confundir com accuracy): taxa de desacordo, fidelity por classe do
+    oráculo e matriz de acordo (linhas = classe prevista pelo oráculo, colunas = classe prevista pelo surrogate)."""
+    o, s = _arr(oracle_prediction), _arr(surrogate_prediction)
+    _check(o, s)
+    labs = list(labels)
+    per_class = {}
+    for l in labs:
+        m = o == l
+        per_class[str(l)] = float(np.mean(s[m] == l)) if m.any() else None      # sem exemplos da classe -> não definido
+    from sklearn.metrics import confusion_matrix
+    return {"disagreement_rate_to_oracle": float(np.mean(o != s)), "fidelity_per_class": per_class,
+            "agreement_matrix": confusion_matrix(o, s, labels=labs).tolist(), "agreement_matrix_labels": [str(l) for l in labs]}
+
+
 def evaluate_model(*, y_real, prediction, labels: Sequence, minority_label=None,
                    oracle: Optional[OracleInfo] = None, oracle_prediction=None) -> Dict[str, Any]:
     """Avaliação completa de UM modelo. Fidelity só existe quando há oráculo (surrogates)."""
     out: Dict[str, Any] = classification_bundle(y_real, prediction, labels=labels, minority_label=minority_label)
+    out["per_class_metrics_real_labels"] = json.dumps(per_class_real_labels(y_real, prediction, labels))
     if oracle is not None:
         if oracle_prediction is None:
             raise ValueError("Fidelity exige as predições do oráculo no mesmo conjunto de avaliação.")
         out["fidelity_to_oracle"] = fidelity_to_oracle(oracle_prediction, prediction, oracle)
         out["fidelity_oracle_name"] = oracle.name
         out["fidelity_oracle_type"] = oracle.type
+        det = fidelity_detail(oracle_prediction, prediction, labels)
+        out["disagreement_rate_to_oracle"] = det["disagreement_rate_to_oracle"]
+        out["fidelity_per_class"] = json.dumps(det["fidelity_per_class"])
+        out["agreement_matrix"] = json.dumps(det["agreement_matrix"])
+        out["agreement_matrix_labels"] = json.dumps(det["agreement_matrix_labels"])
     else:
+        out["disagreement_rate_to_oracle"] = None
         out["fidelity_to_oracle"] = None
         out["fidelity_oracle_name"] = None
         out["fidelity_oracle_type"] = None

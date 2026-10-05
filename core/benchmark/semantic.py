@@ -115,7 +115,8 @@ class GroupSemanticProvider:
         depths = np.array([1.0 if g is not None else 0.0 for g in groups])
         return SemanticContext("real", self.name, True, names, enriched, list(range(n_orig)), list(range(n_orig, n)),
                                transform, weights, groups, rel, depths, ontology_valid=True,
-                               semantic_time=time.perf_counter() - t0, info={"n_groups": len(gnames)})
+                               semantic_time=time.perf_counter() - t0, info={"n_groups": len(gnames), "mapped_feature_count": sum(1 for g in feat_group if g is not None),
+                                     "unmapped_feature_count": sum(1 for g in feat_group if g is None), "reasoning_applied": False})
 
 
 class OwlSemanticProvider:
@@ -192,6 +193,8 @@ class OwlSemanticProvider:
                                transform, weights, groups, rel, depths, ontology_valid=True,
                                semantic_time=time.perf_counter() - t0 - reasoner_time, reasoner_time=reasoner_time,
                                info={"ontology_quality": report.status, "reasoner": reasoner.get("engine"),
+                                     "mapped_feature_count": len(accepted), "unmapped_feature_count": max(0, n_orig - len(accepted)),
+                                     "reasoning_applied": bool(reasoner), "reasoner_consistent": reasoner.get("consistent"),
                                      "feature_coverage": report.metrics.get("feature_coverage")})
 
 
