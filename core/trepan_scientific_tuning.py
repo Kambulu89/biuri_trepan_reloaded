@@ -6,6 +6,9 @@ essa capacidade, selecciona apenas parâmetros da extensão semântica do Reload
 """
 from __future__ import annotations
 
+import copy
+import hashlib
+import json
 import time
 from dataclasses import asdict, dataclass, replace
 from typing import Any, Optional, Sequence
@@ -763,6 +766,8 @@ def tune_scientific_trepan(
     search: ScientificTrepanSearchConfig = ScientificTrepanSearchConfig(),
     ontology_graph=None,
     semantic_feature_entities=None,
+    reuse_identical_fits: bool = True,
+    run_semantic_stage: bool = True,
 ) -> dict[str, Any]:
     X=np.asarray(X_train,dtype=float); y=np.asarray(y_train)
     if X.ndim != 2 or len(X)!=len(y):
@@ -773,11 +778,23 @@ def tune_scientific_trepan(
     repeats = len(seeds)
     feature_scale = np.nan_to_num(X.std(axis=0), nan=0.0)
 
+    # Memoização exata (engenharia): o ajuste de uma configuração IDÊNTICA (todos os campos), na mesma dobra/seed/partição de treino
+    # e contra o mesmo oráculo, é determinístico; repeti-lo (p.ex. o candidato base na etapa de capacidade, igual a um da grelha de
+    # estrutura) dá exatamente a mesma linha. Identificado por hash do candidato + (repetição, seed, dobra, índices de treino).
+    fit_memo: dict = {}
+    plan_hash = {i: hashlib.sha1(np.ascontiguousarray(tr).tobytes()).hexdigest() for i, (_r, _s, _f, tr, _v) in enumerate(plan)}
+    oracle_key = str(getattr(oracle, "oracle_id", id(oracle)))
+
     def evaluate(candidates, label_stage):
         history = []
         for candidate in candidates:
             rows = []; failed = None
-            for (r, seed, f, tr, va) in plan:
+            candidate_key = hashlib.sha1(json.dumps(asdict(candidate), sort_keys=True, default=str).encode()).hexdigest()
+            for plan_index, (r, seed, f, tr, va) in enumerate(plan):
+                memo_key = (candidate_key, int(r), int(seed), int(f), plan_hash[plan_index], oracle_key)
+                if reuse_identical_fits and memo_key in fit_memo:
+                    rows.append(copy.deepcopy(fit_memo[memo_key]))
+                    continue
                 try:
                     kwargs = candidate.common_tree_kwargs()
                     kwargs["random_state"] = int(seed)          # a aleatoriedade das queries varia com a seed da repetição
@@ -792,6 +809,8 @@ def tune_scientific_trepan(
                                  "budget_exhausted": bool(getattr(model, "query_budget_exhausted_", False)),
                                  "max_nodes_reached": bool(getattr(model, "max_nodes_reached_", False)),
                                  **_tree_structure(model, feature_scale)})
+                    if reuse_identical_fits:
+                        fit_memo[memo_key] = copy.deepcopy(rows[-1])
                 except (ValueError, RuntimeError) as exc:
                     failed = str(exc); break
             if rows and failed is None:
@@ -922,7 +941,7 @@ def tune_scientific_trepan(
 
     semantic_history=[]
     weights=np.ones(X.shape[1],dtype=float) if semantic_feature_weights is None else np.asarray(semantic_feature_weights,dtype=float)
-    for candidate in _semantic_candidates(common, search.max_semantic_candidates):
+    for candidate in (_semantic_candidates(common, search.max_semantic_candidates) if run_semantic_stage else []):
         rows=[]; failed=None; usage=[]
         for tr,va in splits:
             try:
