@@ -21,7 +21,8 @@ AGG_METRICS = (
     "macro_f1_real_labels", "weighted_f1_real_labels", "minority_recall_real_labels", "fidelity_to_oracle",
     "node_count", "internal_nodes", "leaf_count", "depth", "average_leaf_depth", "average_rule_length", "features_used",
     "m_of_n_count", "semantic_split_count", "semantic_decision_changed_count", "membership_queries", "mlp_training_time", "tree_training_time", "query_time",
-    "semantic_processing_time", "reasoner_time",
+    "semantic_processing_time", "reasoner_time", "disagreement_rate_to_oracle", "fidelity_train", "rule_count",
+    "average_rule_literals", "ontology_usage_rate",
 )
 
 
@@ -37,24 +38,24 @@ class Contrast:
 
 
 DEFAULT_CONTRASTS: List[Contrast] = [
-    Contrast("owl_in_mlp", "mlp_ontological", "mlp_original", ("accuracy_real_labels", "balanced_accuracy_real_labels", "macro_f1_real_labels"),
-             "(1) O MLP Ontológico melhora o MLP Original (rótulos reais)?", semantic_claim=True),
-    Contrast("reloaded_architecture_sanity", "reloaded_lambda0", "trepan_original", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "Sanidade: Reloaded λ=0 (sem semântica) deve coincidir com o Original (mesma infraestrutura)", group="sanity"),
-    Contrast("semantic_score_effect", "reloaded_semantic_score", "reloaded_lambda0", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "(4) O score semântico (λ>0) altera a fidelidade face a λ=0?", semantic_claim=True),
-    Contrast("owl_features_effect", "reloaded_owl_features", "reloaded_lambda0", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "(4) As features OWL (sem score semântico) alteram a fidelidade?", semantic_claim=True),
-    Contrast("owl_full_vs_architecture", "reloaded_owl_full", "reloaded_lambda0", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "(4) OWL completa vs mesma arquitectura sem semântica", semantic_claim=True),
-    Contrast("reloaded_owl_vs_original_same_oracle", "reloaded_owl_full", "trepan_original", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "(3) Reloaded+OWL aumenta a fidelidade ao MESMO oráculo (MLP Original) vs Original?", semantic_claim=True),
+    # Comparações causais (arm_a - arm_b); o sinal NUNCA é assumido.
+    Contrast("architectural_gain", "reloaded_core", "trepan_original", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
+             "C vs D: ganho arquitectural (mecanismos Reloaded não semânticos, sem ontologia). 0 se D == Original", group="main"),
+    Contrast("incremental_ontology", "reloaded_owl_full", "reloaded_core", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
+             "D vs E: ganho incremental da ontologia sobre a mesma arquitectura", group="main", semantic_claim=True),
     Contrast("NEGATIVE_CONTROL_real_vs_shuffled", "reloaded_owl_full", "reloaded_owl_shuffled", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
-             "CONTROLO NEGATIVO: OWL real > OWL permutada? (sem isto não se atribui o ganho à ontologia)", group="negative_control"),
-    Contrast("end_to_end_vs_original", "reloaded_e2e", "trepan_original", ("accuracy_real_labels", "fidelity_to_oracle", "node_count"),
-             "(3) Pipeline completo (oráculo seleccionado) vs Original -> MLP Original", group="end_to_end"),
-    Contrast("c45_vs_trepan_original", "c45", "trepan_original", ("accuracy_real_labels", "balanced_accuracy_real_labels", "node_count"),
-             "Baseline supervisionada C4.5 vs TREPAN Original (accuracy vs rótulos reais)", group="baseline"),
+             "E vs F — CONTROLO NEGATIVO: OWL real > OWL permutada? (sem isto não se atribui o ganho à ontologia)", group="negative_control"),
+    Contrast("total_reloaded_vs_original", "reloaded_owl_full", "trepan_original", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
+             "C vs E: ganho total do Reloaded+OWL face ao TREPAN Original (mesmo FrozenOracle)", group="main", semantic_claim=True),
+    Contrast("c45_vs_trepan_original", "c45", "trepan_original", ("accuracy_real_labels", "balanced_accuracy_real_labels", "fidelity_to_oracle", "node_count"),
+             "B vs C: C4.5 canónico vs TREPAN Original", group="baseline"),
+    Contrast("c45_vs_reloaded_owl", "c45", "reloaded_owl_full", ("accuracy_real_labels", "balanced_accuracy_real_labels", "fidelity_to_oracle", "node_count"),
+             "B vs E: C4.5 canónico vs Reloaded+OWL", group="baseline"),
+    # Ablações isoladas (mesma arquitectura D como referência).
+    Contrast("semantic_score_effect", "reloaded_semantic_score", "reloaded_core", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
+             "Ablação: score semântico (sem features OWL) vs D", group="ablation", semantic_claim=True),
+    Contrast("owl_features_effect", "reloaded_owl_features", "reloaded_core", ("fidelity_to_oracle", "accuracy_real_labels", "node_count"),
+             "Ablação: features OWL (sem score semântico) vs D", group="ablation", semantic_claim=True),
     Contrast("ablation_original_no_mofn", "trepan_original_no_mofn", "trepan_original", ("fidelity_to_oracle", "node_count"),
              "Ablação: Original sem m-of-n", group="ablation"),
     Contrast("ablation_no_mofn", "reloaded_owl_full_no_mofn", "reloaded_owl_full", ("fidelity_to_oracle", "node_count"),
@@ -63,6 +64,11 @@ DEFAULT_CONTRASTS: List[Contrast] = [
              "Ablação: sem active queries", group="ablation"),
     Contrast("ablation_no_error_focus", "reloaded_owl_full_no_error_focus", "reloaded_owl_full", ("fidelity_to_oracle", "node_count"),
              "Ablação: sem refinamento focado no erro", group="ablation"),
+    # Experiência separada (oráculo diferente): fora dos braços A–F.
+    Contrast("owl_in_mlp", "mlp_ontological", "mlp_original", ("accuracy_real_labels", "balanced_accuracy_real_labels", "macro_f1_real_labels"),
+             "different_oracle_experiment: o MLP Ontológico melhora o MLP Original?", group="different_oracle_experiment", semantic_claim=True),
+    Contrast("end_to_end_vs_original", "reloaded_e2e", "trepan_original", ("accuracy_real_labels", "fidelity_to_oracle", "node_count"),
+             "different_oracle_experiment: pipeline com oráculo ontológico vs Original", group="different_oracle_experiment"),
 ]
 
 
@@ -178,16 +184,16 @@ def negative_control_verdicts(res: pd.DataFrame) -> Dict[tuple, Dict[str, Any]]:
 
 
 def semantic_attribution(res: pd.DataFrame, metric: str = "fidelity_to_oracle") -> List[Dict[str, Any]]:
-    """Decompõe o ganho do Reloaded: arquitectura | features OWL | score semântico | OWL completa | vs controlo."""
+    """Decompõe o ganho do Reloaded: arquitectura (D-C) | ontologia incremental (E-D) | total (E-C) | real vs permutada (E-F)."""
     out = []
     nc = negative_control_verdicts(res)
     for ds in res["dataset"].unique():
         g = res[(res["dataset"] == ds) & (res["metric"] == metric) & (res["status"] == "ok")].set_index("contrast")
         def md(name):
             return float(g.loc[name, "mean_diff"]) if name in g.index else None
-        entry = dict(dataset=ds, metric=metric, architecture_effect=md("reloaded_architecture_sanity"),
+        entry = dict(dataset=ds, metric=metric, architectural_gain=md("architectural_gain"),
                      owl_features_effect=md("owl_features_effect"), semantic_score_effect=md("semantic_score_effect"),
-                     owl_full_vs_lambda0=md("owl_full_vs_architecture"), total_vs_original=md("reloaded_owl_vs_original_same_oracle"),
+                     incremental_ontology=md("incremental_ontology"), total_vs_original=md("total_reloaded_vs_original"),
                      real_vs_shuffled=md("NEGATIVE_CONTROL_real_vs_shuffled"),
                      negative_control=nc.get((ds, metric), {}).get("verdict", "NOT_RUN"))
         v = entry["negative_control"]
@@ -213,7 +219,7 @@ def cross_dataset(frames: Dict[str, pd.DataFrame], res_all: pd.DataFrame, metric
             entry["note"] = "menos de 5 datasets: sem teste entre datasets (apenas descritivo)"
         out["contrasts"].append(entry)
     # Friedman entre braços principais (blocos = datasets)
-    arms = ["trepan_original", "reloaded_lambda0", "reloaded_owl_full", "reloaded_owl_shuffled"]
+    arms = ["trepan_original", "reloaded_core", "reloaded_owl_full", "reloaded_owl_shuffled"]
     mat = []
     for ds, f in frames.items():
         means = f.groupby("arm")[metric].mean()
