@@ -157,17 +157,63 @@ def raw_table(df: pd.DataFrame) -> pd.DataFrame:
     return t
 
 
+def smoke_table(report: Dict[str, Any], records: List[Dict[str, Any]], rows: pd.DataFrame, meta: List[Dict[str, Any]]) -> pd.DataFrame:
+    """Uma linha por dataset: Dataset | Invariantes | oracle_id comum | test leakage | tuning ontology-blind | mirror | C4.5 fidelity |
+    OWL gate | métricas recomputáveis | runtime. PASS/FAIL derivados dos invariantes verificados sobre os brutos."""
+    from validation.benchmark.raw_store import verify_raw_metrics
+    out = []
+    for unit, checks in report["units"].items():
+        ds, seed = unit.split("/seed")
+        by = {c["invariant"]: c["passed"] for c in checks}
+        pf = lambda *names: "PASS" if all(by.get(n, False) for n in names) else "FAIL"
+        unit_records = [r for r in records if r["dataset"] == ds and str(r["master_seed"]) == seed]
+        mrec = verify_raw_metrics(unit_records)
+        m = next((x for x in meta if x["dataset"] == ds and str(x["seed"]) == seed), {})
+        e = rows[(rows["dataset"] == ds) & (rows["arm"] == "reloaded_owl_full")]
+        out.append({"Dataset": ds, "Invariantes": "PASS" if all(by.values()) and mrec["ok"] else "FAIL",
+                    "oracle_id comum": pf("same_frozen_oracle_id_for_A_C_D_E_F", "same_split"),
+                    "test leakage": "NENHUM" if all(by.get(n, False) for n in ("test_not_used_before_final_evaluation", "preprocessing_id_shared_and_fit_on_train_only")) else "FAIL",
+                    "tuning ontology-blind": pf("structural_tuning_ontology_blind", "structural_tuning_actually_ran_without_test", "same_purity_epsilon_max_nodes_budget_for_C_D_E_F"),
+                    "mirror": "False (PASS)" if by.get("mirror_applied_false_in_D_E_F") else "FAIL",
+                    "C4.5 fidelity": pf("c45_fidelity_against_same_frozen_oracle", "c45_label_is_native_c45"),
+                    "OWL gate": pf("ontology_quality_gate_filled_in_D_E_F", "ontology_category_assigned_to_E_and_F", "arm_D_has_no_ontological_information")
+                    + (f" [{e['ontology_category'].iloc[0]}]" if len(e) else ""),
+                    "métricas recomputáveis": f"{'PASS' if mrec['ok'] else 'FAIL'} ({mrec['checked_values']} valores)",
+                    "runtime": f"{m.get('seconds', float('nan')):.0f} s" if m else "—"})
+    return pd.DataFrame(out)
+
+
+def timing_table(meta: List[Dict[str, Any]]) -> pd.DataFrame:
+    keys = ["preprocessing_time", "mlp_training_time", "tuning_time", "c45_time", "original_time", "reloaded_core_time", "reloaded_owl_time",
+            "reloaded_shuffled_time", "ontology_mapping_time", "reasoning_time", "metrics_time", "serialization_time", "total_time"]
+    return pd.DataFrame([{"dataset": m["dataset"], "seed": m["seed"], **{k: round(float(m.get("timing", {}).get(k, float("nan"))), 2) for k in keys}}
+                         for m in meta if m.get("timing")])
+
+
+def work_table(meta: List[Dict[str, Any]]) -> pd.DataFrame:
+    keys = ["n_samples", "n_features_raw", "n_features_processed", "n_classes", "number_cv_fits", "number_trepan_fits", "candidate_count",
+            "semantic_feature_count", "number_reasoner_calls"]
+    return pd.DataFrame([{"dataset": m["dataset"], "seed": m["seed"], **{k: m["work"].get(k) for k in keys},
+                          "oracle_queries": sum((m["work"].get("oracle_queries_per_scope") or {}).values()),
+                          "synthetic_queries": sum((m["work"].get("synthetic_queries_per_arm") or {}).values())} for m in meta if m.get("work")])
+
+
 def smoke_report(root: Path) -> Path:
     root = Path(root)
     rows, records, splits = load_raw(root)
     report = inv.check_all(records, splits, expected_arms=ARM_ORDER)
     (root / "invariants.json").write_text(json.dumps(report, indent=1, default=str), encoding="utf-8")
     meta = [json.loads(p.read_text()) for p in sorted((root / "raw").glob("*/seed*/RUN_META.txt"))]
+    table = smoke_table(report, records, rows, meta)
+    table.to_csv(root / "smoke_protocol_table.csv", index=False)
+    raw = raw_table(rows)
+    raw.to_csv(root / "smoke_raw_results_table.csv", index=False)
     text = ["# Protocol smoke test (1 master seed por dataset)\n",
-            "> O objetivo NÃO é interpretar quem venceu: só verificar invariantes do protocolo. Os números abaixo são resultados BRUTOS, sem leitura científica.\n",
-            "## 1. Invariantes\n", invariants_markdown(report),
-            "## 2. Resultados brutos por dataset × seed × braço\n", _md(raw_table(rows)),
-            "## 3. Execução\n", _md(pd.DataFrame(meta))]
+            "> O objetivo NÃO é interpretar quem venceu: só verificar invariantes do protocolo. Os números de desempenho abaixo são "
+            "resultados BRUTOS, sem leitura científica.\n",
+            "## 1. Smoke protocol (PASS/FAIL)\n", _md(table), "## 2. Invariantes detalhados\n", invariants_markdown(report),
+            "## 3. Resultados brutos por dataset × seed × braço\n", _md(raw),
+            "## 4. Tempo por estágio (s)\n", _md(timing_table(meta)), "## 5. Contagens de trabalho\n", _md(work_table(meta))]
     path = root / "SMOKE_REPORT.md"
     path.write_text("\n".join(text), encoding="utf-8")
     return path

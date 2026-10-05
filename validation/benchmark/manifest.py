@@ -23,7 +23,7 @@ from validation.benchmark import datasets as ds_mod
 from validation.benchmark.c45_audit import audit_native_c45
 
 ROOT = Path(__file__).resolve().parents[2]
-MANIFEST_VERSION = "1"
+MANIFEST_VERSION = "2"
 MANIFEST_PATH = Path(__file__).resolve().parent / f"BENCHMARK_MANIFEST_v{MANIFEST_VERSION}.json"
 MASTER_SEEDS = (42, 7, 123, 2024, 11)                        # fixadas ANTES de qualquer resultado
 MAIN_ARM_GROUPS = ("A", "B", "C", "D", "E", "F")
@@ -34,8 +34,20 @@ FROZEN_CODE_FILES = (
     "core/trepan_scientific_tuning.py", "core/scientific_experiment_contract.py", "core/trepan_original.py",
     "core/trepan_reloaded_historical.py", "core/c45_j48_tree.py", "core/benchmark/runner.py", "core/benchmark/semantic.py",
     "core/benchmark/ontology_gate.py", "core/benchmark/structure.py", "core/benchmark/metrics.py", "core/benchmark/analysis.py",
+    "core/benchmark/preprocessing.py", "core/benchmark/timing.py",
 )
 # Chaves proibidas por dataset: hiperparâmetros do TREPAN/Reloaded e da seleção estrutural.
+SUPERSEDES = "BENCHMARK_MANIFEST_v1.json"
+ENGINEERING_CHANGES_V2 = [
+    "trepan_original: ganho de informação/entropia por contagens (bincount) com memo exato; thresholds vectorizados; amostragem KDE com "
+    "RandomState reutilizado (mesma sequência); 1-of-1 sem column_stack",
+    "trepan_scientific_tuning: memoização exata de ajustes idênticos (hash do candidato + repetição/seed/dobra/treino/oracle_id); "
+    "etapa semântica opcional (run_semantic_stage) — o protocolo estrutural ontology-blind não a consome",
+    "benchmark: contexto semântico permutado (F) reutiliza o contexto real (sem segundo reasoning); matrizes enriquecidas calculadas uma vez por split",
+    "run: ambiente numérico fixado (OPENBLAS_CORETYPE=Haswell, 1 thread BLAS, sem AVX-512 do NumPy) para reprodutibilidade entre máquinas; "
+    "sintéticos: hash dos dados arredondado a 8 casas",
+]
+SYNTHETIC_HASH_DECIMALS = 8
 FORBIDDEN_DATASET_KEYS = {"max_nodes", "purity_epsilon", "alpha", "beta", "lam", "lambda", "min_sample", "max_queries", "max_depth",
                           "max_n", "beam_width", "min_samples_leaf", "confidence_factor", "semantic_active_query_fraction",
                           "error_focused_refinement", "onto_weight", "trepan", "reloaded", "hyperparameters", "hyperparams"}
@@ -64,7 +76,10 @@ def dataset_entry(spec: ds_mod.DatasetSpec) -> Dict[str, Any]:
     return {
         "dataset_id": spec.dataset_id, "kind": spec.kind, "ranking_eligible": bool(spec.ranking_eligible),
         "origin": spec.origin, "version": spec.version,
-        "data_hash": core_mf.hash_dataset(ds.X, ds.y, ds.feature_names),
+        "data_hash": core_mf.hash_dataset(np.round(ds.X, SYNTHETIC_HASH_DECIMALS) if spec.kind == ds_mod.SYNTHETIC_CONTROLLED else ds.X,
+                                          ds.y, ds.feature_names),
+        "data_hash_note": (f"X arredondado a {SYNTHETIC_HASH_DECIMALS} casas (make_classification usa BLAS: o último bit depende do CPU)"
+                           if spec.kind == ds_mod.SYNTHETIC_CONTROLLED else "bytes exatos"),
         "source_file_sha256": ds_mod.source_file_sha256(spec.source_file),
         "n_samples": int(len(ds.y)), "n_features": int(ds.X.shape[1]),
         "feature_names": list(ds.feature_names), "feature_types": _feature_types(ds.X),
@@ -106,13 +121,25 @@ def assert_no_hyperparameters(manifest: Dict[str, Any]) -> None:
         walk(entry, [str(entry.get("dataset_id"))])
 
 
+def equivalence_reference() -> Optional[Dict[str, Any]]:
+    path = Path(__file__).resolve().parent / "EQUIVALENCE_REPORT_v1_to_v2.json"
+    if not path.exists():
+        return None
+    return {"file": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "identical": json.loads(path.read_text()).get("identical")}
+
+
 def build_manifest(dataset_ids=None) -> Dict[str, Any]:
     ids = list(dataset_ids or (ds_mod.MAIN_DATASETS + ds_mod.CONTROLLED_DATASETS))
     entries = [dataset_entry(ds_mod.REGISTRY[i]) for i in ids]
     audit = audit_native_c45()
     manifest = {
         "manifest_version": MANIFEST_VERSION, "created_utc": datetime.now(timezone.utc).isoformat(),
-        "design_frozen": True,
+        "design_frozen": True, "supersedes": SUPERSEDES, "supersedes_reason": "otimizações de engenharia sem efeito científico (ver engineering_changes)",
+        "engineering_changes": list(ENGINEERING_CHANGES_V2), "equivalence_report": equivalence_reference(),
+        "numeric_environment": {"OPENBLAS_CORETYPE": "Haswell", "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1",
+                                "NPY_DISABLE_CPU_FEATURES": "AVX512F AVX512CD AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_KNL AVX512_KNM"},
+        "resource_policy": {"max_wall_time_per_unit_s": None, "scope": "global_operational_not_scientific",
+                            "on_exceeded": "unit marked resource_limit_exceeded; scientific configuration is never changed to finish"},
         "design_statement": ("Desenho experimental CONGELADO: algoritmos e hiperparâmetros não são alterados em resposta aos resultados; "
                              "um resultado inesperado é evidência a investigar. A configuração estrutural é escolhida por split, só no treino, "
                              "pelo tuning científico congelado (ontology-blind) e é igual em C, D, E e F."),

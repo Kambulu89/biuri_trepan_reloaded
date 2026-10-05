@@ -22,6 +22,7 @@ import sys
 import time
 import warnings
 from pathlib import Path
+from typing import Optional
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -67,7 +68,14 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MAN
     return out
 
 
-def _spawn(units, out: Path, workers: int) -> int:
+def _write_status(out: Path, dataset: str, seed: int, status: str, **extra) -> None:
+    d = out / "status"; d.mkdir(parents=True, exist_ok=True)
+    (d / f"{dataset}_seed{seed}.json").write_text(json.dumps({"dataset": dataset, "seed": seed, "status": status, **extra}), encoding="utf-8")
+
+
+def _spawn(units, out: Path, workers: int, max_wall_time_per_unit: Optional[float] = None) -> int:
+    """Supervisor. ``max_wall_time_per_unit`` (segundos) é um limite OPERACIONAL global, igual para todos os datasets: uma unidade que o
+    ultrapasse é terminada e marcada ``resource_limit_exceeded``. A configuração científica NUNCA é alterada para a fazer terminar."""
     logs = out / "logs"; logs.mkdir(parents=True, exist_ok=True)
     pending, running, failed = [u for u in units if not unit_complete(out, *u)], [], 0
     while pending or running:
@@ -80,9 +88,20 @@ def _spawn(units, out: Path, workers: int) -> int:
             print(f"[run] iniciada {ds} seed={seed}", flush=True)
         for item in list(running):
             p, ds, seed, log, t0 = item
-            if p.poll() is not None:
+            if p.poll() is None and max_wall_time_per_unit is not None and time.time() - t0 > max_wall_time_per_unit:
+                p.terminate()
+                try:
+                    p.wait(timeout=30)
+                except subprocess.TimeoutExpired:
+                    p.kill()
+                log.close(); running.remove(item); failed += 1
+                _write_status(out, ds, seed, "resource_limit_exceeded", limit_s=max_wall_time_per_unit, elapsed_s=time.time() - t0,
+                              note="unidade terminada pelo limite operacional global; a configuração científica não foi alterada")
+                print(f"[run] resource_limit_exceeded {ds} seed={seed} (> {max_wall_time_per_unit:.0f}s)", flush=True)
+            elif p.poll() is not None:
                 log.close(); running.remove(item)
                 failed += int(p.returncode != 0)
+                _write_status(out, ds, seed, "completed" if p.returncode == 0 else "failed", elapsed_s=time.time() - t0, returncode=p.returncode)
                 print(f"[run] {'OK' if p.returncode == 0 else 'FALHOU'} {ds} seed={seed} ({time.time() - t0:.0f}s)", flush=True)
         time.sleep(2)
     return failed
@@ -94,6 +113,8 @@ def main() -> None:
     g.add_argument("--smoke", action="store_true"); g.add_argument("--main", action="store_true")
     g.add_argument("--controlled", action="store_true"); g.add_argument("--unit", nargs=2, metavar=("DATASET", "SEED"))
     ap.add_argument("--out", required=True); ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--max-wall-time-per-unit", type=float, default=None,
+                    help="limite operacional global (s) por unidade dataset×seed; omissão = sem limite. Excedê-lo marca resource_limit_exceeded")
     a = ap.parse_args()
     out = Path(a.out)
     if a.unit:
@@ -105,7 +126,7 @@ def main() -> None:
         units = [(d, s) for s in mf.MASTER_SEEDS for d in ds_mod.MAIN_DATASETS]
     else:
         units = [(d, s) for s in mf.MASTER_SEEDS for d in ds_mod.CONTROLLED_DATASETS]
-    sys.exit(1 if _spawn(units, out, a.workers) else 0)
+    sys.exit(1 if _spawn(units, out, a.workers, a.max_wall_time_per_unit) else 0)
 
 
 if __name__ == "__main__":
