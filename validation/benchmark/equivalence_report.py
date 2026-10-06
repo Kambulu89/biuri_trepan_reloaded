@@ -69,8 +69,8 @@ def compare_dataset(root_a: Path, root_b: Path, dataset: str) -> List[Dict[str, 
     gate_arms = [a for a in ("reloaded_core", "reloaded_owl_full", "reloaded_owl_shuffled") if a in common]
     add("quality gate", all(_same(ra[a]["row"].get(f), rb[a]["row"].get(f)) for a in gate_arms for f in GATE_FIELDS), "campos do gate diferem")
     add("semantic audit", all(_same(ra[a]["row"].get(f), rb[a]["row"].get(f)) for a in gate_arms for f in SEMANTIC_AUDIT)
-        and _same(eq._strip_time({k: v for k, v in sa.items() if k not in ("work", "timing", "structural_protocol", "oracle_contract")}),
-                  eq._strip_time({k: v for k, v in sb.items() if k not in ("work", "timing", "structural_protocol", "oracle_contract")})),
+        and _same(eq._strip_time({k: v for k, v in sa.items() if k not in ("work", "timing", "structural_protocol", "oracle_contract", "tuning_execution_count")}),
+                  eq._strip_time({k: v for k, v in sb.items() if k not in ("work", "timing", "structural_protocol", "oracle_contract", "tuning_execution_count")})),
         "auditoria semântica difere")
     add("ontology_effectively_used / categoria", all(_same(ra[a]["row"].get("ontology_effectively_used"), rb[a]["row"].get("ontology_effectively_used"))
                                                         and _same(ra[a]["row"].get("ontology_category"), rb[a]["row"].get("ontology_category")) for a in gate_arms),

@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 TIME_TOKENS = ("time", "seconds", "_s", "elapsed", "timestamp", "experiment_id", "run_code_commit", "manifest")
-IGNORED_EXACT = {"arm_time_s", "tuning_time_s", "time_s"}
+IGNORED_EXACT = {"arm_time_s", "tuning_time_s", "time_s", "tuning_execution_count"}      # contadores/medições de engenharia, não resultados
 
 
 def _is_time_key(key: str) -> bool:
@@ -68,7 +68,10 @@ def compare_records(a: Dict[str, Any], b: Dict[str, Any], tol: float = 0.0) -> L
 def compare_split_payload(a: Dict[str, Any], b: Dict[str, Any], tol: float = 0.0) -> List[str]:
     """Auditoria semântica, protocolo estrutural (tuning), gate e contrato do oráculo (ignora tempos e contadores de trabalho)."""
     def keep(p):
-        rep = {k: v for k, v in p["semantic_report"][0].items() if k not in ("work", "timing")}
+        rep = {k: v for k, v in p["semantic_report"][0].items() if k not in ("work", "timing", "tuning_execution_count")}
+        if "structural_protocol" in rep:                # perfil/contadores de engenharia do tuning (o resto do protocolo é comparado)
+            rep["structural_protocol"] = {k: v for k, v in rep["structural_protocol"].items()
+                                          if k not in ("engineering_profile", "number_cv_fits", "number_capacity_fits")}
         if "oracle_contract" in rep:                    # contadores de queries por escopo são CONTADORES DE TRABALHO (a memoização reduz-os)
             rep["oracle_contract"] = {k: v for k, v in rep["oracle_contract"].items() if k != "queries_per_scope"}
         return _strip_time(rep)
