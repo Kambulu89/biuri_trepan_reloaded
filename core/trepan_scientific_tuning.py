@@ -6,6 +6,9 @@ essa capacidade, selecciona apenas parâmetros da extensão semântica do Reload
 """
 from __future__ import annotations
 
+import copy
+import hashlib
+import json
 import time
 from dataclasses import asdict, dataclass, replace
 from typing import Any, Optional, Sequence
@@ -15,6 +18,7 @@ from scipy import stats as _scipy_stats
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 
+from core.tuning_checkpoint import from_environment as _checkpoint_from_environment
 from core.training_config import DEFAULT_QUERY_BUDGET_CAP, non_binding_query_budget, required_query_budget
 from core.controlled_trepan_experiment import ControlledTrepanConfig
 from core.trepan_original import TrepanOriginalClassifier
@@ -749,6 +753,10 @@ def _budget_check(history) -> dict:
             "max_queries_used": max((h["stats"]["queries_used_max"] for h in rows), default=0)}
 
 
+# Contador de execuções do tuning (engenharia): o protocolo estrutural deve executá-lo UMA vez por unidade dataset × master seed.
+TUNING_EXECUTIONS = 0
+
+
 def tune_scientific_trepan(
     X_train,
     y_train,
@@ -763,7 +771,17 @@ def tune_scientific_trepan(
     search: ScientificTrepanSearchConfig = ScientificTrepanSearchConfig(),
     ontology_graph=None,
     semantic_feature_entities=None,
+    reuse_identical_fits: bool = True,
+    run_semantic_stage: bool = True,
 ) -> dict[str, Any]:
+    global TUNING_EXECUTIONS
+    TUNING_EXECUTIONS += 1
+    profile = {k: 0.0 for k in ("fold_preparation", "candidate_construction", "tree_fit_total", "synthetic_generation", "oracle_prediction",
+                                "local_model_fit", "split_search", "tree_construction_other", "metric_computation", "bootstrap_selection",
+                                "memo_copy")}
+    profile["fits_executed"] = 0; profile["fits_reused"] = 0; profile["fits_resumed"] = 0
+    checkpoint = _checkpoint_from_environment()      # BIURI_TUNING_CHECKPOINT: retoma uma unidade interrompida (resultados idênticos)
+    t_prep = time.perf_counter()
     X=np.asarray(X_train,dtype=float); y=np.asarray(y_train)
     if X.ndim != 2 or len(X)!=len(y):
         raise ValueError("X_train/y_train inválidos para tuning científico TREPAN.")
@@ -773,17 +791,52 @@ def tune_scientific_trepan(
     repeats = len(seeds)
     feature_scale = np.nan_to_num(X.std(axis=0), nan=0.0)
 
+    # Memoização exata (engenharia): o ajuste de uma configuração IDÊNTICA (todos os campos), na mesma dobra/seed/partição de treino
+    # e contra o mesmo oráculo, é determinístico; repeti-lo (p.ex. o candidato base na etapa de capacidade, igual a um da grelha de
+    # estrutura) dá exatamente a mesma linha. Identificado por hash do candidato + (repetição, seed, dobra, índices de treino).
+    fit_memo: dict = {}
+    plan_hash = {i: hashlib.sha1(np.ascontiguousarray(tr).tobytes()).hexdigest() for i, (_r, _s, _f, tr, _v) in enumerate(plan)}
+    oracle_key = str(getattr(oracle, "oracle_id", id(oracle)))
+    profile["fold_preparation"] += time.perf_counter() - t_prep
+
+    def timed(key, fn):
+        t_c = time.perf_counter()
+        try:
+            return fn()
+        finally:
+            profile[key] += time.perf_counter() - t_c
+
     def evaluate(candidates, label_stage):
         history = []
         for candidate in candidates:
             rows = []; failed = None
-            for (r, seed, f, tr, va) in plan:
+            candidate_key = timed("candidate_construction", lambda: hashlib.sha1(json.dumps(asdict(candidate), sort_keys=True, default=str).encode()).hexdigest())
+            for plan_index, (r, seed, f, tr, va) in enumerate(plan):
+                memo_key = (candidate_key, int(r), int(seed), int(f), plan_hash[plan_index], oracle_key)
+                if reuse_identical_fits and memo_key in fit_memo:
+                    rows.append(timed("memo_copy", lambda: copy.deepcopy(fit_memo[memo_key])))
+                    profile["fits_reused"] += 1
+                    continue
+                ckpt_key = checkpoint.key(*memo_key)
+                resumed_row = checkpoint.get(ckpt_key)
+                if resumed_row is not None:
+                    rows.append(copy.deepcopy(resumed_row))
+                    profile["fits_resumed"] += 1
+                    if reuse_identical_fits:
+                        fit_memo[memo_key] = copy.deepcopy(resumed_row)
+                    continue
                 try:
                     kwargs = candidate.common_tree_kwargs()
                     kwargs["random_state"] = int(seed)          # a aleatoriedade das queries varia com a seed da repetição
                     t0 = time.perf_counter()
                     model = TrepanOriginalClassifier(**kwargs).fit(X[tr], oracle=oracle, feature_names=feature_names)
                     elapsed = time.perf_counter() - t0
+                    profile["fits_executed"] += 1
+                    profile["tree_fit_total"] += elapsed
+                    for src, dst in (("synthetic_generation_time_", "synthetic_generation"), ("oracle_prediction_time_", "oracle_prediction"),
+                                     ("local_model_time_", "local_model_fit"), ("split_search_time_", "split_search")):
+                        profile[dst] += float(getattr(model, src, 0.0) or 0.0)
+                    t_metrics = time.perf_counter()
                     obj = _objective(model, X[va], y[va], oracle, candidate, search)
                     rows.append({"repeat": r, "seed": int(seed), "fold": f, **obj,
                                  "nodes": int(getattr(model, "node_count_", 0)), "depth": int(model.get_depth()),
@@ -792,6 +845,10 @@ def tune_scientific_trepan(
                                  "budget_exhausted": bool(getattr(model, "query_budget_exhausted_", False)),
                                  "max_nodes_reached": bool(getattr(model, "max_nodes_reached_", False)),
                                  **_tree_structure(model, feature_scale)})
+                    profile["metric_computation"] += time.perf_counter() - t_metrics
+                    checkpoint.put(ckpt_key, copy.deepcopy(rows[-1]))
+                    if reuse_identical_fits:
+                        fit_memo[memo_key] = copy.deepcopy(rows[-1])
                 except (ValueError, RuntimeError) as exc:
                     failed = str(exc); break
             if rows and failed is None:
@@ -889,6 +946,11 @@ def tune_scientific_trepan(
                      "t_critical": info.get("t_critical"), "n_splits": info.get("n_splits")}
         return ControlledTrepanConfig(**history[winner]["config"]), selection
 
+    _select_impl = select
+
+    def select(*a, **k):
+        return timed("bootstrap_selection", lambda: _select_impl(*a, **k))
+
     # Etapa 1: estrutura (purity_epsilon x max_nodes), só no treino, CV repetida. Sem grelha ou com
     # ``tune_structure=False`` ficam os valores canónicos da base.
     structure_history = []
@@ -901,10 +963,10 @@ def tune_scientific_trepan(
                  "saturation_threshold": float(search.capacity_expansion_saturation_threshold), "steps": [],
                  "last_supported_max_nodes": None, "interpretation": None}
     if search.tune_structure and search.purity_epsilon_grid and search.max_nodes_grid:
-        structure_history = evaluate(_structure_candidates(base_config, search), "structure")
+        structure_history = evaluate(timed("candidate_construction", lambda: _structure_candidates(base_config, search)), "structure")
         expansion.update(run_capacity_expansion(
             structure_history,
-            lambda nodes: evaluate(_expansion_candidates(base_config, search, nodes, [h["config"] for h in structure_history]), "structure"),
+            lambda nodes: evaluate(timed("candidate_construction", lambda: _expansion_candidates(base_config, search, nodes, [h["config"] for h in structure_history])), "structure"),
             search, folds))
         structure_base, structure_selection = select(structure_history, base_config)
         expansion["fraction_at_node_cap"] = (structure_selection.get("node_cap") or {}).get("fraction_at_node_cap")
@@ -916,13 +978,13 @@ def tune_scientific_trepan(
         capacity_history = structure_history              # sem eixos adicionais: a vencedora da etapa 1 é a comum
         common = structure_base
     else:
-        capacity_history = evaluate(_capacity_candidates(
-            structure_base, X.shape[1], search.max_capacity_candidates, grow_nodes=False), "capacity")
+        capacity_history = evaluate(timed("candidate_construction", lambda: _capacity_candidates(
+            structure_base, X.shape[1], search.max_capacity_candidates, grow_nodes=False)), "capacity")
         common, capacity_selection = select(capacity_history, structure_base)
 
     semantic_history=[]
     weights=np.ones(X.shape[1],dtype=float) if semantic_feature_weights is None else np.asarray(semantic_feature_weights,dtype=float)
-    for candidate in _semantic_candidates(common, search.max_semantic_candidates):
+    for candidate in (_semantic_candidates(common, search.max_semantic_candidates) if run_semantic_stage else []):
         rows=[]; failed=None; usage=[]
         for tr,va in splits:
             try:
@@ -973,7 +1035,12 @@ def tune_scientific_trepan(
         semantic_history.append({"config":asdict(candidate),"mean":mean,"failed":failed})
     valid_sem=[r for r in semantic_history if np.isfinite(r["mean"]["selection_score"])]
     selected=ControlledTrepanConfig(**max(valid_sem,key=lambda r:r["mean"]["selection_score"])["config"]) if valid_sem else common
+    profile["tree_construction_other"] = max(0.0, profile["tree_fit_total"] - profile["synthetic_generation"] - profile["oracle_prediction"]
+                                              - profile["local_model_fit"] - profile["split_search"])
+    profile["total_instrumented"] = float(sum(v for k, v in profile.items() if k in (
+        "fold_preparation", "candidate_construction", "tree_fit_total", "metric_computation", "bootstrap_selection", "memo_copy")))
     return {
+        "engineering_profile": profile,
         "selection_scope":"training_cv_only",
         "test_used_for_selection":False,
         "cv_folds":int(folds),

@@ -78,6 +78,8 @@ class MofNTest:
     def evaluate(self, X: np.ndarray) -> np.ndarray:
         if not self.literals:
             return np.ones(len(X), dtype=bool)
+        if self.m == 1 and len(self.literals) == 1:
+            return self.literals[0].evaluate(X)          # 1-of-1 == o próprio literal (mesmos valores booleanos)
         votes = np.column_stack([lit.evaluate(X) for lit in self.literals]).sum(axis=1)
         return votes >= self.m
 
@@ -171,13 +173,35 @@ class FeatureDistributionModel:
                 self.features_.append(_FeatureDistribution(False, finite, None, kde, bw))
         return self
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        for derived in ("_kde_random_state", "_gaussian_cache"):      # caches de desempenho: nunca entram em pickles/cópias persistidas
+            state.pop(derived, None)
+        return state
+
     def _sample_column(self, j: int, n: int) -> np.ndarray:
         spec = self.features_[j]
         if spec.discrete:
             return self._rng.choice(spec.values, size=n, replace=True, p=spec.probabilities)
         # KernelDensity.sample aceita int/RandomState, não Generator em versões antigas.
         seed = int(self._rng.integers(0, np.iinfo(np.int32).max))
-        return spec.kde.sample(n_samples=n, random_state=seed).reshape(-1)
+        rs = getattr(self, "_kde_random_state", None)
+        if rs is None:
+            rs = self._kde_random_state = np.random.RandomState(0)
+        rs.seed(seed)             # mesma sequência que ``random_state=seed`` (RandomState(seed)), sem recriar o gerador
+        kde = spec.kde
+        cache = getattr(self, "_gaussian_cache", None)
+        if cache is None:
+            cache = self._gaussian_cache = {}
+        fast = cache.get(j)
+        if fast is None:
+            fast = cache[j] = np.asarray(kde.tree_.data) if (kde.kernel == "gaussian" and kde.tree_.sample_weight is None) else False
+        if fast is False:
+            return kde.sample(n_samples=n, random_state=rs).reshape(-1)
+        # Exatamente o corpo de ``KernelDensity.sample`` (núcleo gaussiano, sem pesos): uniform -> índices -> normal(data[i], bw)
+        u = rs.uniform(0, 1, size=n)
+        i = (u * fast.shape[0]).astype(np.int64)
+        return np.atleast_2d(rs.normal(fast[i], kde.bandwidth_)).reshape(-1)
 
     def _draw_unconstrained(self, n: int) -> np.ndarray:
         out = np.empty((n, self.n_features_in_), dtype=float)
@@ -254,7 +278,8 @@ class FeatureDistributionModel:
         return False
 
 
-def _entropy(y: np.ndarray, classes: np.ndarray) -> float:
+def _entropy_legacy(y: np.ndarray, classes: np.ndarray) -> float:
+    """Implementação de referência (lenta). Mantida para provar a equivalência exata do caminho rápido."""
     if len(y) == 0:
         return 0.0
     counts = np.asarray([(y == c).sum() for c in classes], dtype=float)
@@ -262,15 +287,76 @@ def _entropy(y: np.ndarray, classes: np.ndarray) -> float:
     return float(-(p * np.log2(p)).sum())
 
 
-def _information_gain(y: np.ndarray, mask: np.ndarray, classes: np.ndarray) -> float:
+def _information_gain_legacy(y: np.ndarray, mask: np.ndarray, classes: np.ndarray) -> float:
     if len(y) == 0 or not np.any(mask) or np.all(mask):
         return 0.0
     n = len(y)
     return float(
-        _entropy(y, classes)
-        - mask.sum() / n * _entropy(y[mask], classes)
-        - (~mask).sum() / n * _entropy(y[~mask], classes)
+        _entropy_legacy(y, classes)
+        - mask.sum() / n * _entropy_legacy(y[mask], classes)
+        - (~mask).sum() / n * _entropy_legacy(y[~mask], classes)
     )
+
+
+def _entropy_from_counts(counts: np.ndarray) -> float:
+    """Mesma expressão numérica que ``_entropy_legacy`` aplicada a contagens já calculadas (resultado idêntico bit a bit)."""
+    p = counts[counts > 0] / counts.sum()
+    return float(-(p * np.log2(p)).sum())
+
+
+# Cache de um só slot: o mesmo ``y`` (mesmo objeto, mantido vivo pela referência) é pontuado por centenas de candidatos.
+# Códigos de classe e entropia do pai são calculados uma vez; nunca se reutilizam entre objetos ``y`` diferentes.
+_CLASS_CODE_CACHE: dict = {"y": None, "classes": None, "codes": None, "counts": None, "entropy": None, "entropy_memo": {}}
+
+
+def _class_codes(y: np.ndarray, classes: np.ndarray):
+    c = _CLASS_CODE_CACHE
+    if c["y"] is y and c["classes"] is classes:
+        return c if c["codes"] is not None else None
+    codes = counts = entropy = None
+    try:
+        cls = np.asarray(classes)
+        arr = np.asarray(y)
+        if cls.ndim == 1 and len(cls) and (len(cls) == 1 or bool(np.all(cls[:-1] < cls[1:]))) and arr.ndim == 1:
+            idx = np.searchsorted(cls, arr)
+            safe = np.minimum(idx, len(cls) - 1)
+            if bool(np.all(cls[safe] == arr)):
+                codes = safe.astype(np.intp)
+                counts = np.bincount(codes, minlength=len(cls)).astype(float)
+                entropy = _entropy_from_counts(counts)
+    except (TypeError, ValueError):
+        codes = None
+    c.update(y=y, classes=classes, codes=codes, counts=counts, entropy=entropy, entropy_memo={})
+    return c if codes is not None else None
+
+
+def _information_gain(y: np.ndarray, mask: np.ndarray, classes: np.ndarray) -> float:
+    if len(y) == 0 or not np.any(mask) or np.all(mask):
+        return 0.0
+    mask_arr = mask
+    if getattr(mask_arr, "dtype", None) != np.bool_ or len(mask_arr) != len(y):
+        return _information_gain_legacy(y, mask, classes)
+    cache = _class_codes(y, classes)
+    if cache is None:
+        return _information_gain_legacy(y, mask, classes)
+    n = len(y)
+    k = len(cache["counts"])
+    left = np.bincount(cache["codes"][mask_arr], minlength=k).astype(float)
+    right = cache["counts"] - left
+    n_left = int(np.count_nonzero(mask_arr))
+    memo = cache["entropy_memo"]                      # o mesmo vetor de contagens (p.ex. máscaras complementares) → mesma entropia
+    key_l, key_r = left.tobytes(), right.tobytes()
+    h_left = memo.get(key_l)
+    if h_left is None:
+        h_left = memo[key_l] = _entropy_from_counts(left)
+    h_right = memo.get(key_r)
+    if h_right is None:
+        h_right = memo[key_r] = _entropy_from_counts(right)
+    return float(cache["entropy"] - n_left / n * h_left - (n - n_left) / n * h_right)
+
+
+def _entropy(y: np.ndarray, classes: np.ndarray) -> float:
+    return _entropy_legacy(y, classes)
 
 
 @dataclass
@@ -395,17 +481,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         candidates: list[tuple[float, Literal]] = []
         priorities = self._feature_priority_scores(X)
         feature_order = np.argsort(-priorities, kind="stable")[: self.max_features_per_node]
+        Xf = np.asarray(X, dtype=float)
         for j in feature_order:
             values = X[:, j]
+            col = np.ascontiguousarray(Xf[:, j])
             order = np.argsort(values, kind="stable")
             sv, sy = values[order], y[order]
-            thresholds = []
-            for i in range(len(sv) - 1):
-                if not np.isfinite(sv[i]) or not np.isfinite(sv[i + 1]):
-                    continue
-                if sv[i] == sv[i + 1] or sy[i] == sy[i + 1]:
-                    continue
-                thresholds.append((sv[i] + sv[i + 1]) / 2.0)
+            thresholds = self._boundary_thresholds(sv, sy)
             if not thresholds:
                 uniq = np.unique(values[np.isfinite(values)])
                 if len(uniq) > 1:
@@ -414,11 +496,14 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             if len(thresholds) > 24:
                 idx = np.linspace(0, len(thresholds) - 1, 24).round().astype(int)
                 thresholds = [thresholds[i] for i in np.unique(idx)]
+            n_rows = len(col)
             for thr in thresholds:
+                thr_f = float(thr)
                 for greater in (True, False):
-                    lit = Literal(int(j), float(thr), greater)
-                    mask = lit.evaluate(X)
-                    if mask.sum() < self.min_samples_leaf or (~mask).sum() < self.min_samples_leaf:
+                    lit = Literal(int(j), thr_f, greater)
+                    mask = (col > thr_f) if greater else (col <= thr_f)         # == lit.evaluate(X), sobre a coluna contígua
+                    n_true = int(np.count_nonzero(mask))
+                    if n_true < self.min_samples_leaf or (n_rows - n_true) < self.min_samples_leaf:
                         continue
                     test = MofNTest(1, (lit,))
                     candidates.append((self._split_selection_score(y, mask, test), lit))
@@ -432,6 +517,15 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self._count("simple_generated", len(candidates))
         self._count("simple_evaluated", len(out))
         return out
+
+    @staticmethod
+    def _boundary_thresholds(sv: np.ndarray, sy: np.ndarray) -> list:
+        """Pontos médios entre valores consecutivos distintos, finitos e de classes diferentes (vectorizado; mesmos valores e ordem)."""
+        if len(sv) < 2:
+            return []
+        a, b = sv[:-1], sv[1:]
+        keep = np.isfinite(a) & np.isfinite(b) & (a != b) & (sy[:-1] != sy[1:])
+        return ((a[keep] + b[keep]) / 2.0).tolist()
 
     def _count(self, name: str, amount: int = 1) -> None:
         """Contadores de auditoria activos apenas durante a procura de splits do nó."""
@@ -514,11 +608,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         parent_model = node.parent_model or self.global_distribution_model_
         local_model = parent_model
         if len(X) >= 8:
+            t_local = time.perf_counter()
             candidate = FeatureDistributionModel(
                 random_state=self.random_state + max(0, node.node_id),
             ).fit(X)
             if candidate.differs_from(parent_model, X, alpha=self.local_model_alpha):
                 local_model = candidate
+            self.local_model_time_ = getattr(self, "local_model_time_", 0.0) + (time.perf_counter() - t_local)
         needed = max(0, int(self.effective_min_sample_) - len(X))
         remaining_budget = max(0, int(self.max_queries) - self.membership_queries_)
         requested = needed
@@ -534,8 +630,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             rejected_before = getattr(local_model, "n_rejected_", 0)
             t0 = time.perf_counter()
             qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+            t1 = time.perf_counter()
             qy = np.asarray(self.oracle_.predict(qx))
-            self.query_time_ += time.perf_counter() - t0
+            t2 = time.perf_counter()
+            self.query_time_ += t2 - t0
+            # decomposição de engenharia do tempo de queries (geração sintética vs predição do oráculo)
+            self.synthetic_generation_time_ = getattr(self, "synthetic_generation_time_", 0.0) + (t1 - t0)
+            self.oracle_prediction_time_ = getattr(self, "oracle_prediction_time_", 0.0) + (t2 - t1)
             valid = int(np.sum(node.constraints.accepts(qx))) if len(qx) else 0
             node.stats.update({
                 "queries_generated": int(len(qx)),
@@ -587,6 +688,9 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.membership_queries_ = 0
         self._fit_started_ = time.perf_counter()
         self.query_time_ = 0.0
+        self.synthetic_generation_time_ = 0.0
+        self.oracle_prediction_time_ = 0.0
+        self.local_model_time_ = 0.0
         self.split_search_time_ = 0.0
         self.m_of_n_search_time_ = 0.0
         self.pruning_time_ = 0.0

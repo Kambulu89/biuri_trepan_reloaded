@@ -1,0 +1,693 @@
+{
+  "manifest_version": "1",
+  "created_utc": "2026-10-05T11:04:37.225952+00:00",
+  "design_frozen": true,
+  "design_statement": "Desenho experimental CONGELADO: algoritmos e hiperparâmetros não são alterados em resposta aos resultados; um resultado inesperado é evidência a investigar. A configuração estrutural é escolhida por split, só no treino, pelo tuning científico congelado (ontology-blind) e é igual em C, D, E e F.",
+  "datasets": [
+    {
+      "dataset_id": "iris",
+      "kind": "real_offline",
+      "ranking_eligible": true,
+      "origin": "sklearn.datasets.load_iris (UCI Iris, Fisher 1936)",
+      "version": "scikit-learn 1.6.1",
+      "data_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016",
+      "source_file_sha256": "f13ffa8fdd56fd8e6c8d16d4081a3fbd3114bcd0aae4256c43205169cd9d1449",
+      "n_samples": 150,
+      "n_features": 4,
+      "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
+      ],
+      "feature_types": {
+        "counts": {
+          "continuous": 4
+        },
+        "per_feature": [
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 3,
+      "classes": [
+        "setosa",
+        "versicolor",
+        "virginica"
+      ],
+      "class_counts": {
+        "0": 50,
+        "1": 50,
+        "2": 50
+      },
+      "has_missing_values": false,
+      "ontology_id": "iris",
+      "ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+      "ontology_file": "validation/benchmark/ontologies/iris.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    },
+    {
+      "dataset_id": "wine",
+      "kind": "real_offline",
+      "ranking_eligible": true,
+      "origin": "sklearn.datasets.load_wine (UCI Wine)",
+      "version": "scikit-learn 1.6.1",
+      "data_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7",
+      "source_file_sha256": "10e8a802908b34f86e5da8ce962f3c806694bc98450a18f61851af59f324bede",
+      "n_samples": 178,
+      "n_features": 13,
+      "feature_names": [
+        "alcohol",
+        "malic_acid",
+        "ash",
+        "alcalinity_of_ash",
+        "magnesium",
+        "total_phenols",
+        "flavanoids",
+        "nonflavanoid_phenols",
+        "proanthocyanins",
+        "color_intensity",
+        "hue",
+        "od280/od315_of_diluted_wines",
+        "proline"
+      ],
+      "feature_types": {
+        "counts": {
+          "continuous": 11,
+          "integer": 2
+        },
+        "per_feature": [
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "integer",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "integer"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 3,
+      "classes": [
+        "class_0",
+        "class_1",
+        "class_2"
+      ],
+      "class_counts": {
+        "0": 59,
+        "1": 71,
+        "2": 48
+      },
+      "has_missing_values": false,
+      "ontology_id": "wine",
+      "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+      "ontology_file": "validation/benchmark/ontologies/wine.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    },
+    {
+      "dataset_id": "breast_cancer",
+      "kind": "real_offline",
+      "ranking_eligible": true,
+      "origin": "sklearn.datasets.load_breast_cancer (UCI WDBC)",
+      "version": "scikit-learn 1.6.1",
+      "data_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7",
+      "source_file_sha256": "fed3eb72d0575ef6192293f5093c6e801b1476b577d0386bf4455504522172ed",
+      "n_samples": 569,
+      "n_features": 30,
+      "feature_names": [
+        "mean radius",
+        "mean texture",
+        "mean perimeter",
+        "mean area",
+        "mean smoothness",
+        "mean compactness",
+        "mean concavity",
+        "mean concave points",
+        "mean symmetry",
+        "mean fractal dimension",
+        "radius error",
+        "texture error",
+        "perimeter error",
+        "area error",
+        "smoothness error",
+        "compactness error",
+        "concavity error",
+        "concave points error",
+        "symmetry error",
+        "fractal dimension error",
+        "worst radius",
+        "worst texture",
+        "worst perimeter",
+        "worst area",
+        "worst smoothness",
+        "worst compactness",
+        "worst concavity",
+        "worst concave points",
+        "worst symmetry",
+        "worst fractal dimension"
+      ],
+      "feature_types": {
+        "counts": {
+          "continuous": 30
+        },
+        "per_feature": [
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 2,
+      "classes": [
+        "malignant",
+        "benign"
+      ],
+      "class_counts": {
+        "0": 212,
+        "1": 357
+      },
+      "has_missing_values": false,
+      "ontology_id": "breast_cancer",
+      "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+      "ontology_file": "validation/benchmark/ontologies/breast_cancer.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    },
+    {
+      "dataset_id": "digits",
+      "kind": "real_offline",
+      "ranking_eligible": true,
+      "origin": "sklearn.datasets.load_digits (UCI Optical Recognition of Handwritten Digits, 8x8)",
+      "version": "scikit-learn 1.6.1",
+      "data_hash": "6eb4cea3f35c407baf0c138f45bce7bb15193c4f0213aa8e78a6175ecfe6a01e",
+      "source_file_sha256": "09f66e6debdee2cd2b5ae59e0d6abbb73fc2b0e0185d2e1957e9ebb51e23aa22",
+      "n_samples": 1797,
+      "n_features": 64,
+      "feature_names": [
+        "pixel_0_0",
+        "pixel_0_1",
+        "pixel_0_2",
+        "pixel_0_3",
+        "pixel_0_4",
+        "pixel_0_5",
+        "pixel_0_6",
+        "pixel_0_7",
+        "pixel_1_0",
+        "pixel_1_1",
+        "pixel_1_2",
+        "pixel_1_3",
+        "pixel_1_4",
+        "pixel_1_5",
+        "pixel_1_6",
+        "pixel_1_7",
+        "pixel_2_0",
+        "pixel_2_1",
+        "pixel_2_2",
+        "pixel_2_3",
+        "pixel_2_4",
+        "pixel_2_5",
+        "pixel_2_6",
+        "pixel_2_7",
+        "pixel_3_0",
+        "pixel_3_1",
+        "pixel_3_2",
+        "pixel_3_3",
+        "pixel_3_4",
+        "pixel_3_5",
+        "pixel_3_6",
+        "pixel_3_7",
+        "pixel_4_0",
+        "pixel_4_1",
+        "pixel_4_2",
+        "pixel_4_3",
+        "pixel_4_4",
+        "pixel_4_5",
+        "pixel_4_6",
+        "pixel_4_7",
+        "pixel_5_0",
+        "pixel_5_1",
+        "pixel_5_2",
+        "pixel_5_3",
+        "pixel_5_4",
+        "pixel_5_5",
+        "pixel_5_6",
+        "pixel_5_7",
+        "pixel_6_0",
+        "pixel_6_1",
+        "pixel_6_2",
+        "pixel_6_3",
+        "pixel_6_4",
+        "pixel_6_5",
+        "pixel_6_6",
+        "pixel_6_7",
+        "pixel_7_0",
+        "pixel_7_1",
+        "pixel_7_2",
+        "pixel_7_3",
+        "pixel_7_4",
+        "pixel_7_5",
+        "pixel_7_6",
+        "pixel_7_7"
+      ],
+      "feature_types": {
+        "counts": {
+          "binary": 3,
+          "integer": 61
+        },
+        "per_feature": [
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "binary",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "binary",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "binary",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 10,
+      "classes": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "class_counts": {
+        "0": 178,
+        "1": 182,
+        "2": 177,
+        "3": 183,
+        "4": 181,
+        "5": 182,
+        "6": 181,
+        "7": 179,
+        "8": 174,
+        "9": 180
+      },
+      "has_missing_values": false,
+      "ontology_id": "digits",
+      "ontology_hash": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+      "ontology_file": "validation/benchmark/ontologies/digits.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    },
+    {
+      "dataset_id": "synthetic_binary",
+      "kind": "synthetic_controlled",
+      "ranking_eligible": false,
+      "origin": "core.benchmark.synthetic.make_synthetic(seed=9)",
+      "version": "make_classification-scikit-learn 1.6.1",
+      "data_hash": "b7e0bd45c79eb1a430d993eb21ea772f9daaeb682a7f8316aeabeef0872044ea",
+      "source_file_sha256": null,
+      "n_samples": 260,
+      "n_features": 9,
+      "feature_names": [
+        "feat_0",
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4",
+        "feat_5",
+        "feat_6",
+        "feat_7",
+        "feat_8"
+      ],
+      "feature_types": {
+        "counts": {
+          "continuous": 9
+        },
+        "per_feature": [
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 2,
+      "classes": [
+        "class_0",
+        "class_1"
+      ],
+      "class_counts": {
+        "0": 128,
+        "1": 132
+      },
+      "has_missing_values": false,
+      "ontology_id": "synthetic_binary",
+      "ontology_hash": "43e2650bc6701e973784a387cbc98b52c0ee746f0ad72e3ff9e9cc579d395e0d",
+      "ontology_file": "validation/benchmark/ontologies/synthetic_binary.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    },
+    {
+      "dataset_id": "synthetic_3class",
+      "kind": "synthetic_controlled",
+      "ranking_eligible": false,
+      "origin": "core.benchmark.synthetic.make_synthetic(seed=10)",
+      "version": "make_classification-scikit-learn 1.6.1",
+      "data_hash": "9422f18d5af10a02b8f12bdfb1894dca8fe1c9fae555d2706d7498ba7649a9b5",
+      "source_file_sha256": null,
+      "n_samples": 260,
+      "n_features": 12,
+      "feature_names": [
+        "feat_0",
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4",
+        "feat_5",
+        "feat_6",
+        "feat_7",
+        "feat_8",
+        "feat_9",
+        "feat_10",
+        "feat_11"
+      ],
+      "feature_types": {
+        "counts": {
+          "continuous": 12
+        },
+        "per_feature": [
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous",
+          "continuous"
+        ],
+        "all_numeric": true
+      },
+      "target_column": "target",
+      "n_classes": 3,
+      "classes": [
+        "class_0",
+        "class_1",
+        "class_2"
+      ],
+      "class_counts": {
+        "0": 85,
+        "1": 87,
+        "2": 88
+      },
+      "has_missing_values": false,
+      "ontology_id": "synthetic_3class",
+      "ontology_hash": "ca94db2aa39361ea1833e94009b64676a3645793828be7cdc5b69db603e138ac",
+      "ontology_file": "validation/benchmark/ontologies/synthetic_3class.owl",
+      "expected_mapping_rate": 1.0,
+      "expected_mapping_rate_note": "metadado informativo (cobertura dos grupos da TBox); não é threshold nem critério de seleção",
+      "master_seeds": [
+        42,
+        7,
+        123,
+        2024,
+        11
+      ]
+    }
+  ],
+  "main_ranking_datasets": [
+    "iris",
+    "wine",
+    "breast_cancer",
+    "digits"
+  ],
+  "controlled_validation_datasets": [
+    "synthetic_binary",
+    "synthetic_3class"
+  ],
+  "master_seeds": [
+    42,
+    7,
+    123,
+    2024,
+    11
+  ],
+  "evaluation": {
+    "scheme": "holdout",
+    "test_size": 0.25,
+    "stratified": true,
+    "one_split_per_master_seed": true
+  },
+  "arms": [
+    {
+      "group": "A",
+      "arm_id": "mlp_original",
+      "family": "mlp",
+      "description": "A: MLP / FrozenOracle (espaço original)",
+      "control": false
+    },
+    {
+      "group": "B",
+      "arm_id": "c45",
+      "family": "c45",
+      "description": "B: C4.5 canónico treinado nos rótulos reais",
+      "control": false
+    },
+    {
+      "group": "C",
+      "arm_id": "trepan_original",
+      "family": "trepan_original",
+      "description": "C: TREPAN Original -> FrozenOracle",
+      "control": false
+    },
+    {
+      "group": "D",
+      "arm_id": "reloaded_core",
+      "family": "trepan_reloaded",
+      "description": "D: TREPAN Reloaded Core -> FrozenOracle: SEM informação ontológica; mecanismos não semânticos ativos",
+      "control": false
+    },
+    {
+      "group": "E",
+      "arm_id": "reloaded_owl_full",
+      "family": "trepan_reloaded",
+      "description": "E: TREPAN Reloaded + OWL real (features, score, projetor) -> FrozenOracle",
+      "control": false
+    },
+    {
+      "group": "F",
+      "arm_id": "reloaded_owl_shuffled",
+      "family": "trepan_reloaded",
+      "description": "F: CONTROLO NEGATIVO: Reloaded + OWL permutada -> FrozenOracle",
+      "control": true
+    }
+  ],
+  "different_oracle_experiment_excluded_from_A_to_F": [
+    "mlp_ontological",
+    "reloaded_e2e"
+  ],
+  "c45": {
+    "label": "C4.5-Nativo",
+    "audit_is_c45": true,
+    "audit_checks": {
+      "categorical_multiway_split": {
+        "passed": true,
+        "detail": "filhos da raiz num atributo nominal de 3 valores: 3 (esperado 3)"
+      },
+      "numeric_binary_threshold": {
+        "passed": true,
+        "detail": "filhos da raiz: 2"
+      },
+      "gain_ratio_selection": {
+        "passed": true,
+        "detail": "atributo da raiz: 1 (esperado 1 = binário; 0 = identificador)"
+      },
+      "missing_values_fractional_distribution": {
+        "passed": true,
+        "detail": "P(classe | ausente) = [0.5, 0.5] (esperado mistura)"
+      },
+      "pessimistic_error_pruning_confidence_factor": {
+        "passed": true,
+        "detail": "folhas cf=0.49: 8; cf=0.05: 2; auditoria de poda: True"
+      },
+      "not_a_sklearn_cart_tree": {
+        "passed": true,
+        "detail": "MRO: ['core.c45_j48_tree.C45Classifier', 'sklearn.base.ClassifierMixin', 'sklearn.base.BaseEstimator']"
+      }
+    },
+    "known_deviations": {
+      "subtree_raising": "não implementado (só substituição de subárvore por folha); J48/C4.5 R8 também faz subtree raising",
+      "numeric_threshold": "ponto médio entre valores consecutivos (C4.5 R8 usa o maior valor observado <= ponto médio)",
+      "categorical_grouping": "sem agrupamento de valores nominais (multirramo puro, como C4.5 sem -s)"
+    },
+    "canonical_no_node_cap": true
+  },
+  "code_commit": "578856215d3dc5d1720acd70b938b59fa7d5137f",
+  "code_branch": "claude/repository-architecture-analysis-s1vl5a",
+  "code_dirty_at_freeze": false,
+  "frozen_code_sha256": {
+    "core/trepan_scientific_tuning.py": "8bb1147a2c95ea7edb3fab1dcfa0f27cf12c541c10fbc4f1f7109623d9c08a29",
+    "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+    "core/trepan_original.py": "fc57a1487fd6657923e76acb7d564e01c855b20ac19c045e7fd46bd78859f931",
+    "core/trepan_reloaded_historical.py": "675dd135ddf2a769cd56663dce1261cebd3e147840911eab3d5d4b7e95a90416",
+    "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+    "core/benchmark/runner.py": "f0e54ca124eccc364b64fdbed7e6c4b4f1c6ce6117fe33b3896c01c3d178bec8",
+    "core/benchmark/semantic.py": "59450b35f7b30eaac828cfc0e5a974a4528b0e76bec595421399bef73452ec79",
+    "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+    "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+    "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+    "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211"
+  },
+  "library_versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.15.2",
+    "pandas": "2.2.3",
+    "sklearn": "1.6.1",
+    "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v70-x86_64-with-glibc2.39",
+  "manifest_sha256": "d444c3bc073d76e1cdb6043c128f03fdf78222d62425e1a4e8c5594f572a0053"
+}

@@ -105,12 +105,12 @@ def ablation_markdown(entries: List[Dict[str, Any]]) -> str:
     for e in entries:
         r, a = e["result"], e["analysis"]
         out.append(f"### {r.dataset}\n")
-        out.append(contrast_table(a["contrasts"], r.dataset, groups=["ablation", "sanity", "main"]))
-        out.append("\n**Decomposição da fidelidade (Δ face a λ=0 salvo indicação):**\n")
+        out.append(contrast_table(a["contrasts"], r.dataset, groups=["ablation", "baseline", "main"]))
+        out.append("\n**Decomposição da fidelidade (Δ face ao braço D salvo indicação):**\n")
         for att in a["attribution"]:
-            out.append(f"- arquitectura (λ=0 vs Original): {_f(att['architecture_effect'])}; features OWL: {_f(att['owl_features_effect'])}; "
-                       f"score semântico: {_f(att['semantic_score_effect'])}; OWL completa vs λ=0: {_f(att['owl_full_vs_lambda0'])}; "
-                       f"total vs Original: {_f(att['total_vs_original'])}; real − shuffled: {_f(att['real_vs_shuffled'])}.")
+            out.append(f"- ganho arquitectural (D − C): {_f(att['architectural_gain'])}; features OWL: {_f(att['owl_features_effect'])}; "
+                       f"score semântico: {_f(att['semantic_score_effect'])}; ontologia incremental (E − D): {_f(att['incremental_ontology'])}; "
+                       f"total (E − C): {_f(att['total_vs_original'])}; real − shuffled: {_f(att['real_vs_shuffled'])}.")
         out.append("")
     out.append("## Ablações não aplicáveis neste runner (e porquê)\n")
     out += [f"- **{k}**: {v}" for k, v in NOT_APPLICABLE_ABLATIONS.items()]

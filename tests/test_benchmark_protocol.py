@@ -167,9 +167,12 @@ def test_oracle_identification_and_label_usage(result):
     trees = df[df["family"].isin(["trepan_original", "trepan_reloaded"])]
     assert trees["oracle_name"].notna().all() and trees["oracle_type"].notna().all() and trees["oracle_feature_space"].notna().all()
     assert trees["fidelity_to_oracle"].notna().all() and not trees["uses_real_labels_for_training"].any()
-    non_surrogates = df[df["family"].isin(["mlp", "c45"])]
-    assert non_surrogates["fidelity_to_oracle"].isna().all() and non_surrogates["oracle_name"].isna().all()
+    mlp = df[df["family"] == "mlp"]
+    assert mlp["fidelity_to_oracle"].isna().all() and mlp["oracle_name"].isna().all()
     c45 = df[df["family"] == "c45"]
+    # C4.5 canónico: treina nos rótulos reais, mas a fidelidade é medida contra o MESMO FrozenOracle no mesmo teste
+    assert c45["fidelity_to_oracle"].notna().all() and c45["disagreement_rate_to_oracle"].notna().all()
+    assert (c45["fidelity_to_oracle"] + c45["disagreement_rate_to_oracle"]).round(9).eq(1.0).all()
     assert c45["uses_real_labels_for_training"].all() and not c45["uses_oracle"].any()
     assert set(trees[trees["arm"] != "reloaded_e2e"]["oracle_name"]) == {rn.ORACLE_ORIGINAL}
 
@@ -177,18 +180,18 @@ def test_oracle_identification_and_label_usage(result):
 def test_original_vs_reloaded_same_oracle_budget_split_seed(result):
     df = result.frame()
     for _, g in df[df["family"].isin(["trepan_original", "trepan_reloaded"])].groupby("split_id"):
-        main = g[g["arm"].isin(["trepan_original", "reloaded_lambda0", "reloaded_owl_full", "reloaded_owl_shuffled"])]
+        main = g[g["arm"].isin(["trepan_original", "reloaded_core", "reloaded_owl_full", "reloaded_owl_shuffled"])]
         assert main["query_budget"].nunique() == 1 and main["oracle_name"].nunique() == 1 and main["seed"].nunique() == 1
         assert main["split_hash"].nunique() == 1
 
 
-def test_reloaded_lambda0_matches_original_exactly(result):
+def test_reloaded_core_neutralizes_only_ontology(result):
+    """D: sem informação ontológica (nada de equivalência forçada com o Original; igual => architectural_gain = 0)."""
     r = result.frame()
-    l0 = r[r["arm"] == "reloaded_lambda0"]
-    assert l0["identical_predictions_to_trepan_original"].all() and (l0["semantic_split_count"] == 0).all()
-    for sid, g in r.groupby("split_id"):
-        o, z = g[g["arm"] == "trepan_original"].iloc[0], g[g["arm"] == "reloaded_lambda0"].iloc[0]
-        assert o["fidelity_to_oracle"] == z["fidelity_to_oracle"] and o["node_count"] == z["node_count"]
+    d = r[r["arm"] == "reloaded_core"]
+    assert len(d) and (d["semantic_split_count"] == 0).all()
+    assert (d["ontology_usage_rate"].fillna(0) == 0).all() and not d["ontology_effectively_used"].astype(bool).any()
+    assert not d["mirror_applied"].astype(bool).any()
 
 
 def test_predictions_are_stored_and_metrics_recomputable(result, tmp_path):
@@ -219,7 +222,7 @@ def test_no_ontology_runs_without_crash(synth):
     cfg = BenchmarkConfig(seeds=(11,), tree=TreeBudget(min_sample=150, max_queries=1500, max_nodes=7), extra_ablations=False, n_boot=100, inner_cv_splits=2)
     r = BenchmarkRunner(cfg).run(ds, None)
     arms = set(r.frame()["arm"])
-    assert {"mlp_original", "c45", "trepan_original", "reloaded_lambda0"} <= arms
+    assert {"mlp_original", "c45", "trepan_original", "reloaded_core"} <= arms
     assert not arms & {"mlp_ontological", "reloaded_owl_full", "reloaded_owl_shuffled", "reloaded_e2e"}
     assert all(s["semantic_available"] is False for s in r.semantic_report) and any("semantic_available=false" in s["reason"] for s in r.skipped)
     a = analyze(r)
@@ -500,4 +503,4 @@ def test_semantic_split_count_refers_to_final_tree_only(result):
     trees = df[df["family"] == "trepan_reloaded"]
     assert (trees["semantic_split_count"] <= trees["internal_nodes"]).all()
     assert (trees["semantic_decision_changed_count"] <= trees["semantic_split_count"]).all()
-    assert (df[df["arm"].isin(["trepan_original", "reloaded_lambda0"])]["semantic_split_count"] == 0).all()
+    assert (df[df["arm"].isin(["trepan_original", "reloaded_core"])]["semantic_split_count"] == 0).all()

@@ -59,6 +59,18 @@ class SemanticContext:
         return h.hexdigest()[:16]
 
 
+def structure_counts(ctx: "SemanticContext") -> Dict[str, Any]:
+    """Contagens estruturais da semântica (classes/grupos, relações, features derivadas) para o registo do controlo negativo."""
+    groups = [g for g in (ctx.groups or []) if g is not None]
+    rel = np.asarray(ctx.relatedness) if ctx.relatedness is not None else np.zeros((0, 0))
+    off = rel - np.diag(np.diag(rel)) if rel.size else rel
+    return {"n_semantic_classes": int(len(set(groups))), "n_grouped_features": int(len(groups)),
+            "n_relations": int(np.count_nonzero(np.triu(off, 1))) if rel.size else 0,
+            "relatedness_sum": float(np.triu(off, 1).sum()) if rel.size else 0.0,
+            "n_semantic_features": int(len(ctx.onto_idx)),
+            "n_nonunit_weights": int(np.count_nonzero(np.asarray(ctx.weights) != 1.0)) if ctx.weights is not None else 0}
+
+
 class NoSemanticProvider:
     name = "none"
 
@@ -115,7 +127,9 @@ class GroupSemanticProvider:
         depths = np.array([1.0 if g is not None else 0.0 for g in groups])
         return SemanticContext("real", self.name, True, names, enriched, list(range(n_orig)), list(range(n_orig, n)),
                                transform, weights, groups, rel, depths, ontology_valid=True,
-                               semantic_time=time.perf_counter() - t0, info={"n_groups": len(gnames)})
+                               semantic_time=time.perf_counter() - t0, info={"n_groups": len(gnames), "mapped_feature_count": sum(1 for g in feat_group if g is not None),
+                                     "unmapped_feature_count": sum(1 for g in feat_group if g is None), "reasoning_applied": False,
+                                     "ontology_hash": hashlib.sha256(repr(sorted(self.groups.items())).encode()).hexdigest()})
 
 
 class OwlSemanticProvider:
@@ -146,6 +160,7 @@ class OwlSemanticProvider:
             onto = get_ontology(str(Path(self.ontology_path).resolve())).load()
             r0 = time.perf_counter()
             reasoner = run_owl_reasoner(onto, engine=self.reasoner_engine, infer_property_values=True, debug=0)
+            self.n_reasoner_calls = int(getattr(self, "n_reasoner_calls", 0)) + 1
             reasoner_time = time.perf_counter() - r0
             gate = OntologyQualityGate()
             report = gate.evaluate(names, onto, reasoner_report=reasoner, require_reasoner=True)
@@ -192,6 +207,10 @@ class OwlSemanticProvider:
                                transform, weights, groups, rel, depths, ontology_valid=True,
                                semantic_time=time.perf_counter() - t0 - reasoner_time, reasoner_time=reasoner_time,
                                info={"ontology_quality": report.status, "reasoner": reasoner.get("engine"),
+                                     "ontology_hash": hashlib.sha256(Path(self.ontology_path).read_bytes()).hexdigest(),
+                                     "n_ontology_graph_nodes": int(len(graph.nodes)),
+                                     "mapped_feature_count": len(accepted), "unmapped_feature_count": max(0, n_orig - len(accepted)),
+                                     "reasoning_applied": bool(reasoner), "reasoner_consistent": reasoner.get("consistent"),
                                      "feature_coverage": report.metrics.get("feature_coverage")})
 
 
@@ -208,7 +227,10 @@ class ShuffledSemanticProvider:
         self.seed_offset = int(seed_offset)
 
     def build(self, X_train, feature_names, seed: int = 0) -> SemanticContext:
-        ctx = self.base.build(X_train, feature_names, seed)
+        return self.from_context(self.base.build(X_train, feature_names, seed), seed)
+
+    def from_context(self, ctx: SemanticContext, seed: int = 0) -> SemanticContext:
+        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning)."""
         if not ctx.available:
             ctx.provider = self.name
             return ctx
@@ -229,6 +251,13 @@ class ShuffledSemanticProvider:
             shuffled_transform, ctx.weights[perm], [ctx.groups[i] for i in perm], ctx.relatedness[np.ix_(perm, perm)],
             ctx.depths[perm], ontology_valid=ctx.ontology_valid, reason="controlo negativo: semântica permutada",
             semantic_time=ctx.semantic_time, reasoner_time=ctx.reasoner_time,
-            info={**ctx.info, "perm_hash": hashlib.sha256(perm.tobytes() + col_perm.tobytes()).hexdigest()[:16],
+            info={**ctx.info, "shuffle_seed": int(seed) + self.seed_offset, "original_ontology_hash": ctx.info.get("ontology_hash"),
+                  "counts_before": structure_counts(ctx), "n_ontology_graph_nodes": ctx.info.get("n_ontology_graph_nodes"),
+                  "perm_hash": hashlib.sha256(perm.tobytes() + col_perm.tobytes()).hexdigest()[:16],
                   "real_structure_signature": ctx.structure_signature()})
+        sh.info["counts_after"] = structure_counts(sh)
+        sh.info["shuffled_structure_signature"] = sh.structure_signature()
+        sh.info["shuffled_ontology_hash"] = hashlib.sha256("|".join(
+            [str(sh.info["original_ontology_hash"]), str(sh.info["shuffle_seed"]), sh.info["perm_hash"],
+             sh.info["shuffled_structure_signature"]]).encode()).hexdigest()
         return sh
