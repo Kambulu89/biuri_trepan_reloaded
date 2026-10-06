@@ -3491,6 +3491,8 @@ Asegúrese de que:
                 Qt.ConnectionType.SingleShotConnection,
             )
 
+        if result.get('local_counterfactuals') is not None:           # passo «gerar» do clique único da árvore CF
+            self.cf_interactive_result = result['local_counterfactuals']
         if 'counterfactuals' in result and result['counterfactuals'] is not None:
             generated = result['counterfactuals']
             if generated.get('consistency') is not None:
@@ -3591,12 +3593,15 @@ Asegúrese de que:
             CounterfactualWorker.STAGE_GENERATE,
             CounterfactualWorker.STAGE_GLOBAL,
             CounterfactualWorker.STAGE_TREE,
+            CounterfactualWorker.STAGE_GENERATE_TREE,
             CounterfactualWorker.STAGE_TRANSFER,
         }
         self.show_results(''.join(lines), switch_tab=not keep_counterfactual_tab)
         if keep_counterfactual_tab:
             self.content_tabs.setCurrentWidget(self.counterfactual_tab)
             self._set_status("Análise contrafactual concluída — dataset activo.")
+        if mode in (CounterfactualWorker.STAGE_TREE, CounterfactualWorker.STAGE_GENERATE_TREE) and self.cf_tree_result:
+            self._visualize_cf_tree(self.cf_tree_result)          # a árvore CF construída abre logo na aba Visualização
 
     def _on_cf_failed(self, error_msg, dlg):
         dlg.close()
@@ -3612,7 +3617,11 @@ Asegúrese de que:
         if 'cancelad' in error_msg.lower():
             self.show_results(f"⚠️ {error_msg}")
         else:
-            QMessageBox.critical(self, "Error", f"Error en contrafactuales: {error_msg}")
+            hint = ""
+            if "CLEAR indispon" in error_msg:
+                hint = ("\n\nSugestão: o botão lateral usa o CLEAR original (precisa de TensorFlow). Na aba Contrafactuais os métodos nativos "
+                        "(Automático, LORE, CLEAR-inspired, CoGS) funcionam sem TensorFlow e permitem construir a árvore CF.")
+            QMessageBox.critical(self, "Error", f"Error en contrafactuales: {error_msg}{hint}")
 
     def generate_counterfactuals_action(self):
         self._launch_cf_worker(CounterfactualWorker.STAGE_GENERATE)
@@ -3631,19 +3640,29 @@ Asegúrese de que:
             options=dict(options or {}),
         )
 
+    def _local_cf_matches_request(self, options):
+        """O último resultado local serve para a árvore se for do mesmo modelo/instância/classe/método pedidos e tiver CFs válidos."""
+        local = self.cf_interactive_result
+        if not local or local.get('rows') is not None or local.get('result_type') in {'global_rules', 'counterfactual_tree'}:
+            return False
+        if not any(bool((c.get('metrics') or {}).get('validity')) for c in local.get('candidates') or []):
+            return False
+        norm = lambda v: ''.join(ch.lower() for ch in str(v or '') if ch.isalnum())
+        if options.get('target_model') and norm(local.get('target_model')) != norm(options.get('target_model')):
+            return False
+        if local.get('instance_index') is not None and int(local['instance_index']) != int(options.get('instance_index', 0)):
+            return False
+        wanted = options.get('desired_class')
+        return wanted in (None, '') or str(local.get('desired_class')) == str(wanted)
+
     def _build_cf_tree_from_panel(self, options):
-        if not self.cf_interactive_result:
-            QMessageBox.warning(
-                self, "Advertencia",
-                "Gere primeiro contrafactuais locais válidos para a instância activa.",
-            )
-            return
+        """«Construir árvore CF»: reutiliza os CFs locais já gerados para o MESMO pedido; senão gera-os e constrói a árvore num só passo."""
+        options = dict(options or {})
         self.content_tabs.setCurrentWidget(self.counterfactual_tab)
-        self._launch_cf_worker(
-            CounterfactualWorker.STAGE_TREE,
-            cf_result=self.cf_interactive_result,
-            options=dict(options or {}),
-        )
+        if self._local_cf_matches_request(options):
+            self._launch_cf_worker(CounterfactualWorker.STAGE_TREE, cf_result=self.cf_interactive_result, options=options)
+        else:
+            self._launch_cf_worker(CounterfactualWorker.STAGE_GENERATE_TREE, options=options)
 
     def _visualize_cf_tree(self, result):
         # A cópia mantida pela janela é a fonte canónica: contém o estimador

@@ -96,7 +96,7 @@ def test_counterfactual_panel_options_and_results(qapp):
     panel.model_combo.setCurrentText('Trepan Original')
     qapp.processEvents()
     assert panel.global_button.isEnabled()
-    assert not panel.tree_button.isEnabled()
+    assert panel.tree_button.isEnabled()          # um clique: gera os CFs locais (se faltarem) e constrói a árvore CF
 
     panel.show()
     qapp.processEvents()
@@ -332,3 +332,101 @@ def test_construir_arvore_cf_end_to_end_worker_to_panel(qapp):
     panel.display_result(tree_result)
     assert panel.candidates_table.rowCount() >= 1
     panel.close()
+
+
+# ------------------------------------------------------------------- «Construir árvore CF» num só clique
+def test_one_click_tree_generates_local_cfs_then_builds_the_tree(qapp):
+    session = _cf_tree_session()
+    outs, errors = [], []
+    worker = CounterfactualWorker(
+        session, mode=CounterfactualWorker.STAGE_GENERATE_TREE,
+        options={'method': 'LORE-LOCAL', 'instance_index': 0, 'seed': 1, 'total_cfs': 3, 'cf_tree_neighborhood_size': 120},
+    )
+    worker.finished_ok.connect(outs.append)
+    worker.failed.connect(errors.append)
+    worker.run()
+    assert not errors, errors
+    tree = outs[0]['counterfactuals']
+    local = outs[0]['local_counterfactuals']
+    assert tree['result_type'] == 'counterfactual_tree' and tree.get('_runtime_tree_model') is not None
+    assert any((c.get('metrics') or {}).get('validity') for c in local['candidates'])
+
+
+def test_one_click_tree_explains_when_no_valid_counterfactual_exists(qapp, monkeypatch):
+    import counterfactuals.service as service
+    monkeypatch.setattr(service, 'generate_explanation_from_session',
+                        lambda *a, **k: {'candidates': [{'metrics': {'validity': False}}], 'result_type': None})
+    errors = []
+    worker = CounterfactualWorker(_cf_tree_session(), mode=CounterfactualWorker.STAGE_GENERATE_TREE, options={'method': 'LORE-LOCAL'})
+    worker.failed.connect(errors.append)
+    worker.run()
+    assert errors and "VÁLIDOS" in errors[0] and "outra instância" in errors[0]
+
+
+def test_panel_enables_the_tree_button_as_soon_as_generation_is_possible(qapp):
+    panel = CounterfactualPanel()
+    assert not panel.tree_button.isEnabled()                       # sem modelo treinado/dataset
+    panel.configure(n_instances=20, class_labels={0: 'neg', 1: 'pos'}, available_models=['Trepan Original', 'MLP Original'],
+                    dataset_name='dataset_carregado.arff')
+    qapp.processEvents()
+    assert panel.generate_button.isEnabled() and panel.tree_button.isEnabled()
+    assert "gera-os primeiro" in panel.tree_button.toolTip()
+    panel.set_busy(True)
+    assert not panel.tree_button.isEnabled()
+    panel.close()
+
+
+def test_app_reuses_matching_local_cfs_and_otherwise_generates_then_builds(qapp, monkeypatch):
+    from gui.biuri_app_complete import BiuriApp
+    w = BiuriApp()
+    launched = []
+    monkeypatch.setattr(w, '_launch_cf_worker', lambda stage, **kw: launched.append((stage, kw)))
+    valid = {'candidates': [{'metrics': {'validity': True}}], 'target_model': 'Trepan Original', 'instance_index': 3, 'desired_class': 1}
+    opts = {'target_model': 'Trepan Original', 'instance_index': 3, 'desired_class': 1}
+    w.cf_interactive_result = None
+    w._build_cf_tree_from_panel(opts)
+    assert launched[-1][0] == CounterfactualWorker.STAGE_GENERATE_TREE           # sem CFs locais: gera + constrói
+    w.cf_interactive_result = valid
+    w._build_cf_tree_from_panel(opts)
+    assert launched[-1][0] == CounterfactualWorker.STAGE_TREE and launched[-1][1]['cf_result'] is valid
+    w._build_cf_tree_from_panel({**opts, 'instance_index': 4})                     # outra instância: não reutiliza
+    assert launched[-1][0] == CounterfactualWorker.STAGE_GENERATE_TREE
+    w._build_cf_tree_from_panel({**opts, 'target_model': 'MLP Original'})          # outro modelo alvo: não reutiliza
+    assert launched[-1][0] == CounterfactualWorker.STAGE_GENERATE_TREE
+    w.close()
+
+
+def test_finishing_a_tree_build_stores_results_and_opens_the_visualization(qapp, monkeypatch):
+    from sklearn.tree import DecisionTreeClassifier
+    from gui.biuri_app_complete import BiuriApp
+    w = BiuriApp()
+    shown = []
+    monkeypatch.setattr(w, '_visualize_cf_tree', lambda result: shown.append(result))
+    tree_model = DecisionTreeClassifier(max_depth=2, random_state=0).fit(np.asarray([[0.0], [1.0], [2.0], [3.0]]), np.asarray([0, 0, 1, 1]))
+    tree_result = {'result_type': 'counterfactual_tree', '_runtime_tree_model': tree_model, 'narrative': 'ok', 'tree_rules': [],
+                   'candidates': [], 'feature_names': ['f0'], 'class_names': ['a', 'b']}
+    local = {'candidates': [{'metrics': {'validity': True}}], 'target_model': 'Trepan Original'}
+
+    class _Dlg:
+        def close(self):
+            pass
+    monkeypatch.setattr(w.counterfactual_tab, 'display_result', lambda r: None)
+    w._on_cf_finished({'counterfactuals': tree_result, 'local_counterfactuals': local}, _Dlg(), CounterfactualWorker.STAGE_GENERATE_TREE)
+    assert w.cf_interactive_result is local and w.cf_tree_result is tree_result
+    assert shown == [tree_result]                                                  # a árvore abre na aba Visualização
+    w.close()
+
+
+def test_clear_unavailable_error_points_to_the_native_methods(qapp, monkeypatch):
+    from gui.biuri_app_complete import BiuriApp
+    from PyQt6.QtWidgets import QMessageBox
+    w = BiuriApp()
+    seen = []
+    monkeypatch.setattr(QMessageBox, 'critical', lambda *a, **k: seen.append(a[2]))
+
+    class _Dlg:
+        def close(self):
+            pass
+    w._on_cf_failed("CLEAR indisponível: instale/valide TensorFlow. Causa: No module named 'tensorflow'", _Dlg())
+    assert seen and "sem TensorFlow" in seen[0] and "Contrafactuais" in seen[0]
+    w.close()
