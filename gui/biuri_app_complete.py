@@ -3774,6 +3774,7 @@ Asegúrese de que:
         if getattr(self, 'benchmark_view', None) is not None:
             self.benchmark_view = None
             self.benchmark_outcome = None
+            self.c45_tree = None                              # o C4.5 do benchmark não passa para o modo interativo
 
     def _benchmark_tree_title(self):
         view = getattr(self, 'benchmark_view', None) or {}
@@ -3791,7 +3792,7 @@ Asegúrese de que:
             class_names=list(view['class_names'] or []),
             trepan_original_tree=view['trepan_original'],
             trepan_reloaded_tree=view['trepan_reloaded'],
-            c45_tree=None, trepan_original_improved_tree=None, trepan_reloaded_improved_tree=None,
+            c45_tree=view.get('c45_tree'), trepan_original_improved_tree=None, trepan_reloaded_improved_tree=None,
             dataset_name=self._benchmark_tree_title(), primary_tree_label=self._benchmark_tree_title(),
         )
         self.tree_widget = viz
@@ -3836,6 +3837,7 @@ Asegúrese de que:
         self.benchmark_view = view
         self.trepan_original_tree = view["trepan_original"]
         self.trepan_reloaded_tree = view["trepan_reloaded"]
+        self.c45_tree = view.get("c45_tree")                  # o C4.5 EXATO avaliado pelo pipeline científico (para a visualização)
         self.trepan_reloaded_feature_names = list(view["feature_names_reloaded"] or [])
         if self.audit is not None:
             self.audit.on_benchmark_finished(outcome.result)
@@ -4830,11 +4832,25 @@ o Comparar Métricas para medir cuánto el árbol copia al MLP.
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error al visualizar árbol: {str(e)}")
             
+    def _show_benchmark_metrics(self):
+        """SCIENTIFIC / BENCHMARK: as métricas JÁ foram calculadas pelo pipeline científico (mesmo oráculo congelado, teste usado uma só
+        vez). A interface apresenta-as; recalculá-las com o estado do modo interativo (outro split/codificador) seria incorreto."""
+        from gui.benchmark_metrics import comparison_results_from_report
+        outcome = self.benchmark_outcome
+        comparison = comparison_results_from_report(outcome.report, outcome.oracle_id)
+        if hasattr(self, "metrics_widget") and self.metrics_widget is not None:
+            self.metrics_widget.update_comparison_results(comparison)
+        self.content_tabs.setCurrentWidget(self.metrics_tab)
+        self._set_status(f"SCIENTIFIC / BENCHMARK · métricas do pipeline científico (oracle_id={str(outcome.oracle_id)[:8]}), sem recálculo.")
+
     def compare_metrics(self):
         if not self._has_loaded_data():
             QMessageBox.warning(self, "Advertencia", "¡Cargue datos primero!")
             return
         if self._warn_if_busy("comparar métricas"):
+            return
+        if getattr(self, "benchmark_view", None) is not None and getattr(self, "benchmark_outcome", None) is not None:
+            self._show_benchmark_metrics()
             return
 
         X, y = self._get_original_xy()

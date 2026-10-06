@@ -343,6 +343,8 @@ def from_production_report(report: Mapping[str, Any]) -> ExperimentResult:
     models["c45"] = ModelCard(
         key="c45", status="AVAILABLE" if c45 else "NOT_AVAILABLE", oracle=None,
         metrics=predictive_metrics(c45, missing=Reason.NOT_TRAINED), fidelity=Measure.na(Reason.NO_ORACLE),
+        agreement_with_mlp=Measure.of((c45 or {}).get("oracle_fidelity"), Reason.NOT_REPORTED),
+        complexity={k: Measure.of((c45 or {})[k]) for k in ("leaves", "depth") if (c45 or {}).get(k) is not None},
         evaluation_samples=n_test, status_reason=None if c45 else Reason.NOT_TRAINED)
     diag = dict(ev.get("tree_diagnostics") or {})
     trees: Dict[str, TreeDiagnostics] = {}

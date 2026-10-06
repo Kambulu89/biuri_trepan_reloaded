@@ -51,7 +51,8 @@ class BenchmarkOutcome:
         a = dict(self.artifacts or {})
         return {"trepan_original": a.get("trepan_original"), "trepan_reloaded": a.get("trepan_reloaded"),
                 "feature_names_original": a.get("feature_names_original"), "feature_names_reloaded": a.get("feature_names_reloaded"),
-                "class_names": a.get("class_names"), "oracle_id": self.oracle_id, "selected_config": a.get("selected_config")}
+                "class_names": a.get("class_names"), "oracle_id": self.oracle_id, "selected_config": a.get("selected_config"),
+                "c45_tree": a.get("c45_native"), "feature_names_c45": a.get("c45_feature_names")}
 
     @property
     def usable_as_benchmark(self) -> bool:

@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import pytest
 
 GUI = Path(__file__).resolve().parents[1] / "gui"
-MODULES = ("result_presenter.py", "result_builder.py", "audit_controller.py", "audit_panel.py", "export_results.py",
+MODULES = ("benchmark_metrics.py", "result_presenter.py", "result_builder.py", "audit_controller.py", "audit_panel.py", "export_results.py",
            "messages.py", "experiment_state.py", "strings.py")
 FORBIDDEN_CALLS = {"predict", "predict_proba", "fit", "fit_transform", "score", "accuracy_score", "f1_score",
                    "balanced_accuracy_score", "precision_score", "recall_score", "confusion_matrix", "train_test_split"}

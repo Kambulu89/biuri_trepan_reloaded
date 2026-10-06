@@ -368,6 +368,11 @@ def train_production_dataframe(
     if teacher is not None:
         evaluation['models']['mlp_semantic']=classification_metrics(yte,teacher_pred)
     evaluation['models']['c45_native']=classification_metrics(yte,c45_pred)
+    # C4.5 canónico (rótulos reais): concordância com o MESMO oráculo congelado no mesmo teste + complexidade completa (sem teto de nós)
+    c45_agreement=float(np.mean(np.asarray(c45_pred)==np.asarray(teacher_pred)))
+    evaluation['models']['c45_native'].update(
+        oracle_fidelity=c45_agreement, disagreement_rate_to_oracle=1.0-c45_agreement, fidelity_oracle_id=oracle.oracle_id,
+        leaves=int(c45.get_n_leaves()), depth=int(c45.get_depth()))
     original_pred=pair.original.predict(Zte); reloaded_pred=pair.reloaded.predict(Zte_rel)
     evaluation['scientific_validation']=build_scientific_validation_report(
         yte, teacher_pred, {
@@ -443,6 +448,7 @@ def train_production_dataframe(
             'feature_names_original':list(model_names),'feature_names_reloaded':list(names_aug) if augmented else list(model_names),
             'class_names':[str(c) for c in getattr(mlp,'classes_',[])],'selected_config':cfg,
             'oracle_id':oracle.oracle_id,'preprocessor':pre,
+            'c45_native':c45,'c45_feature_names':[str(c) for c in Xtr.columns],     # o C4.5 EXATO avaliado (para os visualizadores)
         }
     return report
 
