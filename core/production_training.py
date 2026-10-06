@@ -69,10 +69,11 @@ def _drop_missing_target(df, target, missing_tokens):
 
 
 def _load_ontology(path):
+    from core.owl_runtime import OwlRuntimeError, import_owlready2
     try:
-        from owlready2 import get_ontology
-    except ImportError as exc:
-        raise OntologyQualityError("OWL requer owlready2. Instale o extra de ontologia antes do treino.") from exc
+        get_ontology = import_owlready2().get_ontology
+    except OwlRuntimeError as exc:
+        raise OntologyQualityError("OWL requer um owlready2 utilizável. " + exc.user_message) from exc
     return get_ontology(str(Path(path).resolve())).load()
 
 

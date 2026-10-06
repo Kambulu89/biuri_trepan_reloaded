@@ -118,8 +118,8 @@ class TrepanReloaded:
             default_ontology_path = current_dir / "data" / "sample_ontology.owl"
 
             if default_ontology_path.exists():
-                from owlready2 import get_ontology
-                onto = get_ontology(str(default_ontology_path)).load()
+                from core.owl_runtime import import_owlready2
+                onto = import_owlready2().get_ontology(str(default_ontology_path)).load()
                 print(f"[INFO] Ontologia padrao carregada: {default_ontology_path}")
                 return onto
             print(f"[WARN] Ontologia padrao nao encontrada em: {default_ontology_path}")

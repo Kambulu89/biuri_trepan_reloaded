@@ -29,6 +29,7 @@ from scipy.io import arff
 sys.path.append(str(Path(__file__).parent.parent))
 from core.trepan import TrepanReloaded
 from core.trepan_reloaded_extractor import TrepanReloadedExtractor
+from core.owl_runtime import OwlRuntimeError, import_owlready2
 from core.ontology_processor import OntologyProcessor
 from core.protocol_audit import stable_sha256_strings
 from core.ontology_quality import OntologyQualityGate
@@ -2790,7 +2791,15 @@ que la red se vuelve interpretable.
                     
     def load_ontology_from_file(self, file_path):
         try:
-            from owlready2 import get_ontology, OwlReadyOntologyParsingError
+            try:
+                OwlReadyOntologyParsingError = import_owlready2().OwlReadyOntologyParsingError
+            except OwlRuntimeError as owl_error:
+                # owlready2 corrompido/ausente: diagnóstico acionável e o projeto continua SEM OWL (como quando o reasoner não corre)
+                self._clear_loaded_ontology()
+                self.last_ontology_load_diagnostic = dict(owl_error.diagnostic)
+                self.show_results("⚠️ ONTOLOGÍA NO ACTIVADA — owlready2 no utilizable\n\n" + owl_error.user_message)
+                QMessageBox.warning(self, "owlready2 no utilizable", owl_error.user_message)
+                return False
             
             try:
                 onto = TrepanReloadedExtractor.load_ontology_file(file_path)

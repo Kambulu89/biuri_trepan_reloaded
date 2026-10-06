@@ -56,6 +56,11 @@ def _probe_imports(mapping: dict[str, str]) -> dict:
         try:
             imported = importlib.import_module(module)
             version = getattr(imported, "__version__", None)
+            if module == "owlready2" and (getattr(imported, "__file__", None) is None or not hasattr(imported, "get_ontology")):
+                # «(unknown location)»: pasta 'owlready2' sem __init__.py (instalação corrompida ou pasta homónima a sobrepor-se ao pacote)
+                result[package] = {"ok": False, "error": "owlready2 importado sem localização/sem get_ontology: reinstale "
+                                   "(pip uninstall -y owlready2; apague a pasta residual; pip install owlready2==0.47)"}
+                continue
             result[package] = {"ok": True, "version": version}
         except Exception as exc:
             result[package] = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
