@@ -328,3 +328,27 @@ def test_equivalence_report_passes_on_identical_runs_and_fails_field_by_field(tm
     assert not bad["identical"] and {"predictions Reloaded + OWL (E)", "nós", "ontology_effectively_used / categoria"} <= failed
     assert "predictions TREPAN Original (C)" not in failed and "split_hash" not in failed       # só falha o que realmente difere
     assert "FAIL" in er.to_markdown(bad)
+
+
+# ----------------------------------------------------------------------------------------- checkpoint/retoma do tuning
+def test_tuning_checkpoint_resumes_without_changing_results_and_never_reuses_stale_rows(tmp_path, monkeypatch):
+    from core import tuning_checkpoint as tc
+    ckpt = tmp_path / "unit.ckpt"
+    monkeypatch.setenv("BIURI_TUNING_CHECKPOINT", str(ckpt))
+    first, f1 = _tune(reuse_identical_fits=False, run_semantic_stage=False)           # execução completa, a gravar
+    assert ckpt.exists() and f1["orig"] > 0
+    resumed, f2 = _tune(reuse_identical_fits=False, run_semantic_stage=False)         # "reinício": retoma tudo do disco
+    total = first["engineering_profile"]["fits_executed"] + first["engineering_profile"]["fits_resumed"]      # (repetidos já saem do disco)
+    assert f2["orig"] == 0 and resumed["engineering_profile"]["fits_resumed"] == total
+    for key in ("common_capacity", "structure_selected", "tuning_status"):
+        assert _strip_times(resumed[key]) == _strip_times(first[key])
+    assert _strip_times(resumed["structure_history"]) == _strip_times(first["structure_history"])
+    # processo morto a meio da escrita: cauda truncada é descartada e só esse ajuste é recalculado
+    raw = ckpt.read_bytes()
+    ckpt.write_bytes(raw[:-17])
+    partial, f3 = _tune(reuse_identical_fits=False, run_semantic_stage=False)
+    assert 0 < f3["orig"] < f1["orig"] and _strip_times(partial["structure_history"]) == _strip_times(first["structure_history"])
+    # sal do código diferente (ou oráculo diferente) => nenhuma linha antiga é reutilizada
+    monkeypatch.setattr(tc, "code_salt", lambda: "other-code")
+    stale, f4 = _tune(reuse_identical_fits=False, run_semantic_stage=False)
+    assert f4["orig"] == f1["orig"] and stale["engineering_profile"]["fits_resumed"] == first["engineering_profile"]["fits_resumed"]   # só repetições da própria execução

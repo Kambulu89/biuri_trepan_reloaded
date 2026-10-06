@@ -48,6 +48,9 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Optional[Path
         raise SystemExit(f"Manifesto inválido: {verification['problems']}")
     if seed not in mf.MASTER_SEEDS:
         raise SystemExit(f"Seed {seed} não pertence às master seeds congeladas {mf.MASTER_SEEDS}.")
+    # Retoma: os ajustes do tuning ficam gravados ao terminar; uma unidade morta (p.ex. reinício da VM) continua de onde parou, com resultados
+    # idênticos (as chaves incluem oracle_id, hash do treino e do código; qualquer alteração científica invalida o checkpoint).
+    os.environ["BIURI_TUNING_CHECKPOINT"] = str(out / "checkpoints" / f"{dataset_id}_seed{seed}.ckpt")
     spec = ds_mod.REGISTRY[dataset_id]
     ds, _target, _classes = spec.load()
     cfg = benchmark_config(seed)
@@ -63,7 +66,7 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Optional[Path
     timing["total_time"] = time.perf_counter() - t0
     meta = {"dataset": dataset_id, "seed": seed, "seconds": timing["total_time"], "frozen_code_drift": verification["frozen_code_drift"],
             "run_code_commit": verification["current_code_commit"], "code_dirty": bool(mf._git("status", "--porcelain", "--untracked-files=no")),
-            "manifest_used": manifest_path.name, "tuning_execution_count": split_report.get("tuning_execution_count"),
+            "manifest_used": manifest_path.name, "tuning_fits_resumed": ((split_report.get("structural_protocol") or {}).get("engineering_profile") or {}).get("fits_resumed"), "tuning_execution_count": split_report.get("tuning_execution_count"),
             "tuning_engineering_profile": (split_report.get("structural_protocol") or {}).get("engineering_profile"),
             "status": "completed", "timing": timing,
             "numeric_environment": {k: os.environ.get(k) for k in ("OPENBLAS_CORETYPE", "OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NPY_DISABLE_CPU_FEATURES")},

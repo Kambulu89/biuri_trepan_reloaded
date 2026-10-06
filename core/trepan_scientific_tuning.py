@@ -18,6 +18,7 @@ from scipy import stats as _scipy_stats
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 
+from core.tuning_checkpoint import from_environment as _checkpoint_from_environment
 from core.training_config import DEFAULT_QUERY_BUDGET_CAP, non_binding_query_budget, required_query_budget
 from core.controlled_trepan_experiment import ControlledTrepanConfig
 from core.trepan_original import TrepanOriginalClassifier
@@ -778,7 +779,8 @@ def tune_scientific_trepan(
     profile = {k: 0.0 for k in ("fold_preparation", "candidate_construction", "tree_fit_total", "synthetic_generation", "oracle_prediction",
                                 "local_model_fit", "split_search", "tree_construction_other", "metric_computation", "bootstrap_selection",
                                 "memo_copy")}
-    profile["fits_executed"] = 0; profile["fits_reused"] = 0
+    profile["fits_executed"] = 0; profile["fits_reused"] = 0; profile["fits_resumed"] = 0
+    checkpoint = _checkpoint_from_environment()      # BIURI_TUNING_CHECKPOINT: retoma uma unidade interrompida (resultados idênticos)
     t_prep = time.perf_counter()
     X=np.asarray(X_train,dtype=float); y=np.asarray(y_train)
     if X.ndim != 2 or len(X)!=len(y):
@@ -815,6 +817,14 @@ def tune_scientific_trepan(
                     rows.append(timed("memo_copy", lambda: copy.deepcopy(fit_memo[memo_key])))
                     profile["fits_reused"] += 1
                     continue
+                ckpt_key = checkpoint.key(*memo_key)
+                resumed_row = checkpoint.get(ckpt_key)
+                if resumed_row is not None:
+                    rows.append(copy.deepcopy(resumed_row))
+                    profile["fits_resumed"] += 1
+                    if reuse_identical_fits:
+                        fit_memo[memo_key] = copy.deepcopy(resumed_row)
+                    continue
                 try:
                     kwargs = candidate.common_tree_kwargs()
                     kwargs["random_state"] = int(seed)          # a aleatoriedade das queries varia com a seed da repetição
@@ -836,6 +846,7 @@ def tune_scientific_trepan(
                                  "max_nodes_reached": bool(getattr(model, "max_nodes_reached_", False)),
                                  **_tree_structure(model, feature_scale)})
                     profile["metric_computation"] += time.perf_counter() - t_metrics
+                    checkpoint.put(ckpt_key, copy.deepcopy(rows[-1]))
                     if reuse_identical_fits:
                         fit_memo[memo_key] = copy.deepcopy(rows[-1])
                 except (ValueError, RuntimeError) as exc:
