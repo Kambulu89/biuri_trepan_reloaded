@@ -234,3 +234,97 @@ def test_gaussian_kde_fast_path_equals_sklearn_sample_and_caches_are_not_pickled
                 slow = ref._sample_column(j, n)
             assert np.array_equal(fast, slow)
     assert hasattr(model, "_gaussian_cache") and "_gaussian_cache" not in pickle.loads(pickle.dumps(model)).__dict__
+
+
+# ----------------------------------------------------------------------------------------- oráculo: amostras ≠ chamadas
+def test_oracle_query_samples_are_counted_per_sample_not_per_python_call():
+    from sklearn.linear_model import LogisticRegression
+    from core.scientific_experiment_contract import freeze_oracle
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(300, 4)); y = (X[:, 0] > 0).astype(int)
+    model = LogisticRegression().fit(X, y)
+    batched, single = freeze_oracle(model, X, builder="t"), freeze_oracle(model, X, builder="t")
+    with batched.scope("a"):
+        batched.predict(X[:100])
+    with single.scope("a"):
+        for i in range(100):
+            single.predict(X[i:i + 1])
+    assert batched.calls["a"]["queries"] == single.calls["a"]["queries"] == 100       # métrica científica: 100 amostras consultadas
+    assert batched.calls["a"]["calls"] == 1 and single.calls["a"]["calls"] == 100     # diagnóstico de engenharia: chamadas Python
+
+
+# ----------------------------------------------------------------------------------------- tuning: uma execução por unidade
+def _unit_runner():
+    ds, groups = make_synthetic("tune_once", n_samples=150, n_features=6, n_classes=2, n_groups=2, seed=9)
+    cheap = ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=1, purity_epsilon_grid=(0.05,), max_nodes_grid=(7,))
+    cfg = BenchmarkConfig(seeds=(42,), tree=TreeBudget(min_sample=120, max_queries=1500, max_nodes=7, max_depth=4), extra_ablations=False,
+                          different_oracle_experiment=False, structure_tuning=True, structure_search=cheap, n_boot=50, inner_cv_splits=2)
+    arms = [a for a in default_arms(cfg) if a.group in ("A", "B", "C", "D", "E", "F")]
+    return ds, groups, cfg, arms
+
+
+def test_structural_tuning_runs_exactly_once_per_unit_and_is_reused_by_all_arms():
+    from validation.benchmark import invariants as inv
+    from validation.benchmark import raw_store as rs
+    import tempfile
+    ds, groups, cfg, arms = _unit_runner()
+    result = BenchmarkRunner(cfg, arms).run(ds, GroupSemanticProvider(groups))
+    assert result.semantic_report[0]["tuning_execution_count"] == 1
+    frame = result.frame()
+    assert set(frame["tuning_execution_count"]) == {1}
+    trees = frame[frame["family"].isin(["trepan_original", "trepan_reloaded"])]
+    assert trees["tree_max_nodes"].nunique() == 1 and trees["query_budget"].nunique() == 1           # a MESMA configuração em C, D, E, F
+    prof = result.semantic_report[0]["structural_protocol"]["engineering_profile"]
+    assert prof["fits_executed"] > 0 and prof["tree_fit_total"] > 0
+    parts = prof["synthetic_generation"] + prof["oracle_prediction"] + prof["local_model_fit"] + prof["split_search"] + prof["tree_construction_other"]
+    assert abs(parts - prof["tree_fit_total"]) < 1e-6                                                # a decomposição fecha com o total
+    with tempfile.TemporaryDirectory() as tmp:
+        from pathlib import Path
+        rs.write_unit(result, Path(tmp), manifest_sha256="t", labels=[0, 1])
+        _, records, splits = rs.load_raw(Path(tmp))
+        checks = {c["invariant"]: c["passed"] for c in inv.check_unit(records, splits[0], expected_arms=[a.arm_id for a in arms])}
+    assert checks["tuning_executed_exactly_once_per_unit"]
+
+
+def test_a_silent_second_tuning_is_detected():
+    from core.benchmark.runner import BenchmarkRunner as BR
+    ds, groups, cfg, arms = _unit_runner()
+
+    class Leaky(BR):
+        def _run_arm(self, spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds, infos,
+                     selected, budget, seed, labels, minority, fo=None, fe=None, oracle_train_pred=None, structural=None):
+            if spec.arm_id == "reloaded_core":                        # um braço repete o tuning às escondidas
+                self._structural_protocol(Xtr, ytr, fo, ds.feature_names, seed, len(Xtr))
+            return super()._run_arm(spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds,
+                                    infos, selected, budget, seed, labels, minority, fo, fe, oracle_train_pred=oracle_train_pred, structural=structural)
+    result = Leaky(cfg, arms).run(ds, GroupSemanticProvider(groups))
+    assert result.semantic_report[0]["tuning_execution_count"] == 2
+
+
+def test_equivalence_report_passes_on_identical_runs_and_fails_field_by_field(tmp_path):
+    import hashlib
+    from validation.benchmark import equivalence_report as er
+    from validation.benchmark import raw_store as rs
+    ds, groups, cfg, arms = _unit_runner()
+    result = BenchmarkRunner(cfg, arms).run(ds, GroupSemanticProvider(groups))
+    a, b = tmp_path / "a", tmp_path / "b"
+    rs.write_unit(result, a, manifest_sha256="x", labels=[0, 1]); rs.write_unit(result, b, manifest_sha256="x", labels=[0, 1])
+    ok = er.build_report([("tune_once", a, b)])
+    assert ok["identical"] and ok["n_fail"] == 0 and ok["n_fields"] >= 25
+
+    def tamper(arm, mutate):
+        udir = b / "raw" / "tune_once" / "seed42"
+        f = udir / f"{arm}.json"
+        rec = json.loads(f.read_text()); mutate(rec)
+        f.chmod(0o644); f.write_text(json.dumps(rec)); f.chmod(0o444)
+        idx = udir / "UNIT_SHA256.json"
+        listed = json.loads(idx.read_text()); listed[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
+        idx.chmod(0o644); idx.write_text(json.dumps(listed)); idx.chmod(0o444)
+    tamper("reloaded_owl_full", lambda r: r["predictions"]["surrogate_predictions"].__setitem__(0, 1 - r["predictions"]["surrogate_predictions"][0]))
+    tamper("trepan_original", lambda r: r["row"].__setitem__("node_count", r["row"]["node_count"] + 2))
+    tamper("reloaded_core", lambda r: r["row"].__setitem__("ontology_effectively_used", True))
+    bad = er.build_report([("tune_once", a, b)])
+    failed = {r["field"] for r in bad["results"] if r["status"] == "FAIL"}
+    assert not bad["identical"] and {"predictions Reloaded + OWL (E)", "nós", "ontology_effectively_used / categoria"} <= failed
+    assert "predictions TREPAN Original (C)" not in failed and "split_hash" not in failed       # só falha o que realmente difere
+    assert "FAIL" in er.to_markdown(bad)

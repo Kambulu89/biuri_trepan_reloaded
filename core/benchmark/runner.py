@@ -21,6 +21,7 @@ from core.benchmark.splits import SplitSpec, assert_disjoint, inner_folds, make_
 from core.benchmark.ontology_gate import ontology_category, ontology_gate_fields
 from core.benchmark.preprocessing import preprocessing_record
 from core.benchmark.timing import ARM_TIME_KEY, StageTimer
+from core import trepan_scientific_tuning as _tuning_module
 from core.benchmark.preprocessing import preprocessing_record
 from core.benchmark.structure import c45_structure, structure_columns, trepan_structure
 from core.c45_j48_tree import C45Classifier
@@ -392,6 +393,7 @@ class BenchmarkRunner:
                           cv_plan=tuned.get("cv_plan"), test_used_for_selection=bool(tuned.get("test_used_for_selection", False)),
                           tuning_time_s=time.perf_counter() - t0)
             hist = {h["label"]: h for h in (tuned.get("structure_history") or [])}
+            report["engineering_profile"] = tuned.get("engineering_profile")
             report["candidate_count"] = int(len(hist))
             report["number_cv_fits"] = int(sum(len(h.get("per_split") or []) for h in (tuned.get("structure_history") or [])))
             report["number_capacity_fits"] = int(sum(len(h.get("per_split") or []) for h in (tuned.get("capacity_history") or [])
@@ -407,6 +409,7 @@ class BenchmarkRunner:
     def _run_split(self, ds: Dataset, sp: SplitSpec, provider):
         cfg = self.cfg
         timer = StageTimer()
+        tuning_executions_before = int(_tuning_module.TUNING_EXECUTIONS)
         reasoner_calls_before = int(getattr(provider, "n_reasoner_calls", 0))
         seed = int(sp.seed) + 1000 * int(sp.repeat) + int(sp.fold)
         with timer.stage("preprocessing_time"):
@@ -501,6 +504,10 @@ class BenchmarkRunner:
         sem["oracle_contract"] = self._verify_oracle_contract(rows, fo, fe)
         guard.record_final_evaluation(PartitionRole.TEST, "final_metrics_all_arms_once", n_test=sp.n_test)
         sem["protocol_audit"] = guard.audit()
+        # o tuning estrutural é UMA decisão ontology-blind por unidade (split); nenhum braço o repete silenciosamente
+        sem["tuning_execution_count"] = int(_tuning_module.TUNING_EXECUTIONS) - tuning_executions_before
+        for r in rows:
+            r["tuning_execution_count"] = sem["tuning_execution_count"]
         timing = timer.report()
         timing["ontology_mapping_time"] = float(ctx_real.semantic_time)
         timing["reasoning_time"] = float(ctx_real.reasoner_time)
@@ -511,6 +518,9 @@ class BenchmarkRunner:
             "n_samples": int(len(ds.y)), "n_train": int(sp.n_train), "n_test": int(sp.n_test), "n_features_raw": int(Xtr.shape[1]),
             "n_features_processed": int(ctx_real.n_features if ctx_real.available else Xtr.shape[1]), "n_classes": int(len(labels)),
             "number_cv_fits": cv_fits, "number_trepan_fits": cv_fits + n_tree_arms, "candidate_count": int(structural.get("candidate_count", 0)),
+            # oracle_query_samples = nº de AMOSTRAS consultadas (métrica científica); oracle_predict_calls = chamadas Python (só diagnóstico)
+            "oracle_query_samples_per_scope": {k: int(v["queries"]) for k, v in fo.calls.items()},
+            "oracle_predict_calls_per_scope": {k: int(v["calls"]) for k, v in fo.calls.items()},
             "oracle_queries_per_scope": {k: int(v["queries"]) for k, v in fo.calls.items()},
             "oracle_calls_per_scope": {k: int(v["calls"]) for k, v in fo.calls.items()},
             "synthetic_queries_per_arm": {r["arm"]: int(r["membership_queries"]) for r in rows if r.get("membership_queries") is not None},

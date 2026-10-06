@@ -608,11 +608,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         parent_model = node.parent_model or self.global_distribution_model_
         local_model = parent_model
         if len(X) >= 8:
+            t_local = time.perf_counter()
             candidate = FeatureDistributionModel(
                 random_state=self.random_state + max(0, node.node_id),
             ).fit(X)
             if candidate.differs_from(parent_model, X, alpha=self.local_model_alpha):
                 local_model = candidate
+            self.local_model_time_ = getattr(self, "local_model_time_", 0.0) + (time.perf_counter() - t_local)
         needed = max(0, int(self.effective_min_sample_) - len(X))
         remaining_budget = max(0, int(self.max_queries) - self.membership_queries_)
         requested = needed
@@ -628,8 +630,13 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
             rejected_before = getattr(local_model, "n_rejected_", 0)
             t0 = time.perf_counter()
             qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+            t1 = time.perf_counter()
             qy = np.asarray(self.oracle_.predict(qx))
-            self.query_time_ += time.perf_counter() - t0
+            t2 = time.perf_counter()
+            self.query_time_ += t2 - t0
+            # decomposição de engenharia do tempo de queries (geração sintética vs predição do oráculo)
+            self.synthetic_generation_time_ = getattr(self, "synthetic_generation_time_", 0.0) + (t1 - t0)
+            self.oracle_prediction_time_ = getattr(self, "oracle_prediction_time_", 0.0) + (t2 - t1)
             valid = int(np.sum(node.constraints.accepts(qx))) if len(qx) else 0
             node.stats.update({
                 "queries_generated": int(len(qx)),
@@ -681,6 +688,9 @@ class TrepanOriginalClassifier(ClassifierMixin, BaseEstimator):
         self.membership_queries_ = 0
         self._fit_started_ = time.perf_counter()
         self.query_time_ = 0.0
+        self.synthetic_generation_time_ = 0.0
+        self.oracle_prediction_time_ = 0.0
+        self.local_model_time_ = 0.0
         self.split_search_time_ = 0.0
         self.m_of_n_search_time_ = 0.0
         self.pruning_time_ = 0.0

@@ -40,8 +40,9 @@ def benchmark_config(seed: int):
                            different_oracle_experiment=False, structure_tuning=True, n_boot=10000)
 
 
-def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MANIFEST_PATH) -> Path:
+def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Optional[Path] = None) -> Path:
     from core.benchmark.runner import BenchmarkRunner
+    manifest_path = manifest_path or mf.latest_manifest_path()
     verification = mf.verify_manifest(manifest_path, dataset_ids=[dataset_id])
     if not verification["ok"]:
         raise SystemExit(f"Manifesto inválido: {verification['problems']}")
@@ -61,7 +62,10 @@ def run_unit(dataset_id: str, seed: int, out: Path, manifest_path: Path = mf.MAN
     timing = dict(split_report.get("timing", {}), serialization_time=serialization)
     timing["total_time"] = time.perf_counter() - t0
     meta = {"dataset": dataset_id, "seed": seed, "seconds": timing["total_time"], "frozen_code_drift": verification["frozen_code_drift"],
-            "run_code_commit": verification["current_code_commit"], "status": "completed", "timing": timing,
+            "run_code_commit": verification["current_code_commit"], "code_dirty": bool(mf._git("status", "--porcelain", "--untracked-files=no")),
+            "manifest_used": manifest_path.name, "tuning_execution_count": split_report.get("tuning_execution_count"),
+            "tuning_engineering_profile": (split_report.get("structural_protocol") or {}).get("engineering_profile"),
+            "status": "completed", "timing": timing,
             "numeric_environment": {k: os.environ.get(k) for k in ("OPENBLAS_CORETYPE", "OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NPY_DISABLE_CPU_FEATURES")},
             "work": split_report.get("work", {})}
     (out / "raw" / dataset_id / f"seed{seed}" / "RUN_META.txt").write_text(json.dumps(meta), encoding="utf-8")

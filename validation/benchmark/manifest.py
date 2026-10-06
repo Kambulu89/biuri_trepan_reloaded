@@ -25,6 +25,16 @@ from validation.benchmark.c45_audit import audit_native_c45
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_VERSION = "2"
 MANIFEST_PATH = Path(__file__).resolve().parent / f"BENCHMARK_MANIFEST_v{MANIFEST_VERSION}.json"
+
+
+def latest_manifest_path() -> Path:
+    """Manifesto efetivo para execuções: o da versão pedida se já existir; senão o mais recente já congelado (nunca um inexistente)."""
+    if MANIFEST_PATH.exists():
+        return MANIFEST_PATH
+    found = sorted(MANIFEST_PATH.parent.glob("BENCHMARK_MANIFEST_v*.json"), key=lambda p: int(p.stem.rsplit("_v", 1)[1]))
+    if not found:
+        raise FileNotFoundError("Nenhum BENCHMARK_MANIFEST_v*.json congelado.")
+    return found[-1]
 MASTER_SEEDS = (42, 7, 123, 2024, 11)                        # fixadas ANTES de qualquer resultado
 MAIN_ARM_GROUPS = ("A", "B", "C", "D", "E", "F")
 EVALUATION = {"scheme": "holdout", "test_size": 0.25, "stratified": True, "one_split_per_master_seed": True}

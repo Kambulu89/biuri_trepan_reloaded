@@ -44,6 +44,8 @@ def check_unit(records: List[Dict[str, Any]], split_payload: Dict[str, Any], *, 
                     f"source={sp.get('source')}, status={sp.get('tuning_status')}, failed={sp.get('failed')}"))
     same_cfg = all(trees[c].nunique(dropna=False) == 1 for c in ("tree_max_nodes", "query_budget", "structural_source", "structural_tuning_status"))
     sel = sp.get("selected", {})
+    out.append(_res("tuning_executed_exactly_once_per_unit", int(sem.get("tuning_execution_count", -1)) == 1
+                    and set(trees["tuning_execution_count"].astype(int)) == {1}, f"tuning_execution_count={sem.get('tuning_execution_count')}"))
     out.append(_res("same_purity_epsilon_max_nodes_budget_for_C_D_E_F", same_cfg and bool(sel),
                     f"selected={sel}; max_nodes={trees['tree_max_nodes'].unique().tolist()}; query_budget={trees['query_budget'].unique().tolist()}"))
     d_e_f = rows.loc[[a for a in ("reloaded_core", "reloaded_owl_full", "reloaded_owl_shuffled") if a in rows.index]]
