@@ -12,7 +12,7 @@ FAMILIES = {"radius", "texture", "perimeter", "area", "smoothness", "compactness
 
 @pytest.fixture(scope="module")
 def onto():
-    return owlready2.get_ontology(OWL.as_uri()).load()
+    return owlready2.get_ontology(str(OWL.resolve())).load()      # igual à produção: caminho local (as_uri() gera "/D:/..." inválido no Windows)
 
 
 def test_tbox_only_no_instances(onto):
