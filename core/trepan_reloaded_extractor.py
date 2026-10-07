@@ -1,5 +1,4 @@
 from core.tree_stop_summary import stop_summary_of
-import graphviz
 import logging
 import os
 import webbrowser
@@ -4865,6 +4864,11 @@ class TrepanReloadedExtractor:
                 enhanced_feature_names, class_names, output_file=dot_path, open_image=False
             )
             dot_data = Path(dot_path).read_text(encoding='utf-8')
+            try:
+                import graphviz                      # visualização opcional: só a exportação para imagem precisa dela
+            except ImportError as exc:
+                raise RuntimeError("Exportar a árvore como imagem requer o pacote Python 'graphviz' (e o binário 'dot'); "
+                                   "o treino e a avaliação funcionam sem eles. pip install graphviz") from exc
             graph = graphviz.Source(dot_data)
             graph.format = 'png'
             rendered = graph.render(filename=str(stem), cleanup=True)

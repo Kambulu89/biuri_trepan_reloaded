@@ -308,6 +308,7 @@ class BenchmarkRunner:
             mf.stable_hash({"provider": getattr(ontology, "name", "none")}) if ontology is not None else "none")
         ds_hash = mf.hash_dataset(dataset.X, dataset.y, dataset.feature_names)
         self._ontology_hash, self._dataset_hash = ontology_hash, ds_hash
+        self._dataset_content_hash = mf.hash_dataset_content(dataset.X, dataset.y)
         splits = make_splits(dataset.y, scheme=self.cfg.scheme, seeds=self.cfg.seeds, test_size=self.cfg.test_size,
                              n_splits=self.cfg.n_splits, n_repeats=self.cfg.n_repeats, base_seed=self.cfg.base_seed)
         rows: List[Dict[str, Any]] = []
@@ -474,7 +475,8 @@ class BenchmarkRunner:
         if ctx_shuf.available and ctx_shuf is not ctx_real:
             sem["negative_control"] = {k: ctx_shuf.info.get(k) for k in ("shuffle_seed", "original_ontology_hash", "shuffled_ontology_hash",
                                                                          "counts_before", "counts_after", "n_ontology_graph_nodes")}
-        base = dict(preprocessing_id=prep["preprocessing_id"], base_representation_hash=prep["train_matrix_hash"],
+        base = dict(preprocessing_id=prep["preprocessing_id"], scientific_preprocessing_id=prep["scientific_preprocessing_id"],
+                    dataset_content_hash=getattr(self, "_dataset_content_hash", None), base_representation_hash=prep["train_matrix_hash"],
                     dataset_hash=getattr(self, "_dataset_hash", None), config_hash=mf.stable_hash(cfg.to_dict()),
                     dataset=ds.name, split_id=sp.split_id, seed=int(sp.seed), repeat=sp.repeat, fold=sp.fold, split_hash=sp.split_hash,
                     scheme=sp.scheme, n_train=sp.n_train, n_test=sp.n_test, minority_label=str(minority))
@@ -667,6 +669,7 @@ class BenchmarkRunner:
         row.update(gate)
         uses_onto = bool(spec.family == "trepan_reloaded" and spec.semantic != "none")
         row["ontology_hash"] = (ctx_real.info.get("ontology_hash") or self._ontology_hash) if uses_onto else "none"
+        row["ontology_structure_signature"] = (ctx_shuf if spec.semantic == "shuffled" else ctx_real).structure_signature() if uses_onto else "none"
         row["ontology_category"] = ontology_category(gate) if uses_onto else None
         if spec.semantic == "shuffled":
             nc = ctx_shuf.info

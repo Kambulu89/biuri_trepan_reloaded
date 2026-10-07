@@ -28,5 +28,9 @@ def preprocessing_record(X_train, feature_names: Sequence[str], train_idx) -> Di
         "train_index_hash": stable_hash([int(i) for i in np.asarray(train_idx)]),
         "train_matrix_hash": train_hash,
     }
-    record["preprocessing_id"] = stable_hash(record)[:16]
+    # Identidade CIENTÍFICA: só valores/partição/configuração (nomes das features não alteram nenhum resultado).
+    scientific = {k: v for k, v in record.items() if k != "feature_names_hash"}
+    record["scientific_preprocessing_id"] = stable_hash(scientific)[:16]
+    # Identidade de ARTEFACTO/cache: acrescenta os nomes das features (rastreabilidade do esquema). Nunca seleciona comportamento.
+    record["preprocessing_id"] = stable_hash({k: v for k, v in record.items() if k != "scientific_preprocessing_id"})[:16]
     return record
