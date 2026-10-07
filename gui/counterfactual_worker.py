@@ -12,6 +12,7 @@ class CounterfactualWorker(QThread):
     STAGE_GENERATE = 'generate'
     STAGE_GLOBAL = 'global'
     STAGE_TREE = 'tree'
+    STAGE_GENERATE_TREE = 'generate_tree'     # um clique: gera os CFs locais (se preciso) e constrói a árvore CF
     STAGE_TRANSFER = 'transfer'
     STAGE_IMPROVE = 'improve'
     STAGE_FULL = 'full'
@@ -76,6 +77,27 @@ class CounterfactualWorker(QThread):
                     self.failed.emit('Operación cancelada por el usuario.')
                     return
                 self.finished_ok.emit({'counterfactuals': tree_result})
+                return
+
+            if self.mode == self.STAGE_GENERATE_TREE:
+                cf_result = generate_explanation_from_session(
+                    self.session, self.options, progress_fn=progress_fn, cancel_fn=cancel_fn,
+                )
+                if self._cancel_requested:
+                    self.failed.emit('Operación cancelada por el usuario.')
+                    return
+                if not any(bool((item.get('metrics') or {}).get('validity')) for item in cf_result.get('candidates') or []):
+                    raise ValueError(
+                        "Não foi possível gerar contrafactuais VÁLIDOS para esta instância com o método escolhido, pelo que a árvore CF "
+                        "não pode ser construída. Escolha outra instância, outra classe alvo ou outro método."
+                    )
+                tree_result = build_counterfactual_tree_from_session(
+                    self.session, cf_result, self.options, progress_fn=progress_fn, cancel_fn=cancel_fn,
+                )
+                if self._cancel_requested:
+                    self.failed.emit('Operación cancelada por el usuario.')
+                    return
+                self.finished_ok.emit({'counterfactuals': tree_result, 'local_counterfactuals': cf_result})
                 return
 
             if self.mode == self.STAGE_TRANSFER:

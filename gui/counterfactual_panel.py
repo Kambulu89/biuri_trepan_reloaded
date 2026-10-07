@@ -277,7 +277,8 @@ class CounterfactualPanel(QWidget):
             "Extrair todas as regras e transições de classe da árvore seleccionada"
         )
         self.tree_button.setToolTip(
-            "Construir uma árvore explicativa com a vizinhança e os CFs válidos gerados"
+            "Constrói a árvore explicativa CF (vizinhança + contrafactuais válidos). Se ainda não existirem contrafactuais locais para a "
+            "instância, método e classe alvo escolhidos, gera-os primeiro; no fim abre a árvore na aba Visualização."
         )
         self.visualize_tree_button.setToolTip(
             "Mostrar a última árvore contrafactual na aba de visualização"
@@ -751,7 +752,7 @@ class CounterfactualPanel(QWidget):
     def _update_action_states(self, busy: bool) -> None:
         self.generate_button.setEnabled(not busy and self._generation_ready)
         self.global_button.setEnabled(not busy and self._global_ready)
-        self.tree_button.setEnabled(not busy and self._tree_ready)
+        self.tree_button.setEnabled(not busy and (self._tree_ready or self._generation_ready))
         self.transfer_button.setEnabled(not busy and self._transfer_ready)
         self.visualize_tree_button.setEnabled(not busy and self._visualization_ready)
         self.export_button.setEnabled(not busy and bool(self.current_result))
@@ -821,6 +822,19 @@ class CounterfactualPanel(QWidget):
         self._fill_cards({})
         self._update_action_states(False)
 
+    def reset_results(self) -> None:
+        """Limpa resultados mostrados (mantém a configuração) — usado quando dataset/modelo mudam."""
+        self._tree_ready = False
+        self._visualization_ready = False
+        self._local_result = {}
+        self.current_result = {}
+        self._last_generation = {}
+        self.summary_text.clear()
+        self.metrics_table.setRowCount(0)
+        self.candidates_table.setRowCount(0)
+        self._fill_cards({})
+        self._update_action_states(False)
+
     def options(self) -> Dict[str, Any]:
         return {
             "target_model": self.model_combo.currentText(),
@@ -856,7 +870,7 @@ class CounterfactualPanel(QWidget):
         self._visualization_ready = (
             result_type == "counterfactual_tree"
             and runtime_tree is not None
-            and getattr(runtime_tree, "tree_", None) is not None
+            and (getattr(runtime_tree, "root_", None) is not None or getattr(runtime_tree, "tree_", None) is not None)
         )
         if result.get("rows") is not None:
             self._display_transfer(result)
