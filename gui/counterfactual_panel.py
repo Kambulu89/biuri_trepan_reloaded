@@ -822,6 +822,19 @@ class CounterfactualPanel(QWidget):
         self._fill_cards({})
         self._update_action_states(False)
 
+    def reset_results(self) -> None:
+        """Limpa resultados mostrados (mantém a configuração) — usado quando dataset/modelo mudam."""
+        self._tree_ready = False
+        self._visualization_ready = False
+        self._local_result = {}
+        self.current_result = {}
+        self._last_generation = {}
+        self.summary_text.clear()
+        self.metrics_table.setRowCount(0)
+        self.candidates_table.setRowCount(0)
+        self._fill_cards({})
+        self._update_action_states(False)
+
     def options(self) -> Dict[str, Any]:
         return {
             "target_model": self.model_combo.currentText(),

@@ -430,3 +430,62 @@ def test_clear_unavailable_error_points_to_the_native_methods(qapp, monkeypatch)
     w._on_cf_failed("CLEAR indisponível: instale/valide TensorFlow. Causa: No module named 'tensorflow'", _Dlg())
     assert seen and "sem TensorFlow" in seen[0] and "Contrafactuais" in seen[0]
     w.close()
+
+
+def test_changing_dataset_or_retraining_invalidates_old_counterfactual_results(qapp, monkeypatch):
+    from gui.biuri_app_complete import BiuriApp
+    w = BiuriApp()
+    launched = []
+    monkeypatch.setattr(w, '_launch_cf_worker', lambda stage, **kw: launched.append(stage))
+    opts = {'target_model': 'Trepan Original', 'instance_index': 3, 'desired_class': 1}
+    seen = []
+    monkeypatch.setattr(w.counterfactual_tab, 'reset_results', lambda: seen.append(True))
+
+    def fresh():
+        w.cf_interactive_result = {'candidates': [{'metrics': {'validity': True}}], 'target_model': 'Trepan Original', 'instance_index': 3, 'desired_class': 1}
+        w.cf_tree_result = {'result_type': 'counterfactual_tree'}
+        w.cf_result = {'consistency': []}
+        w._cf_result_generation = w._cf_generation
+    fresh()
+    assert w._local_cf_matches_request(opts)
+    w._invalidate_counterfactual_results("dataset")                   # carregar outro dataset / retreinar / benchmark
+    assert w.cf_interactive_result is None and w.cf_tree_result is None and w.cf_result is None and seen
+    fresh()
+    w._cf_generation += 1                                             # resultado de uma geração anterior que escapou ao reset
+    assert not w._local_cf_matches_request(opts)
+    w._build_cf_tree_from_panel(opts)
+    assert launched[-1] == CounterfactualWorker.STAGE_GENERATE_TREE   # nunca reutiliza: regenera
+    w.close()
+
+
+def test_result_finishing_after_dataset_or_model_changed_is_discarded(qapp, monkeypatch):
+    from gui.biuri_app_complete import BiuriApp
+    w = BiuriApp()
+    monkeypatch.setattr(w, '_visualize_cf_tree', lambda r: (_ for _ in ()).throw(AssertionError("não deve abrir")))
+
+    class _Dlg:
+        def close(self):
+            pass
+    w._invalidate_counterfactual_results("treino")
+    w._on_cf_finished({'counterfactuals': {'result_type': 'counterfactual_tree'}}, _Dlg(), CounterfactualWorker.STAGE_GENERATE_TREE, 0)
+    assert w.cf_tree_result is None
+    w.close()
+
+
+def test_failed_generation_restores_controls_and_closes_progress(qapp, monkeypatch):
+    from gui.biuri_app_complete import BiuriApp
+    from PyQt6.QtWidgets import QMessageBox
+    w = BiuriApp()
+    seen, closed = [], []
+    monkeypatch.setattr(QMessageBox, 'critical', lambda *a, **k: seen.append(a[2]))
+    w.counterfactual_tab.configure(n_instances=5, class_labels={0: 'a', 1: 'b'}, available_models=['MLP Original'], dataset_name='d')
+    w.counterfactual_tab.set_busy(True)
+    assert not w.counterfactual_tab.tree_button.isEnabled()
+
+    class _Dlg:
+        def close(self):
+            closed.append(True)
+    w._on_cf_failed("Não foi possível gerar contrafactuais VÁLIDOS para esta instância", _Dlg())
+    assert closed and seen and "VÁLIDOS" in seen[0]
+    assert w.counterfactual_tab.tree_button.isEnabled() and w.counterfactual_tab.generate_button.isEnabled()
+    w.close()

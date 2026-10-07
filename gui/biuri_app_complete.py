@@ -858,6 +858,8 @@ class BiuriApp(QMainWindow):
         self.cf_interactive_result = None
         self.cf_global_result = None
         self.cf_tree_result = None
+        self._cf_generation = 0            # incrementa sempre que dataset/modelos mudam: resultados CF antigos deixam de ser reutilizáveis
+        self._cf_result_generation = 0     # geração em que os cf_* atuais foram produzidos
         self.cf_transfer_result = None
         self.cf_improve_result = None
         self.trepan_improved_tree = None
@@ -2519,6 +2521,7 @@ que la red se vuelve interpretable.
                 'classes': len(classes), 'class_names': [str(c) for c in classes], 'target': meta.get('target'),
             }
             self.dataset_fingerprint = dataset_fingerprint_of(X, y)
+            self._invalidate_counterfactual_results("dataset")
             if self.audit is not None:
                 self.audit.on_data_loaded()
         except Exception as exc:  # a observabilidade nunca impede o carregamento
@@ -3024,6 +3027,7 @@ Asegúrese de que:
     def _on_training_finished(self, result, dlg):
         dlg.close()
         self._training_worker = None
+        self._invalidate_counterfactual_results("treino")
         if result.get('result_text'):
             self.show_results(result['result_text'])
         if result.get('success'):
@@ -3455,7 +3459,8 @@ Asegúrese de que:
         self._cf_worker = worker
 
         worker.progress.connect(self._on_cf_progress)
-        worker.finished_ok.connect(lambda result: self._on_cf_finished(result, dlg, mode))
+        launched_generation = self._cf_generation
+        worker.finished_ok.connect(lambda result: self._on_cf_finished(result, dlg, mode, launched_generation))
         worker.failed.connect(lambda err: self._on_cf_failed(err, dlg))
         dlg.canceled.connect(worker.request_cancel)
         dlg.show()
@@ -3479,11 +3484,14 @@ Asegúrese de que:
         self._cf_worker = None
         self._cf_progress_dialog = None
 
-    def _on_cf_finished(self, result, dlg, mode):
+    def _on_cf_finished(self, result, dlg, mode, generation=None):
         dlg.close()
         self._cf_progress_dialog = None
         if hasattr(self, 'counterfactual_tab'):
             self.counterfactual_tab.set_busy(False)
+        if generation is not None and generation != self._cf_generation:
+            QMessageBox.information(self, "Contrafactuais", "O dataset ou o modelo mudou durante o cálculo; o resultado foi descartado. Volte a gerar.")
+            return
         worker = self._cf_worker
         if worker is not None:
             worker.finished.connect(
@@ -3640,9 +3648,22 @@ Asegúrese de que:
             options=dict(options or {}),
         )
 
+    def _invalidate_counterfactual_results(self, reason=""):
+        """Descarta todos os resultados contrafactuais (e os da árvore CF) quando dataset/modelos treinados mudam."""
+        self._cf_generation = getattr(self, '_cf_generation', 0) + 1
+        self._cf_result_generation = self._cf_generation
+        for name in ('cf_result', 'cf_interactive_result', 'cf_global_result', 'cf_tree_result',
+                     'cf_transfer_result', 'cf_improve_result'):
+            setattr(self, name, None)
+        panel = getattr(self, 'counterfactual_tab', None)
+        if panel is not None and hasattr(panel, 'reset_results'):
+            panel.reset_results()
+
     def _local_cf_matches_request(self, options):
         """O último resultado local serve para a árvore se for do mesmo modelo/instância/classe/método pedidos e tiver CFs válidos."""
         local = self.cf_interactive_result
+        if getattr(self, '_cf_result_generation', 0) != getattr(self, '_cf_generation', 0):
+            return False
         if not local or local.get('rows') is not None or local.get('result_type') in {'global_rules', 'counterfactual_tree'}:
             return False
         if not any(bool((c.get('metrics') or {}).get('validity')) for c in local.get('candidates') or []):
@@ -3850,6 +3871,7 @@ Asegúrese de que:
         dlg.close()
         self._training_worker = None
         outcome = payload["outcome"]
+        self._invalidate_counterfactual_results("benchmark")
         self.benchmark_outcome = outcome
         # As MESMAS árvores avaliadas cientificamente (nada é reconstruído nem retreinado para as desenhar).
         view = outcome.tree_view()
