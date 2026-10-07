@@ -3693,6 +3693,24 @@ Asegúrese de que:
         else:
             self._launch_cf_worker(CounterfactualWorker.STAGE_GENERATE_TREE, options=options)
 
+    def _cf_local_tree_header(self, result):
+        """Cabeçalho da árvore CF local: deixa explícito que NÃO é a árvore interna do modelo seleccionado."""
+        from html import escape as _esc
+        from counterfactuals.local_surrogate_tree import concordance_lines, summary_lines
+        if not result.get('local_provenance'):
+            return None
+        info = "<br>".join(_esc(line) for line in summary_lines(result))
+        matrix = _esc("\n".join(concordance_lines(result.get('local_concordance'))))
+        label = QLabel(
+            f"<div style='font-size:12px;'>{info}<br><i>Árvore local treinada com os rótulos do oráculo; "
+            f"não é a árvore interna do modelo.</i></div>"
+            f"<pre style='font-family:Consolas,monospace;font-size:11px;'>{matrix}</pre>"
+        )
+        label.setTextFormat(Qt.TextFormat.RichText)
+        label.setWordWrap(True)
+        label.setObjectName("cf_local_tree_header")
+        return label
+
     def _visualize_cf_tree(self, result):
         # A cópia mantida pela janela é a fonte canónica: contém o estimador
         # sklearn ajustado mesmo que o painel tenha sido redesenhado entretanto.
@@ -3709,18 +3727,21 @@ Asegúrese de que:
                 feature_names=result.get('feature_names') or [],
                 class_names=result.get('class_names') or [],
                 dataset_name=result.get('dataset', 'dataset_carregado'),
-                primary_tree_label="Árvore contrafactual",
+                primary_tree_label=result.get('tree_title') or "Árvore CF local",
             )
+            header = self._cf_local_tree_header(result)
             layout = self.visualization_tab.layout()
             if layout:
                 for index in reversed(range(layout.count())):
                     widget = layout.itemAt(index).widget()
                     if widget is not None:
                         widget.setParent(None)
+                if header is not None:
+                    layout.addWidget(header)
                 layout.addWidget(viz)
             self.tree_widget = viz
             self.content_tabs.setCurrentWidget(self.visualization_tab)
-            self._set_status("Árvore contrafactual — aba Visualização.")
+            self._set_status(f"{result.get('tree_title') or 'Árvore CF local'} — aba Visualização.")
         except Exception as exc:
             QMessageBox.critical(
                 self, "Error", f"Error al visualizar árbol contrafactual: {exc}"
