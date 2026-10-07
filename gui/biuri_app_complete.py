@@ -2527,6 +2527,9 @@ que la red se vuelve interpretable.
             }
             self.dataset_fingerprint = dataset_fingerprint_of(X, y)
             self._invalidate_counterfactual_results("dataset")
+            if hasattr(self, 'counterfactual_tab') and not self._has_trained_models_for_cf():
+                # modelos de outro dataset deixam de estar disponíveis na aba até haver novo treino
+                self.counterfactual_tab.configure(n_instances=0, class_labels={}, available_models=[], dataset_name="")
             if self.audit is not None:
                 self.audit.on_data_loaded()
         except Exception as exc:  # a observabilidade nunca impede o carregamento

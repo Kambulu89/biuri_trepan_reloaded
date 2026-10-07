@@ -512,3 +512,15 @@ def test_real_cf_tree_is_a_trepan_tree_and_opens_in_the_visualization(qapp):
     panel.display_result(tree_result)
     assert panel._visualization_ready
     w.close()
+
+
+def test_loading_a_new_dataset_disables_the_counterfactual_actions_until_retraining(qapp, tmp_path):
+    from gui.biuri_app_complete import BiuriApp
+    w = BiuriApp()
+    w.counterfactual_tab.configure(n_instances=5, class_labels={0: 'a', 1: 'b'}, available_models=['MLP Original'], dataset_name='antigo')
+    assert w.counterfactual_tab.tree_button.isEnabled()
+    arff = tmp_path / "novo.arff"
+    arff.write_text("@relation n\n@attribute a numeric\n@attribute b numeric\n@attribute class {x,y}\n@data\n" + "\n".join(f"{i},{i % 3},{'x' if i % 2 else 'y'}" for i in range(20)))
+    w.load_data_from_file(str(arff))
+    assert not w.counterfactual_tab.tree_button.isEnabled() and not w.counterfactual_tab.generate_button.isEnabled()
+    w.close()
