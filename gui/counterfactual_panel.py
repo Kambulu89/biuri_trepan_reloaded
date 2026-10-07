@@ -870,7 +870,7 @@ class CounterfactualPanel(QWidget):
         self._visualization_ready = (
             result_type == "counterfactual_tree"
             and runtime_tree is not None
-            and getattr(runtime_tree, "tree_", None) is not None
+            and (getattr(runtime_tree, "root_", None) is not None or getattr(runtime_tree, "tree_", None) is not None)
         )
         if result.get("rows") is not None:
             self._display_transfer(result)

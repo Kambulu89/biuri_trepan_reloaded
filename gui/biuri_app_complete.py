@@ -398,6 +398,11 @@ class OntologyLoadDialog(QDialog):
             self.file_path_edit.setText(file_path)
 
 
+def _is_fitted_cf_tree(tree):
+    """Árvore ajustada desenhável: TREPAN histórico (``root_``) ou árvore sklearn (``tree_``)."""
+    return tree is not None and (getattr(tree, 'root_', None) is not None or getattr(tree, 'tree_', None) is not None)
+
+
 class TreeVisualizationWidget(QWidget):
 
     def __init__(self, tree_model=None, feature_names=None, class_names=None, 
@@ -3690,7 +3695,7 @@ Asegúrese de que:
         # sklearn ajustado mesmo que o painel tenha sido redesenhado entretanto.
         result = self.cf_tree_result or result or {}
         tree = result.get('_runtime_tree_model')
-        if tree is None or getattr(tree, 'tree_', None) is None:
+        if not _is_fitted_cf_tree(tree):
             QMessageBox.warning(
                 self, "Advertencia", "Nenhuma árvore contrafactual está disponível."
             )

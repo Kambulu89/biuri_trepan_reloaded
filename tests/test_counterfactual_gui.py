@@ -489,3 +489,26 @@ def test_failed_generation_restores_controls_and_closes_progress(qapp, monkeypat
     assert closed and seen and "VÁLIDOS" in seen[0]
     assert w.counterfactual_tab.tree_button.isEnabled() and w.counterfactual_tab.generate_button.isEnabled()
     w.close()
+
+
+def test_real_cf_tree_is_a_trepan_tree_and_opens_in_the_visualization(qapp):
+    """Regressão: a árvore CF real é um TrepanOriginalClassifier (sem ``tree_`` sklearn) e tem de abrir na Visualização."""
+    from gui.biuri_app_complete import BiuriApp
+    outs = []
+    worker = CounterfactualWorker(
+        _cf_tree_session(), mode=CounterfactualWorker.STAGE_GENERATE_TREE,
+        options={'method': 'LORE-LOCAL', 'instance_index': 0, 'seed': 1, 'total_cfs': 3, 'cf_tree_neighborhood_size': 120},
+    )
+    worker.finished_ok.connect(outs.append)
+    worker.run()
+    tree_result = outs[0]['counterfactuals']
+    assert getattr(tree_result['_runtime_tree_model'], 'tree_', None) is None
+    w = BiuriApp()
+    w.cf_tree_result = tree_result
+    w._visualize_cf_tree(tree_result)
+    assert w.content_tabs.currentWidget() is w.visualization_tab
+    assert w.tree_widget.tree_options[0][0] == "Árvore contrafactual"
+    panel = CounterfactualPanel()
+    panel.display_result(tree_result)
+    assert panel._visualization_ready
+    w.close()
