@@ -22,10 +22,10 @@ RUNTIME_IMPORTS = {
     "statsmodels": "statsmodels",
     "matplotlib": "matplotlib",
     "seaborn": "seaborn",
-    "graphviz": "graphviz",
-    "dtreeviz": "dtreeviz",
     "optuna": "optuna",
 }
+# Visualização opcional: a ausência (pacote ou binário ``dot``) NUNCA impede treino, benchmark, MLP, ontologia ou TREPAN.
+OPTIONAL_VISUALIZATION_IMPORTS = {"graphviz": "graphviz", "dtreeviz": "dtreeviz"}
 GUI_IMPORTS = {"PyQt6": "PyQt6"}
 OWL_IMPORTS = {"owlready2": "owlready2"}
 CLEAR_IMPORTS = {"tensorflow": "tensorflow"}
@@ -73,13 +73,13 @@ def build_preflight(*, require_gui: bool = False, require_owl: bool = False, req
     owl = _probe_imports(OWL_IMPORTS) if require_owl else {}
     clear = _probe_imports(CLEAR_IMPORTS) if require_clear else {}
     python_target_ok = sys.version_info[:2] in {(3, 11), (3, 12)}
+    optional_viz = _probe_imports(OPTIONAL_VISUALIZATION_IMPORTS)
     graphviz_dot = shutil.which("dot")
     java = _probe_java()
     checks = {
         "python_3_11": python_target_ok,
         "runtime_dependencies": all(row["ok"] for row in runtime.values()),
         "java": bool(java.get("ok")) if require_owl else True,
-        "graphviz_dot": graphviz_dot is not None,
     }
     if require_gui:
         checks["gui_dependencies"] = all(row["ok"] for row in gui.values())
@@ -99,6 +99,12 @@ def build_preflight(*, require_gui: bool = False, require_owl: bool = False, req
         "clear_imports": clear,
         "java": java,
         "graphviz_dot": graphviz_dot,
+        "optional_visualization": {
+            "imports": optional_viz,
+            "graphviz_dot_binary": graphviz_dot is not None,
+            "available": all(row["ok"] for row in optional_viz.values()) and graphviz_dot is not None,
+            "note": "Opcional: só a exportação de árvores para imagem (PNG via Graphviz) depende disto.",
+        },
         "checks": checks,
         "ready": all(checks.values()),
     }

@@ -170,12 +170,29 @@ def arrays(n: int, p: int, k: int, seed: int):
     return X, y
 
 
-def run_arrays(name: str, X, y, feature_names, provider=None, tuning: bool = True):
+def positional_provider(feature_names):
+    """Ontologia programática genérica: duas metades das colunas (por POSIÇÃO). Os braços semânticos (E/F) exigem uma ontologia por desenho;
+    sem ela são saltados com razão explícita (ver ``test_without_an_ontology_...``). Não conhece nenhum dataset."""
+    names = [str(n) for n in feature_names]
+    half = max(1, len(names) // 2)
+    return GroupSemanticProvider({"G1": names[:half], "G2": names[half:]} if len(names) > 1 else {"G1": names})
+
+
+_AUTO = object()
+
+
+def run_arrays(name: str, X, y, feature_names, provider=_AUTO, tuning: bool = True):
     cfg = fast_cfg(tuning=tuning)
+    if provider is _AUTO:
+        provider = positional_provider(feature_names)
     return BenchmarkRunner(cfg, arms_af(cfg)).run(Dataset(name, X, y, feature_names), provider)
 
 
-NAME_BEARING = ["dataset", "dataset_hash", "features_used_names", "root_feature", "split_signatures", "experiment_id"]
+# Identificadores de ARTEFACTO/cache: incluem legitimamente nomes (dataset, features, ficheiro da ontologia) para rastreabilidade.
+# A identidade CIENTÍFICA equivalente (scientific_preprocessing_id, dataset_content_hash, ontology_structure_signature) NÃO está aqui:
+# é comparada como qualquer outro resultado (ver ``test_scientific_identity_is_name_free_while_artifact_identity_keeps_names``).
+NAME_BEARING = ["dataset", "dataset_hash", "features_used_names", "root_feature", "split_signatures", "experiment_id",
+                "preprocessing_id", "ontology_hash", "original_ontology_hash", "shuffled_ontology_hash"]
 
 
 def comparable(df: pd.DataFrame) -> pd.DataFrame:
@@ -210,8 +227,8 @@ def test_file_name_and_dataset_id_do_not_influence_the_result(tmp_path):
     d1, d2 = Dataset.from_file(str(p1), "target"), Dataset.from_file(str(p2), "target", name="id_diferente_zzz")
     assert d1.name != d2.name and np.array_equal(d1.X, d2.X) and np.array_equal(d1.y, d2.y)
     cfg = fast_cfg()
-    r1 = BenchmarkRunner(cfg, arms_af(cfg)).run(d1, None)
-    r2 = BenchmarkRunner(cfg, arms_af(cfg)).run(d2, None)
+    r1 = BenchmarkRunner(cfg, arms_af(cfg)).run(d1, positional_provider(d1.feature_names))
+    r2 = BenchmarkRunner(cfg, arms_af(cfg)).run(d2, positional_provider(d2.feature_names))
     assert not eq.compare_frames(comparable(r1.frame()), comparable(r2.frame()))
 
 
@@ -225,6 +242,29 @@ def test_semantic_arms_depend_on_the_ontology_content_not_on_the_dataset_name():
     assert not eq.compare_frames(comparable(r1.frame()), comparable(r2.frame()))
     e1 = r1.frame().set_index("arm").loc["reloaded_owl_full"]
     assert e1["mapped_feature_count"] == 6 and e1["mapping_rate"] == 1.0
+
+
+def test_scientific_identity_is_name_free_while_artifact_identity_keeps_names():
+    X, y = arrays(180, 6, 2, seed=11)
+    n1, n2 = [f"a{i}" for i in range(6)], [f"zz_{i}_nome" for i in range(6)]
+    f1 = run_arrays("same_content_1", X, y, n1).frame()
+    f2 = run_arrays("zz_other_dataset_id", X, y, n2).frame()
+    for col in ("scientific_preprocessing_id", "dataset_content_hash", "ontology_structure_signature", "split_hash", "oracle_id"):
+        assert f1[col].tolist() == f2[col].tolist(), col                      # mesma identidade científica
+    assert f1["preprocessing_id"].tolist() != f2["preprocessing_id"].tolist()   # o artefacto continua rastreável pelos nomes
+    assert f1["dataset_hash"].iloc[0] != f2["dataset_hash"].iloc[0]
+
+
+def test_without_an_ontology_semantic_arms_are_skipped_explicitly_and_the_rest_ignores_names():
+    X, y = arrays(180, 6, 3, seed=5)
+    a = run_arrays("identity_a", X, y, [f"m{i}" for i in range(6)], None)
+    b = run_arrays("zz_unrelated", X, y, [f"coluna_ñ_{i} (°C)" for i in range(6)], None)
+    for out in (a, b):
+        assert {s["arm"] for s in out.skipped} == {"reloaded_owl_full", "reloaded_owl_shuffled"}
+        assert all("semantic_available=false" in s["reason"] for s in out.skipped)
+        assert set(out.frame()["arm"]) == set(ARMS_AF) - {"reloaded_owl_full", "reloaded_owl_shuffled"}
+    assert not eq.compare_frames(comparable(a.frame()), comparable(b.frame()))
+    assert np.array_equal(a.predictions.filter(like="pred__").to_numpy(), b.predictions.filter(like="pred__").to_numpy())
 
 
 # ==================================================================================================== C. dataset desconhecido
