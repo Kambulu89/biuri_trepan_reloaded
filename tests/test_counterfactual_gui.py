@@ -460,6 +460,9 @@ def test_changing_dataset_or_retraining_invalidates_old_counterfactual_results(q
 
 def test_result_finishing_after_dataset_or_model_changed_is_discarded(qapp, monkeypatch):
     from gui.biuri_app_complete import BiuriApp
+    from PyQt6.QtWidgets import QMessageBox
+    infos = []
+    monkeypatch.setattr(QMessageBox, 'information', lambda *a, **k: infos.append(a[2]))
     w = BiuriApp()
     monkeypatch.setattr(w, '_visualize_cf_tree', lambda r: (_ for _ in ()).throw(AssertionError("não deve abrir")))
 
@@ -468,7 +471,7 @@ def test_result_finishing_after_dataset_or_model_changed_is_discarded(qapp, monk
             pass
     w._invalidate_counterfactual_results("treino")
     w._on_cf_finished({'counterfactuals': {'result_type': 'counterfactual_tree'}}, _Dlg(), CounterfactualWorker.STAGE_GENERATE_TREE, 0)
-    assert w.cf_tree_result is None
+    assert w.cf_tree_result is None and infos and "descartado" in infos[0]
     w.close()
 
 
