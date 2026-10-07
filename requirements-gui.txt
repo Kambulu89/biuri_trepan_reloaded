@@ -1,3 +1,6 @@
 -r requirements-core.txt
-PyQt6==6.4.2
-PyQt6-Qt6==6.4.3
+# PyQt6 6.4.x não suporta Python 3.12 (a CI Windows 3.12 terminou com «access violation» ao criar um FigureCanvasQTAgg).
+# 3.11: pins validados; 3.12: PyQt6 >= 6.6 (primeira série com suporte a 3.12), como em pyproject.toml (extra «gui»).
+PyQt6==6.4.2; python_version < "3.12"
+PyQt6-Qt6==6.4.3; python_version < "3.12"
+PyQt6>=6.6,<6.9; python_version >= "3.12"
