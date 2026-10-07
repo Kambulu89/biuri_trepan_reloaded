@@ -59,15 +59,17 @@ class FitCheckpoint:
         return hashlib.sha256(("|".join(map(str, parts)) + "|" + self.salt).encode()).hexdigest()
 
     def get(self, key: str) -> Optional[Any]:
+        if self.path is None:              # sem ficheiro de checkpoint o mecanismo é inerte (não funciona como memo escondida)
+            return None
         row = self.rows.get(key)
         if row is not None:
             self.resumed += 1
         return row
 
     def put(self, key: str, row: Any) -> None:
-        self.rows[key] = row
         if self.path is None:
             return
+        self.rows[key] = row
         with open(self.path, "ab") as fh:
             pickle.dump((key, row), fh, protocol=pickle.HIGHEST_PROTOCOL)
             fh.flush()
