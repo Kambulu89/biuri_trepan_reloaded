@@ -11,3 +11,6 @@ dist/
 # Saídas com timestamp geradas pela execução dos testes/pipelines (results/<dir>/<nome>_AAAAMMDD_HHMMSS.*)
 results/*/*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9].csv
 results/*/*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9][0-9][0-9][0-9][0-9].json
+
+# Cache de modelos treinados (gerada pela GUI/treino; nunca versionar)
+results/model_cache/
