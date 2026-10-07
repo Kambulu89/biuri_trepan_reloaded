@@ -19,7 +19,16 @@ def stable_hash(obj: Any) -> str:
     return hashlib.sha256(json.dumps(obj, sort_keys=True, default=str).encode("utf-8")).hexdigest()
 
 
+def hash_dataset_content(X, y) -> str:
+    """Identidade CIENTÍFICA dos dados: só valores de X e de y. Nunca o nome do dataset, ficheiro, caminho, ``dataset_id`` nem nomes de features."""
+    h = hashlib.sha256()
+    h.update(np.ascontiguousarray(np.asarray(X, dtype=float)).tobytes())
+    h.update(np.ascontiguousarray(np.asarray(y).astype(str)).tobytes())
+    return h.hexdigest()
+
+
 def hash_dataset(X, y, feature_names=None) -> str:
+    """Identidade de ARTEFACTO/cache: conteúdo + nomes das features (rastreabilidade). Não seleciona comportamento algorítmico."""
     h = hashlib.sha256()
     h.update(np.ascontiguousarray(np.asarray(X, dtype=float)).tobytes())
     h.update(np.ascontiguousarray(np.asarray(y).astype(str)).tobytes())
