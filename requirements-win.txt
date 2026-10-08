@@ -1,3 +1,5 @@
 # Compatibilidade: ambiente Windows x64 alvo do BIURI / TREPAN Reloaded.
-# Python suportado por este pacote: 3.11.x
+# Python recomendado: 3.11.x (pins validados). 3.12 também é testado na CI (PyQt6>=6.6 via requirements-gui.txt).
+# Reasoner OWL (HermiT) requer Java 17 no PATH ou JAVA_HOME (ver docs/REASONER_WINDOWS_V9_1.md).
 -r requirements-gui.txt
+-r requirements-owl.txt            # owlready2: sem isto as ontologias OWL não carregam (a GUI continua a funcionar só com ARFF)
