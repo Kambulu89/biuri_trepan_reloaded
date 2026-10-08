@@ -274,7 +274,7 @@ def build_counterfactual_tree_from_session(
     cancel_fn=None,
 ) -> Dict[str, Any]:
     """Constrói uma árvore CF local a partir do último resultado da sessão."""
-    from counterfactuals.cf_tree import build_counterfactual_tree
+    from counterfactuals.local_surrogate_tree import CounterfactualLocalTreeExplainer, collect_oracle_predictions
 
     options = dict(options or {})
     if not generation_result or generation_result.get('result_type') in {
@@ -298,18 +298,23 @@ def build_counterfactual_tree_from_session(
         raise InterruptedError('Cancelado')
     if progress_fn:
         progress_fn('cf_tree', 20, 'Construindo vizinhança e árvore explicativa CF...')
-    result = build_counterfactual_tree(
+    explainer = CounterfactualLocalTreeExplainer(
+        max_depth=int(options.get('cf_tree_max_depth', 5)),
+        neighborhood_size=int(options.get('cf_tree_neighborhood_size', 300)),
+        seed=int(options.get('seed', 42)),
+    )
+    n_rows = len(context['X'])
+    result = explainer.explain(
         context['oracle'],
         context['X'],
         generation_result,
         context['feature_names'],
         original_tree=context['global_tree'],
         class_labels=session.get('class_labels'),
-        max_depth=int(options.get('cf_tree_max_depth', 5)),
-        neighborhood_size=int(options.get('cf_tree_neighborhood_size', 300)),
-        seed=int(options.get('seed', 42)),
-        model_name=context['target_model'],
+        oracle_name=context['target_model'],
         dataset_name=current_dataset,
+        concordance_provider=lambda idx: collect_oracle_predictions(
+            session, options, idx, n_rows, _resolve_interactive_context),
     )
     result['oracle_label'] = context['oracle_label']
     result['ontology_active'] = bool(context['ontology_active'])

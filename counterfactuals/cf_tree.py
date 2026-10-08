@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import uuid
 from typing import Any, Dict, Mapping, Optional, Sequence
 
 import numpy as np
@@ -51,7 +52,7 @@ def _candidate_plausibility(item: Mapping[str, Any]) -> float:
     return float(np.mean(values)) if values else 1.0
 
 
-def build_counterfactual_tree(
+def build_local_surrogate_tree(
     oracle: Any,
     X_reference: Any,
     generation_result: Mapping[str, Any],
@@ -65,7 +66,9 @@ def build_counterfactual_tree(
     model_name: str = "modelo",
     dataset_name: str = "dataset_carregado",
 ) -> Dict[str, Any]:
-    """Constrói a *árvore local de contrafactuais* (CF-LocalTree).
+    """Motor do ``CounterfactualLocalTreeExplainer`` (Local Surrogate m-of-n).
+
+    Constrói a *árvore local de contrafactuais* (CF-LocalTree).
 
     Finalidade: resumir, em regras legíveis, a fronteira de decisão do modelo
     explicado na vizinhança da instância activa, usando o factual e os CFs
@@ -109,7 +112,12 @@ def build_counterfactual_tree(
     distance = np.linalg.norm((X - original) / scale, axis=1)
     count = min(len(X), max(20, int(neighborhood_size)))
     neighbors = X[np.argsort(distance)[:count]]
+    neighbor_index = np.argsort(distance)[:count]
     neighbor_labels = _predict(oracle, neighbors)
+    # Identidade do CONJUNTO LOCAL (independente do oráculo): vizinhança real + factual. Só valores numéricos, nunca nomes.
+    local_dataset_hash = hashlib.sha256(
+        np.ascontiguousarray(neighbors).tobytes() + np.ascontiguousarray(original).tobytes()
+    ).hexdigest()
 
     evaluation_mode = "holdout"
     unique, class_counts = np.unique(neighbor_labels, return_counts=True)
@@ -131,9 +139,9 @@ def build_counterfactual_tree(
     augmented_X = np.vstack([X_train, original.reshape(1, -1), cf_vectors])
     augmented_y = np.concatenate([y_train, np.asarray([factual_label]), cf_labels])
     model_fingerprint = _model_fingerprint(oracle, X, names)
-    effective_seed = int(
-        (int(model_fingerprint[:8], 16) ^ int(seed)) % (2**31 - 1)
-    )
+    # Semente do explicador: depende só da semente do utilizador e do conjunto local, NUNCA do oráculo. Assim todos os oráculos são
+    # comparados com o MESMO explicador (a aleatoriedade das queries não introduz diferenças entre modelos que rotulam igual).
+    effective_seed = int((int(local_dataset_hash[:8], 16) ^ int(seed)) % (2**31 - 1))
     # Produção: a árvore local pertence à mesma família TREPAN histórica do
     # restante sistema. Contrafactuais válidos são sementes adicionais, mas
     # os rótulos continuam a ser consultados no próprio oráculo.
@@ -188,19 +196,53 @@ def build_counterfactual_tree(
         "rule": rule.text(),
     } for rule in rules]
     narrative = (
-        f"A árvore explicativa contrafactual foi construída para {model_name} com "
+        f"Árvore CF local (Local Surrogate m-of-n) construída com o oráculo {model_name}: "
         f"{len(neighbors)} vizinhos reais e {len(cf_vectors)} contrafactuais válidos. "
+        f"Não é a árvore interna de {model_name}: é um substituto local treinado com os rótulos desse oráculo. "
         f"A fidelidade local ao oráculo é {metrics['fidelity_to_oracle']:.1%}; "
         f"a avaliação usada foi {evaluation_mode}."
     )
-    tree_signature = hashlib.sha256(
-        json.dumps(tree.export_rules(), sort_keys=True, default=str).encode("utf-8")
-        + model_fingerprint.encode("ascii")
-    ).hexdigest()
+    rules_payload = json.dumps(tree.export_rules(), sort_keys=True, default=str).encode("utf-8")
+    tree_artifact_signature = hashlib.sha256(rules_payload + model_fingerprint.encode("ascii")).hexdigest()
+    structure_signature = hashlib.sha256(rules_payload).hexdigest()           # só regras: igual se e só se as regras locais forem iguais
+    build_token = uuid.uuid4().hex                                           # identidade do objeto: cada construção cria uma árvore nova
+    try:
+        tree._cf_build_token = build_token
+    except AttributeError:                                                   # pragma: no cover
+        pass
+    provenance = {
+        "explainer": "CounterfactualLocalTreeExplainer",
+        "builder": "Local Surrogate m-of-n",
+        "oracle_id": model_fingerprint,
+        "oracle_name": model_name,
+        "oracle_object_id": id(oracle),
+        "instance_id": {"index": generation_result.get("instance_index"),
+                        "hash": hashlib.sha256(np.ascontiguousarray(original).tobytes()).hexdigest()},
+        "local_dataset_hash": local_dataset_hash,
+        "augmented_dataset_hash": hashlib.sha256(np.ascontiguousarray(augmented_X).tobytes()).hexdigest(),
+        "prediction_hash": hashlib.sha256(
+            np.asarray(neighbor_labels).astype(str).tobytes()
+            + np.asarray([factual_label]).astype(str).tobytes() + np.asarray(cf_labels).astype(str).tobytes()
+        ).hexdigest(),
+        "tree_signature": structure_signature,
+        "tree_artifact_signature": tree_artifact_signature,
+        "tree_object_id": id(tree),
+        "tree_build_token": build_token,
+        "effective_seed": effective_seed,
+        "n_local_samples": int(len(neighbors)),
+        "n_training_samples": int(len(X_train)),
+        "n_counterfactuals": int(len(cf_vectors)),
+        "neighbor_index": [int(i) for i in neighbor_index],
+    }
+    tree_signature = tree_artifact_signature
     return {
         "result_type": "counterfactual_tree",
         "tree_kind": "CF-LocalTree",
         "tree_kind_note": "Árvore local de contrafactuais; distinta de TREPAN Original/Reloaded globais.",
+        "explainer": "CounterfactualLocalTreeExplainer",
+        "builder": "Local Surrogate m-of-n",
+        "local_provenance": provenance,
+        "tree_signature": structure_signature,
         "scope": "loaded_dataset_only",
         "dataset": dataset_name,
         "target_model": model_name,
@@ -226,4 +268,6 @@ def build_counterfactual_tree(
     }
 
 
-__all__ = ["build_counterfactual_tree"]
+build_counterfactual_tree = build_local_surrogate_tree      # nome histórico (compatibilidade)
+
+__all__ = ["build_local_surrogate_tree", "build_counterfactual_tree"]

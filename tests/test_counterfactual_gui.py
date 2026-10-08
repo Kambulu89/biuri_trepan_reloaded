@@ -510,7 +510,7 @@ def test_real_cf_tree_is_a_trepan_tree_and_opens_in_the_visualization(qapp):
     w.cf_tree_result = tree_result
     w._visualize_cf_tree(tree_result)
     assert w.content_tabs.currentWidget() is w.visualization_tab
-    assert w.tree_widget.tree_options[0][0] == "Árvore contrafactual"
+    assert w.tree_widget.tree_options[0][0].startswith("Árvore CF local — Oráculo: ")
     panel = CounterfactualPanel()
     panel.display_result(tree_result)
     assert panel._visualization_ready

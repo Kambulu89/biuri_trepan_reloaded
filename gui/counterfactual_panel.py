@@ -1047,18 +1047,21 @@ class CounterfactualPanel(QWidget):
     def _display_tree(self, result: Mapping[str, Any]) -> None:
         self._set_candidate_mode("tree")
         self._set_result_titles(
-            "Síntese da árvore contrafactual",
-            "Qualidade da árvore CF",
-            "Regras da árvore explicativa",
+            "Síntese da árvore CF local",
+            "Qualidade da árvore CF local",
+            "Regras da árvore CF local",
         )
         self._set_card_labels({
             "validity": "Fidelidade oráculo", "proximity": "Profundidade",
             "sparsity": "N.º de folhas", "robustness": "Fidelidade CF",
             "actionability": "Fidelidade factual", "plausibility": "Fidelidade árvore",
         })
+        from counterfactuals.local_surrogate_tree import concordance_lines, summary_lines, tree_title
+        oracle = str(result.get("oracle_name") or result.get("target_model") or "?")
+        info = "\n".join(summary_lines(result)) + "\n\n" + str(result.get("narrative") or "Árvore CF concluída.")
         self._set_summary_content(
-            "Árvore explicativa contrafactual",
-            str(result.get("narrative") or "Árvore CF concluída."),
+            result.get("tree_title") or tree_title(oracle), info,
+            pre_text="\n".join(concordance_lines(result.get("local_concordance"))),
         )
         metrics = result.get("aggregate_metrics") or {}
         self._fill_metrics(metrics)
@@ -1087,14 +1090,16 @@ class CounterfactualPanel(QWidget):
         self.metrics_box.setTitle(metrics)
         self.candidates_box.setTitle(candidates)
 
-    def _set_summary_content(self, heading: str, text: str) -> None:
+    def _set_summary_content(self, heading: str, text: str, pre_text: str = "") -> None:
         safe_heading = escape(str(heading))
         safe_text = escape(str(text)).replace("\n", "<br>")
+        pre = (f"<pre style='font-family: Consolas, monospace; font-size: 11px; margin-top: 8px;'>"
+               f"{escape(str(pre_text))}</pre>") if pre_text else ""
         self.summary_text.setHtml(
             f"<div style='font-family: Segoe UI; color: {theme.TEXT};'>"
             f"<div style='font-size: 15px; font-weight: 700; color: {theme.BRAND_DARK}; "
             f"margin-bottom: 8px;'>{safe_heading}</div>"
-            f"<div style='font-size: 12px; line-height: 1.45;'>{safe_text}</div>"
+            f"<div style='font-size: 12px; line-height: 1.45;'>{safe_text}</div>{pre}"
             "</div>"
         )
 
