@@ -151,3 +151,15 @@ def test_no_ontology_mode_still_operational(qapp):
         assert w._require_current_models("x") is True
     finally:
         w.close()
+
+
+def test_benchmark_finished_discards_result_if_ontology_changed_meanwhile(app_with_models):
+    w, warnings = app_with_models
+    w._training_started_for_current_state()
+    w._ontology_changed("durante o benchmark")
+
+    class Outcome:
+        def tree_view(self):
+            raise AssertionError("resultado de um estado ontológico antigo não pode ser instalado")
+    w._on_benchmark_finished({"outcome": Outcome()}, _Dlg())
+    assert warnings and w.benchmark_outcome is None and w.trepan_reloaded_tree is None

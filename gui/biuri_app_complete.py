@@ -1609,6 +1609,11 @@ que la red se vuelve interpretable.
     def _training_started_for_current_state(self):
         self._training_ontology_state_id = self._ontology_state_id
 
+    def _training_state_mismatch(self):
+        """True se o treino/benchmark em curso arrancou sob outro estado ontológico (ontologia mudou entretanto)."""
+        started = getattr(self, "_training_ontology_state_id", None)
+        return started is not None and started != self._ontology_state_id
+
     def _training_matches_current_state(self):
         """Só um treino iniciado sob o estado ontológico ACTUAL e que reconstruiu o modelo pode desbloquear."""
         return (getattr(self, "_training_ontology_state_id", None) == self._ontology_state_id
@@ -3110,7 +3115,7 @@ Asegúrese de que:
         if result.get('result_text'):
             self.show_results(result['result_text'])
         if result.get('success') and (
-            getattr(self, "_training_ontology_state_id", None) != self._ontology_state_id
+            self._training_state_mismatch()
             or (getattr(self, "_stale_models_reason", None) and self.mlp_model is None)
         ):
             # a ontologia mudou durante o treino, ou o treino não reconstruiu o modelo: não é válido para o estado actual
@@ -3999,7 +4004,7 @@ Asegúrese de que:
         self._training_worker = None
         outcome = payload["outcome"]
         self._invalidate_counterfactual_results("benchmark")
-        if getattr(self, "_training_ontology_state_id", None) != self._ontology_state_id:
+        if self._training_state_mismatch():
             self._discard_trained_artifacts()
             QMessageBox.warning(self, "Modelos desatualizados",
                                 "A ontologia mudou durante o benchmark; o resultado foi descartado. Execute novamente.")
