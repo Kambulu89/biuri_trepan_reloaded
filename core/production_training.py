@@ -69,12 +69,11 @@ def _drop_missing_target(df, target, missing_tokens):
 
 
 def _load_ontology(path):
-    from core.owl_runtime import OwlRuntimeError, import_owlready2
+    from core.owl_runtime import OwlRuntimeError, load_ontology_isolated
     try:
-        get_ontology = import_owlready2().get_ontology
+        return load_ontology_isolated(path)              # mundo OWL próprio: nunca partilha estado com outras ontologias
     except OwlRuntimeError as exc:
         raise OntologyQualityError("OWL requer um owlready2 utilizável. " + exc.user_message) from exc
-    return get_ontology(str(Path(path).resolve())).load()
 
 
 def _semantic_inputs(pre: DataPreprocessor, quality: Dict[str,Any], graph: OntologySemanticGraph):

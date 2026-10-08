@@ -12,6 +12,8 @@ import re
 import numpy as np
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Set, Tuple
 
+from core.owl_annotations import annotation_values
+
 logger = logging.getLogger(__name__)
 
 
@@ -197,8 +199,7 @@ class OntologySemanticGraph:
             graph.nodes.add(n); seen[n] = entity
             graph.entity_kinds[n] = entity_kind_by_id.get(id(entity), "unknown")
             labels = []
-            for attr in ("label", "prefLabel", "altLabel"):
-                labels.extend(str(v) for v in _iter_attr(entity, attr))
+            labels.extend(annotation_values(entity, ("label", "prefLabel", "altLabel")))
             graph.labels[n] = list(dict.fromkeys(labels))
             if _has_integer_range(entity):
                 graph.integer_entities.add(n)

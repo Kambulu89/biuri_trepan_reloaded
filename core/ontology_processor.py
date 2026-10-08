@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
-from core.ontology_quality import OntologyQualityGate, entity_kind, ontology_entities
+from core.ontology_quality import OntologyQualityGate, annotation_values, entity_kind, ontology_entities
 from core.ontology_semantic_graph import _explicit_entity_bounds
 
 
@@ -449,46 +449,8 @@ class OntologyProcessor:
 
     @staticmethod
     def _annotation_values(entity: Any, names: Sequence[str]) -> List[str]:
-        values: List[str] = []
-        normalized_targets = {
-            re.sub(r"[^a-z0-9]+", "", str(name).lower()) for name in names
-        }
-        for attr in names:
-            try:
-                raw = getattr(entity, attr, None)
-            except Exception:
-                raw = None
-            if raw is None:
-                continue
-            if not isinstance(raw, (list, tuple, set)):
-                raw = [raw]
-            for item in raw:
-                value = getattr(item, "name", item)
-                if value is not None and str(value).strip():
-                    values.append(str(value).strip())
-        # Owlready2 pode não expor uma AnnotationProperty importada como atributo
-        # Python em todas as versões. Neste caso, consultar as propriedades RDF
-        # directamente mantém o processor independente da versão da biblioteca.
-        if not values:
-            try:
-                properties = list(entity.get_properties())
-            except Exception:
-                properties = []
-            for prop in properties:
-                prop_name = re.sub(
-                    r"[^a-z0-9]+", "", str(getattr(prop, "name", "")).lower()
-                )
-                if prop_name not in normalized_targets:
-                    continue
-                try:
-                    raw_values = list(prop[entity])
-                except Exception:
-                    raw_values = []
-                for item in raw_values:
-                    value = getattr(item, "name", item)
-                    if value is not None and str(value).strip():
-                        values.append(str(value).strip())
-        return values
+        """Valores de anotação por propriedade/IRI (ver :func:`core.ontology_quality.annotation_values`)."""
+        return annotation_values(entity, names)
 
     @staticmethod
     def _safe_token(value: str) -> str:

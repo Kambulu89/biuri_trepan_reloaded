@@ -376,8 +376,9 @@ class TrepanReloadedExtractor:
         path = Path(file_path).resolve()
         last_error = None
 
+        from core.owl_runtime import load_ontology_isolated
         try:
-            return get_ontology(str(path)).load()
+            return load_ontology_isolated(path)            # mundo OWL próprio por carga (nada de default_world partilhado)
         except (OwlReadyOntologyParsingError, Exception) as exc:
             last_error = exc
 
@@ -405,13 +406,11 @@ class TrepanReloadedExtractor:
                 f"Não foi possível determinar o IRI da ontologia Turtle: {path}"
             )
 
-        onto = get_ontology(ns_iri)
-        with open(path, 'rb') as fileobj:
-            onto.load(fileobj=fileobj, format='turtle', reload=True)
+        onto = load_ontology_isolated(path, iri=ns_iri, fileobj_format='turtle')
         if not list(onto.classes()) and not list(onto.data_properties()):
             tbox_candidate = path.with_name(f"{path.stem}_TBox{path.suffix}")
             if tbox_candidate.exists() and tbox_candidate != path:
-                return get_ontology(str(tbox_candidate.resolve())).load()
+                return load_ontology_isolated(tbox_candidate)
             raise OwlReadyOntologyParsingError(
                 f"Turtle carregado sem entidades reconhecíveis: {path}. "
                 "Use RDF/XML, exporte um TBox (ex.: *_TBox.owl) ou verifique o namespace."

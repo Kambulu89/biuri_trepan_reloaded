@@ -82,8 +82,8 @@ def _metrics(
 
 
 def _load_and_validate_ontology(ontology_path, feature_names, reasoner_engine):
-    from owlready2 import get_ontology
-    ontology = get_ontology(str(Path(ontology_path).resolve())).load()
+    from core.owl_runtime import load_ontology_isolated
+    ontology = load_ontology_isolated(ontology_path)
     reasoner = run_owl_reasoner(
         ontology, engine=reasoner_engine, infer_property_values=True, debug=0
     )
