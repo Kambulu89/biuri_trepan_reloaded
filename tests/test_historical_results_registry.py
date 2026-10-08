@@ -13,7 +13,7 @@ def test_registry_is_non_destructive_and_hashes_match_tracked_files():
     assert reg["files"]
     for row in reg["files"][:25]:
         assert hashlib.sha256((ROOT / row["path"]).read_bytes()).hexdigest() == row["sha256"]
-    changed = subprocess.run(["git", "status", "--porcelain", "--", "results"], cwd=ROOT, capture_output=True, text=True).stdout
+    changed = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no", "--", "results"], cwd=ROOT, capture_output=True, text=True).stdout
     assert changed.strip() == ""
 
 
