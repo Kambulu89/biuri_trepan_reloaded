@@ -1,0 +1,290 @@
+[
+ {
+  "ontology": "ab99",
+  "seed": 7,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.9230769230769231,
+  "predictions_differ": 8,
+  "fixed": 4,
+  "broken": 4,
+  "changed_nodes": [
+   {
+    "node_id": 1,
+    "error_focused_intervention_reason": "semantic_candidate_improves_local_and_real_training_fidelity",
+    "data_only_information_gain": 0.09808371243165978,
+    "semantic_information_gain": 0.09244235594668887,
+    "semantic_bonus": 0.6931407074477716,
+    "data_only_selection_score": 0.09808371243165978,
+    "semantic_selection_score": 0.7855830633944605,
+    "data_only_local_fidelity": 0.935,
+    "semantic_local_fidelity": 0.9475,
+    "local_fidelity_gain": 0.012499999999999956,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.01736111111111105,
+    "decision_sample_size": 400,
+    "data_only_test": "2-of-3(onto_area_worst_minus_mean > 142.621; texture_worst > 25.869; perimeter_worst > 104.233)",
+    "semantic_test": "1-of-2(perimeter_worst <= 98.4463; texture_mean <= 20.9963)"
+   }
+  ]
+ },
+ {
+  "ontology": "ab99",
+  "seed": 42,
+  "n_test": 143,
+  "fid_core": 0.9300699300699301,
+  "fid_full": 0.8881118881118881,
+  "predictions_differ": 10,
+  "fixed": 2,
+  "broken": 8,
+  "changed_nodes": [
+   {
+    "node_id": 1,
+    "error_focused_intervention_reason": "semantic_candidate_improves_local_and_real_training_fidelity",
+    "data_only_information_gain": 0.1413607896570821,
+    "semantic_information_gain": 0.09506452270066848,
+    "semantic_bonus": 0.8188244767882714,
+    "data_only_selection_score": 0.1413607896570821,
+    "semantic_selection_score": 0.9138889994889399,
+    "data_only_local_fidelity": 0.9735849056603774,
+    "semantic_local_fidelity": 0.9773584905660377,
+    "local_fidelity_gain": 0.0037735849056603765,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.0037735849056603765,
+    "decision_sample_size": 265,
+    "data_only_test": "2-of-3(onto_texture_worst_minus_mean > 9.735; area_mean > 696.25; perimeter_worst > 91.695)",
+    "semantic_test": "3-of-3(onto_texture_worst_minus_mean > 9.735; perimeter_worst > 91.695; onto_area_worst_minus_mean > 98.35)"
+   }
+  ]
+ },
+ {
+  "ontology": "ab99",
+  "seed": 123,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.951048951048951,
+  "predictions_differ": 10,
+  "fixed": 7,
+  "broken": 3,
+  "changed_nodes": [
+   {
+    "node_id": 2,
+    "error_focused_intervention_reason": "semantic_candidate_improves_local_and_real_training_fidelity",
+    "data_only_information_gain": 0.23724697769262115,
+    "semantic_information_gain": 0.2733003120379241,
+    "semantic_bonus": 1.0672044179496574,
+    "data_only_selection_score": 0.23724697769262115,
+    "semantic_selection_score": 1.3405047299875814,
+    "data_only_local_fidelity": 0.965,
+    "semantic_local_fidelity": 0.985,
+    "local_fidelity_gain": 0.020000000000000018,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.024844720496894346,
+    "decision_sample_size": 200,
+    "data_only_test": "2-of-4(onto_area_worst_minus_mean > 278.95; onto_perimeter_worst_minus_mean > 20.065; onto_concave_points_relative_worst_delta <= 2.04203; texture_worst > 18.445)",
+    "semantic_test": "3-of-4(onto_concave_points_relative_worst_delta > 2.04203; onto_perimeter_worst_minus_mean <= 20.065; texture_mean <= 14.9323; onto_area_worst_minus_mean <= 221.718)"
+   },
+   {
+    "node_id": 1,
+    "error_focused_intervention_reason": "semantic_coherence_gain_within_fidelity_tolerance",
+    "data_only_information_gain": 0.14282581229618518,
+    "semantic_information_gain": 0.14282581229618518,
+    "semantic_bonus": 1.0084013299214107,
+    "data_only_selection_score": 0.14282581229618518,
+    "semantic_selection_score": 1.151227142217596,
+    "data_only_local_fidelity": 0.9886792452830189,
+    "semantic_local_fidelity": 0.9886792452830189,
+    "local_fidelity_gain": 0.0,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.0,
+    "decision_sample_size": 265,
+    "data_only_test": "3-of-3(onto_hasNuclearConcavePointsStatistic_aggregate > 0.131655; texture_mean > 21.315; onto_hasNuclearConcavityStatistic_aggregate > -0.0186215)",
+    "semantic_test": "4-of-4(onto_hasNuclearConcavePointsStatistic_aggregate > 0.131655; texture_mean > 21.315; onto_hasNuclearConcavityStatistic_aggregate > -0.0186215; onto_hasNuclearTextureStatistic_aggregate > -0.0353416)"
+   }
+  ]
+ },
+ {
+  "ontology": "ab99",
+  "seed": 2024,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.951048951048951,
+  "predictions_differ": 6,
+  "fixed": 5,
+  "broken": 1,
+  "changed_nodes": [
+   {
+    "node_id": 2,
+    "error_focused_intervention_reason": "semantic_candidate_improves_local_and_real_training_fidelity",
+    "data_only_information_gain": 0.210042236881959,
+    "semantic_information_gain": 0.21790344041100532,
+    "semantic_bonus": 1.117427425967598,
+    "data_only_selection_score": 0.210042236881959,
+    "semantic_selection_score": 1.3353308663786034,
+    "data_only_local_fidelity": 0.97,
+    "semantic_local_fidelity": 0.99,
+    "local_fidelity_gain": 0.020000000000000018,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.032467532467532534,
+    "decision_sample_size": 200,
+    "data_only_test": "2-of-4(onto_hasNuclearPerimeterStatistic_aggregate > 0.193121; onto_perimeter_worst_minus_mean > 19.777; onto_hasNuclearTextureStatistic_aggregate > -0.960925; area_worst > 1214)",
+    "semantic_test": "2-of-4(onto_hasNuclearTextureStatistic_aggregate > -0.575645; onto_hasNuclearCompactnessStatistic_aggregate > -0.348496; onto_concave_points_relative_worst_delta <= 2.34507; onto_perimeter_worst_minus_mean > 19.777)"
+   }
+  ]
+ },
+ {
+  "ontology": "ab99",
+  "seed": 11,
+  "n_test": 143,
+  "fid_core": 0.951048951048951,
+  "fid_full": 0.9440559440559441,
+  "predictions_differ": 5,
+  "fixed": 2,
+  "broken": 3,
+  "changed_nodes": [
+   {
+    "node_id": 0,
+    "error_focused_intervention_reason": "semantic_coherence_gain_within_fidelity_tolerance",
+    "data_only_information_gain": 0.6430100907615052,
+    "semantic_information_gain": 0.5827805575662282,
+    "semantic_bonus": 0.9153479588969697,
+    "data_only_selection_score": 0.6430100907615052,
+    "semantic_selection_score": 1.498128516463198,
+    "data_only_local_fidelity": 0.9178403755868545,
+    "semantic_local_fidelity": 0.9107981220657277,
+    "local_fidelity_gain": -0.007042253521126751,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": -0.007042253521126751,
+    "decision_sample_size": 426,
+    "data_only_test": "1-of-3(perimeter_worst > 101.95; onto_perimeter_worst_minus_mean > 16.145; onto_area_worst_minus_mean > 198)",
+    "semantic_test": "1-of-2(perimeter_mean > 98.825; perimeter_worst > 101.95)"
+   },
+   {
+    "node_id": 3,
+    "error_focused_intervention_reason": "semantic_coherence_gain_within_fidelity_tolerance",
+    "data_only_information_gain": 0.07342437295180615,
+    "semantic_information_gain": 0.09625010251826904,
+    "semantic_bonus": 0.6417521546419128,
+    "data_only_selection_score": 0.07342437295180615,
+    "semantic_selection_score": 0.7380022571601819,
+    "data_only_local_fidelity": 0.68,
+    "semantic_local_fidelity": 0.6925,
+    "local_fidelity_gain": 0.012499999999999956,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.0,
+    "decision_sample_size": 400,
+    "data_only_test": "1-of-1(texture_worst > 27.3568)",
+    "semantic_test": "1-of-2(texture_worst > 27.3568; perimeter_worst > 124.148)"
+   }
+  ]
+ },
+ {
+  "ontology": "551f",
+  "seed": 7,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.916083916083916,
+  "predictions_differ": 9,
+  "fixed": 4,
+  "broken": 5,
+  "changed_nodes": []
+ },
+ {
+  "ontology": "551f",
+  "seed": 42,
+  "n_test": 143,
+  "fid_core": 0.9300699300699301,
+  "fid_full": 0.8881118881118881,
+  "predictions_differ": 10,
+  "fixed": 2,
+  "broken": 8,
+  "changed_nodes": [
+   {
+    "node_id": 1,
+    "error_focused_intervention_reason": "semantic_candidate_improves_local_and_real_training_fidelity",
+    "data_only_information_gain": 0.1413607896570821,
+    "semantic_information_gain": 0.09506452270066848,
+    "semantic_bonus": 0.8192462344816853,
+    "data_only_selection_score": 0.1413607896570821,
+    "semantic_selection_score": 0.9143107571823538,
+    "data_only_local_fidelity": 0.9735849056603774,
+    "semantic_local_fidelity": 0.9773584905660377,
+    "local_fidelity_gain": 0.0037735849056603765,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": 0.0037735849056603765,
+    "decision_sample_size": 265,
+    "data_only_test": "2-of-3(onto_texture_worst_minus_mean > 9.735; area_mean > 696.25; perimeter_worst > 91.695)",
+    "semantic_test": "3-of-3(onto_texture_worst_minus_mean > 9.735; perimeter_worst > 91.695; onto_area_worst_minus_mean > 98.35)"
+   }
+  ]
+ },
+ {
+  "ontology": "551f",
+  "seed": 123,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.951048951048951,
+  "predictions_differ": 10,
+  "fixed": 7,
+  "broken": 3,
+  "changed_nodes": []
+ },
+ {
+  "ontology": "551f",
+  "seed": 2024,
+  "n_test": 143,
+  "fid_core": 0.9230769230769231,
+  "fid_full": 0.9300699300699301,
+  "predictions_differ": 3,
+  "fixed": 2,
+  "broken": 1,
+  "changed_nodes": [
+   {
+    "node_id": 0,
+    "error_focused_intervention_reason": "semantic_coherence_gain_within_fidelity_tolerance",
+    "data_only_information_gain": 0.6312075673986657,
+    "semantic_information_gain": 0.6131437177681677,
+    "semantic_bonus": 0.8942942768875305,
+    "data_only_selection_score": 0.6312075673986657,
+    "semantic_selection_score": 1.5074379946556982,
+    "data_only_local_fidelity": 0.9413145539906104,
+    "semantic_local_fidelity": 0.931924882629108,
+    "local_fidelity_gain": -0.009389671361502372,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": -0.009389671361502372,
+    "decision_sample_size": 426,
+    "data_only_test": "2-of-4(onto_area_worst_minus_mean > 197.05; perimeter_worst > 115.8; area_worst > 874.85; radius_worst <= 17.315)",
+    "semantic_test": "2-of-3(area_se <= 35.04; radius_worst <= 16.805; perimeter_worst <= 114.45)"
+   }
+  ]
+ },
+ {
+  "ontology": "551f",
+  "seed": 11,
+  "n_test": 143,
+  "fid_core": 0.951048951048951,
+  "fid_full": 0.9440559440559441,
+  "predictions_differ": 5,
+  "fixed": 2,
+  "broken": 3,
+  "changed_nodes": [
+   {
+    "node_id": 0,
+    "error_focused_intervention_reason": "semantic_coherence_gain_within_fidelity_tolerance",
+    "data_only_information_gain": 0.6430100907615052,
+    "semantic_information_gain": 0.5827805575662282,
+    "semantic_bonus": 0.917776661526845,
+    "data_only_selection_score": 0.6430100907615052,
+    "semantic_selection_score": 1.5005572190930732,
+    "data_only_local_fidelity": 0.9178403755868545,
+    "semantic_local_fidelity": 0.9107981220657277,
+    "local_fidelity_gain": -0.007042253521126751,
+    "required_local_fidelity_gain": 0.002,
+    "real_fidelity_gain": -0.007042253521126751,
+    "decision_sample_size": 426,
+    "data_only_test": "1-of-3(perimeter_worst > 101.95; onto_perimeter_worst_minus_mean > 16.145; onto_area_worst_minus_mean > 198)",
+    "semantic_test": "1-of-2(perimeter_mean > 98.825; perimeter_worst > 101.95)"
+   }
+  ]
+ }
+]

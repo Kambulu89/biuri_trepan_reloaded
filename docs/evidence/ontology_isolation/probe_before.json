@@ -1,0 +1,70 @@
+{
+ "ABA": [
+  {
+   "step": "A",
+   "kinds": {
+    "hierarchical_aggregate": 11,
+    "relational": 50
+   },
+   "n_out": 91,
+   "values_sha": "f4b331c82015",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  },
+  {
+   "step": "B",
+   "kinds": {
+    "hierarchical_aggregate": 10,
+    "relational": 50
+   },
+   "n_out": 90,
+   "values_sha": "467afc53c6fb",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  },
+  {
+   "step": "A",
+   "kinds": {
+    "hierarchical_aggregate": 11
+   },
+   "n_out": 41,
+   "values_sha": "8fe5ddec6e62",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  }
+ ],
+ "BAB": [
+  {
+   "step": "B",
+   "kinds": {
+    "hierarchical_aggregate": 10,
+    "relational": 50
+   },
+   "n_out": 90,
+   "values_sha": "467afc53c6fb",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  },
+  {
+   "step": "A",
+   "kinds": {
+    "hierarchical_aggregate": 11
+   },
+   "n_out": 41,
+   "values_sha": "8fe5ddec6e62",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  },
+  {
+   "step": "B",
+   "kinds": {
+    "hierarchical_aggregate": 10,
+    "relational": 50
+   },
+   "n_out": 90,
+   "values_sha": "467afc53c6fb",
+   "world_id": 140509036877904,
+   "same_world_as_default": true
+  }
+ ]
+}

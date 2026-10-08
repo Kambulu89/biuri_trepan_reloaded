@@ -1,0 +1,1687 @@
+{
+ "schema": 1,
+ "purpose": "marcar (sem eliminar nem alterar) resultados históricos potencialmente afectados pela colisão de ontologias OWL",
+ "fix_reference": "docs/ONTOLOGY_ISOLATION_AUDIT.md",
+ "limitation": "o processo gerador de cada resultado não foi registado; classificação por conteúdo é conservadora. NOT_VERIFIED ≠ errado: significa não demonstrado.",
+ "counts": {
+  "unverified_single_ontology": 81,
+  "not_applicable": 152,
+  "potentially_contaminated_multi_ontology": 3
+ },
+ "files": [
+  {
+   "path": "EFSR_PRODUCTION_READINESS_V9_2.json",
+   "sha256": "b59d5538d6b785789ca847c2c31a1e7618e651a694a26e10ce057fbbe8920de5",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "PRODUCTION_READINESS_NO_CART_V9_2.json",
+   "sha256": "4ed99273ffd456caec755b4584853d49ff41fd284927f9a4e5ab56ca03dc0753",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "PRODUCTION_VALIDATION_SUMMARY_V9_2.json",
+   "sha256": "3b67eaf253e113e04518394137fb65ef55a4e9e97f80ad04d271cfc4dbcabdc4",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "TREE_VALIDATION_RESULTS.json",
+   "sha256": "1c422a2873d7ce60fb2969e7417410f923fa14f0d368275d26518bafae580f53",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_ADAPTIVE_SEMANTIC_CONFIRMATORY_HASH_CHECK.json",
+   "sha256": "70599bca5c8153f91ddeeea19f45cf304bd8f56db9b2f52c328085c496e24de0",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_ADAPTIVE_SEMANTIC_VALIDATION.json",
+   "sha256": "d0f753f5a8883875637ea09d4becb8b38ad93eb7c9a42ef7a18925457b734da6",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_EFSR_MECHANISM_VALIDATION.json",
+   "sha256": "dbeada1106f309526c8c3001cdd738388c7429142ff111d43b4fafce296bbc10",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_EFSR_VALIDATION_SUMMARY.json",
+   "sha256": "395008c8fc1e359c8540b615c5d5dd5b5f6e98d0f42bdf1e26ca75ba763d7702",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_NO_CART_VALIDATION.json",
+   "sha256": "ff37d1fa94abdda34a209d2ca5be6b03802329ebbbdc78e6694a2069c9b2d956",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_SCIENTIFIC_LOCK_VALIDATION.json",
+   "sha256": "663cc8501409a0a728fd3110a7712e78cf5b1a5d67a045cd7bc85e8db26c6096",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_SEMANTIC_REAL_GAIN_READINESS.json",
+   "sha256": "68abcacc83968bfd0f126dcd3b12248f9ed8a64fe9db51dc551a07a7e0a44255",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_SEMANTIC_REAL_GAIN_VALIDATION.json",
+   "sha256": "68a4a082f9b4a3c5fba5172ac1b009ea67b05944dc452b57ffaf845473cea73f",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "V92_VALIDATION_SUMMARY.json",
+   "sha256": "b9ce3d80a5a2ba0ebdb5e3892b3a1699cd4db7a90c47790de2bf2dc49d75b22b",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/clear_cfs.csv",
+   "sha256": "4ed775c9f1052564b3fa362939660ed9aa8c3dcdf72f12dfdb8d527f7de767c0",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/clear_cfs_full.csv",
+   "sha256": "19b05dc1d9bbbd329acac087bdeb3319bd9a3772875fa672a8ff04bb891811ae",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/cogs_cfs.csv",
+   "sha256": "3ef9a956ae9a1eef0e92427b825f62e941a57c5be1a4537e61bcc798571a7f41",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/cogs_cfs_full.csv",
+   "sha256": "3ef9a956ae9a1eef0e92427b825f62e941a57c5be1a4537e61bcc798571a7f41",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/consistency_indicators.csv",
+   "sha256": "65c6feeb1de966017be099da676f0a4a8ba5732ec9a618f5610b911c3442da4e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/hepatitis/resultados/summary.json",
+   "sha256": "4ec5f032400e488e939018813303cb13ebc1503e7bd55934e12f7320b87a7e35",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/clear_cfs.csv",
+   "sha256": "1505478bbb6be6f0f8cb6dbc661bdedc11541cca43a3da00448353cf2911804f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/clear_cfs_full.csv",
+   "sha256": "500caf6b9cecba10964e7928ae636ca24b6d05cf4c6152395033b35cd8acd5cd",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/cogs_cfs.csv",
+   "sha256": "d00ef9810f32b80e4cc3c3239f36f6234ca08e41b017a7d34e92efdab513f889",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/cogs_cfs_full.csv",
+   "sha256": "d00ef9810f32b80e4cc3c3239f36f6234ca08e41b017a7d34e92efdab513f889",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/consistency_indicators.csv",
+   "sha256": "a7cdb185c9a52a0282041a6e8c04d977164d1200836668ffc92447ee83090de6",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/iris/resultados/summary.json",
+   "sha256": "f6edbf8658bd785e2993daecbb5e45614604306b632112f2e84ed52047dc366a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/sonar/resultados/cogs_cfs.csv",
+   "sha256": "b144dd5d229d040e26d01ba20c19e459008166c5d90d86f513e2722d45986a98",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/sonar/resultados/cogs_cfs_full.csv",
+   "sha256": "b144dd5d229d040e26d01ba20c19e459008166c5d90d86f513e2722d45986a98",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/sonar/resultados/consistency_indicators.csv",
+   "sha256": "340b1e0b7d4fce23108e8b643e926d6ba775dc6fa582b78e1f82a748e3588d00",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/sonar/resultados/summary.json",
+   "sha256": "3f0b5d2cbbb8bd518c4dca17526b42ca48f2cb734a42473133c79f3a3e779aeb",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wdbc/resultados/cogs_cfs.csv",
+   "sha256": "b2cdbdcae909d2f7ecc3645cc9650ec366eccd144a5694474b8c6d09f07cb6cf",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wdbc/resultados/cogs_cfs_full.csv",
+   "sha256": "b2cdbdcae909d2f7ecc3645cc9650ec366eccd144a5694474b8c6d09f07cb6cf",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wdbc/resultados/consistency_indicators.csv",
+   "sha256": "cfb4ef76e377296b8914f46eb8e411cf8c6769be2c88c58203113f2dffd22335",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wdbc/resultados/summary.json",
+   "sha256": "2d929ea55dc310d2479802ea5e6a225bfcc23a060ea415151bfb494f19c170a1",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wine/resultados/cogs_cfs.csv",
+   "sha256": "e8447cef330bb1c8c5f090cb7b8698406a16915810eac07515c9f9beb0002993",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wine/resultados/cogs_cfs_full.csv",
+   "sha256": "e8447cef330bb1c8c5f090cb7b8698406a16915810eac07515c9f9beb0002993",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wine/resultados/consistency_indicators.csv",
+   "sha256": "6e14e85e48f5238ecf2ec427d32ac653ff982c7f37c2c08c61d1d6ea36dcc65e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/experimentos/wine/resultados/summary.json",
+   "sha256": "b99677d021e5a6b194d3a88c93874a2e7cba954bda78ac19064fc2b86363e0dd",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/resultados_consolidados/consistency_results_all.csv",
+   "sha256": "3eb1e743a2bcd8b7c73a1e33b7473f64e2f343ba1d525f8c6d5e32da21b1279a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/resultados_consolidados/summary_all.json",
+   "sha256": "a0e40f586d040c91f37a05a2538003f36764c8a87b20c2cdd0f73391e172d952",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/resultados_consolidados/table_for_thesis.csv",
+   "sha256": "897e50f6b3681547b1c9db0c693719e7368ed91e61a551ad7098521c52a70d9f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/resultados_mejora/detalle_mejora.csv",
+   "sha256": "617b2f7619f639e1aca39eac518fcfe564e647d860ac7f4f97b54f9486a77cb3",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "counterfactuals/resultados_mejora/mejora_resumen.csv",
+   "sha256": "ecd4b7d7a63ff6795d022a46f116d1d2ffb704c63397dcab04bc82bc60468c47",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/ablation/ablation_results.json",
+   "sha256": "f729085b858889da3305ffc60ba46a8fe5a9242983b72f7967e5661bac6091cc",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "potentially_contaminated_multi_ontology",
+   "reason": "contém 6 identificadores distintos de dataset/ontologia no mesmo artefacto (carga sequencial provável)",
+   "distinct_ids": [
+    "/workspace/scratch/6122b42e007a/work/ontology_v6/trepa_reloaded/data/benchmark_ontologies/breast_cancer.owl",
+    "/workspace/scratch/6122b42e007a/work/ontology_v6/trepa_reloaded/data/benchmark_ontologies/iris.owl",
+    "/workspace/scratch/6122b42e007a/work/ontology_v6/trepa_reloaded/data/benchmark_ontologies/wine.owl",
+    "breast_cancer",
+    "iris",
+    "wine"
+   ]
+  },
+  {
+   "path": "results/ablation/ablation_rows.csv",
+   "sha256": "60bf7ccc267bf39dbaf10af76f62342fce9d6d2922397d29350d38c1bfeaa161",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/ablation_v9_2/ablation_rows.json",
+   "sha256": "2e6bca39616e91e7b8f3a348285daab40cae58677451adc79e6a43ccbf16989d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "potentially_contaminated_multi_ontology",
+   "reason": "contém 5 identificadores distintos de dataset/ontologia no mesmo artefacto (carga sequencial provável)",
+   "distinct_ids": [
+    "breast_cancer",
+    "diabetes_progression",
+    "digits",
+    "iris",
+    "wine"
+   ]
+  },
+  {
+   "path": "results/ablation_v9_2/summary.json",
+   "sha256": "d56a81cff619213fabaf4cdb98f90dabbedd2786265bf92775b3d2b302cb1a5b",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/audit_remediation_v9_1/environment_preflight_current.json",
+   "sha256": "7617aa569841010d2378fe36b1c6a5777457098a141061b1d0557f923a7bf05a",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/aggregate.csv",
+   "sha256": "5fe67919e672aed8496b249fa5a2feeb140edb9ad6e8cadcb9486572a90154c0",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/config.json",
+   "sha256": "1a0261be81207e2c813f5ad6c612ad7e9f0fa092778df7e7415752a11892b69e",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/contrasts.csv",
+   "sha256": "10171ce9b22b7deaaef497eded4a2b088eaf80160ded6b6b13442ccdafb732f1",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/manifest.json",
+   "sha256": "a6e3672d3073c33db77763aeff33caba03c9ab60421d5f129845b26079360ecb",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/metrics.json",
+   "sha256": "8a916b84bf48ae29e9d294e27328242c2495833b40fc1b4da099857d0899e920",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/predictions.csv",
+   "sha256": "7aae85bc0ba174bd5f820dd8e4bbe86157dd4de0d690007b65c8f13014a07e69",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/raw_results.csv",
+   "sha256": "af77728c7d1aef6034c0f53cf959b045a957dd3b68a2bd75844c8bbbd28eb3ef",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/semantic_report.json",
+   "sha256": "beb5ca1813606b30e7aecc7eb6d6831e01f08925d5f286c73661f73aaa9a4a39",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230514_synthetic_binary_732f4521/tree_metrics.json",
+   "sha256": "1edbde985ffe3a60de5894ba73b24f77cd496f123da35b8bc6f5bca0f38e5f46",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/aggregate.csv",
+   "sha256": "6ba44c49a39128791325b25103d47e014da21a9fcae113d629d45152148e6025",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/config.json",
+   "sha256": "1a0261be81207e2c813f5ad6c612ad7e9f0fa092778df7e7415752a11892b69e",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/contrasts.csv",
+   "sha256": "95539075f66ce5132695016dcfd4a5085cf48ee7daf19dd02a8f23c943bc083e",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/manifest.json",
+   "sha256": "fec4042dfb38d19aafc146a499c68b97608d8b07289bf78418800daacadb6f25",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/metrics.json",
+   "sha256": "2ccfc7f5039b6abf71de56d0072a59db9421d3f2a282371e3b142eff43ef653f",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/predictions.csv",
+   "sha256": "5d563d0eea7cee6e7f7ee8301435f75bc9e2e312477ce444b68c9d8b2c43a86c",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/raw_results.csv",
+   "sha256": "0d3773cab519095f1627cab6211da584c881864fc993033c7d49f8ae7f0de948",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/semantic_report.json",
+   "sha256": "3aadb28e2dd1dc1374e44c1a87dc945aaf4bc65b00f40faf1c1f2788e39ff7ef",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/benchmark_smoke/20261002T230913_synthetic_3class_732f4521/tree_metrics.json",
+   "sha256": "12ef117f8ba3e20f61e4fc627340d4ced0855afbb61b1e377acc2d1064f404b4",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_noonto/benchmark.json",
+   "sha256": "e05b345d0732591635708aee97ecc82f32b28e2aff39f76f581c5e921051807d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_noonto/counterfactual_report.json",
+   "sha256": "0a44ca5123928c5083843b57a8cbee219b917974d3030432e55b16c58e527381",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_noonto/counterfactuals.csv",
+   "sha256": "91df1d16f717ab8394d275f63b84d3ce70deea55a8f0977cb6a142a3f84f7267",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_onto/benchmark.json",
+   "sha256": "a9a64292cfa93370d62eb9f7be7a6dec49b2ad61ca1eb3f881a28d0e3085d5fd",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_onto/counterfactual_report.json",
+   "sha256": "cbf448bdbd6b28ca5c7db4d2aeeb892a83d297300825c1538931378563c8f51a",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/binary_onto/counterfactuals.csv",
+   "sha256": "e7aaaec9cec882bfcea2f12dc3e64e4c9c9c44b7c4d21f705cb6e3f55ceadd78",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_noonto/benchmark.json",
+   "sha256": "7f97b5ae8df55c11c27a5ab8d2c933e8c72d8ce32dc7753e9db337da9e82caba",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_noonto/counterfactual_report.json",
+   "sha256": "267157575b6f370226ad601d5e6c56bc269a064f1825a450417f4853374a4f50",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_noonto/counterfactuals.csv",
+   "sha256": "7ee0c434ee43672aa70af6ff5abc90b27adad3d0831b1542db62b58e6c68ec47",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_onto/benchmark.json",
+   "sha256": "7f4380f3da12c612c1bda797aa17771bae882c6db7573b375979982652411900",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_onto/counterfactual_report.json",
+   "sha256": "67086c319af726fc6f81e1ab188555338d65fc8c2ecc97935a8f1329542f719d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/multiclass_onto/counterfactuals.csv",
+   "sha256": "21110b73f5264db561859422ca1a89e0ed5789b8c9d856a48b935f12a09327de",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/cf_validation/summary.json",
+   "sha256": "374b026f721fcdfa8437eaed0c943f79a4df3dfeac4c5d0d33138d9d9d196977",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/confirmatory_v7/CONFIRMATORY_RUN_COMPLETED.json",
+   "sha256": "3e915f748cb3c90b488c208a82cab86d63146df085e75f9f36c877b13765efbe",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/confirmatory_v7/FROZEN_PROTOCOL.json",
+   "sha256": "6a1b67cfc4e05c770d37d46667c92477a5c50c57c37780ff7fed21de034f96d8",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/confirmatory_v7/confirmatory_results.json",
+   "sha256": "978683c733a3aad0e5b78f2d8b4e615d57a007ede025ec001c3ff285a4696cc1",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "potentially_contaminated_multi_ontology",
+   "reason": "contém 5 identificadores distintos de dataset/ontologia no mesmo artefacto (carga sequencial provável)",
+   "distinct_ids": [
+    "breast_cancer",
+    "diabetes_progression",
+    "digits",
+    "iris",
+    "wine"
+   ]
+  },
+  {
+   "path": "results/confirmatory_v7/confirmatory_rows.csv",
+   "sha256": "424dc3c847a2c9fb381f91a46ff6433ded588330363f47a1e4fd624de88aec80",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/legacy_pickle_audit_v9_2.json",
+   "sha256": "e22d355a780299c3674e3cb4498b7eb67ca508ba4d2f41db8168053ec0f55bf7",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_173604.csv",
+   "sha256": "1924155690eab7f8380e8102b79946878b6d47d2a55a622a5d1db1ff8641c6ba",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_173604.json",
+   "sha256": "0f33b36649dce721cfe63db98ef999d01586c6b48a9ef6ca929bb50c3e739411",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_173837.csv",
+   "sha256": "327de68640af5fdf2c7076a7e2f6afac04f818c1d4461391f3ca37b1911cd081",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_173837.json",
+   "sha256": "a6b0f2062d6d202a3e818b087132907ae486e9bbbc467184fdbe4257f9084ddd",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_182501.csv",
+   "sha256": "f9e81b971ea07c5121b79d1e71edbea1e53b6cd42fbf7b3d233f4dd4c5309d7b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_182501.json",
+   "sha256": "aae16349f2a60ddf25e1e209dc99e58339d63da42398f58c0bebed5a26bcbec2",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_182900.csv",
+   "sha256": "ad2afd1b1cb3c47a319c007f0806d4c9a76a89db2b46bb5f26152a1c6e7f1242",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_182900.json",
+   "sha256": "32987f4f5986ae688b23add03944b5da1e3e767ad86201ad294af61c006a18d1",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_191300.csv",
+   "sha256": "268e22c423256729fb87eee410528d8f64dea10cead2b0450ed0aa82ff040ec9",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_191300.json",
+   "sha256": "fe19507c0e91d283d79f38f5e42953bff23ed92e8b5b05e33c2b7e8db11f85a6",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_191715.csv",
+   "sha256": "fcab8a77df5388663a354f8ecdd4ebe1de543b1c706896f7d6356041957ee7c6",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_breast_cancer_arff_20261002_191715.json",
+   "sha256": "d16fec035d2455e2af4cb0cb2bad3dc4041cacb031a4b2bbe8ec0848a2d38d55",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20260930_095006.csv",
+   "sha256": "6d373a9e6cae9fd1e47a5295ce17bda314d96d0fefee3592c1b37e97aa172a2c",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20260930_095006.json",
+   "sha256": "b01cbd3688bc2bbb4d06af768a43082da83aea0b29d1ad9f98a4f585ea6bfdc0",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_181044.csv",
+   "sha256": "27fb493324f6b33acdc354c1588e519968c4e04a3b73883e66f997b5927d60bb",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_181044.json",
+   "sha256": "9729719f0611bf228117d40e8a567476e58bd70bd80b1b9a775ac85f9c07ff26",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_190254.csv",
+   "sha256": "c5ce7a6d50836af6a0b4576cd5baa10dbba3f099be13a407178a17dac26c99b3",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_190254.json",
+   "sha256": "8c7c855136a754581d6f4ed4e47435bf16154a51053d26e4c3ac4af7ba49b6e5",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_212553.csv",
+   "sha256": "b3a566cddc16c0f96d3ee3e37f3af88d35d2875891f23eae4a236c49bdde8c1a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_212553.json",
+   "sha256": "bb718aea875ee653487cf4a90bfaa92afd6979fd18c9c6321c4d454f8f60778d",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_212933.csv",
+   "sha256": "bae1c3e7fc504b9fa1c58c533eecdfe3d1b4dcaf105e65f75093743c5cead99b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_212933.json",
+   "sha256": "701167a665af595dad6cbd53603df410245f96ca02f093a1d9389cb8264547cf",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_213650.csv",
+   "sha256": "bda686f94d0470775c65174ac4a04ea3872dafb9a97bba59fde8a311129469e5",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_213650.json",
+   "sha256": "0b29a008ff7e424489267c5ed66abefc30972d02d683709334700ba6a12fee1f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_214329.csv",
+   "sha256": "6571334a27332bdacfe771dc23dd8a80333ca05a935c1a1fd6a748bc827a3ff7",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_test_dataset_20261002_214329.json",
+   "sha256": "b65359dd7eedb219b73d482b5c88693605d679465889502af30232448c3c71d9",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095007.csv",
+   "sha256": "c552389fb7c14ac7c377f851e9157de78790e5bf2a06c58faaad22e983b536ec",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095007.json",
+   "sha256": "37484356bf96c92bc104828b7efb815f6bcc6b2bb045638c2341102bcafda3b5",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095008.csv",
+   "sha256": "5ffeb74d7729d0b05d171a1ff9849df6e79fa057598177bbe4a99a21c25b4daa",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095008.json",
+   "sha256": "30a02122e47e74e00c9ecd3bdd00fb6a45fa152030a2f8b2b52076c113dbb2f8",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095009.csv",
+   "sha256": "0f2f7848705c30c5ab166b7c7b11451b178eb079a0ce86bdaf19cef30962faeb",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095009.json",
+   "sha256": "57085af22d4ce2f78aae9979550d22b5c5c8c07a62cffde9a7d4f8ad4c7e5779",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095019.csv",
+   "sha256": "e0e7746f329e3da0946fe14a90e25045eed7b8caa5db36af31366f68918f1e99",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_095019.json",
+   "sha256": "bf02aae397906b068ef9c639ce5de279695a6c3e722a903af89377970d9ee6fa",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103336.csv",
+   "sha256": "ddc3a279492a162db43504f233203dcc5550f22d521f8ca4067e8d99c0e9615b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103336.json",
+   "sha256": "7fc7ab0dee06ba07a019f770f2eb2bb9adf90d4b6e384b00045dcb8171ec1e9e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103609.csv",
+   "sha256": "50c81ffc04a89e181b990804735dd205b13b0cc5c139eef8d6875c00e2326057",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103609.json",
+   "sha256": "a31d5c5f2659d87cd7d23db50cf76393e4c86c3c5cf8d9fe1a272a589f1fccc0",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103702.csv",
+   "sha256": "ad7e7723dda8b197dc3d75ebd53b642b3e37a27612e381bb4a721d3ac3458462",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103702.json",
+   "sha256": "34315dfe6f75326e12b6b34884d19a4c271b64cc9dbe93f27765457ca40b95ac",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103954.csv",
+   "sha256": "71864f08de811cfd34214346f2ca2a04caafc96f2a6bb050ab06b3d4b137c769",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_103954.json",
+   "sha256": "68e9352ea9c5d3cabdc5d931998d06d09d2f7793843201cd87d9040d53031531",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_152447.csv",
+   "sha256": "329c4df2792f2c2a6d7f82f4c881eece5e9ae3220be3b1aa373322ca58c13001",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20260930_152447.json",
+   "sha256": "841d2a3c3d8a2bc99eee1071f8449fcc83ae5828bfecc35d460c6e73c2d7f092",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_175424.csv",
+   "sha256": "7a4143e5f71d6465b12e7f8035d084f1a673cd035f0616d42c541ad9fd09fff7",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_175424.json",
+   "sha256": "be46e4839f6b0f4f5f0fff8bc067b7635b6576da74e1d48c18721dba2c84d140",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_180827.csv",
+   "sha256": "9a5c3c254045e351a406de781c0e37dec2c29ca7f89acddc6acba210199973da",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_180827.json",
+   "sha256": "ffe936b0919415ad7c68ed1ff3433128ce991018af9bb04f730bdefadd1ec4a4",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_180959.csv",
+   "sha256": "41c26cdce0b9aa700f64071b50e63fae71eab8487ebcbc0ca2a3cc5d4d16d0ea",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_180959.json",
+   "sha256": "1bbd5d2f7358c1bd711fdb01c1efd6c5a058b5af4994ea3f9359e0b2bde85419",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181000.csv",
+   "sha256": "94cfc168dadbb1eb78495c67acf8ede2135d86ccdb00624e703dfd0e3a95dfda",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181000.json",
+   "sha256": "ba9c6005e6762052a63682fdaa9413531fea359e0763cc4d6d7f91a873f3e916",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181046.csv",
+   "sha256": "ad7413903a06fb59f3c9478a0eca6515ded4c41b32e63284785427e119475e0f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181046.json",
+   "sha256": "3744e8f42c60e486fcd9f276c9796b2578bac7e8495c30f0be427cbff1472c1c",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181047.csv",
+   "sha256": "34fe3d342a04fc85885014d42646f421dd11bdd7ef28bc5d85a09087c40999e1",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181047.json",
+   "sha256": "01d929cdf0eb7b4fc5520cfa82d92ff482798a4a3cf83a8c69fb4f2ffa5eec2d",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181048.csv",
+   "sha256": "340ceb99495c66fc8c642d34f41d7b357fd63646567c5a17bf6150db024d2cf2",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181048.json",
+   "sha256": "975c15b50810577336e8ea4748271751dadc1a3e02a0e5ae9e3ca85145587a39",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181407.csv",
+   "sha256": "23d722d57593bc79d7da40c9fcdd7a7369cda0bb99afe098a1643266b81448fc",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_181407.json",
+   "sha256": "3f1bbb8ec84d0a95b71dbcb61b1aa2bf5066cbdbfcd9baef969957ff1bac290c",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190003.csv",
+   "sha256": "d9bffce7112595fd1ad13f8e69ba31e7668d719a340fb3299a2fdc5c2fc6bdc5",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190003.json",
+   "sha256": "46963e37a7a15227a17f92a05067e8cb1e5c3e8f5f2b647c996f81e1c82b1fc7",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190152.csv",
+   "sha256": "2df2da21d4d5f5c08c5f5d21ef1141e53ffd5bd20044608434f48f5fb3364fab",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190152.json",
+   "sha256": "fbe5f0d03b462faf52732ae3c4c82c10c8d056af2a0b152764ebe945007d9962",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190154.csv",
+   "sha256": "84d03c0b4c36f073d67acf7a860f069af2751194ea78de4c4af4821831199675",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190154.json",
+   "sha256": "540e231b417aa2ce1f7939196a607b63dd5d65068a952f75ac2cfc40bbca819a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190256.csv",
+   "sha256": "417b8dc41021123748bbdc87c6df5adfd62a99129b8996cdc7bc0ed93b8a023e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190256.json",
+   "sha256": "da5b6d5b6a38aa0a6820602ef9e30a24226be8aa1bac773ce952b176e190aa27",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190258.csv",
+   "sha256": "232f75c2a4741cb6b48acd97b6d992257b1e484734656acf5ac32da6243cffb1",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190258.json",
+   "sha256": "c28115028b4967bd0b69de69fa3b831380bf57acf61b84d1a4af50d9e6f70e32",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190259.csv",
+   "sha256": "ccd0cddf04bb2f63f782962f668332253bbe331e24fadec487ce71537a8983a3",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190259.json",
+   "sha256": "5de14c819a0478cc5a3ef195a1c46a39fa5ddd025839fe9b72d02b40262a6aaa",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190709.csv",
+   "sha256": "1b99c672f54ee1b29e1d9da0876a4b2dd986277a0faf8b37f0ae7f4a3f1dd53f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_190709.json",
+   "sha256": "10f2c8de2b0c1c76bc3772590360537a26123bb22cde743605797738e88828c8",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212416.csv",
+   "sha256": "dc7a1c636ef064a7aeb2fd3240089faf929f13e45d6d10b275d82c71e8dae356",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212416.json",
+   "sha256": "256cbce16c11f3f2beb5f0f3d4929cd84d3c8e2ae2c65e3f53a927a5c49643bd",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212521.csv",
+   "sha256": "589305c76c64324eb8ca54bf6ae938b8111eb2ed0e480ad9011c39d2ce8ee66f",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212521.json",
+   "sha256": "349cb710d3ea232ca89e17fa6545b4f1c91512ab829040d0137e42b7cb743d51",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212522.csv",
+   "sha256": "13ac9b0e6e92f3c3cfc4b7d62779d55ce6d980e74765fcdcc1bc4e09e395b236",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212522.json",
+   "sha256": "1688969e32f46ba3440ae318b1b031a6ee2d53e4aae337e79dafe8d0c13d4538",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212554.csv",
+   "sha256": "88a9468103d9831d51cbc004f1e05f8a3b63d770207bd27db381b6c2f7f3cb93",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212554.json",
+   "sha256": "0749ad9a00e013903c21f3a8f183db795a4100752b76a307fe4784d4740478b4",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212555.csv",
+   "sha256": "6c2453779704fb16ed86d7998aa9ac76250530bf997a50d2b22b9cb341ce1175",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212555.json",
+   "sha256": "369b884f2d5e8e18d92c77cb3e2bb309d9d00818c82775c577e3f9fb117e2c7b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212732.csv",
+   "sha256": "b3f583162d9f1d283acaf271965f30022dc962361861fbeb5c7dff26a11915d2",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212732.json",
+   "sha256": "5cc6aa07ec41477c58888bf31970fb4fed48618257988c6fb1ad172d8b42678d",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212801.csv",
+   "sha256": "b0e82e06cf03f6a825d95a653006cbed564e7833ed2ceee8b12f7d94c90cf7e8",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212801.json",
+   "sha256": "80e322944bc1fd58eb3a7264f6462914084e7f9ae01972fdf5065004f9757c13",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212903.csv",
+   "sha256": "2e596d9a0892aa0f266e04d396fcf25d0e203fa4342877b4dec7181258a218c3",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212903.json",
+   "sha256": "1e1e8342af8a2d4db165218d4c8f97a896e5e506f58bc614c46e15f22663b42c",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212933.csv",
+   "sha256": "0a04b47a8fcdec8eff33ecc942ab98237b449c52674f9f60eb901ed64abe1298",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212933.json",
+   "sha256": "3cd4c8f0c72792688ef4d2839d6a1c3954a8ab7e8bca815f83623ebb17aee0ab",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212934.csv",
+   "sha256": "0774c63dbbe0b16a312821062e2daf776dcb42ae67bc4920b0c7fbf334a6ea5b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_212934.json",
+   "sha256": "201ba52c2431b6932a94233578aa3b7284e7825945cd5998217f6ef6ade75e22",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213113.csv",
+   "sha256": "94066e18958b25c56ea74f8e0bcd3315932f64050f42a2a7d7c9fbde2857afba",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213113.json",
+   "sha256": "fdcce348f33cf43c195176fffa4846e3776440572405142bd0e3d0770cd4a310",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213515.csv",
+   "sha256": "8eb04fe71debcfeab81c49a53b2cb1d206fc5b919ecf7b1f0b992d5b9ceb8ffc",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213515.json",
+   "sha256": "f6a36e7e7542482449c829365b7b4536bdb740757e23984d9d63fc852acaeb9a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213619.csv",
+   "sha256": "9b49dea70a33fcb7a758abfde47ecdc6b8e84db0156f4f165f2c1ee3ea8b945b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213619.json",
+   "sha256": "6039a6290b890aabd45959159751ac7ce349043c55e5f2c613c41d1510a41967",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213620.csv",
+   "sha256": "33cb4a0a66491eb1f37b0033e80c96a05fdf7d2ba49b7e3c2c248b9802328c81",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213620.json",
+   "sha256": "b0677c85cdabf8fd97898d9b3d437c42084c07d55190a9b6d8bdbfc398224a30",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213650.csv",
+   "sha256": "4a9c3ebb7ebbaa24103faa54f194e41a839aace96c8e0a391c07c680dd3a9877",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213650.json",
+   "sha256": "7d6242d1dcd7d77e97d34f910301052f8fc3ac6ff5288163f7f9e942149f90d1",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213651.csv",
+   "sha256": "2469dff998024ca74fe15395814b10e6d5c20437d4ad469089568cc300e6c88e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213651.json",
+   "sha256": "ebe5efcfc04828a95a6c9df2092ec1571dd3f906083f976ce78558c20a07a5ff",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213830.csv",
+   "sha256": "d04dbfac6c68a62820f68f1468e96bebe4140faf23d8c2d95c8ea42ee2875658",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_213830.json",
+   "sha256": "bbff1196d4ec51b9afa9e97b715c6f15c139dd5c800b8c99faeb57ed96f0a2b3",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214202.csv",
+   "sha256": "a3b761562c2b751058f79f22b8c033a282f69680fd9e6b8d56c91119091357e4",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214202.json",
+   "sha256": "76599c8ec6494ad883d008df28809474c4140c0c12798b6e31b0f41565c6d573",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214258.csv",
+   "sha256": "c62ffd41a36a5e0be38628238b1d65c44801af0ce287afd24bf7a9a9ca999c02",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214258.json",
+   "sha256": "64d301a5864e634ca5d8bf0b641615ad5d7ed2012c9a0ed6d2854d233bf6a652",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214259.csv",
+   "sha256": "e33806ad3393f6b262256835328024ad3024325a0289ba7630f150b4fccc03cd",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214259.json",
+   "sha256": "f5c120b2e9e39ad159770286de6cb37fcc4882cb597db78290a8aaffa320977b",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214330.csv",
+   "sha256": "922766797bdb731f204cedbb8a37495898697aeabc736be83e3bf2badca88f60",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214330.json",
+   "sha256": "18603adea596589f9d8edc83ddd6bfd30cf2dafe5ca2145e2590b3888345500e",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214331.csv",
+   "sha256": "7bc0317f50cc1946b3d07e3993edbb72b0fa8931c8514123092d3530b43a2dd5",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214331.json",
+   "sha256": "9fb8aa6f8dcc68c3f2b1646ed85051b61709cf4957e2403a185e6d1ba366b336",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214508.csv",
+   "sha256": "9ed1052d8b314c91387e459f6d2008eef2435f1e21402d6937ac0425a089179a",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/mlp_optimization/mlp_optimization_unknown_20261002_214508.json",
+   "sha256": "5cce23e403afee89d08f8dc9ecb6d81c32d02e9ee988fced9dd3257d8e4042b2",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  },
+  {
+   "path": "results/performance_logs/performance_scientific_breast_cancer_arff_20261002_174026.json",
+   "sha256": "98ed6ec93bd319ce3e7e9d5d26b85e7b4a5d74a5f4bd1fe32d3428d705c2a0f9",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/performance_logs/performance_scientific_breast_cancer_arff_20261002_183336.json",
+   "sha256": "b2968c1e73c208e9382b6531925b11565b2587942fcf9dcbae7c7b60658db0fc",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/pipeline_audit/pipeline_audit_training_breast_cancer_arff_20261002_174026.csv",
+   "sha256": "b67aa94d005bd0bc68f86fdb32c0ed44aea2ba479b46186d358a86b74cf528fa",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/pipeline_audit/pipeline_audit_training_breast_cancer_arff_20261002_174026.json",
+   "sha256": "76805c20be4bc1b285f28c7d50dadde4e3cdd5798bb512a6dd314af3c2127216",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/pipeline_audit/pipeline_audit_training_breast_cancer_arff_20261002_183336.csv",
+   "sha256": "81300f8df5f52d8b8cf261bbbf86ef4287474b1802f0ad9dea2264f744e3adcd",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/pipeline_audit/pipeline_audit_training_breast_cancer_arff_20261002_183336.json",
+   "sha256": "b6c87df0094b91857313efa92da01377b86fd5f405775dadacb6b5733e208e46",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/production_readiness_v92.json",
+   "sha256": "7e649c5065127b8b09512ee19684c1e348d5380dfd056c23166672b51f2a7a6e",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_breast_cancer_seeds1-6.json",
+   "sha256": "99ec98ec4ce22b36fee7327614732473897ecd0d2a5e69b779866431959ecfc6",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_breast_cancer_seeds7-12.json",
+   "sha256": "ebc2632d0dc8c8deb84b49f6db155453ae061b564390cfefccbfa74e75dabc1d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_iris_seeds1-6.json",
+   "sha256": "ae224d6fbbfedbbd5283ef7a9b3c6cbd63d47a14f83ac04b2f1f5ad397890108",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_iris_seeds7-12.json",
+   "sha256": "af1e6369ffa21ea991c16b07d74a9d9ad7186e5311f1159be9da1bc9e4e72b79",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_wine_seeds1-6.json",
+   "sha256": "0b51de6891822b15383a4685719e4b386d98633545fff2083d6521528f6aada7",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_real_wine_seeds7-12.json",
+   "sha256": "7012c3bcc1cf7f724fdd2893b54e50e0d7b2256c0ebb9d997f83618070a41d52",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_synthetic_seeds1-5.json",
+   "sha256": "6314b1537753bcadfcad0cb6d9fdaee475a0e8173095e749c389b0ded7308f7a",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/attribution_gate_synthetic_seeds6-10.json",
+   "sha256": "e72cb371232e202a3942046ff8b54d0bd46834c88e0a9e06212a728e1f95feb6",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_breast_cancer_seed42.csv",
+   "sha256": "d8b6504813c91ab51973660a5695c215a8a0a2452118e12436c1f1140c57a400",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_breast_cancer_seed43.csv",
+   "sha256": "e6dfd8e84e486d68494408a71b9310b97b04a31ce4180437b696c47ba2a130e5",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_breast_cancer_seed44.csv",
+   "sha256": "2c40e19aa8fd3156b06c05af763b488f030801d63b49491b05627b555b514a2c",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_digits_seed42.csv",
+   "sha256": "fc6f7c4ff9c029f75155f720c66efc5a08ae4ede4bc07fa3d7e02dd59facf317",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_iris_seed42.csv",
+   "sha256": "9e9a2a38da6edaf28fa2246ed67409b2332615f23bc613e7e490ce2db6c8a81a",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_iris_seed43.csv",
+   "sha256": "369eb3e7cb19629703d6c408cbdf334a8c993b4bae72f5ce0f3321726c7bd4ef",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_iris_seed44.csv",
+   "sha256": "47e8c048aa00884e58006ac2bea8ed8a0b029b2e63ce5a190b0b78304257046d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_wine_seed42.csv",
+   "sha256": "ddf67714087d952e5167902947f93b6919208a9668f9e4756d08765511f9cacd",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_wine_seed43.csv",
+   "sha256": "13fecdf8458d7b156943376b7e0ae50b098fa9ac8a29aea4a452aacc9e437563",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/feature_audit_wine_seed44.csv",
+   "sha256": "aa70edab31dde8682cbc8112fad611db009b7b1a580d8a9c91e8ba5342fe6e7e",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/reloaded_attribution_breast_cancer.json",
+   "sha256": "c50be5aaca6df1d0a00bad7b7daa70a7d8d4a77208018c0b9d09e3690ba4174d",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/reloaded_attribution_iris.json",
+   "sha256": "58e3fa8a6982cac2f997296bc0192dedd4da3f65147d4ce8a0a70f6fda2a1791",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/reloaded_attribution_wine.json",
+   "sha256": "cc2dec03d109a91f1b2c3db64252f55d579894c551d6f3ebac17d549742ce0d6",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/semantic_validation_digits.json",
+   "sha256": "22eaf4e4216cda0223a93ec7b0328a4360a7c1f28452041e6ab7d8a084110e76",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/semantic_validation_small.json",
+   "sha256": "5552ab9bfde77adfb39b8b6ba79304c8a6f0500c6b4e3fe2bbe8d198fb1b9e8c",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/teacher_comparison.json",
+   "sha256": "16c40257f01082009fb67c0d4331d0c7c5f7ce58ca902fa9c134646529636db2",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "results/semantic_validation/teacher_real_breast_cancer.json",
+   "sha256": "4128328eca4df19589eed59d194ad588bb7cd18f05c2e5dc1c59846518ac37d2",
+   "status": "NOT_VERIFIED_OWL_ISOLATION",
+   "classification": "unverified_single_ontology",
+   "reason": "uma ontologia, mas o processo gerador não está registado: isolamento não demonstrável"
+  },
+  {
+   "path": "skills-lock.json",
+   "sha256": "d359eb7776eb21a994902562b905a4526982407df697b77649d9f74744c8ac90",
+   "status": "NOT_AFFECTED_NO_ONTOLOGY",
+   "classification": "not_applicable",
+   "reason": "sem marcadores de ontologia/braços semânticos"
+  }
+ ]
+}

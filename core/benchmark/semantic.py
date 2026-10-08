@@ -157,7 +157,8 @@ class OwlSemanticProvider:
             return empty(f"dependência OWL em falta: {exc}", None)
         t0 = time.perf_counter()
         try:
-            onto = get_ontology(str(Path(self.ontology_path).resolve())).load()
+            from core.owl_runtime import load_ontology_isolated
+            onto = load_ontology_isolated(self.ontology_path)       # mundo OWL próprio por split/chamada
             r0 = time.perf_counter()
             reasoner = run_owl_reasoner(onto, engine=self.reasoner_engine, infer_property_values=True, debug=0)
             self.n_reasoner_calls = int(getattr(self, "n_reasoner_calls", 0)) + 1

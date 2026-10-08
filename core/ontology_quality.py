@@ -8,6 +8,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
 
 from core.ontology_semantic_graph import _explicit_entity_bounds
+from core.owl_annotations import annotation_values
 
 
 GENERIC_ENTITY_NAMES = {
@@ -48,16 +49,8 @@ def identifier_tokens(value: Any) -> List[str]:
 
 
 def entity_labels(entity) -> List[str]:
-    labels = []
-    for attr in ("label", "prefLabel", "altLabel"):
-        try:
-            raw = getattr(entity, attr, []) or []
-            if not isinstance(raw, (list, tuple, set)):
-                raw = [raw]
-            labels.extend(str(item) for item in raw if item is not None)
-        except Exception:
-            continue
-    return list(dict.fromkeys(labels))
+    """Rótulos da entidade (rdfs:label / skos:prefLabel / skos:altLabel), lidos por propriedade/IRI."""
+    return annotation_values(entity, ("label", "prefLabel", "altLabel"))
 
 
 def entity_kind(entity) -> str:
@@ -92,27 +85,8 @@ def ontology_entities(ontology) -> Dict[str, List[Any]]:
 
 
 def _has_annotation(entity: Any, names: Sequence[str]) -> bool:
-    """Indica se a entidade declara alguma das anotações (atributo ou propriedade RDF)."""
-    for attr in names:
-        try:
-            if getattr(entity, attr, None):
-                return True
-        except Exception:
-            pass
-    targets = {re.sub(r"[^a-z0-9]+", "", name.lower()) for name in names}
-    try:
-        properties = list(entity.get_properties())
-    except Exception:
-        return False
-    for prop in properties:
-        if re.sub(r"[^a-z0-9]+", "", str(getattr(prop, "name", "")).lower()) not in targets:
-            continue
-        try:
-            if list(prop[entity]):
-                return True
-        except Exception:
-            pass
-    return False
+    """Indica se a entidade declara alguma das anotações (por propriedade/IRI, sem depender da ordem de carregamento)."""
+    return bool(annotation_values(entity, names))
 
 
 def taxonomy_depth(classes: Sequence[Any]) -> int:

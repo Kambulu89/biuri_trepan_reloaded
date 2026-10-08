@@ -64,3 +64,35 @@ def import_owlready2():
     if not diag["ok"]:
         raise OwlRuntimeError(_message(diag), diag)
     return sys.modules["owlready2"]
+
+
+def new_owl_world():
+    """Um ``World`` do owlready2 NOVO e vazio: quadstore, IRIs, propriedades de anotação, indivíduos e reasoner próprios.
+
+    O ``default_world`` do owlready2 é global ao processo: ontologias carregadas nele partilham propriedades pelo NOME curto
+    (``statisticRole`` de A e de B colidem) e o raciocinador corre sobre tudo o que lá estiver. Cada ontologia do BIURI vive no seu
+    próprio mundo para que o resultado nunca dependa do que foi carregado antes."""
+    return import_owlready2().World()
+
+
+def load_ontology_isolated(source, *, iri=None, fileobj_format=None):
+    """Carrega uma ontologia num mundo OWL próprio e devolve-a (``onto.world`` é exclusivo desta carga).
+
+    ``source`` é um caminho local (RDF/XML, OWL/XML, N-Triples). Para Turtle, passar ``iri`` (namespace) e ``fileobj_format='turtle'``.
+    Carregar o MESMO caminho duas vezes devolve duas ontologias independentes (nunca a cópia em cache de uma carga anterior)."""
+    from pathlib import Path
+    world = new_owl_world()
+    if fileobj_format:
+        onto = world.get_ontology(str(iri))
+        with open(Path(source), "rb") as fileobj:
+            onto.load(fileobj=fileobj, format=fileobj_format, reload=True)
+        return onto
+    return world.get_ontology(str(Path(source).resolve())).load()
+
+
+def release_ontology(onto) -> None:
+    """Liberta o mundo OWL de uma ontologia que já não é usada (idempotente)."""
+    try:
+        onto.world.close()
+    except Exception:
+        pass

@@ -1,0 +1,8 @@
+{
+ "step0_ab99_before_vs_after_differences": 0,
+ "step1_551f_before_vs_after_differences": 0,
+ "step2_ab99_before_vs_after_differences": 68,
+ "before_step0_vs_step2_same_ontology_differences": 68,
+ "after_step0_vs_step2_same_ontology_differences": 0,
+ "sequence": "ab99(seed7) -> 551f(seed7) -> ab99(seed7), same process, BenchmarkRunner light config, arms: mlp_original, trepan_original, reloaded_core, reloaded_owl_full, reloaded_owl_shuffled"
+}
