@@ -74,15 +74,80 @@ def test_ontology_change_without_models_does_not_flag(qapp):
         w.close()
 
 
-def test_successful_training_clears_stale_flag(app_with_models):
-    w, _ = app_with_models
-    w._ontology_changed("teste")
+class _Dlg:
+    def close(self):
+        pass
 
-    class Dlg:
-        def close(self):
-            pass
+
+def _finish(w, result=None):
     w._refresh_dataset_split_info = lambda: None
     w._unlock_clarity = lambda *a, **k: None
     w._refresh_counterfactual_panel = lambda: None
-    w._on_training_finished({"success": True}, Dlg())
+    w._on_training_finished(result or {"success": True}, _Dlg())
+
+
+def test_ontology_change_discards_all_dependent_artifacts(app_with_models):
+    w, _ = app_with_models
+    w.c45_tree = object()
+    w.mlp_model_onto = object()
+    w.X_encoded_aug = [[0.0]]
+    w.benchmark_outcome = object()
+    w.cf_result = {"x": 1}
+    w.metrics_comparator.comparison_results = {"k": 1}
+    w._ontology_changed("teste")
+    for name in ("mlp_model", "mlp_model_onto", "trepan_original_tree", "trepan_reloaded_tree", "c45_tree",
+                 "X_encoded", "y_encoded", "X_encoded_aug", "selected_oracle", "benchmark_outcome", "cf_result"):
+        assert getattr(w, name) is None, name
+    assert w.metrics_comparator.comparison_results == {}
+    assert not w._has_any_trained_model()
+
+
+def test_ontology_removal_invalidates_too(app_with_models):
+    w, _ = app_with_models
+    w._clear_loaded_ontology()
+    assert w._stale_models_reason
+    assert w.mlp_model is None and w.trepan_reloaded_tree is None
+
+
+def test_successful_training_for_current_state_unlocks(app_with_models):
+    w, _ = app_with_models
+    w._ontology_changed("teste")
+    w._training_started_for_current_state()
+    w.mlp_model = object()                       # modelo reconstruído pelo treino
+    _finish(w)
     assert w._stale_models_reason is None
+    assert w.trepan_reloaded_tree is None        # árvores antigas NÃO regressam: só o que foi reconstruído existe
+    assert not w._has_trained_models_for_cf()
+
+
+def test_partial_training_does_not_validate_old_artifacts(app_with_models):
+    w, warnings = app_with_models
+    w._ontology_changed("teste")
+    w._training_started_for_current_state()
+    _finish(w)                                   # sucesso declarado, mas nenhum modelo reconstruído
+    assert w._stale_models_reason
+    assert w.mlp_model is None and warnings
+
+
+def test_ontology_change_during_training_invalidates_result(app_with_models):
+    w, warnings = app_with_models
+    w._training_started_for_current_state()
+    w.mlp_model = object()
+    w._ontology_changed("durante o treino")
+    w.mlp_model = object()                       # o worker acabou de escrever um modelo treinado sob a ontologia antiga
+    _finish(w)
+    assert w._stale_models_reason and w.mlp_model is None and warnings
+
+
+def test_no_ontology_mode_still_operational(qapp):
+    w = BiuriApp()
+    try:
+        assert w._stale_models_reason is None
+        w._training_started_for_current_state()
+        w.mlp_model = object()
+        w.X_encoded, w.y_encoded = [[0.0]], [0]
+        _finish(w)
+        assert w._stale_models_reason is None and w.mlp_model is not None
+        assert w._require_current_models("x") is True
+    finally:
+        w.close()

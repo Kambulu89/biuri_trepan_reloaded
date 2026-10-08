@@ -847,6 +847,7 @@ class BiuriApp(QMainWindow):
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
         self._ontology_match_cache = {}
+        self._training_ontology_state_id = None
         self._stale_models_reason = None                     # não-None: modelos/árvores treinados sob outra ontologia; bloqueia reutilização
         self._ontology_state_id = uuid.uuid4().hex          # muda a cada ontologia carregada/limpa: caches e resultados derivados não atravessam ontologias
         self._ontology_matcher = None
@@ -1570,10 +1571,48 @@ que la red se vuelve interpretable.
         if self._has_any_trained_model():
             self._stale_models_reason = (
                 f"A ontologia mudou ({reason or 'alteração'}) depois do treino: os modelos e árvores existentes "
-                "foram treinados com outro estado ontológico. Treine novamente."
+                "foram treinados com outro estado ontológico e foram descartados. Treine novamente."
             )
+            self._discard_trained_artifacts()
         self._invalidate_counterfactual_results(reason or "ontologia")
         self._audit_check_stale()
+
+    def _discard_trained_artifacts(self):
+        """Descarta TODOS os artefactos que dependem do estado ontológico (modelos, árvores, matrizes, métricas, caches, explicações, benchmark)."""
+        for name in ("mlp_model", "mlp_model_reloaded", "mlp_model_onto", "mlp_model_residual", "selected_oracle",
+                     "selected_oracle_label", "ontology_acceptance", "trepan_original_tree", "trepan_reloaded_tree",
+                     "c45_tree", "trepan_original_audit", "trepan_reloaded_audit", "X_encoded", "y_encoded",
+                     "X_encoded_aug", "y_encoded_aug", "_eval_split_original", "_eval_split_augmented",
+                     "trepan_reloaded_feature_names", "mlp_original_diagnostic", "reloaded_oracle_diagnostic"):
+            if hasattr(self, name):
+                setattr(self, name, None)
+        self.explanation_generated = False
+        try:
+            self._clear_benchmark_view()
+        except Exception:
+            pass
+        self.benchmark_view = None
+        self.benchmark_outcome = None
+        try:
+            self.trepan.mlp_trainer.reset(keep_label_encoder=False)
+        except Exception:
+            pass
+        try:
+            self.metrics_comparator.clear_cache()
+            self.metrics_comparator.comparison_results = {}
+            widget = getattr(self, "metrics_widget", None)
+            if widget is not None:
+                widget.metrics_visualizer.clear_model_data()
+        except Exception:
+            pass
+
+    def _training_started_for_current_state(self):
+        self._training_ontology_state_id = self._ontology_state_id
+
+    def _training_matches_current_state(self):
+        """Só um treino iniciado sob o estado ontológico ACTUAL e que reconstruiu o modelo pode desbloquear."""
+        return (getattr(self, "_training_ontology_state_id", None) == self._ontology_state_id
+                and self.mlp_model is not None)
 
     def _has_any_trained_model(self):
         return any(
@@ -3023,6 +3062,7 @@ Asegúrese de que:
             QMessageBox.warning(self, "Advertencia", "Ya hay un entrenamiento en curso.")
             return
 
+        self._training_started_for_current_state()
         self._training_cancel_flag = False
         self._last_training_preset = getattr(preset, 'key', None)
         self._pending_failure_detail = None
@@ -3069,8 +3109,20 @@ Asegúrese de que:
         self._invalidate_counterfactual_results("treino")
         if result.get('result_text'):
             self.show_results(result['result_text'])
-        if result.get('success'):
+        if result.get('success') and (
+            getattr(self, "_training_ontology_state_id", None) != self._ontology_state_id
+            or (getattr(self, "_stale_models_reason", None) and self.mlp_model is None)
+        ):
+            # a ontologia mudou durante o treino, ou o treino não reconstruiu o modelo: não é válido para o estado actual
+            self._discard_trained_artifacts()
+            self._stale_models_reason = (
+                "A ontologia mudou durante o treino ou o treino não reconstruiu os modelos; os artefactos foram descartados. Treine novamente."
+            )
+            QMessageBox.warning(self, "Modelos desatualizados", self._stale_models_reason)
+            result = dict(result, success=False)
+        elif result.get('success'):
             self._stale_models_reason = None
+        if result.get('success'):
             self._refresh_dataset_split_info()
             if self.audit is not None:
                 self.audit.on_training_finished()
@@ -3922,6 +3974,7 @@ Asegúrese de que:
         if self._training_worker is not None and self._training_worker.isRunning():
             QMessageBox.warning(self, "Advertencia", "Ya hay un entrenamiento en curso.")
             return
+        self._training_started_for_current_state()
         self._pending_failure_detail = None
         if self.audit is not None:
             self.audit.on_training_started()
@@ -3946,6 +3999,12 @@ Asegúrese de que:
         self._training_worker = None
         outcome = payload["outcome"]
         self._invalidate_counterfactual_results("benchmark")
+        if getattr(self, "_training_ontology_state_id", None) != self._ontology_state_id:
+            self._discard_trained_artifacts()
+            QMessageBox.warning(self, "Modelos desatualizados",
+                                "A ontologia mudou durante o benchmark; o resultado foi descartado. Execute novamente.")
+            return
+        self._stale_models_reason = None
         self.benchmark_outcome = outcome
         # As MESMAS árvores avaliadas cientificamente (nada é reconstruído nem retreinado para as desenhar).
         view = outcome.tree_view()
