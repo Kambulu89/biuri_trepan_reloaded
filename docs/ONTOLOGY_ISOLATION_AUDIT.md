@@ -190,10 +190,8 @@ oráculo congelado, mesmo tuning estrutural cego à ontologia, mesmas seeds mest
 
 ## 9. Problemas ainda existentes
 
-1. Resultados históricos: não foi auditado se algum resultado bruto foi calculado num processo com várias ontologias (potencialmente
-   contaminado antes desta correção). Rever as unidades afetadas.
-2. GUI: ao trocar de ontologia depois de treinar, os modelos treinados (MLP ontológico, árvore Reloaded, matrizes aumentadas) **não são
-   descartados**; só os contrafactuais são invalidados e a auditoria marca «stale». Os mundos OWL antigos não são fechados (memória) porque
+1. Resultados históricos: marcados `NOT_VERIFIED_OWL_ISOLATION` (§11); a repetição com o código corrigido continua por fazer.
+2. GUI: ao trocar de ontologia depois de treinar, os modelos **não são descartados** mas ficam **bloqueados** (`_stale_models_reason`: explicação, árvore, métricas, exportações e contrafactuais exigem novo treino); contrafactuais são invalidados e a auditoria marca «stale». Os mundos OWL antigos não são fechados (memória) porque
    árvores treinadas podem referenciá-los.
 3. Dependência de Java: testes de raciocinador/GUI/fornecedor semântico só correm com Java (sem Java são ignorados com justificação de ambiente);
    a confirmação em CI Linux/Windows 3.11/3.12 só existe depois do push.
