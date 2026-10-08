@@ -211,3 +211,18 @@ QT_QPA_PLATFORM=offscreen python -m pytest tests/test_owl_world_isolation.py -q
 python scripts/owl_isolation_probe.py --csv dados.csv --target classe --owl A=a.owl B=b.owl --order ABA BAB
 python scripts/check_dataset_agnosticism.py
 ```
+
+## 11. Resultados históricos potencialmente contaminados (registo não destrutivo)
+
+A colisão exigia **duas ou mais ontologias carregadas no mesmo processo** (mundo owlready2 global). Resultados gerados antes desta correcção por
+execuções que carregaram várias ontologias em sequência no mesmo processo podem ter features derivadas/métricas semânticas alteradas
+(ver §3–§5: 91→41 colunas em A→B→A). Como o processo gerador de cada resultado **não foi registado**, o isolamento não é demonstrável a posteriori.
+
+* Registo: `docs/evidence/ontology_isolation/historical_results_registry.json` (gerado por `python -m validation.historical_results_registry --out …`).
+  Para cada ficheiro de dados (`results/**`, JSON/CSV na raiz) indica `sha256`, classificação e estado.
+* Estado `NOT_VERIFIED_OWL_ISOLATION` = **não verificado**, não «errado». Classes: `potentially_contaminated_multi_ontology` (≥2 datasets/ontologias
+  no mesmo artefacto), `unverified_single_ontology` (uma ontologia, processo desconhecido) e `NOT_AFFECTED_NO_ONTOLOGY` (braços sem ontologia: C4.5,
+  TREPAN Original, MLP base, desempenho).
+* Nenhum resultado bruto foi apagado ou alterado (teste `tests/test_historical_results_registry.py`). Resultados semânticos destes ficheiros não devem
+  ser citados como evidência até serem repetidos com o código corrigido (uma unidade = um `World` isolado).
+* Limitação: classificação por conteúdo; resultados em ficheiros sem identificadores de dataset podem escapar à classe «multi-ontologia».
