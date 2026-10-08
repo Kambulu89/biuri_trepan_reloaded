@@ -1,4 +1,5 @@
 import sys
+import uuid
 import os
 import warnings
 import re
@@ -846,6 +847,7 @@ class BiuriApp(QMainWindow):
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
         self._ontology_match_cache = {}
+        self._ontology_state_id = uuid.uuid4().hex          # muda a cada ontologia carregada/limpa: caches e resultados derivados não atravessam ontologias
         self._ontology_matcher = None
         self.ontology_match_threshold = 0.72
         self.ontology_quality_gate = OntologyQualityGate()
@@ -1561,6 +1563,12 @@ que la red se vuelve interpretable.
         if hasattr(self, "ontology_settings_group"):
             self.ontology_settings_group.setVisible(bool(enabled))
 
+    def _ontology_changed(self, reason=""):
+        """Nova identidade de estado ontológico: invalida resultados derivados (contrafactuais) e reavalia o estado «stale» da auditoria."""
+        self._ontology_state_id = uuid.uuid4().hex
+        self._invalidate_counterfactual_results(reason or "ontologia")
+        self._audit_check_stale()
+
     def _clear_loaded_ontology(self):
         """ARFF sem OWL: garante modo compatibilidade (sem ontologia activa)."""
         self.loaded_ontology = None
@@ -1578,6 +1586,7 @@ que la red se vuelve interpretable.
         self.ontology_transformer = None
         self.trepan.clear_ontology()
         self._set_onto_bias_controls_enabled(False)
+        self._ontology_changed("ontologia removida")
 
     def _sync_onto_bias_controls_from_value(self, value):
         value = float(value)
@@ -1754,7 +1763,7 @@ que la red se vuelve interpretable.
         if not entities:
             return None, 0.0, None
 
-        cache_key = f"{'classval' if for_class_values else 'feat'}:{label}"
+        cache_key = f"{self._ontology_state_id}:{'classval' if for_class_values else 'feat'}:{label}"
         if cache_key in self._ontology_match_cache:
             return self._ontology_match_cache[cache_key]
 
@@ -2855,6 +2864,7 @@ que la red se vuelve interpretable.
                 self._ontology_matcher = None
                 self.ontology_augmented_columns = []
                 self.ontology_feature_summary = []
+                self._ontology_changed("ontologia carregada")
                 
                 self.trepan.set_ontology(onto)
                 self.trepan.extractor.reasoner_report = dict(reasoner_report)
