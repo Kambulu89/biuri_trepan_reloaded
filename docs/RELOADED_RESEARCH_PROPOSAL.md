@@ -1,5 +1,7 @@
 # TREPAN Reloaded — proposta técnica e experimental (fase de diagnóstico e planeamento)
 
+> **ERRATA (Fase 0 B1–B4, `docs/b1b4/01_AUDITORIA_TECNICA.md` §3):** D1 e D3 abaixo estavam **incorretos**. D1 comparava o score Reloaded (escala normalizada) menos o IG cru em bits; o termo semântico aditivo real vale **0,83×** a componente estatística (mediana; excede-a em 12/30 nós). D3 usava `1/143` (tamanho do teste); a unidade correta é a amostra de decisão do nó (1/200–1/426). Os restantes pontos mantêm-se. Esta proposta foi substituída, para B1–B4, pelos documentos de `docs/b1b4/`.
+
 **Estado: proposta.** Nesta fase **não se altera o algoritmo nem hiperparâmetros**; nada aqui foi ajustado com base em dados de teste. O objectivo não
 é fazer o Reloaded superar os baselines, mas definir um método cuja melhoria, se existir, seja demonstrável e estatisticamente defensável. TREPAN
 Original e C4.5 permanecem baselines independentes (código, tuning e oráculo inalterados). Base empírica: `docs/ONTOLOGY_ISOLATION_AUDIT.md` e
