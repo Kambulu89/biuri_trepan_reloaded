@@ -27,7 +27,7 @@ FLAGS = (("default", {}), ("no_mirror", {"mirror_when_no_semantic_effect": False
          ("no_efsr", {"error_focused_refinement": False, "mirror_when_no_semantic_effect": False}))
 
 
-def collect():
+def collect(sig=None):
     out = {}
     for kind, p, k in PROBLEMS:
         for seed in SEEDS:
@@ -35,22 +35,23 @@ def collect():
             Xtr, Xte = X[:200], X[200:]
             key = f"{kind}-p{p}-k{k}-s{seed}"
             m, spy = fit_model(TrepanOriginalClassifier, {}, Xtr, names, oracle, seed)
-            out[f"{key}|original"] = fingerprint(m, spy, Xte)
+            out[f"{key}|original"] = fingerprint(m, spy, Xte, sig)
             for sc in SCENARIOS:
                 for fl, kw in FLAGS:
                     m, spy = fit_model(TrepanReloadedClassifier, kw, Xtr, names, oracle, seed, fit_kw=scenario_fit_kwargs(sc, p))
-                    out[f"{key}|{sc}|{fl}"] = fingerprint(m, spy, Xte)
+                    out[f"{key}|{sc}|{fl}"] = fingerprint(m, spy, Xte, sig)
     return out
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(ROOT / "tests/golden/golden_effective.json"))
+    ap.add_argument("--sig", type=int, default=None, help="algarismos significativos das auditorias (âncora portável)")
     a = ap.parse_args()
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     core = subprocess.run(["git", "hash-object", "core/trepan_reloaded_historical.py", "core/trepan_original.py"], cwd=ROOT,
                           capture_output=True, text=True).stdout.split()
     doc = {"generator": "tests/golden/make_effective_anchors.py", "git_head": head,
-           "blob_reloaded": core[0], "blob_original": core[1], "numpy": np.__version__, "entries": collect()}
+           "blob_reloaded": core[0], "blob_original": core[1], "numpy": np.__version__, "sig": a.sig, "entries": collect(a.sig)}
     pathlib.Path(a.out).write_text(json.dumps(doc, indent=1, sort_keys=True))
     print(len(doc["entries"]), "entradas ->", a.out)

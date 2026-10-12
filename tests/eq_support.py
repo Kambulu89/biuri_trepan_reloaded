@@ -88,15 +88,16 @@ BUDGET = dict(min_sample=200, max_queries=1500, max_nodes=9, max_depth=4, max_n=
               max_features_per_node=8, purity_epsilon=0.05)
 
 
-def _jsonable(o: Any):
+def _jsonable(o: Any, sig: Optional[int] = None):
+    """``sig=None``: floats exatos (``repr``); ``sig=n``: n algarismos significativos (portável entre plataformas/libm)."""
     if isinstance(o, dict):
-        return {str(k): _jsonable(v) for k, v in sorted(o.items(), key=lambda kv: str(kv[0])) if "time" not in str(k)}
+        return {str(k): _jsonable(v, sig) for k, v in sorted(o.items(), key=lambda kv: str(kv[0])) if "time" not in str(k)}
     if isinstance(o, (list, tuple, set)):
-        return [_jsonable(v) for v in (sorted(o, key=str) if isinstance(o, set) else o)]
+        return [_jsonable(v, sig) for v in (sorted(o, key=str) if isinstance(o, set) else o)]
     if isinstance(o, np.ndarray):
-        return [_jsonable(v) for v in o.tolist()]
+        return [_jsonable(v, sig) for v in o.tolist()]
     if isinstance(o, (np.floating, float)):
-        return repr(float(o))
+        return repr(float(o)) if sig is None else format(float(o), f".{sig}g")
     if isinstance(o, (np.integer,)):
         return int(o)
     if isinstance(o, (np.bool_,)):
@@ -106,8 +107,8 @@ def _jsonable(o: Any):
     return repr(o)
 
 
-def digest(obj: Any) -> str:
-    return hashlib.sha256(json.dumps(_jsonable(obj), sort_keys=True).encode()).hexdigest()
+def digest(obj: Any, sig: Optional[int] = None) -> str:
+    return hashlib.sha256(json.dumps(_jsonable(obj, sig), sort_keys=True).encode()).hexdigest()
 
 
 def fit_model(cls, kw: dict, X, names, oracle, seed: int, *, fit_kw: Optional[dict] = None, forbid_proba: bool = False):
@@ -117,8 +118,9 @@ def fit_model(cls, kw: dict, X, names, oracle, seed: int, *, fit_kw: Optional[di
     return model, spy
 
 
-def fingerprint(model, spy: SpyOracle, Xte) -> dict:
-    """Saídas observáveis E1–E9 (e auditorias de relato, em separado)."""
+def fingerprint(model, spy: SpyOracle, Xte, sig: Optional[int] = None) -> dict:
+    """Saídas observáveis E1–E9 (e auditorias de relato, em separado). ``sig``: floats das auditorias com n algarismos significativos
+    (impressão digital portável); as saídas discretas (regras, previsões, contagens, fluxo ao oráculo) são sempre exatas."""
     nodes = list(model.iter_nodes())
     fp = {
         "rules": digest(model.export_rules()),
@@ -130,13 +132,13 @@ def fingerprint(model, spy: SpyOracle, Xte) -> dict:
         "oracle_calls": dict(spy.calls),
         "oracle_samples": dict(spy.samples),
         "oracle_sequence": digest(spy.sequence),
-        "split_audit": digest(getattr(model, "split_audit_", [])),
+        "split_audit": digest(getattr(model, "split_audit_", []), sig),
         "expansion_order": digest(getattr(model, "expansion_order_", [])),
     }
     rep = {}
     for name in ("semantic_split_audit_", "error_region_audit_"):
         if hasattr(model, name):
-            rep[name] = digest(getattr(model, name))
+            rep[name] = digest(getattr(model, name), sig)
     for name in ("semantic_projected_query_count_", "semantic_projection_batches_", "semantic_active_query_batches_",
                  "semantic_active_query_selected_", "error_focused_interventions_attempted_",
                  "error_focused_interventions_accepted_", "error_focused_interventions_rejected_",

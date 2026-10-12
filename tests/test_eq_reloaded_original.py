@@ -27,6 +27,10 @@ NON_SCIENTIFIC_REPORTING_FIELDS = ("semantic_split_audit_", "error_region_audit_
 NON_EFFECTIVE = ("none", "depths_zero", "groups_unique")
 EFFECTIVE = ("depths", "weights", "groups", "relatedness", "projector", "combined")
 GOLDEN = json.loads((ROOT / "tests" / "golden" / "golden_effective.json").read_text())["entries"]
+# Suplemento portável (auditorias com 8 algarismos significativos), gerado com o código pré-correção (blob 0053b3d): as auditorias com floats
+# diferem no último bit entre plataformas (CI Windows); as saídas discretas (regras, previsões, contagens, fluxo ao oráculo) são sempre exatas.
+GOLDEN_PORTABLE = json.loads((ROOT / "tests" / "golden" / "golden_effective_portable.json").read_text())["entries"]
+SIG = 8
 FLAGS = {"default": {}, "no_mirror": {"mirror_when_no_semantic_effect": False},
          "no_efsr": {"error_focused_refinement": False, "mirror_when_no_semantic_effect": False}}
 E_FIELDS = ("rules", "predictions", "membership_queries", "oracle_query_count", "n_nodes", "oracle_stream", "oracle_calls",
@@ -153,7 +157,10 @@ def test_effective_behaviour_unchanged_golden(scenario):
     X, names, oracle = make_problem(seed, p=p, k=k, kind=kind)
     for flag, kw in FLAGS.items():
         m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, seed, fit_kw=scenario_fit_kwargs(scenario, p))
-        assert fingerprint(m, spy, X[200:]) == GOLDEN[f"{kind}-p{p}-k{k}-s{seed}|{scenario}|{flag}"], (scenario, flag)
+        key = f"{kind}-p{p}-k{k}-s{seed}|{scenario}|{flag}"
+        assert fingerprint(m, spy, X[200:], SIG) == GOLDEN_PORTABLE[key], (scenario, flag)       # todas as plataformas
+        if sys.platform.startswith("linux"):                                                     # plataforma de geração: bit-a-bit
+            assert fingerprint(m, spy, X[200:]) == GOLDEN[key], (scenario, flag)
 
 
 def test_golden_covers_all_scenarios_and_original_baseline_unchanged():
