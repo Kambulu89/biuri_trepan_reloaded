@@ -1,4 +1,6 @@
-# Documento 2 — Protocolo experimental (PROPOSTA, para aprovação)
+# Documento 2 — Protocolo experimental (PROPOSTA, revista pela correção arquitetural)
+
+> **Revisão:** o Reloaded é o Original + extensão ontológica (contrato de equivalência EQ, `07_CONTRATO_EQUIVALENCIA.md`). Neste protocolo `R_OWL` = Reloaded com ontologia efetiva; `R∅` = Reloaded sem ontologia (controlo EQ, tem de ≡ Original); o ganho é sempre medido contra o **Original equivalente** nas mesmas condições. Os seis grupos de comparação (A C4.5, B Original, C R∅, D R_OWL, E controlo permutado/aleatório, F engenharia convencional) estão em `04_MATRIZ_ABLACAO.md` §1.
 
 Nada aqui foi executado. O protocolo só é válido depois de **aprovado e congelado** num `BENCHMARK_MANIFEST_v2.json` (hash do código, datasets, ontologias,
 seeds, grelhas, regras de decisão) **antes** de qualquer execução confirmatória. TREPAN Original e C4.5 mantêm-se congelados (hashes do manifest v1).
@@ -29,10 +31,10 @@ Os 4 datasets sklearn já foram observados repetidamente; contam como DEV mesmo 
 * Papéis: `TRAIN` (treino externo) ⊃ `VALIDATION` (dobras internas) ; `TEST` externo lido **uma vez** por unidade (`EvaluationProtocolGuard`).
 * Seeds nunca escolhidas depois de ver resultados; sem repetição de unidades «azaradas».
 
-## 4. Oráculos
-* **Primário:** `MLP Original` congelado (`freeze_oracle`), igual para Original, Reloaded (todas as variantes) e C4.5-fidelidade. Reloaded no espaço
-  enriquecido consulta o mesmo oráculo via `OriginalOracleProjection`.
-* **Secundário (reportado à parte, nunca misturado):** `MLP Ontológico` aceite pelo gate interno; fidelidade só comparável com árvores do mesmo oráculo.
+## 4. Oráculos e pistas
+* **Pista T (enriquecimento da árvore) — primária:** oráculo = `MLP Original` congelado (`freeze_oracle`), **o mesmo** para Original, R∅, R_OWL (todas as variantes), controlos e C4.5-fidelidade. R_OWL no espaço enriquecido
+  consulta o mesmo oráculo via `OriginalOracleProjection`. Toda a fidelidade «A–F» pertence a esta pista.
+* **Pista M (enriquecimento do MLP) — separada:** oráculo = `MLP Ontológico` aceite pelo gate interno; compara-se Original(repr. OWL) vs R_OWL **consultando o mesmo oráculo MLP_onto**. Fidelidades das pistas T e M nunca se misturam.
 
 ## 5. Fluxo por unidade (sem contaminar o teste)
 ```
@@ -40,7 +42,7 @@ Treino externo (n_tr) ──► MLP original (oráculo externo O_ext)  [para o t
         │
         ├─► Estrutura comum (tuning ontology-blind, existente, só Original + O_ext)      → budget comum C
         │
-        └─► SELEÇÃO do Reloaded (nova):  para cada dobra interna k=1..K do treino:
+        └─► SELEÇÃO do R_OWL (nova; **só existe se Ω efetiva** — sem ontologia ou ontologia rejeitada o Reloaded ≡ Original e não há seleção):  para cada dobra interna k=1..K do treino:
                  MLP_k reajustado só em inner-train_k  →  oráculo O_k congelado
                  Original_k, C4.5_k, Reloaded_k(config c ∈ GRELHA) treinados com O_k / rótulos de inner-train_k, orçamento C
                  medir em inner-val_k (rótulos reais e O_k): A_R,A_O,A_C,F_R,F_O, nós, queries, estabilidade
@@ -54,10 +56,11 @@ Treino externo (n_tr) ──► MLP original (oráculo externo O_ext)  [para o t
 ## 6. Hipóteses e endpoints
 | Id | Hipótese (unilateral, pré-registada) | Endpoint primário |
 |---|---|---|
-| H1 | `A_R > A_O` | Δacc_real = acc(Reloaded*) − acc(Original), pareado por unidade |
-| H2 | `A_O > A_C` | Δacc_real = acc(Original) − acc(C4.5) (propriedade dos baselines; **não** é alvo de otimização) |
-| H3 | `F_R > F_O` | Δfid = fid(Reloaded*) − fid(Original) ao mesmo oráculo |
-| H4 | contribuição ontológica real | Δacc/Δfid (Reloaded+OWL real) − (Reloaded+OWL permutada / grupos aleatórios / engenharia convencional) |
+| **H0** | **EQ:** `R∅ ≡ O` (exata, não estatística) | igualdade de E1–E9 em **todas** as unidades; uma violação = protocolo suspenso para essa variante |
+| H1 | `A_R_OWL > A_O` | Δacc_real = acc(R_OWL*) − acc(O), pareado por unidade |
+| H2 | `A_O > A_C` | Δacc_real = acc(O) − acc(C4.5) (propriedade dos baselines; **não** é alvo de otimização) |
+| H3 | `F_R_OWL > F_O` | Δfid = fid(R_OWL*) − fid(O) ao mesmo oráculo |
+| H4 | ganho atribuível à ontologia | Δ_conhecimento = R_OWL − R_OWL~perm/~rand; Δ_convencional = O(repr. OWL) − O(repr. conv.); decomposição Δ_total = Δ_repr + Δ_guia (Doc. 7 §7) |
 Secundários: macro-F1, balanced accuracy, nº de nós/folhas/profundidade, comprimento médio das regras, nº de splits m-of-n, nº de queries (igual por
 construção de orçamento), tempo, estabilidade entre repetições (DP entre unidades do mesmo dataset), taxa de aceitação/rejeição de splits semânticos.
 Não-inferioridade (restrições): nós ≤ 1,25× Original; fidelidade ≥ Original − δ_F (δ_F pré-fixado = 0,01).
@@ -80,7 +83,8 @@ Pressupostos de σ_d vêm de resultados exploratórios (DP por unidade ≈ 2,5�
 * Resultados por dataset reportados todos (incluindo negativos); nenhum dataset excluído depois de correr.
 
 ## 8. Variantes e controlos (ver Documento 4)
-Todas as variantes do Reloaded usam **o mesmo** orçamento de candidatos/queries; os controlos igualam número de candidatos m-of-n avaliados e oportunidades de seleção.
+Todas as variantes de R_OWL usam **o mesmo** orçamento de candidatos/queries que o Original; os controlos igualam número de candidatos m-of-n avaliados e oportunidades de seleção. Nenhuma variante
+usa rótulos reais na construção da árvore (a linha «híbrida/Modo B» saiu do âmbito: Doc. 7 §8).
 
 ## 9. Reprodutibilidade e integridade
 * `BENCHMARK_MANIFEST_v2.json` + `manifest_sha256`, `frozen_code_sha256` (inclui os novos módulos), versões de bibliotecas, ambiente.

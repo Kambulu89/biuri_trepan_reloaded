@@ -1,11 +1,13 @@
-# Documento 5 — Contrato de superioridade (PROPOSTA)
+# Documento 5 — Contrato de superioridade (PROPOSTA, revista pela correção arquitetural)
+
+> **Revisão:** a hierarquia é `Accuracy_Reloaded_OWL > Accuracy_Original > Accuracy_C4.5` e `Fidelity_Reloaded_OWL > Fidelity_Original`. «Reloaded» abaixo significa **Reloaded com ontologia efetiva (R_OWL)**. Sem ontologia vale o contrato de equivalência (`07_CONTRATO_EQUIVALENCIA.md`): `R∅ ≡ Original` — esse controlo tem o seu próprio veredito `EQ ∈ {EQUIVALENT, VIOLATION}`, **fora** dos quatro estados da hierarquia (uma igualdade exata não é uma «superioridade»). O ganho é sempre medido contra o Original equivalente (mesmo oráculo, dados, parâmetros, seed; mesma representação quando se isola a orientação semântica: Doc. 7 §7).
 
 Define **formalmente**, antes de qualquer execução, o que significa a hierarquia `TREPAN Reloaded > TREPAN Original > C4.5`, como é otimizada (só em validação), medida,
 verificada e reportada. A hierarquia é um **requisito de seleção/aceitação e de relatório**, nunca uma garantia de resultado nem uma autorização para mexer nos baselines.
 
 ## 1. Símbolos (todos em precisão total, sem arredondamento)
 Para uma unidade `u` (dataset × partição), sobre **o mesmo conjunto de teste** e o mesmo oráculo congelado:
-* `A_R(u), A_O(u), A_C(u)`: accuracy contra rótulos reais (Reloaded selecionado, Original, C4.5 canónico).
+* `A_R(u), A_O(u), A_C(u)`: accuracy contra rótulos reais (R_OWL selecionado, Original, C4.5 canónico). Se a ontologia não for efetiva na unidade, `R=R∅≡O`: a unidade recebe `EQ`, não entra nos vereditos de hierarquia e conta como `INSUFFICIENT_EVIDENCE` para H1/H3 (sem tratamento).
 * `F_R(u), F_O(u)`: fidelidade ao oráculo congelado (`fidelity_to_oracle`); `F_C` é medida suplementar (não faz parte da cadeia).
 * `δ_A ≥ 0`: margem de superioridade em accuracy. **δ_A^estado = 0** (comparações estritas `>`, empates não contam) para o estado por unidade; **δ_A^alegação = 0,01** (pré-registado) para
   declarar superioridade material no Documento 2.
@@ -63,9 +65,9 @@ Cada veredito traz `evidence_level ∈ {observed_only, statistically_sustained}`
 3. Teste externo inacessível antes de `config_frozen_hash`; `EvaluationProtocolGuard` regista 1 leitura.
 4. Seeds, grelhas, datasets e margens vêm do manifest; nada escolhido depois dos resultados.
 5. Nenhuma unidade removida por «difícil»; falhas ficam em `skipped` e entram na contagem `INSUFFICIENT_EVIDENCE`.
-6. Rótulos reais nunca alterados; C4.5 nunca recebe o oráculo; Original nunca recebe bónus ontológico.
+6. Rótulos reais nunca alterados; C4.5 nunca recebe o oráculo; Original nunca recebe bónus ontológico; **o Reloaded nunca usa rótulos reais na construção**.
 7. Um fallback do Reloaded para Original nunca conta como vitória do Reloaded (`fallback_original=True`, empate ⇒ `NOT_SATISFIED` com `δ_A=0`).
-8. Resultados do Modo B (híbrido) são identificados `reloaded_hybrid` e relatados separadamente.
+8. **Equivalência:** em cada unidade o braço R∅ é comparado ao Original (E1–E9, bit-a-bit); `EQ_VIOLATION` bloqueia a execução dessa variante e é reportada (Doc. 7). Nenhuma melhoria independente da ontologia pode explicar um ganho de R_OWL (Δ_conhecimento e Δ_convencional controlam).
 
 ## 7. Interface do módulo (para o plano; ainda não implementado)
 ```python

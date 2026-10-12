@@ -1,6 +1,10 @@
-# Documento 3 — Arquitetura proposta para B1–B4 (PROPOSTA, sem código)
+# Documento 3 — Arquitetura proposta para B1–B4 (PROPOSTA, sem código; revista pela correção arquitetural)
 
-Princípios: (1) **tudo atrás de uma configuração explícita, desligada por omissão**; modo `legacy` ≡ comportamento atual, provado por comparação exata
+> **Regra central (Doc. 7):** Reloaded = Original + extensão ontológica. B1–B4 são **exclusivamente** mecanismos associados ao enriquecimento ontológico; nenhum modifica o comportamento sem OWL.
+> Cada método sobreposto em `TrepanReloadedClassifier` passa a começar por `if not self._ontology_effective(): return super().<método>(...)`, de modo que a equivalência `R∅ ≡ O` é **estrutural**.
+> Fase 1a (antes de B1): corrigir a não-conformidade V1 (consultas extra ao oráculo sem ontologia) e instalar os testes de contrato EQ.
+
+Princípios: (0) **sem ontologia efetiva, nada disto corre** (despacho para o Original); (1) **tudo atrás de uma configuração explícita, desligada por omissão**; modo `legacy` ≡ comportamento atual, provado por comparação exata
 (`validation/benchmark/equivalence_report.py`); (2) nenhum ficheiro congelado (Original, C4.5, tuning, contrato do oráculo) é alterado; (3) só propriedades
 gerais (contagens, tipos, estrutura/qualidade da ontologia, orçamento) — nunca identidade de dataset; (4) cada decisão é registada para auditoria.
 
@@ -9,6 +13,7 @@ gerais (contagens, tipos, estrutura/qualidade da ontologia, orçamento) — nunc
 | Módulo | Ação | Intervenção |
 |---|---|---|
 | `core/trepan_reloaded_historical.py` | **alterar** (único motor tocado): `_split_selection_score`, `_best_mofn`, `_evaluate_error_focused_intervention`, `_ontology_guided_candidates` delegam em políticas injetáveis | B1, B2, B4 |
+| `core/trepan_reloaded_historical.py` (Fase 1a) | **conformidade EQ:** despacho no topo (`_ontology_effective`), remover consulta `predict_proba` por nó quando `Ω=∅` (V1) | EQ |
 | `core/reloaded_policies.py` (**novo**) | `ScoreCalibrationPolicy` (legacy / tie-break / bounded / normalized), `SplitAcceptancePolicy` (legacy / evidence-based), `GroupProvider` (semantic / random / shuffled) — funções puras, testáveis sem modelo | B1, B2, B4 |
 | `core/hierarchy_contract.py` (**novo**) | `HierarchyStatus` + `evaluate_hierarchy(...)`: puro, sem ML | B3 / reporte |
 | `core/reloaded_config_selection.py` (**novo**) | `select_reloaded_config(...)`: CV interna com MLP por dobra, regra lexicográfica, registo de todos os candidatos | B3 |
@@ -47,12 +52,12 @@ Registo: para cada split, `statistical_component`, `semantic_additive_term`, `de
   aceitar (são amostras do próprio modelo gerador, não evidência independente). Aceita-se se `LCB_95(Δ̂) ≥ 0` (nunca ganho negativo confirmado); se `n_real` for insuficiente → razão
   `insufficient_evidence` ⇒ mantém o vencedor data-only (≡ Original naquele nó). Consequência esperada: menos intervenções em nós fundos; declarada, não escondida.
 * **Granularidade:** reporta-se `1/n_eff`; **não** é usado como limiar universal.
-* **Paragem/poda (B2-D):** poda posterior opcional por regra 1-SE em fidelidade OOF (sem acesso ao teste) para subárvores sem benefício; registada em `pruning_audit_`.
+* **Paragem/poda (B2-D) — restrita:** poda posterior por regra 1-SE em fidelidade OOF **apenas de subárvores que contêm divisões influenciadas pela ontologia**; poda geral é proibida (alteraria o Reloaded sem OWL). Registada em `pruning_audit_`.
 * **Registo por divisão:** `node_id, sample_count, effective_sample_count, statistical_gain, semantic_bonus, estimated_fidelity_gain, estimated_accuracy_gain,
-  uncertainty, accepted_or_rejected, decision_reason` (os campos pedidos). `estimated_accuracy_gain` só existe no Modo B (Mode A não vê rótulos reais).
+  uncertainty, accepted_or_rejected, decision_reason` (os campos pedidos). `estimated_accuracy_gain` = `N/A` por split (a árvore não usa rótulos reais); a accuracy real só entra na seleção B3 (OOF com MLP por dobra).
 
 ## 5. B3 — Seleção multiobjetivo hierárquica (`select_reloaded_config`)
-**Nível:** *modelo* (escolha entre configurações do Reloaded já treinadas), não por split — é o nível onde accuracy, fidelidade, complexidade e estabilidade são mensuráveis
+**Âmbito:** só existe com Ω efetiva (sem ontologia ⇒ sem seleção ⇒ ≡ Original). **Nível:** *modelo* (escolha entre configurações do R_OWL já treinadas), não por split — é o nível onde accuracy, fidelidade, complexidade e estabilidade são mensuráveis
 em dobras internas. Pareto por split multiplicaria o espaço de procura sem forma honesta de medir accuracy local.
 
 Para cada configuração `c` ∈ grelha pré-declarada, em cada dobra interna `k` (MLP_k, O_k reajustados): `A_R,k(c)`, `F_R,k(c)`, `nós_k(c)`, `queries_k(c)`, coerência semântica;
@@ -64,9 +69,7 @@ somas ponderadas arbitrárias; Pareto devolve conjuntos grandes sem critério de
 4. **Viabilidade da hierarquia (OOF):** `A_R(c*) > A_O` e `A_O > A_C`; o segundo termo **não depende de c** (propriedade dos baselines) ⇒ só serve para classificar `INFEASIBLE`.
 5. **Fallback:** se nenhuma `c` cumprir (1)–(2), regista-se `selected="none"` e usa-se a configuração `legacy`; **não** se substitui por um Original disfarçado. (Se o utilizador quiser
    um «fallback ao Original», tem de ser um braço declarado, nunca contado como vitória do Reloaded — decisão D-3.)
-* **Modo A (oráculo):** o Reloaded só vê o oráculo (contrato atual). **Modo B (híbrido supervisionado):** o split score passa a `(1−γ)·IG_oráculo + γ·IG_rótulos_reais(linhas reais do nó)`,
-  γ ∈ {0; 0,25; 0,50} escolhido na CV interna (γ=0 ≡ Modo A). Rotulado `reloaded_hybrid`, **braço e relatório próprios**; nunca apresentado como imitação pura do oráculo; não é
-  comparável com o Original em «fidelidade pura».
+* **Rótulos reais:** o R_OWL **não** usa rótulos reais na construção (contrato do oráculo inalterado). A antiga proposta de «Modo B/γ» foi **retirada** (independente da ontologia; Doc. 7 §8).
 
 ## 6. B4 — m-of-n semântico (`GroupProvider`)
 * `semantic`: grupos/relações do grafo OWL (como hoje, via `OntologySemanticGraph`).
@@ -89,14 +92,17 @@ de métricas **não arredondadas**; usadas pelo runner (relatório) e pela GUI (
 * Visualização de árvores: nenhuma alteração à geometria; só painéis de texto/tabela adicionais.
 * Artefactos treinados guardam `reloaded_policy_config` (hash incluído no `config_hash`).
 
-## 10. Decisões que precisam da tua aprovação
-| Id | Decisão | Recomendação |
+## 10. Decisões (estado após a correção arquitetural)
+| Id | Decisão | Estado / recomendação |
 |---|---|---|
-| D-1 | CLAUDE.md §2 diz «nunca otimizar nem codificar para produzir a ordem Reloaded > Original > C4.5». O novo requisito torna-a objetivo formal. | Emendar a regra: a hierarquia é **critério pré-registado de seleção em validação interna e de relatório**; continua proibido: alterar baselines, usar o teste, escolher seeds/datasets a posteriori. Só altero CLAUDE.md com a tua confirmação explícita. |
-| D-2 | CLAUDE.md §2 «tuning científico e contrato do oráculo congelados» vs. B1–B4 a alterar o Reloaded. | Congelamento mantém-se para Original/C4.5/tuning estrutural/oráculo; Reloaded evolui sob **manifest v2**; manifest v1 permanece como histórico. |
-| D-3 | Fallback para Original em B3. | Não permitir como «Reloaded»; só como braço declarado `fallback_original`. |
-| D-4 | Modo B (rótulos reais) | Incluir como braço híbrido separado; reivindicações primárias só do Modo A. |
-| D-5 | Definição de `n_eff` no B2 (só linhas reais vs. mistura com sintéticas) | Só reais para aceitar; sintéticas para ordenar. |
-| D-6 | Mapeamento explícito coluna↔entidade para nomes opacos | Sidecar opcional (tabela índice→IRI) lido pelo provider; sem sidecar a ontologia é rejeitada. |
-| D-7 | Lista de ≥ 12 datasets CONFIRM e quem escreve/valida as ontologias | Tu escolhes/aprovas a lista; ontologias escritas às cegas e congeladas por hash. |
-| D-8 | Grelhas (λ, γ) e δ_A, δ_F do Documento 5 | Aprovar antes de correr; δ_A=0 para estado por unidade, δ_A=1 pp para alegação de superioridade. |
+| D-1 | Hierarquia como objetivo de otimização vs regra «nunca otimizar para a ordem» | **Resolvida** pela tua mensagem: objetivo formal pré-registado, nunca imposto. `CLAUDE.md` §2 atualizado. |
+| D-2 | Congelamento vs evolução do Reloaded | **Resolvida:** baselines/tuning/oráculo congelados por hash; Reloaded só evolui por mecanismos **ontológicos**, sob manifest v2. `CLAUDE.md` §2b. |
+| D-3 | Fallback para Original em B3 | Sem Ω ⇒ Original (EQ). Com Ω mas nenhuma config validada ⇒ declarar `no_config_validated` e usar `legacy`; nunca contar como vitória. |
+| D-4 | Modo B (rótulos reais) | **Resolvida:** removido do Reloaded; se desejado, linha `hybrid` separada, só com autorização. |
+| D-5 | `n_eff` do B2 | Só linhas reais para aceitar; sintéticas só para ordenar. |
+| D-6 | Mapeamento coluna↔entidade (nomes opacos) | Sidecar opcional; sem sidecar ⇒ ontologia rejeitada ⇒ R≡O. |
+| D-7 | Lista de ≥ 12 datasets CONFIRM e autoria das ontologias | **Pendente (precisa de ti).** |
+| D-8 | Grelhas (λ), δ_A, δ_F, ν_F | **Pendente.** |
+| D-9 | (substitui a «procura de ganho arquitetural independente») | **Nova:** o objetivo é demonstrar o ganho **adicional da ontologia**; ganhos de arquitetura/hiperparâmetros/pré-processamento/oráculo não são atribuíveis à ontologia e não se desenvolvem no Reloaded. |
+| D-10 | Allowlist de diferenças não semânticas R∅ vs O | **Vazia.** Qualquer entrada exige autorização tua e registo no manifest. |
+| D-11 | Consulta extra ao oráculo (V1) | Tratar como **não-conformidade a corrigir na Fase 1a**, não como «diferença justificada». |

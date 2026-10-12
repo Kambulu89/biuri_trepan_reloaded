@@ -1,5 +1,7 @@
 # Documento 1 — Auditoria técnica (Fase 0, B1–B4)
 
+> **Adenda (correção arquitetural):** ver §9 — auditoria do contrato de equivalência `Reloaded(sem ontologia) ≡ Original`. As conclusões de §3.1 sobre «Reloaded Core ≡ Original» ficam **qualificadas**: árvore, regras e previsões são iguais, mas o consumo do oráculo **não** (não-conformidade V1).
+
 Estado: **auditoria sem alteração de código de produção** (base: `main` @ `1789c17`). Referências `ficheiro:função` verificadas no código real; nada
 foi presumido a partir de nomes de classes ou opções. Evidência empírica = leitura de código + reanálise (apenas leitura) de
 `docs/evidence/ontology_isolation/split_audit_allnodes_v2.json` (30 nós, 2 ontologias × 5 seeds, **exploratório**, um só dataset).
@@ -63,8 +65,8 @@ Outros defeitos de desenho confirmados:
 * **Controlo F incompleto:** `ShuffledSemanticProvider` permuta grupos/relatedness/depths mas **mantém as mesmas features derivadas**; não controla (i) o conteúdo
   das features nem (ii) a hipótese «engenharia convencional por nomes». Não existe braço de engenharia convencional (`validation/ontology_feature_audit.py`
   mostrou 60/60 features replicáveis por nomes em `breast_cancer`).
-* **Reloaded Core (D) ≡ Original por construção:** com estrutura semântica inativa, `_split_selection_score` devolve o IG cru e `_priority` devolve a base
-  (`_semantic_structure_active()` falso). Em dados exploratórios (bc, 10 unidades) D e C têm accuracy idêntica (0,9427). D não é um algoritmo distinto.
+* **Reloaded Core (D) ≡ Original na árvore, mas não no oráculo:** com estrutura semântica inativa, `_split_selection_score` devolve o IG cru e `_priority` a base; accuracy idêntica em bc (0,9427) e
+  regras/previsões iguais em 6/6 sondas. **Porém** consulta o oráculo 2,6–3,1× mais (§9, V1). D é o controlo de equivalência pretendido, não um algoritmo distinto — desde que V1 seja corrigida.
 
 ### 3.2 O gate EFSR e os ganhos negativos (B2)
 `_evaluate_error_focused_intervention` (l. 574):
@@ -128,6 +130,7 @@ multiobjetivo, controlo de grupos aleatórios, comparação sem arredondamento d
 
 ## 8. Resumo de problemas (prioridade)
 1. **P0** — Diagnóstico D1 anterior incorreto (escalas misturadas) → corrigido aqui; propor correção do campo `semantic_bonus` (observabilidade, Fase 1).
+1b. **P0** — **V1: violação do contrato EQ** (consultas extra ao oráculo sem ontologia; §9) → corrigir na Fase 1a antes de B1–B4.
 2. **P0** — Dev datasets/ontologias já expostos; nenhuma confirmação válida sem datasets frescos e ontologias congeladas às cegas.
 3. **P0** — Validação de accuracy exige MLP por dobra interna; sem isso a seleção pela hierarquia é enviesada.
 4. **P1** — Sem log por candidato (impossível medir influência semântica real sobre o *ranking*).
@@ -136,3 +139,19 @@ multiobjetivo, controlo de grupos aleatórios, comparação sem arredondamento d
 7. **P2** — Prior constante `onto_weight`/`depth=1` em features derivadas.
 8. **P2** — Reloaded Core ≡ Original (arm D redundante como «algoritmo»).
 9. **P2** — Potência estatística insuficiente (20 unidades, 4 datasets).
+
+## 9. Auditoria do contrato de equivalência (adenda)
+Contrato: `Reloaded(Ω=∅) ≡ Original` (Doc. 7). Sonda só-leitura `docs/evidence/b1b4/equivalence_probe.py` (resultado em `equivalence_probe_result.jsonl`): 3 datasets × 2 seeds, MLP e oráculo
+congelado partilhados, Reloaded configurado como o braço D (sem informação ontológica), com um oráculo-espião que faz hash de tudo o que recebe.
+
+| Saída | iris 42/7 · wine 42/7 · breast_cancer 42/7 |
+|---|---|
+| Regras (E1/E2), previsões (E5), nós (E7), `membership_queries_` (E4) | iguais 6/6 |
+| **Fluxo de entradas ao oráculo (E4)** | **diferente 6/6** |
+| Amostras consultadas O → R | 652→1712 · 660→1712 · 659→1733 · 607→1733 · 1116→3408 · 1109→3408 |
+| Chamadas O → R | 5→13 (iris, wine) · 4→11 (breast_cancer) |
+Causa: `core/trepan_reloaded_historical.py:_decision_sample` constrói o perfil de erro com `include_uncertainty=True` em todos os nós, e `_known_row_uncertainty` chama `oracle.predict_proba` mesmo sem estrutura
+semântica. Não altera a árvore, mas altera o custo de oráculo medido (`oracle_queries` do `FrozenOracle`) e viola E4. **Estado:** não-conformidade V1 (nenhum código alterado nesta fase).
+Outras fontes potenciais de divergência sem Ω a cobrir em testes de propriedade (não observadas nesta sonda): `semantic_active_query_fraction=0,65` em `_draw_membership_queries`, `query_projector`,
+`gain_criterion="normalized_information_gain"`, `mirror_when_no_semantic_effect=True` por omissão (reexecuta o Original — equivalência trivial, mas custo duplicado).
+Verificado: os parâmetros partilhados entre `TrepanOriginalClassifier.__init__` e `TrepanReloadedClassifier.__init__` têm **os mesmos valores por omissão** (sem divergências).
