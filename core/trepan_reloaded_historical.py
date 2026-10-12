@@ -252,6 +252,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             or repeated_groups
             or related_off_diagonal
         )
+        # Predicado único de «ontologia efetiva» (contrato EQ, Doc. 7): a extensão ontológica altera algum mecanismo do Original.
+        # Inclui o domínio OWL (filtragem das membership queries), que atua mesmo com a projeção desligada.
+        self.ontology_effective_ = bool(self.reload_extension_active_ or self._ontology_domain_fit is not None)
         self.algorithm_family_ = "historical_trepan"
         self.semantic_projected_query_count_ = 0
         self.semantic_projection_batches_ = 0
@@ -363,6 +366,13 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         self._current_real_validation_y_ = None
         self.semantic_audit_summary_ = self.semantic_audit_summary()
         return fitted
+
+    def _ontology_effective(self) -> bool:
+        """``False`` ⇒ o Reloaded delega no TREPAN Original (equivalência EQ: mesma árvore e mesmo fluxo de consultas ao oráculo).
+
+        Antes de ``fit`` assume-se efetiva (comportamento histórico preservado).
+        """
+        return bool(getattr(self, "ontology_effective_", True))
 
     def _adopt_original_state(self, original: TrepanOriginalClassifier) -> None:
         """Adopta apenas o estado aprendido do TREPAN Original de referência."""
@@ -524,6 +534,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return False, "below_disagreement_threshold"
 
     def _priority(self, node: _Node) -> float:
+        if not self._ontology_effective():
+            return TrepanOriginalClassifier._priority(self, node)
         base = TrepanOriginalClassifier._priority(self, node)
         if not bool(self.error_focused_refinement) or not self._semantic_structure_active():
             return base
@@ -542,6 +554,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return float(base * multiplier)
 
     def _decision_sample(self, node: _Node):
+        if not self._ontology_effective():
+            return super()._decision_sample(node)
         X, y, model = super()._decision_sample(node)
         # O TREPAN Original actualiza a predição da folha com a maioria do
         # conjunto de decisão imediatamente depois deste hook. O perfil EFSR
@@ -687,6 +701,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return result
 
     def _feature_priority_scores(self, X: np.ndarray) -> np.ndarray:
+        if not self._ontology_effective():
+            return super()._feature_priority_scores(X)
         base = super()._feature_priority_scores(X)
         weights = getattr(self, "semantic_feature_weights_", None)
         if weights is None or np.allclose(weights, 1.0, atol=1e-12):
@@ -838,6 +854,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return self._test_feature_mean(profile.get("feature_error_scores"), test)
 
     def _split_selection_score(self, y, mask, test=None) -> float:
+        if not self._ontology_effective():
+            return super()._split_selection_score(y, mask, test)
         raw = super()._split_selection_score(y, mask, test)
         weight = self._semantic_weight_for_test(test)
         if not self._ontology_gain_active():
@@ -1015,6 +1033,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         fidelidade local ao MLP melhora pelo mínimo configurado. Isto impede que
         coerência semântica, isoladamente, force uma decisão pior.
         """
+        if not self._ontology_effective():
+            self._semantic_candidates_last_ = 0
+            return super()._best_mofn(X, y)
         semantic_result = super()._best_mofn(X, y)
         generated = self._ontology_guided_candidates(X, y)
         self._semantic_candidates_last_ = len(generated)
@@ -1193,6 +1214,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return final_result
 
     def _split_audit_metadata(self, test: MofNTest) -> dict:
+        if not self._ontology_effective():
+            return super()._split_audit_metadata(test)
         weight = self._semantic_weight_for_test(test)
         weights = getattr(self, "semantic_feature_weights_", np.ones(self.n_features_in_))
         weight_features = {
@@ -1297,6 +1320,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         constraints: ConstraintSet,
         node: _Node,
     ) -> np.ndarray:
+        if not self._ontology_effective():
+            return super()._draw_membership_queries(model, n, constraints, node)
         if n <= 0:
             return np.empty((0, model.n_features_in_), dtype=float)
         domain = getattr(self, "_ontology_domain_fit", None)
