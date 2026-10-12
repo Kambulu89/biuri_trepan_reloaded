@@ -37,7 +37,22 @@
       "core/trepan_original.py",
       "core/trepan_scientific_tuning.py"
     ],
-    "equivalence_report_v1_to_current": "PENDING (docs/b1b4/manifest_v2/equivalence_v1_to_current.json)",
+    "equivalence_report_v1_to_current": {
+      "files_sha256": {
+        "equivalence_provenance.json": "4e66e18342d83c522f5da08a235d54d66c5a7339105c44632422425ed1ac7956",
+        "equivalence_v1_to_current.json": "a5af5acfb8829df96d91133a2740e9393664dba610744bb814a7ded15fd27408",
+        "equivalence_v1_to_current.md": "e45b6f8986636e97ebf6b2fa03678150d80504c4ec16e40d4e41fd3a550d9ff8",
+        "equivalence_v1_to_current_UNPINNED_ENV.md": "5e4068a5156728a57f59495876299d8bd84dae88c87001659fa921ea325f6776"
+      },
+      "not_covered": [
+        "digits",
+        "other seeds",
+        "other machines"
+      ],
+      "scientific_fields": "PASS exato sob ambiente numérico fixado; 2 campos de contabilidade/instrumentação diferem por dataset",
+      "status": "DEV_PARTIAL",
+      "units": "iris(42,7) wine(42,7) breast_cancer(42)"
+    },
     "files": {
       "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
       "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
@@ -243,7 +258,7 @@
       "INSUFFICIENT_EVIDENCE"
     ]
   },
-  "manifest_sha256": "57b67ffff9e176d4d750b9f933fa38a2018d9ecbc6bee1c469079a4b4de57d40",
+  "manifest_sha256": "9cdafccea9f06f5572d71323df4946d101c96bb634f34cdc5555eb8d6a56d8cb",
   "manifest_version": "2-DRAFT",
   "ontology_protocol": {
     "doc": "docs/b1b4/09_AUTORIA_ONTOLOGIAS_E_CONGELAMENTO_OWL.md",

@@ -11,6 +11,13 @@
 | [04](04_MATRIZ_ABLACAO.md) | Os seis grupos A–F, variantes R0–R7, controlos, Original na representação OWL, estágios |
 | [05](05_CONTRATO_SUPERIORIDADE.md) | Hierarquia com `R_OWL`, estados, níveis de veredito, invariantes |
 | [06](06_PLANO_IMPLEMENTACAO.md) | Fases (nova **1a: conformidade EQ**), riscos, testes |
+| **Fase 0.5** | |
+| [12](12_RELATORIO_FASE05.md) | **Relatório da Fase 0.5**: estado dos 10 entregáveis, achados, decisões pendentes — começar por aqui |
+| [08](08_ELEGIBILIDADE_DATASETS.md) | Critérios EC1–EC11, matriz dos 12 candidatos, reservas (UCI inacessível: pré-verificação documental) |
+| [09](09_AUTORIA_ONTOLOGIAS_E_CONGELAMENTO_OWL.md) | Autoria independente de ontologias e contrato de congelamento OWL (SHA-256) |
+| [10](10_GRELHAS_MARGENS_CUSTO.md) | Grelhas λ, margens, seeds CONFIRM, custo (achado de inexequibilidade) |
+| [11](11_PLANO_V1_FASE1A.md) | Diagnóstico e plano de correção da V1; critérios de entrada/conclusão da Fase 1a |
+| `manifest_v2/` | `BENCHMARK_MANIFEST_v2.DRAFT.json` (não congelado) + evidência de equivalência v1→atual |
 
 ## O que mudou com a correção arquitetural
 1. **Regra central** (também em `CLAUDE.md` §2b): sem ontologia (ausente, rejeitada ou sem estrutura ativa) o Reloaded **é** o Original — em árvore, regras, m-of-n, **consultas ao oráculo**, previsões,

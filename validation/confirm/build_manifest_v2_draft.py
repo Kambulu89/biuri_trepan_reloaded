@@ -30,6 +30,17 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _equivalence_reference() -> Dict[str, Any]:
+    d = ROOT / "docs" / "b1b4" / "manifest_v2"
+    files = {n: _sha(d / n) for n in ("equivalence_v1_to_current.md", "equivalence_v1_to_current.json", "equivalence_provenance.json",
+                                      "equivalence_v1_to_current_UNPINNED_ENV.md") if (d / n).exists()}
+    if not files:
+        return {"status": "PENDING"}
+    return {"status": "DEV_PARTIAL", "files_sha256": files, "units": "iris(42,7) wine(42,7) breast_cancer(42)",
+            "scientific_fields": "PASS exato sob ambiente numérico fixado; 2 campos de contabilidade/instrumentação diferem por dataset",
+            "not_covered": ["digits", "other seeds", "other machines"]}
+
+
 def build() -> Dict[str, Any]:
     v1 = json.loads((ROOT / "validation/benchmark/BENCHMARK_MANIFEST_v1.json").read_text(encoding="utf-8"))
     cur = {f: _sha(ROOT / f) for f in FROZEN_CODE_FILES}
@@ -49,7 +60,7 @@ def build() -> Dict[str, Any]:
                       "evidence_levels": ["observed_only", "statistically_sustained"], "fidelity_loss_tolerance": "exploratory sensitivity only; never used to claim fidelity superiority"},
         "code_freeze": {"files": cur, "v1_hashes": v1["frozen_code_sha256"], "drift_vs_v1": drift,
                         "drift_policy": "Original/tuning mudaram desde o v1 (otimizações exatas de engenharia); re-congelar só com relatório de equivalência v1->atual versionado (ver Doc. 12 D-13)",
-                        "equivalence_report_v1_to_current": "PENDING (docs/b1b4/manifest_v2/equivalence_v1_to_current.json)"},
+                        "equivalence_report_v1_to_current": _equivalence_reference()},
         "splits": {"scheme": "holdout", "test_size": 0.25, "stratified": True, "dev_seeds": DEV_SEEDS, "confirm_seeds_rule": CONFIRM_SEED_RULE, "confirm_seeds": confirm_seeds()},
         "eligibility_criteria": {"EC3": EC3, "documented_in": "docs/b1b4/08_ELEGIBILIDADE_DATASETS.md", "sha256": _sha(ROOT / "docs/b1b4/08_ELEGIBILIDADE_DATASETS.md")},
         "datasets_confirm_primary": [k for k, v in sorted(CANDIDATES.items(), key=lambda kv: kv[1]["order"]) if v["primary"]],

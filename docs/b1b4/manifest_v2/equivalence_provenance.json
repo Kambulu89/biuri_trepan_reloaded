@@ -1,0 +1,46 @@
+{
+  "purpose": "equivalência de resultados científicos entre o código do manifest v1 (commit 578856215d3dc5d1720acd70b938b59fa7d5137f) e o código atual (main 1789c17 + docs), protocolo congelado v1, DEV",
+  "base_commit": "578856215d3dc5d1720acd70b938b59fa7d5137f",
+  "base_hashes_match_manifest_v1": true,
+  "optimized_commit": "1789c1763788046a75cc0a3ef0c75de859b18d11 (+ commits só de documentação/ferramentas, sem alteração a core/)",
+  "units": [
+    [
+      "iris",
+      42
+    ],
+    [
+      "iris",
+      7
+    ],
+    [
+      "wine",
+      42
+    ],
+    [
+      "wine",
+      7
+    ],
+    [
+      "breast_cancer",
+      42
+    ]
+  ],
+  "arms": "A-F do manifest v1",
+  "numeric_environment_both_sides": {
+    "OPENBLAS_CORETYPE": "Haswell",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NPY_DISABLE_CPU_FEATURES": "AVX512F AVX512CD AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_KNL AVX512_KNM"
+  },
+  "harness_only_patch_on_base": "validation/benchmark/manifest.py (worktree v1): ignora a verificação de data_hash dos datasets sintéticos (v1 faz hash bit-a-bit de X sintético, dependente de BLAS); não toca em ficheiros congelados nem em algoritmos",
+  "result_scientific_fields": "PASS exato (oracle_id, predições A-F, fidelidade, accuracy, balanced accuracy, macro-F1, nós, folhas, profundidade, estrutura das árvores, quality gate, contrastes, purity_epsilon, max_nodes, query_budget)",
+  "result_failures": "2 campos por dataset, ambos de contabilidade/instrumentação acrescentada depois do v1: 'relatório do tuning estrutural' (engineering_profile, contadores de ajustes, scientific_preprocessing_id, oracle_queries do tuning) e 'semantic audit' do relatório por split (contadores 'work'); as colunas SEMANTIC_AUDIT por braço são idênticas (0 diferenças)",
+  "unpinned_env_run": "FAIL em oracle_id (pesos do MLP diferem porque o run.py v1 não fixa o ambiente numérico); ver equivalence_v1_to_current_UNPINNED_ENV.md",
+  "not_covered": [
+    "digits",
+    "seeds fora de {42,7}",
+    "outros datasets",
+    "resultados em máquinas/CPUs diferentes"
+  ]
+}

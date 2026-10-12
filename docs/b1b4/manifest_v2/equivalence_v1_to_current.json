@@ -1,0 +1,483 @@
+{
+ "title": "BASELINE_VS_OPTIMIZED_EQUIVALENCE",
+ "datasets": [
+  "breast_cancer",
+  "iris",
+  "wine"
+ ],
+ "n_fields": 78,
+ "n_fail": 6,
+ "identical": false,
+ "tolerance": 0.0,
+ "ignored": "tempos, contadores de trabalho (queries por escopo do tuning, n\u00famero de ajustes) e identificadores de execu\u00e7\u00e3o",
+ "results": [
+  {
+   "dataset": "iris",
+   "field": "conjunto de bra\u00e7os A\u2013F",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "split_hash",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "preprocessing_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "oracle_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "tuning config selecionada (estrutural)",
+   "status": "FAIL",
+   "detail": "relat\u00f3rio do tuning estrutural difere"
+  },
+  {
+   "dataset": "iris",
+   "field": "purity_epsilon",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "max_nodes",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "query_budget",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions MLP (A)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions C4.5 (B)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions TREPAN Original (C)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions Reloaded Core (D)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions Reloaded + OWL (E)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "predictions Reloaded + OWL shuffled (F)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "fidelity",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "balanced accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "macro-F1",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "n\u00f3s",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "folhas",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "profundidade",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "quality gate",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "semantic audit",
+   "status": "FAIL",
+   "detail": "auditoria sem\u00e2ntica difere"
+  },
+  {
+   "dataset": "iris",
+   "field": "ontology_effectively_used / categoria",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "estrutura das \u00e1rvores (features/splits)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "iris",
+   "field": "contrastes",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "conjunto de bra\u00e7os A\u2013F",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "split_hash",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "preprocessing_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "oracle_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "tuning config selecionada (estrutural)",
+   "status": "FAIL",
+   "detail": "relat\u00f3rio do tuning estrutural difere"
+  },
+  {
+   "dataset": "wine",
+   "field": "purity_epsilon",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "max_nodes",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "query_budget",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions MLP (A)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions C4.5 (B)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions TREPAN Original (C)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions Reloaded Core (D)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions Reloaded + OWL (E)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "predictions Reloaded + OWL shuffled (F)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "fidelity",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "balanced accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "macro-F1",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "n\u00f3s",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "folhas",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "profundidade",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "quality gate",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "semantic audit",
+   "status": "FAIL",
+   "detail": "auditoria sem\u00e2ntica difere"
+  },
+  {
+   "dataset": "wine",
+   "field": "ontology_effectively_used / categoria",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "estrutura das \u00e1rvores (features/splits)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "wine",
+   "field": "contrastes",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "conjunto de bra\u00e7os A\u2013F",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "split_hash",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "preprocessing_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "oracle_id",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "tuning config selecionada (estrutural)",
+   "status": "FAIL",
+   "detail": "relat\u00f3rio do tuning estrutural difere"
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "purity_epsilon",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "max_nodes",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "query_budget",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions MLP (A)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions C4.5 (B)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions TREPAN Original (C)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions Reloaded Core (D)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions Reloaded + OWL (E)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "predictions Reloaded + OWL shuffled (F)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "fidelity",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "balanced accuracy",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "macro-F1",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "n\u00f3s",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "folhas",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "profundidade",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "quality gate",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "semantic audit",
+   "status": "FAIL",
+   "detail": "auditoria sem\u00e2ntica difere"
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "ontology_effectively_used / categoria",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "estrutura das \u00e1rvores (features/splits)",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "dataset": "breast_cancer",
+   "field": "contrastes",
+   "status": "PASS",
+   "detail": ""
+  }
+ ]
+}
