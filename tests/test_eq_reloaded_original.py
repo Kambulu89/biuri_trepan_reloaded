@@ -28,7 +28,8 @@ NON_EFFECTIVE = ("none", "depths_zero", "groups_unique")
 EFFECTIVE = ("depths", "weights", "groups", "relatedness", "projector", "combined")
 GOLDEN = json.loads((ROOT / "tests" / "golden" / "golden_effective.json").read_text())["entries"]
 # Suplemento portável (auditorias com 8 algarismos significativos), gerado com o código pré-correção (blob 0053b3d): as auditorias com floats
-# diferem no último bit entre plataformas (CI Windows); as saídas discretas (regras, previsões, contagens, fluxo ao oráculo) são sempre exatas.
+# diferem no último bit entre plataformas (CI Windows), tal como os bytes das amostras sintéticas enviadas ao oráculo (hash com entradas
+# arredondadas); as saídas discretas (regras, previsões, contagens, fluxo ao oráculo) são sempre exatas.
 GOLDEN_PORTABLE = json.loads((ROOT / "tests" / "golden" / "golden_effective_portable.json").read_text())["entries"]
 SIG = 8
 FLAGS = {"default": {}, "no_mirror": {"mirror_when_no_semantic_effect": False},
@@ -167,7 +168,10 @@ def test_golden_covers_all_scenarios_and_original_baseline_unchanged():
     kind, p, k, seed = "mixed", 6, 2, 11
     X, names, oracle = make_problem(seed, p=p, k=k, kind=kind)
     m, spy = fit_model(TrepanOriginalClassifier, {}, X[:200], names, oracle, seed)
-    assert fingerprint(m, spy, X[200:]) == GOLDEN[f"{kind}-p{p}-k{k}-s{seed}|original"]
+    key = f"{kind}-p{p}-k{k}-s{seed}|original"
+    assert fingerprint(m, spy, X[200:], SIG) == GOLDEN_PORTABLE[key]
+    if sys.platform.startswith("linux"):
+        assert fingerprint(m, spy, X[200:]) == GOLDEN[key]
     assert {k_.split("|")[1] for k_ in GOLDEN if not k_.endswith("|original")} == set(NON_EFFECTIVE) | set(EFFECTIVE)
 
 

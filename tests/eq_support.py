@@ -38,12 +38,23 @@ class ClosedFormOracle:
         return e / e.sum(axis=1, keepdims=True)
 
 
+def _round_sig(a: np.ndarray, sig: int) -> np.ndarray:
+    """Arredonda a ``sig`` algarismos significativos (vetorizado); zeros e não finitos ficam como estão."""
+    a = np.asarray(a, dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        mag = np.floor(np.log10(np.abs(a)))
+        dec = np.where(np.isfinite(mag), sig - 1 - mag, 0).astype(int)
+    out = np.where(np.isfinite(mag), np.round(a * 10.0 ** dec) / 10.0 ** dec, a)
+    return np.ascontiguousarray(out)
+
+
 class SpyOracle:
     """Regista método, forma e bytes de tudo o que recebe; opcionalmente falha em ``predict_proba``."""
 
     def __init__(self, inner, *, forbid_proba: bool = False):
         self.inner, self.forbid_proba = inner, forbid_proba
         self.h = hashlib.sha256()
+        self.hr = hashlib.sha256()          # fluxo com entradas arredondadas (portável entre plataformas)
         self.calls = {"predict": 0, "proba": 0}
         self.samples = {"predict": 0, "proba": 0}
         self.sequence: list[tuple[str, tuple[int, ...]]] = []
@@ -51,6 +62,7 @@ class SpyOracle:
     def _see(self, kind, X):
         a = np.ascontiguousarray(np.asarray(X, dtype=float))
         self.h.update(kind.encode() + str(a.shape).encode() + a.tobytes())
+        self.hr.update(kind.encode() + str(a.shape).encode() + _round_sig(a, 8).tobytes())
         self.calls[kind] += 1
         self.samples[kind] += len(a)
         self.sequence.append((kind, tuple(a.shape)))
@@ -68,8 +80,8 @@ class SpyOracle:
     def __getattr__(self, name):
         return getattr(self.inner, name)
 
-    def stream_digest(self) -> str:
-        return self.h.hexdigest()
+    def stream_digest(self, sig: Optional[int] = None) -> str:
+        return self.h.hexdigest() if sig is None else self.hr.hexdigest()
 
 
 def make_problem(seed: int, n: int = 240, p: int = 8, k: int = 3, kind: str = "continuous"):
@@ -128,7 +140,7 @@ def fingerprint(model, spy: SpyOracle, Xte, sig: Optional[int] = None) -> dict:
         "membership_queries": int(model.membership_queries_),
         "oracle_query_count": int(model.oracle_query_count_),
         "n_nodes": len(nodes),
-        "oracle_stream": spy.stream_digest(),
+        "oracle_stream": spy.stream_digest(sig),
         "oracle_calls": dict(spy.calls),
         "oracle_samples": dict(spy.samples),
         "oracle_sequence": digest(spy.sequence),
