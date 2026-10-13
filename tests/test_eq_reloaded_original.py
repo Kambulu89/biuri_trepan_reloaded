@@ -14,7 +14,7 @@ for p in (ROOT, ROOT / "tests"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from eq_support import (BUDGET, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, portable_audit_view,
+from eq_support import (BUDGET, audit_views, diff_views, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, portable_audit_view,
                         scenario_fit_kwargs)
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
@@ -33,6 +33,8 @@ GOLDEN = json.loads((ROOT / "tests" / "golden" / "golden_effective.json").read_t
 # arredondadas); as saídas discretas (regras, previsões, contagens, fluxo ao oráculo) são sempre exatas.
 GOLDEN_PORTABLE = json.loads((ROOT / "tests" / "golden" / "golden_effective_portable.json").read_text())["entries"]
 SIG = 8
+# Vistas de referência (Linux) das auditorias, só para diagnóstico de diferenças entre plataformas (não decidem passa/falha).
+DIAG_VIEWS = json.loads((ROOT / "tests" / "golden" / "diag_reference_views.json").read_text())
 FLAGS = {"default": {}, "no_mirror": {"mirror_when_no_semantic_effect": False},
          "no_efsr": {"error_focused_refinement": False, "mirror_when_no_semantic_effect": False}}
 E_FIELDS = ("rules", "predictions", "membership_queries", "oracle_query_count", "n_nodes", "oracle_stream", "oracle_calls",
@@ -161,7 +163,10 @@ def test_effective_behaviour_unchanged_golden(scenario):
         m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, seed, fit_kw=scenario_fit_kwargs(scenario, p))
         key = f"{kind}-p{p}-k{k}-s{seed}|{scenario}|{flag}"
         got = fingerprint(m, spy, X[200:], SIG)
-        assert got == GOLDEN_PORTABLE[key], (scenario, flag, portable_audit_view(m))             # todas as plataformas
+        if got != GOLDEN_PORTABLE[key]:      # diagnóstico: campos de auditoria que diferem da vista de referência (Linux)
+            ref = DIAG_VIEWS.get(key)
+            detail = diff_views(ref, audit_views(m)) if ref else [portable_audit_view(m)]
+            assert got == GOLDEN_PORTABLE[key], (scenario, flag, detail)
         if sys.platform.startswith("linux"):                                                     # plataforma de geração: bit-a-bit
             assert fingerprint(m, spy, X[200:]) == GOLDEN[key], (scenario, flag)
 

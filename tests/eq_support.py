@@ -52,6 +52,32 @@ def _round_sig(a: np.ndarray, sig: int) -> np.ndarray:
     return np.ascontiguousarray(out)
 
 
+def audit_views(model) -> dict:
+    """Auditorias de relato como estrutura JSON (floats a 8 algarismos significativos), para diagnóstico campo a campo."""
+    return {n: _jsonable(getattr(model, n), 8) for n in ("split_audit_", "semantic_split_audit_", "error_region_audit_") if hasattr(model, n)}
+
+
+def diff_views(ref, got, path: str = "", out=None, limit: int = 25) -> list:
+    """Diferenças campo a campo entre duas vistas (apenas diagnóstico; não decide o resultado do teste)."""
+    out = [] if out is None else out
+    if len(out) >= limit:
+        return out
+    if isinstance(ref, dict) and isinstance(got, dict):
+        for k in sorted(set(ref) | set(got)):
+            if k not in ref or k not in got:
+                out.append(f"{path}/{k}: só em {'ref' if k in ref else 'got'}")
+            else:
+                diff_views(ref[k], got[k], f"{path}/{k}", out, limit)
+    elif isinstance(ref, list) and isinstance(got, list):
+        if len(ref) != len(got):
+            out.append(f"{path}: len {len(ref)} != {len(got)}")
+        for i, (a, b) in enumerate(zip(ref, got)):
+            diff_views(a, b, f"{path}[{i}]", out, limit)
+    elif ref != got:
+        out.append(f"{path}: ref={str(ref)[:80]} got={str(got)[:80]}")
+    return out[:limit]
+
+
 def portable_audit_view(model, limit: int = 4000) -> str:
     """Texto compacto (floats com 8 algarismos significativos) das auditorias, para diagnóstico de diferenças entre plataformas."""
     view = {n: _jsonable(getattr(model, n), 8) for n in ("split_audit_", "semantic_split_audit_", "error_region_audit_") if hasattr(model, n)}
