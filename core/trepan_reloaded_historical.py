@@ -22,6 +22,7 @@ import numpy as np
 
 from core.trepan_original import (
     ConstraintSet,
+    Literal,
     FeatureDistributionModel,
     MofNTest,
     TrepanOriginalClassifier,
@@ -121,6 +122,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """
 
     GAIN_CRITERIA = ("normalized_information_gain", "information_gain", "gain_ratio")
+    SEMANTIC_CALIBRATIONS = (None, "tiebreak", "bounded", "calibrated")
     # Fase 1b (V2): no mirror, a reexecução do Original reutiliza as respostas de chamadas ``predict`` byte-idênticas já feitas ao mesmo
     # oráculo neste fit (hoje: a rotulagem inicial do treino). ``False`` restaura o comportamento anterior (útil para auditoria/ablação).
     REUSE_IDENTICAL_ORACLE_CALLS = True
@@ -165,6 +167,10 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         gain_criterion: str = "normalized_information_gain",
         semantic_query_projection: bool = True,
         error_focus_fidelity_tolerance: float = 0.015,
+        semantic_calibration: Optional[str] = None,
+        semantic_lambda_cap: float = 0.20,
+        semantic_tie_se_multiplier: float = 1.0,
+        log_split_candidates: bool = False,
     ):
         super().__init__(
             max_nodes=max_nodes,
@@ -213,6 +219,17 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # EFSR: perda de fidelidade local/real tolerada quando a coerência
         # semântica do split aumenta. 0 recupera o gate estrito anterior.
         self.error_focus_fidelity_tolerance = float(error_focus_fidelity_tolerance)
+        # B1 (EXPERIMENTAL, desligado por omissão): calibração do contributo semântico no score do split. ``None`` = score histórico
+        # (bit-a-bit). Só atua com ontologia efetiva (S3); nunca altera o caminho ≡ Original (S0–S2).
+        if semantic_calibration not in self.SEMANTIC_CALIBRATIONS:
+            raise ValueError(f"semantic_calibration deve ser um de {self.SEMANTIC_CALIBRATIONS}.")
+        if float(semantic_lambda_cap) < 0.0 or float(semantic_tie_se_multiplier) < 0.0:
+            raise ValueError("semantic_lambda_cap e semantic_tie_se_multiplier devem ser >= 0.")
+        self.semantic_calibration = semantic_calibration
+        self.semantic_lambda_cap = float(semantic_lambda_cap)
+        self.semantic_tie_se_multiplier = float(semantic_tie_se_multiplier)
+        # Instrumentação (sem efeito nas decisões, nas consultas nem no RNG): regista TODOS os candidatos pontuados, não só o vencedor.
+        self.log_split_candidates = bool(log_split_candidates)
 
     def fit(
         self,
@@ -330,6 +347,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # Predicado único de «ontologia efetiva» (contrato EQ, Doc. 7): a extensão ontológica altera algum mecanismo do Original.
         # Inclui o domínio OWL (filtragem das membership queries), que atua mesmo com a projeção desligada.
         self.ontology_effective_ = bool(self.reload_extension_active_ or self._ontology_domain_fit is not None)
+        self.split_candidate_log_: list[dict] = []
         semantic_inputs_given = any(v is not None for v in (
             semantic_feature_weights, semantic_feature_groups, semantic_relatedness_matrix, semantic_feature_depths, query_projector,
             semantic_feature_entities,
@@ -1029,10 +1047,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             return super()._split_selection_score(y, mask, test)
         raw = super()._split_selection_score(y, mask, test)
         weight = self._semantic_weight_for_test(test)
+        calibration = self.semantic_calibration
+        if calibration is not None and not getattr(self, "_semantic_search_disabled", False) and self._semantic_structure_active():
+            return self._calibrated_split_score(raw, weight, y, mask, test, calibration)
         if not self._ontology_gain_active():
             if np.isclose(weight, 1.0, atol=1e-12):
                 return raw
-            return float(raw * (weight ** float(self.semantic_gain_strength)))
+            score = float(raw * (weight ** float(self.semantic_gain_strength)))
+            if self.log_split_candidates:
+                self._log_candidate(test, raw, raw, weight, 0.0, 0.0, score, "legacy_weight_only")
+            return score
         # Um split sem informação nunca vence só pelos bónus ontológicos.
         if raw <= 1e-12:
             return 0.0
@@ -1042,13 +1066,103 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             base_gain = self._normalized_information_gain(raw, y)
         else:
             base_gain = raw
+        stat_gain = base_gain
         if not np.isclose(weight, 1.0, atol=1e-12):
             base_gain *= weight ** float(self.semantic_gain_strength)
         onto_depth = self._onto_depth_for_test(test)
         error_cov = self._error_coverage_for_test(test)
         gain_reloaded = base_gain + (self.alpha * onto_depth) + (self.beta * error_cov)
+        if self.log_split_candidates:
+            self._log_candidate(test, raw, stat_gain, weight, onto_depth, error_cov, float(gain_reloaded), "legacy")
         return float(gain_reloaded)
 
+    # ---- B1: calibração do contributo semântico (EXPERIMENTAL) ------------------------------------------------------------
+    def _calibrated_split_score(self, raw, weight, y, mask, test, calibration: str) -> float:
+        """Score calibrado. ``s`` = componente estatística (ganho normalizado do nó, ∈[0,1]); ``m`` = contributo semântico líquido, definido
+        para que o score histórico seja exatamente ``s + m``:  m = s·(w^k − 1) + α·OntoDepth + β·ErrorCoverage.
+
+        * ``bounded``   : score = s + clip(m, −λ·s, +λ·s)            (λ = ``semantic_lambda_cap``; λ=0 ⇒ ranking puramente estatístico)
+        * ``calibrated``: score = s + λ·s·tanh(m / (λ·s))             (saturação suave com o mesmo teto λ·s)
+        * ``tiebreak``  : score = s + τ·clip(q, −1, 1), τ = c/√n_real, q = (w^k − 1) + α·OntoDepth + β·ErrorCoverage  (a semântica só reordena
+          candidatos estatisticamente indistinguíveis: |Δs| < 2τ; n_real = linhas REAIS do nó, nunca as consultas sintéticas)
+        """
+        if raw <= 1e-12:
+            return 0.0
+        if self.gain_criterion == "gain_ratio":
+            s = self._gain_ratio(raw, mask)
+        elif self.gain_criterion == "normalized_information_gain":
+            s = self._normalized_information_gain(raw, y)
+        else:
+            s = raw
+        k = float(self.semantic_gain_strength)
+        w_term = (weight ** k) - 1.0 if not np.isclose(weight, 1.0, atol=1e-12) else 0.0
+        onto_depth = self._onto_depth_for_test(test)
+        error_cov = self._error_coverage_for_test(test)
+        sem_add = float(self.alpha) * onto_depth + float(self.beta) * error_cov
+        lam = float(self.semantic_lambda_cap)
+        if calibration == "bounded":
+            m = s * w_term + sem_add
+            score = s + float(np.clip(m, -lam * s, lam * s))
+        elif calibration == "calibrated":
+            m = s * w_term + sem_add
+            score = s if lam <= 0.0 or s <= 0.0 else s + lam * s * float(np.tanh(m / (lam * s)))
+        else:   # tiebreak
+            ry = getattr(self, "_current_real_validation_y_", None)
+            n_real = int(len(ry)) if ry is not None and len(ry) else int(len(y))
+            tau = float(self.semantic_tie_se_multiplier) / math.sqrt(max(1, n_real))
+            score = s + tau * float(np.clip(w_term + sem_add, -1.0, 1.0))
+        if self.log_split_candidates:
+            self._log_candidate(test, raw, s, weight, onto_depth, error_cov, float(score), calibration)
+        return float(score)
+
+    def candidate_log_summary(self) -> dict:
+        """Sumário por nó do log de candidatos (exige ``log_split_candidates``): escalas reais e efeito do contributo semântico na ESCOLHA.
+
+        Por nó (fase ``semantic``): ``stat_top`` = melhor componente estatística entre os candidatos; ``winner_stat`` = componente estatística do
+        teste finalmente escolhido (``test`` do audit); ``regret`` = (stat_top − winner_stat)/stat_top; ``switched`` = o vencedor não é o melhor
+        estatístico (decisão alterada pela semântica ou pelo gate EFSR); ``ratio_m_over_s`` = mediana de (score − s)/s dos candidatos do nó.
+        """
+        from collections import defaultdict
+        log = getattr(self, "split_candidate_log_", None) or []
+        by_node: dict = defaultdict(list)
+        for r in log:
+            if r["phase"] == "semantic" and r["stat_component"] > 1e-12:
+                by_node[r["node_id"]].append(r)
+        chosen = {int(row["node_id"]): str(row.get("test")) for row in (getattr(self, "split_audit_", None) or []) if "node_id" in row}
+        nodes = []
+        for nid, rows in sorted(by_node.items()):
+            top = max(r["stat_component"] for r in rows)
+            top_test = max(rows, key=lambda r: r["stat_component"])
+            win_txt = chosen.get(nid)
+            win = [r for r in rows if win_txt is not None and MofNTest(r["m"], tuple(Literal(f, t, g) for f, t, g in r["literals"])).text(self.feature_names_in_) == win_txt]
+            winner_stat = max((r["stat_component"] for r in win), default=None)
+            nodes.append({
+                "node_id": nid, "n_candidates": len(rows), "stat_top": float(top),
+                "winner_stat": None if winner_stat is None else float(winner_stat),
+                "regret": None if winner_stat is None else float((top - winner_stat) / top),
+                "switched": None if winner_stat is None else bool(winner_stat < top - 1e-12),
+                "ratio_m_over_s_median": float(np.median([(r["score"] - r["stat_component"]) / r["stat_component"] for r in rows])),
+                "top_stat_literals": top_test["literals"],
+            })
+        regrets = [n["regret"] for n in nodes if n["regret"] is not None]
+        sw = [n["switched"] for n in nodes if n["switched"] is not None]
+        return {
+            "nodes": nodes, "candidates_logged": len(log), "nodes_with_candidates": len(nodes),
+            "switch_rate": float(np.mean(sw)) if sw else None,
+            "regret_median": float(np.median(regrets)) if regrets else None, "regret_max": float(np.max(regrets)) if regrets else None,
+            "ratio_m_over_s_median": float(np.median([n["ratio_m_over_s_median"] for n in nodes])) if nodes else None,
+        }
+
+    def _log_candidate(self, test, raw, stat_gain, weight, onto_depth, error_cov, score, variant) -> None:
+        """Registo de TODOS os candidatos pontuados (instrumentação pura)."""
+        profile = getattr(self, "_current_error_profile_", None) or {}
+        lits = [] if test is None else [(int(l.feature), float(l.threshold), bool(l.greater)) for l in test.literals]
+        self.split_candidate_log_.append({
+            "node_id": int(profile.get("node_id", -1)), "m": None if test is None else int(test.m), "n": len(lits), "literals": lits,
+            "raw_information_gain": float(raw), "stat_component": float(stat_gain), "weight": float(weight), "onto_depth": float(onto_depth),
+            "error_coverage": float(error_cov), "score": float(score), "variant": variant,
+            "lambda_cap": float(self.semantic_lambda_cap), "phase": "data_only" if getattr(self, "_semantic_search_disabled", False) else "semantic",
+        })
 
     def _semantic_structure_active(self) -> bool:
         if getattr(self, "_semantic_search_disabled", False):

@@ -80,11 +80,21 @@ class BenchmarkConfig:
     structure_search: Optional[ScientificTrepanSearchConfig] = None      # None -> CV 5x3 científica
     # False: não treina o MLP ontológico nem corre o gate/braços de OUTRO oráculo (fora de A–F): só o benchmark principal.
     different_oracle_experiment: bool = True
+    # B1 (EXPERIMENTAL; vazio por omissão => lista de braços e configuração IDÊNTICAS às anteriores): variantes de calibração do contributo
+    # semântico avaliadas como braços adicionais (E-like) + controlo permutado, com o mesmo MLP, oráculo, ontologia e tuning estrutural.
+    b1_calibrations: Sequence[str] = ()                 # subconjunto de ("tiebreak", "bounded", "calibrated")
+    b1_lambdas: Sequence[float] = ()                    # grelha de lambda_cap (bounded/calibrated); tiebreak não usa λ
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["seeds"] = list(self.seeds)
         d["semantic_lambdas"] = list(self.semantic_lambdas)
+        if not self.b1_calibrations:                    # config sem B1 serializa exatamente como antes
+            d.pop("b1_calibrations", None)
+            d.pop("b1_lambdas", None)
+        else:
+            d["b1_calibrations"] = list(self.b1_calibrations)
+            d["b1_lambdas"] = list(self.b1_lambdas)
         return d
 
 
@@ -158,6 +168,9 @@ class ArmSpec:
     role: str = "main"           # main | ablation | sensitivity | different_oracle_experiment
     group: str = ""              # A..F no benchmark principal
     control: bool = False        # controlo negativo (nunca é evidência de uso da ontologia)
+    calibration: Optional[str] = None    # B1: tiebreak | bounded | calibrated (None = score histórico)
+    lambda_cap: float = 0.0              # B1: teto λ do bónus semântico (bounded/calibrated)
+    log_candidates: bool = False         # B1: instrumentação de todos os candidatos (sem efeito nas decisões)
 
 
 def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
@@ -202,6 +215,19 @@ def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
         if float(lam) not in (0.0, 1.0):
             arms.append(ArmSpec(f"reloaded_owl_full_lambda{lam:g}", "trepan_reloaded", f"Sensibilidade λ={lam:g}", tree_space="enr",
                                 oracle="mlp_original", semantic="real", lam=float(lam), needs_semantic=True, role="sensitivity"))
+    if cfg.b1_calibrations:      # E reproduzido com instrumentação (deve ser bit-a-bit E): escalas reais do score histórico
+        arms.append(ArmSpec("b1_legacy_logged", "trepan_reloaded", "B1 referência: E com log de candidatos (score histórico)", tree_space="enr",
+                            oracle="mlp_original", semantic="real", lam=1.0, needs_semantic=True, role="b1_variant", group="B1", log_candidates=True))
+    for cal in cfg.b1_calibrations:
+        lams = (0.0,) if cal == "tiebreak" else tuple(float(v) for v in cfg.b1_lambdas)
+        for lam in lams:
+            tag = "b1_tiebreak" if cal == "tiebreak" else f"b1_{cal}_l{lam:g}".replace(".", "p")
+            arms.append(ArmSpec(tag, "trepan_reloaded", f"B1 {cal} (λcap={lam:g}): Reloaded + OWL real, score calibrado -> FrozenOracle",
+                                tree_space="enr", oracle="mlp_original", semantic="real", lam=1.0, needs_semantic=True, role="b1_variant",
+                                group="B1", calibration=cal, lambda_cap=lam))
+            arms.append(ArmSpec(tag + "_shuf", "trepan_reloaded", f"B1 {cal} (λcap={lam:g}): CONTROLO NEGATIVO com OWL permutada",
+                                tree_space="enr", oracle="mlp_original", semantic="shuffled", lam=1.0, needs_semantic=True, role="b1_variant",
+                                group="B1", control=True, calibration=cal, lambda_cap=lam))
     return arms
 
 
@@ -625,6 +651,10 @@ class BenchmarkRunner:
                           semantic_gain_strength=float(spec.lam), semantic_group_strength=0.15 * float(spec.lam),
                           semantic_active_query_fraction=0.65 if spec.active_queries else 0.0,
                           mirror_when_no_semantic_effect=False)
+                if spec.calibration is not None:
+                    kw.update(semantic_calibration=spec.calibration, semantic_lambda_cap=float(spec.lambda_cap))
+                if spec.log_candidates or spec.calibration is not None:
+                    kw.update(log_split_candidates=True)
                 fit_kw: Dict[str, Any] = {}
                 if spec.lam > 0 and spec.semantic != "none":
                     sl = ctx.orig_idx if not use_enr else list(range(ctx.n_features))
@@ -686,6 +716,20 @@ class BenchmarkRunner:
                    semantic_mirror_applied=False, mirror_applied=False,
                    benchmark_group=spec.group, arm_role=spec.role,
                    lambda_semantic=float(spec.lam), tree_max_n=int(common["max_n"]))
+        if spec.calibration is not None or spec.log_candidates:
+            summ = tree.candidate_log_summary()
+            row.update(b1_calibration=spec.calibration, b1_lambda_cap=float(spec.lambda_cap), b1_candidates_logged=summ["candidates_logged"],
+                       b1_nodes_with_candidates=summ["nodes_with_candidates"], b1_switch_rate=summ["switch_rate"],
+                       b1_regret_median=summ["regret_median"], b1_regret_max=summ["regret_max"],
+                       b1_ratio_m_over_s_median=summ["ratio_m_over_s_median"])
+        acc = getattr(tree, "oracle_accounting_", None)
+        if acc:
+            row.update(ontology_state=acc["ontology_state"], eq_contract_version=acc["eq_contract_version"],
+                       original_oracle_calls=acc["original_oracle_calls"], original_oracle_samples=acc["original_oracle_samples"],
+                       semantic_oracle_calls=acc["semantic_oracle_calls"], semantic_oracle_samples=acc["semantic_oracle_samples"],
+                       reused_oracle_calls=acc["reused_oracle_calls"], total_oracle_calls=acc["total_oracle_calls"],
+                       total_oracle_samples=acc["total_oracle_samples"], semantic_attempt_executed=acc["semantic_attempt_executed"],
+                       semantic_effect_observed=acc["semantic_effect_observed"], semantic_attempt_status=acc["semantic_attempt_status"])
         if spec.semantic != "none":
             row["semantic_processing_time"], row["reasoner_time"] = ctx.semantic_time, ctx.reasoner_time
         return row, pred
