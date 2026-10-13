@@ -309,11 +309,12 @@ def test_v2_ledger_does_not_alter_observed_oracle_surface():
     assert _ExactCallLedger(ClosedFormOracle(3, 2, 0)).classes_.tolist() == [0, 1]
 
 
-def test_v2_no_ledger_without_mirror_or_without_effective_ontology():
+def test_v2_no_response_cache_without_mirror_or_without_effective_ontology():
+    """Sem mirror possível o observador só conta (não guarda respostas nem faz hashing): nada para reutilizar."""
     X, names, oracle = make_problem(5, p=8, k=3)
     for kw, sc in (({"mirror_when_no_semantic_effect": False}, "combined"), ({}, "none"), ({}, "depths_zero")):
         m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, 5, fit_kw=scenario_fit_kwargs(sc, 8))
-        assert not hasattr(m, "oracle_accounting_")
+        assert m.oracle_accounting_["reused_oracle_calls"] == 0 and m.oracle_accounting_["reused_oracle_samples"] == 0
 
 
 def test_v2_oracle_not_shared_across_different_oracles_and_seeds_reproducible():
@@ -330,9 +331,102 @@ def test_v2_oracle_not_shared_across_different_oracles_and_seeds_reproducible():
     assert m2.export_rules() == o2.export_rules()                                 # com outro oráculo continua ≡ Original (mirror)
 
 
-@pytest.mark.xfail(strict=True, reason="V2 PARCIAL (Doc. 15): a identidade do fluxo COMPLETO no caso 4 sem efeito mensurável não é alcançável por construção — a "
-                                       "tentativa semântica é necessária para decidir «sem efeito». Eliminada a parte redundante (chamadas byte-idênticas); o "
-                                       "fluxo do Original é exato (teste positivo acima). Aguarda decisão do utilizador sobre o contrato do caso 4.")
-def test_v2_mirror_full_oracle_stream_equals_original_known_by_design_gap():
-    (_, so), (_, sr), _ = _mirrored_pair("projector", 3, True)
-    assert so.stream_digest() == sr.stream_digest()
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Contrato EQ v2.0 (S0–S3): substitui o xfail da V2 por verificações positivas
+# ---------------------------------------------------------------------------------------------------------------------------------
+def _acc_matches_spy(m, spy):
+    a = m.oracle_accounting_
+    assert a["total_oracle_calls"] == sum(spy.calls.values())
+    assert a["total_oracle_samples"] == sum(spy.samples.values())
+    assert a["total_oracle_samples"] == a["original_oracle_samples"] + a["semantic_oracle_samples"] - a["reused_oracle_samples"] or a["ontology_state"] != "S3"
+
+
+class _RejectedGraph:
+    is_active = False
+
+
+def test_contract_state_classification_S0_S1_S2_S3():
+    X, names, oracle = make_problem(5, p=8, k=3)
+    cases = {
+        "S0": {},
+        "S1": {"ontology_graph": _RejectedGraph()},
+        "S2": scenario_fit_kwargs("depths_zero", 8),          # estrutura fornecida mas sem mecanismo executável
+        "S3": scenario_fit_kwargs("weights", 8),
+    }
+    for state, fk in cases.items():
+        m, spy = fit_model(TrepanReloadedClassifier, {}, X[:200], names, oracle, 5, fit_kw=fk)
+        assert m.ontology_state_ == state and m.oracle_accounting_["ontology_state"] == state
+        assert m.oracle_accounting_["eq_contract_version"] == TrepanReloadedClassifier.EQ_CONTRACT_VERSION == "2.0-S0S3"
+        assert m.oracle_accounting_["semantic_attempt_executed"] is (state == "S3")
+
+
+@pytest.mark.parametrize("seed", [3, 11, 29])
+@pytest.mark.parametrize("state_kw", ["S0", "S1", "S2"])
+def test_contract_S0_S1_S2_full_equivalence_and_zero_semantic_cost(state_kw, seed):
+    """S0–S2: equivalência INTEGRAL E1–E9 (fluxo de consultas incluído) e custo semântico nulo."""
+    fk = {"S0": {}, "S1": {"ontology_graph": _RejectedGraph()}, "S2": scenario_fit_kwargs("groups_unique", 8)}[state_kw]
+    X, names, oracle = make_problem(seed, p=8, k=3)
+    mo, so = fit_model(TrepanOriginalClassifier, {}, X[:200], names, oracle, seed)
+    mr, sr = fit_model(TrepanReloadedClassifier, {}, X[:200], names, oracle, seed, fit_kw=fk, forbid_proba=True)
+    fo, fr = fingerprint(mo, so, X[200:]), fingerprint(mr, sr, X[200:])
+    assert all(fo[f] == fr[f] for f in E_FIELDS)
+    a = mr.oracle_accounting_
+    assert a["semantic_attempt_executed"] is False and a["semantic_oracle_calls"] == 0 and a["semantic_oracle_samples"] == 0
+    assert a["semantic_attempt_status"] == "NO_SEMANTIC_ATTEMPT"
+    assert a["total_oracle_calls"] == sum(so.calls.values()) and a["total_oracle_samples"] == sum(so.samples.values())
+    _acc_matches_spy(mr, sr)
+
+
+@pytest.mark.parametrize("seed", [3, 11, 29])
+@pytest.mark.parametrize("scenario", MIRROR_SCENARIOS)
+def test_contract_S3_original_portion_equivalent_and_attempt_fully_accounted(scenario, seed):
+    """S3 com mirror: porção Original ≡ Original isolado (regras, previsões, fluxo), modelo final ≡ Original, e TODAS as consultas
+    adicionais atribuídas à tentativa semântica; o total contabilizado coincide com o que o oráculo recebeu (sem alterações ocultas)."""
+    (mo, so), (mr, sr), X = _mirrored_pair(scenario, seed, True)
+    a = mr.oracle_accounting_
+    assert a["ontology_state"] == "S3" and a["semantic_attempt_executed"] is True
+    if not mr.semantic_effect_mirror_applied_:
+        pytest.skip("efeito semântico estrutural observado neste cenário/seed (sem mirror): coberto pelo teste S3 sem mirror")
+    assert a["semantic_effect_observed"] is False and a["semantic_attempt_status"] == "SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN"
+    assert mo.export_rules() == mr.export_rules() and np.array_equal(mo.predict(X[200:]), mr.predict(X[200:]))
+    # porção Original: pedidos (enviados + reutilizados) == Original isolado, em chamadas e amostras
+    assert a["original_portion_executed"] is True
+    assert a["original_oracle_calls"] == sum(so.calls.values()) and a["original_oracle_samples"] == sum(so.samples.values())
+    # tudo o que excede o Original é tentativa semântica (nenhuma consulta fora das duas porções)
+    assert a["semantic_oracle_calls"] == a["semantic_attempt"]["predict"]["calls"] + a["semantic_attempt"]["predict_proba"]["calls"]
+    assert a["total_oracle_calls"] == a["original_oracle_calls"] + a["semantic_oracle_calls"] - a["reused_oracle_calls"]
+    _acc_matches_spy(mr, sr)
+    assert a["original_rerun"]["predict_proba"]["calls"] == 0            # o Original nunca consulta predict_proba
+
+
+@pytest.mark.parametrize("scenario", ["weights", "groups", "combined"])
+def test_contract_S3_without_mirror_attempt_is_whole_pass_and_effect_flagged(scenario):
+    X, names, oracle = make_problem(3, p=8, k=3)
+    kw = {"mirror_when_no_semantic_effect": False}
+    m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, 3, fit_kw=scenario_fit_kwargs(scenario, 8))
+    a = m.oracle_accounting_
+    assert a["ontology_state"] == "S3" and a["semantic_attempt_executed"] is True
+    assert a["original_portion_executed"] is False and a["original_oracle_samples"] == 0
+    assert a["semantic_oracle_samples"] == a["total_oracle_samples"] == sum(spy.samples.values())
+    assert a["semantic_effect_observed"] == bool(m.semantic_audit_summary()["ontology_influenced_splits"]
+                                                  or m.semantic_audit_summary()["error_focused_interventions_accepted"])
+    _acc_matches_spy(m, spy)
+
+
+def test_contract_gain_is_not_inferred_from_attempt():
+    """Tentativa executada ≠ ganho: com árvores idênticas ao Original o estado é SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN; empates não são ganho."""
+    from validation.benchmark.semantic_cost import cost_report, efficiency_report, no_effect_rate, semantic_gain_report
+    (mo, so), (mr, sr), X = _mirrored_pair("projector", 3, True)
+    orc = ClosedFormOracle(8, 3, 4).predict(X[200:])                                      # oráculo do problema (make_problem: seed+1)
+    y = orc                                                                               # só para exercitar o cálculo
+    g = semantic_gain_report(mr, mo, X[200:], y, orc)
+    assert g["predictions_identical"] and g["semantic_gain_accuracy"] == 0.0 and g["semantic_gain_fidelity"] == 0.0
+    assert g["semantic_attempt_status"] == "SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN"
+    assert g["fidelity_non_inferior"] is True and g["fidelity_strictly_superior"] is False  # F_R >= F_O vs F_R > F_O
+    c = cost_report(mr, ref_total_oracle_samples=sum(so.samples.values()), ref_total_oracle_calls=sum(so.calls.values()))
+    assert c["extra_oracle_samples_vs_original"] == c["semantic_oracle_samples"] - c["reused_oracle_samples"] > 0
+    e = efficiency_report(g, c, mr)
+    assert e["fidelity_gain_per_1k_extra_samples"] == 0.0 and e["complexity_diff_nodes"] == 0
+    assert no_effect_rate([g]) == 1.0
+    g0 = semantic_gain_report(mo, mo, X[200:], y, orc)
+    assert g0["semantic_attempt_status"] == "NO_SEMANTIC_ATTEMPT" and no_effect_rate([g0]) is None

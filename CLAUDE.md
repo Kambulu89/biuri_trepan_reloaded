@@ -34,6 +34,10 @@
   construção da árvore, seleção de divisões, regras, m-of-n, **fluxo de consultas ao oráculo**, previsões, fidelidade, accuracy e complexidade. O mesmo vale se a ontologia for
   rejeitada pelo quality gate ou não produzir estrutura semântica ativa. Diferenças só são aceites se forem não semânticas, justificadas e **previamente autorizadas** (allowlist
   versionada, vazia por omissão). Formalização e testes: `docs/b1b4/07_CONTRATO_EQUIVALENCIA.md`.
+- **Contrato EQ v2.0 (estados S0–S3):** S0 ontologia ausente, S1 rejeitada, S2 válida sem mecanismo semântico executado → equivalência **integral** E1–E9. S3 válida com tentativa semântica
+  executada → porção Original ≡ Original isolado **+ tentativa semântica auditada** (todas as consultas adicionais atribuídas e contabilizadas em `oracle_accounting_`, nunca ocultas). Tentativa
+  executada ≠ ganho: sem melhoria observada o estado é `SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN`. O TREPAN Original canónico não se modifica (inclui o desempate m-of-n: limitação de
+  reprodutibilidade registada; política determinística só como variante experimental isolada).
 - Com ontologia efetiva só são permitidos mecanismos **ontológicos** (matching, hierarquia/domínio, enriquecimento de representação, restrições, orientação semântica de splits,
   calibração do contributo semântico, aceitação/controlo de splits influenciados pela semântica, seleção de configurações do Reloaded enriquecido, m-of-n guiado por relações
   OWL), cada um controlável por flag, auditável e com controlo negativo (ontologia permutada/aleatória) e controlo de engenharia convencional de features.

@@ -54,8 +54,9 @@ class _ExactCallLedger:
     Só observa: não altera argumentos nem respostas. ``predict_proba`` é exposto apenas se o oráculo o tiver (preserva ``hasattr``).
     """
 
-    def __init__(self, inner):
+    def __init__(self, inner, keep_responses: bool = True):
         self.inner = inner
+        self.keep_responses = bool(keep_responses)      # False: só contabiliza (sem hashing nem memória)
         self.responses: dict = {}
         self.stats = {"predict": [0, 0], "predict_proba": [0, 0]}
 
@@ -63,7 +64,8 @@ class _ExactCallLedger:
         out = self.inner.predict(X)
         self.stats["predict"][0] += 1
         self.stats["predict"][1] += int(len(X))
-        self.responses[_exact_call_key("predict", X)] = np.array(out, copy=True)
+        if self.keep_responses:
+            self.responses[_exact_call_key("predict", X)] = np.array(out, copy=True)
         return out
 
     def __getattr__(self, name):
@@ -122,6 +124,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
     # Fase 1b (V2): no mirror, a reexecução do Original reutiliza as respostas de chamadas ``predict`` byte-idênticas já feitas ao mesmo
     # oráculo neste fit (hoje: a rotulagem inicial do treino). ``False`` restaura o comportamento anterior (útil para auditoria/ablação).
     REUSE_IDENTICAL_ORACLE_CALLS = True
+    # Contrato de equivalência EQ v2.0 (Doc. 7 §9): S0 ontologia ausente, S1 rejeitada, S2 válida sem mecanismo semântico executado
+    # (≡ Original, E1–E9 integrais); S3 válida com tentativa semântica executada (porção Original ≡ Original isolado + tentativa auditada).
+    EQ_CONTRACT_VERSION = "2.0-S0S3"
 
     def __init__(
         self,
@@ -325,6 +330,18 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # Predicado único de «ontologia efetiva» (contrato EQ, Doc. 7): a extensão ontológica altera algum mecanismo do Original.
         # Inclui o domínio OWL (filtragem das membership queries), que atua mesmo com a projeção desligada.
         self.ontology_effective_ = bool(self.reload_extension_active_ or self._ontology_domain_fit is not None)
+        semantic_inputs_given = any(v is not None for v in (
+            semantic_feature_weights, semantic_feature_groups, semantic_relatedness_matrix, semantic_feature_depths, query_projector,
+            semantic_feature_entities,
+        ))
+        if self.ontology_effective_:
+            self.ontology_state_ = "S3"        # válida com tentativa semântica executada
+        elif ontology_graph is not None and not graph_active:
+            self.ontology_state_ = "S1"        # rejeitada / inativa
+        elif ontology_graph is None and not semantic_inputs_given:
+            self.ontology_state_ = "S0"        # ausente
+        else:
+            self.ontology_state_ = "S2"        # válida sem mecanismo semântico executado
         self.algorithm_family_ = "historical_trepan"
         self.semantic_projected_query_count_ = 0
         self.semantic_projection_batches_ = 0
@@ -357,12 +374,11 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         self._semantic_structure_cache_enabled_ = True
         ledger = None
         pass_oracle = oracle
-        if (
-            oracle is not None
-            and self.mirror_when_no_semantic_effect
-            and self.ontology_effective_
-        ):
-            ledger = _ExactCallLedger(oracle)       # só observa; contabilidade V2 e reutilização exata no mirror
+        if oracle is not None:
+            # Observador (nunca altera argumentos nem respostas): contabilidade do contrato S0–S3 em TODOS os estados; só guarda respostas
+            # (reutilização exata V2) quando o mirror é possível.
+            mirror_possible = bool(self.mirror_when_no_semantic_effect and self.reload_extension_active_)
+            ledger = _ExactCallLedger(oracle, keep_responses=mirror_possible)
             pass_oracle = ledger
         try:
             fitted = super().fit(
@@ -462,17 +478,61 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return fitted
 
     def _build_oracle_accounting(self, ledger: _ExactCallLedger) -> dict:
-        """Contabilidade auditável do consumo do oráculo (só relato; não influencia decisões). ``semantic_attempt`` = passagem semântica;
-        ``original_rerun`` = reexecução do Original no mirror (fluxo ≡ Original isolado); ``reused_identical`` = chamadas byte-idênticas
-        servidas da passagem semântica em vez de repetidas."""
-        def block(stats):
-            return {m: {"calls": int(v[0]), "samples": int(v[1])} for m, v in stats.items()}
+        """Contabilidade auditável do consumo do oráculo (só relato; não influencia decisões), contrato EQ v2.0.
+
+        * ``semantic_oracle_*``: consultas da tentativa semântica (passagem semântica; 0 nos estados S0–S2, em que o fit É o Original).
+        * ``original_oracle_*``: pedidos da porção Original (reexecução do ``mirror``: enviados + reutilizados = Original isolado);
+          0 e ``original_portion_executed=False`` se não houve reexecução.
+        * ``reused_oracle_*``: chamadas byte-idênticas servidas da passagem semântica em vez de repetidas.
+        * ``total_oracle_*`` = original + semantic − reused = o que o oráculo realmente recebeu.
+        Estado S0–S2: toda a passagem é o Original (``original`` = total, ``semantic`` = 0). S3 sem mirror: a passagem é a tentativa
+        semântica (a porção Original isolada é o braço de referência, medido à parte)."""
+        state = getattr(self, "ontology_state_", "S3")
+        attempt = {m: [int(v[0]), int(v[1])] for m, v in ledger.stats.items()}
         rerun = getattr(self, "_mirror_rerun_accounting", None)
+        reused = dict(rerun["reused"]) if rerun else {"calls": 0, "samples": 0}
+        calls_att = sum(v[0] for v in attempt.values())
+        samples_att = sum(v[1] for v in attempt.values())
+        if state != "S3":                                   # S0–S2: o fit é o Original
+            orig_calls, orig_samples, sem_calls, sem_samples, orig_exec = calls_att, samples_att, 0, 0, True
+        else:
+            sem_calls, sem_samples = calls_att, samples_att
+            if rerun and rerun["stats"] is not None:
+                orig_calls = sum(v[0] for v in rerun["stats"].values()) + reused["calls"]
+                orig_samples = sum(v[1] for v in rerun["stats"].values()) + reused["samples"]
+                orig_exec = True
+            else:
+                orig_calls = orig_samples = 0
+                orig_exec = False
+        total_calls = (orig_calls + sem_calls - reused["calls"]) if state == "S3" else calls_att
+        total_samples = (orig_samples + sem_samples - reused["samples"]) if state == "S3" else samples_att
+        summary = self.semantic_audit_summary()
+        effect_observed = bool(
+            state == "S3" and not getattr(self, "semantic_effect_mirror_applied_", False)
+            and (summary.get("ontology_influenced_splits", 0) or summary.get("error_focused_interventions_accepted", 0))
+        )
+        if state != "S3":
+            status = "NO_SEMANTIC_ATTEMPT"
+        elif effect_observed:
+            status = "SEMANTIC_EFFECT_STRUCTURAL_GAIN_UNEVALUATED"     # ganho em métricas só se avalia fora do fit (conjuntos de avaliação)
+        else:
+            status = "SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN"
         out = {
+            "eq_contract_version": self.EQ_CONTRACT_VERSION,
+            "ontology_state": state,
+            "semantic_attempt_executed": bool(state == "S3"),
+            "semantic_effect_observed": effect_observed,
+            "semantic_attempt_status": status,
             "mirror_applied": bool(self.semantic_effect_mirror_applied_),
-            "semantic_attempt": block(ledger.stats),
-            "original_rerun": block(rerun["stats"]) if rerun and rerun["stats"] is not None else None,
-            "reused_identical": dict(rerun["reused"]) if rerun else {"calls": 0, "samples": 0},
+            "original_portion_executed": bool(orig_exec),
+            "original_oracle_calls": int(orig_calls), "original_oracle_samples": int(orig_samples),
+            "semantic_oracle_calls": int(sem_calls), "semantic_oracle_samples": int(sem_samples),
+            "reused_oracle_calls": int(reused["calls"]), "reused_oracle_samples": int(reused["samples"]),
+            "total_oracle_calls": int(total_calls), "total_oracle_samples": int(total_samples),
+            "semantic_attempt": {m: {"calls": v[0], "samples": v[1]} for m, v in attempt.items()} if state == "S3" else None,
+            "original_rerun": ({m: {"calls": int(v[0]), "samples": int(v[1])} for m, v in rerun["stats"].items()}
+                               if rerun and rerun["stats"] is not None else None),
+            "reused_identical": reused,
             "reuse_policy": "byte_identical_predict_same_oracle_same_fit" if self.REUSE_IDENTICAL_ORACLE_CALLS else "disabled",
         }
         self._mirror_rerun_accounting = None

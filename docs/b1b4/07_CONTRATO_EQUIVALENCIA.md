@@ -94,3 +94,22 @@ Duas pistas separadas: **T (árvore)** — oráculo = MLP original; **M (MLP)** 
 * **Poda 1-SE genérica (B2-D):** só admissível restrita a subárvores que contêm divisões influenciadas pela ontologia; poda geral ⇒ removida.
 * **Ganhos «do Core»:** não há objetivo de o Reloaded sem ontologia superar o Original (substitui a antiga linha de investigação de ganho arquitetural independente — a «D-9» que referes não existe nos
   meus documentos com esse número; interpretei-a como esta e fica substituída por D-9 abaixo).
+
+
+## 9. Contrato de equivalência **v2.0 — estados S0–S3** (decisão de 2026-10-13; substitui a exigência de identidade do fluxo completo no caso 4)
+`Reloaded_OWL = Original + tentativa semântica auditada`. Versão do contrato no código: `TrepanReloadedClassifier.EQ_CONTRACT_VERSION = "2.0-S0S3"`; cada ajuste regista-a em `oracle_accounting_`.
+
+| Estado | Definição | Exigência |
+|---|---|---|
+| **S0** | ontologia ausente | equivalência **integral** E1–E9 (inclui fluxo de consultas) |
+| **S1** | ontologia rejeitada (quality gate / grafo inativo) | equivalência **integral** E1–E9 |
+| **S2** | ontologia válida **sem mecanismo semântico executado** (nenhuma estrutura/hook ativo) | equivalência **integral** E1–E9 |
+| **S3** | ontologia válida **com tentativa semântica executada** | **porção Original ≡ Original isolado** (regras/previsões/fluxo de pedidos) **+ tentativa semântica auditada**; todas as consultas adicionais atribuídas à tentativa semântica; sem alterações ocultas ao oráculo |
+
+Tentativa executada **não** é melhoria observada. Sem alteração de divisões, previsões ou métricas o estado é `SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN`, que **não autoriza** declarar ganho ontológico. Em S3 com `mirror` a porção Original é a reexecução (fluxo exatamente o do Original isolado; chamadas byte-idênticas reutilizadas contabilizadas à parte); em S3 sem `mirror` a passagem completa é a tentativa e a porção Original isolada é o braço de referência medido à parte (`extra_oracle_* vs Original`).
+
+**Contabilidade obrigatória** (`oracle_accounting_`; `validation/benchmark/semantic_cost.py`): `original_oracle_calls/samples`, `semantic_oracle_calls/samples`, `reused_oracle_calls/samples`, `total_oracle_calls/samples` (= original + semantic − reused = recebido pelo oráculo, verificado contra espião), `semantic_attempt_executed`, `semantic_effect_observed`, `semantic_attempt_status`; fora do ajuste (conjuntos de avaliação explícitos, nunca o teste na otimização): `semantic_gain_accuracy`, `semantic_gain_fidelity`, ganho por 1 000 amostras adicionais, diferença de complexidade, taxa de aceitação de candidatos semânticos e proporção de tentativas sem efeito. Distinguir `F_R ≥ F_O` (não-inferioridade observada) de `F_R > F_O` (superioridade estrita observada).
+
+**Testes positivos (substituem o `xfail` da V2):** `tests/test_eq_reloaded_original.py` — `test_contract_state_classification_S0_S1_S2_S3`, `test_contract_S0_S1_S2_full_equivalence_and_zero_semantic_cost`, `test_contract_S3_original_portion_equivalent_and_attempt_fully_accounted`, `test_contract_S3_without_mirror_attempt_is_whole_pass_and_effect_flagged`, `test_contract_gain_is_not_inferred_from_attempt`, mais o diferencial bit-a-bit contra a cópia congelada de `main@1789c17` (comportamento com ontologia efetiva preservado) e os testes V2 (reutilização só byte-idêntica). A alteração das **âncoras originais** continua proibida.
+
+**Estado global:** `GLOBAL_EQ_CONTRACT v2.0` só se declara **cumprido** após a execução bem-sucedida da CI no commit exato (ver Doc. 15/16). Desempate m-of-n dependente de plataforma: **limitação de reprodutibilidade registada** (Original canónico não modificado); estudo de política determinística separado (Doc. 16 §4).
