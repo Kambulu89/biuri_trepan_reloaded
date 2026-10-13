@@ -1,0 +1,325 @@
+{
+ "dataset": "iris",
+ "master_seed": 123,
+ "splits": [
+  {
+   "split_id": "seed123",
+   "seed": 123,
+   "repeat": 0,
+   "fold": 0,
+   "split_hash": "9071269c9f4abaa15f6f18301015276a35dbb2fbf3cdd057d2ee62d0fab2b080",
+   "n_train": 112,
+   "n_test": 38,
+   "scheme": "holdout",
+   "stratified": true
+  }
+ ],
+ "semantic_report": [
+  {
+   "split_id": "seed123",
+   "provider": "owl_real",
+   "semantic_available": true,
+   "ontology_valid": true,
+   "reason": "",
+   "n_derived_features": 2,
+   "semantic_time": 0.03231313299966132,
+   "reasoner_time": 0.5440982879999865,
+   "info": {
+    "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+    "reasoner": "hermit",
+    "ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+    "n_ontology_graph_nodes": 11,
+    "mapped_feature_count": 4,
+    "unmapped_feature_count": 0,
+    "reasoning_applied": true,
+    "reasoner_consistent": true,
+    "feature_coverage": 1.0
+   },
+   "real_structure_signature": "0972b6bfec3acb93",
+   "shuffled_structure_signature": "33ebde87d3f7f60b",
+   "mlp_enrichment_accepted": false,
+   "oracle_gate": {
+    "gate_margin": 0.01,
+    "available": false,
+    "accepted": false,
+    "reason": "semântica indisponível"
+   },
+   "trepan_semantics_available": true,
+   "selected_oracle": "mlp_original",
+   "structural_protocol": {
+    "structural_tuning_ontology_blind": true,
+    "enabled": true,
+    "semantic_inputs_given_to_tuning": false,
+    "test_used": false,
+    "tuning_oracle_id": "879a88347e200aae",
+    "source": "scientific_tuning_frozen",
+    "selected": {
+     "min_sample": 336,
+     "max_queries": 85681,
+     "max_nodes": 63,
+     "max_depth": 31,
+     "max_n": 3,
+     "beam_width": 2,
+     "min_samples_leaf": 2,
+     "max_features_per_node": 4,
+     "purity_epsilon": 0.02
+    },
+    "structure_selected": {
+     "purity_epsilon": 0.02,
+     "max_nodes": 63
+    },
+    "tuning_status": "non_discriminative_grid",
+    "status_reason": "all_candidates_statistically_equivalent",
+    "selection_basis": "parsimony_tiebreak_among_indistinguishable",
+    "selected_config_full_cv": "purity_epsilon=0.02, max_nodes=63",
+    "initial_node_grid": [
+     31,
+     63
+    ],
+    "final_node_grid": [
+     31,
+     63
+    ],
+    "expansion_stop_reason": "validation_plateau",
+    "fraction_at_node_cap": 1.0,
+    "cv_plan": {
+     "scheme": "RepeatedStratifiedKFold (conjunto de treino apenas)",
+     "folds": 3,
+     "repeats": 5,
+     "seeds": [
+      123,
+      1132,
+      2141,
+      3150,
+      4159
+     ],
+     "n_splits": 15,
+     "test_set_used": false
+    },
+    "test_used_for_selection": false,
+    "tuning_time_s": 36.46480102500027,
+    "engineering_profile": {
+     "fold_preparation": 0.0019953020000684774,
+     "candidate_construction": 0.0010835969997060602,
+     "tree_fit_total": 35.81068082299953,
+     "synthetic_generation": 8.975135377015249,
+     "oracle_prediction": 1.595503211952746,
+     "local_model_fit": 4.911439607012653,
+     "split_search": 16.608485896995262,
+     "tree_construction_other": 3.7201167300236193,
+     "metric_computation": 0.37205902099503874,
+     "bootstrap_selection": 0.14262433500061888,
+     "memo_copy": 0.00041023499943548813,
+     "fits_executed": 120,
+     "fits_reused": 15,
+     "fits_resumed": 0,
+     "total_instrumented": 36.3288533129944
+    },
+    "candidate_count": 6,
+    "number_cv_fits": 90,
+    "number_capacity_fits": 45,
+    "oof_fidelity_mean": 0.9283546704599335
+   },
+   "preprocessing": {
+    "representation": "numeric_matrix_as_loaded",
+    "imputation": "none",
+    "encoding": "none",
+    "feature_selection": "none",
+    "scaling": "estimator_internal_pipeline_fit_on_train_only",
+    "semantic_enrichment": "provider_fit_on_train_only",
+    "fit_partition": "train",
+    "test_used_in_fit": false,
+    "n_fit_rows": 112,
+    "n_features": 4,
+    "feature_names_hash": "8125418b9968fe58def85dca6142a3e99f5b21a7c1299eb87023c43aafb4b560",
+    "train_index_hash": "1aa536e9a1ef023bd4887640b563133d6f1be96faef5fa8eb81ce80d51aa759b",
+    "train_matrix_hash": "6c8cbd47ab35f2b25048a27488fe7c1c40c544abc8db11acd924f63f5acccb9f",
+    "scientific_preprocessing_id": "5ef22bdcbe8dc6ee",
+    "preprocessing_id": "be6b343ef41a4802"
+   },
+   "negative_control": {
+    "shuffle_seed": 8042,
+    "original_ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+    "shuffled_ontology_hash": "1d91d7a084a9bba726a0cb7fed055cccf9037bdc78c77d2d0a5db4929fcc5d06",
+    "counts_before": {
+     "n_semantic_classes": 2,
+     "n_grouped_features": 6,
+     "n_relations": 6,
+     "relatedness_sum": 4.274687999999999,
+     "n_semantic_features": 2,
+     "n_nonunit_weights": 2
+    },
+    "counts_after": {
+     "n_semantic_classes": 2,
+     "n_grouped_features": 6,
+     "n_relations": 6,
+     "relatedness_sum": 4.274687999999999,
+     "n_semantic_features": 2,
+     "n_nonunit_weights": 2
+    },
+    "n_ontology_graph_nodes": 11
+   },
+   "oracle_contract": {
+    "oracle_id_original": "879a88347e200aae",
+    "oracle_id_ontological": null,
+    "shared_oracle_arms": [
+     "reloaded_core",
+     "reloaded_owl_full",
+     "reloaded_owl_shuffled",
+     "trepan_original"
+    ],
+    "single_oracle_for_shared_arms": true,
+    "unchanged_after": true,
+    "queries_per_scope": {
+     "structural_tuning": 1085280,
+     "trepan_original": 9930,
+     "reloaded_core": 9930,
+     "reloaded_owl_full": 22548,
+     "reloaded_owl_shuffled": 22341
+    }
+   },
+   "protocol_audit": {
+    "run_id": "iris:seed123",
+    "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+    "events": [
+     {
+      "phase": "selection",
+      "role": "train",
+      "operation": "fit_all_models_on_train",
+      "details": {
+       "split_hash": "9071269c9f4abaa15f6f18301015276a35dbb2fbf3cdd057d2ee62d0fab2b080"
+      }
+     },
+     {
+      "phase": "selection",
+      "role": "validation",
+      "operation": "oracle_gate_inner_cv_on_train_only",
+      "details": {
+       "folds": 3
+      }
+     },
+     {
+      "phase": "final_evaluation",
+      "role": "test",
+      "operation": "final_metrics_all_arms_once",
+      "details": {
+       "n_test": 38
+      }
+     }
+    ],
+    "test_used_for_selection": false,
+    "test_used_for_feature_selection": false,
+    "test_used_for_oracle_selection": false,
+    "test_used_for_hyperparameter_selection": false,
+    "test_used_for_counterfactual_selection": false,
+    "test_used_for_tree_selection": false,
+    "locked_test_used": true,
+    "final_test_evaluated": true,
+    "final_evaluation_recorded": true,
+    "valid": true
+   },
+   "tuning_execution_count": 1,
+   "timing": {
+    "preprocessing_time": 5.855599920323584e-05,
+    "ontology_total_time": 0.606217968999772,
+    "ontology_shuffled_build_time": 0.0002925400003732648,
+    "mlp_training_time": 0.02286601499963581,
+    "oracle_freeze_time": 0.0012582609997480176,
+    "oracle_gate_time": 4.146999344811775e-06,
+    "tuning_time": 36.46508990299935,
+    "mlp_arm_time": 0.008625802000096883,
+    "metrics_time": 0.0752454849998685,
+    "c45_time": 0.01815267500023765,
+    "original_time": 0.4668516390001969,
+    "reloaded_core_time": 0.450219057999675,
+    "reloaded_owl_time": 3.387114186999497,
+    "reloaded_shuffled_time": 3.570883559000322,
+    "total_time": 44.99950337199971,
+    "ontology_mapping_time": 0.03231313299966132,
+    "reasoning_time": 0.5440982879999865
+   },
+   "work": {
+    "n_samples": 150,
+    "n_train": 112,
+    "n_test": 38,
+    "n_features_raw": 4,
+    "n_features_processed": 6,
+    "n_classes": 3,
+    "number_cv_fits": 135,
+    "number_trepan_fits": 139,
+    "candidate_count": 6,
+    "oracle_query_samples_per_scope": {
+     "structural_tuning": 1085280,
+     "trepan_original": 9930,
+     "reloaded_core": 9930,
+     "reloaded_owl_full": 22548,
+     "reloaded_owl_shuffled": 22341
+    },
+    "oracle_predict_calls_per_scope": {
+     "structural_tuning": 3308,
+     "trepan_original": 33,
+     "reloaded_core": 33,
+     "reloaded_owl_full": 127,
+     "reloaded_owl_shuffled": 123
+    },
+    "oracle_queries_per_scope": {
+     "structural_tuning": 1085280,
+     "trepan_original": 9930,
+     "reloaded_core": 9930,
+     "reloaded_owl_full": 22548,
+     "reloaded_owl_shuffled": 22341
+    },
+    "oracle_calls_per_scope": {
+     "structural_tuning": 3308,
+     "trepan_original": 33,
+     "reloaded_core": 33,
+     "reloaded_owl_full": 127,
+     "reloaded_owl_shuffled": 123
+    },
+    "synthetic_queries_per_arm": {
+     "trepan_original": 9818,
+     "reloaded_core": 9818,
+     "reloaded_owl_full": 9747,
+     "reloaded_owl_shuffled": 9718
+    },
+    "semantic_feature_count": 2,
+    "number_reasoner_calls": 1
+   }
+  }
+ ],
+ "skipped_arms": [],
+ "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016",
+ "ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+ "manifest": {
+  "experiment_id": "20261013T221746_iris_e87c4e47",
+  "timestamp": "2026-10-13T22:17:46.890238+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "db417ff2db1145a76114de8199c734016e44ce1b",
+  "dataset": "iris",
+  "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016",
+  "ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+  "config_hash": "e87c4e47f564c6f350fd8e06f8b11a328f7b0e110e5ad4bd14ee957c09e71204",
+  "seeds": [
+   123
+  ],
+  "split_hash": "d35284bb976678122d9e74517f6bad5231470b7386419057e6d84976ac1ff4b4",
+  "library_versions": {
+   "numpy": "1.26.4",
+   "scipy": "1.15.2",
+   "pandas": "2.2.3",
+   "sklearn": "1.6.1",
+   "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+   "mlp_original",
+   "c45",
+   "trepan_original",
+   "reloaded_core",
+   "reloaded_owl_full",
+   "reloaded_owl_shuffled"
+  ]
+ }
+}
