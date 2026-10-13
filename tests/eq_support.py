@@ -38,6 +38,9 @@ class ClosedFormOracle:
         return e / e.sum(axis=1, keepdims=True)
 
 
+TINY = 1e-9
+
+
 def _round_sig(a: np.ndarray, sig: int) -> np.ndarray:
     """Arredonda a ``sig`` algarismos significativos (vetorizado); zeros e não finitos ficam como estão."""
     a = np.asarray(a, dtype=float)
@@ -45,7 +48,14 @@ def _round_sig(a: np.ndarray, sig: int) -> np.ndarray:
         mag = np.floor(np.log10(np.abs(a)))
         dec = np.where(np.isfinite(mag), sig - 1 - mag, 0).astype(int)
     out = np.where(np.isfinite(mag), np.round(a * 10.0 ** dec) / 10.0 ** dec, a)
+    out = np.where(np.abs(out) < TINY, 0.0, out)
     return np.ascontiguousarray(out)
+
+
+def portable_audit_view(model, limit: int = 4000) -> str:
+    """Texto compacto (floats com 8 algarismos significativos) das auditorias, para diagnóstico de diferenças entre plataformas."""
+    view = {n: _jsonable(getattr(model, n), 8) for n in ("split_audit_", "semantic_split_audit_", "error_region_audit_") if hasattr(model, n)}
+    return json.dumps(view, sort_keys=True)[:limit]
 
 
 class SpyOracle:
@@ -109,7 +119,10 @@ def _jsonable(o: Any, sig: Optional[int] = None):
     if isinstance(o, np.ndarray):
         return [_jsonable(v, sig) for v in o.tolist()]
     if isinstance(o, (np.floating, float)):
-        return repr(float(o)) if sig is None else format(float(o), f".{sig}g")
+        if sig is None:
+            return repr(float(o))
+        v = float(o)
+        return "0" if abs(v) < TINY else format(v, f".{sig}g")   # ruído de cancelamento (±1e-16) ≡ 0 entre plataformas
     if isinstance(o, (np.integer,)):
         return int(o)
     if isinstance(o, (np.bool_,)):

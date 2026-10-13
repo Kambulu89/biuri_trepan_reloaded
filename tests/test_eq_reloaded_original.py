@@ -14,7 +14,8 @@ for p in (ROOT, ROOT / "tests"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from eq_support import BUDGET, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, scenario_fit_kwargs
+from eq_support import (BUDGET, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, portable_audit_view,
+                        scenario_fit_kwargs)
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
 
@@ -159,7 +160,8 @@ def test_effective_behaviour_unchanged_golden(scenario):
     for flag, kw in FLAGS.items():
         m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, seed, fit_kw=scenario_fit_kwargs(scenario, p))
         key = f"{kind}-p{p}-k{k}-s{seed}|{scenario}|{flag}"
-        assert fingerprint(m, spy, X[200:], SIG) == GOLDEN_PORTABLE[key], (scenario, flag)       # todas as plataformas
+        got = fingerprint(m, spy, X[200:], SIG)
+        assert got == GOLDEN_PORTABLE[key], (scenario, flag, portable_audit_view(m))             # todas as plataformas
         if sys.platform.startswith("linux"):                                                     # plataforma de geração: bit-a-bit
             assert fingerprint(m, spy, X[200:]) == GOLDEN[key], (scenario, flag)
 
