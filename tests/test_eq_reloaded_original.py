@@ -3,6 +3,7 @@
 Tudo sintético e dataset-agnóstico. O oráculo-espião regista o fluxo exato de entradas (método, forma, bytes).
 """
 import json
+import os
 import platform
 import sys
 from pathlib import Path
@@ -172,7 +173,31 @@ def test_effective_behaviour_unchanged_golden(scenario):
             assert not diffs, (scenario, flag, diffs, detail)
 
 
-@pytest.mark.skipif(not (sys.platform.startswith("linux") and platform.machine() in ("x86_64", "AMD64")), reason="âncora exata: Linux x86_64")
+def _legacy_class():
+    import importlib.util
+    path = ROOT / "tests" / "golden" / "legacy" / "trepan_reloaded_main_1789c17.py"
+    spec = importlib.util.spec_from_file_location("trepan_reloaded_main_1789c17", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.TrepanReloadedClassifier
+
+
+@pytest.mark.parametrize("seed", [3, 11])
+@pytest.mark.parametrize("scenario", EFFECTIVE)
+def test_effective_behaviour_identical_to_frozen_main_same_host(scenario, seed):
+    """DIFERENCIAL, bit-a-bit e no mesmo anfitrião: com ontologia efetiva o código atual ≡ cópia congelada de main@1789c17 (independente de
+    hashes guardados, do kernel BLAS e das instruções SIMD). Única diferença legítima: retirada de chamadas byte-idênticas no mirror (V2)."""
+    Legacy = _legacy_class()
+    X, names, oracle = make_problem(seed, p=8, k=3)
+    for flag, kw in FLAGS.items():
+        fk = scenario_fit_kwargs(scenario, 8)
+        ml, sl = fit_model(Legacy, kw, X[:200], names, oracle, seed, fit_kw=fk)
+        mn, sn = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, seed, fit_kw=fk)
+        diffs = compare_golden(fingerprint(mn, sn, X[200:]), fingerprint(ml, sl, X[200:]), mn)
+        assert not diffs, (scenario, seed, flag, diffs)
+
+
+@pytest.mark.skipif(os.environ.get("BIURI_EXACT_GOLDEN") != "1", reason="âncora exata guardada: opt-in (BIURI_EXACT_GOLDEN=1); o gate é o teste diferencial no mesmo anfitrião")
 def test_effective_behaviour_unchanged_golden_exact_pinned_numeric_env():
     """Âncora EXATA (bit-a-bit) num subprocesso com ambiente numérico fixado: independente do kernel BLAS do anfitrião."""
     import subprocess
