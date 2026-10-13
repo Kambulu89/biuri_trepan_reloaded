@@ -249,3 +249,25 @@ def scenario_fit_kwargs(name: str, p: int) -> dict:
                      "query_projector": domain_projector()},
     }
     return table[name]
+
+
+def compare_golden(got: dict, ref: dict, model=None) -> list:
+    """Compara uma impressão digital com a âncora. Em fits com ``mirror`` aplicado, a ÚNICA diferença legítima (Fase 1b/V2) é a retirada de
+    chamadas ``predict`` byte-idênticas já feitas na passagem semântica: ``oracle_stream``/``oracle_sequence`` mudam e as contagens de
+    ``predict`` descem exatamente o que a contabilidade ``oracle_accounting_.reused_identical`` regista. Tudo o resto tem de ser idêntico."""
+    mirrored = bool(ref.get("reporting", {}).get("semantic_effect_mirror_applied_")) and model is not None \
+        and bool(getattr(model, "semantic_effect_mirror_applied_", False))
+    if not mirrored:
+        return [] if got == ref else [k for k in sorted(set(got) | set(ref)) if got.get(k) != ref.get(k)]
+    acc = (getattr(model, "oracle_accounting_", None) or {}).get("reused_identical", {"calls": 0, "samples": 0})
+    diffs = [k for k in sorted(set(got) | set(ref)) if k not in ("oracle_stream", "oracle_sequence", "oracle_calls", "oracle_samples")
+             and got.get(k) != ref.get(k)]
+    exp_calls = dict(ref["oracle_calls"]); exp_calls["predict"] -= acc["calls"]
+    exp_samples = dict(ref["oracle_samples"]); exp_samples["predict"] -= acc["samples"]
+    if got["oracle_calls"] != exp_calls:
+        diffs.append("oracle_calls(delta V2)")
+    if got["oracle_samples"] != exp_samples:
+        diffs.append("oracle_samples(delta V2)")
+    if acc["calls"] < 1 and ref["oracle_calls"] != got["oracle_calls"]:
+        diffs.append("reuse_accounting")
+    return diffs

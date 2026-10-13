@@ -1,0 +1,294 @@
+[
+ {
+  "original_alone": {
+   "calls": 4,
+   "samples": 561
+  },
+  "reloaded_pass": {
+   "calls": 11,
+   "samples": 1600,
+   "by_method": {
+    "predict": 4,
+    "predict_proba": 7
+   }
+  },
+  "mirror_rerun": {
+   "calls": 4,
+   "samples": 561
+  },
+  "rerun_stream_equals_original_alone": true,
+  "rerun_calls_with_input_identical_to_a_reloaded_pass_call": [
+   {
+    "method": "predict",
+    "shape": [
+     200,
+     8
+    ],
+    "rerun_i": 11,
+    "first_i": 0,
+    "same_response": true
+   }
+  ],
+  "samples_redundant_exact": 200,
+  "first_pass_callers": [
+   [
+    "predict",
+    [
+     "_decision_sample",
+     "_decision_sample",
+     "fit"
+    ]
+   ],
+   [
+    "predict",
+    [
+     "fit",
+     "fit"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_decision_sample"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_draw_membership_queries_unfiltered"
+    ]
+   ]
+  ],
+  "scenario": "projector",
+  "seed": 3,
+  "mirror_applied": true,
+  "rules_equal": true
+ },
+ {
+  "original_alone": {
+   "calls": 4,
+   "samples": 544
+  },
+  "reloaded_pass": {
+   "calls": 11,
+   "samples": 1600,
+   "by_method": {
+    "predict": 4,
+    "predict_proba": 7
+   }
+  },
+  "mirror_rerun": {
+   "calls": 4,
+   "samples": 544
+  },
+  "rerun_stream_equals_original_alone": true,
+  "rerun_calls_with_input_identical_to_a_reloaded_pass_call": [
+   {
+    "method": "predict",
+    "shape": [
+     200,
+     8
+    ],
+    "rerun_i": 11,
+    "first_i": 0,
+    "same_response": true
+   }
+  ],
+  "samples_redundant_exact": 200,
+  "first_pass_callers": [
+   [
+    "predict",
+    [
+     "_decision_sample",
+     "_decision_sample",
+     "fit"
+    ]
+   ],
+   [
+    "predict",
+    [
+     "fit",
+     "fit"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_decision_sample"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_draw_membership_queries_unfiltered"
+    ]
+   ]
+  ],
+  "scenario": "projector",
+  "seed": 11,
+  "mirror_applied": true,
+  "rules_equal": true
+ },
+ {
+  "original_alone": {
+   "calls": 4,
+   "samples": 561
+  },
+  "reloaded_pass": {
+   "calls": 14,
+   "samples": 1881,
+   "by_method": {
+    "predict": 4,
+    "predict_proba": 10
+   }
+  },
+  "mirror_rerun": {
+   "calls": 4,
+   "samples": 561
+  },
+  "rerun_stream_equals_original_alone": true,
+  "rerun_calls_with_input_identical_to_a_reloaded_pass_call": [
+   {
+    "method": "predict",
+    "shape": [
+     200,
+     8
+    ],
+    "rerun_i": 14,
+    "first_i": 0,
+    "same_response": true
+   }
+  ],
+  "samples_redundant_exact": 200,
+  "first_pass_callers": [
+   [
+    "predict",
+    [
+     "_decision_sample",
+     "_decision_sample",
+     "fit"
+    ]
+   ],
+   [
+    "predict",
+    [
+     "fit",
+     "fit"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_decision_sample"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_draw_membership_queries_unfiltered"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_draw_membership_queries_unfiltered",
+     "_draw_membership_queries"
+    ]
+   ]
+  ],
+  "scenario": "groups",
+  "seed": 3,
+  "mirror_applied": true,
+  "rules_equal": true
+ },
+ {
+  "original_alone": {
+   "calls": 4,
+   "samples": 561
+  },
+  "reloaded_pass": {
+   "calls": 14,
+   "samples": 1881,
+   "by_method": {
+    "predict": 4,
+    "predict_proba": 10
+   }
+  },
+  "mirror_rerun": {
+   "calls": 4,
+   "samples": 561
+  },
+  "rerun_stream_equals_original_alone": true,
+  "rerun_calls_with_input_identical_to_a_reloaded_pass_call": [
+   {
+    "method": "predict",
+    "shape": [
+     200,
+     8
+    ],
+    "rerun_i": 14,
+    "first_i": 0,
+    "same_response": true
+   }
+  ],
+  "samples_redundant_exact": 200,
+  "first_pass_callers": [
+   [
+    "predict",
+    [
+     "_decision_sample",
+     "_decision_sample",
+     "fit"
+    ]
+   ],
+   [
+    "predict",
+    [
+     "fit",
+     "fit"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_decision_sample"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_build_error_region_profile",
+     "_draw_membership_queries_unfiltered"
+    ]
+   ],
+   [
+    "predict_proba",
+    [
+     "_known_row_uncertainty",
+     "_draw_membership_queries_unfiltered",
+     "_draw_membership_queries"
+    ]
+   ]
+  ],
+  "scenario": "relatedness",
+  "seed": 3,
+  "mirror_applied": true,
+  "rules_equal": true
+ }
+]

@@ -14,6 +14,7 @@ mesmo do TREPAN Original histórico.
 from __future__ import annotations
 
 from typing import Callable, Optional, Sequence
+import hashlib
 import itertools
 import math
 
@@ -41,6 +42,72 @@ from core.error_focused_semantic_refinement import (
 )
 
 
+def _exact_call_key(method: str, X) -> tuple:
+    """Chave de uma consulta ao oráculo: método + forma + dtype + SHA-256 dos bytes EXATOS (sem arredondamentos nem aproximações)."""
+    a = np.ascontiguousarray(np.asarray(X, dtype=float))
+    return (method, a.shape, a.dtype.str, hashlib.sha256(a.tobytes()).hexdigest())
+
+
+class _ExactCallLedger:
+    """Delega no oráculo e regista, por método, chamadas/amostras e as respostas de ``predict`` indexadas pelo conteúdo exato da entrada.
+
+    Só observa: não altera argumentos nem respostas. ``predict_proba`` é exposto apenas se o oráculo o tiver (preserva ``hasattr``).
+    """
+
+    def __init__(self, inner):
+        self.inner = inner
+        self.responses: dict = {}
+        self.stats = {"predict": [0, 0], "predict_proba": [0, 0]}
+
+    def predict(self, X):
+        out = self.inner.predict(X)
+        self.stats["predict"][0] += 1
+        self.stats["predict"][1] += int(len(X))
+        self.responses[_exact_call_key("predict", X)] = np.array(out, copy=True)
+        return out
+
+    def __getattr__(self, name):
+        attr = getattr(self.inner, name)
+        if name == "predict_proba":
+            def counted(X, *a, **k):
+                self.stats["predict_proba"][0] += 1
+                self.stats["predict_proba"][1] += int(len(X))
+                return attr(X, *a, **k)
+            return counted
+        return attr
+
+
+class _ExactReplayOracle:
+    """Reexecução do Original (mirror): serve de uma cópia da resposta SÓ as chamadas ``predict`` cuja entrada é byte-idêntica a uma já feita ao
+    MESMO oráculo neste mesmo ``fit``; tudo o resto vai ao oráculo. Pressupõe oráculo determinístico (contrato FrozenOracle)."""
+
+    def __init__(self, ledger: _ExactCallLedger):
+        self.ledger = ledger
+        self.inner = ledger.inner
+        self.stats = {"predict": [0, 0], "predict_proba": [0, 0]}
+        self.reused = {"calls": 0, "samples": 0}
+
+    def predict(self, X):
+        stored = self.ledger.responses.get(_exact_call_key("predict", X))
+        if stored is not None:
+            self.reused["calls"] += 1
+            self.reused["samples"] += int(len(X))
+            return np.array(stored, copy=True)
+        self.stats["predict"][0] += 1
+        self.stats["predict"][1] += int(len(X))
+        return self.inner.predict(X)
+
+    def __getattr__(self, name):
+        attr = getattr(self.inner, name)
+        if name == "predict_proba":
+            def counted(X, *a, **k):
+                self.stats["predict_proba"][0] += 1
+                self.stats["predict_proba"][1] += int(len(X))
+                return attr(X, *a, **k)
+            return counted
+        return attr
+
+
 class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """TREPAN Reloaded construído directamente sobre o motor histórico.
 
@@ -52,6 +119,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """
 
     GAIN_CRITERIA = ("normalized_information_gain", "information_gain", "gain_ratio")
+    # Fase 1b (V2): no mirror, a reexecução do Original reutiliza as respostas de chamadas ``predict`` byte-idênticas já feitas ao mesmo
+    # oráculo neste fit (hoje: a rotulagem inicial do treino). ``False`` restaura o comportamento anterior (útil para auditoria/ablação).
+    REUSE_IDENTICAL_ORACLE_CALLS = True
 
     def __init__(
         self,
@@ -285,11 +355,20 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # candidato consulta-a, por isso é calculada uma única vez.
         self._semantic_structure_cache_ = None
         self._semantic_structure_cache_enabled_ = True
+        ledger = None
+        pass_oracle = oracle
+        if (
+            oracle is not None
+            and self.mirror_when_no_semantic_effect
+            and self.ontology_effective_
+        ):
+            ledger = _ExactCallLedger(oracle)       # só observa; contabilidade V2 e reutilização exata no mirror
+            pass_oracle = ledger
         try:
             fitted = super().fit(
                 X_arr,
                 y=y,
-                oracle=oracle,
+                oracle=pass_oracle,
                 sample_weight=sample_weight,
                 feature_names=feature_names,
             )
@@ -300,6 +379,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             self._ontology_domain_fit = None
             self._semantic_structure_cache_enabled_ = False
             self._semantic_structure_cache_ = None
+        if ledger is not None:
+            self.oracle_info_["oracle_type"] = type(oracle).__name__      # o invólucro de observação não é visível no relato
         self.semantic_split_audit_ = []
         for item in self.split_audit_:
             row = dict(item)
@@ -327,6 +408,10 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             # árvore quando nenhuma contribuição semântica mensurável foi
             # aceite. Reexecuta exactamente o TREPAN Original com o mesmo
             # oráculo, seed e orçamento e adopta esse estado final.
+            rerun_oracle = (
+                _ExactReplayOracle(ledger) if (ledger is not None and self.REUSE_IDENTICAL_ORACLE_CALLS) else
+                (ledger.inner if ledger is not None else oracle)
+            )
             original = TrepanOriginalClassifier(
                 max_nodes=self.max_nodes,
                 max_depth=self.max_depth,
@@ -342,9 +427,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
                 local_model_alpha=self.local_model_alpha,
                 random_state=self.random_state,
             ).fit(
-                X_arr, y=y, oracle=oracle, sample_weight=sample_weight,
+                X_arr, y=y, oracle=rerun_oracle, sample_weight=sample_weight,
                 feature_names=feature_names,
             )
+            original.oracle_info_["oracle_type"] = type(oracle).__name__
+            if ledger is not None:
+                replay = rerun_oracle if isinstance(rerun_oracle, _ExactReplayOracle) else None
+                self._mirror_rerun_accounting = {
+                    "stats": dict(replay.stats) if replay is not None else None,
+                    "reused": dict(replay.reused) if replay is not None else {"calls": 0, "samples": 0},
+                }
             self.pre_mirror_semantic_audit_ = dict(preliminary_summary)
             self.pre_mirror_semantic_split_audit_ = list(self.semantic_split_audit_)
             self._adopt_original_state(original)
@@ -364,8 +456,27 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             fitted = self
         self._current_real_validation_X_ = None
         self._current_real_validation_y_ = None
+        if ledger is not None:
+            self.oracle_accounting_ = self._build_oracle_accounting(ledger)
         self.semantic_audit_summary_ = self.semantic_audit_summary()
         return fitted
+
+    def _build_oracle_accounting(self, ledger: _ExactCallLedger) -> dict:
+        """Contabilidade auditável do consumo do oráculo (só relato; não influencia decisões). ``semantic_attempt`` = passagem semântica;
+        ``original_rerun`` = reexecução do Original no mirror (fluxo ≡ Original isolado); ``reused_identical`` = chamadas byte-idênticas
+        servidas da passagem semântica em vez de repetidas."""
+        def block(stats):
+            return {m: {"calls": int(v[0]), "samples": int(v[1])} for m, v in stats.items()}
+        rerun = getattr(self, "_mirror_rerun_accounting", None)
+        out = {
+            "mirror_applied": bool(self.semantic_effect_mirror_applied_),
+            "semantic_attempt": block(ledger.stats),
+            "original_rerun": block(rerun["stats"]) if rerun and rerun["stats"] is not None else None,
+            "reused_identical": dict(rerun["reused"]) if rerun else {"calls": 0, "samples": 0},
+            "reuse_policy": "byte_identical_predict_same_oracle_same_fit" if self.REUSE_IDENTICAL_ORACLE_CALLS else "disabled",
+        }
+        self._mirror_rerun_accounting = None
+        return out
 
     def _ontology_effective(self) -> bool:
         """``False`` ⇒ o Reloaded delega no TREPAN Original (equivalência EQ: mesma árvore e mesmo fluxo de consultas ao oráculo).

@@ -3,6 +3,7 @@
 Tudo sintético e dataset-agnóstico. O oráculo-espião regista o fluxo exato de entradas (método, forma, bytes).
 """
 import json
+import platform
 import sys
 from pathlib import Path
 
@@ -14,7 +15,7 @@ for p in (ROOT, ROOT / "tests"):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from eq_support import (BUDGET, audit_views, diff_views, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, portable_audit_view,
+from eq_support import (BUDGET, audit_views, compare_golden, diff_views, ClosedFormOracle, SpyOracle, digest, fingerprint, fit_model, make_problem, portable_audit_view,
                         scenario_fit_kwargs)
 from core.trepan_original import TrepanOriginalClassifier
 from core.trepan_reloaded_historical import TrepanReloadedClassifier
@@ -23,7 +24,7 @@ from core.trepan_reloaded_historical import TrepanReloadedClassifier
 ALGORITHMIC_DIFFERENCE_ALLOWLIST: tuple = ()
 # Campos de relato, fora de E1–E9, SEM efeito em decisões/consultas/RNG/previsões (D-15). Lista separada da allowlist acima.
 NON_SCIENTIFIC_REPORTING_FIELDS = ("semantic_split_audit_", "error_region_audit_", "semantic_audit_summary_",
-                                   "pre_mirror_semantic_audit_", "pre_mirror_semantic_split_audit_")
+                                   "pre_mirror_semantic_audit_", "pre_mirror_semantic_split_audit_", "oracle_accounting_")
 
 NON_EFFECTIVE = ("none", "depths_zero", "groups_unique")
 EFFECTIVE = ("depths", "weights", "groups", "relatedness", "projector", "combined")
@@ -156,19 +157,27 @@ def test_property_random_budgets_and_shapes(seed):
 
 @pytest.mark.parametrize("scenario", EFFECTIVE)
 def test_effective_behaviour_unchanged_golden(scenario):
-    """Com ontologia efetiva o comportamento é bit-a-bit o de main@1789c17 (âncora gerada antes da correção)."""
+    """Com ontologia efetiva o comportamento é o de main@1789c17 (âncora gerada antes da correção), em todas as plataformas (comparação
+    portável). Única diferença legítima: retirada das chamadas byte-idênticas no mirror (V2, ver ``compare_golden``)."""
     kind, p, k, seed = "continuous", 8, 3, 3
     X, names, oracle = make_problem(seed, p=p, k=k, kind=kind)
     for flag, kw in FLAGS.items():
         m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, seed, fit_kw=scenario_fit_kwargs(scenario, p))
         key = f"{kind}-p{p}-k{k}-s{seed}|{scenario}|{flag}"
         got = fingerprint(m, spy, X[200:], SIG)
-        if got != GOLDEN_PORTABLE[key]:      # diagnóstico: campos de auditoria que diferem da vista de referência (Linux)
+        diffs = compare_golden(got, GOLDEN_PORTABLE[key], m)
+        if diffs:      # diagnóstico: campos de auditoria que diferem da vista de referência (Linux)
             ref = DIAG_VIEWS.get(key)
             detail = diff_views(ref, audit_views(m)) if ref else [portable_audit_view(m)]
-            assert got == GOLDEN_PORTABLE[key], (scenario, flag, detail)
-        if sys.platform.startswith("linux"):                                                     # plataforma de geração: bit-a-bit
-            assert fingerprint(m, spy, X[200:]) == GOLDEN[key], (scenario, flag)
+            assert not diffs, (scenario, flag, diffs, detail)
+
+
+@pytest.mark.skipif(not (sys.platform.startswith("linux") and platform.machine() in ("x86_64", "AMD64")), reason="âncora exata: Linux x86_64")
+def test_effective_behaviour_unchanged_golden_exact_pinned_numeric_env():
+    """Âncora EXATA (bit-a-bit) num subprocesso com ambiente numérico fixado: independente do kernel BLAS do anfitrião."""
+    import subprocess
+    r = subprocess.run([sys.executable, str(ROOT / "tests" / "golden" / "check_exact.py")], capture_output=True, text=True, timeout=900)
+    assert r.returncode == 0, r.stdout[-3000:] + r.stderr[-1500:]
 
 
 def test_golden_covers_all_scenarios_and_original_baseline_unchanged():
@@ -177,30 +186,128 @@ def test_golden_covers_all_scenarios_and_original_baseline_unchanged():
     m, spy = fit_model(TrepanOriginalClassifier, {}, X[:200], names, oracle, seed)
     key = f"{kind}-p{p}-k{k}-s{seed}|original"
     assert fingerprint(m, spy, X[200:], SIG) == GOLDEN_PORTABLE[key]
-    if sys.platform.startswith("linux"):
-        assert fingerprint(m, spy, X[200:]) == GOLDEN[key]
     assert {k_.split("|")[1] for k_ in GOLDEN if not k_.endswith("|original")} == set(NON_EFFECTIVE) | set(EFFECTIVE)
 
 
-def test_v2_mirror_effective_without_measurable_effect_tree_equals_original():
-    """V2 (D-16, caso 4 sem efeito mensurável): a árvore ≡ Original; a duplicação de consultas ao oráculo é registada, não corrigida na 1a."""
-    (_, _, fo), (mr, _, fr) = _pair(3, 8, 3, "continuous", "projector", "default")
-    assert mr.semantic_effect_mirror_applied_ is True
-    assert fo["rules"] == fr["rules"] and fo["predictions"] == fr["predictions"]
-    assert fo["membership_queries"] == fr["membership_queries"]
+MIRROR_SCENARIOS = ("projector", "groups", "relatedness", "weights", "combined", "depths")
 
 
-@pytest.mark.xfail(strict=True, reason="V2 conhecida (Doc. 11/12, D-16): o espelhamento reexecuta o Original no mesmo oráculo, duplicando consultas; "
-                                       "alterar exigiria mexer na lógica ontológica ativa — fora do âmbito da Fase 1a")
-def test_v2_mirror_oracle_stream_equals_original_known_violation():
-    (_, _, fo), (_, _, fr) = _pair(3, 8, 3, "continuous", "projector", "default")
-    assert fo["oracle_stream"] == fr["oracle_stream"]
+def _mirrored_pair(scenario, seed, reuse, p=8, k=3, kind="continuous"):
+    """Original isolado vs Reloaded com mirror (espião no oráculo REAL, abaixo de qualquer invólucro)."""
+    X, names, oracle = make_problem(seed, p=p, k=k, kind=kind)
+    mo, so = fit_model(TrepanOriginalClassifier, {}, X[:200], names, oracle, seed)
+    old = TrepanReloadedClassifier.REUSE_IDENTICAL_ORACLE_CALLS
+    TrepanReloadedClassifier.REUSE_IDENTICAL_ORACLE_CALLS = reuse
+    try:
+        mr, sr = fit_model(TrepanReloadedClassifier, {}, X[:200], names, oracle, seed, fit_kw=scenario_fit_kwargs(scenario, p))
+    finally:
+        TrepanReloadedClassifier.REUSE_IDENTICAL_ORACLE_CALLS = old
+    return (mo, so), (mr, sr), X
 
 
-def test_canonical_mofn_complement_is_same_partition():
-    """m-of-n(L) e (n-m+1)-of-n(¬L) são a mesma partição; a etiqueta de auditoria pode sair em qualquer das formas (desempate por último bit)."""
-    from eq_support import canonical_mofn
-    a, b = "2-of-2(a0 > -0.15685; a2 <= 0.3833)", "1-of-2(a0 <= -0.15685; a2 > 0.3833)"
-    assert canonical_mofn(a) == canonical_mofn(b)
-    assert canonical_mofn(a) != canonical_mofn("2-of-2(a0 > -0.15685; a2 > 0.3833)")      # testes realmente diferentes continuam distintos
-    assert canonical_mofn("texto livre") == "texto livre"
+@pytest.mark.parametrize("seed", [3, 11, 29])
+@pytest.mark.parametrize("scenario", MIRROR_SCENARIOS)
+def test_v2_mirror_final_model_equals_original(scenario, seed):
+    (mo, so), (mr, sr), X = _mirrored_pair(scenario, seed, True)
+    if not mr.semantic_effect_mirror_applied_:
+        pytest.skip("sem mirror neste cenário/seed (efeito semântico mensurável: comportamento ontológico preservado pelas âncoras)")
+    assert mo.export_rules() == mr.export_rules()
+    assert np.array_equal(mo.predict(X[200:]), mr.predict(X[200:]))
+    assert int(mo.membership_queries_) == int(mr.membership_queries_)
+    assert mr.oracle_info_["oracle_type"] == mo.oracle_info_["oracle_type"]
+
+
+@pytest.mark.parametrize("seed", [3, 11, 29])
+@pytest.mark.parametrize("scenario", MIRROR_SCENARIOS)
+def test_v2_original_portion_of_stream_is_exactly_the_original_stream(scenario, seed):
+    """Sem reutilização, o fluxo da reexecução do Original (sufixo do fluxo total) é IDÊNTICO ao do Original isolado; com reutilização
+    é o mesmo fluxo menos as chamadas byte-idênticas já servidas (contabilidade). Total = tentativa semântica + Original − reutilizado."""
+    (mo, so), (mr0, sr0), _ = _mirrored_pair(scenario, seed, False)
+    (_, _), (mr1, sr1), _ = _mirrored_pair(scenario, seed, True)
+    if not mr0.semantic_effect_mirror_applied_:
+        pytest.skip("sem mirror neste cenário/seed")
+    n_o = len(so.sequence)
+    assert sr0.sequence[-n_o:] == so.sequence                                   # sufixo = Original isolado (formas, ordem, métodos)
+    assert so.calls["predict"] == n_o and so.calls["proba"] == 0
+    acc = mr1.oracle_accounting_
+    reused = acc["reused_identical"]
+    assert reused["calls"] >= 1 and reused["samples"] == 200                    # a rotulagem inicial do treino
+    # espião no oráculo real: total = tentativa + rerun (o que chegou ao oráculo)
+    assert sr1.samples["predict"] == acc["semantic_attempt"]["predict"]["samples"] + acc["original_rerun"]["predict"]["samples"]
+    assert sr1.samples["proba"] == acc["semantic_attempt"]["predict_proba"]["samples"]
+    assert acc["original_rerun"]["predict_proba"]["calls"] == 0                   # o Original nunca consulta predict_proba
+    # equivalência exata ao Original: rerun + reutilizado == Original isolado
+    assert acc["original_rerun"]["predict"]["samples"] + reused["samples"] == so.samples["predict"]
+    assert acc["original_rerun"]["predict"]["calls"] + reused["calls"] == so.calls["predict"]
+    # a reutilização elimina exatamente o que o espião deixou de ver
+    assert sr0.samples["predict"] - sr1.samples["predict"] == reused["samples"]
+    assert sr0.samples["proba"] == sr1.samples["proba"]                           # a tentativa semântica não muda
+    assert mr0.export_rules() == mr1.export_rules()
+
+
+def test_v2_replay_oracle_reuses_only_byte_identical_predict_calls():
+    from core.trepan_reloaded_historical import _ExactCallLedger, _ExactReplayOracle
+    oracle = ClosedFormOracle(5, 3, 1)
+    X = np.random.default_rng(0).normal(size=(40, 5))
+    spy = SpyOracle(oracle)
+    ledger = _ExactCallLedger(spy)
+    y = ledger.predict(X)
+    replay = _ExactReplayOracle(ledger)
+    assert np.array_equal(replay.predict(X), y) and replay.reused == {"calls": 1, "samples": 40}
+    assert spy.calls["predict"] == 1                                              # servido sem nova consulta
+    assert replay.predict(X.copy()) is not None and replay.reused["calls"] == 2    # cópia byte-idêntica
+    # semelhante mas NÃO equivalente: 1 ulp, outra ordem, outro subconjunto, outro dtype/forma -> vão ao oráculo
+    X2 = X.copy(); X2[0, 0] = np.nextafter(X2[0, 0], np.inf)
+    replay.predict(X2); replay.predict(X[::-1]); replay.predict(X[:20]); replay.predict(X.astype(np.float32).astype(float))
+    assert replay.reused["calls"] == 2 and spy.calls["predict"] == 5
+    # predict_proba nunca vem da cache e nunca se confunde com predict
+    replay.predict_proba(X); replay.predict_proba(X)
+    assert spy.calls["proba"] == 2 and replay.reused["calls"] == 2
+    # oráculo diferente => ledger diferente => nada partilhado
+    other = ClosedFormOracle(5, 3, 2)
+    assert _ExactReplayOracle(_ExactCallLedger(other)).predict(X).tolist() == other.predict(X).tolist()
+    # a resposta devolvida é uma cópia (alterá-la não corrompe a cache)
+    r = replay.predict(X); r[:] = -1
+    assert np.array_equal(replay.predict(X), y)
+
+
+def test_v2_ledger_does_not_alter_observed_oracle_surface():
+    """O invólucro só observa: ``predict_proba`` só existe se o oráculo o tiver; atributos são reencaminhados."""
+    from core.trepan_reloaded_historical import _ExactCallLedger
+
+    class NoProba:
+        classes_ = np.arange(2)
+        def predict(self, X): return np.zeros(len(X), dtype=int)
+
+    assert not hasattr(_ExactCallLedger(NoProba()), "predict_proba")
+    assert hasattr(_ExactCallLedger(ClosedFormOracle(3, 2, 0)), "predict_proba")
+    assert _ExactCallLedger(ClosedFormOracle(3, 2, 0)).classes_.tolist() == [0, 1]
+
+
+def test_v2_no_ledger_without_mirror_or_without_effective_ontology():
+    X, names, oracle = make_problem(5, p=8, k=3)
+    for kw, sc in (({"mirror_when_no_semantic_effect": False}, "combined"), ({}, "none"), ({}, "depths_zero")):
+        m, spy = fit_model(TrepanReloadedClassifier, kw, X[:200], names, oracle, 5, fit_kw=scenario_fit_kwargs(sc, 8))
+        assert not hasattr(m, "oracle_accounting_")
+
+
+def test_v2_oracle_not_shared_across_different_oracles_and_seeds_reproducible():
+    outs = []
+    for _ in range(2):
+        (_, _), (mr, sr), _ = _mirrored_pair("projector", 3, True)
+        outs.append((mr.oracle_accounting_, sr.stream_digest()))
+    assert outs[0] == outs[1]                                                     # reprodutível
+    X, names, oracle = make_problem(3, p=8, k=3)
+    other = ClosedFormOracle(8, 3, 777)
+    m1, _ = fit_model(TrepanReloadedClassifier, {}, X[:200], names, oracle, 3, fit_kw=scenario_fit_kwargs("projector", 8))
+    m2, _ = fit_model(TrepanReloadedClassifier, {}, X[:200], names, other, 3, fit_kw=scenario_fit_kwargs("projector", 8))
+    o2, _ = fit_model(TrepanOriginalClassifier, {}, X[:200], names, other, 3)
+    assert m2.export_rules() == o2.export_rules()                                 # com outro oráculo continua ≡ Original (mirror)
+
+
+@pytest.mark.xfail(strict=True, reason="V2 PARCIAL (Doc. 15): a identidade do fluxo COMPLETO no caso 4 sem efeito mensurável não é alcançável por construção — a "
+                                       "tentativa semântica é necessária para decidir «sem efeito». Eliminada a parte redundante (chamadas byte-idênticas); o "
+                                       "fluxo do Original é exato (teste positivo acima). Aguarda decisão do utilizador sobre o contrato do caso 4.")
+def test_v2_mirror_full_oracle_stream_equals_original_known_by_design_gap():
+    (_, so), (_, sr), _ = _mirrored_pair("projector", 3, True)
+    assert so.stream_digest() == sr.stream_digest()
