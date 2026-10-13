@@ -195,3 +195,12 @@ def test_v2_mirror_effective_without_measurable_effect_tree_equals_original():
 def test_v2_mirror_oracle_stream_equals_original_known_violation():
     (_, _, fo), (_, _, fr) = _pair(3, 8, 3, "continuous", "projector", "default")
     assert fo["oracle_stream"] == fr["oracle_stream"]
+
+
+def test_canonical_mofn_complement_is_same_partition():
+    """m-of-n(L) e (n-m+1)-of-n(¬L) são a mesma partição; a etiqueta de auditoria pode sair em qualquer das formas (desempate por último bit)."""
+    from eq_support import canonical_mofn
+    a, b = "2-of-2(a0 > -0.15685; a2 <= 0.3833)", "1-of-2(a0 <= -0.15685; a2 > 0.3833)"
+    assert canonical_mofn(a) == canonical_mofn(b)
+    assert canonical_mofn(a) != canonical_mofn("2-of-2(a0 > -0.15685; a2 > 0.3833)")      # testes realmente diferentes continuam distintos
+    assert canonical_mofn("texto livre") == "texto livre"

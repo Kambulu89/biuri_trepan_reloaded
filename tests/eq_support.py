@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from typing import Any, Optional
 
 import numpy as np
@@ -39,6 +40,23 @@ class ClosedFormOracle:
 
 
 TINY = 1e-9
+_MOFN = re.compile(r"^(\d+)-of-(\d+)\((.*)\)$")
+_LIT = re.compile(r"^(\S+) (>|<=) (\S+)$")
+
+
+def canonical_mofn(text: str) -> str:
+    """Forma canónica de um teste m-of-n: ``m-of-n(L)`` e o seu complemento ``(n-m+1)-of-n(¬L)`` são a MESMA partição (ramos trocados).
+    Qual das duas formas aparece numa etiqueta de auditoria depende de um desempate por último bit (varia entre plataformas); devolve a menor."""
+    m = _MOFN.match(text)
+    if not m:
+        return text
+    k, n, body = int(m.group(1)), int(m.group(2)), m.group(3)
+    lits = [_LIT.match(x) for x in body.split("; ")]
+    if len(lits) != n or any(x is None for x in lits):
+        return text
+    flip = {">": "<=", "<=": ">"}
+    comp = f"{n - k + 1}-of-{n}(" + "; ".join(f"{x.group(1)} {flip[x.group(2)]} {x.group(3)}" for x in lits) + ")"
+    return min(text, comp)
 
 
 def _round_sig(a: np.ndarray, sig: int) -> np.ndarray:
@@ -153,7 +171,9 @@ def _jsonable(o: Any, sig: Optional[int] = None):
         return int(o)
     if isinstance(o, (np.bool_,)):
         return bool(o)
-    if isinstance(o, (int, str, bool)) or o is None:
+    if isinstance(o, str):
+        return canonical_mofn(o) if sig is not None else o
+    if isinstance(o, (int, bool)) or o is None:
         return o
     return repr(o)
 
