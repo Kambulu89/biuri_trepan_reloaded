@@ -74,5 +74,34 @@ Evidência (`tiebreak_probe.py`, `tiebreak_probe_result.json`):
 * **Proposta (NÃO aplicada; exige alterar o Original ⇒ nova autorização e manifest):** desempate determinístico e agnóstico: quantizar a pontuação (`round(score, 12)`) e ordenar por `(-score_q, len(literals), m, orientação canónica, feature, threshold, greater)`, com orientação canónica = menor representação entre teste e complemento; idem em `_candidate_literals`. Testes propostos: invariância a ruído (perturbar scores ±1 ulp ⇒ mesma árvore), invariância à orientação (candidato e complemento ⇒ mesma árvore), propriedade em muitos problemas sintéticos, e comparação entre plataformas na CI.
 * No caminho ontológico ativo **não** alterei nada (instrução).
 
-## 8. Ficheiros, hashes e estado
-Modificados: `core/trepan_reloaded_historical.py`; `tests/eq_support.py`, `tests/test_eq_reloaded_original.py`, `tests/golden/check_exact.py`; novos: `validation/benchmark/v2_before_after.py`, `docs/evidence/b1b4/phase1b/*`. `core/trepan_original.py` e C4.5/MLP **inalterados**. CI e hashes finais: ver atualização no fim.
+## 8. Ficheiros, hashes, testes e CI (estado final)
+**Modificados:** `core/trepan_reloaded_historical.py` (único ficheiro de núcleo); `tests/eq_support.py`, `tests/test_eq_reloaded_original.py`, `tests/golden/check_exact.py`. **Novos:** `tests/golden/legacy/trepan_reloaded_main_1789c17.py` (cópia congelada, só leitura, corpo idêntico ao blob `0053b3d`), `validation/benchmark/v2_before_after.py`, `docs/evidence/b1b4/phase1b/*`. `core/trepan_original.py`, C4.5 e MLP **inalterados** (blob `2e80cd6`); `golden_effective.json` **inalterado**.
+
+**Consultas eliminadas:** exatamente a rotulagem inicial do treino repetida na reexecução do `mirror` (`n_treino` amostras, 1 chamada por *fit*): iris −112, wine −133, breast_cancer −426, digits −1 347 (0,36%–3,2% do total). Não eliminadas (necessárias ao desenho atual): consultas de pertença e `predict_proba` da tentativa semântica (~2–3× o Original).
+
+**Testes (Linux):** `tests/test_eq_reloaded_original.py` 184 passed, 27 skipped (cenários/seeds sem `mirror`; âncora exata guardada opt-in), 1 xfailed (identidade do fluxo completo no caso 4); suite completa em 4 shards sem falhas (aa: 525 passed/27 skipped/1 xfailed; ab, ac, ad: 0 falhas, duas execuções); agnosticismo estático OK; `test_agnosticism_contract.py` incluído nos shards.
+
+**Incidente de teste (registado):** a âncora **exata por hashes guardados** é sensível ao anfitrião (kernel BLAS/SIMD): falhou no *baseline* sem alterações após um reinício do contentor e uma vez numa execução com 4 shards em paralelo, **sem reprodução** (6/6 execuções repetidas, inclusive sob carga, passaram). O **gate** passou a ser o teste **diferencial bit-a-bit no mesmo anfitrião** contra a cópia congelada de `main@1789c17` (12/12); a âncora exata guardada ficou opt-in (`BIURI_EXACT_GOLDEN=1`, `tests/golden/check_exact.py`). Não se alterou nenhuma âncora original.
+
+**CI no commit final `8203b51`:** Windows 3.11 ✔ e 3.12 ✔ (run 141, suite completa), `agnosticism-guard` ✔ (run 60). Commits anteriores da fase também verdes (`30bc3d6`, `0f34756`).
+
+**Hashes (SHA-256):**
+| ficheiro | sha256 |
+|---|---|
+| `core/trepan_reloaded_historical.py` | `5f119eb4c24e68d4067a9eb24a054a5fb6a2bade0bbd93da0c3a57a5f71cbdba` |
+| `core/trepan_original.py` | `c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331` |
+| `tests/test_eq_reloaded_original.py` | `6ba1878bdd5204fa760213591f8a71c029914354b2eba941baae4b961c895fba` |
+| `tests/eq_support.py` | `8e774a6eaec1174a5947ab84a4d6e05e1e7be74417c0489990c910027b019b66` |
+| `tests/golden/check_exact.py` | `ca9273f38011d826f6fc12da4e67345fa3b8b4e316a411465cf61ea3d87aa2b4` |
+| `tests/golden/golden_effective.json` | `acc0b4990c69928115c3fc5d5fe24956608aa3fd992930fdea36a09a4b6a4e0d` |
+| `tests/golden/golden_effective_portable.json` | `de765c5804c7522aff22c0e4dbb3302ce6a994837a99fb577f69c690fc801b38` |
+| `tests/golden/legacy/trepan_reloaded_main_1789c17.py` | `302bf17f879e3012986ee7a13d2c7fc98a270787ec30ff9d340842610923df6b` |
+| `docs/evidence/b1b4/phase1b/v2_before_after.jsonl` | `4b2c65df60c7dd87b07c543c6b846a6d35c3b3a61f62dc05508eeca7d4b8a66e` |
+| `docs/evidence/b1b4/phase1b/trace_v2_result.json` | `1366eb0b50383316cba02c7f53f50a4addb1806fa218734c17fe91db6a4ac27a` |
+| `docs/evidence/b1b4/phase1b/tiebreak_probe_result.json` | `719f1e50049513db0b151421e040e43ba0b27e5fd1bc03b0bd5931122f8033ee` |
+
+## 9. Não conformidades remanescentes
+1. **V2 (caso 4, sem efeito mensurável):** a identidade do fluxo *completo* com o Original não é alcançável por construção; `xfail` estrito mantido, aguarda a decisão do §6. `GLOBAL_EQ_CONTRACT: NOT_YET_FULLY_COMPLIANT`.
+2. **Desempate m-of-n/IG dependente de ruído de ulp** (propriedade do Original congelado, §7): proposta sem aplicar; exige autorização para alterar o Original e novo manifest.
+3. A âncora exata guardada depende do anfitrião (§8): mitigada pelo teste diferencial.
+4. O caminho ontológico ativo não foi alterado; B1–B4 não implementados; sem avaliação confirmatória; sem merge.

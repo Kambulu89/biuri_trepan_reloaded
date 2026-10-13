@@ -17,6 +17,7 @@
 | [09](09_AUTORIA_ONTOLOGIAS_E_CONGELAMENTO_OWL.md) | Autoria independente de ontologias e contrato de congelamento OWL (SHA-256) |
 | [10](10_GRELHAS_MARGENS_CUSTO.md) | Grelhas λ, margens, seeds CONFIRM, custo (achado de inexequibilidade) |
 | [11](11_PLANO_V1_FASE1A.md) | Diagnóstico e plano de correção da V1; critérios de entrada/conclusão da Fase 1a |
+| [13](13_RELATORIO_FASE1A.md) · [14](14_PLANO_FASE1B_V2.md) · [15](15_RELATORIO_FASE1B_V2.md) | **Fase 1a** (V1 corrigida), plano e **relatório da Fase 1b** (V2: causa, hipóteses H-A..H-D, intervenção, desempate m-of-n) |
 | `manifest_v2/` | `BENCHMARK_MANIFEST_v2.DRAFT.json` (não congelado) + evidência de equivalência v1→atual |
 
 ## O que mudou com a correção arquitetural

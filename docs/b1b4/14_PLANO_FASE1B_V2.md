@@ -1,6 +1,6 @@
 # Documento 14 — Plano da Fase 1b: duplicação de consultas no espelhamento ontológico (V2)
 
-Estado: **planeamento**; implementação só depois do relatório da Fase 1a (Doc. 13) ser aceite. Nenhuma lógica do `mirror` foi alterada.
+Estado: **executado — ver Doc. 15** (relatório da Fase 1b).
 
 ## 1. Problema
 Com `mirror_when_no_semantic_effect=True` (por omissão) e ontologia com estrutura ativa mas sem efeito mensurável (`ontology_influenced_splits==0` e `error_focused_interventions_accepted==0`), `fit` reexecuta o Original no mesmo oráculo depois da tentativa semântica: o estado final é o do Original, mas o oráculo recebe **tentativa semântica + Original completo** (≈2× consultas, a que se somam as projeções). Teste: `test_v2_mirror_oracle_stream_equals_original_known_violation` (xfail estrito).
