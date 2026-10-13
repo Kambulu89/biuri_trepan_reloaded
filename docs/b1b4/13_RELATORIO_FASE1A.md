@@ -7,7 +7,7 @@
 | **V2** (duplicação de consultas no `mirror`) | **OPEN / PHASE_1B** (`xfail` estrito mantido) |
 | **GLOBAL_EQ_CONTRACT** | **NOT_YET_FULLY_COMPLIANT** (violação conhecida V2) |
 | Digits, agnosticismo, E1–E9, desempenho | verificados (abaixo) |
-| CI Windows 3.11/3.12 no commit final | **ver §7 — não declarada aprovada sem execução verde** |
+| CI no commit `f8c4005` | **VERDE**: Windows 3.11 ✔, Windows 3.12 ✔ (run 137), `agnosticism-guard` ✔ (run 56) — ver §7 |
 
 Base `main@1789c17`. Âncora `50f97b2` (antes de qualquer alteração a `core/`), correção `4f7d91f`. B1–B4 **não** implementados; sem avaliação confirmatória; baselines intocados; sem merge nem PR.
 
@@ -51,7 +51,14 @@ Global (120 pares): mediana 1,016. **Objetivo ≤ 1,1× cumprido** em todas as m
 (valores completos: `sha256sum` dos ficheiros no commit referido no §7.)
 
 ## 7. CI e incidente de portabilidade (registado, não escondido)
-A CI **Windows (3.11 e 3.12) falhou** nos commits `4f7d91f`…`1c7bf7f` com **6 falhas**, todas no teste da âncora com ontologia efetiva: em Windows os floats das auditorias e os **bytes das amostras sintéticas** enviadas ao oráculo diferem no último bit (libm), enquanto regras, previsões, contagens e sequência de chamadas coincidem. Não é falha de equivalência (os testes EQ Original vs Reloaded, na mesma plataforma, passaram em Windows); é fragilidade do **hash exato** da âncora. Correção sem tocar nas âncoras: suplemento portável (floats e entradas ao oráculo com 8 algarismos significativos), gerado com o código pré-correção; Linux continua a comparar bit-a-bit. Commit `c91ff4b`. O workflow `agnosticism-guard` passou em todos os commits da fase. **Resultado da CI Windows em `c91ff4b`: ver atualização no final deste documento** (não declarado aprovado até haver execução verde).
+**Estado final: VERDE no commit `f8c4005`** — `Windows scientific regression` run 137: **windows-tests (3.11) ✔ e (3.12) ✔** (suite completa, 0 falhas); `Dataset agnosticism guard` run 56 ✔. (Os commits seguintes alteram apenas documentação.)
+
+Histórico das falhas, por ordem (cada uma diagnosticada pelos logs, nenhuma resolvida relaxando testes nem alterando as âncoras):
+1. `4f7d91f`…`1c7bf7f` (6 falhas): hash exato das auditorias com floats e dos bytes das amostras sintéticas enviadas ao oráculo não é portável entre plataformas (libm). Correção `9233f5c`/`c91ff4b`: âncora suplementar portável (8 algarismos significativos; entradas ao oráculo arredondadas).
+2. `c91ff4b`/`392c772` (2 falhas): hipótese de ruído de cancelamento (|v|<1e-9 ≡ 0) aplicada em `5af75a0`; **não era a causa** (os hashes que falhavam eram os mesmos).
+3. `5af75a0` (2 falhas, `weights/default` e `combined/no_efsr`): diagnóstico campo a campo (`e9a9a40`) revelou a **causa real**: apenas o campo de auditoria `semantic_test` (3.º split), escrito como `m-of-n(L)` em Linux e `(n-m+1)-of-n(¬L)` no Windows — **a mesma partição** (ramos trocados), com a mesma pontuação; qual aparece depende de um desempate por último bit entre candidatos equivalentes. Regras, previsões, árvore, contagens e fluxo ao oráculo idênticos. Correção `f8c4005`: a comparação **portável** usa a forma canónica (a menor entre o teste e o seu complemento); teste dedicado confirma que testes realmente diferentes continuam distintos.
+
+Garantias mantidas: `golden_effective.json` **não foi alterado** (Linux compara bit-a-bit); regras, previsões, contagens e fluxo ao oráculo são comparados **exatamente** em todas as plataformas; o suplemento portável foi gerado com o código pré-correção (blob `0053b3d`). Observação para a Fase 1b/B1–B4: o desempate entre candidatos m-of-n complementares (mesma pontuação) é dependente de plataforma no caminho com ontologia efetiva — comportamento pré-existente em `main`, sem efeito nas regras exportadas, mas a auditar quando a seleção de candidatos for formalizada.
 
 ## 8. Possíveis regressões / riscos residuais
 Atributos de relato (`semantic_split_audit_`, `error_region_audit_`, …) mantêm-se presentes; sem ontologia efetiva `error_region_audit_` fica vazio e `semantic_split_audit_` só contém linhas derivadas de `split_audit_` (sem influência). Consumidores GUI/benchmark tolerantes (suite e protocolo sem falhas). O predicado inclui o domínio OWL: se no futuro surgir outro mecanismo ontológico, tem de entrar no predicado (teste de tabela de verdade).
