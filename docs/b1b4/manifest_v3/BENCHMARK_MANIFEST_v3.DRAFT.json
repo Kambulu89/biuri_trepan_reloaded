@@ -1,7 +1,7 @@
 {
  "acceptance_criteria": {
-  "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md \u00a710",
-  "hierarchy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original (objetivo pr\u00e9-registado, n\u00e3o imposto)",
+  "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md §10",
+  "hierarchy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original (objetivo pré-registado, não imposto)",
   "labels": [
    "HIERARCHY_SATISFIED",
    "NOT_SATISFIED",
@@ -41,10 +41,10 @@
   }
  },
  "baselines": {
-  "c45": "C4.5 can\u00f3nico (r\u00f3tulos reais)",
-  "equivalence_contract": "EQ v2.0 S0\u2013S3 (docs/b1b4/07_CONTRATO_EQUIVALENCIA.md)",
+  "c45": "C4.5 canónico (rótulos reais)",
+  "equivalence_contract": "EQ v2.0 S0–S3 (docs/b1b4/07_CONTRATO_EQUIVALENCIA.md)",
   "mlp": "FrozenOracle (oracle_id = hash dos pesos)",
-  "trepan_original": "can\u00f3nico; limita\u00e7\u00e3o de desempate m-of-n registada (Doc. 19)"
+  "trepan_original": "canónico; limitação de desempate m-of-n registada (Doc. 19)"
  },
  "code": {
   "branch": "claude/repository-architecture-analysis-s1vl5a",
@@ -88,10 +88,10 @@
   }
  },
  "computational_budget": {
-  "coherent_sampling_dev": "18 unidades, 15 bra\u00e7os, 5,1 h CPU (\u22482,4 h rel\u00f3gio com 3 processos)",
+  "coherent_sampling_dev": "18 unidades, 15 braços, 5,1 h CPU (≈2,4 h relógio com 3 processos)",
   "executor_task_limit_min": 120,
-  "pilot_b2c_dev": "18 unidades, \u224813 \u00e1rvores sem\u00e2nticas por unidade; ver Doc. 20 \u00a78",
-  "structural_tuning": "fingerprint v2 das depend\u00eancias efetivas; reutiliza\u00e7\u00e3o demonstrada (iris/42: 120 ajustes retomados)"
+  "pilot_b2c_dev": "18 unidades, ≈13 árvores semânticas por unidade; ver Doc. 20 §8",
+  "structural_tuning": "fingerprint v2 das dependências efetivas; reutilização demonstrada (iris/42: 120 ajustes retomados)"
  },
  "datasets": {
   "confirmatory": "BLOQUEADO (ver BENCHMARK_MANIFEST_v2.DRAFT.json: candidatos por verificar)",
@@ -107,10 +107,10 @@
   ]
  },
  "freeze_preconditions": [
-  "aprova\u00e7\u00e3o expl\u00edcita do utilizador",
-  "datasets/ontologias/or\u00e1culos/configura\u00e7\u00f5es/m\u00e9tricas confirmat\u00f3rios fixados",
+  "aprovação explícita do utilizador",
+  "datasets/ontologias/oráculos/configurações/métricas confirmatórios fixados",
   "CI verde no commit",
-  "equival\u00eancia vs v1 documentada"
+  "equivalência vs v1 documentada"
  ],
  "frozen": false,
  "manifest_sha256": "2537d075545e278748ae93879ff4cfa72339828f62f3afc80fc15358d89535d8",
@@ -141,7 +141,7 @@
  },
  "ontological_controls": [
   "ontologia permutada",
-  "Original equivalente na mesma representa\u00e7\u00e3o",
+  "Original equivalente na mesma representação",
   "controlo de engenharia convencional de features (planeado)"
  ],
  "ontologies": {
@@ -156,7 +156,7 @@
   }
  },
  "oracles": {
-  "policy": "FrozenOracle partilhado por todos os bra\u00e7os da unidade; oracle_id verificado; OriginalOracleProjection nas representa\u00e7\u00f5es enriquecidas"
+  "policy": "FrozenOracle partilhado por todos os braços da unidade; oracle_id verificado; OriginalOracleProjection nas representações enriquecidas"
  },
  "partitioning": {
   "one_split_per_master_seed": true,
@@ -170,7 +170,7 @@
   "b1_* sem B2-C"
  ],
  "pilot_matrix_B2C": [
-  "E hist\u00f3rico",
+  "E histórico",
   "B1 tiebreak",
   "B1 calibrated lambda=0.2",
   "B1 calibrated lambda=0.4"
@@ -178,7 +178,7 @@
  "rng_policy": {
   "dataset_identity_dependence": false,
   "rng_original": "estado interno (np.random.Generator) dos FeatureDistributionModel (global: random_state; local: random_state+node_id); intocado por B2-C",
-  "rng_semantic": "np.random.default_rng(SeedSequence([random_state, 0xB2C, node_id])) sobre c\u00f3pia superficial do modelo local; s\u00f3 consultas sem\u00e2nticas"
+  "rng_semantic": "np.random.default_rng(SeedSequence([random_state, 0xB2C, node_id])) sobre cópia superficial do modelo local; só consultas semânticas"
  },
  "sampling_variants": {
   "arms_group_COH": [
@@ -199,24 +199,24 @@
     "statistical_fallback"
    ],
    "parameters": {
-    "active_queries": "semantic_active_query_fraction (0,65 por omiss\u00e3o; 0 = desligadas)",
-    "model": "FeatureDistributionModel no espa\u00e7o ORIGINAL (mesmas sementes do Original)",
+    "active_queries": "semantic_active_query_fraction (0,65 por omissão; 0 = desligadas)",
+    "model": "FeatureDistributionModel no espaço ORIGINAL (mesmas sementes do Original)",
     "transform": "ctx.enrich (OntologyProcessor ajustado no treino)"
    },
    "status": "implemented_experimental_default_off"
   },
   "conventional_feature_control": {
    "grouping": "average-linkage sobre 1-|spearman| do treino",
-   "n_target": "n\u00ba de derivadas OWL (teto p//2)",
+   "n_target": "nº de derivadas OWL (teto p//2)",
    "provider": "ConventionalFeatureProvider"
   },
   "historical": {
-   "description": "modelo marginal no espa\u00e7o enriquecido (+projetor ontol\u00f3gico); consultas ativas por omiss\u00e3o",
+   "description": "modelo marginal no espaço enriquecido (+projetor ontológico); consultas ativas por omissão",
    "status": "default"
   }
  },
  "seeds": {
-  "confirmatory_seeds": "RESERVADAS; n\u00e3o definidas neste rascunho",
+  "confirmatory_seeds": "RESERVADAS; não definidas neste rascunho",
   "dev_digits_seeds_in_pilot": [
    42,
    7,
@@ -230,7 +230,7 @@
    11
   ]
  },
- "status": "DRAFT_NOT_FROZEN: B2-C implementado e em piloto DEV; B2-A/B2-B n\u00e3o implementados; confirmat\u00f3rio BLOQUEADO at\u00e9 congelar datasets/ontologias/or\u00e1culos/configura\u00e7\u00f5es/m\u00e9tricas",
+ "status": "DRAFT_NOT_FROZEN: B2-C implementado e em piloto DEV; B2-A/B2-B não implementados; confirmatório BLOQUEADO até congelar datasets/ontologias/oráculos/configurações/métricas",
  "status_registry": {
   "B2C_SCIENTIFIC_STATUS": "NOT_DEMONSTRATED",
   "B2C_TECHNICAL_STATUS": "VALIDATED",
@@ -253,7 +253,34 @@
    "training_config.py",
    "tuning_checkpoint.py"
   ],
-  "proof": "tests/test_tuning_fingerprint.py (tra\u00e7o din\u00e2mico)",
+  "proof": "tests/test_tuning_fingerprint.py (traço dinâmico)",
   "version": 2
+ },
+ "mechanism_status": {
+  "B1": "TECHNICALLY_VALIDATED / NOT_PROMOTED",
+  "B2C": "TECHNICALLY_VALIDATED / NOT_PROMOTED",
+  "COHERENT_SAMPLING": "PARTIAL_NOT_PROMOTED",
+  "B2A": "NOT_IMPLEMENTED",
+  "B2B": "NOT_IMPLEMENTED",
+  "B3": "DESIGN_ONLY",
+  "B4": "NOT_IMPLEMENTED"
+ },
+ "investigation_causal_plausibility": {
+  "docs": [
+   "docs/b1b4/23_ANALISE_CAUSAL_GANHO_COERENCIA.md",
+   "docs/b1b4/24_PLAUSIBILIDADE_CONSULTAS.md",
+   "docs/b1b4/25_AUDITORIA_REPRESENTACAO_SEMANTICA.md"
+  ],
+  "evidence": "docs/evidence/b1b4/causal_plausibility/",
+  "scope": "DEV exploratory, observed_only; confirmatory untouched",
+  "factorial": "S(hist/coh) x A(active on/off) x L(adoption-test columns native/flipped), replicas r=0..2 (digits 0..1); P2 partial-permutation controls",
+  "controls": [
+   "shuffled both",
+   "shuffled structure only",
+   "shuffled features only",
+   "conventional",
+   "representation-only (lambda=0)"
+  ],
+  "experimental_samplers": "validation/experimental/query_samplers.py (strategies As,C,D + DomainConstrained; not in core, not default)"
  }
 }

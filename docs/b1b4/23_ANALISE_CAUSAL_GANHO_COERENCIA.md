@@ -49,5 +49,71 @@ Verificações antes da campanha: reutilização de *checkpoints* (fingerprint v
 ### 0.7 Registo de comparações (preenchido no fim)
 Ver «Resultados» abaixo: nº de contrastes realmente calculados e ajustados.
 
+
+## 1. Execução e controlo computacional (factos)
+- 18 unidades (iris, wine, breast_cancer ×5 sementes mestras; digits ×3), 8 células S×A×L × réplicas (r=0 nativas reaproveitadas do benchmark anterior, bit-a-bit) + 4 braços P2 × 2 réplicas (1 em digits) + braços de referência (MLP, C4.5, Original, Reloaded-core).
+- **Reutilização de checkpoints verificada em TODAS as 18 unidades**: `tuning_fits_resumed` = nº total de ajustes (iris 120, wine/bc 150, digits 240), `tuning_execution_count` = 1; fingerprint v2 (Doc. 22/tests) coincidiu em todas; nenhum ajuste de tuning refeito.
+- **Integridade**: 54/54 comparações dos braços de referência (Original, Reloaded-core, C4.5) idênticas às do benchmark anterior (fidelidade, accuracy, nº de nós).
+- Custo: soma de tempos de parede das unidades ≈ 3,7 h (execução em paralelo limitado; unidades < 120 min cada, a maior ≈ 40 min). CPU total estimado ≈ 5 h (soma dos tempos de parede das unidades + plausibilidade, auditoria e regressão; **estimativa, não medido por contador de CPU**), abaixo do teto de 10 CPU-h e do previsto (≈ 5,6 h). Nenhuma unidade repetida; nenhuma duplicação de benchmarks.
+- Regressão (testes de benchmark/protocolo/equivalência): 176 passed.
+
+## 2. Resultados (exploratórios, DEV, `observed_only`; ΔF = fidelidade ao oráculo)
+### 2.1 Matriz S×A×L (média sobre unidades; cada unidade = média das réplicas)
+| S | A | L nativo | L trocado |
+|---|---|---|---|
+| histórico | ativas | 0,9121 | 0,9119 |
+| histórico | sem ativas | 0,9182 | 0,9200 |
+| coerente | ativas | 0,9183 | 0,9187 |
+| coerente | sem ativas | 0,9189 | 0,9195 |
+Original (referência comum): média ≈ 0,9203 (D−Original −0,002 ± 0,004; histórico-ativas−Original −0,008 ± 0,005; 5 melhores/11 piores).
+
+### 2.2 Efeitos (todas as réplicas; EP entre unidades; Holm sobre 7 contrastes)
+| Contraste | ΔF | EP | p (Holm) |
+|---|---|---|---|
+| S (coerente−histórico) | +0,0033 | 0,0027 | 1,0 |
+| A (ativas−sem) | −0,0039 | 0,0033 | 1,0 |
+| L (trocado−nativo) | +0,0006 | 0,0007 | 1,0 |
+| S×A | +0,0032 | 0,0024 | 1,0 |
+| S×L | −0,0002 | 0,0005 | 1,0 |
+| A×L | −0,0006 | 0,0006 | 1,0 |
+| S×A×L | +0,0004 | 0,0004 | 1,0 |
+Accuracy (real): nenhum contraste significativo (A −0,0066 ± 0,0037, p_Holm 0,65). Nº de nós: S −1,17 ± 0,45 (p 0,018; Holm 0,13): árvores coerentes ≈ 1 nó menores (exploratório).
+
+### 2.3 Decomposição de D − C
+- **Com a réplica original (r=0), D − C = +0,0121 ± 0,0051 (10 melhores/2 piores)** — reproduz o valor do Doc. 22 (+0,011).
+- Réplicas novas: r=1 **+0,0040 ± 0,0082**; r=2 **+0,0023 ± 0,0057**. Média das réplicas por unidade: **+0,0062 ± 0,0040 (8 melhores/7 piores, 3 empates)**. Com ativas desligadas: +0,0007 ± 0,0031.
+- Desvio-padrão entre réplicas dentro da célula (mesma unidade, só muda o fluxo de amostragem): **0,0166** — mais de 3× o efeito pontual D−C e ~1,4× o EP entre unidades.
+- Fator L (regra de colunas do teste de adoção): contribuição para D−C = −0,0003 ± 0,0014 (−5 % [IC95 −164 %, +123 %]) no coerente e −0,0002 ± 0,0007 (−3 %) no histórico. **H-L rejeitada** (critério §0.5: ≥ 70 % e > 2 EP — não cumprido). Taxas de adoção do modelo local praticamente iguais (0,50–0,51 em todas as células).
+- Por dataset (D−C, todas as réplicas): wine +0,012, breast_cancer +0,005, digits +0,004, iris +0,004; accuracy ≈ 0.
+
+### 2.4 Indicadores de mecanismo (observacionais, média das unidades)
+| Célula | adoção local | partilha m-of-n | partilha de literais derivados | KS orig. | fora de intervalo | TV rótulos vs. reais | literais/split |
+|---|---|---|---|---|---|---|---|
+| h/on | 0,50 | 0,88 | 0,26 | 0,210 | 0,36 | 0,171 | 2,45 |
+| c/on | 0,50 | 0,87 | 0,27 | 0,221 | 0,36 | 0,180 | 2,44 |
+| h/off | 0,51 | 0,89 | 0,24 | 0,191 | 0,41 | 0,161 | 2,50 |
+| c/off | 0,51 | 0,89 | 0,25 | 0,213 | 0,42 | 0,167 | 2,48 |
+Nenhum indicador (adoção, escolha m-of-n, uso de derivadas, entropia/partilha de rótulos das consultas) distingue de forma sistemática histórico de coerente. Interpretação: **H-M e H-O sem suporte**; **H-S** (efeito de S com L fixo) pequeno e não distinguível de zero (+0,0033 ± 0,0027); **H-A/interação** de sinal consistente (S×A +0,003) mas não significativa; **H-N confirmada**: o efeito encolhe de +0,012 (r=0) para +0,003 (r=1,2) — compatível com regressão à média sobre um fluxo RNG favorável (*winner's curse*); não se escolheram sementes (r=0 foi o único fluxo disponível antes, não selecionado por resultado).
+
+### 2.5 Controlos ontológicos P2 (fidelidade; verdadeira − permutação parcial; mesmo orçamento e dimensionalidade)
+| Contraste | ΔF | EP | n |
+|---|---|---|---|
+| verdadeira − estrutura permutada (ativas) | −0,0006 | 0,0046 | 18 |
+| verdadeira − estrutura permutada (sem ativas) | −0,0042 | 0,0037 | 18 |
+| verdadeira − features permutadas (ativas) | −0,0001 | 0,0072 | 18 |
+| verdadeira − features permutadas (sem ativas) | −0,0013 | 0,0055 | 18 |
+Accuracy: −0,002 ± 0,006; −0,001 ± 0,003; −0,004 ± 0,006; +0,004 ± 0,005. **Nenhum contraste cumpre o critério §0.5 (|Δ| > 2 EP, mesmo sentido em F e Acc).** Em somatório com a evidência do Doc. 22 (permutada total e convencional) a conclusão é: **neste ambiente (DEV, 18 unidades, 4 datasets) a ontologia verdadeira não supera as permutações parciais, nem a engenharia convencional, nem o Original** — o ganho ontológico **não está demonstrado** (nem refutado: o poder estatístico é limitado, EP ≈ 0,004–0,007 face a efeitos plausíveis ≲ 0,01).
+
+## 3. Resposta às perguntas do P0
+1. *Mecanismo do ganho D−C ≈ +0,011?* Não identificado como propriedade da coerência: (i) a regra de adoção (L) não o explica; (ii) o efeito principal de S com 3 réplicas é +0,003 (1,2 EP); (iii) o valor +0,011 corresponde sobretudo ao fluxo RNG da réplica r=0 (réplicas 1–2: +0,004/+0,002); (iv) sem consultas ativas D−C ≈ 0,0007; a evidência é de que a perda do histórico com ativas (−0,008 vs Original) tem uma componente de ruído de fluxo e uma interação com ativas (A: −0,006 no histórico vs −0,0006 no coerente), não de coerência algébrica (violação já 0 no histórico, Doc. 21).
+2. *Efeito da coerência isolado*: S = +0,003 ± 0,003 (n.s.). *Efeito das ativas*: A = −0,004 ± 0,003 (n.s.; −0,0066 em accuracy, p_Holm 0,65). *Interação*: S×A = +0,003 ± 0,002 (n.s.).
+3. *Não emparelhabilidade RNG*: documentada; mitigada com réplicas e médias por unidade. O desvio-padrão entre réplicas (0,0166) é a incerteza dominante.
+4. Complexidade: coerente produz árvores ~1,2 nós menores (exploratório).
+
+## 4. Incerteza, comparações e limitações causais
+- Contrastes calculados: 7 (fidelidade) + 7 (accuracy) + 7 (nós) + 4 P2 ×2 métricas + 1 decomposição L; Holm aplicado por família de 7; nada sobrevive a Holm. Resultados exploratórios (DEV já observado).
+- Limitações: 4 datasets/18 unidades; 2–3 réplicas; ontologias manualmente definidas por dataset (DEV); fator L implementado por *patch* no executor (não é flag do núcleo); S e fluxo RNG confundidos por construção (não emparelháveis); efeito de A medido só com a política ativa atual; ausência de poder para efeitos < 0,008.
+- Reforço de política: não se atribui o resultado a «coerência» pelo nome da variante; não há promoção; confirmatório intocado.
+
 ## Alterações de protocolo
-(nenhuma até ao momento)
+Nenhuma. (Critérios §0.5 e desenho §0.3 aplicados tal como registados. Execução: r=0 nativas reaproveitadas do benchmark anterior, previsto em §0.3.)
