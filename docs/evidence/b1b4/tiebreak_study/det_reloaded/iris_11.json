@@ -1,0 +1,165 @@
+{
+ "dataset": "iris",
+ "seed": 11,
+ "structure_tuning": false,
+ "canonical": {
+  "trepan_original": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 25,
+   "pred_hash": "b143fa8fcbd4ff2b"
+  },
+  "reloaded_core": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 25,
+   "pred_hash": "b143fa8fcbd4ff2b"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 29,
+   "pred_hash": "5c111f79cf85382f"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 1.0,
+   "acc": 0.9736842105263158,
+   "nodes": 29,
+   "pred_hash": "438f653f4e1a2267"
+  }
+ },
+ "det": {
+  "trepan_original": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 25,
+   "pred_hash": "b143fa8fcbd4ff2b"
+  },
+  "reloaded_core": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 25,
+   "pred_hash": "b143fa8fcbd4ff2b"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9473684210526315,
+   "nodes": 29,
+   "pred_hash": "5c111f79cf85382f"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 1.0,
+   "acc": 0.9736842105263158,
+   "nodes": 29,
+   "pred_hash": "438f653f4e1a2267"
+  }
+ },
+ "noise_canonical": [
+  {
+   "trepan_original": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 13,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_core": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 13,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 29,
+    "pred_hash": "5c111f79cf85382f"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 1.0,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "438f653f4e1a2267"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_core": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 29,
+    "pred_hash": "5c111f79cf85382f"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 31,
+    "pred_hash": "5c111f79cf85382f"
+   }
+  }
+ ],
+ "noise_det": [
+  {
+   "trepan_original": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_core": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 29,
+    "pred_hash": "5c111f79cf85382f"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 1.0,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "438f653f4e1a2267"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_core": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 25,
+    "pred_hash": "b143fa8fcbd4ff2b"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9736842105263158,
+    "acc": 0.9473684210526315,
+    "nodes": 29,
+    "pred_hash": "5c111f79cf85382f"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 1.0,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "438f653f4e1a2267"
+   }
+  }
+ ]
+}

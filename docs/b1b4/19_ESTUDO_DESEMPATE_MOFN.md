@@ -79,3 +79,28 @@ Windows 3.11.9 (CI, commit 50e6c1e; `TIEBREAK_XPLAT_DIGEST`) vs Linux 3.11.15 (l
 | s7 | `1e9cdb597e` = `1e9cdb597e` ✔ | `024dd76d2d` = `024dd76d2d` ✔ |
 
 Conclusão (prudente): **nestes 4 problemas sintéticos não se observou divergência Linux × Windows nem no Original nem na variante**. A dependência da plataforma do Original **não ficou demonstrada** em ambiente real; ficou demonstrada a **sensibilidade** ao ruído de 1–3 ulp (§3), que é o mecanismo pelo qual uma diferença de libm/BLAS/CPU se manifestaria. A amostra é pequena (4 problemas, oráculo de forma fechada sem BLAS pesado); ausência de divergência não prova invariância. Python 3.12 (CI): ver o resumo de avisos do job (não afeta a conclusão acima). Aconselhado: manter o digest no CI como vigia informativo (já ativo) e, se aparecer divergência, tratá-la como evidência direta da limitação.
+
+
+## 8. Verificação de plataformas e versões — atualização (D4)
+Digest `TIEBREAK_XPLAT_DIGEST` (4 problemas sintéticos; Original e variante) em **quatro** ambientes: Linux Python 3.11.15/NumPy 1.26.4; **Linux Python 3.12.3/NumPy 2.5.4** (venv local, execução do mesmo teste); Windows Python 3.11.9 e Windows Python 3.12.10 (CI, commit 50e6c1e). **Os quatro digests são idênticos** (`all=3480f7b9b849`; por problema: O=`95057818b5`/`bbe492cb64`/`42273fba86`/`1e9cdb597e`, V=`95057818b5`/`26f52557b1`/`42273fba86`/`024dd76d2d`).
+Distinção pedida: **ruído injetado** (§3: o Original muda de regras em 52/60 e 9/9 ajustes) vs **divergência efetivamente observada entre plataformas** (**nenhuma** nestes 4 problemas × 4 ambientes). A dependência de plataforma do Original **continua não demonstrada em ambiente real**; a amostra (4 problemas, oráculo de forma fechada) é pequena e não prova invariância.
+
+## 9. Estudo separado «Original-det vs Reloaded-det» (D4)
+Implementação: `validation/experimental/det_reloaded_study.py` + `deterministic_policy()` em `validation/experimental/deterministic_tiebreak.py` (parcheamento **transitório** da pesquisa m-of-n na classe base, de que o Reloaded herda; nunca altera `core/` em disco; o modo `canonical` é o código tal como está). Tuning estrutural desligado (orçamento fixo): mede estabilidade e a diferença Reloaded−Original por regime, **não** desempenho final. 10 unidades DEV (iris×5, wine×3, breast_cancer×2), evidência em `docs/evidence/b1b4/tiebreak_study/det_reloaded/`. **Resultados exploratórios; não afirmam superioridade face ao Original canónico.**
+
+| Medida (10 unidades) | canónico | det |
+|---|---|---|
+| Original: fidelidade média | 0,9315 | 0,9432 |
+| Reloaded Core ≡ Original (previsões idênticas) | 10/10 | 10/10 |
+| Reloaded OWL (E): fidelidade média | 0,9363 | 0,9330 |
+| E − Original (ΔF; EP) | +0,0048 (0,0109) | −0,0102 (0,0142) |
+| unidades em que E > / < Original | 2 / 4 | 4 / 5 |
+| Ruído 1–2 ulp: unidades com previsões alteradas — Original | 4/10 (máx. \|ΔF\| 0,067) | **0/10** |
+| Ruído 1–2 ulp: unidades com previsões alteradas — **Reloaded E** | 7/10 (máx. 0,067) | **4/10** (máx. 0,022) |
+| Original-det vs Original canónico: previsões diferentes / ΔF médio | 6/10 / +0,0117 | |
+
+Leituras:
+1. O **sinal** de E − Original muda de regime (+0,005 → −0,010) com diferenças de 0,01–0,02 e EP ≈ 0,011–0,014: **diferenças desta ordem estão dentro do ruído do regime de desempate** — confirma o aviso de que comparações Reloaded×Original com |ΔF| < 0,06 por unidade têm de ser lidas com cautela e com emparelhamento multi-semente.
+2. A política determinística aplicada **só à pesquisa m-of-n** torna o Original invariante ao ruído (0/10), mas **não** o Reloaded: persistem outros desempates dependentes de ulp (p.ex. comparação `score > melhor + 1e-12` na junção dos candidatos guiados, ordenação dos candidatos guiados por `-score`, limiares do gate, calibrações B1). Um **Reloaded-det completo** exigiria quantizar também esses pontos — alteração do Reloaded que **não** foi feita (nenhuma política nova de desempate foi aprovada). A variante continua restrita à pesquisa m-of-n e a estudos isolados.
+3. A equivalência Reloaded Core ≡ Original (D ≡ C) mantém-se em ambos os regimes.
+4. A política **não** é adotada: `Original-det` difere do canónico em 6/10 unidades; qualquer nova política de desempate exige aprovação separada.

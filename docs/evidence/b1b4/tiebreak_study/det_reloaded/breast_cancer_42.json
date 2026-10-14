@@ -1,0 +1,165 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 42,
+ "structure_tuning": false,
+ "canonical": {
+  "trepan_original": {
+   "fid": 0.9370629370629371,
+   "acc": 0.9370629370629371,
+   "nodes": 17,
+   "pred_hash": "79e73acc133613a3"
+  },
+  "reloaded_core": {
+   "fid": 0.9370629370629371,
+   "acc": 0.9370629370629371,
+   "nodes": 17,
+   "pred_hash": "79e73acc133613a3"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9300699300699301,
+   "acc": 0.9300699300699301,
+   "nodes": 27,
+   "pred_hash": "5604ab9232672fbd"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.916083916083916,
+   "acc": 0.9300699300699301,
+   "nodes": 21,
+   "pred_hash": "2f789e92a3ad7083"
+  }
+ },
+ "det": {
+  "trepan_original": {
+   "fid": 0.9370629370629371,
+   "acc": 0.9370629370629371,
+   "nodes": 17,
+   "pred_hash": "79e73acc133613a3"
+  },
+  "reloaded_core": {
+   "fid": 0.9370629370629371,
+   "acc": 0.9370629370629371,
+   "nodes": 17,
+   "pred_hash": "79e73acc133613a3"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9300699300699301,
+   "acc": 0.9300699300699301,
+   "nodes": 27,
+   "pred_hash": "5604ab9232672fbd"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.9370629370629371,
+   "acc": 0.9370629370629371,
+   "nodes": 17,
+   "pred_hash": "79154f39769ce926"
+  }
+ },
+ "noise_canonical": [
+  {
+   "trepan_original": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9230769230769231,
+    "nodes": 23,
+    "pred_hash": "da8b4aa3a86bb088"
+   },
+   "reloaded_core": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9230769230769231,
+    "nodes": 23,
+    "pred_hash": "da8b4aa3a86bb088"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.916083916083916,
+    "acc": 0.916083916083916,
+    "nodes": 23,
+    "pred_hash": "f2ebd6d8f2789b79"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.916083916083916,
+    "acc": 0.9300699300699301,
+    "nodes": 21,
+    "pred_hash": "2f789e92a3ad7083"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_core": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9300699300699301,
+    "acc": 0.916083916083916,
+    "nodes": 29,
+    "pred_hash": "9fae7037a82ca433"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9090909090909091,
+    "acc": 0.9230769230769231,
+    "nodes": 21,
+    "pred_hash": "fada75d50250d3df"
+   }
+  }
+ ],
+ "noise_det": [
+  {
+   "trepan_original": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_core": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.916083916083916,
+    "acc": 0.916083916083916,
+    "nodes": 23,
+    "pred_hash": "f2ebd6d8f2789b79"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79154f39769ce926"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_core": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79e73acc133613a3"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9300699300699301,
+    "acc": 0.9300699300699301,
+    "nodes": 27,
+    "pred_hash": "5604ab9232672fbd"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9370629370629371,
+    "acc": 0.9370629370629371,
+    "nodes": 17,
+    "pred_hash": "79154f39769ce926"
+   }
+  }
+ ]
+}
