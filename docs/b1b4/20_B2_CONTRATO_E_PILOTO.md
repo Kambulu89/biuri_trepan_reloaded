@@ -254,7 +254,7 @@ Datasets necessários para detetar 0,01 (80 %): `σ_d=0`: 14/7/4 (s=5/10/20); `�
 | fallback com decisões corretamente auditadas | cumprido (`b2c_audit_`; 174/174 nós de reprodução confirmados) |
 | corrente RNG controlada | cumprido (testes de independência e determinismo) |
 | testes passam | cumprido localmente; ver CI abaixo |
-| CI verde | `4143db6` (pré-B2): verde. `d1043fe`/`786b027` (B2-C): `agnosticism-guard` verde, **Windows vermelho** (regressão de pickle descrita em §5, corrigida); CI do commit corrigido — ver nota de fecho |
+| CI verde | `4143db6` (pré-B2): verde. `d1043fe`/`786b027` (B2-C): `agnosticism-guard` verde, **Windows vermelho** (regressão de pickle descrita em §5, corrigida); **commit corrigido `ef8b010`: Windows 3.11, Windows 3.12 e `agnosticism-guard` VERDES**; suite completa local 1367 passed / 40 skipped |
 | resultados DEV documentados | cumprido (§7) |
 | custo medido | cumprido (§8) |
 | sem alterações indevidas ao Original | cumprido (`core/trepan_original.py` inalterado, hash idêntico) |
