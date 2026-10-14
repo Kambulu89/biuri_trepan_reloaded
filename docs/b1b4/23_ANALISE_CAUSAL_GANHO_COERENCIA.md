@@ -1,6 +1,6 @@
 # Doc. 23 — Análise causal do ganho D − C (amostragem coerente vs histórica)
 
-Estado: **PRÉ-REGISTO ESCRITO ANTES DAS EXPERIÓNCIAS** (commit anterior a qualquer execução desta fase). Os resultados são acrescentados abaixo, sem alterar este pré-registo; qualquer desvio é listado em «Alterações de protocolo». Investigação **exploratória**: DEV (4 datasets, 18 unidades) já observado; não declara superioridade generalizada nem causalidade definitiva.
+Estado: **PRÉ-REGISTO ESCRITO ANTES DAS EXPERIÊNCIAS** (commit anterior a qualquer execução desta fase). Os resultados são acrescentados abaixo, sem alterar este pré-registo; qualquer desvio é listado em «Alterações de protocolo». Investigação **exploratória**: DEV (4 datasets, 18 unidades) já observado; não declara superioridade generalizada nem causalidade definitiva.
 
 ## 0. Pré-registo
 

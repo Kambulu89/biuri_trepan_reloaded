@@ -119,3 +119,54 @@ def test_sidecar_records_fingerprint_and_history(tmp_path, monkeypatch):
     tc.FitCheckpoint(str(path))
     rep2 = json.loads(side.read_text())
     assert rep2["fingerprint"] != rep["fingerprint"] and rep2["history"][-1]["fingerprint"] == rep["fingerprint"]
+
+
+_PROBE = r'''
+import json, sys, numpy as np
+sys.path.insert(0, sys.argv[1])
+from core.controlled_trepan_experiment import ControlledTrepanConfig
+from core.trepan_scientific_tuning import ScientificTrepanSearchConfig, tune_scientific_trepan
+
+class Oracle:
+    def __init__(self, p, k, seed):
+        r = np.random.default_rng(seed); self.W = r.normal(size=(p, k)); self.V = r.normal(size=(p, k)) * 0.5; self.classes_ = np.arange(k); self.oracle_id = "probe"
+    def predict(self, X):
+        X = np.asarray(X, float); return np.argmax(X @ self.W + np.tanh(X) @ self.V, axis=1)
+    def predict_proba(self, X):
+        X = np.asarray(X, float); s = X @ self.W + np.tanh(X) @ self.V; e = np.exp(s - s.max(1, keepdims=True)); return e / e.sum(1, keepdims=True)
+
+out = {}
+for tag, (p, k, n, extra) in {"binary": (4, 2, 140, {}), "multiclass": (6, 4, 160, {"max_features_per_node": 3})}.items():
+    r = np.random.default_rng(1); X = r.normal(size=(n, p)); o = Oracle(p, k, 2); y = o.predict(X)
+    base = ControlledTrepanConfig(max_nodes=9, max_depth=4, min_samples_leaf=2, min_sample=n, max_n=2, beam_width=2,
+                                  max_features_per_node=extra.get("max_features_per_node", p), max_queries=500, random_state=3)
+    # caminho completo do protocolo estrutural usado pelo benchmark (estrutura + expansão de capacidade + capacidade), sem etapa semântica
+    t = tune_scientific_trepan(X, y, oracle=o, feature_names=[f"a{i}" for i in range(p)], base_config=base,
+                               search=ScientificTrepanSearchConfig(cv_folds=2, cv_repeats=2), run_semantic_stage=False)
+    out[tag] = {"common": t["common_capacity"], "hist": [(h["label"], h.get("stats") and round(h["stats"]["fidelity_mean"], 12)) for h in t["structure_history"]]}
+print(json.dumps(out, sort_keys=True, default=str))
+'''
+
+
+def test_tuning_rows_do_not_depend_on_reloaded_code_empirically(tmp_path):
+    """Prova empírica complementar ao traço: com o ficheiro do Reloaded DELIBERADAMENTE partido (qualquer instanciação rebenta), o protocolo estrutural
+    completo (estrutura + expansão de capacidade + capacidade; binário e multiclasse) devolve resultados idênticos ⇒ o Reloaded não é dependência efetiva."""
+    import subprocess
+    probe = tmp_path / "probe.py"
+    probe.write_text(_PROBE, encoding="utf-8")
+
+    def run(root):
+        res = subprocess.run([sys.executable, str(probe), str(root)], capture_output=True, text=True, cwd=str(root), timeout=900)
+        assert res.returncode == 0, res.stderr[-800:]
+        return res.stdout.strip().splitlines()[-1]
+
+    clean = tmp_path / "clean"; broken = tmp_path / "broken"
+    for root in (clean, broken):
+        shutil.copytree(ROOT / "core", root / "core", ignore=shutil.ignore_patterns("__pycache__"))
+    f = broken / "core" / "trepan_reloaded_historical.py"
+    src = f.read_text(encoding="utf-8")
+    marker = "        super().__init__(\n            max_nodes=max_nodes,"
+    assert marker in src
+    f.write_text(src.replace(marker, "        raise RuntimeError('Reloaded partido de propósito')\n" + marker, 1), encoding="utf-8")
+    assert run(clean) == run(broken)
+    assert tc.fingerprint_report(clean / "core")["fingerprint"] == tc.fingerprint_report(broken / "core")["fingerprint"]

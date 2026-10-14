@@ -89,6 +89,8 @@ class BenchmarkConfig:
     b2c_pilot: bool = False
     # Amostragem coerente (EXPERIMENTAL; False por omissão ⇒ lista de braços e configuração IDÊNTICAS às anteriores; Doc. 22).
     coherent_pilot: bool = False
+    # Controlos parciais da ontologia permutada (P2, Doc. 23): contextos extra «structure» e «features». False por omissão ⇒ nada muda.
+    causal_pilot: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -98,6 +100,8 @@ class BenchmarkConfig:
             d.pop("b2c_pilot", None)
         if not self.coherent_pilot:
             d.pop("coherent_pilot", None)
+        if not self.causal_pilot:
+            d.pop("causal_pilot", None)
         if not self.b1_calibrations:                    # config sem B1 serializa exatamente como antes
             d.pop("b1_calibrations", None)
             d.pop("b1_lambdas", None)
@@ -182,6 +186,7 @@ class ArmSpec:
     log_candidates: bool = False         # B1: instrumentação de todos os candidatos (sem efeito nas decisões)
     b2c: bool = False                    # B2-C: fallback estatístico local + corrente RNG semântica separada
     coherent: bool = False               # amostragem ontologicamente coerente (consultas no espaço original + transformador ajustado no treino)
+    seed_offset: int = 0                 # réplicas da árvore: random_state = semente mestra + offset (mesma divisão, oráculo e orçamento)
 
 
 def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
@@ -492,8 +497,12 @@ class BenchmarkRunner:
             ctx_real = provider.build(Xtr, ds.feature_names, seed)
         with timer.stage("ontology_shuffled_build_time"):
             ctx_shuf = ShuffledSemanticProvider(provider).from_context(ctx_real, seed) if ctx_real.available else ctx_real
+        self._ctx_variants = {}
+        if cfg.causal_pilot and ctx_real.available:
+            for mode in ("structure", "features"):
+                self._ctx_variants[mode] = ShuffledSemanticProvider(provider).from_context(ctx_real, seed, mode=mode)
         self._ctx_conv = None
-        if cfg.coherent_pilot and ctx_real.available:
+        if (cfg.coherent_pilot or cfg.causal_pilot) and ctx_real.available:
             from core.benchmark.semantic import ConventionalFeatureProvider
             conv = ConventionalFeatureProvider(len(ctx_real.onto_idx)).build(Xtr, ds.feature_names, seed)
             self._ctx_conv = conv if conv.available else None
@@ -631,7 +640,8 @@ class BenchmarkRunner:
         cfg = self.cfg
         row: Dict[str, Any] = {"mlp_training_time": None, "tree_training_time": None, "query_time": None,
                                "semantic_processing_time": 0.0, "reasoner_time": 0.0, "counterfactual_time": None}
-        ctx = ctx_shuf if spec.semantic == "shuffled" else (getattr(self, "_ctx_conv", None) if spec.semantic == "conventional" else ctx_real)
+        ctx = ctx_shuf if spec.semantic == "shuffled" else (getattr(self, "_ctx_conv", None) if spec.semantic == "conventional" else
+                                                            (getattr(self, "_ctx_variants", {}).get(spec.semantic.split("_", 1)[1]) if spec.semantic in ("shuffled_structure", "shuffled_features") else ctx_real))
         if ctx is None:
             raise RuntimeError("contexto de features convencionais indisponível para este split")
         if spec.family == "mlp":
@@ -681,7 +691,7 @@ class BenchmarkRunner:
                 raise ValueError("MLP Ontológico só pode ser oráculo de uma árvore no espaço enriquecido.")
         X_fit = _enriched(ctx, Xtr, "train") if use_enr else Xtr
         names = ctx.enriched_names if use_enr else ds.feature_names
-        common = dict(budget, random_state=seed)
+        common = dict(budget, random_state=seed + int(spec.seed_offset))
         if spec.max_n is not None:
             common["max_n"] = spec.max_n
         frozen = fo if key == "mlp_original" else fe

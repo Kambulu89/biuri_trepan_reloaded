@@ -277,8 +277,14 @@ class ShuffledSemanticProvider:
     def build(self, X_train, feature_names, seed: int = 0) -> SemanticContext:
         return self.from_context(self.base.build(X_train, feature_names, seed), seed)
 
-    def from_context(self, ctx: SemanticContext, seed: int = 0) -> SemanticContext:
-        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning)."""
+    def from_context(self, ctx: SemanticContext, seed: int = 0, mode: str = "both") -> SemanticContext:
+        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning).
+
+        ``mode`` (controlos P2, Doc. 23): ``both`` (histórico: colunas de origem E estrutura permutadas), ``structure`` (features VERDADEIRAS, estrutura
+        — pesos/grupos/relatedness/profundidades — permutada) ou ``features`` (features calculadas sobre colunas permutadas, estrutura VERDADEIRA).
+        Os sorteios do RNG são os mesmos nos três modos (``both`` inalterado)."""
+        if mode not in ("both", "structure", "features"):
+            raise ValueError("mode deve ser both|structure|features")
         if not ctx.available:
             ctx.provider = self.name
             return ctx
@@ -294,10 +300,15 @@ class ShuffledSemanticProvider:
             full[:, :n_orig] = Z                      # as features originais mantêm-se (só a semântica é destruída)
             return full
 
+        use_perm_structure = mode in ("both", "structure")
+        use_shuffled_transform = mode in ("both", "features")
+        ident = np.arange(n)
+        sperm = perm if use_perm_structure else ident
         sh = SemanticContext(
             "shuffled", self.name, True, ctx.base_names, ctx.enriched_names, ctx.orig_idx, ctx.onto_idx,
-            shuffled_transform, ctx.weights[perm], [ctx.groups[i] for i in perm], ctx.relatedness[np.ix_(perm, perm)],
-            ctx.depths[perm], ontology_valid=ctx.ontology_valid, reason="controlo negativo: semântica permutada",
+            shuffled_transform if use_shuffled_transform else real_transform, ctx.weights[sperm], [ctx.groups[i] for i in sperm],
+            ctx.relatedness[np.ix_(sperm, sperm)], ctx.depths[sperm], ontology_valid=ctx.ontology_valid,
+            reason="controlo negativo: semântica permutada" if mode == "both" else f"controlo parcial P2: {mode} permutado",
             semantic_time=ctx.semantic_time, reasoner_time=ctx.reasoner_time,
             info={**ctx.info, "shuffle_seed": int(seed) + self.seed_offset, "original_ontology_hash": ctx.info.get("ontology_hash"),
                   "counts_before": structure_counts(ctx), "n_ontology_graph_nodes": ctx.info.get("n_ontology_graph_nodes"),
