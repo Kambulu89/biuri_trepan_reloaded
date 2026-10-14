@@ -69,4 +69,13 @@ Leitura:
 
 ## 7. Resultado da verificação de plataformas
 
-(pendente de CI — preenchido abaixo)
+Windows 3.11.9 (CI, commit 50e6c1e; `TIEBREAK_XPLAT_DIGEST`) vs Linux 3.11.15 (local):
+
+| Problema | Original (Linux = Windows?) | Variante (Linux = Windows?) |
+|---|---|---|
+| s0 | `95057818b5` = `95057818b5` ✔ | `95057818b5` = `95057818b5` ✔ |
+| s3 | `bbe492cb64` = `bbe492cb64` ✔ | `26f52557b1` = `26f52557b1` ✔ |
+| s5 | `42273fba86` = `42273fba86` ✔ | `42273fba86` = `42273fba86` ✔ |
+| s7 | `1e9cdb597e` = `1e9cdb597e` ✔ | `024dd76d2d` = `024dd76d2d` ✔ |
+
+Conclusão (prudente): **nestes 4 problemas sintéticos não se observou divergência Linux × Windows nem no Original nem na variante**. A dependência da plataforma do Original **não ficou demonstrada** em ambiente real; ficou demonstrada a **sensibilidade** ao ruído de 1–3 ulp (§3), que é o mecanismo pelo qual uma diferença de libm/BLAS/CPU se manifestaria. A amostra é pequena (4 problemas, oráculo de forma fechada sem BLAS pesado); ausência de divergência não prova invariância. Python 3.12 (CI): ver o resumo de avisos do job (não afeta a conclusão acima). Aconselhado: manter o digest no CI como vigia informativo (já ativo) e, se aparecer divergência, tratá-la como evidência direta da limitação.
