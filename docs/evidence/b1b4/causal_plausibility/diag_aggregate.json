@@ -1,0 +1,553 @@
+{
+ "plausibility_dev": {
+  "n_runs": 18,
+  "strategies": {
+   "A_marginal_historical": {
+    "sec_per_1000_queries": 0.008315228833326829,
+    "acceptance_under_path_constraint": 0.44837869315989765,
+    "sec_per_1000_under_constraint": 0.013196439888878963,
+    "auc_real_vs_synth_orig": 0.9039246876669592,
+    "auc_real_vs_synth_enr": 0.9244668544263352,
+    "nn_distance_ratio_vs_holdout": 2.3827496473640415,
+    "out_of_range_rate": 0.46022222222222225,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 1.0,
+    "surrogate_fidelity_on_holdout": 0.8252699654201361,
+    "query_label_entropy": 1.6032022720097951,
+    "near_boundary_fraction_margin<0.2": 0.11800000000000001,
+    "boundary_points_covered_fraction": 0.234375,
+    "diversity_nn_distance_ratio": 1.5674293383565605,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "As_marginal_joint_groups": {
+    "sec_per_1000_queries": 0.016653271611109705,
+    "acceptance_under_path_constraint": 0.43222906833334596,
+    "sec_per_1000_under_constraint": 0.12500678755556136,
+    "auc_real_vs_synth_orig": 0.9039246876669592,
+    "auc_real_vs_synth_enr": 0.9028616970818937,
+    "nn_distance_ratio_vs_holdout": 2.3827496473640415,
+    "out_of_range_rate": 0.46022222222222225,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.8584883309300833,
+    "query_label_entropy": 1.6032022720097951,
+    "near_boundary_fraction_margin<0.2": 0.11800000000000001,
+    "boundary_points_covered_fraction": 0.234375,
+    "diversity_nn_distance_ratio": 1.5674293383565605,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "B_marginal_coherent": {
+    "sec_per_1000_queries": 0.016052349277771327,
+    "acceptance_under_path_constraint": 0.43222906833334596,
+    "sec_per_1000_under_constraint": 0.12096433111110451,
+    "auc_real_vs_synth_orig": 0.9039246876669592,
+    "auc_real_vs_synth_enr": 0.9028616970818937,
+    "nn_distance_ratio_vs_holdout": 2.3827496473640415,
+    "out_of_range_rate": 0.46022222222222225,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.8584883309300833,
+    "query_label_entropy": 1.6032022720097951,
+    "near_boundary_fraction_margin<0.2": 0.11800000000000001,
+    "boundary_points_covered_fraction": 0.234375,
+    "diversity_nn_distance_ratio": 1.5674293383565605,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "C_joint_empirical": {
+    "sec_per_1000_queries": 0.014994728861103744,
+    "acceptance_under_path_constraint": 0.44427006796355084,
+    "sec_per_1000_under_constraint": 0.11930938999997427,
+    "auc_real_vs_synth_orig": 0.7155071902687892,
+    "auc_real_vs_synth_enr": 0.7625621650191915,
+    "nn_distance_ratio_vs_holdout": 1.039271085505621,
+    "out_of_range_rate": 0.27169444444444446,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.9063624005359875,
+    "query_label_entropy": 1.6681089629021868,
+    "near_boundary_fraction_margin<0.2": 0.029277777777777774,
+    "boundary_points_covered_fraction": 0.42190563725490193,
+    "diversity_nn_distance_ratio": 0.8694993875623181,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "D_neighborhood": {
+    "sec_per_1000_queries": 0.01708467455557007,
+    "acceptance_under_path_constraint": 0.46327814242581944,
+    "sec_per_1000_under_constraint": 0.10127979444443251,
+    "auc_real_vs_synth_orig": 0.6831717047335361,
+    "auc_real_vs_synth_enr": 0.6864906819155011,
+    "nn_distance_ratio_vs_holdout": 0.37710674094236907,
+    "out_of_range_rate": 0.0,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.9063655132871262,
+    "query_label_entropy": 1.6911030541594398,
+    "near_boundary_fraction_margin<0.2": 0.013416666666666667,
+    "boundary_points_covered_fraction": 0.4040592903828198,
+    "diversity_nn_distance_ratio": 0.23024082537308901,
+    "exact_copy_of_base_rows": 0.0
+   }
+  }
+ },
+ "plausibility_mixed": {
+  "n_runs": 5,
+  "strategies": {
+   "A_marginal_historical": {
+    "sec_per_1000_queries": 0.0023755702999778807,
+    "acceptance_under_path_constraint": 0.4577333333333334,
+    "sec_per_1000_under_constraint": 0.0024024304000704435,
+    "auc_real_vs_synth_orig": 0.8499166666666668,
+    "auc_real_vs_synth_enr": 0.966815972222222,
+    "nn_distance_ratio_vs_holdout": 2.0078238438023313,
+    "out_of_range_rate": 0.0162,
+    "onehot_violation_rate": 0.8150999999999999,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 1.0,
+    "surrogate_fidelity_on_holdout": 0.7825,
+    "query_label_entropy": 1.5823554941933715,
+    "near_boundary_fraction_margin<0.2": 0.11640000000000002,
+    "boundary_points_covered_fraction": 0.3115408177000777,
+    "diversity_nn_distance_ratio": 1.4732095005414938,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "As_marginal_joint_groups": {
+    "sec_per_1000_queries": 0.0024979864000215456,
+    "acceptance_under_path_constraint": 0.4489333333333333,
+    "sec_per_1000_under_constraint": 0.003284244799988301,
+    "auc_real_vs_synth_orig": 0.7599097222222222,
+    "auc_real_vs_synth_enr": 0.77734375,
+    "nn_distance_ratio_vs_holdout": 1.313076558854835,
+    "out_of_range_rate": 0.0162,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.7775,
+    "query_label_entropy": 1.5815267973461713,
+    "near_boundary_fraction_margin<0.2": 0.11539999999999999,
+    "boundary_points_covered_fraction": 0.7696023031638284,
+    "diversity_nn_distance_ratio": 1.0063433963612265,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "B_marginal_coherent": {
+    "sec_per_1000_queries": 0.0017909608999957527,
+    "acceptance_under_path_constraint": 0.4489333333333333,
+    "sec_per_1000_under_constraint": 0.002399336799908269,
+    "auc_real_vs_synth_orig": 0.8499166666666668,
+    "auc_real_vs_synth_enr": 0.8508819444444444,
+    "nn_distance_ratio_vs_holdout": 2.0078238438023313,
+    "out_of_range_rate": 0.0162,
+    "onehot_violation_rate": 0.8150999999999999,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.7808333333333334,
+    "query_label_entropy": 1.5823554941933715,
+    "near_boundary_fraction_margin<0.2": 0.11640000000000002,
+    "boundary_points_covered_fraction": 0.3115408177000777,
+    "diversity_nn_distance_ratio": 1.4732095005414938,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "C_joint_empirical": {
+    "sec_per_1000_queries": 0.001492915999995148,
+    "acceptance_under_path_constraint": 0.44400000000000006,
+    "sec_per_1000_under_constraint": 0.001932678799948917,
+    "auc_real_vs_synth_orig": 0.5939861111111111,
+    "auc_real_vs_synth_enr": 0.5830902777777778,
+    "nn_distance_ratio_vs_holdout": 0.5420684520492136,
+    "out_of_range_rate": 0.013600000000000001,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.82,
+    "query_label_entropy": 1.5816761455952644,
+    "near_boundary_fraction_margin<0.2": 0.11140000000000001,
+    "boundary_points_covered_fraction": 0.868522603549429,
+    "diversity_nn_distance_ratio": 0.6346385051510163,
+    "exact_copy_of_base_rows": 0.0
+   },
+   "D_neighborhood": {
+    "sec_per_1000_queries": 0.0015627934999997706,
+    "acceptance_under_path_constraint": 0.4664,
+    "sec_per_1000_under_constraint": 0.0017455751999477798,
+    "auc_real_vs_synth_orig": 0.6402743055555555,
+    "auc_real_vs_synth_enr": 0.6333298611111111,
+    "nn_distance_ratio_vs_holdout": 0.4787473554355204,
+    "out_of_range_rate": 0.0,
+    "onehot_violation_rate": 0.0,
+    "vocab_violation_rate": 0.0,
+    "binary_violation_rate": 0.0,
+    "derived_violation_rate": 0.0,
+    "surrogate_fidelity_on_holdout": 0.8041666666666668,
+    "query_label_entropy": 1.5827025428148138,
+    "near_boundary_fraction_margin<0.2": 0.12050000000000001,
+    "boundary_points_covered_fraction": 0.7458664930503094,
+    "diversity_nn_distance_ratio": 0.398960648080922,
+    "exact_copy_of_base_rows": 0.0
+   }
+  }
+ },
+ "audit": {
+  "n_runs": 18,
+  "real": {
+   "n_derived": 16.61111111111111,
+   "mean_abs_spearman_within_groups": 0.5187336967715406,
+   "mean_z_vs_random_groups": 1.2779402450310269,
+   "share_groups_above_null_p95": 0.4081062194269741,
+   "share_derived_nearly_single_original": 0.16509433962264153,
+   "share_derived_mi_above_best_member": 0.29577218728162125,
+   "conditional_info_Y_D_given_X": 0.0,
+   "share_bootstrap_derived_wins_root": 0.22592592592592592,
+   "mean_ig_gain_derived_minus_original": -0.03530537650814928,
+   "candidate_ratio_enriched_over_original": 1.3202039874679068
+  },
+  "shuffled": {
+   "n_derived": 16.61111111111111,
+   "mean_abs_spearman_within_groups": 0.3888330001363988,
+   "mean_z_vs_random_groups": 0.12388011183714329,
+   "share_groups_above_null_p95": 0.03738644304682041,
+   "share_derived_nearly_single_original": 0.5569531795946889,
+   "share_derived_mi_above_best_member": 0.17155835080363382,
+   "conditional_info_Y_D_given_X": 0.0,
+   "share_bootstrap_derived_wins_root": 0.08518518518518518,
+   "mean_ig_gain_derived_minus_original": -0.06980456953202135,
+   "candidate_ratio_enriched_over_original": 1.3878187089164085
+  },
+  "conventional": {
+   "n_derived": 2.888888888888889,
+   "mean_abs_spearman_within_groups": 0.6774664249747558,
+   "mean_z_vs_random_groups": 2.789700691629036,
+   "share_groups_above_null_p95": 0.8888888888888888,
+   "share_derived_nearly_single_original": 0.5425925925925926,
+   "share_derived_mi_above_best_member": 0.13518518518518519,
+   "conditional_info_Y_D_given_X": 0.0,
+   "share_bootstrap_derived_wins_root": 0.05925925925925926,
+   "mean_ig_gain_derived_minus_original": -0.1359408686228552,
+   "candidate_ratio_enriched_over_original": 1.190371006283056
+  },
+  "per_unit_real": {
+   "breast_cancer:11": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 30,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 41,
+     "n_original": 30
+    },
+    "n_derived": 53,
+    "cond_info": 0.0,
+    "nearly_single": 0.09433962264150944,
+    "mean_z": 1.5106808083208165
+   },
+   "breast_cancer:123": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 30,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 41,
+     "n_original": 30
+    },
+    "n_derived": 53,
+    "cond_info": 0.0,
+    "nearly_single": 0.09433962264150944,
+    "mean_z": 1.5495271423942807
+   },
+   "breast_cancer:2024": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 30,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 41,
+     "n_original": 30
+    },
+    "n_derived": 53,
+    "cond_info": 0.0,
+    "nearly_single": 0.09433962264150944,
+    "mean_z": 1.528606399165365
+   },
+   "breast_cancer:42": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 30,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 41,
+     "n_original": 30
+    },
+    "n_derived": 53,
+    "cond_info": 0.0,
+    "nearly_single": 0.09433962264150944,
+    "mean_z": 1.556806968915929
+   },
+   "breast_cancer:7": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 30,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 41,
+     "n_original": 30
+    },
+    "n_derived": 53,
+    "cond_info": 0.0,
+    "nearly_single": 0.09433962264150944,
+    "mean_z": 1.5522991389965195
+   },
+   "digits:123": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 64,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 72,
+     "n_original": 64
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 2.2645724017837936
+   },
+   "digits:42": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 64,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 72,
+     "n_original": 64
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 2.3951698318447647
+   },
+   "digits:7": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 64,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 72,
+     "n_original": 64
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 2.310811928655187
+   },
+   "iris:11": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 4,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 11,
+     "n_original": 4
+    },
+    "n_derived": 2,
+    "cond_info": 0.0,
+    "nearly_single": 0.5,
+    "mean_z": -0.07438200809580386
+   },
+   "iris:123": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 4,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 11,
+     "n_original": 4
+    },
+    "n_derived": 2,
+    "cond_info": 0.0,
+    "nearly_single": 0.5,
+    "mean_z": -0.037586590768816874
+   },
+   "iris:2024": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 4,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 11,
+     "n_original": 4
+    },
+    "n_derived": 2,
+    "cond_info": 0.0,
+    "nearly_single": 0.5,
+    "mean_z": 0.026403986761068254
+   },
+   "iris:42": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 4,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 11,
+     "n_original": 4
+    },
+    "n_derived": 2,
+    "cond_info": 0.0,
+    "nearly_single": 0.5,
+    "mean_z": -0.07403324987512783
+   },
+   "iris:7": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 4,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 11,
+     "n_original": 4
+    },
+    "n_derived": 2,
+    "cond_info": 0.0,
+    "nearly_single": 0.5,
+    "mean_z": 0.0006598456296282862
+   },
+   "wine:11": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 13,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 21,
+     "n_original": 13
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 1.639172731431497
+   },
+   "wine:123": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 13,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 21,
+     "n_original": 13
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 1.6657159452031278
+   },
+   "wine:2024": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 13,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 21,
+     "n_original": 13
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 1.7071320188338792
+   },
+   "wine:42": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 13,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 21,
+     "n_original": 13
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 1.6901122187780058
+   },
+   "wine:7": {
+    "matching": {
+     "available": true,
+     "reason": "",
+     "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+     "mapped_features": 13,
+     "unmapped_features": 0,
+     "feature_coverage": 1.0,
+     "reasoner_consistent": true,
+     "graph_nodes": 21,
+     "n_original": 13
+    },
+    "n_derived": 3,
+    "cond_info": 0.0,
+    "nearly_single": 0.0,
+    "mean_z": 1.7912548925843723
+   }
+  },
+  "stability": {
+   "min_corr": 0.9236721357676437,
+   "max_rel_std_change": 0.12446410551085103
+  }
+ }
+}

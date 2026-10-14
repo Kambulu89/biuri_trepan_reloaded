@@ -1,0 +1,133 @@
+{
+ "dataset": "iris",
+ "seed": 2024,
+ "matching": {
+  "available": true,
+  "reason": "",
+  "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+  "mapped_features": 4,
+  "unmapped_features": 0,
+  "feature_coverage": 1.0,
+  "reasoner_consistent": true,
+  "graph_nodes": 11,
+  "n_original": 4
+ },
+ "real": {
+  "name": "owl_real",
+  "n_derived": 2,
+  "source_group_sizes": {
+   "min": 2,
+   "median": 2.0,
+   "max": 2
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.5776882724419325,
+   "mean_z_vs_random_groups": 0.026403986761068254,
+   "share_groups_above_null_p95": 0.0,
+   "n_groups_ge2": 2
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 0.5,
+  "mi_derived_median": 0.5389075218990069,
+  "mi_original_median": 0.7291167493188527,
+  "share_derived_mi_above_best_member": 0.5,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.9152908478124057,
+   "root_best_ig_derived": 0.8467096939327499,
+   "share_bootstrap_subsamples_where_derived_wins": 0.2,
+   "mean_ig_gain_derived_minus_original": 0.012518533793006707
+  },
+  "candidates": {
+   "original_space": 46,
+   "enriched_space": 100,
+   "p": 4,
+   "p_plus_k": 6
+  },
+  "semantic_structure": {
+   "weights_nonunit": 2,
+   "groups_named": 2,
+   "relatedness_offdiag_nonzero": 6,
+   "depth_mean_derived": 1.0
+  }
+ },
+ "shuffled": {
+  "name": "owl_shuffled",
+  "n_derived": 2,
+  "source_group_sizes": {
+   "min": 2,
+   "median": 2.0,
+   "max": 2
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.5853427955044251,
+   "mean_z_vs_random_groups": 0.10938377556598572,
+   "share_groups_above_null_p95": 0.0,
+   "n_groups_ge2": 2
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 0.5,
+  "mi_derived_median": 0.7598934875708183,
+  "mi_original_median": 0.7291167493188527,
+  "share_derived_mi_above_best_member": 0.0,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.9152908478124057,
+   "root_best_ig_derived": 0.8467096939327499,
+   "share_bootstrap_subsamples_where_derived_wins": 0.06666666666666667,
+   "mean_ig_gain_derived_minus_original": -0.028450670354658848
+  },
+  "candidates": {
+   "original_space": 46,
+   "enriched_space": 120,
+   "p": 4,
+   "p_plus_k": 6
+  },
+  "semantic_structure": {
+   "weights_nonunit": 2,
+   "groups_named": 2,
+   "relatedness_offdiag_nonzero": 6,
+   "depth_mean_derived": 1.0
+  }
+ },
+ "conventional": {
+  "name": "conventional",
+  "n_derived": 1,
+  "source_group_sizes": {
+   "min": 3,
+   "median": 3.0,
+   "max": 3
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.8882690519332973,
+   "mean_z_vs_random_groups": 1.9479976600021796,
+   "share_groups_above_null_p95": 1.0,
+   "n_groups_ge2": 1
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 1.0,
+  "mi_derived_median": 0.9172048607555852,
+  "mi_original_median": 0.7291167493188527,
+  "share_derived_mi_above_best_member": 0.0,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.9152908478124057,
+   "root_best_ig_derived": 0.8467096939327499,
+   "share_bootstrap_subsamples_where_derived_wins": 0.06666666666666667,
+   "mean_ig_gain_derived_minus_original": -0.045363011844079565
+  },
+  "candidates": {
+   "original_space": 46,
+   "enriched_space": 74,
+   "p": 4,
+   "p_plus_k": 5
+  },
+  "semantic_structure": {
+   "weights_nonunit": 0,
+   "groups_named": 0,
+   "relatedness_offdiag_nonzero": 0,
+   "depth_mean_derived": 0.0
+  }
+ },
+ "stability_under_80pct_refit": {
+  "min_corr": 0.999855701890019,
+  "max_rel_std_change": 0.03226566307635508
+ }
+}

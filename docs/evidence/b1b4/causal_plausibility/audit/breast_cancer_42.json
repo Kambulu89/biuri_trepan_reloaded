@@ -1,0 +1,133 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 42,
+ "matching": {
+  "available": true,
+  "reason": "",
+  "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+  "mapped_features": 30,
+  "unmapped_features": 0,
+  "feature_coverage": 1.0,
+  "reasoner_consistent": true,
+  "graph_nodes": 41,
+  "n_original": 30
+ },
+ "real": {
+  "name": "owl_real",
+  "n_derived": 53,
+  "source_group_sizes": {
+   "min": 2,
+   "median": 2.0,
+   "max": 10
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.7834317738486638,
+   "mean_z_vs_random_groups": 1.556806968915929,
+   "share_groups_above_null_p95": 0.5471698113207547,
+   "n_groups_ge2": 53
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 0.09433962264150944,
+  "mi_derived_median": 0.10984864363697389,
+  "mi_original_median": 0.18376396234818448,
+  "share_derived_mi_above_best_member": 0.11320754716981132,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.5614895174730299,
+   "root_best_ig_derived": 0.6198953551823484,
+   "share_bootstrap_subsamples_where_derived_wins": 0.6666666666666666,
+   "mean_ig_gain_derived_minus_original": 0.03736287511180814
+  },
+  "candidates": {
+   "original_space": 570,
+   "enriched_space": 564,
+   "p": 30,
+   "p_plus_k": 83
+  },
+  "semantic_structure": {
+   "weights_nonunit": 53,
+   "groups_named": 3,
+   "relatedness_offdiag_nonzero": 435,
+   "depth_mean_derived": 1.0
+  }
+ },
+ "shuffled": {
+  "name": "owl_shuffled",
+  "n_derived": 53,
+  "source_group_sizes": {
+   "min": 2,
+   "median": 2.0,
+   "max": 10
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.4467863656595328,
+   "mean_z_vs_random_groups": 0.11888566712429924,
+   "share_groups_above_null_p95": 0.09433962264150944,
+   "n_groups_ge2": 53
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 0.2830188679245283,
+  "mi_derived_median": 0.13521304241610044,
+  "mi_original_median": 0.18376396234818448,
+  "share_derived_mi_above_best_member": 0.22641509433962265,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.5614895174730299,
+   "root_best_ig_derived": 0.5675153806006871,
+   "share_bootstrap_subsamples_where_derived_wins": 0.26666666666666666,
+   "mean_ig_gain_derived_minus_original": -0.003807040460481555
+  },
+  "candidates": {
+   "original_space": 570,
+   "enriched_space": 564,
+   "p": 30,
+   "p_plus_k": 83
+  },
+  "semantic_structure": {
+   "weights_nonunit": 53,
+   "groups_named": 3,
+   "relatedness_offdiag_nonzero": 435,
+   "depth_mean_derived": 1.0
+  }
+ },
+ "conventional": {
+  "name": "conventional",
+  "n_derived": 5,
+  "source_group_sizes": {
+   "min": 2,
+   "median": 3.0,
+   "max": 6
+  },
+  "groups_alignment_with_data_structure": {
+   "mean_abs_spearman_within_groups": 0.9104332595818472,
+   "mean_z_vs_random_groups": 3.6932456451446,
+   "share_groups_above_null_p95": 1.0,
+   "n_groups_ge2": 5
+  },
+  "share_derived_nearly_a_single_original(|r|>0.95)": 0.8,
+  "mi_derived_median": 0.2697301873406124,
+  "mi_original_median": 0.18376396234818448,
+  "share_derived_mi_above_best_member": 0.4,
+  "conditional_info_Y_D_given_X": 0.0,
+  "tree_utility": {
+   "root_best_ig_original": 0.5614895174730299,
+   "root_best_ig_derived": 0.5258025817589392,
+   "share_bootstrap_subsamples_where_derived_wins": 0.0,
+   "mean_ig_gain_derived_minus_original": -0.06105849718044336
+  },
+  "candidates": {
+   "original_space": 570,
+   "enriched_space": 572,
+   "p": 30,
+   "p_plus_k": 35
+  },
+  "semantic_structure": {
+   "weights_nonunit": 0,
+   "groups_named": 0,
+   "relatedness_offdiag_nonzero": 0,
+   "depth_mean_derived": 0.0
+  }
+ },
+ "stability_under_80pct_refit": {
+  "min_corr": 0.9978705917745139,
+  "max_rel_std_change": 0.06415838682652762
+ }
+}
