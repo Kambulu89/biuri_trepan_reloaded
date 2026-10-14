@@ -2,6 +2,7 @@
 
 Estado: **implementada, testada e avaliada em DEV** (18 unidades). **Desligada por omissão**; não promovida; B2-A/B2-B/B3/B4 **não** implementados; nenhum dado confirmatório; sem merge.
 `COHERENT_SAMPLING_TECHNICAL_STATUS = VALIDATED` · `COHERENT_SAMPLING_SCIENTIFIC_STATUS = PARTIAL_NOT_PROMOTED` (melhora o Reloaded OWL histórico, não supera o Original e não é atribuível à ontologia — §7). Registo de B2-C: `B2C_TECHNICAL_STATUS = VALIDATED`, `B2C_SCIENTIFIC_STATUS = NOT_DEMONSTRATED` (Doc. 20; implementação e evidências preservadas).
+CI: commit `f3f331d` — Windows 3.11, Windows 3.12 e `agnosticism-guard` **verdes** (o commit anterior falhou só num teste novo do fingerprint, por checkout CRLF; corrigido no teste). Suite completa local: 1391 passed / 40 skipped.
 Legenda: **[IMPL]** implementado · **[TEST]** testado · **[OBS]** observado (DEV, exploratório, `observed_only`) · **[HIP]** hipótese.
 
 ## 1. Arquitetura da variante **[IMPL]**
