@@ -84,11 +84,16 @@ class BenchmarkConfig:
     # semântico avaliadas como braços adicionais (E-like) + controlo permutado, com o mesmo MLP, oráculo, ontologia e tuning estrutural.
     b1_calibrations: Sequence[str] = ()                 # subconjunto de ("tiebreak", "bounded", "calibrated")
     b1_lambdas: Sequence[float] = ()                    # grelha de lambda_cap (bounded/calibrated); tiebreak não usa λ
+    # B2-C (EXPERIMENTAL, piloto DEV; False por omissão => lista de braços e configuração IDÊNTICAS às anteriores): fallback estatístico local
+    # + corrente RNG semântica separada (Doc. 20), em 4 configurações B1 (histórico, tiebreak, calibrado λ=0,2 e 0,4) + Original na representação OWL.
+    b2c_pilot: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
         d["seeds"] = list(self.seeds)
         d["semantic_lambdas"] = list(self.semantic_lambdas)
+        if not self.b2c_pilot:
+            d.pop("b2c_pilot", None)
         if not self.b1_calibrations:                    # config sem B1 serializa exatamente como antes
             d.pop("b1_calibrations", None)
             d.pop("b1_lambdas", None)
@@ -171,6 +176,7 @@ class ArmSpec:
     calibration: Optional[str] = None    # B1: tiebreak | bounded | calibrated (None = score histórico)
     lambda_cap: float = 0.0              # B1: teto λ do bónus semântico (bounded/calibrated)
     log_candidates: bool = False         # B1: instrumentação de todos os candidatos (sem efeito nas decisões)
+    b2c: bool = False                    # B2-C: fallback estatístico local + corrente RNG semântica separada
 
 
 def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
@@ -228,6 +234,19 @@ def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
             arms.append(ArmSpec(tag + "_shuf", "trepan_reloaded", f"B1 {cal} (λcap={lam:g}): CONTROLO NEGATIVO com OWL permutada",
                                 tree_space="enr", oracle="mlp_original", semantic="shuffled", lam=1.0, needs_semantic=True, role="b1_variant",
                                 group="B1", control=True, calibration=cal, lambda_cap=lam))
+    if cfg.b2c_pilot:
+        arms.append(ArmSpec("trepan_original_enr", "trepan_original", "B2-C referência: TREPAN Original na MESMA representação enriquecida (Original equivalente)",
+                            tree_space="enr", oracle="mlp_original", needs_semantic=True, role="b2c_reference", group="B2C"))
+        for tag, cal, lam in (("legacy", None, 0.0), ("tiebreak", "tiebreak", 0.0), ("calibrated_l0p2", "calibrated", 0.2), ("calibrated_l0p4", "calibrated", 0.4)):
+            if cal is not None:        # contrapartida SEM B2-C (mesmo id que em B1 ⇒ comparável com a campanha B1); o histórico é o braço E
+                arms.append(ArmSpec(f"b1_{tag}", "trepan_reloaded", f"B1 {tag}: Reloaded + OWL real -> FrozenOracle (sem B2-C)", tree_space="enr",
+                                    oracle="mlp_original", semantic="real", lam=1.0, needs_semantic=True, role="b1_variant", group="B2C",
+                                    calibration=cal, lambda_cap=lam))
+            for sem, suffix, ctrl in (("real", "", False), ("shuffled", "_shuf", True)):
+                arms.append(ArmSpec(f"b2c_{tag}{suffix}", "trepan_reloaded",
+                                    f"B2-C + B1 {tag}: Reloaded + OWL {'real' if not ctrl else 'PERMUTADA (controlo negativo)'} com fallback estatístico local",
+                                    tree_space="enr", oracle="mlp_original", semantic=sem, lam=1.0, needs_semantic=True, role="b2c_variant",
+                                    group="B2C", control=ctrl, calibration=cal, lambda_cap=lam, b2c=True))
     return arms
 
 
@@ -653,6 +672,8 @@ class BenchmarkRunner:
                           mirror_when_no_semantic_effect=False)
                 if spec.calibration is not None:
                     kw.update(semantic_calibration=spec.calibration, semantic_lambda_cap=float(spec.lambda_cap))
+                if spec.b2c:
+                    kw.update(statistical_fallback=True)
                 if spec.log_candidates or spec.calibration is not None:
                     kw.update(log_split_candidates=True)
                 fit_kw: Dict[str, Any] = {}
@@ -722,6 +743,13 @@ class BenchmarkRunner:
                        b1_nodes_with_candidates=summ["nodes_with_candidates"], b1_switch_rate=summ["switch_rate"],
                        b1_regret_median=summ["regret_median"], b1_regret_max=summ["regret_max"],
                        b1_ratio_m_over_s_median=summ["ratio_m_over_s_median"])
+        if spec.b2c:
+            b2c_rows = list(getattr(tree, "b2c_audit_", []) or [])
+            row.update(b2c_nodes=len(b2c_rows), b2c_accepted=sum(bool(r["accepted"]) for r in b2c_rows),
+                       b2c_fallback_used=sum(bool(r["fallback_used"]) for r in b2c_rows),
+                       b2c_conditions_met=sum(r["context_class"] == "original_reproduction_conditions_met" for r in b2c_rows),
+                       b2c_diverged=sum(r["context_class"] == "context_diverged_not_reproducible" for r in b2c_rows),
+                       b2c_semantic_queries=int(getattr(tree, "semantic_membership_queries_", 0)))
         acc = getattr(tree, "oracle_accounting_", None)
         if acc:
             row.update(ontology_state=acc["ontology_state"], eq_contract_version=acc["eq_contract_version"],
