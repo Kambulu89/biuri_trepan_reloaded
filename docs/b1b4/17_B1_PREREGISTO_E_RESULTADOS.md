@@ -86,3 +86,17 @@ Nenhuma nos braços A–F (108/108). B1 desligado preserva o comportamento hist�
 * **B2 é o passo seguinte justificado**, porque (i) a perda residual com λ = 0 e a insensibilidade a λ localizam o problema na **aceitação/seleção** (gate EFSR, que aceita perdas locais até 1,5 pp e valida na mesma amostra de decisão), não no peso do bónus; (ii) a instrumentação por candidato (já disponível) permite medir benefício real vs flutuação amostral por nó.
 * **Proposta para B2 (a decidir por ti antes de implementar):** critério de aceitação de divisões semânticas com **validação cruzada nas linhas reais** do nó (as consultas sintéticas servem para propor/ordenar, não como observações independentes), limite inferior de confiança do ganho local, não-inferioridade (`ν = 0`) e fallback explícito para o vencedor *data-only*; avaliar B2 **fatorialmente** com os candidatos de calibração `{histórico, tiebreak, calibrated 0,2/0,4}` em vez de fixar um B1 agora, selecionando só com treino/validação interna (B3) e nunca com o teste. Manter controlos: ontologia permutada/aleatória e Original equivalente com o mesmo orçamento de consultas.
 * **Pré-condição científica registada:** ganhos que apareçam apenas em Digits não sustentam o objetivo; a hierarquia só se declara com evidência em múltiplos datasets e, na fase confirmatória, com ambiente congelado e N pré-definido.
+
+## 3. Estado final, CI e hashes
+**CI no commit exato `d7c1b50`:** Windows scientific regression run 150 ✔ (3.11 e 3.12) e Dataset agnosticism guard run 69 ✔. Commits anteriores da etapa também verdes: `db417ff`/`0e3cf27` (contrato EQ v2.0 e B1 desligado), `122185f`. `GLOBAL_EQ_CONTRACT v2.0: COMPLIANT`.
+**Estado:** B1 implementado (opção experimental, desligada por omissão), validado quanto a integridade (108/108) e avaliado em DEV: `NOT_ACHIEVED_ON_DEV` para levar variantes a B2 pelo pré-registo; hierarquia `F_R > F_O` **não satisfeita** em DEV só com B1 (`HIERARCHY_NOT_SATISFIED`, evidência observed_only). Parado antes de B2.
+
+| ficheiro | sha256 |
+|---|---|
+| `core/trepan_reloaded_historical.py` | `3a8b5bc93556f8b626b2c5e0abb2032a2aaeb101fa7244457741275965956361` |
+| `core/benchmark/runner.py` | `6d9ccf64fa15e62f4a59f13727b77ce00d5a90c8fd752a0ecae160946b6bcb75` |
+| `tests/test_b1_semantic_calibration.py` | `0e98107343d876f4c7194e4b032c4e011d8750ed18cff5ce20a8eeeea107a0fb` |
+| `validation/benchmark/b1_analysis.py` | `f440afcdf6fed8fe97ed09c247d78abee6f91ade1a80bed30950caa5754d7b1f` |
+| `validation/benchmark/run_b1.py` | `30ca85765c5cb70acdaebd4807e244ce5384bc35d721bbef7db05468377dd6d4` |
+| `docs/evidence/b1b4/b1_dev_results/b1_analysis.json` | `2c1246851e45e56ca91264fbf3e69c2fd8a89322a6514843fa13e0864733c75c` |
+| `docs/evidence/b1b4/pre_b1_reference/pre_b1_reference.json` | `75edc11048830f8e6da69cdec5bed7014a2187de7bc6f62633444028cc629ebf` |
