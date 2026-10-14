@@ -1,0 +1,37 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 7,
+ "n_rep": 3,
+ "k_first_splits": 5,
+ "structure_tuning": false,
+ "arms": {
+  "hist_active_on": {
+   "jaccard_first_k": 0.48888888888888893,
+   "jaccard_all": 0.6761904761904761,
+   "train_fidelity_mean": 0.9366197183098591,
+   "train_fidelity_sd": 0.010671503675262813,
+   "nodes_mean": 23.0
+  },
+  "hist_active_off": {
+   "jaccard_first_k": 0.3645983645983646,
+   "jaccard_all": 0.6964285714285715,
+   "train_fidelity_mean": 0.9491392801251957,
+   "train_fidelity_sd": 0.0039898431248769906,
+   "nodes_mean": 27.0
+  },
+  "coh_active_on": {
+   "jaccard_first_k": 0.489010989010989,
+   "jaccard_all": 0.7285714285714285,
+   "train_fidelity_mean": 0.9444444444444445,
+   "train_fidelity_sd": 0.014385583967801435,
+   "nodes_mean": 25.666666666666668
+  },
+  "coh_active_off": {
+   "jaccard_first_k": 0.6163558663558663,
+   "jaccard_all": 0.7549019607843137,
+   "train_fidelity_mean": 0.956964006259781,
+   "train_fidelity_sd": 0.007979686249753981,
+   "nodes_mean": 27.666666666666668
+  }
+ }
+}

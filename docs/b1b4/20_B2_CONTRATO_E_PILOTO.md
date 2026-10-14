@@ -1,6 +1,7 @@
 # Doc. 20 — B2.0 (diagnóstico e contratos) e B2-C (implementação isolada + piloto DEV)
 
 Estado: B2.0 e B2.1 **implementados e testados**; B2.2 (piloto DEV) **executado** (resultados exploratórios, `observed_only`, DEV ≠ confirmatório). B2-A, B2-B, B3 e B4 **não** foram implementados; `cv-lite` não implementado; nenhum dado confirmatório; sem merge.
+**Registo formal (decisão do utilizador após o piloto):** `B2C_TECHNICAL_STATUS = VALIDATED` · `B2C_SCIENTIFIC_STATUS = NOT_DEMONSTRATED`. B2-C permanece implementado como mecanismo experimental **desligado por omissão**; não é promovido; a implementação e as evidências ficam preservadas. Continuação: Doc. 21 (diagnóstico da coerência das amostras) e Doc. 22 (amostragem coerente).
 Legenda de evidência: **[IMPL]** implementado · **[TEST]** coberto por teste · **[OBS]** observado (DEV, exploratório) · **[HIP]** hipótese não confirmada.
 
 ## 1. Diagnóstico das interações (B2.0)

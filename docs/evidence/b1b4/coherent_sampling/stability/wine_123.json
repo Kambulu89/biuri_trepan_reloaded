@@ -1,0 +1,37 @@
+{
+ "dataset": "wine",
+ "seed": 123,
+ "n_rep": 3,
+ "k_first_splits": 5,
+ "structure_tuning": false,
+ "arms": {
+  "hist_active_on": {
+   "jaccard_first_k": 0.473063973063973,
+   "jaccard_all": 0.7434232434232434,
+   "train_fidelity_mean": 0.9699248120300753,
+   "train_fidelity_sd": 0.0162424578907465,
+   "nodes_mean": 27.0
+  },
+  "hist_active_off": {
+   "jaccard_first_k": 0.5601851851851852,
+   "jaccard_all": 0.7307692307692308,
+   "train_fidelity_mean": 0.9824561403508771,
+   "train_fidelity_sd": 0.007088789786331303,
+   "nodes_mean": 27.666666666666668
+  },
+  "coh_active_on": {
+   "jaccard_first_k": 0.4663299663299663,
+   "jaccard_all": 0.7414529914529915,
+   "train_fidelity_mean": 0.9924812030075186,
+   "train_fidelity_sd": 0.006139072037050572,
+   "nodes_mean": 28.333333333333332
+  },
+  "coh_active_off": {
+   "jaccard_first_k": 0.7185185185185184,
+   "jaccard_all": 0.8257575757575758,
+   "train_fidelity_mean": 0.9824561403508771,
+   "train_fidelity_sd": 0.003544394893165678,
+   "nodes_mean": 26.333333333333332
+  }
+ }
+}

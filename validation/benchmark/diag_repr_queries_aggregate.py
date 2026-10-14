@@ -34,7 +34,7 @@ def main():
                    "derived_literals_in_inert_tree": r(("derived_literals_in_final_inert_tree",))}
         for k in ("mean_ks_base_vs_sem", "near_boundary_base", "near_boundary_sem", "label_entropy_base", "label_entropy_sem", "share_same_choice", "share_same_choice_Do_vs_Dalt",
                   "fid_choiceDo_on_Do", "fid_choiceDo_on_Ds", "fid_choiceDs_on_Do", "fid_choiceDs_on_Ds", "fid_choiceDo_on_real", "fid_choiceDs_on_real", "fid_choiceDalt_on_real",
-                  "fid_choiceDo_on_Dalt", "fid_choiceDalt_on_Dalt"):
+                  "fid_choiceDo_on_Dalt", "fid_choiceDalt_on_Dalt", "fid_choiceDcoh_on_real", "fid_choiceDcoh_on_Dcoh", "fid_choiceDo_on_Dcoh", "coh_minus_incoh_real"):
             out[ds]["q_" + k] = r(("query_summary", k))
     s = json.dumps(out, indent=1, default=str)
     if a.out: Path(a.out).write_text(s)

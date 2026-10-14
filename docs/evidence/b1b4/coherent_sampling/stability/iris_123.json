@@ -1,0 +1,37 @@
+{
+ "dataset": "iris",
+ "seed": 123,
+ "n_rep": 3,
+ "k_first_splits": 5,
+ "structure_tuning": false,
+ "arms": {
+  "hist_active_on": {
+   "jaccard_first_k": 0.7777777777777777,
+   "jaccard_all": 0.888888888888889,
+   "train_fidelity_mean": 0.9940476190476191,
+   "train_fidelity_sd": 0.004208968935634196,
+   "nodes_mean": 26.333333333333332
+  },
+  "hist_active_off": {
+   "jaccard_first_k": 0.888888888888889,
+   "jaccard_all": 0.888888888888889,
+   "train_fidelity_mean": 0.9910714285714285,
+   "train_fidelity_sd": 0.012626906806902642,
+   "nodes_mean": 26.333333333333332
+  },
+  "coh_active_on": {
+   "jaccard_first_k": 0.6555555555555556,
+   "jaccard_all": 0.888888888888889,
+   "train_fidelity_mean": 0.9970238095238096,
+   "train_fidelity_sd": 0.004208968935634196,
+   "nodes_mean": 26.333333333333332
+  },
+  "coh_active_off": {
+   "jaccard_first_k": 0.888888888888889,
+   "jaccard_all": 1.0,
+   "train_fidelity_mean": 0.9761904761904763,
+   "train_fidelity_sd": 0.021044844678171085,
+   "nodes_mean": 27.0
+  }
+ }
+}

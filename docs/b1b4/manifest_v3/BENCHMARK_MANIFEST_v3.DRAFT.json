@@ -48,7 +48,7 @@
  },
  "code": {
   "branch": "claude/repository-architecture-analysis-s1vl5a",
-  "commit_at_generation": "0cdb93b8832d22d2773c4593b141bf45bd42fd2b",
+  "commit_at_generation": "91b4892fd4b43e86c5f4a58a4b6c0eb12fcf95cf",
   "dirty": true,
   "frozen_baselines": {
    "c45": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
@@ -73,8 +73,8 @@
    "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
    "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
    "core/benchmark/preprocessing.py": "0c0a28b214648d0381b26bdb9f398e07d31422d9b425bea1d900b2f2a3f50155",
-   "core/benchmark/runner.py": "9e75d2ab8c6a44b69a8bc8cceebf7b386196a478c9f7e3ee4fbe33390ab0ef59",
-   "core/benchmark/semantic.py": "f4efdc770ae47c852fd99724ee0d96105758511e51d148df6ed0de1cf307a47c",
+   "core/benchmark/runner.py": "b31fe41ce0f11cf8164a2bf12596bdfce52b01c4fdc0c3947b5e1b2106718b57",
+   "core/benchmark/semantic.py": "b7970165b4a8391e2e537adc513afe820bdb60c95334f97c337b4e9ef5623d1e",
    "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
    "core/benchmark/timing.py": "5fa2cc3e806cb57409cc2ce5c246616af6b4555fee3625242170fc7b577c0991",
    "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
@@ -82,15 +82,16 @@
    "core/probabilistic_distillation.py": "340b148f1fc4e90dab3bacabf0959750ff51bf14596bdaa9286c129bc3c7b990",
    "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
    "core/trepan_original.py": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
-   "core/trepan_reloaded_historical.py": "86eafe5be7d4ae87d22131774cf643459fd75b43dba48c6073de9f1f696cd2fd",
+   "core/trepan_reloaded_historical.py": "24feaae003ad28e5b23411e5bd80a6d142ad8c91c3dde9fabb8bb9309d37f9d0",
    "core/trepan_scientific_tuning.py": "1d98473c40cea8f9361883c34471eeaf4f26cabaf6f433c1cdc195f4835b88ee",
-   "core/tuning_checkpoint.py": "6a0fd2e6facc5980500197867bfd62a2d86db62da09b3ba12508be6cf33fa5f8"
+   "core/tuning_checkpoint.py": "77162603da44960c0128b59e41a2e74d83dc163cffcdec4526a76cd4be550045"
   }
  },
  "computational_budget": {
+  "coherent_sampling_dev": "18 unidades, 15 bra\u00e7os, 5,1 h CPU (\u22482,4 h rel\u00f3gio com 3 processos)",
   "executor_task_limit_min": 120,
   "pilot_b2c_dev": "18 unidades, \u224813 \u00e1rvores sem\u00e2nticas por unidade; ver Doc. 20 \u00a78",
-  "structural_tuning": "recalculado por unidade (o sal do checkpoint inclui o c\u00f3digo do Reloaded)"
+  "structural_tuning": "fingerprint v2 das depend\u00eancias efetivas; reutiliza\u00e7\u00e3o demonstrada (iris/42: 120 ajustes retomados)"
  },
  "datasets": {
   "confirmatory": "BLOQUEADO (ver BENCHMARK_MANIFEST_v2.DRAFT.json: candidatos por verificar)",
@@ -112,7 +113,7 @@
   "equival\u00eancia vs v1 documentada"
  ],
  "frozen": false,
- "manifest_sha256": "134533889eda37841d28979c6821f4fc7106049c10dbd8bf151203ec8050d195",
+ "manifest_sha256": "2537d075545e278748ae93879ff4cfa72339828f62f3afc80fc15358d89535d8",
  "manifest_version": "3-DRAFT",
  "metrics": [
   "fidelity_to_oracle",
@@ -179,6 +180,41 @@
   "rng_original": "estado interno (np.random.Generator) dos FeatureDistributionModel (global: random_state; local: random_state+node_id); intocado por B2-C",
   "rng_semantic": "np.random.default_rng(SeedSequence([random_state, 0xB2C, node_id])) sobre c\u00f3pia superficial do modelo local; s\u00f3 consultas sem\u00e2nticas"
  },
+ "sampling_variants": {
+  "arms_group_COH": [
+   "trepan_original_enr",
+   "hist_active_off",
+   "coh_full",
+   "coh_active_off",
+   "coh_features",
+   "coh_full_shuf",
+   "coh_active_off_shuf",
+   "conv_coh"
+  ],
+  "coherent_sampling": {
+   "doc": "docs/b1b4/22_AMOSTRAGEM_ONTOLOGICA_EXPERIMENTAL.md",
+   "fit_kwarg": "coherent_original_indices",
+   "flag": "TrepanReloadedClassifier(coherent_sampling=True)",
+   "incompatible_with": [
+    "statistical_fallback"
+   ],
+   "parameters": {
+    "active_queries": "semantic_active_query_fraction (0,65 por omiss\u00e3o; 0 = desligadas)",
+    "model": "FeatureDistributionModel no espa\u00e7o ORIGINAL (mesmas sementes do Original)",
+    "transform": "ctx.enrich (OntologyProcessor ajustado no treino)"
+   },
+   "status": "implemented_experimental_default_off"
+  },
+  "conventional_feature_control": {
+   "grouping": "average-linkage sobre 1-|spearman| do treino",
+   "n_target": "n\u00ba de derivadas OWL (teto p//2)",
+   "provider": "ConventionalFeatureProvider"
+  },
+  "historical": {
+   "description": "modelo marginal no espa\u00e7o enriquecido (+projetor ontol\u00f3gico); consultas ativas por omiss\u00e3o",
+   "status": "default"
+  }
+ },
  "seeds": {
   "confirmatory_seeds": "RESERVADAS; n\u00e3o definidas neste rascunho",
   "dev_digits_seeds_in_pilot": [
@@ -195,5 +231,29 @@
   ]
  },
  "status": "DRAFT_NOT_FROZEN: B2-C implementado e em piloto DEV; B2-A/B2-B n\u00e3o implementados; confirmat\u00f3rio BLOQUEADO at\u00e9 congelar datasets/ontologias/or\u00e1culos/configura\u00e7\u00f5es/m\u00e9tricas",
- "supersedes": "nenhum (v1 e v2-DRAFT permanecem intactos)"
+ "status_registry": {
+  "B2C_SCIENTIFIC_STATUS": "NOT_DEMONSTRATED",
+  "B2C_TECHNICAL_STATUS": "VALIDATED",
+  "COHERENT_SAMPLING_SCIENTIFIC_STATUS": "PARTIAL_NOT_PROMOTED",
+  "COHERENT_SAMPLING_TECHNICAL_STATUS": "VALIDATED"
+ },
+ "supersedes": "nenhum (v1 e v2-DRAFT permanecem intactos)",
+ "tuning_checkpoint_fingerprint": {
+  "also_includes": [
+   "python minor",
+   "numpy/scipy/sklearn versions",
+   "platform",
+   "numeric env"
+  ],
+  "effective_dependencies": [
+   "trepan_original.py",
+   "trepan_scientific_tuning.py",
+   "controlled_trepan_experiment.py",
+   "scientific_experiment_contract.py",
+   "training_config.py",
+   "tuning_checkpoint.py"
+  ],
+  "proof": "tests/test_tuning_fingerprint.py (tra\u00e7o din\u00e2mico)",
+  "version": 2
+ }
 }

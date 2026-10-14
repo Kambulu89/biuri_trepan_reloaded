@@ -159,3 +159,52 @@ def test_off_is_bitwise_previous_behaviour():
     a, sa, _, _ = fit_tree(3, False, kw=dict(alpha=0.35, beta=0.2, mirror_when_no_semantic_effect=False))
     b, sb, _, _ = fit_tree(3, False, kw=dict(alpha=0.35, beta=0.2, mirror_when_no_semantic_effect=False, coherent_sampling=False))
     assert digest(a.export_rules()) == digest(b.export_rules()) and sa.stream_digest() == sb.stream_digest()
+
+
+def test_marginal_sampling_does_not_preserve_joint_categorical_constraints():
+    """Limite herdado do Original (NÃO corrigido por esta variante): colunas one-hot amostradas marginalmente produzem combinações inválidas.
+    A variante coerente garante relações algébricas das derivadas, não a validade conjunta das categorias."""
+    rng = np.random.default_rng(0)
+    cat = rng.integers(0, 3, size=400)
+    Xo = np.eye(3)[cat]
+    q = FeatureDistributionModel(random_state=0).fit(Xo).draw(1000, ConstraintSet())
+    invalid = (q.sum(axis=1) != 1.0).mean()
+    assert invalid > 0.3
+    model = _OriginalSpaceModel(0, [0, 1, 2], 3, lambda Z: np.asarray(Z, float)).fit(Xo)
+    assert (model.draw(1000, ConstraintSet()).sum(axis=1) != 1.0).mean() > 0.3          # mesma limitação, declarada
+
+
+def test_integration_owl_and_mlp_on_a_dev_dataset_zero_algebraic_violations():
+    """Integração com OWL real + MLP congelado (dataset DEV; sem lógica por dataset): as consultas da variante coerente têm violação algébrica 0 e o
+    oráculo recebe o mesmo espaço de entrada que nos braços comparáveis. Salta se o ambiente OWL (Java/reasoner) não estiver disponível."""
+    from sklearn.neural_network import MLPClassifier
+    from core.benchmark.semantic import OwlSemanticProvider
+    from core.controlled_trepan_experiment import OriginalOracleProjection
+    from validation.benchmark import datasets as ds_mod
+    spec = ds_mod.REGISTRY["iris"]
+    ds, _t, _c = spec.load()
+    tr = np.arange(0, len(ds.X), 2)
+    Xtr, ytr = ds.X[tr], ds.y[tr]
+    ctx = OwlSemanticProvider(str(spec.ontology_path)).build(Xtr, ds.feature_names, 0)
+    if not ctx.available:
+        pytest.skip("contexto OWL indisponível: " + ctx.reason)
+    mlp = MLPClassifier((8,), max_iter=300, random_state=0).fit(Xtr, ytr)
+    oracle = OriginalOracleProjection(mlp, ctx.orig_idx)
+    seen = []
+
+    class Cap(TrepanReloadedClassifier):
+        def _draw_membership_queries(self, model, n, constraints, node):
+            out = super()._draw_membership_queries(model, n, constraints, node)
+            seen.append(np.asarray(out))
+            return out
+    budget = dict(BUDGET)
+    Z = ctx.enrich(Xtr)
+    t = Cap(**budget, random_state=0, coherent_sampling=True, mirror_when_no_semantic_effect=False)
+    t.fit(Z, oracle=oracle, feature_names=ctx.enriched_names, semantic_feature_weights=ctx.weights, semantic_feature_groups=ctx.groups,
+          semantic_relatedness_matrix=ctx.relatedness, semantic_feature_depths=ctx.depths, query_projector=ctx.query_projector(),
+          coherent_original_indices=list(ctx.orig_idx))
+    assert seen and t.ontology_state_ == "S3"
+    for q in seen:
+        assert q.shape[1] == Z.shape[1]
+        assert np.array_equal(q, ctx.enrich(q[:, ctx.orig_idx]))
+    assert np.array_equal(oracle.predict(Z), mlp.predict(Xtr))
