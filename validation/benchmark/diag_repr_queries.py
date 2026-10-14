@@ -156,7 +156,13 @@ def run_diag(dataset: str, seed: int) -> dict:
                 m2._rng = np.random.default_rng(np.random.SeedSequence([int(self.random_state), 0xD1A6, int(node.node_id)]))
                 qa = m2.draw(nb, node.constraints)
                 alt = (np.vstack([node.real_X, qa]), np.concatenate([node.real_y, np.asarray(self.oracle_.predict(qa))]))
-            store.append((node.node_id, int(len(node.real_y)), Xo, yo_, self._b2c_sem_X, self._b2c_sem_y, node.depth, alt))
+            coh = None
+            if nb > 0:        # amostra COERENTE no mesmo nó (consultas no espaço original + transformador); mesmo n, mesma semente-base do nó
+                from core.trepan_reloaded_historical import _OriginalSpaceModel
+                om = _OriginalSpaceModel(self.random_state + max(0, node.node_id), list(ctx.orig_idx), Z.shape[1], ctx.query_projector()).fit(node.real_X)
+                qc = om.draw(nb, node.constraints)
+                coh = (np.vstack([node.real_X, qc]), np.concatenate([node.real_y, np.asarray(self.oracle_.predict(qc))]))
+            store.append((node.node_id, int(len(node.real_y)), Xo, yo_, self._b2c_sem_X, self._b2c_sem_y, node.depth, alt, coh))
             return Xo, yo_, model
 
     INERT = dict(error_focus_min_local_fidelity_gain=10.0, error_focus_fidelity_tolerance=0.0, mirror_when_no_semantic_effect=False)
@@ -167,7 +173,7 @@ def run_diag(dataset: str, seed: int) -> dict:
     from scipy.stats import ks_2samp
     from core.error_focused_semantic_refinement import split_surrogate_fidelity
     rows = []
-    for nid, nr, Xo, yo_, Xs, ys, depth, alt in store:
+    for nid, nr, Xo, yo_, Xs, ys, depth, alt, coh in store:
         qo, qs = Xo[nr:], Xs[nr:]
         if len(qo) < 8 or len(qs) < 8:
             continue
@@ -193,6 +199,11 @@ def run_diag(dataset: str, seed: int) -> dict:
         to, ts = (res_o[0] if res_o else None), (res_s[0] if res_s else None)
         row.update(same_choice_Do_vs_Ds=bool(tree._test_signature(to) == tree._test_signature(ts)),
                    fid_choiceDo_on_Do=fid(to, Xo, yo_), fid_choiceDo_on_Ds=fid(to, Xs, ys), fid_choiceDs_on_Do=fid(ts, Xo, yo_), fid_choiceDs_on_Ds=fid(ts, Xs, ys))
+        if coh is not None:
+            res_c = TrepanOriginalClassifier._best_mofn(t_e, coh[0], coh[1])
+            tc_ = res_c[0] if res_c else None
+            row.update(fid_choiceDcoh_on_real=fid(tc_, Xo[:nr], yo_[:nr]), fid_choiceDcoh_on_Dcoh=fid(tc_, coh[0], coh[1]), fid_choiceDo_on_Dcoh=fid(to, coh[0], coh[1]),
+                       coh_minus_incoh_real=(None if (tc_ is None or to is None) else fid(tc_, Xo[:nr], yo_[:nr]) - fid(to, Xo[:nr], yo_[:nr])))
         if alt is not None:
             res_a = TrepanOriginalClassifier._best_mofn(t_e, alt[0], alt[1])
             ta = res_a[0] if res_a else None
@@ -214,7 +225,9 @@ def run_diag(dataset: str, seed: int) -> dict:
         fid_choiceDs_on_Do=_m("fid_choiceDs_on_Do"), fid_choiceDs_on_Ds=_m("fid_choiceDs_on_Ds"),
         fid_choiceDo_on_real=_m("fid_choiceDo_on_real"), fid_choiceDs_on_real=_m("fid_choiceDs_on_real"),
         share_same_choice_Do_vs_Dalt=_m("same_choice_Do_vs_Dalt"), fid_choiceDalt_on_real=_m("fid_choiceDalt_on_real"),
-        fid_choiceDo_on_Dalt=_m("fid_choiceDo_on_Dalt"), fid_choiceDalt_on_Dalt=_m("fid_choiceDalt_on_Dalt"))
+        fid_choiceDo_on_Dalt=_m("fid_choiceDo_on_Dalt"), fid_choiceDalt_on_Dalt=_m("fid_choiceDalt_on_Dalt"),
+        fid_choiceDcoh_on_real=_m("fid_choiceDcoh_on_real"), fid_choiceDcoh_on_Dcoh=_m("fid_choiceDcoh_on_Dcoh"), fid_choiceDo_on_Dcoh=_m("fid_choiceDo_on_Dcoh"),
+        coh_minus_incoh_real=_m("coh_minus_incoh_real"))
     res["tree_split_texts"] = [r.get("test") for r in tree.split_audit_]
     res["derived_literals_in_final_inert_tree"] = int(sum(("onto_" in (t or "")) for t in res["tree_split_texts"]))
     return res

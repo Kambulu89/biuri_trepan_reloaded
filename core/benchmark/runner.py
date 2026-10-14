@@ -87,6 +87,8 @@ class BenchmarkConfig:
     # B2-C (EXPERIMENTAL, piloto DEV; False por omissão => lista de braços e configuração IDÊNTICAS às anteriores): fallback estatístico local
     # + corrente RNG semântica separada (Doc. 20), em 4 configurações B1 (histórico, tiebreak, calibrado λ=0,2 e 0,4) + Original na representação OWL.
     b2c_pilot: bool = False
+    # Amostragem coerente (EXPERIMENTAL; False por omissão ⇒ lista de braços e configuração IDÊNTICAS às anteriores; Doc. 22).
+    coherent_pilot: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -94,6 +96,8 @@ class BenchmarkConfig:
         d["semantic_lambdas"] = list(self.semantic_lambdas)
         if not self.b2c_pilot:
             d.pop("b2c_pilot", None)
+        if not self.coherent_pilot:
+            d.pop("coherent_pilot", None)
         if not self.b1_calibrations:                    # config sem B1 serializa exatamente como antes
             d.pop("b1_calibrations", None)
             d.pop("b1_lambdas", None)
@@ -177,6 +181,7 @@ class ArmSpec:
     lambda_cap: float = 0.0              # B1: teto λ do bónus semântico (bounded/calibrated)
     log_candidates: bool = False         # B1: instrumentação de todos os candidatos (sem efeito nas decisões)
     b2c: bool = False                    # B2-C: fallback estatístico local + corrente RNG semântica separada
+    coherent: bool = False               # amostragem ontologicamente coerente (consultas no espaço original + transformador ajustado no treino)
 
 
 def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
@@ -247,6 +252,22 @@ def default_arms(cfg: BenchmarkConfig) -> List[ArmSpec]:
                                     f"B2-C + B1 {tag}: Reloaded + OWL {'real' if not ctrl else 'PERMUTADA (controlo negativo)'} com fallback estatístico local",
                                     tree_space="enr", oracle="mlp_original", semantic=sem, lam=1.0, needs_semantic=True, role="b2c_variant",
                                     group="B2C", control=ctrl, calibration=cal, lambda_cap=lam, b2c=True))
+    if cfg.coherent_pilot:
+        mk = lambda aid, desc, **kw: ArmSpec(aid, "trepan_reloaded", desc, tree_space="enr", oracle="mlp_original", needs_semantic=True,
+                                              role="coherent_variant", group="COH", **kw)
+        arms += [
+            ArmSpec("trepan_original_enr", "trepan_original", "referência: TREPAN Original na MESMA representação enriquecida (amostragem marginal)",
+                    tree_space="enr", oracle="mlp_original", needs_semantic=True, role="coherent_reference", group="COH"),
+            mk("hist_active_off", "F: OWL, amostragem histórica, consultas ativas desligadas", semantic="real", lam=1.0, active_queries=False),
+            mk("coh_full", "D: OWL, amostragem coerente, consultas ativas ligadas", semantic="real", lam=1.0, coherent=True),
+            mk("coh_active_off", "E: OWL, amostragem coerente, consultas ativas desligadas", semantic="real", lam=1.0, active_queries=False, coherent=True),
+            mk("coh_features", "OWL, amostragem coerente, só representação (λ=0)", semantic="real", lam=0.0, coherent=True),
+            mk("coh_full_shuf", "G: CONTROLO ontologia permutada, amostragem coerente, consultas ativas", semantic="shuffled", lam=1.0, coherent=True, control=True),
+            mk("coh_active_off_shuf", "G: CONTROLO ontologia permutada, amostragem coerente, ativas desligadas", semantic="shuffled", lam=1.0,
+               active_queries=False, coherent=True, control=True),
+            mk("conv_coh", "H: CONTROLO engenharia convencional de features (sem ontologia), amostragem coerente, só representação", semantic="conventional",
+               lam=0.0, coherent=True, control=True),
+        ]
     return arms
 
 
@@ -471,6 +492,11 @@ class BenchmarkRunner:
             ctx_real = provider.build(Xtr, ds.feature_names, seed)
         with timer.stage("ontology_shuffled_build_time"):
             ctx_shuf = ShuffledSemanticProvider(provider).from_context(ctx_real, seed) if ctx_real.available else ctx_real
+        self._ctx_conv = None
+        if cfg.coherent_pilot and ctx_real.available:
+            from core.benchmark.semantic import ConventionalFeatureProvider
+            conv = ConventionalFeatureProvider(len(ctx_real.onto_idx)).build(Xtr, ds.feature_names, seed)
+            self._ctx_conv = conv if conv.available else None
         sem = {"split_id": sp.split_id, "provider": ctx_real.provider, "semantic_available": bool(ctx_real.available),
                "ontology_valid": ctx_real.ontology_valid, "reason": ctx_real.reason,
                "n_derived_features": len(ctx_real.onto_idx), "semantic_time": ctx_real.semantic_time,
@@ -605,7 +631,9 @@ class BenchmarkRunner:
         cfg = self.cfg
         row: Dict[str, Any] = {"mlp_training_time": None, "tree_training_time": None, "query_time": None,
                                "semantic_processing_time": 0.0, "reasoner_time": 0.0, "counterfactual_time": None}
-        ctx = ctx_shuf if spec.semantic == "shuffled" else ctx_real
+        ctx = ctx_shuf if spec.semantic == "shuffled" else (getattr(self, "_ctx_conv", None) if spec.semantic == "conventional" else ctx_real)
+        if ctx is None:
+            raise RuntimeError("contexto de features convencionais indisponível para este split")
         if spec.family == "mlp":
             model, info = (mlp_o, info_o) if spec.arm_id == "mlp_original" else (mlp_e, info_e)
             pred = np.asarray(model.predict(Xte if spec.arm_id == "mlp_original" else Xte_enr))
@@ -674,6 +702,8 @@ class BenchmarkRunner:
                     kw.update(semantic_calibration=spec.calibration, semantic_lambda_cap=float(spec.lambda_cap))
                 if spec.b2c:
                     kw.update(statistical_fallback=True)
+                if spec.coherent:
+                    kw.update(coherent_sampling=True)
                 if spec.log_candidates or spec.calibration is not None:
                     kw.update(log_split_candidates=True)
                 fit_kw: Dict[str, Any] = {}
@@ -685,6 +715,8 @@ class BenchmarkRunner:
                                   semantic_feature_depths=np.asarray(ctx.depths)[sl])
                 if use_enr:
                     fit_kw["query_projector"] = ctx.query_projector()
+                    if spec.coherent:
+                        fit_kw["coherent_original_indices"] = list(ctx.orig_idx)
                 tree = TrepanReloadedClassifier(**kw).fit(X_fit, oracle=oracle, feature_names=names, **fit_kw)
         row["tree_training_time"] = time.perf_counter() - t0
         X_eval = _enriched(ctx, Xte, "test") if use_enr else Xte
@@ -715,10 +747,10 @@ class BenchmarkRunner:
                        structural_source=structural.get("source"), structural_tuning_status=structural.get("tuning_status"),
                        structural_oof_fidelity=structural.get("oof_fidelity_mean"))
         gate = ontology_gate_fields(
-            arm_uses_ontology=bool(spec.family == "trepan_reloaded" and spec.semantic != "none"), control=bool(spec.control), ctx=ctx_real,
+            arm_uses_ontology=bool(spec.family == "trepan_reloaded" and spec.semantic not in ("none", "conventional")), control=bool(spec.control), ctx=ctx_real,
             structure=stc, tree=tree, final_audit_rows=audit_rows, semantic_split_count=sem_splits, mirror_applied=False)
         row.update(gate)
-        uses_onto = bool(spec.family == "trepan_reloaded" and spec.semantic != "none")
+        uses_onto = bool(spec.family == "trepan_reloaded" and spec.semantic not in ("none", "conventional"))
         row["ontology_hash"] = (ctx_real.info.get("ontology_hash") or self._ontology_hash) if uses_onto else "none"
         row["ontology_structure_signature"] = (ctx_shuf if spec.semantic == "shuffled" else ctx_real).structure_signature() if uses_onto else "none"
         row["ontology_category"] = ontology_category(gate) if uses_onto else None
@@ -743,6 +775,10 @@ class BenchmarkRunner:
                        b1_nodes_with_candidates=summ["nodes_with_candidates"], b1_switch_rate=summ["switch_rate"],
                        b1_regret_median=summ["regret_median"], b1_regret_max=summ["regret_max"],
                        b1_ratio_m_over_s_median=summ["ratio_m_over_s_median"])
+        if spec.family == "trepan_reloaded":
+            cs = getattr(tree, "coherent_sampling_audit_", None) or {}
+            row.update(coherent_sampling=bool(spec.coherent), coherent_batches=int(cs.get("batches", 0)), coherent_rows=int(cs.get("rows", 0)),
+                       semantic_active_queries_selected=int(getattr(tree, "semantic_active_query_selected_", 0)))
         if spec.b2c:
             b2c_rows = list(getattr(tree, "b2c_audit_", []) or [])
             row.update(b2c_nodes=len(b2c_rows), b2c_accepted=sum(bool(r["accepted"]) for r in b2c_rows),

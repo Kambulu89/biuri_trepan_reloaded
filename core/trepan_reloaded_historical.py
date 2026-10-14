@@ -123,6 +123,60 @@ class _ExactReplayOracle:
         return attr
 
 
+class _LiftedConstraints:
+    """Restrições do caminho (definidas no espaço ENRIQUECIDO) vistas a partir de linhas do espaço ORIGINAL: ``accepts(Xo) = constraints.accepts(lift(Xo))``."""
+
+    def __init__(self, constraints, lift):
+        self.constraints, self.lift = constraints, lift
+
+    def accepts(self, X):
+        return self.constraints.accepts(self.lift(np.asarray(X, dtype=float)))
+
+
+class _OriginalSpaceModel:
+    """Modelo de distribuição das consultas no espaço ORIGINAL (variante experimental ``coherent_sampling``; Doc. 22).
+
+    Ajusta/amostra só as colunas originais com o MESMO ``FeatureDistributionModel`` do Original (mesmas sementes, mesmos lotes de rejeição ⇒ com
+    restrições que só envolvam colunas originais, os sorteios coincidem com os do Original) e recalcula as colunas derivadas com o transformador
+    ontológico JÁ ajustado no treino (``projector``). Coerência algébrica por construção; NÃO garante plausibilidade estatística das originais."""
+
+    def __init__(self, random_state: int, original_indices, n_features: int, projector):
+        self.random_state = int(random_state)
+        self.idx = [int(i) for i in original_indices]
+        self.n_features_in_ = int(n_features)
+        self._projector = projector
+        self.inner = None
+
+    def fit(self, X):
+        self.inner = FeatureDistributionModel(random_state=self.random_state).fit(np.asarray(X, dtype=float)[:, self.idx])
+        self.training_columns_ = self.inner.training_columns_
+        return self
+
+    def _lift(self, Xo):
+        Xo = np.asarray(Xo, dtype=float)
+        full = np.zeros((len(Xo), self.n_features_in_), dtype=float)
+        full[:, self.idx] = Xo
+        return np.asarray(self._projector(full), dtype=float)
+
+    def _draw_unconstrained(self, n: int) -> np.ndarray:
+        return self._lift(self.inner._draw_unconstrained(n))
+
+    def draw(self, n: int, constraints=None) -> np.ndarray:
+        lifted = _LiftedConstraints(constraints, self._lift) if constraints is not None else None
+        return self._lift(self.inner.draw(n, lifted))
+
+    def differs_from(self, reference, X_local, alpha: float = 0.10) -> bool:
+        if reference is None or len(X_local) < 8:
+            return False
+        ref = getattr(reference, "inner", reference)
+        return self.inner.differs_from(ref, np.asarray(X_local, dtype=float)[:, self.idx], alpha=alpha)
+
+    def __getattr__(self, name):
+        if name in ("inner", "idx", "_projector") or name.startswith("__"):
+            raise AttributeError(name)
+        return getattr(self.inner, name)
+
+
 class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """TREPAN Reloaded construído directamente sobre o motor histórico.
 
@@ -185,6 +239,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         log_split_candidates: bool = False,
         statistical_fallback: bool = False,
         b2c_semantic_node_priority: bool = False,
+        coherent_sampling: bool = False,
     ):
         super().__init__(
             max_nodes=max_nodes,
@@ -251,6 +306,15 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # (fator experimental separado, que quebra a preservação da ordem de expansão do Original).
         self.statistical_fallback = bool(statistical_fallback)
         self.b2c_semantic_node_priority = bool(b2c_semantic_node_priority)
+        # Amostragem ontologicamente COERENTE (EXPERIMENTAL, desligada por omissão; Doc. 22): as consultas são geradas no espaço ORIGINAL (mesmo
+        # ``FeatureDistributionModel`` do Original) e as colunas derivadas são recalculadas pelo transformador ajustado no treino. Só atua com ontologia
+        # efetiva (S3); exige ``query_projector`` e ``coherent_original_indices`` no ``fit``. Incompatível com ``statistical_fallback`` (B2-C).
+        self.coherent_sampling = bool(coherent_sampling)
+        if self.coherent_sampling and self.statistical_fallback:
+            raise ValueError("coherent_sampling e statistical_fallback (B2-C) não são combináveis nesta etapa.")
+
+    def _coherent_active(self) -> bool:
+        return bool(self.coherent_sampling and self._ontology_effective())
 
     def _b2c_active(self) -> bool:
         return bool(self.statistical_fallback and self._ontology_effective())
@@ -270,6 +334,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         semantic_feature_depths=None,
         ontology_graph=None,
         semantic_feature_entities: Optional[Sequence[Optional[str]]] = None,
+        coherent_original_indices: Optional[Sequence[int]] = None,
     ):
         X_arr = np.asarray(X, dtype=float)
         if semantic_feature_entities is not None and len(semantic_feature_entities) != X_arr.shape[1]:
@@ -372,6 +437,12 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # Inclui o domínio OWL (filtragem das membership queries), que atua mesmo com a projeção desligada.
         self.ontology_effective_ = bool(self.reload_extension_active_ or self._ontology_domain_fit is not None)
         self.split_candidate_log_: list[dict] = []
+        self._coherent_idx = None if coherent_original_indices is None else [int(i) for i in coherent_original_indices]
+        self._coherent_train_X = X_arr if (self.coherent_sampling and self.ontology_effective_) else None
+        self._coherent_global_model = None
+        self.coherent_sampling_audit_ = {"enabled": bool(self.coherent_sampling and self.ontology_effective_), "batches": 0, "rows": 0}
+        if self.coherent_sampling and self.ontology_effective_ and (self._coherent_idx is None or query_projector is None):
+            raise ValueError("coherent_sampling exige query_projector e coherent_original_indices no fit.")
         self.b2c_audit_: list[dict] = []
         self._b2c_base_draw = False
         self._b2c_sem_X = None
@@ -443,6 +514,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         finally:
             # Não persistir callback/closure de treino no artefacto.
             self._ledger = None
+            self._coherent_train_X = None
+            self._coherent_global_model = None
             self._b2c_sem_X = None
             self._b2c_sem_y = None
             self._query_projector_fit = None
@@ -795,9 +868,68 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             return super()._decision_sample(node)
         if self._b2c_active():
             return self._decision_sample_b2c(node)
-        X, y, model = super()._decision_sample(node)
+        if self._coherent_active():
+            X, y, model = self._decision_sample_coherent(node)
+        else:
+            X, y, model = super()._decision_sample(node)
         self._register_semantic_profile(node, X, y)
         return X, y, model
+
+    def _coherent_model(self, random_state: int) -> _OriginalSpaceModel:
+        return _OriginalSpaceModel(random_state, self._coherent_idx, self.n_features_in_, self._query_projector_fit)
+
+    def _decision_sample_coherent(self, node: _Node):
+        """Mesma lógica de ``TrepanOriginalClassifier._decision_sample`` (cópia fiel; teste diferencial com transformador identidade), mas os modelos de
+        distribuição vivem no espaço ORIGINAL e as consultas chegam ao oráculo já com as derivadas recalculadas."""
+        import time
+        X, y = node.real_X, node.real_y
+        if self._coherent_global_model is None:
+            self._coherent_global_model = self._coherent_model(self.random_state).fit(self._coherent_train_X)
+        parent_model = node.parent_model if isinstance(node.parent_model, _OriginalSpaceModel) else self._coherent_global_model
+        local_model = parent_model
+        if len(X) >= 8:
+            t_local = time.perf_counter()
+            candidate = self._coherent_model(self.random_state + max(0, node.node_id)).fit(X)
+            if candidate.differs_from(parent_model, X, alpha=self.local_model_alpha):
+                local_model = candidate
+            self.local_model_time_ = getattr(self, "local_model_time_", 0.0) + (time.perf_counter() - t_local)
+        needed = max(0, int(self.effective_min_sample_) - len(X))
+        remaining_budget = max(0, int(self.max_queries) - self.membership_queries_)
+        requested = needed
+        needed = min(needed, remaining_budget)
+        node.stats.update({
+            "queries_requested": int(requested), "queries_generated": 0, "queries_valid": 0, "queries_rejected": 0,
+            "queries_used": 0, "query_budget_remaining_before": int(remaining_budget), "budget_truncated": bool(needed < requested),
+        })
+        if needed > 0 and self.oracle_ is not None:
+            drawn_before = getattr(local_model.inner, "n_drawn_", 0)
+            rejected_before = getattr(local_model.inner, "n_rejected_", 0)
+            t0 = time.perf_counter()
+            qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+            t1 = time.perf_counter()
+            qy = np.asarray(self.oracle_.predict(qx))
+            t2 = time.perf_counter()
+            self.query_time_ += t2 - t0
+            self.synthetic_generation_time_ = getattr(self, "synthetic_generation_time_", 0.0) + (t1 - t0)
+            self.oracle_prediction_time_ = getattr(self, "oracle_prediction_time_", 0.0) + (t2 - t1)
+            valid = int(np.sum(node.constraints.accepts(qx))) if len(qx) else 0
+            node.stats.update({
+                "queries_generated": int(len(qx)), "queries_valid": valid,
+                "queries_rejected": int(getattr(local_model.inner, "n_rejected_", 0) - rejected_before),
+                "candidates_drawn": int(getattr(local_model.inner, "n_drawn_", 0) - drawn_before),
+                "queries_used": int(len(qx)), "queries_violating_path": int(len(qx) - valid),
+            })
+            self.membership_queries_ += len(qx)
+            self.coherent_sampling_audit_["batches"] += 1
+            self.coherent_sampling_audit_["rows"] += int(len(qx))
+            node.query_X = qx
+            node.query_y = qy
+            X = np.vstack([X, qx]) if len(X) else qx
+            y = np.concatenate([y, qy]) if len(y) else qy
+        node.stats["real_samples"] = int(len(node.real_y))
+        node.stats["synthetic_samples"] = int(len(y) - len(node.real_y))
+        node.stats["effective_samples"] = int(len(y))
+        return X, y, local_model
 
     # ---- B2-C: amostra-base do Original + amostra semântica adicional (rng_semantic separada) -----------------------------------
     def _b2c_semantic_rng_seed(self, node: _Node) -> np.random.SeedSequence:
@@ -1830,6 +1962,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         active = bool(semantic_active and (error_active or not self.error_focused_refinement))
         if not active and projector is None:
             return super()._draw_membership_queries(model, n, constraints, node)
+        if not active and isinstance(model, _OriginalSpaceModel):
+            return model.draw(n, constraints)          # amostragem coerente sem consultas ativas: sorteio do Original (espaço original) + transformador
 
         target_pool = max(int(n), int(n) * max(1, int(self.semantic_active_pool_multiplier))) if active else int(n)
         pool = []
