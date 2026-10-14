@@ -141,3 +141,15 @@ def test_b2c_off_is_bitwise_previous_behaviour():
     a, sa, _ = _fit(TrepanReloadedClassifier, 3, "combined", NOMIRROR)
     b, sb, _ = _fit(TrepanReloadedClassifier, 3, "combined", dict(statistical_fallback=False, **NOMIRROR))
     assert _rules(a) == _rules(b) and sa.stream_digest() == sb.stream_digest() and a.b2c_audit_ == []
+
+
+@pytest.mark.parametrize("flag", [False, True])
+def test_fitted_model_is_picklable_and_copyable(flag):
+    """Regressão apanhada pelo CI (Windows): o invólucro do oráculo não pode ficar no modelo (pickle/cópia → RecursionError)."""
+    import copy
+    import pickle
+    r, _, X = _fit(TrepanReloadedClassifier, 3, "combined", dict(statistical_fallback=flag, **NOMIRROR))
+    assert getattr(r, "_ledger", None) is None and r._b2c_sem_X is None
+    r2 = pickle.loads(pickle.dumps(r))
+    assert np.array_equal(r2.predict(X), r.predict(X))
+    assert np.array_equal(copy.deepcopy(r).predict(X), r.predict(X))

@@ -79,6 +79,8 @@ class _ExactCallLedger:
         return out
 
     def __getattr__(self, name):
+        if name in ("inner", "stats", "tagged", "tag", "responses", "keep_responses") or name.startswith("__"):
+            raise AttributeError(name)         # evita recursão infinita em cópia/pickle antes de o estado existir
         attr = getattr(self.inner, name)
         if name == "predict_proba":
             def counted(X, *a, **k):
@@ -429,7 +431,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             pass_oracle = ledger
             if self.statistical_fallback:
                 ledger.tag = "original"          # B2-C: por omissão a porção Original; a camada semântica marca-se explicitamente
-        self._ledger = ledger
+        self._ledger = ledger if self.statistical_fallback else None      # só durante o fit e só em B2-C (nunca persiste no artefacto)
         try:
             fitted = super().fit(
                 X_arr,
@@ -440,6 +442,9 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             )
         finally:
             # Não persistir callback/closure de treino no artefacto.
+            self._ledger = None
+            self._b2c_sem_X = None
+            self._b2c_sem_y = None
             self._query_projector_fit = None
             self._ontology_graph_fit = None
             self._ontology_domain_fit = None

@@ -1,0 +1,21 @@
+{
+ "b1_calibrated_l0p2.json": "8c80bab5f171f6473501c05aa9b198cade3b812328bfbc0aae6fb59c45d95ea4",
+ "b1_calibrated_l0p4.json": "893a8e9d738b9528bdf0cc8398c532534c0b9fcbbbbd6d903972bdb8f89791be",
+ "b1_tiebreak.json": "debb2b9774a802d3aa7c02bf3113e19c8629ab3a21700e66dd66ff0a110277df",
+ "b2c_calibrated_l0p2.json": "57d25c05c1da3126baf93f5a9a2476fea979d005d554a0699d33f7bf7e31bed1",
+ "b2c_calibrated_l0p2_shuf.json": "7b86334463a8516ce7cb66613f20a44e10a99b36c506a1089c52aa2c5c8b1bf0",
+ "b2c_calibrated_l0p4.json": "df04e094f9b2be0164e04f7db59238a586d0e684045084581cb103662895c97c",
+ "b2c_calibrated_l0p4_shuf.json": "f5463a09b6c74bbde24d16c69a1d8b96a7c85f8bb04bd02dc9a847491efc68f7",
+ "b2c_legacy.json": "0bf0c7151e660a8938f7653f94b59226c4809467acc535dec10f8e14175aad84",
+ "b2c_legacy_shuf.json": "777ed0f178fba0c35c28db5327433ab6f39efe2617d4272a637c1ce9f1226c5b",
+ "b2c_tiebreak.json": "05da49db2658041da40254e57c05970087a7f43b6f70bc370fa5b57ea5820ca5",
+ "b2c_tiebreak_shuf.json": "f731daddfd5cf97606d45089a996b9149c7c538c9f60f5f37428d50122b46d81",
+ "c45.json": "daf469f57418a1db4279b793ef3becfbaf92b78969d4a3eeb253f427b4debd98",
+ "mlp_original.json": "8c3c8744d2a3479561e481a77f2df5f77e66093d14a50a7400665fb12ecd9b88",
+ "reloaded_core.json": "08a9a33a4fb120de8638858e85d8ece42d11238e4f39f58b784928e4ba03609d",
+ "reloaded_owl_full.json": "bb5f35043b7910c324238c2b432963ac4834cc127defeb65a9a14327080571b9",
+ "reloaded_owl_shuffled.json": "0d9e537d735e2c41b4143a0eaa12bd2a22727adca4386eabd185ae212dec6113",
+ "split.json": "eca4ed8f5a2a74582821155df836460771b03dedd5ac34e0a8d58e5050db7d8e",
+ "trepan_original.json": "2590ea6868628a6e3fd35cc1a6c498bd3f07b92054ca697b13d7a85491ecbf7b",
+ "trepan_original_enr.json": "4217f4a175d58ab0c7b727194d933f44cfca689d86137902ce6b177597cf4484"
+}

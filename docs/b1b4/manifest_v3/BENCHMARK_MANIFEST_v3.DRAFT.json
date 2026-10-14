@@ -48,8 +48,8 @@
  },
  "code": {
   "branch": "claude/repository-architecture-analysis-s1vl5a",
-  "commit_at_generation": "d1043fe9f79b89418d46a028ffc68892213498fc",
-  "dirty": false,
+  "commit_at_generation": "0cdb93b8832d22d2773c4593b141bf45bd42fd2b",
+  "dirty": true,
   "frozen_baselines": {
    "c45": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
    "trepan_original": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
@@ -82,7 +82,7 @@
    "core/probabilistic_distillation.py": "340b148f1fc4e90dab3bacabf0959750ff51bf14596bdaa9286c129bc3c7b990",
    "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
    "core/trepan_original.py": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
-   "core/trepan_reloaded_historical.py": "77b5498ba5efb9815219b5e29fb8bc55f8c25f48fa0743c68d46aff926708f36",
+   "core/trepan_reloaded_historical.py": "86eafe5be7d4ae87d22131774cf643459fd75b43dba48c6073de9f1f696cd2fd",
    "core/trepan_scientific_tuning.py": "1d98473c40cea8f9361883c34471eeaf4f26cabaf6f433c1cdc195f4835b88ee",
    "core/tuning_checkpoint.py": "6a0fd2e6facc5980500197867bfd62a2d86db62da09b3ba12508be6cf33fa5f8"
   }
@@ -112,7 +112,7 @@
   "equival\u00eancia vs v1 documentada"
  ],
  "frozen": false,
- "manifest_sha256": "3f57e0140e2af2bf5ed471d64af422fce006dc78f7fb3856d6804c6b2a6ac185",
+ "manifest_sha256": "134533889eda37841d28979c6821f4fc7106049c10dbd8bf151203ec8050d195",
  "manifest_version": "3-DRAFT",
  "metrics": [
   "fidelity_to_oracle",
