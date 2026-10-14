@@ -1,0 +1,507 @@
+{
+ "units": [
+  "breast_cancer:11",
+  "breast_cancer:123",
+  "breast_cancer:2024",
+  "breast_cancer:42",
+  "breast_cancer:7",
+  "digits:123",
+  "digits:42",
+  "digits:7",
+  "iris:11",
+  "iris:123",
+  "iris:2024",
+  "iris:42",
+  "iris:7",
+  "wine:11",
+  "wine:123",
+  "wine:2024",
+  "wine:42",
+  "wine:7"
+ ],
+ "decomposition": {
+  "trepan_original": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 3
+    },
+    "iris": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    }
+   },
+   "macro_dF": 0.0,
+   "macro_dAcc": 0.0,
+   "macro_dNodes": 0.0,
+   "macro_samples_ratio": 1.0
+  },
+  "diag_original_enr": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.004195804195804187,
+     "dAcc": 0.006993006993006978,
+     "nodes": -4.0,
+     "samples_ratio": 1.0002718472079852,
+     "n": 5
+    },
+    "digits": {
+     "dF": -0.00666666666666671,
+     "dAcc": -0.002962962962962982,
+     "nodes": 2.6666666666666665,
+     "samples_ratio": 1.0033189592727858,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.015789473684210575,
+     "dAcc": -0.005263157894736814,
+     "nodes": -0.8,
+     "samples_ratio": 1.014885973016995,
+     "n": 5
+    },
+    "wine": {
+     "dF": -0.008888888888888901,
+     "dAcc": -0.017777777777777736,
+     "nodes": -1.6,
+     "samples_ratio": 0.992631557211657,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.008885208358892593,
+   "macro_dAcc": -0.004752722910617639,
+   "macro_dNodes": -0.9333333333333335,
+   "macro_samples_ratio": 1.0027770841773558
+  },
+  "reloaded_core": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 3
+    },
+    "iris": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.0,
+     "dAcc": 0.0,
+     "nodes": 0.0,
+     "samples_ratio": 1.0,
+     "n": 5
+    }
+   },
+   "macro_dF": 0.0,
+   "macro_dAcc": 0.0,
+   "macro_dNodes": 0.0,
+   "macro_samples_ratio": 1.0
+  },
+  "reloaded_owl_features": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": 2.2204460492503132e-17,
+     "dAcc": -0.01118881118881121,
+     "nodes": -0.8,
+     "samples_ratio": 2.1493412536750123,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.011851851851851817,
+     "dAcc": 0.013333333333333345,
+     "nodes": -4.0,
+     "samples_ratio": 2.0775914039565007,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.02105263157894739,
+     "dAcc": -0.010526315789473651,
+     "nodes": 0.0,
+     "samples_ratio": 2.151944960968725,
+     "n": 5
+    },
+    "wine": {
+     "dF": -0.004444444444444429,
+     "dAcc": -0.0044444444444444505,
+     "nodes": 1.2,
+     "samples_ratio": 2.239336636707555,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.0034113060428849944,
+   "macro_dAcc": -0.0032065595223489916,
+   "macro_dNodes": -0.8999999999999999,
+   "macro_samples_ratio": 2.1545535638269486
+  },
+  "reloaded_semantic_score": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.004195804195804209,
+     "dAcc": 0.004195804195804187,
+     "nodes": 1.6,
+     "samples_ratio": 2.180619641684605,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.00592592592592589,
+     "dAcc": 0.008148148148148163,
+     "nodes": -6.0,
+     "samples_ratio": 2.1452342694197424,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.015789473684210555,
+     "dAcc": 0.015789473684210555,
+     "nodes": -0.8,
+     "samples_ratio": 2.2017595054281385,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.01777777777777778,
+     "dAcc": 0.022222222222222233,
+     "nodes": 2.4,
+     "samples_ratio": 2.4441172975121943,
+     "n": 5
+    }
+   },
+   "macro_dF": 0.000929606455922227,
+   "macro_dAcc": 0.012588912062596285,
+   "macro_dNodes": -0.7000000000000001,
+   "macro_samples_ratio": 2.24293267851117
+  },
+  "diag_gate_off_active_off": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": 2.2204460492503132e-17,
+     "dAcc": -0.01118881118881121,
+     "nodes": -0.8,
+     "samples_ratio": 2.1493412536750123,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.011851851851851817,
+     "dAcc": 0.013333333333333345,
+     "nodes": -4.0,
+     "samples_ratio": 2.0775914039565007,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.02105263157894739,
+     "dAcc": -0.010526315789473651,
+     "nodes": 0.0,
+     "samples_ratio": 2.151944960968725,
+     "n": 5
+    },
+    "wine": {
+     "dF": -0.004444444444444429,
+     "dAcc": -0.0044444444444444505,
+     "nodes": 1.2,
+     "samples_ratio": 2.239336636707555,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.0034113060428849944,
+   "macro_dAcc": -0.0032065595223489916,
+   "macro_dNodes": -0.8999999999999999,
+   "macro_samples_ratio": 2.1545535638269486
+  },
+  "diag_gate_off": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.012587412587412606,
+     "dAcc": -0.0069930069930070225,
+     "nodes": -2.0,
+     "samples_ratio": 2.0851954309334775,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.011111111111111072,
+     "dAcc": 0.011851851851851855,
+     "nodes": -1.3333333333333333,
+     "samples_ratio": 2.0882820447281283,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.05263157894736845,
+     "dAcc": -0.03157894736842104,
+     "nodes": -2.0,
+     "samples_ratio": 2.1698000720343344,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.008888888888888901,
+     "dAcc": -0.004444444444444429,
+     "nodes": 0.4,
+     "samples_ratio": 2.2392658277148128,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.01130474788369527,
+   "macro_dAcc": -0.007791136738505159,
+   "macro_dNodes": -1.2333333333333332,
+   "macro_samples_ratio": 2.1456358438526886
+  },
+  "diag_active_off": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.006993006993007001,
+     "dAcc": -0.001398601398601418,
+     "nodes": -0.8,
+     "samples_ratio": 2.178230463555122,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.007407407407407381,
+     "dAcc": 0.0037037037037036904,
+     "nodes": 5.333333333333333,
+     "samples_ratio": 2.0882820447281283,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.010526315789473717,
+     "dAcc": -0.010526315789473651,
+     "nodes": -0.4,
+     "samples_ratio": 2.1430865104680086,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.0044444444444444505,
+     "dAcc": 0.013333333333333374,
+     "nodes": 2.0,
+     "samples_ratio": 2.267409012338336,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.0014168677326572214,
+   "macro_dAcc": 0.001278029962240499,
+   "macro_dNodes": 1.5333333333333332,
+   "macro_samples_ratio": 2.169252007772399
+  },
+  "reloaded_owl_full": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.011188811188811187,
+     "dAcc": 0.002797202797202769,
+     "nodes": -1.6,
+     "samples_ratio": 2.2143792253552737,
+     "n": 5
+    },
+    "digits": {
+     "dF": -0.004444444444444473,
+     "dAcc": 0.0,
+     "nodes": 2.0,
+     "samples_ratio": 2.138589424762554,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.0052631578947368585,
+     "dAcc": -0.00526315789473677,
+     "nodes": 0.4,
+     "samples_ratio": 2.1794103826862594,
+     "n": 5
+    },
+    "wine": {
+     "dF": -0.03111111111111111,
+     "dAcc": -0.02666666666666666,
+     "nodes": 2.8,
+     "samples_ratio": 2.3305605339176303,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.013001881159775908,
+   "macro_dAcc": -0.0072831554410501655,
+   "macro_dNodes": 0.8999999999999999,
+   "macro_samples_ratio": 2.2157348916804294
+  },
+  "reloaded_owl_shuffled": {
+   "per_dataset": {
+    "breast_cancer": {
+     "dF": -0.009790209790209791,
+     "dAcc": 0.00979020979020977,
+     "nodes": -2.0,
+     "samples_ratio": 2.1757889332147418,
+     "n": 5
+    },
+    "digits": {
+     "dF": 0.013333333333333308,
+     "dAcc": 0.011111111111111108,
+     "nodes": 6.666666666666667,
+     "samples_ratio": 2.1389834821184226,
+     "n": 3
+    },
+    "iris": {
+     "dF": -0.010526315789473694,
+     "dAcc": 0.01052631578947374,
+     "nodes": -1.2,
+     "samples_ratio": 2.241900900392549,
+     "n": 5
+    },
+    "wine": {
+     "dF": 0.0044444444444444505,
+     "dAcc": 0.004444444444444473,
+     "nodes": 4.0,
+     "samples_ratio": 2.300691144999174,
+     "n": 5
+    }
+   },
+   "macro_dF": -0.0006346869504764317,
+   "macro_dAcc": 0.008968020283809773,
+   "macro_dNodes": 1.8666666666666667,
+   "macro_samples_ratio": 2.214341115181222
+  }
+ },
+ "gate": {
+  "nodes": 670,
+  "proposed_changed": 654,
+  "attempted": 627,
+  "accepted": 226,
+  "accepted_within_tolerance": 181,
+  "reasons": {
+   "semantic_coherence_gain_within_fidelity_tolerance": 181,
+   "semantic_candidate_no_local_fidelity_gain": 320,
+   "semantic_candidate_improves_local_and_real_training_fidelity": 45,
+   "semantic_candidate_fails_real_training_gate": 81
+  },
+  "real_gate_evaluated": 290,
+  "local_gain_accepted_mean": 0.013557236929167821,
+  "local_gain_rejected_mean": -0.0035525170494175315,
+  "real_gain_accepted_mean": 0.056260313421575635,
+  "real_gain_rejected_mean": -0.16658269724008795,
+  "accepted_local_gain_below_0.01": 167,
+  "accepted_real_gain_nonpositive": 132,
+  "decision_sample_size_median": 1347.0,
+  "semantic_candidates_median": 24.0
+ },
+ "timing": {
+  "diag_E_audit": {
+   "query_time_": 11.724041778388418,
+   "synthetic_generation_time_": 11.64366442222197,
+   "oracle_prediction_time_": 0.0803773561664482,
+   "split_search_time_": 26.032534853444197,
+   "m_of_n_search_time_": 24.754100747333204,
+   "local_model_time_": 0.8713511426666022,
+   "training_time_": 41.1602641672778
+  },
+  "diag_active_off": {
+   "query_time_": 4.874093168000646,
+   "synthetic_generation_time_": 4.78924784105572,
+   "oracle_prediction_time_": 0.08484532694492625,
+   "split_search_time_": 24.777131573555753,
+   "m_of_n_search_time_": 23.526084520444627,
+   "local_model_time_": 0.8442576167226498,
+   "training_time_": 31.896826877611105
+  },
+  "diag_gate_off": {
+   "query_time_": 10.63836672461077,
+   "synthetic_generation_time_": 10.552748017721816,
+   "oracle_prediction_time_": 0.0856187068889527,
+   "split_search_time_": 25.534541102333264,
+   "m_of_n_search_time_": 24.478842362777737,
+   "local_model_time_": 0.7760709552225775,
+   "training_time_": 37.696196512944475
+  },
+  "diag_gate_off_active_off": {
+   "query_time_": 4.909614812944394,
+   "synthetic_generation_time_": 4.826317085111005,
+   "oracle_prediction_time_": 0.08329772783338917,
+   "split_search_time_": 26.309066331833037,
+   "m_of_n_search_time_": 24.986453711444046,
+   "local_model_time_": 0.8076774772781555,
+   "training_time_": 32.864603113444446
+  },
+  "diag_original_enr": {
+   "query_time_": 1.4119863578335097,
+   "synthetic_generation_time_": 1.3286645349998782,
+   "oracle_prediction_time_": 0.0833218228336313,
+   "split_search_time_": 1.9572165833883572,
+   "m_of_n_search_time_": 1.89648607077727,
+   "local_model_time_": 0.8501001791110147,
+   "training_time_": 4.342582841611153
+  },
+  "reloaded_core": {
+   "query_time_": 1.1386235533879396,
+   "synthetic_generation_time_": 1.0598038858889065,
+   "oracle_prediction_time_": 0.07881966749903313,
+   "split_search_time_": 1.9633307970557832,
+   "m_of_n_search_time_": 1.9182722136113233,
+   "local_model_time_": 0.6500165978884651,
+   "training_time_": 3.855291437111008
+  },
+  "reloaded_owl_features": {
+   "query_time_": 4.853721950888813,
+   "synthetic_generation_time_": 4.771612589500295,
+   "oracle_prediction_time_": 0.08210936138851821,
+   "split_search_time_": 3.30327641633281,
+   "m_of_n_search_time_": 3.1562430148326888,
+   "local_model_time_": 0.8246818998337884,
+   "training_time_": 9.821408631722218
+  },
+  "reloaded_owl_full": {
+   "query_time_": 11.55721830611111,
+   "synthetic_generation_time_": 11.479033439166995,
+   "oracle_prediction_time_": 0.07818486694411478,
+   "split_search_time_": 25.698584985999396,
+   "m_of_n_search_time_": 24.381327090777177,
+   "local_model_time_": 0.8702064462220783,
+   "training_time_": 40.66288579600001
+  },
+  "reloaded_owl_shuffled": {
+   "query_time_": 10.484970536000276,
+   "synthetic_generation_time_": 10.406016457500577,
+   "oracle_prediction_time_": 0.07895407849969792,
+   "split_search_time_": 24.3954821663326,
+   "m_of_n_search_time_": 22.706510463388188,
+   "local_model_time_": 0.8807561184441587,
+   "training_time_": 37.31077907944435
+  },
+  "reloaded_semantic_score": {
+   "query_time_": 5.13892743138893,
+   "synthetic_generation_time_": 5.066112506333171,
+   "oracle_prediction_time_": 0.07281492505575847,
+   "split_search_time_": 28.355905401666305,
+   "m_of_n_search_time_": 27.128634601999586,
+   "local_model_time_": 0.6996688852777248,
+   "training_time_": 35.46258210122221
+  },
+  "trepan_original": {
+   "query_time_": 1.155158369944003,
+   "synthetic_generation_time_": 1.0775228176106881,
+   "oracle_prediction_time_": 0.07763555233331469,
+   "split_search_time_": 1.929399042277339,
+   "m_of_n_search_time_": 1.8841084303883677,
+   "local_model_time_": 0.6407528949441649,
+   "training_time_": 3.828801837055576
+  }
+ }
+}

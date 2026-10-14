@@ -6,8 +6,8 @@ Reprodução do diagnóstico: `python -m validation.benchmark.run_diag_b2 --unit
 (evidência em `docs/evidence/b1b4/b2_diag/`). Estudo complementar do desempate: Doc. 19.
 
 ## 0. Síntese
-1. A perda residual do Reloaded+OWL face ao Original **não é atribuível apenas ao portão EFSR**. Na decomposição (15 unidades DEV: iris, wine, breast_cancer; digits em §1.4) a **representação enriquecida isolada** e a **amostragem ativa de consultas** explicam, em ordem de grandeza, mais do que o portão; o score semântico nas features originais é ≈ neutro. Nenhuma componente é distinguível de zero individualmente (EP 0,006–0,012; n=15).
-2. O portão atual aceita sobretudo por **tolerância de coerência** (≈77 % das aceitações sem ganho local) e em ≈58 % das aceitações o ganho nas linhas reais é ≤ 0; o ganho é medido na mesma amostra em que o candidato foi escolhido.
+1. A perda residual do Reloaded+OWL face ao Original **não é atribuível apenas ao portão EFSR**. Na decomposição (18 unidades DEV: 5 iris, 5 wine, 5 breast_cancer, 3 digits) a **representação enriquecida isolada** e a **amostragem ativa de consultas** explicam, em ordem de grandeza, mais do que o portão; o score semântico nas features originais é ≈ neutro. Nenhuma componente é distinguível de zero individualmente (EP 0,005–0,010; n=18).
+2. O portão atual aceita sobretudo por **tolerância de coerência** (≈80 % das aceitações sem ganho local) e em ≈58 % das aceitações o ganho nas linhas reais é ≤ 0; o ganho é medido na mesma amostra em que o candidato foi escolhido.
 3. Recomendação: **B2-C (fallback estatístico com preservação da corrente do Original) + B2-A/B (ganho validado com incerteza)**, em fatorial com B1, com B2-C como primeiro passo por atacar a causa mais plausível (H2: contexto de decisão enviesado) e ser a que permite provar igualdade local ao Original. B2-A/B sozinhos são necessários mas provavelmente insuficientes.
 4. Custo (§12) viável dentro do limite de 120 min por tarefa se partido por unidade com retoma; a avaliação **confirmatória** exige mais unidades que as 18 DEV (potência, §12.4).
 
@@ -16,28 +16,28 @@ Reprodução do diagnóstico: `python -m validation.benchmark.run_diag_b2 --unit
 ### 1.1 O que B1 deixou por resolver
 B1 (13 variantes de calibração do score; Doc. 17) não satisfez C1 em nenhuma. O braço λ=0 (sem contributo semântico no score) continuou abaixo do Original em 3/4 datasets, a taxa de troca de decisão e o «regret» quase não variam com λ e todos os braços semânticos consomem ≈2,1–2,3× as consultas do Original. Logo: o score semântico não é o principal canal de perda.
 
-### 1.2 Decomposição por ablação (ΔFidelidade, ΔAccuracy emparelhados por unidade vs `trepan_original`, teste externo, 15 unidades; macro por dataset)
-| Braço (o que fica ativo) | ΔF macro | EP | ΔAcc macro | Δ nós | consultas ×Orig |
-|---|---|---|---|---|---|
-| `reloaded_core` (≡ Original, controlo EQ) | 0,0000 | – | 0,0000 | 0 | 1,00 |
-| `diag_original_enr` — **Original na representação OWL** (só representação) | −0,0096 | 0,0074 | −0,0053 | −2,1 | 1,00 |
-| `reloaded_owl_features` — λ=0, representação + projetor, sem score/portão | −0,0085 | 0,0070 | −0,0087 | +0,1 | 2,18 |
-| `reloaded_semantic_score` — score semântico nas features **originais** | −0,0007 | 0,0110 | +0,0141 | +1,1 | 2,28 |
-| `diag_active_off` — E sem consultas ativas | −0,0044 | 0,0056 | +0,0005 | +0,3 | 2,20 |
-| `diag_gate_off` — E sem portão EFSR | −0,0188 | 0,0099 | −0,0143 | −1,2 | 2,16 |
-| `reloaded_owl_full` (E, Reloaded OWL histórico) | −0,0159 | 0,0088 | −0,0097 | +0,5 | 2,24 |
-| `reloaded_owl_shuffled` (ontologia permutada) | −0,0053 | 0,0095 | +0,0083 | +0,3 | 2,24 |
+### 1.2 Decomposição por ablação (ΔFidelidade, ΔAccuracy emparelhados por unidade vs `trepan_original`, teste externo, 18 unidades; macro por dataset; EP = erro-padrão entre unidades)
+| Braço (o que fica ativo) | ΔF macro | ΔF por dataset (bc / digits / iris / wine) | EP (unid.) | ΔAcc macro | Δ nós | consultas ×Orig |
+|---|---|---|---|---|---|---|
+| `reloaded_core` (≡ Original, controlo EQ) | 0,0000 | 0 / 0 / 0 / 0 | – | 0,0000 | 0 | 1,00 |
+| `diag_original_enr` — **Original na representação OWL** (só representação) | −0,0089 | −0,004 / −0,007 / −0,016 / −0,009 | 0,0063 | −0,0048 | −0,9 | 1,00 |
+| `reloaded_owl_features` — λ=0, representação + projetor, sem score/portão | −0,0034 | 0 / +0,012 / −0,021 / −0,004 | 0,0062 | −0,0032 | −0,9 | 2,15 |
+| `reloaded_semantic_score` — score semântico nas features **originais** | +0,0009 | −0,004 / +0,006 / −0,016 / +0,018 | 0,0093 | +0,0126 | −0,7 | 2,24 |
+| `diag_active_off` — E sem consultas ativas | −0,0014 | −0,007 / +0,007 / −0,011 / +0,004 | 0,0053 | +0,0013 | +1,5 | 2,17 |
+| `diag_gate_off` — E sem portão EFSR | −0,0113 | −0,013 / +0,011 / −0,053 / +0,009 | 0,0087 | −0,0078 | −1,2 | 2,15 |
+| `reloaded_owl_full` (E, Reloaded OWL histórico) | −0,0130 | −0,011 / −0,004 / −0,005 / −0,031 | 0,0074 | −0,0073 | +0,9 | 2,22 |
+| `reloaded_owl_shuffled` (ontologia permutada) | −0,0006 | −0,010 / +0,013 / −0,011 / +0,004 | 0,0082 | +0,0090 | +1,9 | 2,21 |
 
-Contrastes emparelhados dentro do mesmo conjunto de unidades (ΔF; EP): E − gate_off = +0,003 (0,012) [o portão ajuda ligeiramente ou é neutro]; E − active_off = −0,012 (0,008) [as consultas ativas custam ≈1 pp]; E − owl_features = −0,007 (0,012); E − shuffled = −0,011 (0,009) [a ontologia verdadeira não supera a permutada nesta amostra].
+Contrastes emparelhados entre braços (média das 18 diferenças por unidade; EP): E − gate_off = −0,000 (0,010) [**o portão é neutro**]; E − active_off = −0,012 (0,007) [as consultas ativas custam ≈1 pp]; E − owl_features = −0,009 (0,010); E − shuffled = −0,012 (0,007) [**a ontologia verdadeira não supera a permutada nesta amostra**; 10 piores, 3 melhores].
 
-Leitura prudente: (i) com n=15 e EP ≈ 0,006–0,012, **nenhum contraste isolado é estatisticamente distinguível de zero**; é evidência para orientar o desenho, não para concluir; (ii) a ordem de grandeza sugere que representação (≈ −0,010) e amostragem ativa (≈ −0,012) dominam a perda, e o portão é neutro-a-ligeiramente-positivo; (iii) logo B2-A/B (melhorar o portão) tem **teto baixo** se atuar isoladamente, e B2-C (restaurar o contexto de decisão do Original) ataca a componente de amostragem; a representação fica para B3 (fora de âmbito aqui); (iv) o ganho de accuracy do score semântico em features originais (+0,014 Acc, ΔF≈0) é compatível com ruído e não é usado para selecionar nada.
+Leitura prudente: (i) com n=18 e EP ≈ 0,005–0,010, **nenhum contraste isolado é estatisticamente distinguível de zero** (o maior, E − shuffled, é ≈1,7 EP); é evidência para orientar o desenho, não para concluir; (ii) a ordem de grandeza sugere que a **representação isolada (≈ −0,009)** e a **amostragem ativa (≈ −0,012 em E)** dominam a perda e o portão é neutro; (iii) logo B2-A/B (melhorar o portão) tem **teto baixo** se atuar isoladamente, e B2-C (restaurar o contexto de decisão do Original) ataca a componente de amostragem; a representação fica para B3 (fora de âmbito aqui); (iv) o ganho de accuracy do score semântico em features originais (+0,013 Acc, ΔF≈0) é compatível com ruído e não é usado para selecionar nada; (v) os efeitos têm sinais diferentes por dataset (Digits: vários braços acima do Original) — heterogeneidade a investigar, nunca a explorar por dataset.
 
-### 1.3 Estatísticas do portão (braço E, 15 unidades, 289 nós)
-- Nós com decisão proposta ≠ estatística: 278/289 (96 %); tentativas elegíveis: 264; **aceites: 115 (44 %)**, dos quais **89 (77 %) «dentro da tolerância»** (aceites sem ganho local ≥ 0,002, só por ganho de coerência OWL ≤ 0,015 de perda tolerada).
-- Razões de rejeição: sem ganho local 110; falha no gate das linhas reais 39. Aceites com ganho local < 0,01: 76/115; aceites com ganho real ≤ 0: 67/115 (de 137 avaliações do gate real).
-- Ganho local médio dos aceites +0,020 (rejeitados −0,004); ganho real médio dos aceites +0,058 (rejeitados −0,176).
-- Mediana da amostra de decisão: 672 linhas; candidatos semânticos gerados por nó: 24.
-Interpretação: o portão filtra casos claramente maus (ganho real médio −0,18 nos rejeitados) mas a tolerância deixa passar muitos candidatos sem ganho demonstrado; o ganho medido na mesma amostra da seleção é otimista (H1). Estes números são descritivos (não há contrafactual por nó).
+### 1.3 Estatísticas do portão (braço E, 18 unidades, 670 nós)
+- Nós com decisão proposta ≠ estatística: 654/670 (98 %); tentativas elegíveis: 627; **aceites: 226 (36 %)**, dos quais **181 (80 %) «dentro da tolerância»** (aceites sem ganho local ≥ 0,002, só por ganho de coerência OWL com perda tolerada ≤ 0,015).
+- Razões: sem ganho local (rejeitado) 320; falha no gate das linhas reais 81; ganho local e real (aceite estrito) 45; tolerância 181. Aceites com ganho local < 0,01: 167/226; aceites com ganho real ≤ 0: 132/226 (58 %) (gate real avaliado em 290 tentativas).
+- Ganho local médio dos aceites +0,014 (rejeitados −0,004); ganho real médio dos aceites +0,056 (rejeitados −0,167).
+- Mediana da amostra de decisão: 1 347 linhas; candidatos semânticos gerados por nó: 24.
+Interpretação: o portão filtra casos claramente maus (ganho real médio −0,17 nos rejeitados) mas a tolerância deixa passar a maioria das aceitações sem ganho demonstrado, e o ganho medido na mesma amostra da seleção é otimista (H1); contudo, desligar o portão **não** altera a fidelidade média (E − gate_off ≈ 0), pelo que o seu defeito não é, por si, a fonte principal da perda. Números descritivos (sem contrafactual por nó).
 
 ## 2. Hipóteses causais (a testar; nenhuma é assumida)
 
@@ -167,7 +167,7 @@ Mantêm-se: ontologia permutada/aleatória (já `_shuf`), controlo de engenharia
 | iris | 0,3 | 3,1 | 0,05 | 0,57 | ≈18 | ≈9,9 k |
 | wine | 1,1 | 19,8 | 0,77 | 15,8 | ≈21 | ≈10,0 k |
 | breast_cancer | 2,5 | 27,4 | 1,79 | 10,6 | ≈18 | ≈17,5 k |
-| digits | ≈13 | ≈115 (ref. pré-B1) | – | – | – | – |
+| digits | ≈17 | ≈160 | ≈7 | ≈101 | ≈127 | ≈191 k |
 O custo do Reloaded é dominado pela **pesquisa m-of-n semântica** (10–20× a do Original), não pelas consultas ao oráculo nem pelo portão (portão ≪ 0,1 s por árvore nas auditorias).
 
 ### 12.2 Custo por nó dos componentes de B2 (microbenchmark vetorizado, 50–100 candidatos, 80–300 clusters)
@@ -181,20 +181,20 @@ O custo do Reloaded é dominado pela **pesquisa m-of-n semântica** (10–20× a
 Overhead A/B face à pesquisa semântica por nó: wine/bc ≲ 10 %; iris (nó pequeno) pode chegar a ≈ +100 % mas em valor absoluto < 0,3 s por árvore.
 
 ### 12.3 Orçamento da matriz (18 unidades DEV: 5 iris, 5 wine, 5 breast_cancer, 3 digits)
-Custo de uma configuração Reloaded sobre as 18 unidades: 5·3 + 5·20 + 5·27 + 3·115 ≈ 595 s ≈ **10 min** (×1,1 com A/B ⇒ ≈ 11 min).
+Custo de uma configuração Reloaded sobre as 18 unidades: 5·3 + 5·20 + 5·27 + 3·160 ≈ 730 s ≈ **12 min** (×1,1 com A/B ⇒ ≈ 13 min).
 | Bloco | Nº configs | Tempo de CPU sequencial |
 |---|---|---|
-| M1 (4 B1 × 5 B2) | 20 | ≈ 220 min |
-| M2 (controlo permutado, 4 configs selecionadas por validação interna) | 4 | ≈ 44 min |
+| M1 (4 B1 × 5 B2) | 20 | ≈ 270 min |
+| M2 (controlo permutado, 4 configs selecionadas por validação interna) | 4 | ≈ 54 min |
 | M3 (Original equivalente na representação + engenharia convencional de features) | ≈ 4 | ≈ 10 min |
-| X1 (bounded λ=0,8; exploratório separado) | 2 | ≈ 22 min |
-| Subtotal | 30 | **≈ 300 min (5 h CPU)**; 4 núcleos ⇒ ≈ 1,3–1,7 h de relógio |
-| Margem de segurança ×2 (contenção, cv-lite em subamostra) | – | ≈ 10 h CPU |
+| X1 (bounded λ=0,8; exploratório separado) | 2 | ≈ 27 min |
+| Subtotal | 30 | **≈ 360 min (6 h CPU)**; 4 núcleos ⇒ ≈ 1,5–2 h de relógio |
+| Margem de segurança ×2 (contenção, cv-lite em subamostra) | – | ≈ 12 h CPU |
 **Ajuste estrutural (ontology-blind, partilhado por todas as configurações da unidade) — custo à parte e dominante em Digits:** iris ≈ 36 s, breast_cancer ≈ 300 s, digits ≈ 2 600 s (≈ 43 min; medido na referência pré-B1). No diagnóstico DEV o *checkpoint* de tuning **não foi reaproveitado** (`tuning_fits_resumed = 0`; o tuning foi recalculado por unidade), pelo que, antes de qualquer execução da matriz, é item de infraestrutura verificar/corrigir o reuso (sem alterar a configuração científica; resultados idênticos por construção) e calcular o tuning **uma vez por unidade**.
-Restrição do executor (~120 min por tarefa): a unidade de trabalho é (dataset, semente); para Digits separa-se o tuning (≈ 43 min, 1 tarefa, grava *checkpoint*) das configurações (30 × ≈ 125 s ≈ 63 min, repartidas em ≥ 2 tarefas por unidade para folga); as restantes unidades cabem numa só tarefa; cada braço grava JSON próprio e a retoma salta o que já está completo; o ajuste estrutural reutiliza o *checkpoint* (`BIURI_TUNING_CHECKPOINT`). **Redundância:** reutilizar prefixos de árvores só será feito com prova de equivalência exata (`equivalence_report.py`); não é assumido na estimativa. Não se reduz a avaliação estatística para caber: se não couber, particiona-se por mais tarefas.
+Restrição do executor (~120 min por tarefa): a unidade de trabalho é (dataset, semente); para Digits separa-se o tuning (≈ 43 min, 1 tarefa, grava *checkpoint*) das configurações (30 × ≈ 176 s ≈ 88 min, repartidas em ≥ 2–3 tarefas por unidade para folga); as restantes unidades cabem numa só tarefa; cada braço grava JSON próprio e a retoma salta o que já está completo; o ajuste estrutural reutiliza o *checkpoint* (`BIURI_TUNING_CHECKPOINT`). **Redundância:** reutilizar prefixos de árvores só será feito com prova de equivalência exata (`equivalence_report.py`); não é assumido na estimativa. Não se reduz a avaliação estatística para caber: se não couber, particiona-se por mais tarefas.
 
 ### 12.4 Potência e dimensão da avaliação confirmatória
-No diagnóstico, o desvio-padrão de ΔF por unidade é ≈ 0,034 (EP 0,0088 com n=15). Para detetar ΔF = 0,01 com potência 80 % (unilateral, α=0,05) são necessárias ≈ ((1,645+0,84)·0,034/0,01)² ≈ **70 unidades**; com 18 unidades DEV só se distinguem efeitos ≳ 0,02. Portanto: (i) DEV serve para **selecionar** configurações (com este limite explícito); (ii) a avaliação confirmatória terá de usar mais unidades (mais sementes e/ou mais datasets, sementes reservadas) — dimensão e custo a definir em novo pré-registo (decisão D6). Custo confirmatório ≈ 70 unidades × 1 configuração selecionada (+ Original, C4.5, controlos) ≈ 70 × (≈ 33 s média ponderada) ≪ matriz DEV, mas depende do mix de datasets (digits domina).
+No diagnóstico, o desvio-padrão de ΔF por unidade é ≈ 0,032 (EP 0,0074 com n=18). Para detetar ΔF = 0,01 com potência 80 % (unilateral, α=0,05) são necessárias ≈ ((1,645+0,84)·0,032/0,01)² ≈ **63 unidades**; com 18 unidades DEV só se distinguem efeitos ≳ 0,02. Portanto: (i) DEV serve para **selecionar** configurações (com este limite explícito); (ii) a avaliação confirmatória terá de usar mais unidades (mais sementes e/ou mais datasets, sementes reservadas) — dimensão e custo a definir em novo pré-registo (decisão D6). Custo confirmatório ≈ 65 unidades × 1 configuração selecionada (+ Original, C4.5, controlos), com ≈ 41 s de árvore média por unidade (730 s/18) ≪ matriz DEV, mais o tuning estrutural por unidade (dominante em Digits); depende do mix de datasets.
 
 ## 13. Testes planeados (a implementar só com aprovação)
 1. EQ: `B2=off` ≡ estado atual bit a bit (arms A–F, S0–S2); instrumentação não altera RNG/consultas.
@@ -227,18 +227,18 @@ No diagnóstico, o desvio-padrão de ΔF por unidade é ≈ 0,034 (EP 0,0088 com
 ## 16. Alternativa recomendada, justificação, riscos e decisões
 
 **Recomendação:** B2 fatorial com ordem de implementação **B2-C → B2-A → B2-B**, tudo atrás de flags **desligadas por defeito**, com instrumentação (§5) como primeiro entregável (observacional, EQ-testada).
-Justificação científica: (1) a decomposição sugere que o contexto de decisão enviesado (amostragem ativa/representação) pesa mais do que o portão; só B2-C permite **provar** (teste diferencial) que um nó rejeitado devolve a escolha do Original; (2) B2-A/B respondem ao defeito estatístico verificável do portão (seleção e validação na mesma amostra; 77 % das aceitações sem ganho local; tolerância sem custo) e ao requisito de não tratar amostras sintéticas correlacionadas como independentes; (3) todos são ontológicos (só governam divisões influenciadas pela semântica), auditáveis, com controlo negativo (ontologia permutada) e compatíveis com EQ v2.0.
+Justificação científica: (1) a decomposição sugere que o contexto de decisão enviesado (amostragem ativa/representação) pesa mais do que o portão; só B2-C permite **provar** (teste diferencial) que um nó rejeitado devolve a escolha do Original; (2) B2-A/B respondem ao defeito estatístico verificável do portão (seleção e validação na mesma amostra; 80 % das aceitações sem ganho local; tolerância sem custo) e ao requisito de não tratar amostras sintéticas correlacionadas como independentes; (3) todos são ontológicos (só governam divisões influenciadas pela semântica), auditáveis, com controlo negativo (ontologia permutada) e compatíveis com EQ v2.0.
 
 **Riscos principais:** (R1) B2-A/B podem apenas recuperar o nível do Original (não superá-lo): resultado legítimo (`SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN`/`INSUFFICIENT_EVIDENCE`), nunca imposto; (R2) B2-C duplica complexidade de RNG (correntes separadas) e o prefixo deixa de coincidir após o primeiro nó aceite; (R3) potência insuficiente em DEV (§12.4); (R4) multiplicidade (30 configurações); (R5) a representação enriquecida (H3) pode ser o canal dominante e fica fora de B2 (B3); (R6) limitação de desempate do Original (Doc. 19) gera ruído de medição até ±0,06 de fidelidade por unidade; (R7) custo da pesquisa m-of-n semântica (10–20× o Original).
 
 **Critérios de aceitação do desenho (para passar à implementação):** aprovação da matriz e orçamento (§9, §12), dos critérios (§10) e das decisões abaixo; pré-registo versionado antes de qualquer execução.
 
 **Decisões que necessitam de aprovação do utilizador**
-- D1. Aprovar a ordem B2-C → B2-A → B2-B e o fatorial B1×B2 de §9 (30 configurações DEV, ≈5 h CPU, ≈1,5 h de relógio com 4 núcleos).
+- D1. Aprovar a ordem B2-C → B2-A → B2-B e o fatorial B1×B2 de §9 (30 configurações DEV, ≈6 h CPU, ≈1,5–2 h de relógio com 4 núcleos).
 - D2. Autorizar implementação de B2-C com **corrente RNG separada** para os mecanismos semânticos (muda o consumo de RNG do Reloaded com ontologia, não do Original; afeta reprodutibilidade histórica do Reloaded E — mantida como braço de referência por hash).
 - D3. Margem de não-inferioridade, α, g_min, n_min de B2-B: propor valores só por validação interna DEV (pré-registados antes de correr) — aprovar o procedimento.
 - D4. Autorizar (ou não) a análise de sensibilidade «Original-det vs Reloaded-det» com a variante de desempate (Doc. 19 §6) como estudo separado.
 - D5. Autorizar `cv-lite` como fator experimental (não padrão).
-- D6. Definir a dimensão da avaliação confirmatória (nº de unidades ≳ 70 para ΔF=0,01) e reservar sementes/datasets.
+- D6. Definir a dimensão da avaliação confirmatória (nº de unidades ≳ 65 para ΔF=0,01) e reservar sementes/datasets.
 - D7. Autorizar um *manifest* v3 em rascunho (sem execução) para B2.
 Nenhuma destas ações foi iniciada.
