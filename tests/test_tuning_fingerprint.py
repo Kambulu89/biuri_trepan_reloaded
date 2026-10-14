@@ -51,9 +51,11 @@ def test_reloaded_changes_do_not_invalidate_but_are_justified_by_trace(tmp_path)
 
 def test_line_endings_do_not_change_identity(tmp_path):
     d = _clone_core(tmp_path)
-    base = tc.fingerprint_report(d)["fingerprint"]
     f = d / "trepan_original.py"
-    f.write_bytes(f.read_bytes().replace(b"\n", b"\r\n"))
+    lf = f.read_bytes().replace(b"\r\n", b"\n")              # o checkout pode já ter CRLF (Windows): parte-se de LF puro
+    f.write_bytes(lf)
+    base = tc.fingerprint_report(d)["fingerprint"]
+    f.write_bytes(lf.replace(b"\n", b"\r\n"))
     assert tc.fingerprint_report(d)["fingerprint"] == base
 
 
