@@ -42,7 +42,7 @@ def seeds_for(kind: str, k: int, master_seed: int):
     return {}
 
 
-def build_arms(reps: int):
+def build_arms(reps: int, kinds=KINDS):
     arms = []
     for k in range(reps):
         arms.append(ArmSpec(f"m29_P_k{k}", "trepan_reloaded", f"C29: Reloaded + ontologia permutada + amostrador C (draw {k})", tree_space="enr", oracle="mlp_original",
@@ -53,7 +53,7 @@ def build_arms(reps: int):
                             semantic="conventional", lam=1.0, needs_semantic=True, role="m29_control", group="M29", control=True))
         arms.append(ArmSpec(f"m29_G_k{k}", "trepan_original", f"G29: Original EXPERIMENTAL + amostrador C com consultas igualadas a B29 (réplica {k}); NÃO substitui o Original canónico",
                             oracle="mlp_original", role="m29_control", group="M29"))
-    return arms
+    return [a for a in arms if a.arm_id.split("_")[1] in kinds]
 
 
 def reference_queries(sc_dir: Path, dataset: str, seed: int, k: int):
@@ -146,11 +146,11 @@ def _reference_oracle(sc_dir: Path, dataset: str, seed: int) -> dict:
     return {"id": json.loads(f.read_text())["oracle_id"]} if f.exists() else {"id": None}
 
 
-def run_unit_m29(dataset: str, seed: int, out: Path, reps: int = 3, sc_dir: Path = DEFAULT_SC_DIR) -> Path:
+def run_unit_m29(dataset: str, seed: int, out: Path, reps: int = 3, sc_dir: Path = DEFAULT_SC_DIR, kinds=KINDS) -> Path:
     M.update(unit=f"{dataset}_seed{seed}", out=str(out))
     orig_cfg, orig_groups, orig_default = R.benchmark_config, mf.MAIN_ARM_GROUPS, RN.default_arms
     orig_run_arm, orig_rel, orig_orig = RN.BenchmarkRunner._run_arm, RN.TrepanReloadedClassifier, RN.TrepanOriginalClassifier
-    arms_new = build_arms(reps)
+    arms_new = build_arms(reps, kinds)
     cache = {}
     ref_oracle = _reference_oracle(sc_dir, dataset, seed)
 
@@ -178,28 +178,18 @@ def run_unit_m29(dataset: str, seed: int, out: Path, reps: int = 3, sc_dir: Path
         g_info = None
         with cm as shared:
             if is_g:
+                # Alteração A2 (antes de qualquer análise): ajuste ÚNICO com fator pré-definido f = max(1, q_B29/q_A29) sobre ``min_sample`` (o consumo de consultas do Original é quase
+                # linear em ``min_sample`` por nó, mas a forma da árvore muda; a calibração iterativa e a redução abaixo do orçamento canónico foram retiradas). O desvio final é
+                # REGISTADO e o contraste só é «orçamento igualado» se q_G ∈ [0,8; 1,25]·q_B29.
                 qb, qa = reference_queries(sc_dir, dataset, seed, replica)
                 m0, f0 = int(budget["min_sample"]), scale_factor(qb, qa)
-                steps = []
-                f = f0
-                for step in range(2):                                          # 1.º ajuste descartável (calibração por contagem de consultas), depois o ajuste final
-                    b = dict(budget, min_sample=int(np.ceil(m0 * f)), max_queries=max(int(budget["max_queries"]), int(2 * qb)))
-                    if step == 0:
-                        cal = dataclasses.replace(spec, arm_id=spec.arm_id + "__cal")
-                        crow, _ = orig_run_arm(self, cal, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds, infos, selected, b, seed_,
-                                               labels, minority, fo, fe, oracle_train_pred=oracle_train_pred, structural=structural)
-                        q1 = float(crow["oracle_queries"])
-                        steps.append({"min_sample": b["min_sample"], "factor": f, "queries": q1, "target": qb, "deviation": q1 / qb - 1.0})
-                        if abs(q1 / qb - 1.0) > 0.05:
-                            f = f * qb / max(1.0, q1)
-                        M["Q"] = M["rec"] = M["tree"] = None
-                    else:
-                        row, pred = orig_run_arm(self, spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds, infos, selected, b, seed_,
-                                                 labels, minority, fo, fe, oracle_train_pred=oracle_train_pred, structural=structural)
-                        steps.append({"min_sample": b["min_sample"], "factor": f, "queries": float(row["oracle_queries"]), "target": qb, "deviation": float(row["oracle_queries"]) / qb - 1.0})
-                g_info = {"budget_matched_to": "B29 (sc_D)", "reference_queries_B29": qb, "reference_queries_A29": qa, "initial_factor": f0, "steps": steps,
-                          "min_sample_canonical": m0, "min_sample_used": steps[-1]["min_sample"], "final_deviation_from_target": steps[-1]["deviation"],
-                          "note": "consumo de consultas igualado; NÃO equivalência total (distribuição das consultas e espaço de candidatos diferem)"}
+                b = dict(budget, min_sample=int(np.ceil(m0 * f0)), max_queries=max(int(budget["max_queries"]), int(2 * qb)))
+                row, pred = orig_run_arm(self, spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds, infos, selected, b, seed_,
+                                         labels, minority, fo, fe, oracle_train_pred=oracle_train_pred, structural=structural)
+                q_final = float(row["oracle_queries"])
+                g_info = {"budget_matched_to": "B29 (sc_D)", "reference_queries_B29": qb, "reference_queries_A29": qa, "factor": f0, "min_sample_canonical": m0, "min_sample_used": b["min_sample"],
+                          "queries_G29": q_final, "ratio_to_B29": q_final / qb, "final_deviation_from_target": q_final / qb - 1.0, "budget_matched": bool(0.8 <= q_final / qb <= 1.25),
+                          "note": "consumo de consultas aproximado; NÃO equivalência total (distribuição das consultas e espaço de candidatos diferem)"}
             else:
                 row, pred = orig_run_arm(self, spec, ds, Xtr, ytr, Xte, yte, Xte_enr, mlp_o, mlp_e, info_o, info_e, ctx_real, ctx_shuf, oracle_preds, infos, selected,
                                          budget, seed_, labels, minority, fo, fe, oracle_train_pred=oracle_train_pred, structural=structural)
@@ -213,6 +203,7 @@ def run_unit_m29(dataset: str, seed: int, out: Path, reps: int = 3, sc_dir: Path
                 row["control_kind"] = "budget_matched_original"
                 row["budget_matched_min_sample"] = g_info["min_sample_used"]
                 row["budget_match_deviation"] = g_info["final_deviation_from_target"]
+                row["budget_matched"] = g_info["budget_matched"]
             row["control_meta"] = json.dumps(meta, default=str)
             Q = np.vstack(M["Q"]) if M["Q"] else np.empty((0, 0))
             yq = np.concatenate(M["rec"].y) if M["rec"] is not None and M["rec"].y else np.empty(0)
@@ -298,6 +289,7 @@ def main() -> None:
     ap.add_argument("--reps", type=int, default=3)
     ap.add_argument("--reuse-checkpoint-from", default=None)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--only-kinds", default="P,D,E,G", help="subconjunto dos braços novos (p.ex. G para repetir só G29)")
     ap.add_argument("--sc-dir", default=str(DEFAULT_SC_DIR), help="raw da avaliação do Doc. 26 (A29/B29/F29/C4.5 de referência)")
     a = ap.parse_args()
     if a.dry_run:
@@ -311,7 +303,7 @@ def main() -> None:
         for f in src.glob(f"{a.unit[0]}_seed{a.unit[1]}.ckpt*"):
             if not (dst / f.name).exists():
                 shutil.copy2(f, dst / f.name)
-    run_unit_m29(a.unit[0], int(a.unit[1]), Path(a.out), a.reps, Path(a.sc_dir))
+    run_unit_m29(a.unit[0], int(a.unit[1]), Path(a.out), a.reps, Path(a.sc_dir), tuple(a.only_kinds.split(",")))
     res = runtime_comparability(Path(a.out), Path(a.sc_dir), a.unit[0], int(a.unit[1]))
     if not res["all_comparable"]:
         print("COMPARABILIDADE FALHADA:", json.dumps(res, default=str)[:2000], file=sys.stderr)

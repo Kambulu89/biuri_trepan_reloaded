@@ -31,6 +31,7 @@ def main() -> int:
     ap.add_argument("--limit-hours", type=float, default=2.5)
     ap.add_argument("--prior-cpu-hours", type=float, default=0.0, help="CPU já gasto pela campanha (p.ex. dry-run medido)")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--only-kinds", default=None)
     ap.add_argument("--estimates", default=None, help="JSON {dataset: segundos de CPU por unidade}")
     a = ap.parse_args()
     out = Path(a.out)
@@ -58,6 +59,8 @@ def main() -> int:
         cmd = [sys.executable, "-m", "validation.benchmark.run_controls_m29", "--unit", ds, sd, "--out", str(out)] + (["--dry-run"] if a.dry_run else ["--reuse-checkpoint-from", a.reuse_checkpoint_from])
         if a.sc_dir and not a.dry_run:
             cmd += ["--sc-dir", a.sc_dir]
+        if a.only_kinds and not a.dry_run:
+            cmd += ["--only-kinds", a.only_kinds]
         log = open(out / f"{ds}_seed{sd}.log", "w")
         t0 = time.time()
         p = subprocess.Popen(cmd, cwd=str(ROOT), stdout=log, stderr=subprocess.STDOUT)

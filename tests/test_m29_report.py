@@ -45,12 +45,12 @@ def test_missing_partial_or_confounded_control_is_not_assessable_never_favourabl
 
 def test_conventional_control_with_different_dimension_or_queries_is_confounded_and_blocks_conclusive_attribution():
     sc = {("a", 1): unit_sc(0.90, 0.91, 0.95, 0.96)}
-    conf = dict(FULL, m29_E_k0=(0.86, 0.87, None, 1, 1000.0))               # 1 derivada e metade das consultas
+    conf = dict(FULL, m29_E_k0=(0.86, 0.87, None, 1, 2000.0))               # 1 derivada (consultas comparáveis)
     r = build(sc, {("a", 1): unit_m(conf)})
     assert r["level1"]["attribution_counts"] == {"NOT_ASSESSABLE": 1}
     assert r["level1"]["attribution_counts_excluding_E29"] == {"ATTRIBUTED": 1}      # estado secundário, não conclusivo
-    e = r["per_unit"]["a:1"]["states"]["E29_confounding"]
-    assert e["confounded"] and len(e["reasons"]) == 2
+    e = r["per_unit"]["a:1"]["states"]["control_confounding"]["E29"]
+    assert e["confounded"] and any("dimensão" in x for x in e["reasons"])
 
 
 def test_control_that_matches_or_beats_the_real_ontology_blocks_attribution():
@@ -73,3 +73,20 @@ def test_different_oracle_between_arms_blocks_comparability():
     sc = {("a", 1): unit_sc(0.90, 0.91, 0.95, 0.96)}
     sc[("a", 1)]["sc_D_r0"]["row"]["oracle_id"] = "OTHER"
     assert not build(sc, {})["comparability"]["all_comparable"]
+
+
+def test_budget_confounding_is_asymmetric():
+    sc = {("a", 1): unit_sc(0.90, 0.91, 0.95, 0.96)}
+    # B29 vence um controlo que gastou só metade das consultas ⇒ a vitória pode dever-se ao orçamento ⇒ NOT_ASSESSABLE
+    cheap = dict(FULL, m29_P_k0=(0.88, 0.89, "full", 3, 1000.0))
+    r = build(sc, {("a", 1): unit_m(cheap)})
+    assert r["level1"]["attribution_counts"] == {"NOT_ASSESSABLE": 1}
+    assert r["per_unit"]["a:1"]["states"]["control_confounding"]["C29"]["confounded"]
+    # B29 vence um controlo que gastou o DOBRO: vitória informativa (persiste com o controlo mais rico)
+    rich = dict(FULL, m29_P_k0=(0.88, 0.89, "full", 3, 4200.0))
+    assert build(sc, {("a", 1): unit_m(rich)})["level1"]["attribution_counts"] == {"ATTRIBUTED": 1}
+    # B29 PERDE para um controlo que gastou o dobro ⇒ pode ser orçamento ⇒ NOT_ASSESSABLE; perde para um de orçamento comparável ⇒ NOT_ATTRIBUTED
+    lose_rich = dict(FULL, m29_P_k0=(0.96, 0.97, "full", 3, 4200.0))
+    assert build(sc, {("a", 1): unit_m(lose_rich)})["level1"]["attribution_counts"] == {"NOT_ASSESSABLE": 1}
+    lose_same = dict(FULL, m29_P_k0=(0.96, 0.97, "full", 3, 2100.0))
+    assert build(sc, {("a", 1): unit_m(lose_same)})["level1"]["attribution_counts"] == {"NOT_ATTRIBUTED": 1}

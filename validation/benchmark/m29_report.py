@@ -47,13 +47,25 @@ def confounding_e29(b_recs, e_recs) -> dict:
     qb, qe = mean_metric(b_recs, "oracle_queries"), mean_metric(e_recs, "oracle_queries")
     gap = abs((de or 0) - (db or 0)) / max(1.0, (db or 1.0))
     ratio = (qe / qb) if qb else None
-    lo, hi = E_CONFOUND["queries_ratio_range"]
     reasons = []
     if db is None or de is None or gap > E_CONFOUND["max_relative_dimension_gap"]:
         reasons.append(f"dimensão derivada {de} vs {db}")
-    if ratio is None or not (lo <= ratio <= hi):
-        reasons.append(f"consultas E29/B29 = {ratio}")
     return {"confounded": bool(reasons), "reasons": reasons, "derived_B29": db, "derived_E29": de, "queries_B29": qb, "queries_E29": qe, "queries_ratio": ratio}
+
+
+def budget_confounding(b_recs, c_recs, *, b_wins: bool) -> dict:
+    """Confusão de ORÇAMENTO assimétrica (limiares pré-declarados 0,8–1,25 sobre ρ = consultas do controlo / consultas de B29): uma vitória de B29 sobre um controlo que gastou MENOS
+    (ρ < 0,8) pode dever-se ao orçamento; uma derrota de B29 perante um controlo que gastou MAIS (ρ > 1,25) também. Fora disso o contraste é informativo."""
+    qb, qc = mean_metric(b_recs, "oracle_queries"), mean_metric(c_recs, "oracle_queries")
+    if not qb or qc is None:
+        return {"confounded": True, "ratio": None, "reasons": ["consultas não verificáveis"]}
+    rho = qc / qb
+    lo, hi = E_CONFOUND["queries_ratio_range"]
+    if b_wins and rho < lo:
+        return {"confounded": True, "ratio": rho, "reasons": [f"B29 supera o controlo, mas este gastou só {rho:.2f}× as consultas de B29"]}
+    if (not b_wins) and rho > hi:
+        return {"confounded": True, "ratio": rho, "reasons": [f"B29 não supera o controlo, que gastou {rho:.2f}× as consultas de B29"]}
+    return {"confounded": False, "ratio": rho, "reasons": []}
 
 
 def build(sc, m29):
@@ -94,20 +106,24 @@ def build(sc, m29):
         a, b = v["A29"], v["B29"]
         d1 = H.evaluate_direct_gain(b["accuracy"], a["accuracy"], b["fidelity"], a["fidelity"])
         controls, conf = {}, {}
+        b_recs = arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), "B29")
         for arm, name in CONTROL_OF.items():
             cv = v.get(arm)
             if not cv:
                 continue
             recs_arm = arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), arm)
             full = arm in ("E29", "G29") or control_is_full(recs_arm)
+            da, df = b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"]
+            bud = budget_confounding(b_recs, recs_arm, b_wins=(da > 0 and df > 0))
+            reasons = list(bud["reasons"])
             if arm == "E29":
-                c_e = confounding_e29(arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), "B29"), recs_arm)
-                conf[u] = c_e
-                full = full and not c_e["confounded"]
-            if full:
-                controls[name] = (b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"])
+                c_e = confounding_e29(b_recs, recs_arm)
+                reasons += [r for r in c_e["reasons"] if r not in reasons and r.startswith("dimensão")]
+            conf.setdefault(u, {})[arm] = {"confounded": bool(reasons), "reasons": reasons, "queries_ratio_control_over_B29": bud["ratio"]}
+            if full and not reasons:
+                controls[name] = (da, df)
             else:
-                controls[name + ("_confounded" if arm == "E29" and conf.get(u, {}).get("confounded") else "_structure_only_fallback")] = (b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"])
+                controls[name + ("_confounded" if reasons else "_structure_only_fallback")] = (da, df)
         at = H.attribute_to_ontology(d1, controls, required=REQUIRED)
         at_partial = H.attribute_to_ontology(d1, controls, required=("permuted_ontology", "random_groups", "budget_matched_original"))
         g = H.evaluate_global(b["accuracy"], a["accuracy"], c["accuracy"], b["fidelity"], a["fidelity"], c["fidelity"])
@@ -115,7 +131,7 @@ def build(sc, m29):
         attr[at["attribution"]] += 1
         attr_partial[at_partial["attribution"]] += 1
         l2[g["state"]] += 1
-        unit_states[u] = {"direct": d1["state"], "attribution": at["attribution"], "attribution_excluding_E29": at_partial["attribution"], "E29_confounding": conf.get(u), "global": g["state"], "flags": g["flags"], "missing": at["missing_required_controls"]}
+        unit_states[u] = {"direct": d1["state"], "attribution": at["attribution"], "attribution_excluding_E29": at_partial["attribution"], "control_confounding": conf.get(u), "global": g["state"], "flags": g["flags"], "missing": at["missing_required_controls"]}
         ds = u.split(":")[0]
         diffs["vs_original_eq"][ds]["acc"].append(b["accuracy"] - a["accuracy"]); diffs["vs_original_eq"][ds]["fid"].append(b["fidelity"] - a["fidelity"])
         diffs["vs_c45"][ds]["acc"].append(b["accuracy"] - c["accuracy"]); diffs["vs_c45"][ds]["fid"].append(b["fidelity"] - c["fidelity"])
@@ -165,11 +181,15 @@ def mechanisms(sc, m29):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--sc", required=True)
-    ap.add_argument("--m29")
+    ap.add_argument("--m29", nargs="*", default=[], help="um ou mais diretórios de resultados M29 (os últimos prevalecem em braços com o mesmo nome)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     sc = load_full(Path(a.sc))
-    m29 = load_full(Path(a.m29)) if a.m29 and (Path(a.m29) / "raw").exists() else {}
+    m29 = {}
+    for d in a.m29:
+        if (Path(d) / "raw").exists():
+            for key, arms in load_full(Path(d)).items():
+                m29.setdefault(key, {}).update(arms)
     r = build(sc, m29)
     r["mechanism_aggregates"] = mechanisms(sc, m29)
     Path(a.out).write_text(json.dumps(r, indent=1, default=str))

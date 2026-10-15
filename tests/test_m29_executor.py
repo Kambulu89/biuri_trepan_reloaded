@@ -25,6 +25,12 @@ def test_seeds_are_predefined_independent_and_deterministic():
     assert X.seeds_for("P", 0, 42) == X.seeds_for("P", 0, 42) and X.seeds_for("P", 0, 7) != X.seeds_for("P", 0, 42)
 
 
+def test_only_kinds_filters_arms_and_g29_is_single_shot():
+    assert {a.arm_id for a in X.build_arms(2, ("G",))} == {"m29_G_k0", "m29_G_k1"}
+    src = Path(X.__file__).read_text()
+    assert "__cal" not in src and "Alteração A2" in src                          # sem calibração iterativa nem redução abaixo do orçamento canónico
+
+
 def test_scale_factor_never_reduces_the_canonical_budget_and_reference_queries_come_from_counts_only():
     assert X.scale_factor(2100, 1000) == pytest.approx(2.1) and X.scale_factor(900, 1000) == 1.0
     qb, qa = X.reference_queries(REF, "iris", 42, 0)
