@@ -1,0 +1,413 @@
+{
+ "dataset": "wine",
+ "seed": 42,
+ "real": {
+  "available": true,
+  "n_derived": 3,
+  "structure_signature": "120a2912c4ef3283",
+  "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+  "state_reason": ""
+ },
+ "controls": {
+  "m29_P_k0": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.8461538461538461,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.5189885543284032,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 20260042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20260042,
+    "candidate_index": 2,
+    "candidates_tried": 3,
+    "retention": 0.2608695652173913,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.07692307692307693,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "6f7b07f6804d8605",
+   "structure_signature": "955c7f4e07b4934e",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.5189885543284032,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k0": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.6923076923076923,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6381179612730467,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 30260042,
+    "seed_b": 40260042
+   },
+   "perm_meta": {
+    "seed_used": 30260042,
+    "candidate_index": 1,
+    "candidates_tried": 2,
+    "retention": 0.2608695652173913,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.07692307692307693,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "45b687ea8003ef09",
+   "structure_signature": "33f0e53160c6db69",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6381179612730467,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k1": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.5384615384615384,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.5818225741943984,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 20261042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20261042,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.2608695652173913,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.15384615384615385,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "84707e36106b9e6f",
+   "structure_signature": "849cfbbc91813233",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.5818225741943984,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k1": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.6923076923076923,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6453715343983478,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 30261042,
+    "seed_b": 40261042
+   },
+   "perm_meta": {
+    "seed_used": 30261042,
+    "candidate_index": 2,
+    "candidates_tried": 3,
+    "retention": 0.2608695652173913,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.15384615384615385,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "95fc16c62b41d036",
+   "structure_signature": "500c4ef686992d9e",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6453715343983478,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k2": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.6923076923076923,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.638905535226735,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 20262042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20262042,
+    "candidate_index": 1,
+    "candidates_tried": 2,
+    "retention": 0.21739130434782608,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.0,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "34020158495a43fd",
+   "structure_signature": "689fe6ffe11d5d30",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.638905535226735,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k2": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.9230769230769231,
+   "co_grouped_pairs_real": 23,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6275428203280322,
+    "std_max_real": 0.7261955090410274
+   },
+   "seeds": {
+    "seed_a": 30262042,
+    "seed_b": 40262042
+   },
+   "perm_meta": {
+    "seed_used": 30262042,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.17391304347826086,
+    "chance_retention": 0.2948717948717949,
+    "fixed_point_fraction": 0.23076923076923078,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "652d8d268d2126bd",
+   "structure_signature": "81632e818b074e24",
+   "n_derived": 3,
+   "group_sizes": [
+    3,
+    5,
+    5
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.6275428203280322,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k0": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 3,
+   "n_derived_real": 3,
+   "dimension_matched": true,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.8492728179227257,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k1": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 3,
+   "n_derived_real": 3,
+   "dimension_matched": true,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.8492728179227257,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k2": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 3,
+   "n_derived_real": 3,
+   "dimension_matched": true,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.8492728179227257,
+    "std_max_real": 0.7261955090410274
+   },
+   "differs_from_real_structure": true
+  }
+ },
+ "distinct_control_structures": 6
+}

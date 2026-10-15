@@ -19,8 +19,11 @@ from validation.benchmark.hierarchy_joint_report import load as load_full
 METRICS = {"accuracy": "accuracy_real_labels", "fidelity": "fidelity_to_oracle", "precision_macro": "precision_macro_real_labels", "macro_f1": "macro_f1_real_labels",
            "node_count": "node_count", "leaf_count": "leaf_count", "tree_depth": "depth", "m_of_n_split_count": "m_of_n_count", "semantic_split_count": "semantic_split_count",
            "oracle_queries": "oracle_queries", "oracle_samples": "total_oracle_samples", "training_time": "tree_training_time"}
-ARM_SOURCE = {"A29": ("sc", "sc_B_r"), "B29": ("sc", "sc_D_r"), "F29": ("sc", "sc_F_r"), "C29": ("m29", "m29_P_k"), "D29": ("m29", "m29_D_k"), "E29": ("m29", "m29_E_k")}
-CONTROL_OF = {"C29": "permuted_ontology", "D29": "random_groups", "E29": "conventional_features"}
+ARM_SOURCE = {"A29": ("sc", "sc_B_r"), "B29": ("sc", "sc_D_r"), "F29": ("sc", "sc_F_r"), "C29": ("m29", "m29_P_k"), "D29": ("m29", "m29_D_k"), "E29": ("m29", "m29_E_k"),
+              "G29": ("m29", "m29_G_k")}
+CONTROL_OF = {"C29": "permuted_ontology", "D29": "random_groups", "E29": "conventional_features", "G29": "budget_matched_original"}
+REQUIRED = tuple(H.REQUIRED_CONTROLS) + ("budget_matched_original",)
+E_CONFOUND = {"max_relative_dimension_gap": 0.25, "queries_ratio_range": (0.8, 1.25)}      # limiares PRÉ-DECLARADOS (Doc. 29/30) para marcar E29 como confundido
 
 
 def arm_records(sc_unit, m_unit, arm):
@@ -36,6 +39,21 @@ def mean_metric(recs, col):
 
 def control_is_full(recs):
     return bool(recs) and all((r["row"].get("control_variant") in (None, "full")) for r in recs)
+
+
+def confounding_e29(b_recs, e_recs) -> dict:
+    """E29 está CONFUNDIDO face a B29 se a dimensão derivada ou o consumo de consultas diferirem substancialmente (limiares pré-declarados). Nunca se completam colunas artificiais."""
+    db, de = mean_metric(b_recs, "semantic_features_generated"), mean_metric(e_recs, "semantic_features_generated")
+    qb, qe = mean_metric(b_recs, "oracle_queries"), mean_metric(e_recs, "oracle_queries")
+    gap = abs((de or 0) - (db or 0)) / max(1.0, (db or 1.0))
+    ratio = (qe / qb) if qb else None
+    lo, hi = E_CONFOUND["queries_ratio_range"]
+    reasons = []
+    if db is None or de is None or gap > E_CONFOUND["max_relative_dimension_gap"]:
+        reasons.append(f"dimensão derivada {de} vs {db}")
+    if ratio is None or not (lo <= ratio <= hi):
+        reasons.append(f"consultas E29/B29 = {ratio}")
+    return {"confounded": bool(reasons), "reasons": reasons, "derived_B29": db, "derived_E29": de, "queries_B29": qb, "queries_E29": qe, "queries_ratio": ratio}
 
 
 def build(sc, m29):
@@ -55,12 +73,14 @@ def build(sc, m29):
         if not cmp_["comparable"]:
             comp_problems.append({"unit": u, "problems": cmp_["problems"]})
         vals = {a: {m: mean_metric(rs, col) for m, col in METRICS.items()} if rs else None for a, rs in recs.items()}
-        per_unit[u] = {"vals": vals, "c45": {m: (c45["row"].get(col) if c45 else None) for m, col in METRICS.items() if m in ("accuracy", "fidelity", "precision_macro", "macro_f1")},
+        per_draw = {a: [{"accuracy": r["row"].get("accuracy_real_labels"), "fidelity": r["row"].get("fidelity_to_oracle"), "oracle_queries": r["row"].get("oracle_queries"),
+                        "node_count": r["row"].get("node_count"), "variant": r["row"].get("control_variant")} for r in rs] for a, rs in recs.items() if rs}
+        per_unit[u] = {"per_draw": per_draw, "vals": vals, "c45": {m: (c45["row"].get(col) if c45 else None) for m, col in METRICS.items() if m in ("accuracy", "fidelity", "precision_macro", "macro_f1")},
                        "control_variants": {a: sorted({r["row"].get("control_variant") or "full" for r in rs}) for a, rs in recs.items() if a in CONTROL_OF and rs},
                        "n_draws": {a: len(rs) for a, rs in recs.items()}}
     res["comparability"] = {"level": "strict", "all_comparable": not comp_problems, "problems": comp_problems}
     # --- Nível 1 e 2 por unidade
-    l1, l2, attr = Counter(), Counter(), Counter()
+    l1, l2, attr, attr_partial = Counter(), Counter(), Counter(), Counter()
     diffs = {"vs_original_eq": defaultdict(lambda: {"acc": [], "fid": []}), "vs_c45": defaultdict(lambda: {"acc": [], "fid": []})}
     ctl_diffs = {c: defaultdict(lambda: {"acc": [], "fid": []}) for c in CONTROL_OF.values()}
     eq_check = Counter()
@@ -73,19 +93,29 @@ def build(sc, m29):
             continue
         a, b = v["A29"], v["B29"]
         d1 = H.evaluate_direct_gain(b["accuracy"], a["accuracy"], b["fidelity"], a["fidelity"])
-        controls = {}
+        controls, conf = {}, {}
         for arm, name in CONTROL_OF.items():
             cv = v.get(arm)
-            if cv and (arm == "E29" or control_is_full(arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), arm))):
+            if not cv:
+                continue
+            recs_arm = arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), arm)
+            full = arm in ("E29", "G29") or control_is_full(recs_arm)
+            if arm == "E29":
+                c_e = confounding_e29(arm_records(sc[tuple(_k(u))], m29.get(tuple(_k(u))), "B29"), recs_arm)
+                conf[u] = c_e
+                full = full and not c_e["confounded"]
+            if full:
                 controls[name] = (b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"])
-            elif cv:
-                controls[name + "_structure_only_fallback"] = (b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"])   # controlo parcial: NÃO satisfaz o controlo exigido
-        at = H.attribute_to_ontology(d1, controls)
+            else:
+                controls[name + ("_confounded" if arm == "E29" and conf.get(u, {}).get("confounded") else "_structure_only_fallback")] = (b["accuracy"] - cv["accuracy"], b["fidelity"] - cv["fidelity"])
+        at = H.attribute_to_ontology(d1, controls, required=REQUIRED)
+        at_partial = H.attribute_to_ontology(d1, controls, required=("permuted_ontology", "random_groups", "budget_matched_original"))
         g = H.evaluate_global(b["accuracy"], a["accuracy"], c["accuracy"], b["fidelity"], a["fidelity"], c["fidelity"])
         l1[d1["state"]] += 1
         attr[at["attribution"]] += 1
+        attr_partial[at_partial["attribution"]] += 1
         l2[g["state"]] += 1
-        unit_states[u] = {"direct": d1["state"], "attribution": at["attribution"], "global": g["state"], "flags": g["flags"], "missing": at["missing_required_controls"]}
+        unit_states[u] = {"direct": d1["state"], "attribution": at["attribution"], "attribution_excluding_E29": at_partial["attribution"], "E29_confounding": conf.get(u), "global": g["state"], "flags": g["flags"], "missing": at["missing_required_controls"]}
         ds = u.split(":")[0]
         diffs["vs_original_eq"][ds]["acc"].append(b["accuracy"] - a["accuracy"]); diffs["vs_original_eq"][ds]["fid"].append(b["fidelity"] - a["fidelity"])
         diffs["vs_c45"][ds]["acc"].append(b["accuracy"] - c["accuracy"]); diffs["vs_c45"][ds]["fid"].append(b["fidelity"] - c["fidelity"])
@@ -97,7 +127,8 @@ def build(sc, m29):
             eq_check["identical" if all(f[m] == a[m] for m in ("accuracy", "fidelity", "node_count", "oracle_queries")) else "different"] += 1
     pct = lambda cn: {k: {"n": n, "pct_of_all_units": round(100.0 * n / max(1, len(per_unit)), 1)} for k, n in cn.items()}
     res["equivalence_F29_vs_A29"] = dict(eq_check)
-    res["level1"] = {"direct_gain_state_counts": pct(l1), "attribution_counts": dict(attr),
+    res["level1"] = {"direct_gain_state_counts": pct(l1), "attribution_counts": dict(attr), "attribution_counts_excluding_E29": dict(attr_partial),
+                     "attribution_note": "atribuição completa exige C29, D29, E29 (não confundido) e G29; sem E29 comparável a atribuição é NOT_ASSESSABLE. 'excluding_E29' é um estado SECUNDÁRIO (não conclusivo).",
                      "evidence_vs_original_equivalent": H.classify_evidence(diffs["vs_original_eq"], confirmatory=False),
                      "evidence_vs_controls": {c: H.classify_evidence(dd, confirmatory=False) for c, dd in ctl_diffs.items() if dd},
                      "controls_without_data": [c for c, dd in ctl_diffs.items() if not dd]}
