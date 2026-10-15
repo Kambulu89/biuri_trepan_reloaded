@@ -1,0 +1,1001 @@
+{
+ "units": [
+  "breast_cancer:11",
+  "breast_cancer:123",
+  "breast_cancer:2024",
+  "breast_cancer:42",
+  "breast_cancer:7",
+  "digits:123",
+  "digits:42",
+  "digits:7",
+  "iris:11",
+  "iris:123",
+  "iris:2024",
+  "iris:42",
+  "iris:7",
+  "wine:11",
+  "wine:123",
+  "wine:2024",
+  "wine:42",
+  "wine:7"
+ ],
+ "n_units": 18,
+ "equivalence": {
+  "EQ_hist_A_vs_E": {
+   "compared": 54,
+   "identical": 54,
+   "different": []
+  },
+  "EQ_C_B_vs_F": {
+   "compared": 54,
+   "identical": 54,
+   "different": []
+  }
+ },
+ "descriptive_unit_means": {
+  "A": {
+   "fidelity_to_oracle": 0.9159758478471929,
+   "accuracy_real_labels": 0.9118267697215067,
+   "node_count": 67.59259259259257,
+   "depth": 8.611111111111112,
+   "oracle_queries": 42823.5,
+   "tree_training_time": 5.573697108333312
+  },
+  "B": {
+   "fidelity_to_oracle": 0.9326995248632676,
+   "accuracy_real_labels": 0.9349433001479786,
+   "node_count": 69.62962962962963,
+   "depth": 8.722222222222221,
+   "oracle_queries": 42448.851851851854,
+   "tree_training_time": 5.6394239943148206
+  },
+  "C": {
+   "fidelity_to_oracle": 0.913213753973988,
+   "accuracy_real_labels": 0.9105331618781912,
+   "node_count": 68.85185185185186,
+   "depth": 9.0,
+   "oracle_queries": 91498.72222222222,
+   "tree_training_time": 52.875323161499985
+  },
+  "D": {
+   "fidelity_to_oracle": 0.9228673146217007,
+   "accuracy_real_labels": 0.9286765238227227,
+   "node_count": 68.77777777777779,
+   "depth": 8.75925925925926,
+   "oracle_queries": 90892.5925925926,
+   "tree_training_time": 49.05578250187039
+  },
+  "E": {
+   "fidelity_to_oracle": 0.9159758478471929,
+   "accuracy_real_labels": 0.9118267697215067,
+   "node_count": 67.59259259259257,
+   "depth": 8.611111111111112,
+   "oracle_queries": 42823.5,
+   "tree_training_time": 5.6321124263333235
+  },
+  "F": {
+   "fidelity_to_oracle": 0.9326995248632676,
+   "accuracy_real_labels": 0.9349433001479786,
+   "node_count": 69.62962962962963,
+   "depth": 8.722222222222221,
+   "oracle_queries": 42448.851851851854,
+   "tree_training_time": 5.849429070444427
+  },
+  "C45": {
+   "fidelity_to_oracle": 0.9185220172939472,
+   "accuracy_real_labels": 0.9239408025372937,
+   "node_count": 37.333333333333336,
+   "depth": 6.055555555555555
+  }
+ },
+ "contrasts__fidelity": {
+  "B-A": {
+   "mean": 0.016723677016074658,
+   "se": 0.006246674017405273,
+   "n_units": 18,
+   "p": 0.015913562363013778,
+   "better": 14,
+   "worse": 3,
+   "macro_by_dataset": 0.01929822289471411,
+   "per_dataset": {
+    "breast_cancer": 0.0037296037296036923,
+    "digits": 0.04246913580246914,
+    "iris": 0.008771929824561408,
+    "wine": 0.02222222222222219
+   },
+   "ratio_to_se": 2.677213020797473,
+   "p_holm_family5": 0.07956781181506889
+  },
+  "D-B": {
+   "mean": -0.009832210241566941,
+   "se": 0.005797781430268899,
+   "n_units": 18,
+   "p": 0.10814753221386875,
+   "better": 3,
+   "worse": 10,
+   "macro_by_dataset": -0.009194668229755926,
+   "per_dataset": {
+    "breast_cancer": -0.0032634032634032417,
+    "digits": -0.0034567901234567877,
+    "iris": -0.012280701754385937,
+    "wine": -0.017777777777777736
+   },
+   "ratio_to_se": -1.695857348163421,
+   "p_holm_family5": 0.432590128855475
+  },
+  "D-C": {
+   "mean": 0.009653560647712734,
+   "se": 0.006199910788068361,
+   "n_units": 18,
+   "p": 0.13787907935885463,
+   "better": 12,
+   "worse": 5,
+   "macro_by_dataset": 0.012243760138497026,
+   "per_dataset": {
+    "breast_cancer": -0.0023310023310022963,
+    "digits": 0.03555555555555564,
+    "iris": -0.003508771929824528,
+    "wine": 0.01925925925925929
+   },
+   "ratio_to_se": 1.5570483153226773,
+   "p_holm_family5": 0.432590128855475
+  },
+  "C-A": {
+   "mean": -0.002762093873205017,
+   "se": 0.0038816841781275555,
+   "n_units": 18,
+   "p": 0.48638097595274266,
+   "better": 7,
+   "worse": 7,
+   "macro_by_dataset": -0.002140205473538844,
+   "per_dataset": {
+    "breast_cancer": 0.002797202797202747,
+    "digits": 0.0034567901234567136,
+    "iris": 0.0,
+    "wine": -0.014814814814814836
+   },
+   "ratio_to_se": -0.7115709950770375,
+   "p_holm_family5": 0.6802714965516201
+  },
+  "(D-B)-(C-A)": {
+   "mean": -0.007070116368361924,
+   "se": 0.007203786022815234,
+   "n_units": 18,
+   "p": 0.34013574827581006,
+   "better": 8,
+   "worse": 8,
+   "macro_by_dataset": -0.007054462756217082,
+   "per_dataset": {
+    "breast_cancer": -0.006060606060605989,
+    "digits": -0.006913580246913502,
+    "iris": -0.012280701754385937,
+    "wine": -0.002962962962962901
+   },
+   "ratio_to_se": -0.9814445273596463,
+   "p_holm_family5": 0.6802714965516201
+  },
+  "D-F": {
+   "mean": -0.009832210241566941,
+   "se": 0.005797781430268899,
+   "n_units": 18,
+   "p": 0.10814753221386875,
+   "better": 3,
+   "worse": 10,
+   "macro_by_dataset": -0.009194668229755926,
+   "per_dataset": {
+    "breast_cancer": -0.0032634032634032417,
+    "digits": -0.0034567901234567877,
+    "iris": -0.012280701754385937,
+    "wine": -0.017777777777777736
+   },
+   "ratio_to_se": -1.695857348163421
+  },
+  "E-A": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  },
+  "F-B": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  }
+ },
+ "contrasts__accuracy": {
+  "B-A": {
+   "mean": 0.02311653042647198,
+   "se": 0.0059752001038910285,
+   "n_units": 18,
+   "p": 0.0012325044353062248,
+   "better": 14,
+   "worse": 2,
+   "macro_by_dataset": 0.025743148988763058,
+   "per_dataset": {
+    "breast_cancer": 0.004662004662004682,
+    "digits": 0.04938271604938271,
+    "iris": 0.019298245614035127,
+    "wine": 0.029629629629629693
+   },
+   "ratio_to_se": 3.8687458201472746,
+   "p_holm_family5": 0.006162522176531124
+  },
+  "D-B": {
+   "mean": -0.006266776325255852,
+   "se": 0.005331218666085389,
+   "n_units": 18,
+   "p": 0.25600117319785853,
+   "better": 4,
+   "worse": 9,
+   "macro_by_dataset": -0.006652444371742609,
+   "per_dataset": {
+    "breast_cancer": -0.0013986013986013956,
+    "digits": -0.010123456790123423,
+    "iris": -0.0017543859649123083,
+    "wine": -0.013333333333333308
+   },
+   "ratio_to_se": -1.1754866415669694,
+   "p_holm_family5": 0.7680035195935756
+  },
+  "D-C": {
+   "mean": 0.01814336194453157,
+   "se": 0.006250963531675771,
+   "n_units": 18,
+   "p": 0.009910125315258598,
+   "better": 13,
+   "worse": 3,
+   "macro_by_dataset": 0.019859889947609274,
+   "per_dataset": {
+    "breast_cancer": 0.0004662004662004948,
+    "digits": 0.03530864197530862,
+    "iris": 0.014035087719298267,
+    "wine": 0.029629629629629717
+   },
+   "ratio_to_se": 2.902490448487333,
+   "p_holm_family5": 0.03964050126103439
+  },
+  "C-A": {
+   "mean": -0.0012936078433154414,
+   "se": 0.0046784923088562125,
+   "n_units": 18,
+   "p": 0.785496830091421,
+   "better": 9,
+   "worse": 6,
+   "macro_by_dataset": -0.0007691853305888305,
+   "per_dataset": {
+    "breast_cancer": 0.002797202797202791,
+    "digits": 0.003950617283950668,
+    "iris": 0.00350877192982455,
+    "wine": -0.01333333333333333
+   },
+   "ratio_to_se": -0.27650100885421774,
+   "p_holm_family5": 1.0
+  },
+  "(D-B)-(C-A)": {
+   "mean": -0.00497316848194041,
+   "se": 0.007356394252093593,
+   "n_units": 18,
+   "p": 0.5081128447848389,
+   "better": 7,
+   "worse": 10,
+   "macro_by_dataset": -0.005883259041153779,
+   "per_dataset": {
+    "breast_cancer": -0.004195804195804187,
+    "digits": -0.014074074074074091,
+    "iris": -0.0052631578947368585,
+    "wine": 2.2204460492503132e-17
+   },
+   "ratio_to_se": -0.676033435881318,
+   "p_holm_family5": 1.0
+  },
+  "D-F": {
+   "mean": -0.006266776325255852,
+   "se": 0.005331218666085389,
+   "n_units": 18,
+   "p": 0.25600117319785853,
+   "better": 4,
+   "worse": 9,
+   "macro_by_dataset": -0.006652444371742609,
+   "per_dataset": {
+    "breast_cancer": -0.0013986013986013956,
+    "digits": -0.010123456790123423,
+    "iris": -0.0017543859649123083,
+    "wine": -0.013333333333333308
+   },
+   "ratio_to_se": -1.1754866415669694
+  },
+  "E-A": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  },
+  "F-B": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  }
+ },
+ "contrasts__nodes": {
+  "B-A": {
+   "mean": 2.037037037037038,
+   "se": 2.703703703703704,
+   "n_units": 18,
+   "p": 0.46150271178391333,
+   "better": 12,
+   "worse": 6,
+   "macro_by_dataset": 3.944444444444445,
+   "per_dataset": {
+    "breast_cancer": 4.4,
+    "digits": 21.111111111111114,
+    "iris": 0.933333333333335,
+    "wine": -10.666666666666666
+   },
+   "ratio_to_se": 0.7534246575342468
+  },
+  "D-B": {
+   "mean": -0.8518518518518514,
+   "se": 1.5089234024906764,
+   "n_units": 18,
+   "p": 0.5797582256908189,
+   "better": 7,
+   "worse": 10,
+   "macro_by_dataset": -0.5888888888888881,
+   "per_dataset": {
+    "breast_cancer": -2.133333333333333,
+    "digits": 1.777777777777781,
+    "iris": 0.6666666666666657,
+    "wine": -2.6666666666666665
+   },
+   "ratio_to_se": -0.5645428061131255
+  },
+  "D-C": {
+   "mean": -0.07407407407407401,
+   "se": 3.261486662139987,
+   "n_units": 18,
+   "p": 0.9821446593729233,
+   "better": 11,
+   "worse": 6,
+   "macro_by_dataset": 1.6888888888888896,
+   "per_dataset": {
+    "breast_cancer": 2.8,
+    "digits": 17.555555555555554,
+    "iris": 0.8,
+    "wine": -14.399999999999997
+   },
+   "ratio_to_se": -0.02271175134147909
+  },
+  "C-A": {
+   "mean": 1.259259259259261,
+   "se": 1.2707409407624422,
+   "n_units": 18,
+   "p": 0.3355990630252963,
+   "better": 11,
+   "worse": 7,
+   "macro_by_dataset": 1.6666666666666692,
+   "per_dataset": {
+    "breast_cancer": -0.5333333333333321,
+    "digits": 5.333333333333343,
+    "iris": 0.8000000000000007,
+    "wine": 1.0666666666666658
+   },
+   "ratio_to_se": 0.9909645773305359
+  },
+  "(D-B)-(C-A)": {
+   "mean": -2.1111111111111125,
+   "se": 1.8071511300861578,
+   "n_units": 18,
+   "p": 0.2588492548583976,
+   "better": 7,
+   "worse": 10,
+   "macro_by_dataset": -2.2555555555555573,
+   "per_dataset": {
+    "breast_cancer": -1.6000000000000008,
+    "digits": -3.555555555555562,
+    "iris": -0.133333333333335,
+    "wine": -3.733333333333332
+   },
+   "ratio_to_se": -1.1681984289883176
+  },
+  "D-F": {
+   "mean": -0.8518518518518514,
+   "se": 1.5089234024906764,
+   "n_units": 18,
+   "p": 0.5797582256908189,
+   "better": 7,
+   "worse": 10,
+   "macro_by_dataset": -0.5888888888888881,
+   "per_dataset": {
+    "breast_cancer": -2.133333333333333,
+    "digits": 1.777777777777781,
+    "iris": 0.6666666666666657,
+    "wine": -2.6666666666666665
+   },
+   "ratio_to_se": -0.5645428061131255
+  },
+  "E-A": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  },
+  "F-B": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  }
+ },
+ "contrasts__depth": {
+  "B-A": {
+   "mean": 0.11111111111111097,
+   "se": 0.5449977180766791,
+   "n_units": 18,
+   "p": 0.8408722338407273,
+   "better": 8,
+   "worse": 7,
+   "macro_by_dataset": 0.06666666666666643,
+   "per_dataset": {
+    "breast_cancer": 0.8666666666666666,
+    "digits": -0.3333333333333333,
+    "iris": 2.333333333333333,
+    "wine": -2.6000000000000005
+   },
+   "ratio_to_se": 0.20387445199445414
+  },
+  "D-B": {
+   "mean": 0.03703703703703701,
+   "se": 0.36143915606346116,
+   "n_units": 18,
+   "p": 0.9195818493523109,
+   "better": 8,
+   "worse": 9,
+   "macro_by_dataset": 0.08888888888888885,
+   "per_dataset": {
+    "breast_cancer": -0.06666666666666679,
+    "digits": 0.5555555555555554,
+    "iris": -0.7333333333333334,
+    "wine": 0.6000000000000002
+   },
+   "ratio_to_se": 0.10247101459736166
+  },
+  "D-C": {
+   "mean": -0.24074074074074092,
+   "se": 0.5083225689460337,
+   "n_units": 18,
+   "p": 0.6418112788026555,
+   "better": 6,
+   "worse": 11,
+   "macro_by_dataset": -0.2611111111111113,
+   "per_dataset": {
+    "breast_cancer": -0.33333333333333337,
+    "digits": -0.44444444444444464,
+    "iris": 1.2666666666666662,
+    "wine": -1.5333333333333334
+   },
+   "ratio_to_se": -0.4735983712859684
+  },
+  "C-A": {
+   "mean": 0.3888888888888889,
+   "se": 0.25458753860865785,
+   "n_units": 18,
+   "p": 0.14502188779644523,
+   "better": 11,
+   "worse": 3,
+   "macro_by_dataset": 0.41666666666666663,
+   "per_dataset": {
+    "breast_cancer": 1.1333333333333333,
+    "digits": 0.6666666666666666,
+    "iris": 0.3333333333333336,
+    "wine": -0.4666666666666668
+   },
+   "ratio_to_se": 1.5275252316519463
+  },
+  "(D-B)-(C-A)": {
+   "mean": -0.3518518518518519,
+   "se": 0.5221820470029745,
+   "n_units": 18,
+   "p": 0.509490338478539,
+   "better": 7,
+   "worse": 10,
+   "macro_by_dataset": -0.3277777777777778,
+   "per_dataset": {
+    "breast_cancer": -1.2,
+    "digits": -0.11111111111111131,
+    "iris": -1.0666666666666669,
+    "wine": 1.066666666666667
+   },
+   "ratio_to_se": -0.6738107023619057
+  },
+  "D-F": {
+   "mean": 0.03703703703703701,
+   "se": 0.36143915606346116,
+   "n_units": 18,
+   "p": 0.9195818493523109,
+   "better": 8,
+   "worse": 9,
+   "macro_by_dataset": 0.08888888888888885,
+   "per_dataset": {
+    "breast_cancer": -0.06666666666666679,
+    "digits": 0.5555555555555554,
+    "iris": -0.7333333333333334,
+    "wine": 0.6000000000000002
+   },
+   "ratio_to_se": 0.10247101459736166
+  },
+  "E-A": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  },
+  "F-B": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  }
+ },
+ "contrasts__queries": {
+  "B-A": {
+   "mean": -374.6481481481485,
+   "se": 422.6304832799001,
+   "n_units": 18,
+   "p": 0.3877343395494536,
+   "better": 8,
+   "worse": 10,
+   "macro_by_dataset": -614.3277777777784,
+   "per_dataset": {
+    "breast_cancer": -660.3333333333328,
+    "digits": -2771.4444444444475,
+    "iris": 524.6666666666664,
+    "wine": 449.80000000000007
+   },
+   "ratio_to_se": -0.886467405854457
+  },
+  "D-B": {
+   "mean": 48443.74074074074,
+   "se": 18592.34342812325,
+   "n_units": 18,
+   "p": 0.018465857898504082,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 65108.62222222223,
+   "per_dataset": {
+    "breast_cancer": 22923.86666666667,
+    "digits": 215092.5555555556,
+    "iris": 12683.0,
+    "wine": 9735.066666666666
+   },
+   "ratio_to_se": 2.6055747586645537
+  },
+  "D-C": {
+   "mean": -606.1296296296293,
+   "se": 912.880460826109,
+   "n_units": 18,
+   "p": 0.5156114442546028,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": -785.7166666666665,
+   "per_dataset": {
+    "breast_cancer": 762.933333333335,
+    "digits": -2402.0,
+    "iris": 1099.0000000000007,
+    "wine": -2602.8000000000015
+   },
+   "ratio_to_se": -0.6639748090140014
+  },
+  "C-A": {
+   "mean": 48675.22222222222,
+   "se": 18494.774724628096,
+   "n_units": 18,
+   "p": 0.01748789851138314,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 65280.01111111111,
+   "per_dataset": {
+    "breast_cancer": 21500.6,
+    "digits": 214723.11111111112,
+    "iris": 12108.666666666666,
+    "wine": 12787.666666666668
+   },
+   "ratio_to_se": 2.631836448237734
+  },
+  "(D-B)-(C-A)": {
+   "mean": -231.48148148148059,
+   "se": 899.8054793508057,
+   "n_units": 18,
+   "p": 0.8000681453348143,
+   "better": 13,
+   "worse": 5,
+   "macro_by_dataset": -171.38888888888778,
+   "per_dataset": {
+    "breast_cancer": 1423.2666666666687,
+    "digits": 369.4444444444477,
+    "iris": 574.3333333333343,
+    "wine": -3052.6000000000017
+   },
+   "ratio_to_se": -0.2572572481426658
+  },
+  "D-F": {
+   "mean": 48443.74074074074,
+   "se": 18592.34342812325,
+   "n_units": 18,
+   "p": 0.018465857898504082,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 65108.62222222223,
+   "per_dataset": {
+    "breast_cancer": 22923.86666666667,
+    "digits": 215092.5555555556,
+    "iris": 12683.0,
+    "wine": 9735.066666666666
+   },
+   "ratio_to_se": 2.6055747586645537
+  },
+  "E-A": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  },
+  "F-B": {
+   "mean": 0.0,
+   "se": 0.0,
+   "n_units": 18,
+   "p": 1.0,
+   "better": 0,
+   "worse": 0,
+   "macro_by_dataset": 0.0,
+   "per_dataset": {
+    "breast_cancer": 0.0,
+    "digits": 0.0,
+    "iris": 0.0,
+    "wine": 0.0
+   },
+   "ratio_to_se": null
+  }
+ },
+ "contrasts__train_time": {
+  "B-A": {
+   "mean": 0.06572688598150843,
+   "se": 0.3188330726736723,
+   "n_units": 18,
+   "p": 0.8391237530164231,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": -0.11723901567218553,
+   "per_dataset": {
+    "breast_cancer": 0.36365141226669956,
+    "digits": -1.7639321305554307,
+    "iris": -0.026761612400029368,
+    "wine": 0.9580862680000184
+   },
+   "ratio_to_se": 0.20614826884280077
+  },
+  "D-B": {
+   "mean": 43.416358507555564,
+   "se": 13.854185914938936,
+   "n_units": 18,
+   "p": 0.00604966210287205,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 55.69254383030001,
+   "per_dataset": {
+    "breast_cancer": 36.074044718666684,
+    "digits": 166.17821173500002,
+    "iris": 3.530975288733331,
+    "wine": 16.986943578800023
+   },
+   "ratio_to_se": 3.1338079894495863
+  },
+  "D-C": {
+   "mean": -3.8195406596296047,
+   "se": 4.035673179816738,
+   "n_units": 18,
+   "p": 0.35718168213507906,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": -5.572399603511071,
+   "per_dataset": {
+    "breast_cancer": 10.95365912860002,
+    "digits": -21.348130098444273,
+    "iris": 0.20792589079995505,
+    "wine": -12.10305333499999
+   },
+   "ratio_to_se": -0.9464444937543363
+  },
+  "C-A": {
+   "mean": 47.301626053166686,
+   "se": 15.828264067131029,
+   "n_units": 18,
+   "p": 0.008255826642213327,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 61.14770441813891,
+   "per_dataset": {
+    "breast_cancer": 25.48403700233336,
+    "digits": 185.7624097028889,
+    "iris": 3.296287785533347,
+    "wine": 30.048083181800035
+   },
+   "ratio_to_se": 2.9884279067211947
+  },
+  "(D-B)-(C-A)": {
+   "mean": -3.8852675456111134,
+   "se": 4.119642572550504,
+   "n_units": 18,
+   "p": 0.3588368280462023,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": -5.455160587838887,
+   "per_dataset": {
+    "breast_cancer": 10.590007716333321,
+    "digits": -19.584197967888844,
+    "iris": 0.23468750319998435,
+    "wine": -13.06113960300001
+   },
+   "ratio_to_se": -0.9431079219102528
+  },
+  "D-F": {
+   "mean": 43.20635343142596,
+   "se": 13.79585800619692,
+   "n_units": 18,
+   "p": 0.006075327338554776,
+   "better": 18,
+   "worse": 0,
+   "macro_by_dataset": 55.43252358347226,
+   "per_dataset": {
+    "breast_cancer": 35.677206439400024,
+    "digits": 165.468054951889,
+    "iris": 3.543593308399978,
+    "wine": 17.041239634200046
+   },
+   "ratio_to_se": 3.131835179226854
+  },
+  "E-A": {
+   "mean": 0.05841531800001154,
+   "se": 0.0701397459844405,
+   "n_units": 18,
+   "p": 0.4164816045032268,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": 0.09699262346668872,
+   "per_dataset": {
+    "breast_cancer": -0.06767758199998734,
+    "digits": 0.44418837266678324,
+    "iris": -0.007566018466695812,
+    "wine": 0.019025721666654772
+   },
+   "ratio_to_se": 0.8328418813060734
+  },
+  "F-B": {
+   "mean": 0.21000507612960628,
+   "se": 0.1583453639725933,
+   "n_units": 18,
+   "p": 0.20230134942087605,
+   "better": 10,
+   "worse": 8,
+   "macro_by_dataset": 0.26002024682774677,
+   "per_dataset": {
+    "breast_cancer": 0.3968382792666489,
+    "digits": 0.7101567831110115,
+    "iris": -0.012618019666645807,
+    "wine": -0.054296055400027354
+   },
+   "ratio_to_se": 1.326247077028124
+  }
+ },
+ "replicate_sd_fidelity_within_unit": {
+  "A": 0.01776889678239256,
+  "B": 0.012167841359616275,
+  "C": 0.019983372224855942,
+  "D": 0.01746779868015906,
+  "E": 0.01776889678239256,
+  "F": 0.012167841359616275
+ },
+ "criteria": {
+  "C_improves_Original(B-A: dF>2SE and dAcc>=0)": true,
+  "ontological_gain_under_C(D-B: dF>2SE and dAcc>2SE)": false
+ },
+ "hierarchy_counts": {
+  "acc_D_gt_B": 4,
+  "acc_B_gt_C45": 9,
+  "fid_D_gt_B": 3,
+  "all_three": 1,
+  "n": 18,
+  "status": "NOT_SATISFIED"
+ },
+ "plausibility_effective_queries": {
+  "E": {
+   "n_query_rows": 42412.61111111111,
+   "ks_original_mean": 0.18468825632404154,
+   "out_of_range_rate": 0.4535537198869121,
+   "exact_copy_of_train_rows": 0.0,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 1.757241129450489,
+   "diversity_nn_distance_ratio": 1.368757705811126,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.16143789717665286,
+   "binary_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.04267226316502141,
+   "label_tv_vs_real": 0.16669529356292972,
+   "label_entropy": 1.5448015928750765,
+   "boundary_points_covered_fraction": 0.25
+  },
+  "C": {
+   "n_query_rows": 63060.47619047619,
+   "ks_original_mean": 0.1889624617490077,
+   "out_of_range_rate": 0.48617098475073384,
+   "exact_copy_of_train_rows": 0.0,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 1.645343131145163,
+   "diversity_nn_distance_ratio": 1.3060264344142285,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.276789937805098,
+   "binary_violation_rate": 0.0,
+   "derived_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.06816642810208791,
+   "label_tv_vs_real": 0.18030880808008393,
+   "label_entropy": 1.7386465628678849,
+   "boundary_points_covered_fraction": 0.14285714285714285
+  },
+  "A": {
+   "n_query_rows": 42412.61111111111,
+   "ks_original_mean": 0.18468825632404157,
+   "out_of_range_rate": 0.4535537198869121,
+   "exact_copy_of_train_rows": 0.0,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 1.757241129450489,
+   "diversity_nn_distance_ratio": 1.368757705811126,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.16143789717665283,
+   "binary_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.042672263165021415,
+   "label_tv_vs_real": 0.16669529356292972,
+   "label_entropy": 1.5448015928750765,
+   "boundary_points_covered_fraction": 0.25
+  },
+  "B": {
+   "n_query_rows": 42037.96296296296,
+   "ks_original_mean": 0.21426684669826412,
+   "out_of_range_rate": 0.11810201270838909,
+   "exact_copy_of_train_rows": 1.8518518518518518e-05,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 0.6302775762287216,
+   "diversity_nn_distance_ratio": 0.5436732656591986,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.0,
+   "binary_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.03901117194243251,
+   "label_tv_vs_real": 0.15860786655346104,
+   "label_entropy": 1.5583438093309723,
+   "boundary_points_covered_fraction": 0.6314420803782506
+  },
+  "D": {
+   "n_query_rows": 41881.833333333336,
+   "ks_original_mean": 0.23533249506454665,
+   "out_of_range_rate": 0.10481258691908464,
+   "exact_copy_of_train_rows": 0.00011111111111111112,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 0.610943567630595,
+   "diversity_nn_distance_ratio": 0.49986455428513304,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.0,
+   "binary_violation_rate": 0.0,
+   "derived_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.0531780492000633,
+   "label_tv_vs_real": 0.17517825338319268,
+   "label_entropy": 1.5265489986615526,
+   "boundary_points_covered_fraction": 0.68451536643026
+  },
+  "F": {
+   "n_query_rows": 42037.96296296296,
+   "ks_original_mean": 0.21426684669826412,
+   "out_of_range_rate": 0.11810201270838909,
+   "exact_copy_of_train_rows": 1.8518518518518518e-05,
+   "unique_query_rows_fraction": 1.0,
+   "nn_distance_ratio_queries_to_train": 0.6302775762287216,
+   "diversity_nn_distance_ratio": 0.5436732656591986,
+   "onehot_violation_rate": 0.0,
+   "vocab_violation_rate": 0.0,
+   "binary_violation_rate": 0.0,
+   "near_boundary_fraction_margin<0.2": 0.03901117194243251,
+   "label_tv_vs_real": 0.15860786655346104,
+   "label_entropy": 1.5583438093309723,
+   "boundary_points_covered_fraction": 0.6314420803782506
+  }
+ }
+}
