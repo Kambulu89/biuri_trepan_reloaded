@@ -1,0 +1,84 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 42,
+ "true": {
+  "available": true,
+  "n_groups": 3,
+  "n_original": 30,
+  "n_derived": 53,
+  "rel__enriched": {
+   "n_features": 83,
+   "mapped_fraction": 0.39759036144578314,
+   "allowed_pair_fraction": 0.9814869233029679,
+   "allowed_2_subset_fraction": 0.9814869233029679,
+   "allowed_3_subset_fraction": 0.9519922508462032
+  },
+  "rel__original": {
+   "n_features": 30,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 83,
+   "mapped_fraction": 0.39759036144578314,
+   "allowed_pair_fraction": 0.893329415221863,
+   "allowed_2_subset_fraction": 0.893329415221863,
+   "allowed_3_subset_fraction": 0.7484681272515536
+  },
+  "groups_only__original": {
+   "n_features": 30,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.3103448275862069,
+   "allowed_2_subset_fraction": 0.3103448275862069,
+   "allowed_3_subset_fraction": 0.08866995073891626
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ },
+ "permuted_structure": {
+  "available": true,
+  "n_groups": 3,
+  "n_original": 30,
+  "n_derived": 53,
+  "rel__enriched": {
+   "n_features": 83,
+   "mapped_fraction": 0.39759036144578314,
+   "allowed_pair_fraction": 0.9814869233029679,
+   "allowed_2_subset_fraction": 0.9814869233029679,
+   "allowed_3_subset_fraction": 0.9519922508462032
+  },
+  "rel__original": {
+   "n_features": 30,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 83,
+   "mapped_fraction": 0.39759036144578314,
+   "allowed_pair_fraction": 0.893329415221863,
+   "allowed_2_subset_fraction": 0.893329415221863,
+   "allowed_3_subset_fraction": 0.7484681272515536
+  },
+  "groups_only__original": {
+   "n_features": 30,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.3103448275862069,
+   "allowed_2_subset_fraction": 0.3103448275862069,
+   "allowed_3_subset_fraction": 0.08866995073891626
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ }
+}

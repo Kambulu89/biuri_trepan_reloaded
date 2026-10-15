@@ -1,0 +1,84 @@
+{
+ "dataset": "iris",
+ "seed": 42,
+ "true": {
+  "available": true,
+  "n_groups": 2,
+  "n_original": 4,
+  "n_derived": 2,
+  "rel__enriched": {
+   "n_features": 6,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.6666666666666666,
+   "allowed_2_subset_fraction": 0.6666666666666666,
+   "allowed_3_subset_fraction": 0.3
+  },
+  "rel__original": {
+   "n_features": 4,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 6,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.4,
+   "allowed_2_subset_fraction": 0.4,
+   "allowed_3_subset_fraction": 0.1
+  },
+  "groups_only__original": {
+   "n_features": 4,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.3333333333333333,
+   "allowed_2_subset_fraction": 0.3333333333333333,
+   "allowed_3_subset_fraction": 0.0
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ },
+ "permuted_structure": {
+  "available": true,
+  "n_groups": 2,
+  "n_original": 4,
+  "n_derived": 2,
+  "rel__enriched": {
+   "n_features": 6,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.6666666666666666,
+   "allowed_2_subset_fraction": 0.6666666666666666,
+   "allowed_3_subset_fraction": 0.3
+  },
+  "rel__original": {
+   "n_features": 4,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 6,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.4,
+   "allowed_2_subset_fraction": 0.4,
+   "allowed_3_subset_fraction": 0.1
+  },
+  "groups_only__original": {
+   "n_features": 4,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.3333333333333333,
+   "allowed_2_subset_fraction": 0.3333333333333333,
+   "allowed_3_subset_fraction": 0.0
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ }
+}
