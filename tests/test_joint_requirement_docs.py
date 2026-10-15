@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_claude_md_states_the_joint_requirement_and_metric_distinction():
     t = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
-    for needle in ("hierarquia conjunta", "Reloaded+OWL > C4.5", "accuracy ≠ precision", "precision_macro_real_labels", "TRADEOFF", "28_REQUISITO_HIERARQUIA_CONJUNTA"):
+    for needle in ("hierarquia conjunta", "Reloaded+OWL > C4.5", "accuracy ≠ precision", "precision_macro_real_labels", "TRADEOFF", "HIERARCHY_INFEASIBLE", "nenhuma unidade/dataset/seed é excluída", "Dois níveis", "28_REQUISITO_HIERARQUIA_CONJUNTA"):
         assert needle in t, needle
 
 

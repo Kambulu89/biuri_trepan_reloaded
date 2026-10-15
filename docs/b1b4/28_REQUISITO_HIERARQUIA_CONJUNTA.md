@@ -1,40 +1,48 @@
-# Doc. 28 — Requisito científico obrigatório: hierarquia conjunta (accuracy E fidelidade)
+# Doc. 28 — Requisito científico obrigatório: hierarquia conjunta em dois níveis
 
-Estado: **norma do projeto** (CLAUDE.md §2), com contrato executável `core/hierarchy_contract.py` (7 testes) e relatório retroativo só de leitura `validation/benchmark/hierarchy_joint_report.py`. Não altera baselines, resultados históricos nem seleção. Substitui, quando mais estrito, as formulações anteriores dos Docs. 5 e 2 (que ficam como histórico, com notas de revisão).
+Estado: **norma do projeto** (CLAUDE.md §2). Contrato executável `core/hierarchy_contract.py` (13 testes, incluindo a verificação exaustiva dos 3⁶ = 729 padrões de ordem) e relatório retroativo só de leitura `validation/benchmark/hierarchy_joint_report.py`. **Decisão do utilizador (Opção 1)**: todos os datasets e sementes permanecem na avaliação; nenhuma unidade é excluída por `Original ≤ C4.5`; os baselines, o MLP e os resultados históricos não são alterados.
 
-## 1. Requisito
-O TREPAN Reloaded + OWL deve ser otimizado e avaliado para alcançar **simultaneamente**:
-| Métrica | Condições |
-|---|---|
-| **Accuracy** (rótulos reais) | U1 `A_R > A_O` · U2 `A_O > A_C` · U3 `A_R > A_C` |
-| **Fidelidade ao MLP** (`fidelity_to_oracle`) | U4 `F_R > F_O` · U5 `F_R > F_C` |
-Mesmas instâncias de teste para todos os modelos; a fidelidade usa o **mesmo MLP/oráculo congelado** (mesmo `oracle_id`) para Original, Reloaded e C4.5 (C4.5 treina nos rótulos reais, a sua fidelidade mede-se contra esse MLP, sem o usar).
-**Sucesso científico de uma intervenção = U1–U5 em conjunto.** Melhorar a accuracy e perder fidelidade (ou o inverso) é `TRADEOFF_*` e **não** conta como sucesso; ganhar ao Original sem ganhar ao C4.5 também não. Nenhuma superioridade se declara sem evidência experimental (`observed_only` vs `statistically_sustained`).
+## 1. Requisito final (inalterado)
+`Accuracy_Reloaded_OWL > Accuracy_Original > Accuracy_C4.5` **e** `Fidelity_Reloaded_OWL > Fidelity_Original` **e** `Fidelity_Reloaded_OWL > Fidelity_C4.5`, em conjunto, nas **mesmas instâncias** e, na fidelidade, contra o **mesmo MLP/oráculo** (FrozenOracle, mesmo `oracle_id`). Melhorar uma métrica perdendo na outra é `TRADEOFF`, não sucesso conjunto. **Accuracy ≠ precision**: a métrica preditiva principal é `accuracy_real_labels`; `precision_macro_real_labels` e `macro_f1_real_labels` são complementares (só relatório).
 
-## 2. Accuracy não é precision
-- Métrica preditiva **principal**: `accuracy_real_labels` (acertos / total, rótulos reais).
-- **Complementares, sempre reportadas ao lado e nunca usadas para declarar a hierarquia**: `precision_macro_real_labels`, `macro_f1_real_labels` (e `balanced_accuracy`, recall/`minority_recall`, `weighted_f1`).
-- Todos os quadros/relatórios têm de nomear a métrica exata; «precisão» em português **não** pode designar a accuracy.
+## 2. Dois níveis de avaliação (obrigatórios, reportados separadamente)
+**Nível 1 — ganho ontológico direto** (`evaluate_direct_gain`): `A_R` vs `A_Oeq` e `F_R` vs `F_Oeq`, com o **Original equivalente** nas mesmas condições (amostrador, oráculo, partições, orçamento, representação quando se isola a orientação semântica). Estados: `ONTOLOGICAL_JOINT_GAIN`, `TRADEOFF`, `ACCURACY_ONLY_GAIN`, `FIDELITY_ONLY_GAIN`, `EQUIVALENT` (igualdade exata), `NO_GAIN`. Além disso (`attribute_to_ontology`) o ganho só se **atribui** à ontologia (`ATTRIBUTED`) se houver ganho conjunto estrito também sobre os controlos exigidos — ontologia permutada, grupos aleatórios, engenharia convencional de features — e Original/Reloaded com o mesmo amostrador; controlo em falta ⇒ `NOT_ASSESSABLE` (nunca se atribui por omissão); ganho que resulte só de alteração genérica do amostrador não é atribuído à ontologia.
+**Nível 2 — superioridade global** (`evaluate_global`): cadeia U1 `A_R>A_O`, U2 `A_O>A_C`, U3 `A_R>A_C`, U4 `F_R>F_O`, U5 `F_R>F_C` (estritas). Estado por unidade (precedência): `INSUFFICIENT_EVIDENCE` › `JOINT_HIERARCHY_SATISFIED` (U1–U5) › `HIERARCHY_INFEASIBLE` (U2 falsa: `Accuracy_Original ≤ Accuracy_C4.5` **nessa unidade, com os resultados fixados dos baselines** — não é impossibilidade universal e a unidade **não** é excluída) › `TRADEOFF` › `NOT_SATISFIED`. Sinalizadores **ortogonais** reportados em separado: estado do ganho direto, superioridade de accuracy (U1∧U2∧U3), superioridade de fidelidade (U4∧U5), compromisso face ao Original, compromisso face ao C4.5, inviabilidade pelos baselines. O Nível 1 **nunca** substitui o Nível 2 nem autoriza declarar sucesso global.
+**Mesmas instâncias e mesmo MLP**: `evaluate_*` são funções puras sobre números; a garantia está em `check_comparability`, aplicada pelo relatório a **todas** as linhas usadas (cada réplica e cada braço): `split_hash` e `n_test` iguais e `oracle_id` das árvores igual ao oráculo contra o qual a fidelidade do C4.5 foi medida (`fidelity_oracle_id`). Qualquer falha ⇒ o veredito passa a `INSUFFICIENT_EVIDENCE`.
 
-## 3. Estados e modos (`evaluate_joint`)
-Estados por unidade: `HIERARCHY_SATISFIED` (U1–U5) · `HIERARCHY_NOT_SATISFIED` · `HIERARCHY_INFEASIBLE` (U2 falha: o Original não supera o C4.5 em accuracy — propriedade dos baselines congelados; **reporta-se, não se corrige**) · `INSUFFICIENT_EVIDENCE` (dados em falta). Modos: `JOINT_GAIN`, `TRADEOFF_ACCURACY_UP_FIDELITY_DOWN`, `TRADEOFF_FIDELITY_UP_ACCURACY_DOWN`, `ACCURACY_ONLY_GAIN`, `FIDELITY_ONLY_GAIN`, `NO_GAIN_OVER_ORIGINAL`, `GAIN_OVER_ORIGINAL_BUT_NOT_OVER_C45`, `ORIGINAL_NOT_ABOVE_C45_IN_ACCURACY`. Comparações estritas (empates não contam); margens opcionais `delta_acc`, `delta_fid` pré-registadas.
-Agregação (dataset/portfólio): contagens por estado/modo, contrastes médios com EP entre unidades, macro por dataset; `statistically_sustained` só com o critério pré-registado do protocolo (Doc. 2 §6). Réplicas dentro de uma unidade são médias, não unidades.
+## 3. Estado lógico ≠ evidência estatística
+`classify_evidence` é separada das desigualdades: `OBSERVED_JOINT_GAIN` (médias entre datasets positivas em accuracy **e** fidelidade), `SUPPORTED_JOINT_GAIN` (adicionalmente: avaliação **confirmatória**, ≥ 12 datasets independentes — Doc. 2 §7 — e limite inferior dos IC95 (t e bootstrap entre datasets) > 0 em ambas), `TRADEOFF`, `NOT_SATISFIED`, `INSUFFICIENT_EVIDENCE`. A unidade de inferência é o **dataset**: sementes/réplicas são médias dentro do dataset (variabilidade intra-dataset reportada à parte) e **nunca** substituem datasets independentes (200 unidades em 4 datasets ⇒ no máximo `OBSERVED`; testado). Reporta-se: diferenças pareadas, IC entre datasets, DP entre datasets e DP intra-dataset. DEV já observado e seleção retroativa de configurações **nunca** são confirmatórios.
 
-## 4. Regra de otimização/seleção (proposta; implementação só com autorização)
-Seleção e tuning usam **apenas treino e validação interna** (OOF). Um candidato do Reloaded+OWL é elegível se, na validação interna, face ao **Original equivalente** (mesmo oráculo, representação, orçamento, semente): `ΔA_val ≥ 0` **e** `ΔF_val ≥ 0` (sem compromisso) e a estrutura ontológica tem controlo permutado/convencional computado. Entre elegíveis maximiza-se `min(ΔA_val/EP_A, ΔF_val/EP_F)` (melhora o pior dos dois). Se nenhum for elegível, mantém-se a configuração Reloaded ≡ Original (EQ); **nunca** se escolhe por resultado de teste, e nunca se piora um baseline. O teste externo avalia-se uma só vez com a configuração congelada. As intervenções B1–B4 e a amostragem têm de ser desenhadas, ablacionadas e relatadas com este objetivo conjunto, mais os controlos que separam efeito ontológico de efeito genérico (Original com a mesma amostragem/representação).
+## 4. Seleção e aceitação de candidatos (treino/validação interna apenas)
+1. **Elegibilidade (não-inferioridade)**: `A_R ≥ A_O` e `F_R ≥ F_O` na validação interna face ao Original equivalente (`non_inferior`; tolerâncias ν só se pré-registadas). É um filtro, **não** superioridade.
+2. **Preferência**: entre elegíveis privilegiam-se os candidatos com ganho **simultâneo estrito** (`A_R > A_O` e `F_R > F_O`), ponderando fidelidade, accuracy, complexidade (nós/profundidade) e estabilidade (variância entre dobras/réplicas); em empate de ganho prefere-se menor complexidade. Se não houver elegível com ganho, mantém-se a configuração Reloaded ≡ Original (EQ).
+3. **Declaração**: superioridade observada exige `A_R > A_O` e `F_R > F_O`; superioridade conjunta completa exige também as condições face ao C4.5 (U2, U3, U5). Igualdade não é superioridade. O teste nunca autoriza retroativamente uma configuração; o teste externo é lido uma vez com a configuração congelada.
 
-## 5. Estado atual da evidência (relatório retroativo; DEV, 18 unidades; observado, não sustentado)
-Mesmas instâncias, mesmo MLP; média das réplicas por unidade (`docs/evidence/b1b4/hierarchy_joint/`).
-| Comparação (Reloaded+OWL vs Original equivalente) | SATISFIED | NOT_SATISFIED | INFEASIBLE | ΔA(R−O) | ΔF(R−O) | ΔA(R−C4.5) | ΔF(R−C4.5) |
-|---|---|---|---|---|---|---|---|
-| Doc. 26: D vs B (OWL + amostrador C vs Original + C) | 1 | 8 | 9 | −0,0063 | −0,0098 | +0,0047 | +0,0043 |
-| Doc. 26: C vs A (OWL histórico vs Original histórico) | 1 | 5 | 12 | −0,0013 | −0,0028 | −0,0134 | −0,0053 |
-| Doc. 22: Reloaded OWL histórico vs Original | 0 | 5 | 13 | −0,0081 | −0,0140 | −0,0175 | −0,0122 |
-| Doc. 22: coerente (`coh_full`) vs Original | 0 | 5 | 13 | −0,0042 | −0,0019 | −0,0136 | −0,0001 |
-Leituras: (i) **o requisito conjunto não está satisfeito por nenhuma intervenção testada**; (ii) `Original > C4.5` em accuracy só se verifica em metade ou menos das unidades (B: 9/18; A: 6/18): a cadeia é `INFEASIBLE` nessas unidades com os baselines congelados — isto limita o que qualquer mecanismo ontológico pode demonstrar e deve ser reportado como achado, **não** corrigido (o C4.5 não pode ser enfraquecido, o Original não pode ser alterado); (iii) o amostrador C melhora o Original (Doc. 26: B−A) mas isso é efeito genérico não ontológico; (iv) as precisões e macro-F1 acompanham a accuracy (complementares: R 0,931/0,927, O 0,936/0,934, C4.5 0,925/0,922 em D vs B).
+## 5. Estado atual da evidência (retroativo, só leitura; DEV, 18 unidades, TODAS incluídas; exploratório, nunca confirmatório)
+Relatórios: `docs/evidence/b1b4/hierarchy_joint/two_levels/*.json`. Comparabilidade (mesmas instâncias, mesmo MLP): **18/18 unidades comparáveis em todas as especificações**. Os ficheiros `docs/evidence/b1b4/hierarchy_joint/*.json` da versão anterior (estados `HIERARCHY_*` do contrato de nível único) mantêm-se como histórico e ficam **substituídos** por estes.
+
+| Especificação (R vs Original equivalente) | Nível 1: estados por unidade | elegíveis (não-inf.) / ganho conjunto estrito | Evidência (datasets) | Atribuição à ontologia |
+|---|---|---|---|---|
+| Doc. 26 **D vs B** (OWL+C vs Original+C: mesmo amostrador) | NO_GAIN 10, TRADEOFF 4, JOINT_GAIN 2, EQUIVALENT 2 | 4 / 2 de 18 | `NOT_SATISFIED` (ΔA −0,0067, ΔF −0,0092; IC boot. ΔA [−0,012; −0,002], ΔF [−0,015; −0,003]) | `NOT_ASSESSABLE` (sem controlos sob C) |
+| Doc. 26 C vs A (histórico) | NO_GAIN 6, JOINT_GAIN 6, TRADEOFF 3, EQUIV. 2, ACC_ONLY 1 | 9 / 6 | `NOT_SATISFIED` (ΔA −0,0008, ΔF −0,0021) | `NOT_ASSESSABLE` |
+| Doc. 22 `coh_full` vs `trepan_original_enr` (mesma representação) | JOINT_GAIN 5, NO_GAIN 6, EQUIV. 5, TRADEOFF 1, FID_ONLY 1 | 11 / 5 | `OBSERVED_JOINT_GAIN` (ΔA +0,0009 [−0,004; 0,006], ΔF +0,0071 [0,003; 0,013]) | controlos: permutada **melhor** que a real (ΔA −0,014, ΔF −0,006) ⇒ não atribuído; convencional `TRADEOFF`; grupos aleatórios em falta ⇒ `NOT_ASSESSABLE` (unidades: 13 `NOT_ATTRIBUTED`, 5 `NOT_ASSESSABLE`) |
+| Doc. 22 `coh_full` vs Original canónico | JOINT_GAIN 6, NO_GAIN 7, ACC_ONLY 2, EQUIV. 3 | 11 / 6 | `NOT_SATISFIED` (ΔA −0,0038, ΔF −0,0018) | idem |
+| Histórico `reloaded_owl_full` vs Original (controlo permutado) | JOINT_GAIN 5, NO_GAIN 8, TRADEOFF 3, ACC_ONLY 1, EQUIV. 1 | 7 / 5 | `NOT_SATISFIED` (ΔA −0,0073, ΔF −0,013) | permutada melhor que a real ⇒ não atribuído |
+
+| Nível 2 (todas as 18 unidades) | JOINT_HIERARCHY_SATISFIED | HIERARCHY_INFEASIBLE | TRADEOFF | NOT_SATISFIED | superioridade de accuracy / de fidelidade (unidades) |
+|---|---|---|---|---|---|
+| D vs B | 1 | 9 | 1 | 7 | 1 / 3 |
+| C vs A | 1 | 12 | 1 | 4 | 2 / 3 |
+| `coh_full` vs `trepan_original_enr` | 0 | 12 | 1 | 5 | 0 / 3 |
+| `coh_full` vs Original | 0 | 13 | 1 | 4 | 0 / 1 |
+| histórico vs Original | 0 | 13 | 0 | 5 | 0 / 1 |
+Compromissos face ao Original: D vs B 4/18; face ao C4.5: 3/18. `Original > C4.5` em accuracy só em 9/18 (B), 6/18 (A) e 5/18 (Original canónico) unidades — `HIERARCHY_INFEASIBLE` nas restantes, **reportado, não corrigido, sem exclusão** (percentagens sempre sobre as 18 unidades).
+
+**Respostas às três perguntas (estado atual, DEV, exploratório):**
+1. *O Reloaded com ontologia melhora simultaneamente accuracy e fidelidade face ao Original equivalente?* **Não demonstrado.** O único sinal `OBSERVED_JOINT_GAIN` (coerente vs Original na mesma representação) tem accuracy ≈ 0 (IC inclui 0); sob o mesmo amostrador (D vs B) o contraste é negativo.
+2. *O efeito é causado pelo conhecimento ontológico?* **Não atribuído**: a ontologia permutada iguala ou supera a real; o controlo de grupos aleatórios ainda não foi executado.
+3. *O Reloaded com ontologia cumpre a hierarquia global?* **Não**: 0–1 de 18 unidades por especificação, e em 9–13 unidades a cadeia é inviável com os baselines fixados.
+Uma resposta positiva à 1 não implicaria a 2 nem a 3; o objetivo final continua a ser alcançar as três.
 
 ## 6. Consequências para o plano
-1. Critérios de aceitação das intervenções (manifest v3 draft, Docs. 26–27) passam a incluir U1–U5 em conjunto, além dos critérios pré-registados específicos de cada documento (que se mantêm).
-2. B3-a (Doc. 27) é avaliado por `ontology_vs_permuted` **e** pelo veredito conjunto face ao Original equivalente; ganho unilateral não basta.
-3. Para unidades `INFEASIBLE`, o relatório mostra separadamente (a) o contraste Reloaded−Original (contribuição ontológica) e (b) a condição U2 como propriedade dos baselines.
-4. Qualquer afirmação de superioridade exige: controlos ontológicos favoráveis, equivalência EQ verificada, mesmo MLP, teste externo lido uma vez, e número de comparações/unidades declarado.
+Critérios de aceitação das intervenções (manifest v3 draft; Docs. 26–27) incluem os dois níveis, a atribuição por controlos e o nível de evidência. B3-a (Doc. 27) será avaliado por `ontology_vs_permuted` e `random_groups`/`conventional` **e** pelos dois níveis. Unidades `HIERARCHY_INFEASIBLE` mostram sempre, em paralelo, o Nível 1 (contribuição ontológica). Nenhuma mudança de estado das intervenções (B1/B2-C não promovidos; amostragem coerente experimental; amostrador C melhoria genérica sob investigação; B2-A/B não autorizados; B3-a desenho; B3-b desenho; B3-c/d adiados; B4 não implementado) decorre desta formalização.

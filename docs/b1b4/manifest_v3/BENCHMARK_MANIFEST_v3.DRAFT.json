@@ -3,9 +3,10 @@
   "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md §10",
   "hierarchy": "REQUISITO CONJUNTO: Accuracy_R_OWL > Accuracy_Original, Accuracy_R_OWL > Accuracy_C45, Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original, Fidelity_R_OWL > Fidelity_C45 (mesmas instâncias; mesmo MLP/oráculo); sucesso só com as cinco em conjunto; objetivo pré-registado, não imposto",
   "labels": [
-   "HIERARCHY_SATISFIED",
+   "JOINT_HIERARCHY_SATISFIED",
+   "TRADEOFF",
    "NOT_SATISFIED",
-   "INFEASIBLE",
+   "HIERARCHY_INFEASIBLE",
    "INSUFFICIENT_EVIDENCE"
   ],
   "selection_uses_test": false,
@@ -17,7 +18,27 @@
    "macro_f1_real_labels",
    "balanced_accuracy_real_labels",
    "weighted_f1_real_labels"
-  ]
+  ],
+  "evidence_levels": [
+   "OBSERVED_JOINT_GAIN",
+   "SUPPORTED_JOINT_GAIN",
+   "TRADEOFF",
+   "NOT_SATISFIED",
+   "INSUFFICIENT_EVIDENCE"
+  ],
+  "levels": {
+   "level1": "ganho ontológico direto vs Original equivalente (+ atribuição por controlos)",
+   "level2": "cadeia global U1-U5"
+  },
+  "no_unit_excluded": true,
+  "infeasible_means": "Original<=C4.5 em accuracy nessa unidade com os baselines fixados (não impossibilidade universal)",
+  "unit_of_inference": "dataset",
+  "required_controls": [
+   "permuted_ontology",
+   "random_groups",
+   "conventional_features"
+  ],
+  "selection_eligibility": "A_R>=A_O e F_R>=F_O (validação interna); declaração exige > estrito"
  },
  "b1_variants": {
   "arms": [
