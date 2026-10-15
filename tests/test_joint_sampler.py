@@ -143,3 +143,29 @@ def test_deterministic_and_picklable_model():
     b = cls(random_state=3).fit(X)
     assert np.array_equal(a.draw(200), b.draw(200))
     pickle.loads(pickle.dumps(a))
+
+
+def test_onehot_groups_recovered_with_rare_cross_attribute_exclusivity():
+    """Níveis raros de atributos DIFERENTES que nunca coincidem por acaso não podem fundir grupos; cada atributo é uma partição exata."""
+    rng = np.random.default_rng(0)
+    n, levels = 600, [3, 4, 6, 2, 5, 8]
+    cols, truth, start = [], [], 0
+    for L in levels:
+        p = rng.dirichlet(np.ones(L) * 0.4) * 0.8 + 0.2 / L          # todos os níveis presentes (colunas constantes não são binárias)
+        c = rng.choice(L, size=n, p=p)
+        cols.append(np.eye(L)[c])
+        truth.append(list(range(start, start + L)))
+        start += L
+    X = np.hstack(cols + [rng.normal(size=(n, 2))])
+    s = infer_schema(X)
+    assert sorted(map(tuple, s.onehot_groups)) == sorted(map(tuple, truth))
+    cls, _ = make_joint_model_class()
+    Q = cls(random_state=0).fit(X).draw(1000)
+    for g in truth:
+        assert np.all(Q[:, g].sum(axis=1) == 1.0)
+
+
+def test_independent_rare_binaries_not_grouped():
+    rng = np.random.default_rng(1)
+    X = (rng.random((500, 5)) < 0.03).astype(float)
+    assert infer_schema(X).onehot_groups == []

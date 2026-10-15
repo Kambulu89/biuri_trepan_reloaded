@@ -9,7 +9,7 @@ Propriedades (contrato, Doc. 26 §1):
 * esquema de atributos INFERIDO dos dados (binária, grupo one-hot por exclusão mútua com soma 1, discreta inteira nominal, contínua) e partilhado entre
   o modelo global e os locais da mesma árvore (o tipo de uma coluna é propriedade da coluna, não do nó);
 * linha-base real + perturbação: contínuas com ruído gaussiano (``noise_scale``·DP, DP local com piso ``scale_floor``·DP global) recortado a
-  [lo−m·amp, hi+m·amp] do treino global; grupos one-hot reamostrados CONJUNTAMENTE; discretas reamostradas do vocabulário observado; binárias trocadas
+  [lo−m·amp, hi+m·amp] do treino global; grupos one-hot reamostrados CONJUNTAMENTE; discretas reamostradas com a frequência empírica local (valores de outras linhas-base; vocabulário preservado); binárias trocadas
   com ``p_flip``; ordinais declaradas ±1 passo. Linhas que ficariam iguais à base sofrem perturbação forçada de uma unidade categórica (sem cópias);
 * determinístico: RNG = SeedSequence([random_state, replica, 0xC5]); ``replica`` isola a aleatoriedade do AMOSTRADOR sem mexer na do algoritmo;
 * mantém a rejeição por restrições do caminho (``draw`` herdado) e o teste de adoção local (``differs_from`` herdado, marginal por coluna).
@@ -46,22 +46,26 @@ def infer_schema(X, *, max_levels: int = 20, ordinal_columns: Sequence[int] = ()
     n, p = X.shape
     sc = Schema(p, lo=X.min(axis=0), hi=X.max(axis=0), scale=np.maximum(X.std(axis=0), 1e-12))
     is_bin = [j for j in range(p) if set(np.unique(X[:, j])).issubset({0.0, 1.0}) and len(np.unique(X[:, j])) == 2]
-    excl = {j: {k for k in is_bin if k != j and not np.any((X[:, j] == 1) & (X[:, k] == 1))} for j in is_bin}
-    seen, groups = set(), []
-    for j in is_bin:
-        if j in seen:
+    # Grupos one-hot = partições EXATAS das linhas por binárias de suportes disjuntos (soma por linha == 1 em TODAS as linhas). Construção gulosa por
+    # frequência decrescente: um grupo só é aceite se cobrir todas as linhas (colunas raras de outros atributos que nunca coincidem por acaso não bastam).
+    supp = {j: X[:, j] == 1.0 for j in is_bin}
+    order = sorted(is_bin, key=lambda j: (-int(supp[j].sum()), j))
+    assigned, groups = set(), []
+    for j in order:
+        if j in assigned:
             continue
-        comp, stack = set(), [j]
-        while stack:
-            u = stack.pop()
-            if u in comp:
-                continue
-            comp.add(u)
-            stack.extend(excl[u] - comp)
-        seen |= comp
-        cols = sorted(comp)
-        if len(cols) >= 2 and np.all(X[:, cols].sum(axis=1) == 1.0):
-            groups.append(cols)
+        members, covered = [j], supp[j].copy()
+        while not covered.all():
+            cand = [k for k in order if k not in assigned and k not in members and not np.any(supp[k] & covered)]
+            if not cand:
+                break
+            k = cand[0]
+            members.append(k)
+            covered |= supp[k]
+        if covered.all() and len(members) >= 2:
+            groups.append(sorted(members))
+            assigned |= set(members)
+    groups.sort()
     in_group = {j for g in groups for j in g}
     sc.onehot_groups = groups
     sc.binary = [j for j in is_bin if j not in in_group]
@@ -132,7 +136,7 @@ class JointEmpiricalDistributionModel(FeatureDistributionModel):
                 else:
                     m = rng.random(n) < P["p_resample"]
                     if m.any():
-                        rows[m, u] = rng.choice(s.vocab[u], size=int(m.sum()))
+                        rows[m, u] = B[rng.integers(0, len(B), int(m.sum())), u]          # frequência empírica local
             else:
                 m = rng.random(n) < P["p_flip"]
                 rows[m, u] = 1.0 - rows[m, u]
@@ -146,7 +150,7 @@ class JointEmpiricalDistributionModel(FeatureDistributionModel):
                     if kind == "g":
                         rows[t, u] = B[rng.integers(0, len(B))][u]
                     elif kind == "d":
-                        rows[t, u] = rng.choice(s.vocab[u])
+                        rows[t, u] = B[rng.integers(0, len(B)), u]
                     else:
                         rows[t, u] = 1.0 - rows[t, u]
                 self._audit["forced"] += int(len(idx))
