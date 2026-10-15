@@ -243,10 +243,12 @@ def runtime_comparability(out: Path, sc_dir: Path, dataset: str, seed: int) -> d
     base = {k: ref[k] for k in ("c45", "sc_B_r0", "sc_D_r0", "sc_F_r0") if k in ref}
     for arm in sorted(k for k in new if k.startswith("m29_")):
         recs = {**base, arm: new[arm]}
-        strict = H.check_comparability(recs)
-        relax = H.check_comparability(recs, relaxed=("experimental_configuration",)) if not strict["comparable"] else strict
+        # G29 é o controlo do ORÇAMENTO: o seu ``query_budget`` (e ``min_sample``) difere por desenho (A2) e fica registado; todas as outras propriedades continuam estritas
+        fixed = ("query_budget",) if "_G_k" in arm else ()
+        strict = H.check_comparability(recs, relaxed=fixed)
+        relax = H.check_comparability(recs, relaxed=fixed + ("experimental_configuration",)) if not strict["comparable"] else strict
         res["arms"][arm] = {"strict_comparable": strict["comparable"], "failed_strict": strict.get("failed"), "unverifiable": strict.get("unverifiable"),
-                            "comparable_with_config_relaxed": relax["comparable"], "documented_differences": relax.get("documented_differences")}
+                            "comparable_with_config_relaxed": relax["comparable"], "intentionally_relaxed": list(fixed), "documented_differences": relax.get("documented_differences")}
         res["all_comparable"] &= bool(relax["comparable"])
     for ref_arm in ("trepan_original",):                                                  # Original histórico recomputado: tem de coincidir bit a bit com o da referência
         if ref_arm in new and ref_arm in ref:

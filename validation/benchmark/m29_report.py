@@ -77,13 +77,18 @@ def build(sc, m29):
         c45 = sc_unit.get("c45")
         recs = {a: arm_records(sc_unit, m_unit, a) for a in ARM_SOURCE}
         # comparabilidade ESTRITA entre todos os braços presentes e o C4.5 (A29/B29/F29 vêm de outra execução: configuração/manifest são verificados e só o config_hash cruzado é isento)
-        allrecs = {f"{a}:{i}": r for a, rs in recs.items() for i, r in enumerate(rs)}
+        main_recs = {f"{a}:{i}": r for a, rs in recs.items() if a != "G29" for i, r in enumerate(rs)}
         if c45 is not None:
-            allrecs["c45"] = c45
+            main_recs["c45"] = c45
         cross = bool(m_unit)
-        cmp_ = H.check_comparability(allrecs, relaxed=("experimental_configuration",) if cross else ())
+        cmp_ = H.check_comparability(main_recs, relaxed=("experimental_configuration",) if cross else ())
         if not cmp_["comparable"]:
             comp_problems.append({"unit": u, "problems": cmp_["problems"]})
+        for i, r in enumerate(recs.get("G29", [])):                       # G29: orçamento diferente POR DESENHO (query_budget isento e documentado); restantes propriedades estritas
+            cg = H.check_comparability({"A29:0": recs["A29"][0], f"G29:{i}": r, **({"c45": c45} if c45 is not None else {})} if recs.get("A29") else {f"G29:{i}": r},
+                                       relaxed=("experimental_configuration", "query_budget"))
+            if not cg["comparable"]:
+                comp_problems.append({"unit": u, "arm": f"G29:{i}", "problems": cg["problems"]})
         vals = {a: {m: mean_metric(rs, col) for m, col in METRICS.items()} if rs else None for a, rs in recs.items()}
         per_draw = {a: [{"accuracy": r["row"].get("accuracy_real_labels"), "fidelity": r["row"].get("fidelity_to_oracle"), "oracle_queries": r["row"].get("oracle_queries"),
                         "node_count": r["row"].get("node_count"), "variant": r["row"].get("control_variant")} for r in rs] for a, rs in recs.items() if rs}

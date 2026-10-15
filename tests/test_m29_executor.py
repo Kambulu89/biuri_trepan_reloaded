@@ -64,3 +64,12 @@ def test_runtime_comparability_accepts_identical_instances_and_oracle(tmp_path):
 def test_runtime_comparability_blocks_any_identity_mismatch(tmp_path, mut):
     out = _copy_unit(tmp_path, mut)
     assert not X.runtime_comparability(out, REF, "iris", 42)["all_comparable"]
+
+
+def test_g29_query_budget_difference_is_intentional_but_everything_else_stays_strict(tmp_path):
+    out = _copy_unit(tmp_path, lambda r: r["config"]["structural"].__setitem__("query_budget", 999999.0), arm="m29_G_k0")
+    assert X.runtime_comparability(out, REF, "iris", 42)["all_comparable"]                      # orçamento diferente é o objeto do controlo
+    out2 = _copy_unit(tmp_path / "b", lambda r: r["row"].__setitem__("oracle_id", "OTHER"), arm="m29_G_k0")
+    assert not X.runtime_comparability(out2, REF, "iris", 42)["all_comparable"]
+    out3 = _copy_unit(tmp_path / "c", lambda r: r["config"]["structural"].__setitem__("query_budget", 999999.0), arm="m29_P_k0")
+    assert not X.runtime_comparability(out3, REF, "iris", 42)["all_comparable"]                 # nos restantes braços o orçamento tem de ser idêntico
