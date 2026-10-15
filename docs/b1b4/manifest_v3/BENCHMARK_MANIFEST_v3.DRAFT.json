@@ -1,14 +1,23 @@
 {
  "acceptance_criteria": {
   "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md §10",
-  "hierarchy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original (objetivo pré-registado, não imposto)",
+  "hierarchy": "REQUISITO CONJUNTO: Accuracy_R_OWL > Accuracy_Original, Accuracy_R_OWL > Accuracy_C45, Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original, Fidelity_R_OWL > Fidelity_C45 (mesmas instâncias; mesmo MLP/oráculo); sucesso só com as cinco em conjunto; objetivo pré-registado, não imposto",
   "labels": [
    "HIERARCHY_SATISFIED",
    "NOT_SATISFIED",
    "INFEASIBLE",
    "INSUFFICIENT_EVIDENCE"
   ],
-  "selection_uses_test": false
+  "selection_uses_test": false,
+  "hierarchy_contract": "core/hierarchy_contract.py (evaluate_joint); docs/b1b4/28_REQUISITO_HIERARQUIA_CONJUNTA.md",
+  "tradeoff_is_not_success": true,
+  "primary_predictive_metric": "accuracy_real_labels (accuracy != precision)",
+  "complementary_metrics": [
+   "precision_macro_real_labels",
+   "macro_f1_real_labels",
+   "balanced_accuracy_real_labels",
+   "weighted_f1_real_labels"
+  ]
  },
  "b1_variants": {
   "arms": [
@@ -118,6 +127,8 @@
  "metrics": [
   "fidelity_to_oracle",
   "accuracy_real_labels",
+  "precision_macro_real_labels",
+  "macro_f1_real_labels",
   "node_count",
   "depth",
   "oracle_queries",

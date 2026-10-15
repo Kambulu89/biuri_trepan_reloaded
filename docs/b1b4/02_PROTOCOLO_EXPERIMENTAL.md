@@ -96,3 +96,7 @@ usa rótulos reais na construção da árvore (a linha «híbrida/Modo B» saiu 
 * Se H1 não for sustentada, publica-se **«não sustentada»** com IC e potência; não se alteram variantes depois de ver o CONFIRM.
 * Nova hipótese/variante ⇒ novo manifest, **novos** datasets CONFIRM.
 * `HIERARCHY_*` é um relatório (Documento 5), nunca um critério de exclusão de unidades.
+
+
+## 12. Revisão 2 — requisito científico obrigatório (hierarquia conjunta)
+Endpoint de aceitação adicional **H-conj** (unilateral, pré-registado): `A_R_OWL > A_O`, `A_O > A_C`, `A_R_OWL > A_C`, `F_R_OWL > F_O`, `F_R_OWL > F_C`, **em conjunto**, nas mesmas instâncias e contra o mesmo MLP (ver `28_REQUISITO_HIERARQUIA_CONJUNTA.md`; `core/hierarchy_contract.py`). Compromissos (`TRADEOFF_*`) e ganhos unilaterais não são sucesso. Accuracy (rótulos reais) é a métrica principal; `precision_macro_real_labels` e `macro_f1_real_labels` são complementares e distintas. Seleção só em treino/validação interna (elegibilidade conjunta ΔA_val ≥ 0 ∧ ΔF_val ≥ 0 face ao Original equivalente); teste externo lido uma vez; baselines congelados; unidades `INFEASIBLE` (Original ≤ C4.5) reportam-se sem tratamento. Os endpoints H1–H3 acima mantêm-se como análises individuais, mas a **declaração de sucesso** de uma intervenção exige H-conj.
