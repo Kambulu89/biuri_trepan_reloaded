@@ -48,14 +48,18 @@ def main() -> int:
         if not a.dry_run and unit_done(out, ds, sd):
             return
         e = est[ds] * (0.3 if a.dry_run else 1.0)
-        with lock:
-            if state["stop"]:
-                return
-            if state["cpu"] + state["reserved"] + e > limit:
-                state["stop"] = True
-                print(f"[guarda de orçamento] {ds}:{sd} não lançada: CPU {state['cpu'] / 3600:.3f} h + reservado {state['reserved'] / 3600:.3f} h + estimativa {e / 3600:.3f} h > {a.limit_hours} h", flush=True)
-                return
-            state["reserved"] += e
+        while True:
+            with lock:
+                if state["stop"]:
+                    return
+                if state["cpu"] + state["reserved"] + e <= limit:
+                    state["reserved"] += e
+                    break
+                if state["reserved"] <= 0:                                 # nada em curso que possa libertar reserva: o teto não permite lançar esta unidade
+                    state["stop"] = True
+                    print(f"[guarda de orçamento] {ds}:{sd} NÃO lançada: CPU real {state['cpu'] / 3600:.3f} h + estimativa {e / 3600:.3f} h > {a.limit_hours} h", flush=True)
+                    return
+            time.sleep(5)                                                  # espera que unidades em curso terminem e a reserva dê lugar ao CPU real medido
         cmd = [sys.executable, "-m", "validation.benchmark.run_controls_m29", "--unit", ds, sd, "--out", str(out)] + (["--dry-run"] if a.dry_run else ["--reuse-checkpoint-from", a.reuse_checkpoint_from])
         if a.sc_dir and not a.dry_run:
             cmd += ["--sc-dir", a.sc_dir]
