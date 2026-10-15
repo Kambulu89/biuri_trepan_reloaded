@@ -1,0 +1,371 @@
+{
+ "dataset": "digits",
+ "seed": 42,
+ "real": {
+  "available": true,
+  "n_derived": 3,
+  "structure_signature": "4b7c870163ee0a52",
+  "ontology_hash": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+  "state_reason": ""
+ },
+ "controls": {
+  "m29_P_k0": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2361809190508606,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 20260042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20260042,
+    "candidate_index": 3,
+    "candidates_tried": 4,
+    "retention": 0.3318452380952381,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.078125,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "7658334b03d52997",
+   "structure_signature": "f93318bc24816fd0",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2361809190508606,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k0": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2673662108151598,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 30260042,
+    "seed_b": 40260042
+   },
+   "perm_meta": {
+    "seed_used": 30260042,
+    "candidate_index": 2,
+    "candidates_tried": 3,
+    "retention": 0.3244047619047619,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.140625,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "31266336f86c669f",
+   "structure_signature": "ad85311d866857ff",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2673662108151598,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k1": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.24863352318006687,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 20261042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20261042,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.31398809523809523,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.109375,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "f3e9e52e752ec355",
+   "structure_signature": "b87436b61da59efc",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.24863352318006687,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k1": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.28687608658731695,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 30261042,
+    "seed_b": 40261042
+   },
+   "perm_meta": {
+    "seed_used": 30261042,
+    "candidate_index": 3,
+    "candidates_tried": 4,
+    "retention": 0.3333333333333333,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.109375,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "3c1c27793c3a27b6",
+   "structure_signature": "8434978c4fcadd35",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.28687608658731695,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k2": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.26197093301240143,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 20262042,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20262042,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.3318452380952381,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.109375,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "c95aeca18f8df9d3",
+   "structure_signature": "500ff22f18ec0ee9",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.26197093301240143,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k2": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2632294120424824,
+    "std_max_real": 0.39439268361644686
+   },
+   "seeds": {
+    "seed_a": 30262042,
+    "seed_b": 40262042
+   },
+   "perm_meta": {
+    "seed_used": 30262042,
+    "candidate_index": 8,
+    "candidates_tried": 9,
+    "retention": 0.33035714285714285,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.125,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "adb98483359100c2",
+   "structure_signature": "6df58347498895cb",
+   "n_derived": 3,
+   "group_sizes": [
+    16,
+    24,
+    24
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 3,
+    "n_derived_real": 3,
+    "std_max": 0.2632294120424824,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k0": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 2,
+   "n_derived_real": 3,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 2 \u2260 3"
+    ],
+    "n_derived": 2,
+    "n_derived_real": 3,
+    "std_max": 0.7753225806874613,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k1": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 2,
+   "n_derived_real": 3,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 2 \u2260 3"
+    ],
+    "n_derived": 2,
+    "n_derived_real": 3,
+    "std_max": 0.7753225806874613,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k2": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 2,
+   "n_derived_real": 3,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 2 \u2260 3"
+    ],
+    "n_derived": 2,
+    "n_derived_real": 3,
+    "std_max": 0.7753225806874613,
+    "std_max_real": 0.39439268361644686
+   },
+   "differs_from_real_structure": true
+  }
+ },
+ "distinct_control_structures": 6
+}
