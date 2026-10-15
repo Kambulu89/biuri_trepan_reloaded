@@ -1,0 +1,180 @@
+{
+ "control_variants": {
+  "breast_cancer": {
+   "structure_only_fallback": 29,
+   "full": 1
+  },
+  "digits": {
+   "full": 18
+  },
+  "iris": {
+   "full": 30
+  },
+  "wine": {
+   "full": 30
+  }
+ },
+ "retention_vs_chance_full_controls": {
+  "breast_cancer": {
+   "mean_retention": 0.2962962962962963,
+   "mean_chance": 0.3103448275862069,
+   "all_met": true,
+   "n": 1
+  },
+  "digits": {
+   "mean_retention": 0.3265542328042328,
+   "mean_chance": 0.33333333333333326,
+   "all_met": true,
+   "n": 18
+  },
+  "iris": {
+   "mean_retention": 0.0,
+   "mean_chance": 0.3333333333333334,
+   "all_met": true,
+   "n": 30
+  },
+  "wine": {
+   "mean_retention": 0.24492753623188407,
+   "mean_chance": 0.2948717948717949,
+   "all_met": true,
+   "n": 30
+  }
+ },
+ "construction_failure_reasons": {
+  "breast_cancer": {
+   "dimens\u00e3o derivada": 107,
+   "escala 1.27e+10": 2,
+   "escala 1.83e+10": 4,
+   "escala 1.22e+10": 9,
+   "escala 1.73e+09": 1,
+   "escala 5.67e+10": 2,
+   "escala 1.04e+10": 1,
+   "escala 4.12e+10": 2,
+   "escala 4.2e+11": 4,
+   "escala 1.38e+10": 2,
+   "escala 1.77e+09": 1,
+   "escala 2.81e+10": 1,
+   "escala 4.95e+10": 4,
+   "escala 3.54e+10": 3,
+   "escala 1.01e+10": 3,
+   "escala 8.79e+09": 1,
+   "escala 1.52e+10": 2,
+   "escala 2.37e+10": 3,
+   "escala 4.11e+11": 3,
+   "escala 6.48e+09": 1,
+   "escala 1.13e+10": 2,
+   "escala 7.32e+09": 2,
+   "escala 2.49e+10": 2,
+   "escala 9.4e+09": 2,
+   "escala 3.73e+11": 7,
+   "escala 1.67e+10": 1,
+   "escala 3.72e+10": 1,
+   "escala 3.94e+09": 1,
+   "escala 5.95e+10": 6,
+   "escala 2.83e+10": 2,
+   "escala 4.38e+11": 6,
+   "escala 8e+09": 1,
+   "escala 1.82e+09": 1,
+   "escala 4.06e+10": 4,
+   "escala 1.28e+10": 1,
+   "escala 7.82e+09": 1,
+   "escala 5.18e+10": 5,
+   "escala 3.44e+11": 4,
+   "escala 1.39e+10": 2,
+   "escala 1.84e+10": 2,
+   "escala 1.7e+09": 1,
+   "escala 2.75e+10": 1
+  }
+ },
+ "E29_vs_B29": {
+  "breast_cancer": {
+   "derived_B29_mean": 53.0,
+   "derived_E29_mean": 5.6,
+   "queries_ratio_mean": 0.9460599510122446,
+   "n": 15
+  },
+  "digits": {
+   "derived_B29_mean": 3.0,
+   "derived_E29_mean": 2.6666666666666665,
+   "queries_ratio_mean": 0.9799236873551891,
+   "n": 9
+  },
+  "iris": {
+   "derived_B29_mean": 2.0,
+   "derived_E29_mean": 1.0,
+   "queries_ratio_mean": 0.992639312647637,
+   "n": 15
+  },
+  "wine": {
+   "derived_B29_mean": 3.0,
+   "derived_E29_mean": 2.2,
+   "queries_ratio_mean": 1.0935294600205943,
+   "n": 15
+  }
+ },
+ "G29_budget_match": {
+  "breast_cancer": {
+   "factor_mean": 2.3524336411672935,
+   "ratio_to_B29_mean": 1.0853772313222,
+   "fraction_matched": 1.0,
+   "n": 15
+  },
+  "digits": {
+   "factor_mean": 2.1306727426618877,
+   "ratio_to_B29_mean": 1.0202128417574166,
+   "fraction_matched": 1.0,
+   "n": 9
+  },
+  "iris": {
+   "factor_mean": 2.2213496152290113,
+   "ratio_to_B29_mean": 1.0177959795830098,
+   "fraction_matched": 1.0,
+   "n": 15
+  },
+  "wine": {
+   "factor_mean": 2.3650278000135327,
+   "ratio_to_B29_mean": 1.2885927267134412,
+   "fraction_matched": 0.5333333333333333,
+   "n": 15
+  }
+ },
+ "B29_vs_A29_unit_regressions": {
+  "acc_down": 9,
+  "fid_down": 12,
+  "both_down": 7,
+  "acc_up": 4,
+  "fid_up": 4,
+  "both_up": 2,
+  "n_units": 18
+ },
+ "B29_nodes_ratio_vs_A29": {
+  "max": 1.6060606060606062,
+  "fraction_le_1_25": 0.8888888888888888,
+  "mean": 1.0062429260950192
+ },
+ "units_with_direct_joint_gain": {
+  "digits:42": {
+   "direct": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "deltas_vs_A29": {
+    "accuracy": 0.009629629629629655,
+    "fidelity": 0.01777777777777778
+   }
+  },
+  "wine:42": {
+   "direct": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "deltas_vs_A29": {
+    "accuracy": 0.029629629629629672,
+    "fidelity": 0.007407407407407529
+   }
+  }
+ },
+ "cost_ratios": {
+  "queries_B29_over_A29": 2.141226172849416,
+  "time_B29_over_A29": 8.698722165831862,
+  "queries_E29_over_B29": 0.9788647569373701,
+  "time_E29_over_A29": 1.1295963109450975
+ },
+ "E29_minus_A29_dataset_means": null
+}

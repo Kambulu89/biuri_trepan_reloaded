@@ -1,0 +1,6924 @@
+{
+ "arms": {
+  "A29": {
+   "n_units": 18,
+   "accuracy": 0.9349433001479786,
+   "fidelity": 0.9326995248632676,
+   "precision_macro": 0.9358139321952054,
+   "macro_f1": 0.933525605807858,
+   "node_count": 69.62962962962963,
+   "leaf_count": 35.31481481481482,
+   "tree_depth": 8.722222222222221,
+   "m_of_n_split_count": 28.870370370370367,
+   "semantic_split_count": 0.0,
+   "oracle_queries": 42448.851851851854,
+   "oracle_samples": null,
+   "training_time": 5.6394239943148206
+  },
+  "B29": {
+   "n_units": 18,
+   "accuracy": 0.9286765238227227,
+   "fidelity": 0.9228673146217007,
+   "precision_macro": 0.9306942211550956,
+   "macro_f1": 0.9267683772789217,
+   "node_count": 68.77777777777779,
+   "leaf_count": 34.88888888888889,
+   "tree_depth": 8.75925925925926,
+   "m_of_n_split_count": 32.111111111111114,
+   "semantic_split_count": 33.88888888888889,
+   "oracle_queries": 90892.5925925926,
+   "oracle_samples": 90892.5925925926,
+   "training_time": 49.05578250187039
+  },
+  "F29": {
+   "n_units": 18,
+   "accuracy": 0.9349433001479786,
+   "fidelity": 0.9326995248632676,
+   "precision_macro": 0.9358139321952054,
+   "macro_f1": 0.933525605807858,
+   "node_count": 69.62962962962963,
+   "leaf_count": 35.31481481481482,
+   "tree_depth": 8.722222222222221,
+   "m_of_n_split_count": 28.870370370370367,
+   "semantic_split_count": 0.0,
+   "oracle_queries": 42448.851851851854,
+   "oracle_samples": 42448.851851851854,
+   "training_time": 5.849429070444427
+  },
+  "C29": {
+   "n_units": 18,
+   "accuracy": 0.9232438646473735,
+   "fidelity": 0.9221126696565294,
+   "precision_macro": 0.9259837259750121,
+   "macro_f1": 0.9220683321800424,
+   "node_count": 70.74074074074073,
+   "leaf_count": 35.87037037037037,
+   "tree_depth": 9.388888888888888,
+   "m_of_n_split_count": 32.388888888888886,
+   "semantic_split_count": 34.87037037037037,
+   "oracle_queries": 92679.57407407407,
+   "oracle_samples": 92679.57407407407,
+   "training_time": 39.22332675507407
+  },
+  "D29": {
+   "n_units": 18,
+   "accuracy": 0.9309521213029986,
+   "fidelity": 0.9244382950815699,
+   "precision_macro": 0.9332264665804819,
+   "macro_f1": 0.9302904731482889,
+   "node_count": 71.18518518518518,
+   "leaf_count": 36.09259259259259,
+   "tree_depth": 9.092592592592592,
+   "m_of_n_split_count": 32.42592592592592,
+   "semantic_split_count": 35.09259259259259,
+   "oracle_queries": 93022.62962962965,
+   "oracle_samples": 93022.62962962965,
+   "training_time": 38.8691044725926
+  },
+  "E29": {
+   "n_units": 18,
+   "accuracy": 0.9395455378496315,
+   "fidelity": 0.939655408485818,
+   "precision_macro": 0.9407768471757776,
+   "macro_f1": 0.9378585964543612,
+   "node_count": 68.92592592592592,
+   "leaf_count": 34.96296296296296,
+   "tree_depth": 8.981481481481483,
+   "m_of_n_split_count": 27.98148148148148,
+   "semantic_split_count": 0.0,
+   "oracle_queries": 88971.55555555556,
+   "oracle_samples": 88971.55555555556,
+   "training_time": 6.370272539833287
+  },
+  "G29": {
+   "n_units": 18,
+   "accuracy": 0.9355138428822638,
+   "fidelity": 0.9329471351693575,
+   "precision_macro": 0.9362836613852719,
+   "macro_f1": 0.9342754623084626,
+   "node_count": 70.62962962962962,
+   "leaf_count": 35.81481481481481,
+   "tree_depth": 8.925925925925927,
+   "m_of_n_split_count": 28.88888888888889,
+   "semantic_split_count": 0.0,
+   "oracle_queries": 95181.75925925927,
+   "oracle_samples": null,
+   "training_time": 5.956107349314809
+  }
+ },
+ "units": [
+  "breast_cancer:11",
+  "breast_cancer:123",
+  "breast_cancer:2024",
+  "breast_cancer:42",
+  "breast_cancer:7",
+  "digits:123",
+  "digits:42",
+  "digits:7",
+  "iris:11",
+  "iris:123",
+  "iris:2024",
+  "iris:42",
+  "iris:7",
+  "wine:11",
+  "wine:123",
+  "wine:2024",
+  "wine:42",
+  "wine:7"
+ ],
+ "n_units": 18,
+ "exclusions": "nenhuma",
+ "metrics": [
+  "accuracy",
+  "fidelity",
+  "precision_macro",
+  "macro_f1",
+  "node_count",
+  "leaf_count",
+  "tree_depth",
+  "m_of_n_split_count",
+  "semantic_split_count",
+  "oracle_queries",
+  "oracle_samples",
+  "training_time"
+ ],
+ "comparability": {
+  "level": "strict",
+  "all_comparable": true,
+  "problems": []
+ },
+ "equivalence_F29_vs_A29": {
+  "identical": 18
+ },
+ "level1": {
+  "direct_gain_state_counts": {
+   "NO_GAIN": {
+    "n": 10,
+    "pct_of_all_units": 55.6
+   },
+   "TRADEOFF": {
+    "n": 4,
+    "pct_of_all_units": 22.2
+   },
+   "ONTOLOGICAL_JOINT_GAIN": {
+    "n": 2,
+    "pct_of_all_units": 11.1
+   },
+   "EQUIVALENT": {
+    "n": 2,
+    "pct_of_all_units": 11.1
+   }
+  },
+  "attribution_counts": {
+   "NOT_ATTRIBUTED": 16,
+   "NOT_ASSESSABLE": 2
+  },
+  "attribution_counts_excluding_E29": {
+   "NOT_ATTRIBUTED": 17,
+   "NOT_ASSESSABLE": 1
+  },
+  "attribution_note": "atribui\u00e7\u00e3o completa exige C29, D29, E29 (n\u00e3o confundido) e G29; sem E29 compar\u00e1vel a atribui\u00e7\u00e3o \u00e9 NOT_ASSESSABLE. 'excluding_E29' \u00e9 um estado SECUND\u00c1RIO (n\u00e3o conclusivo).",
+  "evidence_vs_original_equivalent": {
+   "n_datasets": 4,
+   "per_dataset": {
+    "breast_cancer": {
+     "acc": -0.0013986013986013956,
+     "fid": -0.0032634032634032417,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.009695400626147094,
+     "within_dataset_sd_fid": 0.007481028688056546
+    },
+    "digits": {
+     "acc": -0.010123456790123423,
+     "fid": -0.0034567901234567877,
+     "n_units": 3,
+     "within_dataset_sd_acc": 0.019278243255252472,
+     "within_dataset_sd_fid": 0.021485738190426765
+    },
+    "iris": {
+     "acc": -0.0017543859649123083,
+     "fid": -0.012280701754385937,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.007339123039772575,
+     "within_dataset_sd_fid": 0.013303290252721972
+    },
+    "wine": {
+     "acc": -0.013333333333333308,
+     "fid": -0.017777777777777736,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.04137552605561164,
+     "within_dataset_sd_fid": 0.04401022452596427
+    }
+   },
+   "confirmatory": false,
+   "unit_of_inference": "dataset",
+   "reasons": [],
+   "across_datasets": {
+    "acc": {
+     "t": {
+      "mean": -0.006652444371742609,
+      "se": 0.0030038315347347706,
+      "lo": -0.016211976941155636,
+      "hi": 0.0029070881976704186,
+      "between_dataset_sd": 0.006007663069469541
+     },
+     "bootstrap_ci": [
+      -0.011728395061728365,
+      -0.001576493681756852
+     ],
+     "mean": -0.006652444371742609
+    },
+    "fid": {
+     "t": {
+      "mean": -0.009194668229755926,
+      "se": 0.003550780685195783,
+      "lo": -0.020494837102231968,
+      "hi": 0.0021055006427201164,
+      "between_dataset_sd": 0.007101561370391566
+     },
+     "bootstrap_ci": [
+      -0.015029239766081837,
+      -0.0033600966934300147
+     ],
+     "mean": -0.009194668229755926
+    }
+   },
+   "evidence": "NOT_SATISFIED"
+  },
+  "evidence_vs_controls": {
+   "permuted_ontology": {
+    "n_datasets": 3,
+    "per_dataset": {
+     "digits": {
+      "acc": -0.005432098765432047,
+      "fid": 0.0004938271604937686,
+      "n_units": 3,
+      "within_dataset_sd_acc": 0.010379184966411591,
+      "within_dataset_sd_fid": 0.012534360638515634
+     },
+     "iris": {
+      "acc": 0.012280701754385937,
+      "fid": -0.007017543859649034,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.015935001863670986,
+      "within_dataset_sd_fid": 0.020942695414584805
+     },
+     "wine": {
+      "acc": 0.020370370370370455,
+      "fid": 0.016666666666666663,
+      "n_units": 4,
+      "within_dataset_sd_acc": 0.057814170241817744,
+      "within_dataset_sd_fid": 0.05749694331948152
+     }
+    },
+    "confirmatory": false,
+    "unit_of_inference": "dataset",
+    "reasons": [
+     "avalia\u00e7\u00e3o n\u00e3o confirmat\u00f3ria (DEV/explorat\u00f3ria)",
+     "3 < 12 datasets independentes",
+     "IC95 entre datasets inclui 0 em accuracy e/ou fidelidade"
+    ],
+    "across_datasets": {
+     "acc": {
+      "t": {
+       "mean": 0.009072991119774781,
+       "se": 0.007619249941487205,
+       "lo": -0.02370999543920231,
+       "hi": 0.04185597767875188,
+       "between_dataset_sd": 0.013196928014222033
+      },
+      "bootstrap_ci": [
+       -0.005432098765432047,
+       0.020370370370370455
+      ],
+      "mean": 0.009072991119774781
+     },
+     "fid": {
+      "t": {
+       "mean": 0.0033809833225038,
+       "se": 0.006987780050239732,
+       "lo": -0.02668500758517643,
+       "hi": 0.03344697423018403,
+       "between_dataset_sd": 0.012103190079131418
+      },
+      "bootstrap_ci": [
+       -0.007017543859649034,
+       0.016666666666666663
+      ],
+      "mean": 0.0033809833225038
+     }
+    },
+    "evidence": "OBSERVED_JOINT_GAIN"
+   },
+   "random_groups": {
+    "n_datasets": 3,
+    "per_dataset": {
+     "digits": {
+      "acc": -0.001481481481481454,
+      "fid": -0.0007407407407407085,
+      "n_units": 3,
+      "within_dataset_sd_acc": 0.016380255101848876,
+      "within_dataset_sd_fid": 0.01797727570298013
+     },
+     "iris": {
+      "acc": 0.010526315789473694,
+      "fid": 2.2204460492503132e-17,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.020003077633318263,
+      "within_dataset_sd_fid": 0.01240538212607982
+     },
+     "wine": {
+      "acc": -0.00925925925925919,
+      "fid": -0.00185185185185191,
+      "n_units": 4,
+      "within_dataset_sd_acc": 0.036975257115733205,
+      "within_dataset_sd_fid": 0.045411294216665454
+     }
+    },
+    "confirmatory": false,
+    "unit_of_inference": "dataset",
+    "reasons": [],
+    "across_datasets": {
+     "acc": {
+      "t": {
+       "mean": -7.147498375564947e-05,
+       "se": 0.0057549495724689625,
+       "lo": -0.024833024471002874,
+       "hi": 0.024690074503491578,
+       "between_dataset_sd": 0.00996786505451303
+      },
+      "bootstrap_ci": [
+       -0.00925925925925919,
+       0.010526315789473694
+      ],
+      "mean": -7.147498375564947e-05
+     },
+     "fid": {
+      "t": {
+       "mean": -0.0008641975308641988,
+       "se": 0.0005381356720420835,
+       "lo": -0.0031796084491229368,
+       "hi": 0.0014512133873945394,
+       "between_dataset_sd": 0.0009320783253421111
+      },
+      "bootstrap_ci": [
+       -0.00185185185185191,
+       2.2204460492503135e-17
+      ],
+      "mean": -0.0008641975308641988
+     }
+    },
+    "evidence": "NOT_SATISFIED"
+   },
+   "conventional_features": {
+    "n_datasets": 1,
+    "per_dataset": {
+     "digits": {
+      "acc": -0.030000000000000027,
+      "fid": -0.027037037037037026,
+      "n_units": 2,
+      "within_dataset_sd_acc": 0.0005237828008789013,
+      "within_dataset_sd_fid": 0.0036664796061525447
+     }
+    },
+    "confirmatory": false,
+    "unit_of_inference": "dataset",
+    "reasons": [
+     "menos de 2 datasets"
+    ],
+    "evidence": "INSUFFICIENT_EVIDENCE"
+   },
+   "budget_matched_original": {
+    "n_datasets": 4,
+    "per_dataset": {
+     "breast_cancer": {
+      "acc": -0.0004662004662004504,
+      "fid": -0.006993006993006956,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.008468952039433578,
+      "within_dataset_sd_fid": 0.019779210662560748
+     },
+     "digits": {
+      "acc": -0.015555555555555545,
+      "fid": -0.005679012345678913,
+      "n_units": 3,
+      "within_dataset_sd_acc": 0.014796284707731958,
+      "within_dataset_sd_fid": 0.021434601890578473
+     },
+     "iris": {
+      "acc": -2.2204460492503132e-17,
+      "fid": -0.0140350877192982,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.02557435041598819,
+      "within_dataset_sd_fid": 0.013303290252721976
+     },
+     "wine": {
+      "acc": -0.016666666666666635,
+      "fid": -0.012962962962962898,
+      "n_units": 4,
+      "within_dataset_sd_acc": 0.03494067085946893,
+      "within_dataset_sd_fid": 0.035972351319341844
+     }
+    },
+    "confirmatory": false,
+    "unit_of_inference": "dataset",
+    "reasons": [],
+    "across_datasets": {
+     "acc": {
+      "t": {
+       "mean": -0.008172105672105662,
+       "se": 0.004590181412811036,
+       "lo": -0.02278011154989064,
+       "hi": 0.006435900205679317,
+       "between_dataset_sd": 0.009180362825622072
+      },
+      "bootstrap_ci": [
+       -0.01611111111111109,
+       -0.00023310023310023633
+      ],
+      "mean": -0.008172105672105662
+     },
+     "fid": {
+      "t": {
+       "mean": -0.009917517505236742,
+       "se": 0.0020965608789048607,
+       "lo": -0.016589709928111044,
+       "hi": -0.003245325082362441,
+       "between_dataset_sd": 0.004193121757809721
+      },
+      "bootstrap_ci": [
+       -0.013499025341130549,
+       -0.0063360096693429345
+      ],
+      "mean": -0.009917517505236742
+     }
+    },
+    "evidence": "NOT_SATISFIED"
+   }
+  },
+  "controls_without_data": []
+ },
+ "level2": {
+  "global_state_counts": {
+   "NOT_SATISFIED": {
+    "n": 7,
+    "pct_of_all_units": 38.9
+   },
+   "HIERARCHY_INFEASIBLE": {
+    "n": 9,
+    "pct_of_all_units": 50.0
+   },
+   "TRADEOFF": {
+    "n": 1,
+    "pct_of_all_units": 5.6
+   },
+   "JOINT_HIERARCHY_SATISFIED": {
+    "n": 1,
+    "pct_of_all_units": 5.6
+   }
+  },
+  "evidence_vs_c45": {
+   "n_datasets": 4,
+   "per_dataset": {
+    "breast_cancer": {
+     "acc": 0.005594405594405605,
+     "fid": 0.008391608391608418,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.018025748185716783,
+     "within_dataset_sd_fid": 0.018618858319548667
+    },
+    "digits": {
+     "acc": 0.015061728395061738,
+     "fid": 0.019753086419753114,
+     "n_units": 3,
+     "within_dataset_sd_acc": 0.024970032335993042,
+     "within_dataset_sd_fid": 0.02450422917316168
+    },
+    "iris": {
+     "acc": -0.0035087719298245723,
+     "fid": -0.010526315789473628,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.007845852552630865,
+     "within_dataset_sd_fid": 0.01569170510526165
+    },
+    "wine": {
+     "acc": 0.0059259259259259785,
+     "fid": 0.005925925925925934,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.047256704911812136,
+     "within_dataset_sd_fid": 0.057711262757873895
+    }
+   },
+   "confirmatory": false,
+   "unit_of_inference": "dataset",
+   "reasons": [
+    "avalia\u00e7\u00e3o n\u00e3o confirmat\u00f3ria (DEV/explorat\u00f3ria)",
+    "4 < 12 datasets independentes",
+    "IC95 entre datasets inclui 0 em accuracy e/ou fidelidade"
+   ],
+   "across_datasets": {
+    "acc": {
+     "t": {
+      "mean": 0.005768321996392187,
+      "se": 0.0037912944152818104,
+      "lo": -0.00629726890776627,
+      "hi": 0.017833912900550645,
+      "between_dataset_sd": 0.007582588830563621
+     },
+     "bootstrap_ci": [
+      -0.0011500974658869346,
+      0.012694897694897704
+     ],
+     "mean": 0.005768321996392187
+    },
+    "fid": {
+     "t": {
+      "mean": 0.00588607623695346,
+      "se": 0.006244596749822454,
+      "lo": -0.013987017617509125,
+      "hi": 0.025759170091416046,
+      "between_dataset_sd": 0.012489193499644908
+     },
+     "bootstrap_ci": [
+      -0.005796834744203117,
+      0.01629629629629632
+     ],
+     "mean": 0.00588607623695346
+    }
+   },
+   "evidence": "OBSERVED_JOINT_GAIN"
+  }
+ },
+ "per_unit": {
+  "breast_cancer:11": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 14087.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.965034965034965,
+      "oracle_queries": 14011.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 13835.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31694.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31442.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.965034965034965,
+      "oracle_queries": 33302.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 14087.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.965034965034965,
+      "oracle_queries": 14011.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 13835.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31568.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 31637.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 31345.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 31487.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 33538.0,
+      "node_count": 19.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31555.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 30426.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 30426.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 30426.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 32728.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 32672.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 35192.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9393939393939394,
+     "fidelity": 0.9533799533799533,
+     "precision_macro": 0.9464003216705777,
+     "macro_f1": 0.9335076688017865,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 5.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13977.666666666666,
+     "oracle_samples": null,
+     "training_time": 2.2578675336665888
+    },
+    "B29": {
+     "accuracy": 0.9324009324009325,
+     "fidelity": 0.9510489510489512,
+     "precision_macro": 0.9301390567375222,
+     "macro_f1": 0.9270606925303059,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 7.0,
+     "m_of_n_split_count": 12.333333333333334,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 32146.0,
+     "oracle_samples": 32146.0,
+     "training_time": 24.963888158666652
+    },
+    "F29": {
+     "accuracy": 0.9393939393939394,
+     "fidelity": 0.9533799533799533,
+     "precision_macro": 0.9464003216705777,
+     "macro_f1": 0.9335076688017865,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 5.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13977.666666666666,
+     "oracle_samples": 13977.666666666666,
+     "training_time": 2.3789362823332945
+    },
+    "C29": {
+     "accuracy": 0.9254079254079256,
+     "fidelity": 0.9393939393939394,
+     "precision_macro": 0.9256282984481827,
+     "macro_f1": 0.9189670243303479,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 13.666666666666666,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 31516.666666666668,
+     "oracle_samples": 31516.666666666668,
+     "training_time": 12.39170769466682
+    },
+    "D29": {
+     "accuracy": 0.9254079254079254,
+     "fidelity": 0.9393939393939394,
+     "precision_macro": 0.9222985887583869,
+     "macro_f1": 0.9196232400824202,
+     "node_count": 26.333333333333332,
+     "leaf_count": 13.666666666666666,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 11.666666666666666,
+     "semantic_split_count": 12.666666666666666,
+     "oracle_queries": 32193.333333333332,
+     "oracle_samples": 32193.333333333332,
+     "training_time": 14.243891455333292
+    },
+    "E29": {
+     "accuracy": 0.9207459207459209,
+     "fidelity": 0.9347319347319347,
+     "precision_macro": 0.9234624137557347,
+     "macro_f1": 0.9133913352433409,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 7.0,
+     "m_of_n_split_count": 11.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 30426.0,
+     "oracle_samples": 30426.0,
+     "training_time": 2.6031306033331325
+    },
+    "G29": {
+     "accuracy": 0.9393939393939394,
+     "fidelity": 0.9533799533799533,
+     "precision_macro": 0.9441086886415633,
+     "macro_f1": 0.9337625412503233,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 33530.666666666664,
+     "oracle_samples": null,
+     "training_time": 2.122691189666663
+    }
+   },
+   "c45": {
+    "accuracy": 0.9020979020979021,
+    "fidelity": 0.916083916083916,
+    "precision_macro": 0.9011072514112028,
+    "macro_f1": 0.8933290707587382
+   },
+   "control_variants": {
+    "C29": [
+     "structure_only_fallback"
+    ],
+    "D29": [
+     "structure_only_fallback"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9804226549700326
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0014724486198385
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 5.0 vs 53.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9464941205748771
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0430743068085193
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "permuted_ontology",
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "breast_cancer:123": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 13582.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 13796.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.8951048951048951,
+      "oracle_queries": 13802.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 35635.0,
+      "node_count": 23.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.8811188811188811,
+      "oracle_queries": 35688.0,
+      "node_count": 19.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9020979020979021,
+      "oracle_queries": 31625.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 13582.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 13796.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.8951048951048951,
+      "oracle_queries": 13802.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.972027972027972,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 31503.0,
+      "node_count": 27.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 35441.0,
+      "node_count": 27.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.916083916083916,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 37644.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31844.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9020979020979021,
+      "fidelity": 0.8881118881118881,
+      "oracle_queries": 35761.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 31673.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.965034965034965,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 30426.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 30426.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.965034965034965,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 30426.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 38311.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 37820.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 35540.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9277389277389277,
+     "fidelity": 0.9090909090909091,
+     "precision_macro": 0.9207125025076343,
+     "macro_f1": 0.9232904768350396,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 12.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13726.666666666666,
+     "oracle_samples": null,
+     "training_time": 2.1295584066666984
+    },
+    "B29": {
+     "accuracy": 0.9254079254079254,
+     "fidelity": 0.8974358974358975,
+     "precision_macro": 0.9159764928777121,
+     "macro_f1": 0.9213933738933738,
+     "node_count": 23.666666666666668,
+     "leaf_count": 12.333333333333334,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 10.666666666666666,
+     "semantic_split_count": 11.333333333333334,
+     "oracle_queries": 34316.0,
+     "oracle_samples": 34316.0,
+     "training_time": 24.162862961333378
+    },
+    "F29": {
+     "accuracy": 0.9277389277389277,
+     "fidelity": 0.9090909090909091,
+     "precision_macro": 0.9207125025076343,
+     "macro_f1": 0.9232904768350396,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 12.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13726.666666666666,
+     "oracle_samples": 13726.666666666666,
+     "training_time": 2.385535194333291
+    },
+    "C29": {
+     "accuracy": 0.9417249417249417,
+     "fidelity": 0.923076923076923,
+     "precision_macro": 0.9357209006444531,
+     "macro_f1": 0.9380164703844027,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 34862.666666666664,
+     "oracle_samples": 34862.666666666664,
+     "training_time": 14.690692854666546
+    },
+    "D29": {
+     "accuracy": 0.9300699300699301,
+     "fidelity": 0.9207459207459207,
+     "precision_macro": 0.9261195870998303,
+     "macro_f1": 0.925131859543289,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 33092.666666666664,
+     "oracle_samples": 33092.666666666664,
+     "training_time": 15.160557647666641
+    },
+    "E29": {
+     "accuracy": 0.958041958041958,
+     "fidelity": 0.9254079254079254,
+     "precision_macro": 0.9531575114440282,
+     "macro_f1": 0.9552763733313773,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 7.0,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 30426.0,
+     "oracle_samples": 30426.0,
+     "training_time": 2.8731257333333815
+    },
+    "G29": {
+     "accuracy": 0.9370629370629371,
+     "fidelity": 0.9277389277389277,
+     "precision_macro": 0.9306197983982561,
+     "macro_f1": 0.932820338810779,
+     "node_count": 31.0,
+     "leaf_count": 16.0,
+     "tree_depth": 5.333333333333333,
+     "m_of_n_split_count": 13.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 37223.666666666664,
+     "oracle_samples": null,
+     "training_time": 1.9485054409998763
+    }
+   },
+   "c45": {
+    "accuracy": 0.9440559440559441,
+    "fidelity": 0.9020979020979021,
+    "precision_macro": 0.9375,
+    "macro_f1": 0.9404910528506034
+   },
+   "control_variants": {
+    "C29": [
+     "structure_only_fallback"
+    ],
+    "D29": [
+     "full",
+     "structure_only_fallback"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0159303726153008
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9643509344523448
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 6.0 vs 53.0"
+      ],
+      "queries_ratio_control_over_B29": 0.8866417997435598
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0847320977580914
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "permuted_ontology",
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "breast_cancer:2024": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 27297.0,
+      "node_count": 63.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 29849.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 28791.0,
+      "node_count": 61.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 65482.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 65789.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 64012.0,
+      "node_count": 59.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 27297.0,
+      "node_count": 63.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 29849.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 28791.0,
+      "node_count": 61.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 68010.0,
+      "node_count": 57.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 67827.0,
+      "node_count": 63.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 68098.0,
+      "node_count": 63.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.965034965034965,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 67709.0,
+      "node_count": 61.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 69548.0,
+      "node_count": 61.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 64064.0,
+      "node_count": 59.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 64426.0,
+      "node_count": 57.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 62426.0,
+      "node_count": 63.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9090909090909091,
+      "oracle_queries": 64426.0,
+      "node_count": 49.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9020979020979021,
+      "oracle_queries": 80916.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 72172.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9090909090909091,
+      "fidelity": 0.916083916083916,
+      "oracle_queries": 66988.0,
+      "node_count": 53.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9463869463869464,
+     "fidelity": 0.93006993006993,
+     "precision_macro": 0.943006312345935,
+     "macro_f1": 0.942431733456439,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 13.0,
+     "m_of_n_split_count": 29.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 28645.666666666668,
+     "oracle_samples": null,
+     "training_time": 8.970314259666717
+    },
+    "B29": {
+     "accuracy": 0.9347319347319347,
+     "fidelity": 0.9370629370629371,
+     "precision_macro": 0.9357036841572564,
+     "macro_f1": 0.9290814160887967,
+     "node_count": 59.0,
+     "leaf_count": 30.0,
+     "tree_depth": 11.0,
+     "m_of_n_split_count": 27.666666666666668,
+     "semantic_split_count": 29.0,
+     "oracle_queries": 65094.333333333336,
+     "oracle_samples": 65094.333333333336,
+     "training_time": 63.56634357633334
+    },
+    "F29": {
+     "accuracy": 0.9463869463869464,
+     "fidelity": 0.93006993006993,
+     "precision_macro": 0.943006312345935,
+     "macro_f1": 0.942431733456439,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 13.0,
+     "m_of_n_split_count": 29.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 28645.666666666668,
+     "oracle_samples": 28645.666666666668,
+     "training_time": 9.11979677699992
+    },
+    "C29": {
+     "accuracy": 0.9463869463869464,
+     "fidelity": 0.93006993006993,
+     "precision_macro": 0.9405708002445654,
+     "macro_f1": 0.9428617128601934,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 9.333333333333334,
+     "m_of_n_split_count": 26.666666666666668,
+     "semantic_split_count": 30.0,
+     "oracle_queries": 67978.33333333333,
+     "oracle_samples": 67978.33333333333,
+     "training_time": 53.01433749200002
+    },
+    "D29": {
+     "accuracy": 0.9557109557109557,
+     "fidelity": 0.9254079254079254,
+     "precision_macro": 0.954326889811617,
+     "macro_f1": 0.9523635266286158,
+     "node_count": 60.333333333333336,
+     "leaf_count": 30.666666666666668,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 27.333333333333332,
+     "semantic_split_count": 29.666666666666668,
+     "oracle_queries": 67107.0,
+     "oracle_samples": 67107.0,
+     "training_time": 52.83205116333344
+    },
+    "E29": {
+     "accuracy": 0.9347319347319347,
+     "fidelity": 0.9184149184149185,
+     "precision_macro": 0.9286622518291293,
+     "macro_f1": 0.9304741281189668,
+     "node_count": 56.333333333333336,
+     "leaf_count": 28.666666666666668,
+     "tree_depth": 11.333333333333334,
+     "m_of_n_split_count": 23.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 63759.333333333336,
+     "oracle_samples": 63759.333333333336,
+     "training_time": 10.048257696333167
+    },
+    "G29": {
+     "accuracy": 0.9324009324009324,
+     "fidelity": 0.9160839160839161,
+     "precision_macro": 0.9274284899362494,
+     "macro_f1": 0.9274675309058736,
+     "node_count": 57.666666666666664,
+     "leaf_count": 29.333333333333332,
+     "tree_depth": 12.333333333333334,
+     "m_of_n_split_count": 26.666666666666668,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 73358.66666666667,
+     "oracle_samples": null,
+     "training_time": 7.8182097346665005
+    }
+   },
+   "c45": {
+    "accuracy": 0.9230769230769231,
+    "fidelity": 0.916083916083916,
+    "precision_macro": 0.9223655913978495,
+    "macro_f1": 0.9165472969388297
+   },
+   "control_variants": {
+    "C29": [
+     "structure_only_fallback"
+    ],
+    "D29": [
+     "structure_only_fallback"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "TRADEOFF",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0443049318169015
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0309192300405052
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 6.0 vs 53.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9794913023663094
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.1269593359381
+     }
+    },
+    "global": "TRADEOFF",
+    "flags": {
+     "ontological_direct_gain_state": "TRADEOFF",
+     "accuracy_superiority": false,
+     "fidelity_superiority": true,
+     "tradeoff_vs_original": true,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "permuted_ontology",
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "breast_cancer:42": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 15057.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 14076.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 14713.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 32019.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 35705.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 36424.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 15057.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 14076.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 14713.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 35550.0,
+      "node_count": 25.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 33584.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9230769230769231,
+      "oracle_queries": 39583.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 33368.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 31830.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 37486.0,
+      "node_count": 27.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.972027972027972,
+      "oracle_queries": 38426.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 30426.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 30426.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9230769230769231,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 30991.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 42046.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 40496.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9347319347319347,
+     "fidelity": 0.9393939393939394,
+     "precision_macro": 0.9312782710401896,
+     "macro_f1": 0.9299044307027131,
+     "node_count": 31.0,
+     "leaf_count": 16.0,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 14.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 14615.333333333334,
+     "oracle_samples": null,
+     "training_time": 5.146719959666598
+    },
+    "B29": {
+     "accuracy": 0.9347319347319347,
+     "fidelity": 0.93006993006993,
+     "precision_macro": 0.9312353330177118,
+     "macro_f1": 0.9298840244668373,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.333333333333334,
+     "m_of_n_split_count": 14.0,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 34716.0,
+     "oracle_samples": 34716.0,
+     "training_time": 48.968641553
+    },
+    "F29": {
+     "accuracy": 0.9347319347319347,
+     "fidelity": 0.9393939393939394,
+     "precision_macro": 0.9312782710401896,
+     "macro_f1": 0.9299044307027131,
+     "node_count": 31.0,
+     "leaf_count": 16.0,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 14.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 14615.333333333334,
+     "oracle_samples": 14615.333333333334,
+     "training_time": 5.591375719666606
+    },
+    "C29": {
+     "accuracy": 0.9463869463869464,
+     "fidelity": 0.9370629370629371,
+     "precision_macro": 0.9448246319996714,
+     "macro_f1": 0.9423766922061269,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 8.0,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 36239.0,
+     "oracle_samples": 36239.0,
+     "training_time": 33.575984770666615
+    },
+    "D29": {
+     "accuracy": 0.9533799533799533,
+     "fidelity": 0.9487179487179486,
+     "precision_macro": 0.9491858606090816,
+     "macro_f1": 0.950144862243501,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 7.0,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 14.333333333333334,
+     "oracle_queries": 34228.0,
+     "oracle_samples": 34228.0,
+     "training_time": 29.310993230333377
+    },
+    "E29": {
+     "accuracy": 0.9557109557109557,
+     "fidelity": 0.9510489510489512,
+     "precision_macro": 0.9571166332657564,
+     "macro_f1": 0.9520696894748433,
+     "node_count": 28.333333333333332,
+     "leaf_count": 14.666666666666666,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 33092.666666666664,
+     "oracle_samples": 33092.666666666664,
+     "training_time": 5.659217802666717
+    },
+    "G29": {
+     "accuracy": 0.9277389277389277,
+     "fidelity": 0.9510489510489509,
+     "precision_macro": 0.9208538661561388,
+     "macro_f1": 0.9230202161319041,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 37844.333333333336,
+     "oracle_samples": null,
+     "training_time": 4.030247443000083
+    }
+   },
+   "c45": {
+    "accuracy": 0.9370629370629371,
+    "fidelity": 0.9370629370629371,
+    "precision_macro": 0.937741935483871,
+    "macro_f1": 0.9317205156772242
+   },
+   "control_variants": {
+    "C29": [
+     "structure_only_fallback"
+    ],
+    "D29": [
+     "structure_only_fallback"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.04387026155087
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9859430810001152
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 5.0 vs 53.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9532396205400007
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0901121480969391
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "permuted_ontology",
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "breast_cancer:7": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 15031.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 14504.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 14841.0,
+      "node_count": 23.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 35633.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 35123.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 31557.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 15031.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 14504.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 14841.0,
+      "node_count": 23.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 31862.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 35689.0,
+      "node_count": 27.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 31491.0,
+      "node_count": 31.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.9300699300699301,
+      "oracle_queries": 37405.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 31677.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 33639.0,
+      "node_count": 29.0,
+      "variant": "structure_only_fallback"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9440559440559441,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 32426.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.958041958041958,
+      "fidelity": 0.958041958041958,
+      "oracle_queries": 34426.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.951048951048951,
+      "fidelity": 0.965034965034965,
+      "oracle_queries": 30426.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9370629370629371,
+      "fidelity": 0.9370629370629371,
+      "oracle_queries": 39109.0,
+      "node_count": 23.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.965034965034965,
+      "fidelity": 0.951048951048951,
+      "oracle_queries": 37714.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9300699300699301,
+      "fidelity": 0.9440559440559441,
+      "oracle_queries": 34262.0,
+      "node_count": 27.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9370629370629371,
+     "fidelity": 0.9417249417249418,
+     "precision_macro": 0.929040404040404,
+     "macro_f1": 0.9333409889754142,
+     "node_count": 28.333333333333332,
+     "leaf_count": 14.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 14792.0,
+     "oracle_samples": null,
+     "training_time": 5.582026901333317
+    },
+    "B29": {
+     "accuracy": 0.9510489510489512,
+     "fidelity": 0.9417249417249417,
+     "precision_macro": 0.9441218098300208,
+     "macro_f1": 0.9481070041421281,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 13.666666666666666,
+     "semantic_split_count": 14.333333333333334,
+     "oracle_queries": 34104.333333333336,
+     "oracle_samples": 34104.333333333336,
+     "training_time": 42.79497440499995
+    },
+    "F29": {
+     "accuracy": 0.9370629370629371,
+     "fidelity": 0.9417249417249418,
+     "precision_macro": 0.929040404040404,
+     "macro_f1": 0.9333409889754142,
+     "node_count": 28.333333333333332,
+     "leaf_count": 14.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 14792.0,
+     "oracle_samples": 14792.0,
+     "training_time": 6.5950344840000525
+    },
+    "C29": {
+     "accuracy": 0.9324009324009325,
+     "fidelity": 0.9324009324009325,
+     "precision_macro": 0.9250378990271902,
+     "macro_f1": 0.9281848133762645,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.0,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 33014.0,
+     "oracle_samples": 33014.0,
+     "training_time": 24.270626925999977
+    },
+    "D29": {
+     "accuracy": 0.9510489510489512,
+     "fidelity": 0.9417249417249417,
+     "precision_macro": 0.9518352645738197,
+     "macro_f1": 0.9470150543510395,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 7.666666666666667,
+     "m_of_n_split_count": 12.333333333333334,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 34240.333333333336,
+     "oracle_samples": 34240.333333333336,
+     "training_time": 22.923346671333395
+    },
+    "E29": {
+     "accuracy": 0.9510489510489512,
+     "fidelity": 0.9603729603729603,
+     "precision_macro": 0.9439587104440648,
+     "macro_f1": 0.9481310925014963,
+     "node_count": 28.333333333333332,
+     "leaf_count": 14.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 32426.0,
+     "oracle_samples": 32426.0,
+     "training_time": 5.118447703333307
+    },
+    "G29": {
+     "accuracy": 0.9440559440559441,
+     "fidelity": 0.9440559440559441,
+     "precision_macro": 0.9376335773371807,
+     "macro_f1": 0.9405249057172448,
+     "node_count": 25.666666666666668,
+     "leaf_count": 13.333333333333334,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 12.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 37028.333333333336,
+     "oracle_samples": null,
+     "training_time": 4.5279612053332885
+    }
+   },
+   "c45": {
+    "accuracy": 0.9440559440559441,
+    "fidelity": 0.9440559440559441,
+    "precision_macro": 0.9434143222506394,
+    "macro_f1": 0.9395604395604396
+   },
+   "control_variants": {
+    "C29": [
+     "structure_only_fallback"
+    ],
+    "D29": [
+     "structure_only_fallback"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "TRADEOFF",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9680294781699295
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.003987763040865
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 6.0 vs 53.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9507882673756023
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0857369053785932
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "TRADEOFF",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": true,
+     "tradeoff_vs_c45": true,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "permuted_ontology",
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "digits:123": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.8933333333333333,
+      "fidelity": 0.8822222222222222,
+      "oracle_queries": 245186.0,
+      "node_count": 241.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8955555555555555,
+      "fidelity": 0.8866666666666667,
+      "oracle_queries": 246305.0,
+      "node_count": 245.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8666666666666667,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 246065.0,
+      "node_count": 249.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.8644444444444445,
+      "fidelity": 0.8577777777777778,
+      "oracle_queries": 518542.0,
+      "node_count": 249.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8288888888888889,
+      "fidelity": 0.8244444444444444,
+      "oracle_queries": 518215.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8755555555555555,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 518317.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.8933333333333333,
+      "fidelity": 0.8822222222222222,
+      "oracle_queries": 245186.0,
+      "node_count": 241.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8955555555555555,
+      "fidelity": 0.8866666666666667,
+      "oracle_queries": 246305.0,
+      "node_count": 245.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8666666666666667,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 246065.0,
+      "node_count": 249.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.8733333333333333,
+      "fidelity": 0.8644444444444445,
+      "oracle_queries": 518167.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8755555555555555,
+      "fidelity": 0.8644444444444445,
+      "oracle_queries": 521936.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8711111111111111,
+      "fidelity": 0.86,
+      "oracle_queries": 517940.0,
+      "node_count": 253.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.8977777777777778,
+      "fidelity": 0.9,
+      "oracle_queries": 526856.0,
+      "node_count": 249.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8511111111111112,
+      "fidelity": 0.8488888888888889,
+      "oracle_queries": 517894.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8422222222222222,
+      "fidelity": 0.8355555555555556,
+      "oracle_queries": 518404.0,
+      "node_count": 253.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.8844444444444445,
+      "fidelity": 0.8755555555555555,
+      "oracle_queries": 509347.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9022222222222223,
+      "fidelity": 0.9,
+      "oracle_queries": 509347.0,
+      "node_count": 247.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8733333333333333,
+      "fidelity": 0.8622222222222222,
+      "oracle_queries": 509347.0,
+      "node_count": 255.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9,
+      "fidelity": 0.8911111111111111,
+      "oracle_queries": 529405.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8755555555555555,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 523876.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.8933333333333333,
+      "oracle_queries": 524958.0,
+      "node_count": 251.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.8851851851851852,
+     "fidelity": 0.8748148148148148,
+     "precision_macro": 0.8884046359484182,
+     "macro_f1": 0.8845768661506312,
+     "node_count": 245.0,
+     "leaf_count": 123.0,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 118.33333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 245852.0,
+     "oracle_samples": null,
+     "training_time": 22.585080667666563
+    },
+    "B29": {
+     "accuracy": 0.8562962962962963,
+     "fidelity": 0.8496296296296296,
+     "precision_macro": 0.8610022556990787,
+     "macro_f1": 0.8548745719056651,
+     "node_count": 252.33333333333334,
+     "leaf_count": 126.66666666666667,
+     "tree_depth": 11.666666666666666,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 125.66666666666667,
+     "oracle_queries": 518358.0,
+     "oracle_samples": 518358.0,
+     "training_time": 211.4676895303334
+    },
+    "F29": {
+     "accuracy": 0.8851851851851852,
+     "fidelity": 0.8748148148148148,
+     "precision_macro": 0.8884046359484182,
+     "macro_f1": 0.8845768661506312,
+     "node_count": 245.0,
+     "leaf_count": 123.0,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 118.33333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 245852.0,
+     "oracle_samples": 245852.0,
+     "training_time": 23.190446471999923
+    },
+    "C29": {
+     "accuracy": 0.8733333333333332,
+     "fidelity": 0.862962962962963,
+     "precision_macro": 0.8762758613136249,
+     "macro_f1": 0.8728073709998081,
+     "node_count": 253.66666666666666,
+     "leaf_count": 127.33333333333333,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 124.0,
+     "semantic_split_count": 126.33333333333333,
+     "oracle_queries": 519347.6666666667,
+     "oracle_samples": 519347.6666666667,
+     "training_time": 157.03584586700012
+    },
+    "D29": {
+     "accuracy": 0.8637037037037038,
+     "fidelity": 0.8614814814814814,
+     "precision_macro": 0.8674884310232492,
+     "macro_f1": 0.8623685470374033,
+     "node_count": 251.66666666666666,
+     "leaf_count": 126.33333333333333,
+     "tree_depth": 12.333333333333334,
+     "m_of_n_split_count": 124.0,
+     "semantic_split_count": 125.33333333333333,
+     "oracle_queries": 521051.3333333333,
+     "oracle_samples": 521051.3333333333,
+     "training_time": 157.4458644383335
+    },
+    "E29": {
+     "accuracy": 0.8866666666666667,
+     "fidelity": 0.8792592592592593,
+     "precision_macro": 0.888129265837699,
+     "macro_f1": 0.8851526515216014,
+     "node_count": 252.33333333333334,
+     "leaf_count": 126.66666666666667,
+     "tree_depth": 13.0,
+     "m_of_n_split_count": 121.33333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 509347.0,
+     "oracle_samples": 509347.0,
+     "training_time": 26.99843532566668
+    },
+    "G29": {
+     "accuracy": 0.8881481481481481,
+     "fidelity": 0.8799999999999999,
+     "precision_macro": 0.8918078322004056,
+     "macro_f1": 0.8883530110883516,
+     "node_count": 252.33333333333334,
+     "leaf_count": 126.66666666666667,
+     "tree_depth": 11.0,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 526079.6666666666,
+     "oracle_samples": null,
+     "training_time": 28.39391193833323
+    }
+   },
+   "c45": {
+    "accuracy": 0.8644444444444445,
+    "fidelity": 0.8577777777777778,
+    "precision_macro": 0.8662910618615853,
+    "macro_f1": 0.8638220016447027
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0019092339014093
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0051958942146804
+     },
+     "E29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9826162613483346
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0148963972132514
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": []
+   }
+  },
+  "digits:42": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.86,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 163801.0,
+      "node_count": 251.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8555555555555555,
+      "fidelity": 0.8466666666666667,
+      "oracle_queries": 163051.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.86,
+      "fidelity": 0.8444444444444444,
+      "oracle_queries": 162149.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.88,
+      "fidelity": 0.88,
+      "oracle_queries": 349574.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8755555555555555,
+      "fidelity": 0.8688888888888889,
+      "oracle_queries": 349490.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8488888888888889,
+      "fidelity": 0.8511111111111112,
+      "oracle_queries": 349530.0,
+      "node_count": 253.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.86,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 163801.0,
+      "node_count": 251.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8555555555555555,
+      "fidelity": 0.8466666666666667,
+      "oracle_queries": 163051.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.86,
+      "fidelity": 0.8444444444444444,
+      "oracle_queries": 162149.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.88,
+      "fidelity": 0.8688888888888889,
+      "oracle_queries": 349646.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8577777777777778,
+      "fidelity": 0.8533333333333334,
+      "oracle_queries": 349483.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8577777777777778,
+      "fidelity": 0.8444444444444444,
+      "oracle_queries": 349436.0,
+      "node_count": 255.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.8711111111111111,
+      "fidelity": 0.8733333333333333,
+      "oracle_queries": 349726.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8911111111111111,
+      "fidelity": 0.88,
+      "oracle_queries": 349374.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8844444444444445,
+      "fidelity": 0.8777777777777778,
+      "oracle_queries": 349189.0,
+      "node_count": 255.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.8688888888888889,
+      "fidelity": 0.86,
+      "oracle_queries": 342138.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.86,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 342138.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8577777777777778,
+      "fidelity": 0.8577777777777778,
+      "oracle_queries": 342138.0,
+      "node_count": 255.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.8866666666666667,
+      "fidelity": 0.8711111111111111,
+      "oracle_queries": 356623.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8644444444444445,
+      "fidelity": 0.8377777777777777,
+      "oracle_queries": 358508.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 356093.0,
+      "node_count": 253.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.8585185185185185,
+     "fidelity": 0.8488888888888889,
+     "precision_macro": 0.8631088551227201,
+     "macro_f1": 0.8584688599594387,
+     "node_count": 253.66666666666666,
+     "leaf_count": 127.33333333333333,
+     "tree_depth": 11.333333333333334,
+     "m_of_n_split_count": 120.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 163000.33333333334,
+     "oracle_samples": null,
+     "training_time": 20.910298259666888
+    },
+    "B29": {
+     "accuracy": 0.8681481481481481,
+     "fidelity": 0.8666666666666667,
+     "precision_macro": 0.8714642692727596,
+     "macro_f1": 0.8671827294894223,
+     "node_count": 253.0,
+     "leaf_count": 127.0,
+     "tree_depth": 13.0,
+     "m_of_n_split_count": 124.66666666666667,
+     "semantic_split_count": 126.0,
+     "oracle_queries": 349531.3333333333,
+     "oracle_samples": 349531.3333333333,
+     "training_time": 175.77573166800025
+    },
+    "F29": {
+     "accuracy": 0.8585185185185185,
+     "fidelity": 0.8488888888888889,
+     "precision_macro": 0.8631088551227201,
+     "macro_f1": 0.8584688599594387,
+     "node_count": 253.66666666666666,
+     "leaf_count": 127.33333333333333,
+     "tree_depth": 11.333333333333334,
+     "m_of_n_split_count": 120.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 163000.33333333334,
+     "oracle_samples": 163000.33333333334,
+     "training_time": 20.02149115066656
+    },
+    "C29": {
+     "accuracy": 0.8651851851851852,
+     "fidelity": 0.8555555555555556,
+     "precision_macro": 0.8672502841480982,
+     "macro_f1": 0.865082537201407,
+     "node_count": 255.0,
+     "leaf_count": 128.0,
+     "tree_depth": 12.333333333333334,
+     "m_of_n_split_count": 123.66666666666667,
+     "semantic_split_count": 127.0,
+     "oracle_queries": 349521.6666666667,
+     "oracle_samples": 349521.6666666667,
+     "training_time": 145.54410863499984
+    },
+    "D29": {
+     "accuracy": 0.8822222222222221,
+     "fidelity": 0.8770370370370371,
+     "precision_macro": 0.8859177796684113,
+     "macro_f1": 0.881235166880618,
+     "node_count": 253.66666666666666,
+     "leaf_count": 127.33333333333333,
+     "tree_depth": 12.333333333333334,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 126.33333333333333,
+     "oracle_queries": 349429.6666666667,
+     "oracle_samples": 349429.6666666667,
+     "training_time": 141.12007603566659
+    },
+    "E29": {
+     "accuracy": 0.8622222222222223,
+     "fidelity": 0.8577777777777778,
+     "precision_macro": 0.8657442037526984,
+     "macro_f1": 0.8611219049712734,
+     "node_count": 254.33333333333334,
+     "leaf_count": 127.66666666666667,
+     "tree_depth": 11.333333333333334,
+     "m_of_n_split_count": 121.33333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 342138.0,
+     "oracle_samples": 342138.0,
+     "training_time": 23.62618556833316
+    },
+    "G29": {
+     "accuracy": 0.88,
+     "fidelity": 0.8585185185185185,
+     "precision_macro": 0.8812667708270817,
+     "macro_f1": 0.8794142062361717,
+     "node_count": 254.33333333333334,
+     "leaf_count": 127.66666666666667,
+     "tree_depth": 11.0,
+     "m_of_n_split_count": 120.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 357074.6666666667,
+     "oracle_samples": null,
+     "training_time": 22.824798361666733
+    }
+   },
+   "c45": {
+    "accuracy": 0.8266666666666667,
+    "fidelity": 0.8288888888888889,
+    "precision_macro": 0.8311277594041571,
+    "macro_f1": 0.8262840711603706
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "ONTOLOGICAL_JOINT_GAIN",
+    "attribution": "NOT_ASSESSABLE",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9999723439195725
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9997091343265364
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 2.0 vs 3.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9788478667625411
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0215812793130612
+     }
+    },
+    "global": "JOINT_HIERARCHY_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "ONTOLOGICAL_JOINT_GAIN",
+     "accuracy_superiority": true,
+     "fidelity_superiority": true,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "digits:7": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.8822222222222222,
+      "fidelity": 0.8733333333333333,
+      "oracle_queries": 163502.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8822222222222222,
+      "fidelity": 0.8777777777777778,
+      "oracle_queries": 163460.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8711111111111111,
+      "fidelity": 0.86,
+      "oracle_queries": 163490.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.8488888888888889,
+      "fidelity": 0.8577777777777778,
+      "oracle_queries": 349726.0,
+      "node_count": 253.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.88,
+      "fidelity": 0.8777777777777778,
+      "oracle_queries": 349869.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8733333333333333,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 349579.0,
+      "node_count": 253.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.8822222222222222,
+      "fidelity": 0.8733333333333333,
+      "oracle_queries": 163502.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8822222222222222,
+      "fidelity": 0.8777777777777778,
+      "oracle_queries": 163460.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8711111111111111,
+      "fidelity": 0.86,
+      "oracle_queries": 163490.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.8733333333333333,
+      "fidelity": 0.8555555555555555,
+      "oracle_queries": 349174.0,
+      "node_count": 247.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8711111111111111,
+      "fidelity": 0.8755555555555555,
+      "oracle_queries": 349008.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8644444444444445,
+      "fidelity": 0.86,
+      "oracle_queries": 349207.0,
+      "node_count": 253.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.8755555555555555,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 349014.0,
+      "node_count": 255.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8333333333333334,
+      "fidelity": 0.8288888888888889,
+      "oracle_queries": 349689.0,
+      "node_count": 249.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8422222222222222,
+      "fidelity": 0.8466666666666667,
+      "oracle_queries": 352430.0,
+      "node_count": 251.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.8866666666666667,
+      "fidelity": 0.8866666666666667,
+      "oracle_queries": 342138.0,
+      "node_count": 247.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.8755555555555555,
+      "oracle_queries": 342138.0,
+      "node_count": 253.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9155555555555556,
+      "fidelity": 0.9133333333333333,
+      "oracle_queries": 342138.0,
+      "node_count": 251.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.8555555555555555,
+      "fidelity": 0.8422222222222222,
+      "oracle_queries": 358221.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8688888888888889,
+      "fidelity": 0.8644444444444445,
+      "oracle_queries": 358426.0,
+      "node_count": 255.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8866666666666667,
+      "fidelity": 0.88,
+      "oracle_queries": 357877.0,
+      "node_count": 255.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.8785185185185185,
+     "fidelity": 0.8703703703703703,
+     "precision_macro": 0.8807546975220366,
+     "macro_f1": 0.8779522353979335,
+     "node_count": 255.0,
+     "leaf_count": 128.0,
+     "tree_depth": 10.666666666666666,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 163484.0,
+     "oracle_samples": null,
+     "training_time": 19.15418715266681
+    },
+    "B29": {
+     "accuracy": 0.8674074074074074,
+     "fidelity": 0.8674074074074074,
+     "precision_macro": 0.8687771316407377,
+     "macro_f1": 0.8670938894297199,
+     "node_count": 253.66666666666666,
+     "leaf_count": 127.33333333333333,
+     "tree_depth": 11.0,
+     "m_of_n_split_count": 126.0,
+     "semantic_split_count": 126.33333333333333,
+     "oracle_queries": 349724.6666666667,
+     "oracle_samples": 349724.6666666667,
+     "training_time": 173.9407800866667
+    },
+    "F29": {
+     "accuracy": 0.8785185185185185,
+     "fidelity": 0.8703703703703703,
+     "precision_macro": 0.8807546975220366,
+     "macro_f1": 0.8779522353979335,
+     "node_count": 255.0,
+     "leaf_count": 128.0,
+     "tree_depth": 10.666666666666666,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 163484.0,
+     "oracle_samples": 163484.0,
+     "training_time": 21.568098806666814
+    },
+    "C29": {
+     "accuracy": 0.8696296296296296,
+     "fidelity": 0.8637037037037038,
+     "precision_macro": 0.870658911829635,
+     "macro_f1": 0.8685989605539967,
+     "node_count": 251.0,
+     "leaf_count": 126.0,
+     "tree_depth": 11.666666666666666,
+     "m_of_n_split_count": 121.33333333333333,
+     "semantic_split_count": 125.0,
+     "oracle_queries": 349129.6666666667,
+     "oracle_samples": 349129.6666666667,
+     "training_time": 147.19345117666657
+    },
+    "D29": {
+     "accuracy": 0.8503703703703703,
+     "fidelity": 0.8474074074074074,
+     "precision_macro": 0.8531431477225343,
+     "macro_f1": 0.8501714170069032,
+     "node_count": 251.66666666666666,
+     "leaf_count": 126.33333333333333,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 122.66666666666667,
+     "semantic_split_count": 125.33333333333333,
+     "oracle_queries": 350377.6666666667,
+     "oracle_samples": 350377.6666666667,
+     "training_time": 140.11312787300025
+    },
+    "E29": {
+     "accuracy": 0.8970370370370371,
+     "fidelity": 0.8918518518518518,
+     "precision_macro": 0.8999158364948515,
+     "macro_f1": 0.8963228487076412,
+     "node_count": 250.33333333333334,
+     "leaf_count": 125.66666666666667,
+     "tree_depth": 11.0,
+     "m_of_n_split_count": 115.66666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 342138.0,
+     "oracle_samples": 342138.0,
+     "training_time": 23.831661037666436
+    },
+    "G29": {
+     "accuracy": 0.8703703703703703,
+     "fidelity": 0.8622222222222221,
+     "precision_macro": 0.8729305642773628,
+     "macro_f1": 0.8701089406389592,
+     "node_count": 255.0,
+     "leaf_count": 128.0,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 121.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 358174.6666666667,
+     "oracle_samples": null,
+     "training_time": 23.072617061333403
+    }
+   },
+   "c45": {
+    "accuracy": 0.8555555555555555,
+    "fidelity": 0.8377777777777777,
+    "precision_macro": 0.859608960962962,
+    "macro_f1": 0.8555685713140561
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9982986616138029
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0018671831364483
+     },
+     "E29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9783067441625507
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0241618644762451
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": []
+   }
+  },
+  "iris:11": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10155.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10995.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 9866.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22458.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22591.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 23626.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10155.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10995.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 9866.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22386.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22208.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 20918.0,
+      "node_count": 27.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22327.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22208.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 25280.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 22960.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 21619.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 20272.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 24950.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 21212.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 1.0,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 26221.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9693121693121695,
+     "macro_f1": 0.9656848912404468,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 5.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10338.666666666666,
+     "oracle_samples": null,
+     "training_time": 0.29522818666661504
+    },
+    "B29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9693121693121695,
+     "macro_f1": 0.9656848912404468,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 10.0,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 14.666666666666666,
+     "oracle_queries": 22891.666666666668,
+     "oracle_samples": 22891.666666666668,
+     "training_time": 3.6470887643332994
+    },
+    "F29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9693121693121695,
+     "macro_f1": 0.9656848912404468,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 5.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10338.666666666666,
+     "oracle_samples": 10338.666666666666,
+     "training_time": 0.28071783166668257
+    },
+    "C29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9755799755799757,
+     "macro_f1": 0.9739917695473251,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.0,
+     "m_of_n_split_count": 10.666666666666666,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 21837.333333333332,
+     "oracle_samples": 21837.333333333332,
+     "training_time": 2.929370535333343
+    },
+    "D29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9670329670329672,
+     "macro_f1": 0.9657866413421968,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 10.0,
+     "m_of_n_split_count": 11.666666666666666,
+     "semantic_split_count": 14.666666666666666,
+     "oracle_queries": 23271.666666666668,
+     "oracle_samples": 23271.666666666668,
+     "training_time": 2.9635001569999986
+    },
+    "E29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 0.9824561403508771,
+     "precision_macro": 0.9761904761904763,
+     "macro_f1": 0.974320987654321,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 9.0,
+     "m_of_n_split_count": 4.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 21617.0,
+     "oracle_samples": 21617.0,
+     "training_time": 0.6673333550000583
+    },
+    "G29": {
+     "accuracy": 0.9824561403508772,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9841269841269842,
+     "macro_f1": 0.9828806584362141,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 9.333333333333334,
+     "m_of_n_split_count": 3.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 24127.666666666668,
+     "oracle_samples": null,
+     "training_time": 0.32747904733340266
+    }
+   },
+   "c45": {
+    "accuracy": 0.9736842105263158,
+    "fidelity": 1.0,
+    "precision_macro": 0.9761904761904763,
+    "macro_f1": 0.974320987654321
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "EQUIVALENT",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9539424827084091
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0165999271933017
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 1.0 vs 2.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9443174372042228
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0539934473971606
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "EQUIVALENT",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "iris:123": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 10189.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 10215.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 9857.0,
+      "node_count": 61.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22982.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22293.0,
+      "node_count": 63.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 23098.0,
+      "node_count": 59.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 10189.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 10215.0,
+      "node_count": 59.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 9857.0,
+      "node_count": 61.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 1.0,
+      "oracle_queries": 22174.0,
+      "node_count": 61.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22069.0,
+      "node_count": 63.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 23648.0,
+      "node_count": 63.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 1.0,
+      "oracle_queries": 22857.0,
+      "node_count": 53.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 23033.0,
+      "node_count": 63.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 23634.0,
+      "node_count": 63.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 21616.0,
+      "node_count": 51.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22290.0,
+      "node_count": 63.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 20944.0,
+      "node_count": 63.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 21668.0,
+      "node_count": 63.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 22628.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 24023.0,
+      "node_count": 59.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9561403508771931,
+     "fidelity": 0.9736842105263158,
+     "precision_macro": 0.958994708994709,
+     "macro_f1": 0.9572016460905349,
+     "node_count": 60.333333333333336,
+     "leaf_count": 30.666666666666668,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 10.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10087.0,
+     "oracle_samples": null,
+     "training_time": 0.6506790236666499
+    },
+    "B29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9649122807017544,
+     "precision_macro": 0.9693121693121695,
+     "macro_f1": 0.9656848912404468,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 25.0,
+     "semantic_split_count": 30.0,
+     "oracle_queries": 22791.0,
+     "oracle_samples": 22791.0,
+     "training_time": 5.6268551620000835
+    },
+    "F29": {
+     "accuracy": 0.9561403508771931,
+     "fidelity": 0.9736842105263158,
+     "precision_macro": 0.958994708994709,
+     "macro_f1": 0.9572016460905349,
+     "node_count": 60.333333333333336,
+     "leaf_count": 30.666666666666668,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 10.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10087.0,
+     "oracle_samples": 10087.0,
+     "training_time": 0.6431529153333789
+    },
+    "C29": {
+     "accuracy": 0.9473684210526315,
+     "fidelity": 0.9824561403508772,
+     "precision_macro": 0.9498371998371998,
+     "macro_f1": 0.9486672997784109,
+     "node_count": 62.333333333333336,
+     "leaf_count": 31.666666666666668,
+     "tree_depth": 13.333333333333334,
+     "m_of_n_split_count": 23.666666666666668,
+     "semantic_split_count": 30.666666666666668,
+     "oracle_queries": 22630.333333333332,
+     "oracle_samples": 22630.333333333332,
+     "training_time": 6.908520504999994
+    },
+    "D29": {
+     "accuracy": 0.9298245614035087,
+     "fidelity": 0.9824561403508772,
+     "precision_macro": 0.9326414326414326,
+     "macro_f1": 0.9315479582146248,
+     "node_count": 59.666666666666664,
+     "leaf_count": 30.333333333333332,
+     "tree_depth": 11.666666666666666,
+     "m_of_n_split_count": 22.333333333333332,
+     "semantic_split_count": 29.333333333333332,
+     "oracle_queries": 23174.666666666668,
+     "oracle_samples": 23174.666666666668,
+     "training_time": 5.639842985000011
+    },
+    "E29": {
+     "accuracy": 0.9385964912280702,
+     "fidelity": 0.9736842105263158,
+     "precision_macro": 0.9417989417989417,
+     "macro_f1": 0.9400823045267489,
+     "node_count": 59.0,
+     "leaf_count": 30.0,
+     "tree_depth": 14.333333333333334,
+     "m_of_n_split_count": 8.666666666666666,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 21616.666666666668,
+     "oracle_samples": 21616.666666666668,
+     "training_time": 0.9193716330000067
+    },
+    "G29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9736842105263158,
+     "precision_macro": 0.9246031746031745,
+     "macro_f1": 0.9229629629629629,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 13.666666666666666,
+     "m_of_n_split_count": 7.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 22773.0,
+     "oracle_samples": null,
+     "training_time": 0.4228705116666636
+    }
+   },
+   "c45": {
+    "accuracy": 0.9736842105263158,
+    "fidelity": 0.9736842105263158,
+    "precision_macro": 0.9761904761904763,
+    "macro_f1": 0.974320987654321
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "TRADEOFF",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.99295043365071
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.016834130431603
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 1.0 vs 2.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9484738127623478
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9992102145583783
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "TRADEOFF",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": true,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "iris:2024": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 10802.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 11047.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 9561.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 23536.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8947368421052632,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 22062.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 23407.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 10802.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 11047.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 9561.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 23474.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 25127.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8947368421052632,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 23439.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 23474.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 23752.0,
+      "node_count": 23.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 23531.0,
+      "node_count": 27.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 24304.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 22960.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 21616.0,
+      "node_count": 23.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 25888.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 22156.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 27572.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9473684210526315,
+     "precision_macro": 0.9220779220779222,
+     "macro_f1": 0.9194847020933977,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 3.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10470.0,
+     "oracle_samples": null,
+     "training_time": 0.3061867083333709
+    },
+    "B29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.912280701754386,
+     "precision_macro": 0.9226218226218226,
+     "macro_f1": 0.9178506231646327,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 8.666666666666666,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 23001.666666666668,
+     "oracle_samples": 23001.666666666668,
+     "training_time": 3.3551180283332847
+    },
+    "F29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9473684210526315,
+     "precision_macro": 0.9220779220779222,
+     "macro_f1": 0.9194847020933977,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 3.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10470.0,
+     "oracle_samples": 10470.0,
+     "training_time": 0.2837037549999574
+    },
+    "C29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9298245614035087,
+     "precision_macro": 0.9206071706071706,
+     "macro_f1": 0.9197427639456625,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.333333333333334,
+     "m_of_n_split_count": 12.0,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 24013.333333333332,
+     "oracle_samples": 24013.333333333332,
+     "training_time": 2.928920311333362
+    },
+    "D29": {
+     "accuracy": 0.9385964912280702,
+     "fidelity": 0.912280701754386,
+     "precision_macro": 0.9378029378029377,
+     "macro_f1": 0.9372324758798188,
+     "node_count": 26.333333333333332,
+     "leaf_count": 13.666666666666666,
+     "tree_depth": 9.0,
+     "m_of_n_split_count": 9.0,
+     "semantic_split_count": 12.666666666666666,
+     "oracle_queries": 23585.666666666668,
+     "oracle_samples": 23585.666666666668,
+     "training_time": 2.481476367999979
+    },
+    "E29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9473684210526315,
+     "precision_macro": 0.9220779220779222,
+     "macro_f1": 0.9194847020933977,
+     "node_count": 26.333333333333332,
+     "leaf_count": 13.666666666666666,
+     "tree_depth": 8.333333333333334,
+     "m_of_n_split_count": 3.3333333333333335,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 22960.0,
+     "oracle_samples": 22960.0,
+     "training_time": 0.5248027749998982
+    },
+    "G29": {
+     "accuracy": 0.9210526315789473,
+     "fidelity": 0.9473684210526315,
+     "precision_macro": 0.9220779220779222,
+     "macro_f1": 0.9194847020933977,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 4.666666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 25205.333333333332,
+     "oracle_samples": null,
+     "training_time": 0.3135900343334015
+    }
+   },
+   "c45": {
+    "accuracy": 0.9210526315789473,
+    "fidelity": 0.9473684210526315,
+    "precision_macro": 0.9220779220779222,
+    "macro_f1": 0.9194847020933977
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0439823201217302
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0253894645315558
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 1.0 vs 2.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9981885370625316
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0958046518368234
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "iris:42": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 11014.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 8783.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 10147.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 21277.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 21070.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 21427.0,
+      "node_count": 27.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 11014.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 8783.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 10147.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20810.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8947368421052632,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 27410.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20884.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20810.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.868421052631579,
+      "oracle_queries": 27674.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20884.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20272.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8947368421052632,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 25648.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.8947368421052632,
+      "oracle_queries": 21616.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 18726.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 22747.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 0.9210526315789473,
+      "oracle_queries": 20194.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.912280701754386,
+     "precision_macro": 0.9670329670329672,
+     "macro_f1": 0.9657866413421968,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 4.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 9981.333333333334,
+     "oracle_samples": null,
+     "training_time": 0.2963015963333267
+    },
+    "B29": {
+     "accuracy": 0.956140350877193,
+     "fidelity": 0.9035087719298246,
+     "precision_macro": 0.957875457875458,
+     "macro_f1": 0.9572522950300728,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 12.0,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 21258.0,
+     "oracle_samples": 21258.0,
+     "training_time": 3.7416391266666174
+    },
+    "F29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.912280701754386,
+     "precision_macro": 0.9670329670329672,
+     "macro_f1": 0.9657866413421968,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 4.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 9981.333333333334,
+     "oracle_samples": 9981.333333333334,
+     "training_time": 0.28118478233333616
+    },
+    "C29": {
+     "accuracy": 0.9298245614035089,
+     "fidelity": 0.9298245614035087,
+     "precision_macro": 0.9346079846079846,
+     "macro_f1": 0.9313697824808935,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 10.333333333333334,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 23034.666666666668,
+     "oracle_samples": 23034.666666666668,
+     "training_time": 4.01457218466669
+    },
+    "D29": {
+     "accuracy": 0.9385964912280702,
+     "fidelity": 0.9035087719298245,
+     "precision_macro": 0.9417989417989417,
+     "macro_f1": 0.9400823045267489,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 10.0,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 23122.666666666668,
+     "oracle_samples": 23122.666666666668,
+     "training_time": 3.9277799853333213
+    },
+    "E29": {
+     "accuracy": 0.9385964912280702,
+     "fidelity": 0.9210526315789473,
+     "precision_macro": 0.9488256841198018,
+     "macro_f1": 0.9393294771072549,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 4.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 22512.0,
+     "oracle_samples": 22512.0,
+     "training_time": 0.5899329386666446
+    },
+    "G29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 0.9210526315789473,
+     "precision_macro": 0.9761904761904763,
+     "macro_f1": 0.974320987654321,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 10.0,
+     "m_of_n_split_count": 2.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 20555.666666666668,
+     "oracle_samples": null,
+     "training_time": 0.2608837319999869
+    }
+   },
+   "c45": {
+    "accuracy": 0.9473684210526315,
+    "fidelity": 0.8947368421052632,
+    "precision_macro": 0.9487179487179488,
+    "macro_f1": 0.9487179487179488
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0835763790886568
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0877159971148118
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 1.0 vs 2.0"
+      ],
+      "queries_ratio_control_over_B29": 1.0589895568727068
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9669614576473171
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "iris:7": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10955.0,
+      "node_count": 25.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 11705.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 11447.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 29014.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22102.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 26040.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 10955.0,
+      "node_count": 25.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 11705.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 11447.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 28834.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 26155.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 24875.0,
+      "node_count": 25.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 23446.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9210526315789473,
+      "fidelity": 0.9473684210526315,
+      "oracle_queries": 26155.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9473684210526315,
+      "fidelity": 0.9736842105263158,
+      "oracle_queries": 27987.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 25648.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 25648.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 25648.0,
+      "node_count": 21.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 31484.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 21929.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9736842105263158,
+      "fidelity": 1.0,
+      "oracle_queries": 22074.0,
+      "node_count": 29.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 1.0,
+     "precision_macro": 0.9743589743589745,
+     "macro_f1": 0.9733333333333333,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 2.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 11369.0,
+     "oracle_samples": null,
+     "training_time": 0.2839267676665713
+    },
+    "B29": {
+     "accuracy": 0.9649122807017544,
+     "fidelity": 0.9912280701754387,
+     "precision_macro": 0.9670329670329672,
+     "macro_f1": 0.9644159544159544,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 9.333333333333334,
+     "m_of_n_split_count": 12.0,
+     "semantic_split_count": 14.666666666666666,
+     "oracle_queries": 25718.666666666668,
+     "oracle_samples": 25718.666666666668,
+     "training_time": 3.1164976449999053
+    },
+    "F29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 1.0,
+     "precision_macro": 0.9743589743589745,
+     "macro_f1": 0.9733333333333333,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 2.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 11369.0,
+     "oracle_samples": 11369.0,
+     "training_time": 0.28047289999994973
+    },
+    "C29": {
+     "accuracy": 0.9385964912280702,
+     "fidelity": 0.9649122807017543,
+     "precision_macro": 0.9432567432567432,
+     "macro_f1": 0.937434245840043,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 10.333333333333334,
+     "m_of_n_split_count": 10.333333333333334,
+     "semantic_split_count": 13.0,
+     "oracle_queries": 26621.333333333332,
+     "oracle_samples": 26621.333333333332,
+     "training_time": 2.749587839333344
+    },
+    "D29": {
+     "accuracy": 0.9473684210526315,
+     "fidelity": 0.9736842105263158,
+     "precision_macro": 0.9514245014245014,
+     "macro_f1": 0.9464664106693093,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 11.333333333333334,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 25862.666666666668,
+     "oracle_samples": 25862.666666666668,
+     "training_time": 2.618799221999931
+    },
+    "E29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 1.0,
+     "precision_macro": 0.9743589743589745,
+     "macro_f1": 0.9733333333333333,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 2.3333333333333335,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 25648.0,
+     "oracle_samples": 25648.0,
+     "training_time": 0.5243021366666957
+    },
+    "G29": {
+     "accuracy": 0.9736842105263158,
+     "fidelity": 1.0,
+     "precision_macro": 0.9743589743589745,
+     "macro_f1": 0.9733333333333333,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 3.6666666666666665,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 25162.333333333332,
+     "oracle_samples": null,
+     "training_time": 0.28991173466662684
+    }
+   },
+   "c45": {
+    "accuracy": 0.9736842105263158,
+    "fidelity": 1.0,
+    "precision_macro": 0.9743589743589745,
+    "macro_f1": 0.9733333333333333
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.035097724091451
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.005599046088444
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 1.0 vs 2.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9972523199751153
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9783685001814505
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "wine:11": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 8253.0,
+      "node_count": 23.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 9322.0,
+      "node_count": 25.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 6613.0,
+      "node_count": 19.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 19016.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 15812.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 16491.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 8253.0,
+      "node_count": 23.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 9322.0,
+      "node_count": 25.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 6613.0,
+      "node_count": 19.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 19623.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8666666666666667,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 19727.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 17354.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 19659.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 14040.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 21208.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 18487.0,
+      "node_count": 23.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 17702.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 18499.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 18769.0,
+      "node_count": 21.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 10772.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 20296.0,
+      "node_count": 21.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9407407407407407,
+     "precision_macro": 0.9551282051282052,
+     "macro_f1": 0.9550000000000001,
+     "node_count": 22.333333333333332,
+     "leaf_count": 11.666666666666666,
+     "tree_depth": 5.333333333333333,
+     "m_of_n_split_count": 6.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 8062.666666666667,
+     "oracle_samples": null,
+     "training_time": 1.5327712079999856
+    },
+    "B29": {
+     "accuracy": 0.9407407407407408,
+     "fidelity": 0.9407407407407408,
+     "precision_macro": 0.9580770107085897,
+     "macro_f1": 0.9417030156160592,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 8.333333333333334,
+     "m_of_n_split_count": 14.0,
+     "semantic_split_count": 14.666666666666666,
+     "oracle_queries": 17106.333333333332,
+     "oracle_samples": 17106.333333333332,
+     "training_time": 14.486554325333449
+    },
+    "F29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9407407407407407,
+     "precision_macro": 0.9551282051282052,
+     "macro_f1": 0.9550000000000001,
+     "node_count": 22.333333333333332,
+     "leaf_count": 11.666666666666666,
+     "tree_depth": 5.333333333333333,
+     "m_of_n_split_count": 6.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 8062.666666666667,
+     "oracle_samples": 8062.666666666667,
+     "training_time": 1.533723544000016
+    },
+    "C29": {
+     "accuracy": 0.9111111111111111,
+     "fidelity": 0.9259259259259259,
+     "precision_macro": 0.9241702741702742,
+     "macro_f1": 0.9133908672576645,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 11.666666666666666,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 18901.333333333332,
+     "oracle_samples": 18901.333333333332,
+     "training_time": 13.374272865999956
+    },
+    "D29": {
+     "accuracy": 0.9259259259259259,
+     "fidelity": 0.8962962962962964,
+     "precision_macro": 0.9447837821979698,
+     "macro_f1": 0.9282369977558327,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 14.666666666666666,
+     "oracle_queries": 18302.333333333332,
+     "oracle_samples": 18302.333333333332,
+     "training_time": 9.90854484833335
+    },
+    "E29": {
+     "accuracy": 0.9481481481481482,
+     "fidelity": 0.9481481481481482,
+     "precision_macro": 0.9559808612440192,
+     "macro_f1": 0.9446003107330339,
+     "node_count": 25.666666666666668,
+     "leaf_count": 13.333333333333334,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 7.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 18229.333333333332,
+     "oracle_samples": 18229.333333333332,
+     "training_time": 1.9246432946665664
+    },
+    "G29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9407407407407407,
+     "precision_macro": 0.9597069597069599,
+     "macro_f1": 0.9548185598489859,
+     "node_count": 24.333333333333332,
+     "leaf_count": 12.666666666666666,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 8.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 16612.333333333332,
+     "oracle_samples": null,
+     "training_time": 0.9496768606666895
+    }
+   },
+   "c45": {
+    "accuracy": 0.9555555555555556,
+    "fidelity": 0.9111111111111111,
+    "precision_macro": 0.9558404558404558,
+    "macro_f1": 0.9566538952745849
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "TRADEOFF",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.1049318965685224
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0699156257916171
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 2.0 vs 3.0"
+      ],
+      "queries_ratio_control_over_B29": 1.0656482004715602
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9711218067382451
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "TRADEOFF",
+     "accuracy_superiority": false,
+     "fidelity_superiority": true,
+     "tradeoff_vs_original": true,
+     "tradeoff_vs_c45": true,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  },
+  "wine:123": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 4680.0,
+      "node_count": 13.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 4837.0,
+      "node_count": 13.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 2527.0,
+      "node_count": 7.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 9198.0,
+      "node_count": 11.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 17598.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 10829.0,
+      "node_count": 13.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 4680.0,
+      "node_count": 13.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 4837.0,
+      "node_count": 13.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 2527.0,
+      "node_count": 7.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.8222222222222222,
+      "fidelity": 0.8,
+      "oracle_queries": 15736.0,
+      "node_count": 19.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 9208.0,
+      "node_count": 11.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8,
+      "fidelity": 0.7777777777777778,
+      "oracle_queries": 9246.0,
+      "node_count": 9.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 7619.0,
+      "node_count": 9.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 10865.0,
+      "node_count": 13.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 12461.0,
+      "node_count": 15.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 8911.0,
+      "node_count": 11.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 4123.0,
+      "node_count": 5.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 18487.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 8174.0,
+      "node_count": 11.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 23385.0,
+      "node_count": 17.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 21839.0,
+      "node_count": 13.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9333333333333335,
+     "fidelity": 0.9111111111111111,
+     "precision_macro": 0.9446312540610787,
+     "macro_f1": 0.9315646130316044,
+     "node_count": 11.0,
+     "leaf_count": 6.0,
+     "tree_depth": 4.0,
+     "m_of_n_split_count": 4.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 4014.6666666666665,
+     "oracle_samples": null,
+     "training_time": 0.47214259966676764
+    },
+    "B29": {
+     "accuracy": 0.9333333333333335,
+     "fidelity": 0.9111111111111111,
+     "precision_macro": 0.9406178425786269,
+     "macro_f1": 0.9328828433730395,
+     "node_count": 17.666666666666668,
+     "leaf_count": 9.333333333333334,
+     "tree_depth": 6.0,
+     "m_of_n_split_count": 8.333333333333334,
+     "semantic_split_count": 8.333333333333334,
+     "oracle_queries": 12541.666666666666,
+     "oracle_samples": 12541.666666666666,
+     "training_time": 8.470478513999902
+    },
+    "F29": {
+     "accuracy": 0.9333333333333335,
+     "fidelity": 0.9111111111111111,
+     "precision_macro": 0.9446312540610787,
+     "macro_f1": 0.9315646130316044,
+     "node_count": 11.0,
+     "leaf_count": 6.0,
+     "tree_depth": 4.0,
+     "m_of_n_split_count": 4.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 4014.6666666666665,
+     "oracle_samples": 4014.6666666666665,
+     "training_time": 0.47860057599996253
+    },
+    "C29": {
+     "accuracy": 0.8444444444444444,
+     "fidelity": 0.8222222222222223,
+     "precision_macro": 0.8747367465504721,
+     "macro_f1": 0.8442299528533259,
+     "node_count": 13.0,
+     "leaf_count": 7.0,
+     "tree_depth": 4.333333333333333,
+     "m_of_n_split_count": 5.666666666666667,
+     "semantic_split_count": 6.0,
+     "oracle_queries": 11396.666666666666,
+     "oracle_samples": 11396.666666666666,
+     "training_time": 4.964874839666739
+    },
+    "D29": {
+     "accuracy": 0.9481481481481482,
+     "fidelity": 0.925925925925926,
+     "precision_macro": 0.9541722896986055,
+     "macro_f1": 0.9510448480467456,
+     "node_count": 12.333333333333334,
+     "leaf_count": 6.666666666666667,
+     "tree_depth": 3.3333333333333335,
+     "m_of_n_split_count": 5.333333333333333,
+     "semantic_split_count": 5.666666666666667,
+     "oracle_queries": 10315.0,
+     "oracle_samples": 10315.0,
+     "training_time": 4.518102860666583
+    },
+    "E29": {
+     "accuracy": 0.9481481481481482,
+     "fidelity": 0.9259259259259259,
+     "precision_macro": 0.9510257806826435,
+     "macro_f1": 0.9484567282837503,
+     "node_count": 15.666666666666666,
+     "leaf_count": 8.333333333333334,
+     "tree_depth": 6.0,
+     "m_of_n_split_count": 6.333333333333333,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 10507.0,
+     "oracle_samples": 10507.0,
+     "training_time": 0.7990084503333795
+    },
+    "G29": {
+     "accuracy": 0.9407407407407407,
+     "fidelity": 0.9185185185185185,
+     "precision_macro": 0.950199709513435,
+     "macro_f1": 0.938869721686643,
+     "node_count": 13.666666666666666,
+     "leaf_count": 7.333333333333333,
+     "tree_depth": 4.666666666666667,
+     "m_of_n_split_count": 4.666666666666667,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 17799.333333333332,
+     "oracle_samples": null,
+     "training_time": 0.5256777323333305
+    }
+   },
+   "c45": {
+    "accuracy": 0.8888888888888888,
+    "fidelity": 0.8666666666666667,
+    "precision_macro": 0.8904139433551198,
+    "macro_f1": 0.8815235690235691
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "EQUIVALENT",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9087043189368771
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.8224584717607973
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 2.0 vs 3.0"
+      ],
+      "queries_ratio_control_over_B29": 0.8377674418604651
+     },
+     "G29": {
+      "confounded": true,
+      "reasons": [
+       "B29 n\u00e3o supera o controlo, que gastou 1.42\u00d7 as consultas de B29"
+      ],
+      "queries_ratio_control_over_B29": 1.4192159468438539
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "EQUIVALENT",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "conventional_features",
+     "budget_matched_original"
+    ]
+   }
+  },
+  "wine:2024": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 24529.0,
+      "node_count": 37.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 6871.0,
+      "node_count": 9.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 33241.0,
+      "node_count": 63.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 1.0,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 62655.0,
+      "node_count": 55.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 27610.0,
+      "node_count": 17.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 32411.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 24529.0,
+      "node_count": 37.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 6871.0,
+      "node_count": 9.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 33241.0,
+      "node_count": 63.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 63941.0,
+      "node_count": 59.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 40404.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 65000.0,
+      "node_count": 59.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 1.0,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 61614.0,
+      "node_count": 61.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 63364.0,
+      "node_count": 63.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 61644.0,
+      "node_count": 59.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 20891.0,
+      "node_count": 15.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 1.0,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 35259.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 57599.0,
+      "node_count": 61.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 68274.0,
+      "node_count": 55.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 101879.0,
+      "node_count": 43.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 33241.0,
+      "node_count": 63.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9481481481481482,
+     "precision_macro": 0.9528403241638537,
+     "macro_f1": 0.9549306979477757,
+     "node_count": 36.333333333333336,
+     "leaf_count": 18.666666666666668,
+     "tree_depth": 8.333333333333334,
+     "m_of_n_split_count": 14.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 21547.0,
+     "oracle_samples": null,
+     "training_time": 2.742732613000044
+    },
+    "B29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9481481481481481,
+     "precision_macro": 0.953525641025641,
+     "macro_f1": 0.9554459203036054,
+     "node_count": 32.333333333333336,
+     "leaf_count": 16.666666666666668,
+     "tree_depth": 9.0,
+     "m_of_n_split_count": 14.333333333333334,
+     "semantic_split_count": 15.666666666666666,
+     "oracle_queries": 40892.0,
+     "oracle_samples": 40892.0,
+     "training_time": 19.75973142666673
+    },
+    "F29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9481481481481482,
+     "precision_macro": 0.9528403241638537,
+     "macro_f1": 0.9549306979477757,
+     "node_count": 36.333333333333336,
+     "leaf_count": 18.666666666666668,
+     "tree_depth": 8.333333333333334,
+     "m_of_n_split_count": 14.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 21547.0,
+     "oracle_samples": 21547.0,
+     "training_time": 2.8890527263332992
+    },
+    "C29": {
+     "accuracy": 0.9407407407407408,
+     "fidelity": 0.9333333333333332,
+     "precision_macro": 0.9432817998994469,
+     "macro_f1": 0.9426463076199072,
+     "node_count": 49.0,
+     "leaf_count": 25.0,
+     "tree_depth": 12.0,
+     "m_of_n_split_count": 21.0,
+     "semantic_split_count": 24.0,
+     "oracle_queries": 56448.333333333336,
+     "oracle_samples": 56448.333333333336,
+     "training_time": 23.60638345433328
+    },
+    "D29": {
+     "accuracy": 0.9703703703703704,
+     "fidelity": 0.9481481481481481,
+     "precision_macro": 0.9697886989553656,
+     "macro_f1": 0.970986676877318,
+     "node_count": 61.0,
+     "leaf_count": 31.0,
+     "tree_depth": 14.0,
+     "m_of_n_split_count": 27.666666666666668,
+     "semantic_split_count": 30.0,
+     "oracle_queries": 62207.333333333336,
+     "oracle_samples": 62207.333333333336,
+     "training_time": 30.997746313999944
+    },
+    "E29": {
+     "accuracy": 0.9703703703703704,
+     "fidelity": 0.9481481481481482,
+     "precision_macro": 0.9696560749192328,
+     "macro_f1": 0.9688791897487551,
+     "node_count": 33.666666666666664,
+     "leaf_count": 17.333333333333332,
+     "tree_depth": 7.666666666666667,
+     "m_of_n_split_count": 12.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 37916.333333333336,
+     "oracle_samples": 37916.333333333336,
+     "training_time": 2.7685908316666428
+    },
+    "G29": {
+     "accuracy": 0.9481481481481481,
+     "fidelity": 0.9407407407407408,
+     "precision_macro": 0.9480936819172113,
+     "macro_f1": 0.9484271801476102,
+     "node_count": 53.666666666666664,
+     "leaf_count": 27.333333333333332,
+     "tree_depth": 12.666666666666666,
+     "m_of_n_split_count": 20.666666666666668,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 67798.0,
+     "oracle_samples": null,
+     "training_time": 2.7840172123333864
+    }
+   },
+   "c45": {
+    "accuracy": 0.9111111111111111,
+    "fidelity": 0.8888888888888888,
+    "precision_macro": 0.9077380952380952,
+    "macro_f1": 0.9095022624434389
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.3804248589781214
+     },
+     "D29": {
+      "confounded": true,
+      "reasons": [
+       "B29 n\u00e3o supera o controlo, que gastou 1.52\u00d7 as consultas de B29"
+      ],
+      "queries_ratio_control_over_B29": 1.5212592520134338
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 2.0 vs 3.0"
+      ],
+      "queries_ratio_control_over_B29": 0.9272310802438946
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.6579771104372494
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "random_groups",
+     "conventional_features"
+    ]
+   }
+  },
+  "wine:42": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 16956.0,
+      "node_count": 51.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 16089.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 7249.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 11626.0,
+      "node_count": 17.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 21263.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 17235.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 16956.0,
+      "node_count": 51.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8888888888888888,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 16089.0,
+      "node_count": 61.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 7249.0,
+      "node_count": 25.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 26017.0,
+      "node_count": 37.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 29855.0,
+      "node_count": 61.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 22068.0,
+      "node_count": 35.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 29243.0,
+      "node_count": 45.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 34064.0,
+      "node_count": 59.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9111111111111111,
+      "fidelity": 0.8666666666666667,
+      "oracle_queries": 18847.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 17705.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 24907.0,
+      "node_count": 41.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 29663.0,
+      "node_count": 57.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 16956.0,
+      "node_count": 51.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 14764.0,
+      "node_count": 37.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 23185.0,
+      "node_count": 27.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9259259259259259,
+     "fidelity": 0.9037037037037036,
+     "precision_macro": 0.9301537242713712,
+     "macro_f1": 0.9268038359683984,
+     "node_count": 45.666666666666664,
+     "leaf_count": 23.333333333333332,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13431.333333333334,
+     "oracle_samples": null,
+     "training_time": 6.543561649999977
+    },
+    "B29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9111111111111111,
+     "precision_macro": 0.9646604938271605,
+     "macro_f1": 0.9563914357981672,
+     "node_count": 24.333333333333332,
+     "leaf_count": 12.666666666666666,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 8.0,
+     "semantic_split_count": 11.666666666666666,
+     "oracle_queries": 16708.0,
+     "oracle_samples": 16708.0,
+     "training_time": 35.84181676733336
+    },
+    "F29": {
+     "accuracy": 0.9259259259259259,
+     "fidelity": 0.9037037037037036,
+     "precision_macro": 0.9301537242713712,
+     "macro_f1": 0.9268038359683984,
+     "node_count": 45.666666666666664,
+     "leaf_count": 23.333333333333332,
+     "tree_depth": 8.666666666666666,
+     "m_of_n_split_count": 13.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 13431.333333333334,
+     "oracle_samples": 13431.333333333334,
+     "training_time": 6.183406965000056
+    },
+    "C29": {
+     "accuracy": 0.9703703703703703,
+     "fidelity": 0.9259259259259259,
+     "precision_macro": 0.9747238466536712,
+     "macro_f1": 0.9727509118313716,
+     "node_count": 44.333333333333336,
+     "leaf_count": 22.666666666666668,
+     "tree_depth": 9.666666666666666,
+     "m_of_n_split_count": 17.666666666666668,
+     "semantic_split_count": 21.666666666666668,
+     "oracle_queries": 25980.0,
+     "oracle_samples": 25980.0,
+     "training_time": 41.177818002666676
+    },
+    "D29": {
+     "accuracy": 0.9333333333333332,
+     "fidelity": 0.888888888888889,
+     "precision_macro": 0.9343996145466734,
+     "macro_f1": 0.9356965402648515,
+     "node_count": 44.333333333333336,
+     "leaf_count": 22.666666666666668,
+     "tree_depth": 9.0,
+     "m_of_n_split_count": 15.666666666666666,
+     "semantic_split_count": 21.666666666666668,
+     "oracle_queries": 27384.666666666668,
+     "oracle_samples": 27384.666666666668,
+     "training_time": 44.565717716333324
+    },
+    "E29": {
+     "accuracy": 0.9629629629629629,
+     "fidelity": 0.9555555555555556,
+     "precision_macro": 0.9665071770334928,
+     "macro_f1": 0.9608303956130043,
+     "node_count": 41.0,
+     "leaf_count": 21.0,
+     "tree_depth": 9.333333333333334,
+     "m_of_n_split_count": 13.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 24091.666666666668,
+     "oracle_samples": 24091.666666666668,
+     "training_time": 3.6471951226666306
+    },
+    "G29": {
+     "accuracy": 0.9481481481481482,
+     "fidelity": 0.9037037037037036,
+     "precision_macro": 0.951320456957712,
+     "macro_f1": 0.950555959696226,
+     "node_count": 38.333333333333336,
+     "leaf_count": 19.666666666666668,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 10.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 18301.666666666668,
+     "oracle_samples": null,
+     "training_time": 5.587958891666631
+    }
+   },
+   "c45": {
+    "accuracy": 0.9333333333333333,
+    "fidelity": 0.9333333333333333,
+    "precision_macro": 0.9444444444444445,
+    "macro_f1": 0.9393939393939394
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "ONTOLOGICAL_JOINT_GAIN",
+    "attribution": "NOT_ASSESSABLE",
+    "attribution_excluding_E29": "NOT_ASSESSABLE",
+    "control_confounding": {
+     "C29": {
+      "confounded": true,
+      "reasons": [
+       "B29 n\u00e3o supera o controlo, que gastou 1.55\u00d7 as consultas de B29"
+      ],
+      "queries_ratio_control_over_B29": 1.5549437395259755
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.6390152421993458
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "B29 n\u00e3o supera o controlo, que gastou 1.44\u00d7 as consultas de B29"
+      ],
+      "queries_ratio_control_over_B29": 1.4419240284095445
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.095383449046365
+     }
+    },
+    "global": "HIERARCHY_INFEASIBLE",
+    "flags": {
+     "ontological_direct_gain_state": "ONTOLOGICAL_JOINT_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": true,
+     "chain_infeasible_by_baselines": true
+    },
+    "missing": [
+     "permuted_ontology",
+     "conventional_features"
+    ]
+   }
+  },
+  "wine:7": {
+   "per_draw": {
+    "A29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 7125.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 6672.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 6255.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "B29": [
+     {
+      "accuracy": 0.8666666666666667,
+      "fidelity": 0.8888888888888888,
+      "oracle_queries": 14831.0,
+      "node_count": 21.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.8666666666666667,
+      "fidelity": 0.8444444444444444,
+      "oracle_queries": 16432.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 14238.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "F29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 7125.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 6672.0,
+      "node_count": 27.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 6255.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ],
+    "C29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9333333333333333,
+      "oracle_queries": 15643.0,
+      "node_count": 27.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 18067.0,
+      "node_count": 25.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9555555555555556,
+      "oracle_queries": 13568.0,
+      "node_count": 31.0,
+      "variant": "full"
+     }
+    ],
+    "D29": [
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 14050.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 18869.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 13463.0,
+      "node_count": 29.0,
+      "variant": "full"
+     }
+    ],
+    "E29": [
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 15299.0,
+      "node_count": 29.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 15297.0,
+      "node_count": 31.0,
+      "variant": "full"
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 7315.0,
+      "node_count": 9.0,
+      "variant": "full"
+     }
+    ],
+    "G29": [
+     {
+      "accuracy": 0.9555555555555556,
+      "fidelity": 0.9777777777777777,
+      "oracle_queries": 12655.0,
+      "node_count": 31.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9777777777777777,
+      "fidelity": 1.0,
+      "oracle_queries": 16304.0,
+      "node_count": 29.0,
+      "variant": null
+     },
+     {
+      "accuracy": 0.9333333333333333,
+      "fidelity": 0.9111111111111111,
+      "oracle_queries": 14906.0,
+      "node_count": 31.0,
+      "variant": null
+     }
+    ]
+   },
+   "vals": {
+    "A29": {
+     "accuracy": 0.9703703703703703,
+     "fidelity": 0.9925925925925926,
+     "precision_macro": 0.9674145299145299,
+     "macro_f1": 0.970197283214361,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 12.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 6684.0,
+     "oracle_samples": null,
+     "training_time": 1.650048403333282
+    },
+    "B29": {
+     "accuracy": 0.888888888888889,
+     "fidelity": 0.8962962962962964,
+     "precision_macro": 0.8910403732643154,
+     "macro_f1": 0.8798412188919184,
+     "node_count": 27.0,
+     "leaf_count": 14.0,
+     "tree_depth": 6.0,
+     "m_of_n_split_count": 11.0,
+     "semantic_split_count": 13.0,
+     "oracle_queries": 15167.0,
+     "oracle_samples": 15167.0,
+     "training_time": 19.31739333466673
+    },
+    "F29": {
+     "accuracy": 0.9703703703703703,
+     "fidelity": 0.9925925925925926,
+     "precision_macro": 0.9674145299145299,
+     "macro_f1": 0.970197283214361,
+     "node_count": 29.666666666666668,
+     "leaf_count": 15.333333333333334,
+     "tree_depth": 6.333333333333333,
+     "m_of_n_split_count": 12.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 6684.0,
+     "oracle_samples": 6684.0,
+     "training_time": 1.5849923856665857
+    },
+    "C29": {
+     "accuracy": 0.9407407407407407,
+     "fidelity": 0.9481481481481482,
+     "precision_macro": 0.9409377387318564,
+     "macro_f1": 0.9361104961736099,
+     "node_count": 27.666666666666668,
+     "leaf_count": 14.333333333333334,
+     "tree_depth": 7.0,
+     "m_of_n_split_count": 11.0,
+     "semantic_split_count": 13.333333333333334,
+     "oracle_queries": 15759.333333333334,
+     "oracle_samples": 15759.333333333334,
+     "training_time": 15.648805636333387
+    },
+    "D29": {
+     "accuracy": 0.9481481481481482,
+     "fidelity": 0.9555555555555556,
+     "precision_macro": 0.9539156830823498,
+     "macro_f1": 0.9500939893179637,
+     "node_count": 29.0,
+     "leaf_count": 15.0,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 10.666666666666666,
+     "semantic_split_count": 14.0,
+     "oracle_queries": 15460.666666666666,
+     "oracle_samples": 15460.666666666666,
+     "training_time": 18.872461534999957
+    },
+    "E29": {
+     "accuracy": 0.9703703703703703,
+     "fidelity": 0.9925925925925926,
+     "precision_macro": 0.9674145299145299,
+     "macro_f1": 0.970197283214361,
+     "node_count": 23.0,
+     "leaf_count": 12.0,
+     "tree_depth": 7.333333333333333,
+     "m_of_n_split_count": 9.333333333333334,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 12637.0,
+     "oracle_samples": 12637.0,
+     "training_time": 1.5412637086666716
+    },
+    "G29": {
+     "accuracy": 0.9555555555555556,
+     "fidelity": 0.9629629629629629,
+     "precision_macro": 0.9557779777078023,
+     "macro_f1": 0.9558325649130247,
+     "node_count": 30.333333333333332,
+     "leaf_count": 15.666666666666666,
+     "tree_depth": 6.666666666666667,
+     "m_of_n_split_count": 11.0,
+     "semantic_split_count": 0.0,
+     "oracle_queries": 14621.666666666666,
+     "oracle_samples": null,
+     "training_time": 1.0089241556666668
+    }
+   },
+   "c45": {
+    "accuracy": 0.9555555555555556,
+    "fidelity": 0.9777777777777777,
+    "precision_macro": 0.9558404558404558,
+    "macro_f1": 0.9566538952745849
+   },
+   "control_variants": {
+    "C29": [
+     "full"
+    ],
+    "D29": [
+     "full"
+    ],
+    "E29": [
+     "full"
+    ],
+    "G29": [
+     "full"
+    ]
+   },
+   "n_draws": {
+    "A29": 3,
+    "B29": 3,
+    "F29": 3,
+    "C29": 3,
+    "D29": 3,
+    "E29": 3,
+    "G29": 3
+   },
+   "states": {
+    "direct": "NO_GAIN",
+    "attribution": "NOT_ATTRIBUTED",
+    "attribution_excluding_E29": "NOT_ATTRIBUTED",
+    "control_confounding": {
+     "C29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0390540867233689
+     },
+     "D29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 1.0193622118195205
+     },
+     "E29": {
+      "confounded": true,
+      "reasons": [
+       "dimens\u00e3o derivada 2.0 vs 3.0"
+      ],
+      "queries_ratio_control_over_B29": 0.8331904793301246
+     },
+     "G29": {
+      "confounded": false,
+      "reasons": [],
+      "queries_ratio_control_over_B29": 0.9640447462693127
+     }
+    },
+    "global": "NOT_SATISFIED",
+    "flags": {
+     "ontological_direct_gain_state": "NO_GAIN",
+     "accuracy_superiority": false,
+     "fidelity_superiority": false,
+     "tradeoff_vs_original": false,
+     "tradeoff_vs_c45": false,
+     "chain_infeasible_by_baselines": false
+    },
+    "missing": [
+     "conventional_features"
+    ]
+   }
+  }
+ },
+ "semantic_gain": {
+  "accuracy": -0.006266776325255852,
+  "fidelity": -0.009832210241566886
+ },
+ "evidence_level_overall": "NOT_SATISFIED",
+ "contrast_tests": {
+  "B29-A29": {
+   "available": true,
+   "dataset_level": {
+    "accuracy": {
+     "mean": -0.006652444371742609,
+     "se": 0.0030038315347347706,
+     "t": -2.214652950678874,
+     "p_two_sided": 0.1136076512097236,
+     "n": 4
+    },
+    "fidelity": {
+     "mean": -0.009194668229755926,
+     "se": 0.003550780685195783,
+     "t": -2.589477933146116,
+     "p_two_sided": 0.08111072865289817,
+     "n": 4
+    }
+   },
+   "unit_level": {
+    "accuracy": {
+     "mean": -0.006266776325255852,
+     "se": 0.005331218666085389,
+     "t": -1.1754866415669694,
+     "p_two_sided": 0.25600117319785853,
+     "n": 18
+    },
+    "fidelity": {
+     "mean": -0.009832210241566941,
+     "se": 0.005797781430268899,
+     "t": -1.695857348163421,
+     "p_two_sided": 0.10814753221386875,
+     "n": 18
+    }
+   },
+   "per_dataset_mean": {
+    "accuracy": {
+     "breast_cancer": -0.0013986013986013956,
+     "digits": -0.010123456790123423,
+     "iris": -0.0017543859649123083,
+     "wine": -0.013333333333333308
+    },
+    "fidelity": {
+     "breast_cancer": -0.0032634032634032417,
+     "digits": -0.0034567901234567877,
+     "iris": -0.012280701754385937,
+     "wine": -0.017777777777777736
+    }
+   },
+   "p_IUT_dataset": 1.0,
+   "p_IUT_holm_family": 1.0
+  },
+  "B29-C29": {
+   "available": true,
+   "dataset_level": {
+    "accuracy": {
+     "mean": 0.004346183381271119,
+     "se": 0.004919080316392966,
+     "t": 0.8835357631359153,
+     "p_two_sided": 0.44201333705680285,
+     "n": 4
+    },
+    "fidelity": {
+     "mean": 0.0007285631847035437,
+     "se": 0.0036030140501566573,
+     "t": 0.2022093654261121,
+     "p_two_sided": 0.8526891333131392,
+     "n": 4
+    }
+   },
+   "unit_level": {
+    "accuracy": {
+     "mean": 0.0054326591753492475,
+     "se": 0.006856083869115958,
+     "t": 0.7923851690060714,
+     "p_two_sided": 0.4390545692855029,
+     "n": 18
+    },
+    "fidelity": {
+     "mean": 0.0007546449651712966,
+     "se": 0.006891228918707859,
+     "t": 0.10950803899760689,
+     "p_two_sided": 0.9140818436115776,
+     "n": 18
+    }
+   },
+   "per_dataset_mean": {
+    "accuracy": {
+     "breast_cancer": -0.002797202797202836,
+     "digits": -0.005432098765432047,
+     "iris": 0.012280701754385937,
+     "wine": 0.01333333333333342
+    },
+    "fidelity": {
+     "breast_cancer": -0.0009324009324009231,
+     "digits": 0.0004938271604937686,
+     "iris": -0.007017543859649034,
+     "wine": 0.010370370370370363
+    }
+   },
+   "p_IUT_dataset": 0.8526891333131392,
+   "p_IUT_holm_family": 1.0
+  },
+  "B29-D29": {
+   "available": true,
+   "dataset_level": {
+    "accuracy": {
+     "mean": -0.0021961858803963767,
+     "se": 0.004626819816144746,
+     "t": -0.47466423324570434,
+     "p_two_sided": 0.6674398790629812,
+     "n": 4
+    },
+    "fidelity": {
+     "mean": -0.001487956487956471,
+     "se": 0.0008060898504836159,
+     "t": -1.845894086203625,
+     "p_two_sided": 0.16208479197263426,
+     "n": 4
+    }
+   },
+   "unit_level": {
+    "accuracy": {
+     "mean": -0.0022755974802758125,
+     "se": 0.005153505153912534,
+     "t": -0.4415630551078778,
+     "p_two_sided": 0.6643705264569033,
+     "n": 18
+    },
+    "fidelity": {
+     "mean": -0.0015709804598693336,
+     "se": 0.005295891887893991,
+     "t": -0.29664133881971355,
+     "p_two_sided": 0.7703339982620526,
+     "n": 18
+    }
+   },
+   "per_dataset_mean": {
+    "accuracy": {
+     "breast_cancer": -0.007459207459207429,
+     "digits": -0.001481481481481454,
+     "iris": 0.010526315789473694,
+     "wine": -0.010370370370370318
+    },
+    "fidelity": {
+     "breast_cancer": -0.0037296037296036698,
+     "digits": -0.0007407407407407085,
+     "iris": 2.2204460492503132e-17,
+     "wine": -0.001481481481481528
+    }
+   },
+   "p_IUT_dataset": 1.0,
+   "p_IUT_holm_family": 1.0
+  },
+  "B29-E29": {
+   "available": true,
+   "dataset_level": {
+    "accuracy": {
+     "mean": -0.01158458176002037,
+     "se": 0.006585924609655413,
+     "t": -1.7589909460907867,
+     "p_two_sided": 0.17681536774817913,
+     "n": 4
+    },
+    "fidelity": {
+     "mean": -0.016615457317211684,
+     "se": 0.005614370740426889,
+     "t": -2.9594513945383536,
+     "p_two_sided": 0.059570227602583736,
+     "n": 4
+    }
+   },
+   "unit_level": {
+    "accuracy": {
+     "mean": -0.01086901402690877,
+     "se": 0.005627901205630992,
+     "t": -1.931273067841665,
+     "p_two_sided": 0.07029708566051719,
+     "n": 18
+    },
+    "fidelity": {
+     "mean": -0.01678809386411724,
+     "se": 0.006251285199146127,
+     "t": -2.6855427850916724,
+     "p_two_sided": 0.01563969126814799,
+     "n": 18
+    }
+   },
+   "per_dataset_mean": {
+    "accuracy": {
+     "breast_cancer": -0.008391608391608397,
+     "digits": -0.018024691358024758,
+     "iris": 0.005263157894736814,
+     "wine": -0.025185185185185133
+    },
+    "fidelity": {
+     "breast_cancer": -0.006526806526806528,
+     "digits": -0.015061728395061702,
+     "iris": -0.012280701754385892,
+     "wine": -0.03259259259259262
+    }
+   },
+   "p_IUT_dataset": 1.0,
+   "p_IUT_holm_family": 1.0
+  },
+  "B29-G29": {
+   "available": true,
+   "dataset_level": {
+    "accuracy": {
+     "mean": -0.007709142709142691,
+     "se": 0.004319990974857503,
+     "t": -1.784527503416134,
+     "p_two_sided": 0.17233249426290106,
+     "n": 4
+    },
+    "fidelity": {
+     "mean": -0.009639739727458968,
+     "se": 0.00197705756914691,
+     "t": -4.875801230016011,
+     "p_two_sided": 0.016488736217744143,
+     "n": 4
+    }
+   },
+   "unit_level": {
+    "accuracy": {
+     "mean": -0.006837319059541263,
+     "se": 0.00513064813119972,
+     "t": -1.3326423649993058,
+     "p_two_sided": 0.2002368430338965,
+     "n": 18
+    },
+    "fidelity": {
+     "mean": -0.010079820547656751,
+     "se": 0.004883629205887577,
+     "t": -2.064002020363213,
+     "p_two_sided": 0.05462550603376462,
+     "n": 18
+    }
+   },
+   "per_dataset_mean": {
+    "accuracy": {
+     "breast_cancer": -0.0004662004662004504,
+     "digits": -0.015555555555555545,
+     "iris": -2.2204460492503132e-17,
+     "wine": -0.014814814814814748
+    },
+    "fidelity": {
+     "breast_cancer": -0.006993006993006956,
+     "digits": -0.005679012345678913,
+     "iris": -0.0140350877192982,
+     "wine": -0.011851851851851803
+    }
+   },
+   "p_IUT_dataset": 1.0,
+   "p_IUT_holm_family": 1.0
+  },
+  "note": "explorat\u00f3rio (DEV, 4 datasets): p-valores descritivos, nunca confirmat\u00f3rios; SUPPORTED_JOINT_GAIN exige avalia\u00e7\u00e3o confirmat\u00f3ria com \u226512 datasets"
+ },
+ "mechanism_aggregates": {
+  "A29": {
+   "ontology_influenced_splits": 0.0,
+   "semantic_decision_changed_count": 0.0,
+   "semantic_rule_count": 0.0,
+   "semantic_features_used": 0.0,
+   "semantic_split_count": 0.0,
+   "m_of_n_count": 28.87037037037037,
+   "internal_nodes": 34.31481481481482
+  },
+  "B29": {
+   "ontology_influenced_splits": 32.81481481481482,
+   "semantic_decision_changed_count": 10.055555555555555,
+   "semantic_rule_count": 34.888888888888886,
+   "semantic_features_used": 3.2037037037037037,
+   "semantic_split_count": 33.888888888888886,
+   "m_of_n_count": 32.111111111111114,
+   "internal_nodes": 33.888888888888886
+  },
+  "F29": {
+   "ontology_influenced_splits": 0.0,
+   "semantic_decision_changed_count": 0.0,
+   "semantic_rule_count": 0.0,
+   "semantic_features_used": 0.0,
+   "semantic_split_count": 0.0,
+   "m_of_n_count": 28.87037037037037,
+   "internal_nodes": 34.31481481481482
+  },
+  "C29": {
+   "ontology_influenced_splits": 32.96296296296296,
+   "semantic_decision_changed_count": 9.703703703703704,
+   "semantic_rule_count": 35.870370370370374,
+   "semantic_features_used": 3.240740740740741,
+   "semantic_split_count": 34.870370370370374,
+   "m_of_n_count": 32.388888888888886,
+   "internal_nodes": 34.870370370370374
+  },
+  "D29": {
+   "ontology_influenced_splits": 33.22222222222222,
+   "semantic_decision_changed_count": 9.61111111111111,
+   "semantic_rule_count": 36.092592592592595,
+   "semantic_features_used": 3.2222222222222223,
+   "semantic_split_count": 35.092592592592595,
+   "m_of_n_count": 32.425925925925924,
+   "internal_nodes": 35.092592592592595
+  },
+  "E29": {
+   "ontology_influenced_splits": 0.0,
+   "semantic_decision_changed_count": 0.0,
+   "semantic_rule_count": 0.0,
+   "semantic_features_used": 0.0,
+   "semantic_split_count": 0.0,
+   "m_of_n_count": 27.98148148148148,
+   "internal_nodes": 33.96296296296296
+  },
+  "G29": {
+   "ontology_influenced_splits": 0.0,
+   "semantic_decision_changed_count": 0.0,
+   "semantic_rule_count": 0.0,
+   "semantic_features_used": 0.0,
+   "semantic_split_count": 0.0,
+   "m_of_n_count": 28.88888888888889,
+   "internal_nodes": 34.81481481481482
+  }
+ }
+}

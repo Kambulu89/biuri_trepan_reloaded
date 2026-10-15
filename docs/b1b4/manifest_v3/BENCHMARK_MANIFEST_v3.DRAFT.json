@@ -360,7 +360,7 @@
   }
  },
  "controls_m29": {
-  "status": "PREPARED_NOT_EXECUTED (orçamento por aprovar)",
+  "status": "EXECUTED_DEV (18 unidades; ver docs/b1b4/30_RESULTADOS_CONTROLOS_ONTOLOGICOS.md); frozen=false",
   "doc": "docs/b1b4/29_PROTOCOLO_CONTROLOS_ONTOLOGICOS.md",
   "arms": {
    "A29": "Original + amostrador C (= sc_B do Doc. 26)",
@@ -679,6 +679,15 @@
    "evidence": "classify_evidence: unidade = dataset; SUPPORTED só confirmatório com >=12 datasets independentes; DEV nunca confirmatório"
   },
   "comparability": "core.hierarchy_contract.check_comparability (nível estrito: instâncias+ordem, rótulos, classes, partição, dataset, representação base, oráculo e previsões, versão do modelo, configuração, orçamento)",
-  "confirmatory_data_used": false
+  "confirmatory_data_used": false,
+  "execution": {
+   "cpu_hours_measured": 1.788,
+   "authorized_max_cpu_hours": 2.5,
+   "units": 18,
+   "results_doc": "docs/b1b4/30_RESULTADOS_CONTROLOS_ONTOLOGICOS.md",
+   "evidence_dir": "docs/evidence/b1b4/m29_campaign",
+   "m29_report_sha256": "7e58b864e9008e5ede9357980f1d19085fcfae6b01e22b6a560a64e855440119",
+   "cpu_ledger_main_sha256": "6a9c08fb32d2819d511148aad03bb796230c7f9b7ea905c0c7c3fc669bec14f5"
+  }
  }
 }

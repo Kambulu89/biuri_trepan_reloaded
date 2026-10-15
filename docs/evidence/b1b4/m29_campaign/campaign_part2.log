@@ -1,0 +1,7 @@
+{"unit": "breast_cancer:11", "rc": 0, "wall_s": 193.5, "cpu_user_s": 197.2, "cpu_sys_s": 8.1, "cpu_s": 205.3, "cpu_over_wall": 1.06, "estimate_s": 330.0, "cumulative_cpu_h": 0.6729, "dry_run": false}
+{"unit": "breast_cancer:123", "rc": 0, "wall_s": 195.7, "cpu_user_s": 195.1, "cpu_sys_s": 9.0, "cpu_s": 204.1, "cpu_over_wall": 1.04, "estimate_s": 330.0, "cumulative_cpu_h": 0.7296, "dry_run": false}
+{"unit": "breast_cancer:2024", "rc": 0, "wall_s": 477.8, "cpu_user_s": 473.4, "cpu_sys_s": 10.9, "cpu_s": 484.3, "cpu_over_wall": 1.01, "estimate_s": 330.0, "cumulative_cpu_h": 0.8641, "dry_run": false}
+{"unit": "digits:42", "rc": 0, "wall_s": 1077.1, "cpu_user_s": 1031.9, "cpu_sys_s": 30.7, "cpu_s": 1062.5, "cpu_over_wall": 0.99, "estimate_s": 1900.0, "cumulative_cpu_h": 1.1593, "dry_run": false}
+{"unit": "digits:7", "rc": 0, "wall_s": 1078.9, "cpu_user_s": 1033.3, "cpu_sys_s": 32.0, "cpu_s": 1065.3, "cpu_over_wall": 0.99, "estimate_s": 1900.0, "cumulative_cpu_h": 1.4552, "dry_run": false}
+{"unit": "digits:123", "rc": 0, "wall_s": 1214.4, "cpu_user_s": 1124.0, "cpu_sys_s": 74.6, "cpu_s": 1198.6, "cpu_over_wall": 0.99, "estimate_s": 1900.0, "cumulative_cpu_h": 1.7882, "dry_run": false}
+{"cumulative_cpu_h": 1.7882, "limit_h": 2.5, "failed": [], "stopped_early": false}

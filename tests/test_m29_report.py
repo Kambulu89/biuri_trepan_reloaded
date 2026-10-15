@@ -90,3 +90,24 @@ def test_budget_confounding_is_asymmetric():
     assert build(sc, {("a", 1): unit_m(lose_rich)})["level1"]["attribution_counts"] == {"NOT_ASSESSABLE": 1}
     lose_same = dict(FULL, m29_P_k0=(0.96, 0.97, "full", 3, 2100.0))
     assert build(sc, {("a", 1): unit_m(lose_same)})["level1"]["attribution_counts"] == {"NOT_ATTRIBUTED": 1}
+
+
+def test_contrast_tests_use_datasets_as_units_iut_and_holm():
+    sc = {(d, s): unit_sc(0.90, 0.91, 0.95 + 0.004 * "abcd".index(d) + 0.001 * s, 0.96 + 0.003 * "abcd".index(d) + 0.001 * s) for d in "abcd" for s in (1, 2, 3)}
+    m = {k: unit_m(FULL) for k in sc}
+    r = build(sc, m)["contrast_tests"]
+    c = r["B29-C29"]
+    assert c["available"] and c["dataset_level"]["accuracy"]["n"] == 4 and c["unit_level"]["accuracy"]["n"] == 12        # inferência por dataset (n=4), unidades só descritivas
+    assert 0.0 <= c["p_IUT_holm_family"] <= 1.0 and "exploratório" in r["note"]
+    assert r["B29-G29"]["available"]
+
+
+def test_effective_derived_dimension_from_audit_overrides_the_misleading_row_field():
+    sc = {("a", 1): unit_sc(0.90, 0.91, 0.95, 0.96)}
+    e = unit_m(FULL)
+    e["m29_E_k0"]["row"]["semantic_features_generated"] = 3          # a linha bruta descreve a OWL real (3), não o controlo
+    e["m29_E_k0"]["row"]["n_derived_effective"] = 1                  # a auditoria diz que o controlo tem 1 derivada
+    r = build(sc, {("a", 1): e})
+    c = r["per_unit"]["a:1"]["states"]["control_confounding"]["E29"]
+    assert c["confounded"] and any("dimensão" in x for x in c["reasons"])
+    assert r["level1"]["attribution_counts"] == {"NOT_ASSESSABLE": 1}

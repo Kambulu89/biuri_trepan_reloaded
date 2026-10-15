@@ -1,0 +1,3 @@
+{"unit": "iris:42", "rc": 0, "wall_s": 37.5, "cpu_user_s": 37.8, "cpu_sys_s": 2.3, "cpu_s": 40.2, "cpu_over_wall": 1.07, "estimate_s": 47.0, "cumulative_cpu_h": 0.1893, "dry_run": false}
+{"unit": "wine:42", "rc": 0, "wall_s": 304.4, "cpu_user_s": 301.0, "cpu_sys_s": 2.7, "cpu_s": 303.6, "cpu_over_wall": 1.0, "estimate_s": 180.0, "cumulative_cpu_h": 0.2736, "dry_run": false}
+{"cumulative_cpu_h": 0.2736, "limit_h": 2.5, "failed": [], "stopped_early": false}

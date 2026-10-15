@@ -43,7 +43,10 @@ def control_is_full(recs):
 
 def confounding_e29(b_recs, e_recs) -> dict:
     """E29 está CONFUNDIDO face a B29 se a dimensão derivada ou o consumo de consultas diferirem substancialmente (limiares pré-declarados). Nunca se completam colunas artificiais."""
-    db, de = mean_metric(b_recs, "semantic_features_generated"), mean_metric(e_recs, "semantic_features_generated")
+    # dimensão derivada EFETIVA de cada braço: ``n_derived_effective`` (injetada a partir da auditoria do braço, que conhece o contexto realmente usado); o campo
+    # ``semantic_features_generated`` da linha bruta descreve o contexto da OWL real e NÃO o do controlo — por isso só serve de recurso para B29.
+    db = mean_metric(b_recs, "n_derived_effective") if mean_metric(b_recs, "n_derived_effective") is not None else mean_metric(b_recs, "semantic_features_generated")
+    de = mean_metric(e_recs, "n_derived_effective") if mean_metric(e_recs, "n_derived_effective") is not None else mean_metric(e_recs, "semantic_features_generated")
     qb, qe = mean_metric(b_recs, "oracle_queries"), mean_metric(e_recs, "oracle_queries")
     gap = abs((de or 0) - (db or 0)) / max(1.0, (db or 1.0))
     ratio = (qe / qb) if qb else None
@@ -162,7 +165,53 @@ def build(sc, m29):
     res["semantic_gain"] = {"accuracy": (res["arms"]["B29"]["accuracy"] - res["arms"]["A29"]["accuracy"]) if res["arms"]["B29"]["accuracy"] is not None and res["arms"]["A29"]["accuracy"] is not None else None,
                             "fidelity": (res["arms"]["B29"]["fidelity"] - res["arms"]["A29"]["fidelity"]) if res["arms"]["B29"]["fidelity"] is not None and res["arms"]["A29"]["fidelity"] is not None else None}
     res["evidence_level_overall"] = res["level1"]["evidence_vs_original_equivalent"].get("evidence")
+    res["contrast_tests"] = contrast_tests(per_unit)
     return res
+
+
+def contrast_tests(per_unit) -> dict:
+    """Família primária pré-registada (+G29 autorizado depois): B29−A29, B29−C29, B29−D29, B29−E29, B29−G29. Cada contraste é uma interseção-união sobre (accuracy, fidelidade): p_IUT = max(p_acc, p_fid).
+    Dois níveis de inferência reportados: (i) DATASET (média das unidades por dataset; t de uma amostra, gl = nº de datasets − 1; é a unidade de generalização) e (ii) UNIDADE (t pareado
+    sobre unidades; descritivo, as unidades do mesmo dataset NÃO são independentes). Holm sobre a família no nível dataset. Exploratório (DEV)."""
+    from scipy.stats import t as T
+    out, pv = {}, []
+    for arm, name in (("A29", "B29-A29"), ("C29", "B29-C29"), ("D29", "B29-D29"), ("E29", "B29-E29"), ("G29", "B29-G29")):
+        by_ds = {m: defaultdict(list) for m in ("accuracy", "fidelity")}
+        units = {m: [] for m in ("accuracy", "fidelity")}
+        for u, d in per_unit.items():
+            v = d["vals"]
+            if not v.get("B29") or not v.get(arm):
+                continue
+            for m in ("accuracy", "fidelity"):
+                diff = v["B29"][m] - v[arm][m]
+                by_ds[m][u.split(":")[0]].append(diff)
+                units[m].append(diff)
+        if not units["accuracy"]:
+            out[name] = {"available": False}
+            continue
+        def tt(x):
+            x = np.asarray(x, dtype=float)
+            if len(x) < 2 or x.std(ddof=1) == 0:
+                return {"mean": float(x.mean()), "se": None, "t": None, "p_two_sided": None, "n": len(x)}
+            se = x.std(ddof=1) / np.sqrt(len(x))
+            tv = x.mean() / se
+            return {"mean": float(x.mean()), "se": float(se), "t": float(tv), "p_two_sided": float(2 * T.sf(abs(tv), len(x) - 1)), "n": len(x)}
+        dsm = {m: [float(np.mean(v)) for v in by_ds[m].values()] for m in by_ds}
+        res = {"available": True, "dataset_level": {m: tt(dsm[m]) for m in dsm}, "unit_level": {m: tt(units[m]) for m in units},
+               "per_dataset_mean": {m: {d: float(np.mean(v)) for d, v in by_ds[m].items()} for m in by_ds}}
+        pa, pf = res["dataset_level"]["accuracy"]["p_two_sided"], res["dataset_level"]["fidelity"]["p_two_sided"]
+        both_pos = res["dataset_level"]["accuracy"]["mean"] > 0 and res["dataset_level"]["fidelity"]["mean"] > 0
+        res["p_IUT_dataset"] = (max(pa, pf) if (pa is not None and pf is not None and both_pos) else (1.0 if pa is not None else None))
+        out[name] = res
+        pv.append((name, res["p_IUT_dataset"]))
+    valid = [(n, p) for n, p in pv if p is not None]
+    order = sorted(valid, key=lambda x: x[1])
+    run = 0.0
+    for rank, (n, p) in enumerate(order):
+        run = max(run, min(1.0, p * (len(order) - rank)))
+        out[n]["p_IUT_holm_family"] = run
+    out["note"] = "exploratório (DEV, 4 datasets): p-valores descritivos, nunca confirmatórios; SUPPORTED_JOINT_GAIN exige avaliação confirmatória com ≥12 datasets"
+    return out
 
 
 def _k(u):
@@ -194,6 +243,12 @@ if __name__ == "__main__":
     for d in a.m29:
         if (Path(d) / "raw").exists():
             for key, arms in load_full(Path(d)).items():
+                for arm_name, rec_ in arms.items():
+                    af = Path(d) / "audits" / f"{key[0]}_seed{key[1]}__{arm_name}.json"
+                    if af.exists():
+                        meta = json.loads(af.read_text()).get("control") or {}
+                        if "n_derived" in meta:
+                            rec_["row"]["n_derived_effective"] = meta["n_derived"]
                 m29.setdefault(key, {}).update(arms)
     r = build(sc, m29)
     r["mechanism_aggregates"] = mechanisms(sc, m29)
