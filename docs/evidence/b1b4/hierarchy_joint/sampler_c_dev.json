@@ -1,0 +1,117 @@
+{
+ "n_units": 18,
+ "definition": "U1 A_R>A_O; U2 A_O>A_C; U3 A_R>A_C; U4 F_R>F_O; U5 F_R>F_C (estrito; mesmas inst\u00e2ncias; mesmo MLP)",
+ "pairs": {
+  "D vs B": {
+   "n": 18,
+   "status_counts": {
+    "HIERARCHY_NOT_SATISFIED": 8,
+    "HIERARCHY_INFEASIBLE": 9,
+    "HIERARCHY_SATISFIED": 1
+   },
+   "mode_counts": {
+    "NO_GAIN_OVER_ORIGINAL": 7,
+    "ORIGINAL_NOT_ABOVE_C45_IN_ACCURACY": 9,
+    "TRADEOFF_FIDELITY_UP_ACCURACY_DOWN": 1,
+    "JOINT_GAIN": 1
+   },
+   "condition_true_counts": {
+    "U1_acc_R_gt_O": 4,
+    "U2_acc_O_gt_C": 9,
+    "U3_acc_R_gt_C": 9,
+    "U4_fid_R_gt_O": 4,
+    "U5_fid_R_gt_C": 8
+   },
+   "mean_deltas": {
+    "acc_R-O": {
+     "mean": -0.006266776325255852,
+     "se": 0.005331218666085389
+    },
+    "acc_O-C": {
+     "mean": 0.011002497610684756,
+     "se": 0.00477104765824671
+    },
+    "acc_R-C": {
+     "mean": 0.0047357212854289045,
+     "se": 0.0063647920722034595
+    },
+    "fid_R-O": {
+     "mean": -0.009832210241566941,
+     "se": 0.005797781430268899
+    },
+    "fid_R-C": {
+     "mean": 0.0043452973277534985,
+     "se": 0.007839738567261029
+    }
+   },
+   "complementary_means": {
+    "precision_macro_real_labels": {
+     "R": 0.9306942211550956,
+     "O": 0.9358139321952054,
+     "C": 0.9250538930570354
+    },
+    "macro_f1_real_labels": {
+     "R": 0.9267683772789217,
+     "O": 0.933525605807858,
+     "C": 0.9222904744871335
+    }
+   }
+  },
+  "C vs A": {
+   "n": 18,
+   "status_counts": {
+    "HIERARCHY_NOT_SATISFIED": 5,
+    "HIERARCHY_INFEASIBLE": 12,
+    "HIERARCHY_SATISFIED": 1
+   },
+   "mode_counts": {
+    "NO_GAIN_OVER_ORIGINAL": 3,
+    "ORIGINAL_NOT_ABOVE_C45_IN_ACCURACY": 12,
+    "TRADEOFF_FIDELITY_UP_ACCURACY_DOWN": 1,
+    "JOINT_GAIN": 1,
+    "ACCURACY_ONLY_GAIN": 1
+   },
+   "condition_true_counts": {
+    "U1_acc_R_gt_O": 9,
+    "U2_acc_O_gt_C": 6,
+    "U3_acc_R_gt_C": 6,
+    "U4_fid_R_gt_O": 7,
+    "U5_fid_R_gt_C": 8
+   },
+   "mean_deltas": {
+    "acc_R-O": {
+     "mean": -0.0012936078433154414,
+     "se": 0.0046784923088562125
+    },
+    "acc_O-C": {
+     "mean": -0.012114032815787225,
+     "se": 0.0062985671295205875
+    },
+    "acc_R-C": {
+     "mean": -0.013407640659102667,
+     "se": 0.007878813421277685
+    },
+    "fid_R-O": {
+     "mean": -0.002762093873205017,
+     "se": 0.0038816841781275555
+    },
+    "fid_R-C": {
+     "mean": -0.005308263319959237,
+     "se": 0.007402298148764213
+    }
+   },
+   "complementary_means": {
+    "precision_macro_real_labels": {
+     "R": 0.9118200346808462,
+     "O": 0.914624737172558,
+     "C": 0.9250538930570354
+    },
+    "macro_f1_real_labels": {
+     "R": 0.9091988217238485,
+     "O": 0.9101212020391843,
+     "C": 0.9222904744871335
+    }
+   }
+  }
+ }
+}
