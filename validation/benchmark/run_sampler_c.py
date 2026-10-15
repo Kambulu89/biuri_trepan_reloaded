@@ -29,8 +29,13 @@ SC: dict = {"Q": None, "rec": None, "ctx": None, "Xtr": None, "otp": None, "arm"
 SAMPLER_ARMS = ("B", "D", "F")
 
 
-def build_arms(reps: int):
+def build_arms(reps: int, dataset: str = "", c_replicas: str = "auto"):
+    """``c_replicas``: ``auto`` = só o que falta (digits r=2; as restantes réplicas de C vêm das células cx_h_on_n do Doc. 23); ``all`` = r>0 de C (verificação de identidade); ``none``."""
     arms = []
+    c_rs = [r for r in range(1, reps) if c_replicas == "all" or (c_replicas == "auto" and dataset == "digits" and r == 2)]
+    for r in c_rs:
+        arms.append(ArmSpec(f"sc_C_r{r}", "trepan_reloaded", f"C: Reloaded OWL histórico, réplica {r} (seed_offset; = cx_h_on_n_r{r})", tree_space="enr", oracle="mlp_original",
+                            semantic="real", lam=1.0, needs_semantic=True, seed_offset=1000 * r, role="sampler_c", group="SC"))
     for r in range(reps):
         arms.append(ArmSpec(f"sc_B_r{r}", "trepan_original", f"B: Original + amostrador C (réplica de amostragem {r})", oracle="mlp_original", role="sampler_c", group="SC"))
         arms.append(ArmSpec(f"sc_D_r{r}", "trepan_reloaded", f"D: Reloaded OWL + amostrador C (réplica {r})", tree_space="enr", oracle="mlp_original", semantic="real",
@@ -116,11 +121,11 @@ def _tree_stats(tree, n_o: int) -> dict:
             "total_literals": sum(len(n.test.literals) for n in splits)}
 
 
-def run_unit_sampler(dataset: str, seed: int, out: Path, reps: int = 3) -> Path:
+def run_unit_sampler(dataset: str, seed: int, out: Path, reps: int = 3, c_replicas: str = "auto") -> Path:
     SC.update(unit=f"{dataset}_seed{seed}", out=str(out))
     orig_cfg, orig_groups, orig_default = R.benchmark_config, mf.MAIN_ARM_GROUPS, RN.default_arms
     orig_run_arm, orig_rel, orig_orig = RN.BenchmarkRunner._run_arm, RN.TrepanReloadedClassifier, RN.TrepanOriginalClassifier
-    arms_new = build_arms(reps)
+    arms_new = build_arms(reps, dataset, c_replicas)
 
     def default_arms_sc(cfg):
         base = [a for a in orig_default(cfg) if a.group in ("A", "B", "C", "D", "E")]      # MLP, C4.5, Original, Reloaded Core, Reloaded OWL (integridade/referência r=0)
@@ -168,6 +173,7 @@ def main() -> None:
     ap.add_argument("--out", required=True)
     ap.add_argument("--reps", type=int, default=3)
     ap.add_argument("--reuse-checkpoint-from", default=None)
+    ap.add_argument("--c-replicas", default="auto", choices=["auto", "all", "none"])
     a = ap.parse_args()
     if a.reuse_checkpoint_from:
         import shutil
@@ -177,7 +183,7 @@ def main() -> None:
         for f in src.glob(f"{a.unit[0]}_seed{a.unit[1]}.ckpt*"):
             if not (dst / f.name).exists():
                 shutil.copy2(f, dst / f.name)
-    run_unit_sampler(a.unit[0], int(a.unit[1]), Path(a.out), a.reps)
+    run_unit_sampler(a.unit[0], int(a.unit[1]), Path(a.out), a.reps, a.c_replicas)
 
 
 if __name__ == "__main__":
