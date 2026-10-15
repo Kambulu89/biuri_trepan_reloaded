@@ -1,0 +1,165 @@
+{
+ "dataset": "wine",
+ "seed": 7,
+ "structure_tuning": false,
+ "canonical": {
+  "trepan_original": {
+   "fid": 0.9333333333333333,
+   "acc": 0.9111111111111111,
+   "nodes": 27,
+   "pred_hash": "b33c05606f30d99e"
+  },
+  "reloaded_core": {
+   "fid": 0.9333333333333333,
+   "acc": 0.9111111111111111,
+   "nodes": 27,
+   "pred_hash": "b33c05606f30d99e"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9333333333333333,
+   "acc": 0.9111111111111111,
+   "nodes": 31,
+   "pred_hash": "5968a2262561f1fb"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.9111111111111111,
+   "acc": 0.8888888888888888,
+   "nodes": 29,
+   "pred_hash": "7c3280eb3a62de03"
+  }
+ },
+ "det": {
+  "trepan_original": {
+   "fid": 0.9777777777777777,
+   "acc": 0.9555555555555556,
+   "nodes": 29,
+   "pred_hash": "a1b724e606629e66"
+  },
+  "reloaded_core": {
+   "fid": 0.9777777777777777,
+   "acc": 0.9555555555555556,
+   "nodes": 29,
+   "pred_hash": "a1b724e606629e66"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9333333333333333,
+   "acc": 0.9111111111111111,
+   "nodes": 31,
+   "pred_hash": "5968a2262561f1fb"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.8888888888888888,
+   "acc": 0.8666666666666667,
+   "nodes": 29,
+   "pred_hash": "b7147aba77c893f3"
+  }
+ },
+ "noise_canonical": [
+  {
+   "trepan_original": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 27,
+    "pred_hash": "b33c05606f30d99e"
+   },
+   "reloaded_core": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 27,
+    "pred_hash": "b33c05606f30d99e"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 31,
+    "pred_hash": "5968a2262561f1fb"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9111111111111111,
+    "acc": 0.8888888888888888,
+    "nodes": 29,
+    "pred_hash": "7c3280eb3a62de03"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 27,
+    "pred_hash": "b33c05606f30d99e"
+   },
+   "reloaded_core": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 27,
+    "pred_hash": "b33c05606f30d99e"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 31,
+    "pred_hash": "5968a2262561f1fb"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.9111111111111111,
+    "acc": 0.8888888888888888,
+    "nodes": 29,
+    "pred_hash": "7c3280eb3a62de03"
+   }
+  }
+ ],
+ "noise_det": [
+  {
+   "trepan_original": {
+    "fid": 0.9777777777777777,
+    "acc": 0.9555555555555556,
+    "nodes": 29,
+    "pred_hash": "a1b724e606629e66"
+   },
+   "reloaded_core": {
+    "fid": 0.9777777777777777,
+    "acc": 0.9555555555555556,
+    "nodes": 29,
+    "pred_hash": "a1b724e606629e66"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 31,
+    "pred_hash": "5968a2262561f1fb"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8888888888888888,
+    "acc": 0.8666666666666667,
+    "nodes": 29,
+    "pred_hash": "b7147aba77c893f3"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9777777777777777,
+    "acc": 0.9555555555555556,
+    "nodes": 29,
+    "pred_hash": "a1b724e606629e66"
+   },
+   "reloaded_core": {
+    "fid": 0.9777777777777777,
+    "acc": 0.9555555555555556,
+    "nodes": 29,
+    "pred_hash": "a1b724e606629e66"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9333333333333333,
+    "acc": 0.9111111111111111,
+    "nodes": 31,
+    "pred_hash": "5968a2262561f1fb"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8888888888888888,
+    "acc": 0.8666666666666667,
+    "nodes": 29,
+    "pred_hash": "b7147aba77c893f3"
+   }
+  }
+ ]
+}

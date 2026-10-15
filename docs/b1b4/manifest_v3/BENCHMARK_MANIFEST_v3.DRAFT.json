@@ -1,0 +1,286 @@
+{
+ "acceptance_criteria": {
+  "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md §10",
+  "hierarchy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original (objetivo pré-registado, não imposto)",
+  "labels": [
+   "HIERARCHY_SATISFIED",
+   "NOT_SATISFIED",
+   "INFEASIBLE",
+   "INSUFFICIENT_EVIDENCE"
+  ],
+  "selection_uses_test": false
+ },
+ "b1_variants": {
+  "arms": [
+   "historical",
+   "tiebreak",
+   "calibrated lambda=0.2",
+   "calibrated lambda=0.4"
+  ],
+  "default": "OFF",
+  "doc": "docs/b1b4/17_B1_PREREGISTO_E_RESULTADOS.md",
+  "exploratory_separate": "bounded lambda=0.8"
+ },
+ "b2_variants": {
+  "B2-A": {
+   "status": "NOT_IMPLEMENTED_requires_authorization"
+  },
+  "B2-B": {
+   "status": "NOT_IMPLEMENTED_requires_authorization"
+  },
+  "B2-C": {
+   "doc": "docs/b1b4/20_B2_CONTRATO_E_PILOTO.md",
+   "flags": [
+    "statistical_fallback",
+    "b2c_semantic_node_priority"
+   ],
+   "status": "implemented_experimental_default_off"
+  },
+  "cv_lite": {
+   "status": "NOT_IMPLEMENTED_experimental_factor_only"
+  }
+ },
+ "baselines": {
+  "c45": "C4.5 canónico (rótulos reais)",
+  "equivalence_contract": "EQ v2.0 S0–S3 (docs/b1b4/07_CONTRATO_EQUIVALENCIA.md)",
+  "mlp": "FrozenOracle (oracle_id = hash dos pesos)",
+  "trepan_original": "canónico; limitação de desempate m-of-n registada (Doc. 19)"
+ },
+ "code": {
+  "branch": "claude/repository-architecture-analysis-s1vl5a",
+  "commit_at_generation": "91b4892fd4b43e86c5f4a58a4b6c0eb12fcf95cf",
+  "dirty": true,
+  "frozen_baselines": {
+   "c45": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+   "trepan_original": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
+   "v1_frozen_code_sha256": {
+    "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
+    "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+    "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+    "core/benchmark/runner.py": "f0e54ca124eccc364b64fdbed7e6c4b4f1c6ce6117fe33b3896c01c3d178bec8",
+    "core/benchmark/semantic.py": "59450b35f7b30eaac828cfc0e5a974a4528b0e76bec595421399bef73452ec79",
+    "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+    "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+    "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+    "core/trepan_original.py": "fc57a1487fd6657923e76acb7d564e01c855b20ac19c045e7fd46bd78859f931",
+    "core/trepan_reloaded_historical.py": "675dd135ddf2a769cd56663dce1261cebd3e147840911eab3d5d4b7e95a90416",
+    "core/trepan_scientific_tuning.py": "8bb1147a2c95ea7edb3fab1dcfa0f27cf12c541c10fbc4f1f7109623d9c08a29"
+   }
+  },
+  "pre_b2c_reference_commit": "4143db6b082b09f02066c5118a121d972c6c49fd",
+  "sha256": {
+   "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
+   "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+   "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+   "core/benchmark/preprocessing.py": "0c0a28b214648d0381b26bdb9f398e07d31422d9b425bea1d900b2f2a3f50155",
+   "core/benchmark/runner.py": "b31fe41ce0f11cf8164a2bf12596bdfce52b01c4fdc0c3947b5e1b2106718b57",
+   "core/benchmark/semantic.py": "b7970165b4a8391e2e537adc513afe820bdb60c95334f97c337b4e9ef5623d1e",
+   "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+   "core/benchmark/timing.py": "5fa2cc3e806cb57409cc2ce5c246616af6b4555fee3625242170fc7b577c0991",
+   "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+   "core/error_focused_semantic_refinement.py": "deea8baf3a0de88123d032096f7868380fbaa2d8d24225d6b262bd2a7fbe31a0",
+   "core/probabilistic_distillation.py": "340b148f1fc4e90dab3bacabf0959750ff51bf14596bdaa9286c129bc3c7b990",
+   "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+   "core/trepan_original.py": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
+   "core/trepan_reloaded_historical.py": "24feaae003ad28e5b23411e5bd80a6d142ad8c91c3dde9fabb8bb9309d37f9d0",
+   "core/trepan_scientific_tuning.py": "1d98473c40cea8f9361883c34471eeaf4f26cabaf6f433c1cdc195f4835b88ee",
+   "core/tuning_checkpoint.py": "77162603da44960c0128b59e41a2e74d83dc163cffcdec4526a76cd4be550045"
+  }
+ },
+ "computational_budget": {
+  "coherent_sampling_dev": "18 unidades, 15 braços, 5,1 h CPU (≈2,4 h relógio com 3 processos)",
+  "executor_task_limit_min": 120,
+  "pilot_b2c_dev": "18 unidades, ≈13 árvores semânticas por unidade; ver Doc. 20 §8",
+  "structural_tuning": "fingerprint v2 das dependências efetivas; reutilização demonstrada (iris/42: 120 ajustes retomados)"
+ },
+ "datasets": {
+  "confirmatory": "BLOQUEADO (ver BENCHMARK_MANIFEST_v2.DRAFT.json: candidatos por verificar)",
+  "controlled": [
+   "synthetic_binary",
+   "synthetic_3class"
+  ],
+  "dev": [
+   "iris",
+   "wine",
+   "breast_cancer",
+   "digits"
+  ]
+ },
+ "freeze_preconditions": [
+  "aprovação explícita do utilizador",
+  "datasets/ontologias/oráculos/configurações/métricas confirmatórios fixados",
+  "CI verde no commit",
+  "equivalência vs v1 documentada"
+ ],
+ "frozen": false,
+ "manifest_sha256": "2537d075545e278748ae93879ff4cfa72339828f62f3afc80fc15358d89535d8",
+ "manifest_version": "3-DRAFT",
+ "metrics": [
+  "fidelity_to_oracle",
+  "accuracy_real_labels",
+  "node_count",
+  "depth",
+  "oracle_queries",
+  "total_oracle_samples",
+  "b2c_* (aceites/fallback/contexto)",
+  "tempos por componente"
+ ],
+ "numeric_environment": {
+  "NPY_DISABLE_CPU_FEATURES": "AVX512F AVX512CD AVX512_SKX AVX512_CLX AVX512_CNL AVX512_ICL AVX512_KNL AVX512_KNM",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_CORETYPE": "Haswell",
+  "OPENBLAS_NUM_THREADS": "1",
+  "libs": {
+   "numpy": "1.26.4",
+   "pandas": "2.2.3",
+   "scipy": "1.15.2",
+   "sklearn": "1.6.1"
+  },
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "python": "3.11.15"
+ },
+ "ontological_controls": [
+  "ontologia permutada",
+  "Original equivalente na mesma representação",
+  "controlo de engenharia convencional de features (planeado)"
+ ],
+ "ontologies": {
+  "control": "ontologia permutada (ShuffledSemanticProvider, seed_offset 7919)",
+  "dev_owl_sha256": {
+   "breast_cancer.owl": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+   "digits.owl": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+   "iris.owl": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+   "synthetic_3class.owl": "ca94db2aa39361ea1833e94009b64676a3645793828be7cdc5b69db603e138ac",
+   "synthetic_binary.owl": "43e2650bc6701e973784a387cbc98b52c0ee746f0ad72e3ff9e9cc579d395e0d",
+   "wine.owl": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640"
+  }
+ },
+ "oracles": {
+  "policy": "FrozenOracle partilhado por todos os braços da unidade; oracle_id verificado; OriginalOracleProjection nas representações enriquecidas"
+ },
+ "partitioning": {
+  "one_split_per_master_seed": true,
+  "scheme": "holdout",
+  "stratified": true,
+  "test_size": 0.25
+ },
+ "pilot_arms": [
+  "trepan_original_enr (Original equivalente)",
+  "b2c_* e b2c_*_shuf (controlo permutado)",
+  "b1_* sem B2-C"
+ ],
+ "pilot_matrix_B2C": [
+  "E histórico",
+  "B1 tiebreak",
+  "B1 calibrated lambda=0.2",
+  "B1 calibrated lambda=0.4"
+ ],
+ "rng_policy": {
+  "dataset_identity_dependence": false,
+  "rng_original": "estado interno (np.random.Generator) dos FeatureDistributionModel (global: random_state; local: random_state+node_id); intocado por B2-C",
+  "rng_semantic": "np.random.default_rng(SeedSequence([random_state, 0xB2C, node_id])) sobre cópia superficial do modelo local; só consultas semânticas"
+ },
+ "sampling_variants": {
+  "arms_group_COH": [
+   "trepan_original_enr",
+   "hist_active_off",
+   "coh_full",
+   "coh_active_off",
+   "coh_features",
+   "coh_full_shuf",
+   "coh_active_off_shuf",
+   "conv_coh"
+  ],
+  "coherent_sampling": {
+   "doc": "docs/b1b4/22_AMOSTRAGEM_ONTOLOGICA_EXPERIMENTAL.md",
+   "fit_kwarg": "coherent_original_indices",
+   "flag": "TrepanReloadedClassifier(coherent_sampling=True)",
+   "incompatible_with": [
+    "statistical_fallback"
+   ],
+   "parameters": {
+    "active_queries": "semantic_active_query_fraction (0,65 por omissão; 0 = desligadas)",
+    "model": "FeatureDistributionModel no espaço ORIGINAL (mesmas sementes do Original)",
+    "transform": "ctx.enrich (OntologyProcessor ajustado no treino)"
+   },
+   "status": "implemented_experimental_default_off"
+  },
+  "conventional_feature_control": {
+   "grouping": "average-linkage sobre 1-|spearman| do treino",
+   "n_target": "nº de derivadas OWL (teto p//2)",
+   "provider": "ConventionalFeatureProvider"
+  },
+  "historical": {
+   "description": "modelo marginal no espaço enriquecido (+projetor ontológico); consultas ativas por omissão",
+   "status": "default"
+  }
+ },
+ "seeds": {
+  "confirmatory_seeds": "RESERVADAS; não definidas neste rascunho",
+  "dev_digits_seeds_in_pilot": [
+   42,
+   7,
+   123
+  ],
+  "dev_master_seeds": [
+   42,
+   7,
+   123,
+   2024,
+   11
+  ]
+ },
+ "status": "DRAFT_NOT_FROZEN: B2-C implementado e em piloto DEV; B2-A/B2-B não implementados; confirmatório BLOQUEADO até congelar datasets/ontologias/oráculos/configurações/métricas",
+ "status_registry": {
+  "B2C_SCIENTIFIC_STATUS": "NOT_DEMONSTRATED",
+  "B2C_TECHNICAL_STATUS": "VALIDATED",
+  "COHERENT_SAMPLING_SCIENTIFIC_STATUS": "PARTIAL_NOT_PROMOTED",
+  "COHERENT_SAMPLING_TECHNICAL_STATUS": "VALIDATED"
+ },
+ "supersedes": "nenhum (v1 e v2-DRAFT permanecem intactos)",
+ "tuning_checkpoint_fingerprint": {
+  "also_includes": [
+   "python minor",
+   "numpy/scipy/sklearn versions",
+   "platform",
+   "numeric env"
+  ],
+  "effective_dependencies": [
+   "trepan_original.py",
+   "trepan_scientific_tuning.py",
+   "controlled_trepan_experiment.py",
+   "scientific_experiment_contract.py",
+   "training_config.py",
+   "tuning_checkpoint.py"
+  ],
+  "proof": "tests/test_tuning_fingerprint.py (traço dinâmico)",
+  "version": 2
+ },
+ "mechanism_status": {
+  "B1": "TECHNICALLY_VALIDATED / NOT_PROMOTED",
+  "B2C": "TECHNICALLY_VALIDATED / NOT_PROMOTED",
+  "COHERENT_SAMPLING": "PARTIAL_NOT_PROMOTED",
+  "B2A": "NOT_IMPLEMENTED",
+  "B2B": "NOT_IMPLEMENTED",
+  "B3": "DESIGN_ONLY",
+  "B4": "NOT_IMPLEMENTED"
+ },
+ "investigation_causal_plausibility": {
+  "docs": [
+   "docs/b1b4/23_ANALISE_CAUSAL_GANHO_COERENCIA.md",
+   "docs/b1b4/24_PLAUSIBILIDADE_CONSULTAS.md",
+   "docs/b1b4/25_AUDITORIA_REPRESENTACAO_SEMANTICA.md"
+  ],
+  "evidence": "docs/evidence/b1b4/causal_plausibility/",
+  "scope": "DEV exploratory, observed_only; confirmatory untouched",
+  "factorial": "S(hist/coh) x A(active on/off) x L(adoption-test columns native/flipped), replicas r=0..2 (digits 0..1); P2 partial-permutation controls",
+  "controls": [
+   "shuffled both",
+   "shuffled structure only",
+   "shuffled features only",
+   "conventional",
+   "representation-only (lambda=0)"
+  ],
+  "experimental_samplers": "validation/experimental/query_samplers.py (strategies As,C,D + DomainConstrained; not in core, not default)"
+ }
+}

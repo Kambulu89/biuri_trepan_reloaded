@@ -1,0 +1,323 @@
+{
+  "architecture": {
+    "equivalence_allowlist": [],
+    "equivalence_contract": "E1-E9 (docs/b1b4/07_CONTRATO_EQUIVALENCIA.md)",
+    "known_nonconformities": [
+      {
+        "fix_phase": "1a",
+        "id": "V1",
+        "status": "open"
+      },
+      {
+        "id": "V2",
+        "status": "to_assess"
+      }
+    ],
+    "statement": "Reloaded = Original + extensão ontológica"
+  },
+  "arms": {
+    "A": "c45_canonical",
+    "B": "trepan_original",
+    "C": "reloaded_no_ontology_equivalence_control",
+    "D": "reloaded_owl_real_variants_R0..R7",
+    "E": "reloaded_owl_permuted_or_random_controls",
+    "F": "conventional_feature_engineering_controls",
+    "extra": [
+      "original_on_owl_representation",
+      "mlp_ontological_track_M"
+    ]
+  },
+  "code_freeze": {
+    "drift_policy": "Original/tuning mudaram desde o v1 (otimizações exatas de engenharia); re-congelar só com relatório de equivalência v1->atual versionado (ver Doc. 12 D-13)",
+    "drift_vs_v1": [
+      "core/benchmark/preprocessing.py",
+      "core/benchmark/runner.py",
+      "core/benchmark/semantic.py",
+      "core/benchmark/timing.py",
+      "core/trepan_original.py",
+      "core/trepan_scientific_tuning.py"
+    ],
+    "equivalence_report_v1_to_current": {
+      "files_sha256": {
+        "equivalence_provenance.json": "4e66e18342d83c522f5da08a235d54d66c5a7339105c44632422425ed1ac7956",
+        "equivalence_v1_to_current.json": "a5af5acfb8829df96d91133a2740e9393664dba610744bb814a7ded15fd27408",
+        "equivalence_v1_to_current.md": "e45b6f8986636e97ebf6b2fa03678150d80504c4ec16e40d4e41fd3a550d9ff8",
+        "equivalence_v1_to_current_UNPINNED_ENV.md": "5e4068a5156728a57f59495876299d8bd84dae88c87001659fa921ea325f6776"
+      },
+      "not_covered": [
+        "digits",
+        "other seeds",
+        "other machines"
+      ],
+      "scientific_fields": "PASS exato sob ambiente numérico fixado; 2 campos de contabilidade/instrumentação diferem por dataset",
+      "status": "DEV_PARTIAL",
+      "units": "iris(42,7) wine(42,7) breast_cancer(42)"
+    },
+    "files": {
+      "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
+      "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+      "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+      "core/benchmark/preprocessing.py": "0c0a28b214648d0381b26bdb9f398e07d31422d9b425bea1d900b2f2a3f50155",
+      "core/benchmark/runner.py": "aed95acc0460dce6c58f4ed8b27b5577735f166311c453eab6813dabbec74734",
+      "core/benchmark/semantic.py": "f4efdc770ae47c852fd99724ee0d96105758511e51d148df6ed0de1cf307a47c",
+      "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+      "core/benchmark/timing.py": "5fa2cc3e806cb57409cc2ce5c246616af6b4555fee3625242170fc7b577c0991",
+      "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+      "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+      "core/trepan_original.py": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
+      "core/trepan_reloaded_historical.py": "675dd135ddf2a769cd56663dce1261cebd3e147840911eab3d5d4b7e95a90416",
+      "core/trepan_scientific_tuning.py": "1d98473c40cea8f9361883c34471eeaf4f26cabaf6f433c1cdc195f4835b88ee"
+    },
+    "v1_hashes": {
+      "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
+      "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+      "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+      "core/benchmark/runner.py": "f0e54ca124eccc364b64fdbed7e6c4b4f1c6ce6117fe33b3896c01c3d178bec8",
+      "core/benchmark/semantic.py": "59450b35f7b30eaac828cfc0e5a974a4528b0e76bec595421399bef73452ec79",
+      "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+      "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+      "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+      "core/trepan_original.py": "fc57a1487fd6657923e76acb7d564e01c855b20ac19c045e7fd46bd78859f931",
+      "core/trepan_reloaded_historical.py": "675dd135ddf2a769cd56663dce1261cebd3e147840911eab3d5d4b7e95a90416",
+      "core/trepan_scientific_tuning.py": "8bb1147a2c95ea7edb3fab1dcfa0f27cf12c541c10fbc4f1f7109623d9c08a29"
+    }
+  },
+  "dataset_pins": {
+    "bank_marketing": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 222
+    },
+    "banknote_authentication": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 267
+    },
+    "car_evaluation": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 19
+    },
+    "dry_bean": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 602
+    },
+    "mushroom": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 73
+    },
+    "occupancy_detection": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 357
+    },
+    "online_shoppers_purchasing_intention": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 468
+    },
+    "rice_cammeo_osmancik": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 545
+    },
+    "spambase": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 94
+    },
+    "statlog_german_credit": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 144
+    },
+    "statlog_vehicle_silhouettes": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 149
+    },
+    "steel_plates_faults": {
+      "data_sha256": "PENDING",
+      "license": "PENDING",
+      "ontology_freeze": "PENDING",
+      "uci_id_expected": 198
+    }
+  },
+  "datasets_confirm_primary": [
+    "car_evaluation",
+    "banknote_authentication",
+    "spambase",
+    "statlog_vehicle_silhouettes",
+    "online_shoppers_purchasing_intention",
+    "dry_bean",
+    "steel_plates_faults",
+    "occupancy_detection",
+    "mushroom",
+    "statlog_german_credit",
+    "bank_marketing",
+    "rice_cammeo_osmancik"
+  ],
+  "datasets_confirm_reserves_ordered": [
+    "phishing_websites",
+    "magic_gamma_telescope",
+    "image_segmentation",
+    "page_blocks_classification",
+    "contraceptive_method_choice",
+    "heart_disease",
+    "statlog_landsat_satellite",
+    "seeds"
+  ],
+  "datasets_confirm_status": {
+    "occupancy_detection": "INELIGIBLE (EC4, série temporal)",
+    "others": "PENDING verification (UCI inacessível no ambiente de desenvolvimento)",
+    "statlog_german_credit": "INELIGIBLE (EC1, exposto)"
+  },
+  "datasets_dev": [
+    "iris",
+    "wine",
+    "breast_cancer",
+    "digits",
+    "synthetic_binary",
+    "synthetic_3class"
+  ],
+  "eligibility_criteria": {
+    "EC3": {
+      "k_max": 10,
+      "k_min": 2,
+      "min_per_class": 30,
+      "n_max": 50000,
+      "n_min": 150,
+      "p_max": 200,
+      "p_min": 4
+    },
+    "documented_in": "docs/b1b4/08_ELEGIBILIDADE_DATASETS.md",
+    "sha256": "af67b889bb74634b200a85acef38f063756f83c29b38bc2fc0142b8af22a37f1"
+  },
+  "experiment_family_id": "BIURI-B1B4-v2",
+  "freeze_preconditions": [
+    "datasets verified by inspection (EC1-EC8)",
+    "ontologies authored, validated and hashed",
+    "V1 fixed + EQ tests green + golden anchor equal",
+    "baseline hash drift resolved (D-13)",
+    "user approval of grids and margins (D-8)"
+  ],
+  "frozen": false,
+  "grids": {
+    "b1_variants": [
+      "A_tie_break",
+      "B_bounded",
+      "C_normalised"
+    ],
+    "grid_status": "PROPOSED; review in docs/b1b4/10_GRELHAS_MARGENS_CUSTO.md",
+    "inner_folds_K": 3,
+    "lambda_b1b": [
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.4,
+      0.8
+    ],
+    "lambda_b1b_definition": "score_i = s_i + min(m_i, lambda*s_i); max statistical shortfall = lambda/(1+lambda)",
+    "legacy_semantic_lambda": [
+      0.0,
+      0.5,
+      1.0,
+      2.5
+    ]
+  },
+  "hierarchy": {
+    "accuracy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45",
+    "comparison": "strict, unrounded",
+    "delta_accuracy": 0.0,
+    "delta_fidelity": 0.0,
+    "evidence_levels": [
+      "observed_only",
+      "statistically_sustained"
+    ],
+    "fidelity": "Fidelity_R_OWL > Fidelity_Original",
+    "fidelity_loss_tolerance": "exploratory sensitivity only; never used to claim fidelity superiority",
+    "nu_fidelity_selection": 0.0,
+    "statuses": [
+      "HIERARCHY_SATISFIED",
+      "HIERARCHY_NOT_SATISFIED",
+      "HIERARCHY_INFEASIBLE",
+      "INSUFFICIENT_EVIDENCE"
+    ]
+  },
+  "manifest_sha256": "9cdafccea9f06f5572d71323df4946d101c96bb634f34cdc5555eb8d6a56d8cb",
+  "manifest_version": "2-DRAFT",
+  "ontology_protocol": {
+    "doc": "docs/b1b4/09_AUTORIA_ONTOLOGIAS_E_CONGELAMENTO_OWL.md",
+    "freeze_tag": "ontologies-confirm-v1",
+    "hash": "sha256 of OWL bytes",
+    "mutation_after_freeze": "forbidden",
+    "sha256": "8bd8180225578cc275a3e69a0c868c2bdfc921b98e6d6cb502e1b476a22eb852"
+  },
+  "protocol_documents": {
+    "02_PROTOCOLO_EXPERIMENTAL.md": "8e4cddef9e4d845470569e8c8cbde2657d057e85434fb04521d20ba153fcdae8",
+    "04_MATRIZ_ABLACAO.md": "3312afd7f6bf68a55ce7035f6c56fded744d089a2e574b371a56c3e65aa4b2d1",
+    "05_CONTRATO_SUPERIORIDADE.md": "3db12c03923035f478cb6fce3d807d5b3fa505dfe25602465ae94d21a616f0fa",
+    "07_CONTRATO_EQUIVALENCIA.md": "de3fc2e95711f046b267bac11579530456ad7dc4b316c32691c336bc0f12d074",
+    "08_ELEGIBILIDADE_DATASETS.md": "af67b889bb74634b200a85acef38f063756f83c29b38bc2fc0142b8af22a37f1",
+    "09_AUTORIA_ONTOLOGIAS_E_CONGELAMENTO_OWL.md": "8bd8180225578cc275a3e69a0c868c2bdfc921b98e6d6cb502e1b476a22eb852",
+    "10_GRELHAS_MARGENS_CUSTO.md": "e516b963b8f49adb54b433ee1cb51589478b319b660c16696da7d7bdb1cb9c1b",
+    "11_PLANO_V1_FASE1A.md": "c909eb01f6bf6df8335711e973a2d7cc5cefc97890ae67a19401c82383491519"
+  },
+  "splits": {
+    "confirm_seeds": [
+      742495737,
+      722389263,
+      45964685,
+      307577131,
+      1546787794,
+      9826868,
+      550199366,
+      1548718903,
+      496223488,
+      514059117
+    ],
+    "confirm_seeds_rule": "seed_i = int(sha256('BIURI-CONFIRM-v2/{i}'), 16) mod (2**31 - 1), i = 1..10",
+    "dev_seeds": [
+      42,
+      7,
+      123,
+      2024,
+      11
+    ],
+    "scheme": "holdout",
+    "stratified": true,
+    "test_size": 0.25
+  },
+  "stage_ids": {
+    "0": "BIURI-B1B4-v2/S0-dev-conformance",
+    "1": "BIURI-B1B4-v2/S1-confirm-primary",
+    "2": "BIURI-B1B4-v2/S2-confirm-attribution",
+    "3": "BIURI-B1B4-v2/S3-opaque-and-track-M",
+    "4": "BIURI-B1B4-v2/S4-factorial"
+  },
+  "statistics": {
+    "H0": "exact equivalence R0=O",
+    "across_datasets": "one-sided Wilcoxon signed-rank + bootstrap CI over datasets",
+    "alpha": 0.05,
+    "equivalence": "TOST margin 0.01 (non-inferiority/no-effect only)",
+    "multiplicity": "Holm over {H1,H2,H3}",
+    "within_dataset": "Nadeau-Bengio corrected resampled t + paired bootstrap"
+  },
+  "status": "DRAFT_NOT_FROZEN: datasets por verificar, ontologias por escrever, hashes de código a re-congelar na entrada da Fase 1a",
+  "supersedes": "BENCHMARK_MANIFEST_v1.json",
+  "unit_id_scheme": "{experiment_family_id}/{stage}/{dataset_id}/{seed}/{arm_id}"
+}

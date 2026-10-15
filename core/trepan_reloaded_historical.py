@@ -14,6 +14,7 @@ mesmo do TREPAN Original histórico.
 from __future__ import annotations
 
 from typing import Callable, Optional, Sequence
+import hashlib
 import itertools
 import math
 
@@ -21,6 +22,7 @@ import numpy as np
 
 from core.trepan_original import (
     ConstraintSet,
+    Literal,
     FeatureDistributionModel,
     MofNTest,
     TrepanOriginalClassifier,
@@ -41,6 +43,140 @@ from core.error_focused_semantic_refinement import (
 )
 
 
+def _exact_call_key(method: str, X) -> tuple:
+    """Chave de uma consulta ao oráculo: método + forma + dtype + SHA-256 dos bytes EXATOS (sem arredondamentos nem aproximações)."""
+    a = np.ascontiguousarray(np.asarray(X, dtype=float))
+    return (method, a.shape, a.dtype.str, hashlib.sha256(a.tobytes()).hexdigest())
+
+
+class _ExactCallLedger:
+    """Delega no oráculo e regista, por método, chamadas/amostras e as respostas de ``predict`` indexadas pelo conteúdo exato da entrada.
+
+    Só observa: não altera argumentos nem respostas. ``predict_proba`` é exposto apenas se o oráculo o tiver (preserva ``hasattr``).
+    """
+
+    def __init__(self, inner, keep_responses: bool = True):
+        self.inner = inner
+        self.keep_responses = bool(keep_responses)      # False: só contabiliza (sem hashing nem memória)
+        self.responses: dict = {}
+        self.stats = {"predict": [0, 0], "predict_proba": [0, 0]}
+        # B2-C: atribuição (só relato) das chamadas à porção Original ("original") ou à camada semântica ("semantic"); None fora de B2-C.
+        self.tag = None
+        self.tagged = {"original": {"predict": [0, 0], "predict_proba": [0, 0]}, "semantic": {"predict": [0, 0], "predict_proba": [0, 0]}}
+
+    def _tag_count(self, method, n):
+        if self.tag in self.tagged:
+            self.tagged[self.tag][method][0] += 1
+            self.tagged[self.tag][method][1] += int(n)
+
+    def predict(self, X):
+        out = self.inner.predict(X)
+        self.stats["predict"][0] += 1
+        self.stats["predict"][1] += int(len(X))
+        self._tag_count("predict", len(X))
+        if self.keep_responses:
+            self.responses[_exact_call_key("predict", X)] = np.array(out, copy=True)
+        return out
+
+    def __getattr__(self, name):
+        if name in ("inner", "stats", "tagged", "tag", "responses", "keep_responses") or name.startswith("__"):
+            raise AttributeError(name)         # evita recursão infinita em cópia/pickle antes de o estado existir
+        attr = getattr(self.inner, name)
+        if name == "predict_proba":
+            def counted(X, *a, **k):
+                self.stats["predict_proba"][0] += 1
+                self.stats["predict_proba"][1] += int(len(X))
+                self._tag_count("predict_proba", len(X))
+                return attr(X, *a, **k)
+            return counted
+        return attr
+
+
+class _ExactReplayOracle:
+    """Reexecução do Original (mirror): serve de uma cópia da resposta SÓ as chamadas ``predict`` cuja entrada é byte-idêntica a uma já feita ao
+    MESMO oráculo neste mesmo ``fit``; tudo o resto vai ao oráculo. Pressupõe oráculo determinístico (contrato FrozenOracle)."""
+
+    def __init__(self, ledger: _ExactCallLedger):
+        self.ledger = ledger
+        self.inner = ledger.inner
+        self.stats = {"predict": [0, 0], "predict_proba": [0, 0]}
+        self.reused = {"calls": 0, "samples": 0}
+
+    def predict(self, X):
+        stored = self.ledger.responses.get(_exact_call_key("predict", X))
+        if stored is not None:
+            self.reused["calls"] += 1
+            self.reused["samples"] += int(len(X))
+            return np.array(stored, copy=True)
+        self.stats["predict"][0] += 1
+        self.stats["predict"][1] += int(len(X))
+        return self.inner.predict(X)
+
+    def __getattr__(self, name):
+        attr = getattr(self.inner, name)
+        if name == "predict_proba":
+            def counted(X, *a, **k):
+                self.stats["predict_proba"][0] += 1
+                self.stats["predict_proba"][1] += int(len(X))
+                return attr(X, *a, **k)
+            return counted
+        return attr
+
+
+class _LiftedConstraints:
+    """Restrições do caminho (definidas no espaço ENRIQUECIDO) vistas a partir de linhas do espaço ORIGINAL: ``accepts(Xo) = constraints.accepts(lift(Xo))``."""
+
+    def __init__(self, constraints, lift):
+        self.constraints, self.lift = constraints, lift
+
+    def accepts(self, X):
+        return self.constraints.accepts(self.lift(np.asarray(X, dtype=float)))
+
+
+class _OriginalSpaceModel:
+    """Modelo de distribuição das consultas no espaço ORIGINAL (variante experimental ``coherent_sampling``; Doc. 22).
+
+    Ajusta/amostra só as colunas originais com o MESMO ``FeatureDistributionModel`` do Original (mesmas sementes, mesmos lotes de rejeição ⇒ com
+    restrições que só envolvam colunas originais, os sorteios coincidem com os do Original) e recalcula as colunas derivadas com o transformador
+    ontológico JÁ ajustado no treino (``projector``). Coerência algébrica por construção; NÃO garante plausibilidade estatística das originais."""
+
+    def __init__(self, random_state: int, original_indices, n_features: int, projector):
+        self.random_state = int(random_state)
+        self.idx = [int(i) for i in original_indices]
+        self.n_features_in_ = int(n_features)
+        self._projector = projector
+        self.inner = None
+
+    def fit(self, X):
+        self.inner = FeatureDistributionModel(random_state=self.random_state).fit(np.asarray(X, dtype=float)[:, self.idx])
+        self.training_columns_ = self.inner.training_columns_
+        return self
+
+    def _lift(self, Xo):
+        Xo = np.asarray(Xo, dtype=float)
+        full = np.zeros((len(Xo), self.n_features_in_), dtype=float)
+        full[:, self.idx] = Xo
+        return np.asarray(self._projector(full), dtype=float)
+
+    def _draw_unconstrained(self, n: int) -> np.ndarray:
+        return self._lift(self.inner._draw_unconstrained(n))
+
+    def draw(self, n: int, constraints=None) -> np.ndarray:
+        lifted = _LiftedConstraints(constraints, self._lift) if constraints is not None else None
+        return self._lift(self.inner.draw(n, lifted))
+
+    def differs_from(self, reference, X_local, alpha: float = 0.10) -> bool:
+        if reference is None or len(X_local) < 8:
+            return False
+        ref = getattr(reference, "inner", reference)
+        return self.inner.differs_from(ref, np.asarray(X_local, dtype=float)[:, self.idx], alpha=alpha)
+
+    def __getattr__(self, name):
+        if name in ("inner", "idx", "_projector") or name.startswith("__"):
+            raise AttributeError(name)
+        return getattr(self.inner, name)
+
+
 class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """TREPAN Reloaded construído directamente sobre o motor histórico.
 
@@ -52,6 +188,13 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
     """
 
     GAIN_CRITERIA = ("normalized_information_gain", "information_gain", "gain_ratio")
+    SEMANTIC_CALIBRATIONS = (None, "tiebreak", "bounded", "calibrated")
+    # Fase 1b (V2): no mirror, a reexecução do Original reutiliza as respostas de chamadas ``predict`` byte-idênticas já feitas ao mesmo
+    # oráculo neste fit (hoje: a rotulagem inicial do treino). ``False`` restaura o comportamento anterior (útil para auditoria/ablação).
+    REUSE_IDENTICAL_ORACLE_CALLS = True
+    # Contrato de equivalência EQ v2.0 (Doc. 7 §9): S0 ontologia ausente, S1 rejeitada, S2 válida sem mecanismo semântico executado
+    # (≡ Original, E1–E9 integrais); S3 válida com tentativa semântica executada (porção Original ≡ Original isolado + tentativa auditada).
+    EQ_CONTRACT_VERSION = "2.0-S0S3"
 
     def __init__(
         self,
@@ -90,6 +233,13 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         gain_criterion: str = "normalized_information_gain",
         semantic_query_projection: bool = True,
         error_focus_fidelity_tolerance: float = 0.015,
+        semantic_calibration: Optional[str] = None,
+        semantic_lambda_cap: float = 0.20,
+        semantic_tie_se_multiplier: float = 1.0,
+        log_split_candidates: bool = False,
+        statistical_fallback: bool = False,
+        b2c_semantic_node_priority: bool = False,
+        coherent_sampling: bool = False,
     ):
         super().__init__(
             max_nodes=max_nodes,
@@ -138,6 +288,36 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # EFSR: perda de fidelidade local/real tolerada quando a coerência
         # semântica do split aumenta. 0 recupera o gate estrito anterior.
         self.error_focus_fidelity_tolerance = float(error_focus_fidelity_tolerance)
+        # B1 (EXPERIMENTAL, desligado por omissão): calibração do contributo semântico no score do split. ``None`` = score histórico
+        # (bit-a-bit). Só atua com ontologia efetiva (S3); nunca altera o caminho ≡ Original (S0–S2).
+        if semantic_calibration not in self.SEMANTIC_CALIBRATIONS:
+            raise ValueError(f"semantic_calibration deve ser um de {self.SEMANTIC_CALIBRATIONS}.")
+        if float(semantic_lambda_cap) < 0.0 or float(semantic_tie_se_multiplier) < 0.0:
+            raise ValueError("semantic_lambda_cap e semantic_tie_se_multiplier devem ser >= 0.")
+        self.semantic_calibration = semantic_calibration
+        self.semantic_lambda_cap = float(semantic_lambda_cap)
+        self.semantic_tie_se_multiplier = float(semantic_tie_se_multiplier)
+        # Instrumentação (sem efeito nas decisões, nas consultas nem no RNG): regista TODOS os candidatos pontuados, não só o vencedor.
+        self.log_split_candidates = bool(log_split_candidates)
+        # B2-C (EXPERIMENTAL, desligado por omissão; Doc. 20): a amostra-base de decisão, a prioridade de expansão e a pesquisa estatística
+        # são as do Original (corrente ``rng_original`` = RNG do modelo de distribuição, intocada); a camada ontológica usa uma amostra
+        # ADICIONAL com corrente ``rng_semantic`` separada, e o fallback de uma proposta semântica rejeitada é a escolha estatística obtida
+        # no contexto-base. Só atua com ontologia efetiva (S3). ``b2c_semantic_node_priority=True`` reintroduz a prioridade semântica de nós
+        # (fator experimental separado, que quebra a preservação da ordem de expansão do Original).
+        self.statistical_fallback = bool(statistical_fallback)
+        self.b2c_semantic_node_priority = bool(b2c_semantic_node_priority)
+        # Amostragem ontologicamente COERENTE (EXPERIMENTAL, desligada por omissão; Doc. 22): as consultas são geradas no espaço ORIGINAL (mesmo
+        # ``FeatureDistributionModel`` do Original) e as colunas derivadas são recalculadas pelo transformador ajustado no treino. Só atua com ontologia
+        # efetiva (S3); exige ``query_projector`` e ``coherent_original_indices`` no ``fit``. Incompatível com ``statistical_fallback`` (B2-C).
+        self.coherent_sampling = bool(coherent_sampling)
+        if self.coherent_sampling and self.statistical_fallback:
+            raise ValueError("coherent_sampling e statistical_fallback (B2-C) não são combináveis nesta etapa.")
+
+    def _coherent_active(self) -> bool:
+        return bool(self.coherent_sampling and self._ontology_effective())
+
+    def _b2c_active(self) -> bool:
+        return bool(self.statistical_fallback and self._ontology_effective())
 
     def fit(
         self,
@@ -154,6 +334,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         semantic_feature_depths=None,
         ontology_graph=None,
         semantic_feature_entities: Optional[Sequence[Optional[str]]] = None,
+        coherent_original_indices: Optional[Sequence[int]] = None,
     ):
         X_arr = np.asarray(X, dtype=float)
         if semantic_feature_entities is not None and len(semantic_feature_entities) != X_arr.shape[1]:
@@ -252,6 +433,35 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             or repeated_groups
             or related_off_diagonal
         )
+        # Predicado único de «ontologia efetiva» (contrato EQ, Doc. 7): a extensão ontológica altera algum mecanismo do Original.
+        # Inclui o domínio OWL (filtragem das membership queries), que atua mesmo com a projeção desligada.
+        self.ontology_effective_ = bool(self.reload_extension_active_ or self._ontology_domain_fit is not None)
+        self.split_candidate_log_: list[dict] = []
+        self._coherent_idx = None if coherent_original_indices is None else [int(i) for i in coherent_original_indices]
+        self._coherent_train_X = X_arr if (self.coherent_sampling and self.ontology_effective_) else None
+        self._coherent_global_model = None
+        self.coherent_sampling_audit_ = {"enabled": bool(self.coherent_sampling and self.ontology_effective_), "batches": 0, "rows": 0}
+        if self.coherent_sampling and self.ontology_effective_ and (self._coherent_idx is None or query_projector is None):
+            raise ValueError("coherent_sampling exige query_projector e coherent_original_indices no fit.")
+        self.b2c_audit_: list[dict] = []
+        self._b2c_base_draw = False
+        self._b2c_sem_X = None
+        self._b2c_sem_y = None
+        self._b2c_semantic_tests_: set = set()
+        self._b2c_first_divergence_order_ = None
+        self.semantic_membership_queries_ = 0
+        semantic_inputs_given = any(v is not None for v in (
+            semantic_feature_weights, semantic_feature_groups, semantic_relatedness_matrix, semantic_feature_depths, query_projector,
+            semantic_feature_entities,
+        ))
+        if self.ontology_effective_:
+            self.ontology_state_ = "S3"        # válida com tentativa semântica executada
+        elif ontology_graph is not None and not graph_active:
+            self.ontology_state_ = "S1"        # rejeitada / inativa
+        elif ontology_graph is None and not semantic_inputs_given:
+            self.ontology_state_ = "S0"        # ausente
+        else:
+            self.ontology_state_ = "S2"        # válida sem mecanismo semântico executado
         self.algorithm_family_ = "historical_trepan"
         self.semantic_projected_query_count_ = 0
         self.semantic_projection_batches_ = 0
@@ -282,21 +492,39 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         # candidato consulta-a, por isso é calculada uma única vez.
         self._semantic_structure_cache_ = None
         self._semantic_structure_cache_enabled_ = True
+        ledger = None
+        pass_oracle = oracle
+        if oracle is not None:
+            # Observador (nunca altera argumentos nem respostas): contabilidade do contrato S0–S3 em TODOS os estados; só guarda respostas
+            # (reutilização exata V2) quando o mirror é possível.
+            mirror_possible = bool(self.mirror_when_no_semantic_effect and self.reload_extension_active_)
+            ledger = _ExactCallLedger(oracle, keep_responses=mirror_possible)
+            pass_oracle = ledger
+            if self.statistical_fallback:
+                ledger.tag = "original"          # B2-C: por omissão a porção Original; a camada semântica marca-se explicitamente
+        self._ledger = ledger if self.statistical_fallback else None      # só durante o fit e só em B2-C (nunca persiste no artefacto)
         try:
             fitted = super().fit(
                 X_arr,
                 y=y,
-                oracle=oracle,
+                oracle=pass_oracle,
                 sample_weight=sample_weight,
                 feature_names=feature_names,
             )
         finally:
             # Não persistir callback/closure de treino no artefacto.
+            self._ledger = None
+            self._coherent_train_X = None
+            self._coherent_global_model = None
+            self._b2c_sem_X = None
+            self._b2c_sem_y = None
             self._query_projector_fit = None
             self._ontology_graph_fit = None
             self._ontology_domain_fit = None
             self._semantic_structure_cache_enabled_ = False
             self._semantic_structure_cache_ = None
+        if ledger is not None:
+            self.oracle_info_["oracle_type"] = type(oracle).__name__      # o invólucro de observação não é visível no relato
         self.semantic_split_audit_ = []
         for item in self.split_audit_:
             row = dict(item)
@@ -319,11 +547,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             self.mirror_when_no_semantic_effect
             and self.reload_extension_active_
             and not measurable_effect
+            and not self.statistical_fallback        # B2-C já preserva a porção Original por construção; o mirror é redundante
         ):
             # Produção: uma OWL carregada não pode alterar silenciosamente a
             # árvore quando nenhuma contribuição semântica mensurável foi
             # aceite. Reexecuta exactamente o TREPAN Original com o mesmo
             # oráculo, seed e orçamento e adopta esse estado final.
+            rerun_oracle = (
+                _ExactReplayOracle(ledger) if (ledger is not None and self.REUSE_IDENTICAL_ORACLE_CALLS) else
+                (ledger.inner if ledger is not None else oracle)
+            )
             original = TrepanOriginalClassifier(
                 max_nodes=self.max_nodes,
                 max_depth=self.max_depth,
@@ -339,9 +572,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
                 local_model_alpha=self.local_model_alpha,
                 random_state=self.random_state,
             ).fit(
-                X_arr, y=y, oracle=oracle, sample_weight=sample_weight,
+                X_arr, y=y, oracle=rerun_oracle, sample_weight=sample_weight,
                 feature_names=feature_names,
             )
+            original.oracle_info_["oracle_type"] = type(oracle).__name__
+            if ledger is not None:
+                replay = rerun_oracle if isinstance(rerun_oracle, _ExactReplayOracle) else None
+                self._mirror_rerun_accounting = {
+                    "stats": dict(replay.stats) if replay is not None else None,
+                    "reused": dict(replay.reused) if replay is not None else {"calls": 0, "samples": 0},
+                }
             self.pre_mirror_semantic_audit_ = dict(preliminary_summary)
             self.pre_mirror_semantic_split_audit_ = list(self.semantic_split_audit_)
             self._adopt_original_state(original)
@@ -361,8 +601,86 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             fitted = self
         self._current_real_validation_X_ = None
         self._current_real_validation_y_ = None
+        if ledger is not None:
+            self.oracle_accounting_ = self._build_oracle_accounting(ledger)
         self.semantic_audit_summary_ = self.semantic_audit_summary()
         return fitted
+
+    def _build_oracle_accounting(self, ledger: _ExactCallLedger) -> dict:
+        """Contabilidade auditável do consumo do oráculo (só relato; não influencia decisões), contrato EQ v2.0.
+
+        * ``semantic_oracle_*``: consultas da tentativa semântica (passagem semântica; 0 nos estados S0–S2, em que o fit É o Original).
+        * ``original_oracle_*``: pedidos da porção Original (reexecução do ``mirror``: enviados + reutilizados = Original isolado);
+          0 e ``original_portion_executed=False`` se não houve reexecução.
+        * ``reused_oracle_*``: chamadas byte-idênticas servidas da passagem semântica em vez de repetidas.
+        * ``total_oracle_*`` = original + semantic − reused = o que o oráculo realmente recebeu.
+        Estado S0–S2: toda a passagem é o Original (``original`` = total, ``semantic`` = 0). S3 sem mirror: a passagem é a tentativa
+        semântica (a porção Original isolada é o braço de referência, medido à parte)."""
+        state = getattr(self, "ontology_state_", "S3")
+        attempt = {m: [int(v[0]), int(v[1])] for m, v in ledger.stats.items()}
+        rerun = getattr(self, "_mirror_rerun_accounting", None)
+        reused = dict(rerun["reused"]) if rerun else {"calls": 0, "samples": 0}
+        calls_att = sum(v[0] for v in attempt.values())
+        samples_att = sum(v[1] for v in attempt.values())
+        if state != "S3":                                   # S0–S2: o fit é o Original
+            orig_calls, orig_samples, sem_calls, sem_samples, orig_exec = calls_att, samples_att, 0, 0, True
+        else:
+            sem_calls, sem_samples = calls_att, samples_att
+            if rerun and rerun["stats"] is not None:
+                orig_calls = sum(v[0] for v in rerun["stats"].values()) + reused["calls"]
+                orig_samples = sum(v[1] for v in rerun["stats"].values()) + reused["samples"]
+                orig_exec = True
+            else:
+                orig_calls = orig_samples = 0
+                orig_exec = False
+        tagged = getattr(ledger, "tagged", None)
+        b2c_split = bool(state == "S3" and getattr(self, "statistical_fallback", False) and tagged is not None and not rerun)
+        if b2c_split:                                        # B2-C: a mesma passagem contém a porção Original e a camada semântica
+            orig_calls = sum(v[0] for v in tagged["original"].values()); orig_samples = sum(v[1] for v in tagged["original"].values())
+            sem_calls = sum(v[0] for v in tagged["semantic"].values()); sem_samples = sum(v[1] for v in tagged["semantic"].values())
+            orig_exec = True
+        total_calls = (orig_calls + sem_calls - reused["calls"]) if state == "S3" else calls_att
+        total_samples = (orig_samples + sem_samples - reused["samples"]) if state == "S3" else samples_att
+        summary = self.semantic_audit_summary()
+        effect_observed = bool(
+            state == "S3" and not getattr(self, "semantic_effect_mirror_applied_", False)
+            and (summary.get("ontology_influenced_splits", 0) or summary.get("error_focused_interventions_accepted", 0))
+        )
+        if state != "S3":
+            status = "NO_SEMANTIC_ATTEMPT"
+        elif effect_observed:
+            status = "SEMANTIC_EFFECT_STRUCTURAL_GAIN_UNEVALUATED"     # ganho em métricas só se avalia fora do fit (conjuntos de avaliação)
+        else:
+            status = "SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN"
+        out = {
+            "eq_contract_version": self.EQ_CONTRACT_VERSION,
+            "ontology_state": state,
+            "semantic_attempt_executed": bool(state == "S3"),
+            "semantic_effect_observed": effect_observed,
+            "semantic_attempt_status": status,
+            "mirror_applied": bool(self.semantic_effect_mirror_applied_),
+            "original_portion_executed": bool(orig_exec),
+            "original_oracle_calls": int(orig_calls), "original_oracle_samples": int(orig_samples),
+            "semantic_oracle_calls": int(sem_calls), "semantic_oracle_samples": int(sem_samples),
+            "reused_oracle_calls": int(reused["calls"]), "reused_oracle_samples": int(reused["samples"]),
+            "total_oracle_calls": int(total_calls), "total_oracle_samples": int(total_samples),
+            "semantic_attempt": {m: {"calls": v[0], "samples": v[1]} for m, v in attempt.items()} if state == "S3" else None,
+            "original_rerun": ({m: {"calls": int(v[0]), "samples": int(v[1])} for m, v in rerun["stats"].items()}
+                               if rerun and rerun["stats"] is not None else None),
+            "reused_identical": reused,
+            "reuse_policy": "byte_identical_predict_same_oracle_same_fit" if self.REUSE_IDENTICAL_ORACLE_CALLS else "disabled",
+            "b2c_split_attribution": ({tag: {m: {"calls": int(v[0]), "samples": int(v[1])} for m, v in tagged[tag].items()}
+                                       for tag in ("original", "semantic")} if b2c_split else None),
+        }
+        self._mirror_rerun_accounting = None
+        return out
+
+    def _ontology_effective(self) -> bool:
+        """``False`` ⇒ o Reloaded delega no TREPAN Original (equivalência EQ: mesma árvore e mesmo fluxo de consultas ao oráculo).
+
+        Antes de ``fit`` assume-se efetiva (comportamento histórico preservado).
+        """
+        return bool(getattr(self, "ontology_effective_", True))
 
     def _adopt_original_state(self, original: TrepanOriginalClassifier) -> None:
         """Adopta apenas o estado aprendido do TREPAN Original de referência."""
@@ -524,7 +842,11 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return False, "below_disagreement_threshold"
 
     def _priority(self, node: _Node) -> float:
+        if not self._ontology_effective():
+            return TrepanOriginalClassifier._priority(self, node)
         base = TrepanOriginalClassifier._priority(self, node)
+        if self._b2c_active() and not self.b2c_semantic_node_priority:
+            return base                 # B2-C: ordem de expansão do Original preservada (fator experimental separado)
         if not bool(self.error_focused_refinement) or not self._semantic_structure_active():
             return base
         try:
@@ -542,14 +864,125 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return float(base * multiplier)
 
     def _decision_sample(self, node: _Node):
-        X, y, model = super()._decision_sample(node)
+        if not self._ontology_effective():
+            return super()._decision_sample(node)
+        if self._b2c_active():
+            return self._decision_sample_b2c(node)
+        if self._coherent_active():
+            X, y, model = self._decision_sample_coherent(node)
+        else:
+            X, y, model = super()._decision_sample(node)
+        self._register_semantic_profile(node, X, y)
+        return X, y, model
+
+    def _coherent_model(self, random_state: int) -> _OriginalSpaceModel:
+        return _OriginalSpaceModel(random_state, self._coherent_idx, self.n_features_in_, self._query_projector_fit)
+
+    def _decision_sample_coherent(self, node: _Node):
+        """Mesma lógica de ``TrepanOriginalClassifier._decision_sample`` (cópia fiel; teste diferencial com transformador identidade), mas os modelos de
+        distribuição vivem no espaço ORIGINAL e as consultas chegam ao oráculo já com as derivadas recalculadas."""
+        import time
+        X, y = node.real_X, node.real_y
+        if self._coherent_global_model is None:
+            self._coherent_global_model = self._coherent_model(self.random_state).fit(self._coherent_train_X)
+        parent_model = node.parent_model if isinstance(node.parent_model, _OriginalSpaceModel) else self._coherent_global_model
+        local_model = parent_model
+        if len(X) >= 8:
+            t_local = time.perf_counter()
+            candidate = self._coherent_model(self.random_state + max(0, node.node_id)).fit(X)
+            if candidate.differs_from(parent_model, X, alpha=self.local_model_alpha):
+                local_model = candidate
+            self.local_model_time_ = getattr(self, "local_model_time_", 0.0) + (time.perf_counter() - t_local)
+        needed = max(0, int(self.effective_min_sample_) - len(X))
+        remaining_budget = max(0, int(self.max_queries) - self.membership_queries_)
+        requested = needed
+        needed = min(needed, remaining_budget)
+        node.stats.update({
+            "queries_requested": int(requested), "queries_generated": 0, "queries_valid": 0, "queries_rejected": 0,
+            "queries_used": 0, "query_budget_remaining_before": int(remaining_budget), "budget_truncated": bool(needed < requested),
+        })
+        if needed > 0 and self.oracle_ is not None:
+            drawn_before = getattr(local_model.inner, "n_drawn_", 0)
+            rejected_before = getattr(local_model.inner, "n_rejected_", 0)
+            t0 = time.perf_counter()
+            qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+            t1 = time.perf_counter()
+            qy = np.asarray(self.oracle_.predict(qx))
+            t2 = time.perf_counter()
+            self.query_time_ += t2 - t0
+            self.synthetic_generation_time_ = getattr(self, "synthetic_generation_time_", 0.0) + (t1 - t0)
+            self.oracle_prediction_time_ = getattr(self, "oracle_prediction_time_", 0.0) + (t2 - t1)
+            valid = int(np.sum(node.constraints.accepts(qx))) if len(qx) else 0
+            node.stats.update({
+                "queries_generated": int(len(qx)), "queries_valid": valid,
+                "queries_rejected": int(getattr(local_model.inner, "n_rejected_", 0) - rejected_before),
+                "candidates_drawn": int(getattr(local_model.inner, "n_drawn_", 0) - drawn_before),
+                "queries_used": int(len(qx)), "queries_violating_path": int(len(qx) - valid),
+            })
+            self.membership_queries_ += len(qx)
+            self.coherent_sampling_audit_["batches"] += 1
+            self.coherent_sampling_audit_["rows"] += int(len(qx))
+            node.query_X = qx
+            node.query_y = qy
+            X = np.vstack([X, qx]) if len(X) else qx
+            y = np.concatenate([y, qy]) if len(y) else qy
+        node.stats["real_samples"] = int(len(node.real_y))
+        node.stats["synthetic_samples"] = int(len(y) - len(node.real_y))
+        node.stats["effective_samples"] = int(len(y))
+        return X, y, local_model
+
+    # ---- B2-C: amostra-base do Original + amostra semântica adicional (rng_semantic separada) -----------------------------------
+    def _b2c_semantic_rng_seed(self, node: _Node) -> np.random.SeedSequence:
+        """Derivação documentada e estável da corrente ``rng_semantic``: SeedSequence([random_state, 0xB2C, node_id]). Não depende do dataset."""
+        return np.random.SeedSequence([int(self.random_state), 0xB2C, int(max(0, node.node_id))])
+
+    def _b2c_semantic_model(self, model: FeatureDistributionModel, node: _Node) -> FeatureDistributionModel:
+        """Cópia superficial do modelo de distribuição com RNG PRÓPRIA: sorteios semânticos nunca avançam o estado do ``rng_original``."""
+        import copy
+        clone = copy.copy(model)
+        clone._rng = np.random.default_rng(self._b2c_semantic_rng_seed(node))
+        return clone
+
+    def _decision_sample_b2c(self, node: _Node):
+        ledger = getattr(self, "_ledger", None)
+        self._b2c_base_draw = True
+        if ledger is not None:
+            ledger.tag = "original"
+        try:
+            Xo, yo, model = TrepanOriginalClassifier._decision_sample(self, node)    # exatamente o contexto-base do Original
+        finally:
+            self._b2c_base_draw = False
+        n_base = int(len(Xo) - len(node.real_y))
+        Xs, ys = Xo, yo
+        if ledger is not None:
+            ledger.tag = "semantic"
+        try:
+            if n_base > 0 and self.oracle_ is not None:
+                sem_model = self._b2c_semantic_model(model, node)
+                qx = self._draw_membership_queries(sem_model, n_base, node.constraints, node)   # caminho semântico (ativo/projetado/domínio)
+                qy = np.asarray(self.oracle_.predict(qx))
+                self.semantic_membership_queries_ += int(len(qx))
+                node.stats["b2c_semantic_queries"] = int(len(qx))
+                Xs = np.vstack([node.real_X, qx]) if len(node.real_X) else qx
+                ys = np.concatenate([node.real_y, qy]) if len(node.real_y) else qy
+            counts = np.asarray([(ys == c).sum() for c in self.classes_], dtype=int)
+            sem_prediction = self.classes_[int(np.argmax(counts))] if len(ys) else node.prediction
+            self._b2c_sem_X, self._b2c_sem_y = Xs, ys
+            self._register_semantic_profile(node, Xs, ys, prediction_override=sem_prediction)
+        finally:
+            if ledger is not None:
+                ledger.tag = "original"
+        return Xo, yo, model
+
+    def _register_semantic_profile(self, node: _Node, X, y, prediction_override=None) -> None:
         # O TREPAN Original actualiza a predição da folha com a maioria do
         # conjunto de decisão imediatamente depois deste hook. O perfil EFSR
         # usa a mesma predição para medir exactamente o erro que será refinado.
-        counts = np.asarray([(y == c).sum() for c in self.classes_], dtype=int)
-        decision_prediction = self.classes_[int(np.argmax(counts))] if len(y) else node.prediction
+        if prediction_override is None:
+            counts = np.asarray([(y == c).sum() for c in self.classes_], dtype=int)
+            prediction_override = self.classes_[int(np.argmax(counts))] if len(y) else node.prediction
         profile = self._build_error_region_profile(
-            node, X, y, include_uncertainty=True, prediction_override=decision_prediction
+            node, X, y, include_uncertainty=True, prediction_override=prediction_override
         )
         eligible, reason = self._resolve_error_region_eligibility(profile, consume=True)
         profile["eligible_for_semantic_refinement"] = bool(eligible)
@@ -569,7 +1002,6 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         audit_profile.pop("semantic_feature_scores", None)
         audit_profile.pop("anchor_indices", None)
         self.error_region_audit_.append(audit_profile)
-        return X, y, model
 
     def _evaluate_error_focused_intervention(
         self,
@@ -687,6 +1119,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return result
 
     def _feature_priority_scores(self, X: np.ndarray) -> np.ndarray:
+        if not self._ontology_effective():
+            return super()._feature_priority_scores(X)
         base = super()._feature_priority_scores(X)
         weights = getattr(self, "semantic_feature_weights_", None)
         if weights is None or np.allclose(weights, 1.0, atol=1e-12):
@@ -838,12 +1272,20 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         return self._test_feature_mean(profile.get("feature_error_scores"), test)
 
     def _split_selection_score(self, y, mask, test=None) -> float:
+        if not self._ontology_effective():
+            return super()._split_selection_score(y, mask, test)
         raw = super()._split_selection_score(y, mask, test)
         weight = self._semantic_weight_for_test(test)
+        calibration = self.semantic_calibration
+        if calibration is not None and not getattr(self, "_semantic_search_disabled", False) and self._semantic_structure_active():
+            return self._calibrated_split_score(raw, weight, y, mask, test, calibration)
         if not self._ontology_gain_active():
             if np.isclose(weight, 1.0, atol=1e-12):
                 return raw
-            return float(raw * (weight ** float(self.semantic_gain_strength)))
+            score = float(raw * (weight ** float(self.semantic_gain_strength)))
+            if self.log_split_candidates:
+                self._log_candidate(test, raw, raw, weight, 0.0, 0.0, score, "legacy_weight_only")
+            return score
         # Um split sem informação nunca vence só pelos bónus ontológicos.
         if raw <= 1e-12:
             return 0.0
@@ -853,13 +1295,103 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             base_gain = self._normalized_information_gain(raw, y)
         else:
             base_gain = raw
+        stat_gain = base_gain
         if not np.isclose(weight, 1.0, atol=1e-12):
             base_gain *= weight ** float(self.semantic_gain_strength)
         onto_depth = self._onto_depth_for_test(test)
         error_cov = self._error_coverage_for_test(test)
         gain_reloaded = base_gain + (self.alpha * onto_depth) + (self.beta * error_cov)
+        if self.log_split_candidates:
+            self._log_candidate(test, raw, stat_gain, weight, onto_depth, error_cov, float(gain_reloaded), "legacy")
         return float(gain_reloaded)
 
+    # ---- B1: calibração do contributo semântico (EXPERIMENTAL) ------------------------------------------------------------
+    def _calibrated_split_score(self, raw, weight, y, mask, test, calibration: str) -> float:
+        """Score calibrado. ``s`` = componente estatística (ganho normalizado do nó, ∈[0,1]); ``m`` = contributo semântico líquido, definido
+        para que o score histórico seja exatamente ``s + m``:  m = s·(w^k − 1) + α·OntoDepth + β·ErrorCoverage.
+
+        * ``bounded``   : score = s + clip(m, −λ·s, +λ·s)            (λ = ``semantic_lambda_cap``; λ=0 ⇒ ranking puramente estatístico)
+        * ``calibrated``: score = s + λ·s·tanh(m / (λ·s))             (saturação suave com o mesmo teto λ·s)
+        * ``tiebreak``  : score = s + τ·clip(q, −1, 1), τ = c/√n_real, q = (w^k − 1) + α·OntoDepth + β·ErrorCoverage  (a semântica só reordena
+          candidatos estatisticamente indistinguíveis: |Δs| < 2τ; n_real = linhas REAIS do nó, nunca as consultas sintéticas)
+        """
+        if raw <= 1e-12:
+            return 0.0
+        if self.gain_criterion == "gain_ratio":
+            s = self._gain_ratio(raw, mask)
+        elif self.gain_criterion == "normalized_information_gain":
+            s = self._normalized_information_gain(raw, y)
+        else:
+            s = raw
+        k = float(self.semantic_gain_strength)
+        w_term = (weight ** k) - 1.0 if not np.isclose(weight, 1.0, atol=1e-12) else 0.0
+        onto_depth = self._onto_depth_for_test(test)
+        error_cov = self._error_coverage_for_test(test)
+        sem_add = float(self.alpha) * onto_depth + float(self.beta) * error_cov
+        lam = float(self.semantic_lambda_cap)
+        if calibration == "bounded":
+            m = s * w_term + sem_add
+            score = s + float(np.clip(m, -lam * s, lam * s))
+        elif calibration == "calibrated":
+            m = s * w_term + sem_add
+            score = s if lam <= 0.0 or s <= 0.0 else s + lam * s * float(np.tanh(m / (lam * s)))
+        else:   # tiebreak
+            ry = getattr(self, "_current_real_validation_y_", None)
+            n_real = int(len(ry)) if ry is not None and len(ry) else int(len(y))
+            tau = float(self.semantic_tie_se_multiplier) / math.sqrt(max(1, n_real))
+            score = s + tau * float(np.clip(w_term + sem_add, -1.0, 1.0))
+        if self.log_split_candidates:
+            self._log_candidate(test, raw, s, weight, onto_depth, error_cov, float(score), calibration)
+        return float(score)
+
+    def candidate_log_summary(self) -> dict:
+        """Sumário por nó do log de candidatos (exige ``log_split_candidates``): escalas reais e efeito do contributo semântico na ESCOLHA.
+
+        Por nó (fase ``semantic``): ``stat_top`` = melhor componente estatística entre os candidatos; ``winner_stat`` = componente estatística do
+        teste finalmente escolhido (``test`` do audit); ``regret`` = (stat_top − winner_stat)/stat_top; ``switched`` = o vencedor não é o melhor
+        estatístico (decisão alterada pela semântica ou pelo gate EFSR); ``ratio_m_over_s`` = mediana de (score − s)/s dos candidatos do nó.
+        """
+        from collections import defaultdict
+        log = getattr(self, "split_candidate_log_", None) or []
+        by_node: dict = defaultdict(list)
+        for r in log:
+            if r["phase"] == "semantic" and r["stat_component"] > 1e-12:
+                by_node[r["node_id"]].append(r)
+        chosen = {int(row["node_id"]): str(row.get("test")) for row in (getattr(self, "split_audit_", None) or []) if "node_id" in row}
+        nodes = []
+        for nid, rows in sorted(by_node.items()):
+            top = max(r["stat_component"] for r in rows)
+            top_test = max(rows, key=lambda r: r["stat_component"])
+            win_txt = chosen.get(nid)
+            win = [r for r in rows if win_txt is not None and MofNTest(r["m"], tuple(Literal(f, t, g) for f, t, g in r["literals"])).text(self.feature_names_in_) == win_txt]
+            winner_stat = max((r["stat_component"] for r in win), default=None)
+            nodes.append({
+                "node_id": nid, "n_candidates": len(rows), "stat_top": float(top),
+                "winner_stat": None if winner_stat is None else float(winner_stat),
+                "regret": None if winner_stat is None else float((top - winner_stat) / top),
+                "switched": None if winner_stat is None else bool(winner_stat < top - 1e-12),
+                "ratio_m_over_s_median": float(np.median([(r["score"] - r["stat_component"]) / r["stat_component"] for r in rows])),
+                "top_stat_literals": top_test["literals"],
+            })
+        regrets = [n["regret"] for n in nodes if n["regret"] is not None]
+        sw = [n["switched"] for n in nodes if n["switched"] is not None]
+        return {
+            "nodes": nodes, "candidates_logged": len(log), "nodes_with_candidates": len(nodes),
+            "switch_rate": float(np.mean(sw)) if sw else None,
+            "regret_median": float(np.median(regrets)) if regrets else None, "regret_max": float(np.max(regrets)) if regrets else None,
+            "ratio_m_over_s_median": float(np.median([n["ratio_m_over_s_median"] for n in nodes])) if nodes else None,
+        }
+
+    def _log_candidate(self, test, raw, stat_gain, weight, onto_depth, error_cov, score, variant) -> None:
+        """Registo de TODOS os candidatos pontuados (instrumentação pura)."""
+        profile = getattr(self, "_current_error_profile_", None) or {}
+        lits = [] if test is None else [(int(l.feature), float(l.threshold), bool(l.greater)) for l in test.literals]
+        self.split_candidate_log_.append({
+            "node_id": int(profile.get("node_id", -1)), "m": None if test is None else int(test.m), "n": len(lits), "literals": lits,
+            "raw_information_gain": float(raw), "stat_component": float(stat_gain), "weight": float(weight), "onto_depth": float(onto_depth),
+            "error_coverage": float(error_cov), "score": float(score), "variant": variant,
+            "lambda_cap": float(self.semantic_lambda_cap), "phase": "data_only" if getattr(self, "_semantic_search_disabled", False) else "semantic",
+        })
 
     def _semantic_structure_active(self) -> bool:
         if getattr(self, "_semantic_search_disabled", False):
@@ -1015,8 +1547,14 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         fidelidade local ao MLP melhora pelo mínimo configurado. Isto impede que
         coerência semântica, isoladamente, force uma decisão pior.
         """
-        semantic_result = super()._best_mofn(X, y)
-        generated = self._ontology_guided_candidates(X, y)
+        if not self._ontology_effective():
+            self._semantic_candidates_last_ = 0
+            return super()._best_mofn(X, y)
+        # B2-C: ``X, y`` = amostra-base (contexto do Original); ``Xs, ys`` = amostra semântica adicional. Fora de B2-C ambas coincidem.
+        b2c = self._b2c_active()
+        Xs, ys = (self._b2c_sem_X, self._b2c_sem_y) if (b2c and self._b2c_sem_X is not None) else (X, y)
+        semantic_result = super()._best_mofn(Xs, ys)
+        generated = self._ontology_guided_candidates(Xs, ys)
         self._semantic_candidates_last_ = len(generated)
         if generated:
             best_generated_score, best_generated_test = generated[0]
@@ -1040,7 +1578,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             and not group_active and not relation_active
             and not self._ontology_gain_active()
         )
-        if neutral:
+        if neutral and not b2c:
             data_result = semantic_result
         else:
             saved_groups = list(getattr(self, 'semantic_feature_groups_', []))
@@ -1065,11 +1603,18 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         profile = dict(getattr(self, '_current_error_profile_', {}) or {})
         disagreement_rate = float(profile.get('disagreement_rate', 0.0))
         intervention = self._evaluate_error_focused_intervention(
-            X, y,
+            Xs, ys,
             data_test=data_test,
             semantic_test=proposed_semantic_test,
             disagreement_rate=disagreement_rate,
         )
+        if b2c and intervention['accepted'] and self._test_signature(proposed_semantic_test) != self._test_signature(data_test):
+            ok, why = self._b2c_valid_in_base_context(proposed_semantic_test, X, y)
+            if not ok:       # a proposta semântica tem de ser também uma divisão válida no contexto-base (mesmos critérios do laço do Original)
+                intervention = dict(intervention)
+                intervention['accepted'] = False
+                intervention['accepted_within_tolerance'] = False
+                intervention['reason'] = why
         if intervention['attempted']:
             self.error_focused_interventions_attempted_ += 1
             if intervention['accepted']:
@@ -1090,10 +1635,10 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         final_changed = self._test_signature(final_test) != self._test_signature(data_test)
 
         if proposed_semantic_test is not None:
-            proposed_mask = proposed_semantic_test.evaluate(X)
+            proposed_mask = proposed_semantic_test.evaluate(Xs)
             proposed_raw = float(
                 TrepanOriginalClassifier._split_selection_score(
-                    self, y, proposed_mask, proposed_semantic_test
+                    self, ys, proposed_mask, proposed_semantic_test
                 )
             )
             semantic_weight = float(self._semantic_weight_for_test(proposed_semantic_test))
@@ -1149,7 +1694,7 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             'semantic_bonus': float(semantic_bonus),
             'gain_reloaded_active': bool(self._ontology_gain_active()),
             'gain_ratio': (
-                float(self._gain_ratio(proposed_raw, proposed_semantic_test.evaluate(X)))
+                float(self._gain_ratio(proposed_raw, proposed_semantic_test.evaluate(Xs)))
                 if proposed_semantic_test is not None and proposed_raw is not None else None
             ),
             'onto_depth': float(self._onto_depth_for_test(proposed_semantic_test)),
@@ -1190,9 +1735,16 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
             'error_focused_accepted_within_tolerance': bool(intervention.get('accepted_within_tolerance', False)),
             'error_region_eligibility_reason': profile.get('eligibility_reason'),
         }
+        if b2c:
+            self._pending_semantic_decision_audit.update(
+                self._b2c_record(profile, X, y, Xs, ys, data_test, proposed_semantic_test, final_test, intervention,
+                                 proposed_changed, proposed_semantic_score, data_raw)
+            )
         return final_result
 
     def _split_audit_metadata(self, test: MofNTest) -> dict:
+        if not self._ontology_effective():
+            return super()._split_audit_metadata(test)
         weight = self._semantic_weight_for_test(test)
         weights = getattr(self, "semantic_feature_weights_", np.ones(self.n_features_in_))
         weight_features = {
@@ -1233,6 +1785,72 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         })
         self._pending_semantic_decision_audit = {}
         return decision
+
+    def _b2c_valid_in_base_context(self, test: MofNTest, X: np.ndarray, y: np.ndarray) -> tuple[bool, str]:
+        """Critérios que o laço do Original aplica à divisão escolhida, avaliados na amostra-base (ganho mínimo e tamanho mínimo de folha)."""
+        mask = test.evaluate(X)
+        if mask.sum() < self.min_samples_leaf or (~mask).sum() < self.min_samples_leaf:
+            return False, "semantic_invalid_in_base_context_min_samples_leaf"
+        raw = TrepanOriginalClassifier._split_selection_score(self, y, mask, test)
+        if float(raw) < float(self.min_gain):
+            return False, "semantic_invalid_in_base_context_min_gain"
+        return True, ""
+
+    def _b2c_record(self, profile, X, y, Xs, ys, data_test, semantic_test, final_test, intervention, proposed_changed,
+                    semantic_score, data_raw) -> dict:
+        """Auditoria B2-C por nó (observacional). Classes de contexto (NUNCA equivalência estrutural global):
+        * ``in_context_statistical_fallback``: o fallback é a escolha estatística (pesquisa do Original) no contexto-base ATUAL.
+        * ``original_reproduction_conditions_met``: condições NECESSÁRIAS para que esta escolha seja a do Original isolado na mesma
+          representação (nenhuma divisão semântica aceite antes, ordem de expansão do Original, corrente-base intacta); só o teste
+          diferencial contra o Original prova a reprodução.
+        * ``context_diverged_not_reproducible``: já houve divergência da árvore (ou prioridade semântica ligada) ⇒ a reprodução não é presumível."""
+        node_id = int(profile.get("node_id", -1))
+        accepted = bool(intervention["accepted"]) and bool(proposed_changed)
+        fallback_used = bool(proposed_changed and not intervention["accepted"])
+        prefix_identical = self._b2c_first_divergence_order_ is None
+        order_preserved = not bool(self.b2c_semantic_node_priority)
+        if prefix_identical and order_preserved:
+            context_class = "original_reproduction_conditions_met"
+        else:
+            context_class = "context_diverged_not_reproducible"
+        final_sig = self._test_signature(final_test)
+        data_sig = self._test_signature(data_test)
+        if final_sig != data_sig and self._b2c_first_divergence_order_ is None:
+            self._b2c_first_divergence_order_ = node_id
+        if accepted:
+            self._b2c_semantic_tests_.add(final_sig)
+        if not proposed_changed:
+            chosen = "identical_candidates" if data_test is not None else "none"
+        else:
+            chosen = "semantic" if accepted else ("statistical" if data_test is not None else "none")
+        row = {
+            "node_id": node_id,
+            "candidate_ids": {"statistical": "stat:" + (data_test.text(self.feature_names_in_) if data_test is not None else "none"),
+                              "semantic": "sem:" + (semantic_test.text(self.feature_names_in_) if semantic_test is not None else "none")},
+            "candidate_type": "semantic_scored_or_guided" if semantic_test is not None else "none",
+            "ontology_state": getattr(self, "ontology_state_", "S3"),
+            "statistical_gain": data_raw,
+            "semantic_score": semantic_score,
+            "local_fidelity_gain": float(intervention["local_fidelity_gain"]),
+            "validated_fidelity_gain": None,                # B2-A (não implementado)
+            "uncertainty_estimate": None,                   # B2-B (não implementado)
+            "effective_sample_count": int(len(X)),
+            "base_sample_size": int(len(X)), "semantic_sample_size": int(len(Xs)),
+            "oracle_query_count": {"base": int(len(X) - len(self._current_real_validation_y_)),
+                                   "semantic": int(len(Xs) - len(self._current_real_validation_y_))},
+            "accepted": accepted,
+            "rejection_reason": None if (accepted or not proposed_changed) else intervention["reason"],
+            "fallback_used": fallback_used,
+            "chosen_candidate_id": chosen,
+            "tree_complexity_delta": (int(len(final_test.literals)) - int(len(data_test.literals))) if (final_test is not None and data_test is not None) else 0,
+            "context_class": context_class,
+            "prefix_identical_so_far": bool(prefix_identical),
+            "base_stream_preserved": True,
+            "node_priority": "original" if order_preserved else "semantic",
+            "reference_representation": "same tree space as this fit (reference = Original fitted on the identical representation)",
+        }
+        self.b2c_audit_.append(row)
+        return {"b2c": row}
 
     def semantic_audit_summary(self) -> dict:
         """Resumo auditável do impacto ontológico nas decisões da árvore."""
@@ -1297,6 +1915,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         constraints: ConstraintSet,
         node: _Node,
     ) -> np.ndarray:
+        if not self._ontology_effective() or getattr(self, "_b2c_base_draw", False):
+            return super()._draw_membership_queries(model, n, constraints, node)     # contexto-base: sorteio do Original, sem hooks semânticos
         if n <= 0:
             return np.empty((0, model.n_features_in_), dtype=float)
         domain = getattr(self, "_ontology_domain_fit", None)
@@ -1342,6 +1962,8 @@ class TrepanReloadedClassifier(TrepanOriginalClassifier):
         active = bool(semantic_active and (error_active or not self.error_focused_refinement))
         if not active and projector is None:
             return super()._draw_membership_queries(model, n, constraints, node)
+        if not active and isinstance(model, _OriginalSpaceModel):
+            return model.draw(n, constraints)          # amostragem coerente sem consultas ativas: sorteio do Original (espaço original) + transformador
 
         target_pool = max(int(n), int(n) * max(1, int(self.semantic_active_pool_multiplier))) if active else int(n)
         pool = []

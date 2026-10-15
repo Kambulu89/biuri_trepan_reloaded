@@ -23,7 +23,28 @@
 - Não alterar (nem em resposta a resultados): tuning científico (CV 5×3, purity_epsilon, max_nodes, política de expansão, critérios
   lexicográficos e de estabilidade, bootstrap diagnóstico) nem o contrato do oráculo (FrozenOracle/oracle_id).
 - Braços A–F, protocolo estrutural comum e ontology-blind, mirror desligado, C4.5 canónico: ver `validation/benchmark/BENCHMARK_MANIFEST_v*.json`.
-- Nunca otimizar nem codificar para produzir a ordem esperada Reloaded > Original > C4.5; resultados inesperados são evidência a investigar.
+- A hierarquia `Accuracy_Reloaded_OWL > Accuracy_Original > Accuracy_C4.5` (e `Fidelity_Reloaded_OWL > Fidelity_Original`) é **objetivo formal pré-registado** de
+  seleção (só em treino/validação interna, nunca no teste) e de aceitação experimental — **não** um resultado que se imponha. Continua proibido: alterar ou degradar
+  os baselines, usar o teste externo na seleção, escolher seeds/datasets/ontologias depois de ver resultados, repetir unidades até obter a ordem, codificar a ordem.
+  Resultados inesperados são evidência a investigar e reportam-se (`HIERARCHY_SATISFIED|NOT_SATISFIED|INFEASIBLE|INSUFFICIENT_EVIDENCE`).
+
+## 2b. Arquitetura científica: Reloaded = Original + extensão ontológica (contrato de equivalência)
+- O TREPAN Reloaded **não** é um algoritmo diferente do Original: é o Original **acrescido de mecanismos de enriquecimento semântico derivados de uma ontologia OWL válida**.
+- **Contrato de equivalência (EQ):** `Reloaded(dataset, ontology=None) ≡ Original(dataset)` com o mesmo oráculo congelado, dados, parâmetros, seed e condições — igualdade em
+  construção da árvore, seleção de divisões, regras, m-of-n, **fluxo de consultas ao oráculo**, previsões, fidelidade, accuracy e complexidade. O mesmo vale se a ontologia for
+  rejeitada pelo quality gate ou não produzir estrutura semântica ativa. Diferenças só são aceites se forem não semânticas, justificadas e **previamente autorizadas** (allowlist
+  versionada, vazia por omissão). Formalização e testes: `docs/b1b4/07_CONTRATO_EQUIVALENCIA.md`.
+- **Contrato EQ v2.0 (estados S0–S3):** S0 ontologia ausente, S1 rejeitada, S2 válida sem mecanismo semântico executado → equivalência **integral** E1–E9. S3 válida com tentativa semântica
+  executada → porção Original ≡ Original isolado **+ tentativa semântica auditada** (todas as consultas adicionais atribuídas e contabilizadas em `oracle_accounting_`, nunca ocultas). Tentativa
+  executada ≠ ganho: sem melhoria observada o estado é `SEMANTIC_ATTEMPT_NO_OBSERVED_GAIN`. O TREPAN Original canónico não se modifica (inclui o desempate m-of-n: limitação de
+  reprodutibilidade registada; política determinística só como variante experimental isolada).
+- Com ontologia efetiva só são permitidos mecanismos **ontológicos** (matching, hierarquia/domínio, enriquecimento de representação, restrições, orientação semântica de splits,
+  calibração do contributo semântico, aceitação/controlo de splits influenciados pela semântica, seleção de configurações do Reloaded enriquecido, m-of-n guiado por relações
+  OWL), cada um controlável por flag, auditável e com controlo negativo (ontologia permutada/aleatória) e controlo de engenharia convencional de features.
+- Proibido no Reloaded: melhorias independentes da ontologia (arquitetura, hiperparâmetros, pré-processamento, oráculo, procura, poda, uso de rótulos reais) que o tornem diferente
+  do Original sem ontologia. Ganhos só se atribuem à ontologia se medidos contra o **Original equivalente** nas mesmas condições (mesma representação, oráculo, orçamento, seed).
+- Baselines (TREPAN Original, C4.5 canónico, tuning estrutural ontology-blind, FrozenOracle) permanecem congelados por hash; o Reloaded só evolui por mecanismos ontológicos sob
+  um novo manifest versionado.
 
 ## 3. Processo
 - Commits pequenos e lógicos; `git status` antes de commitar; não versionar caches/temporários (`.pyc`, `results/` pesados).

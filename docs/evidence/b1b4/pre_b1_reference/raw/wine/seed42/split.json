@@ -1,0 +1,325 @@
+{
+ "dataset": "wine",
+ "master_seed": 42,
+ "splits": [
+  {
+   "split_id": "seed42",
+   "seed": 42,
+   "repeat": 0,
+   "fold": 0,
+   "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523",
+   "n_train": 133,
+   "n_test": 45,
+   "scheme": "holdout",
+   "stratified": true
+  }
+ ],
+ "semantic_report": [
+  {
+   "split_id": "seed42",
+   "provider": "owl_real",
+   "semantic_available": true,
+   "ontology_valid": true,
+   "reason": "",
+   "n_derived_features": 3,
+   "semantic_time": 0.07119916800002102,
+   "reasoner_time": 0.5742749020000701,
+   "info": {
+    "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+    "reasoner": "hermit",
+    "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+    "n_ontology_graph_nodes": 21,
+    "mapped_feature_count": 13,
+    "unmapped_feature_count": 0,
+    "reasoning_applied": true,
+    "reasoner_consistent": true,
+    "feature_coverage": 1.0
+   },
+   "real_structure_signature": "120a2912c4ef3283",
+   "shuffled_structure_signature": "309d03ebe00b294b",
+   "mlp_enrichment_accepted": false,
+   "oracle_gate": {
+    "gate_margin": 0.01,
+    "available": false,
+    "accepted": false,
+    "reason": "semântica indisponível"
+   },
+   "trepan_semantics_available": true,
+   "selected_oracle": "mlp_original",
+   "structural_protocol": {
+    "structural_tuning_ontology_blind": true,
+    "enabled": true,
+    "semantic_inputs_given_to_tuning": false,
+    "test_used": false,
+    "tuning_oracle_id": "53437bfa7c0a9cc7",
+    "source": "scientific_tuning_frozen",
+    "selected": {
+     "min_sample": 399,
+     "max_queries": 101746,
+     "max_nodes": 63,
+     "max_depth": 31,
+     "max_n": 4,
+     "beam_width": 2,
+     "min_samples_leaf": 2,
+     "max_features_per_node": 12,
+     "purity_epsilon": 0.01
+    },
+    "structure_selected": {
+     "purity_epsilon": 0.01,
+     "max_nodes": 63
+    },
+    "tuning_status": "non_discriminative_grid",
+    "status_reason": "all_candidates_statistically_equivalent",
+    "selection_basis": "parsimony_tiebreak_among_indistinguishable",
+    "selected_config_full_cv": "purity_epsilon=0.01, max_nodes=63",
+    "initial_node_grid": [
+     31,
+     63
+    ],
+    "final_node_grid": [
+     31,
+     63
+    ],
+    "expansion_stop_reason": "validation_plateau",
+    "fraction_at_node_cap": 1.0,
+    "cv_plan": {
+     "scheme": "RepeatedStratifiedKFold (conjunto de treino apenas)",
+     "folds": 3,
+     "repeats": 5,
+     "seeds": [
+      42,
+      1051,
+      2060,
+      3069,
+      4078
+     ],
+     "n_splits": 15,
+     "test_set_used": false
+    },
+    "test_used_for_selection": false,
+    "tuning_time_s": 178.1967969709999,
+    "engineering_profile": {
+     "fold_preparation": 0.0040173940001295705,
+     "candidate_construction": 0.0013208889990892203,
+     "tree_fit_total": 177.2254074249986,
+     "synthetic_generation": 30.27412218298832,
+     "oracle_prediction": 2.6461202320215307,
+     "local_model_fit": 20.557954083009008,
+     "split_search": 118.86890635000918,
+     "tree_construction_other": 4.8783045769705495,
+     "metric_computation": 0.6276440130027368,
+     "bootstrap_selection": 0.1665198159994361,
+     "memo_copy": 0.0012216500008435105,
+     "fits_executed": 150,
+     "fits_reused": 15,
+     "fits_resumed": 0,
+     "total_instrumented": 178.02613118700083
+    },
+    "candidate_count": 6,
+    "number_cv_fits": 90,
+    "number_capacity_fits": 75,
+    "oof_fidelity_mean": 0.9157912457912458
+   },
+   "preprocessing": {
+    "representation": "numeric_matrix_as_loaded",
+    "imputation": "none",
+    "encoding": "none",
+    "feature_selection": "none",
+    "scaling": "estimator_internal_pipeline_fit_on_train_only",
+    "semantic_enrichment": "provider_fit_on_train_only",
+    "fit_partition": "train",
+    "test_used_in_fit": false,
+    "n_fit_rows": 133,
+    "n_features": 13,
+    "feature_names_hash": "f262820ea0928519eacf2017b5f824baa55f6bb311bbeb882df591c3f37b1299",
+    "train_index_hash": "5d41e04d4fce39e6d4cfaa33174e5a13eb1129422a0a8a71369fc2bcc280786b",
+    "train_matrix_hash": "dba8f8958958aac603c6e455f38e2961e2667d4ce2bcd1109aaf9913af50643e",
+    "scientific_preprocessing_id": "84947d56a9cab865",
+    "preprocessing_id": "daac74bae9997468"
+   },
+   "negative_control": {
+    "shuffle_seed": 7961,
+    "original_ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+    "shuffled_ontology_hash": "18ab9b82dd01b700257c8d9ff9732e8ae63d8c17d731d30ab658c71796ea44fe",
+    "counts_before": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 16,
+     "n_relations": 78,
+     "relatedness_sum": 55.570944000000004,
+     "n_semantic_features": 3,
+     "n_nonunit_weights": 3
+    },
+    "counts_after": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 16,
+     "n_relations": 78,
+     "relatedness_sum": 55.570944000000004,
+     "n_semantic_features": 3,
+     "n_nonunit_weights": 3
+    },
+    "n_ontology_graph_nodes": 21
+   },
+   "oracle_contract": {
+    "oracle_id_original": "53437bfa7c0a9cc7",
+    "oracle_id_ontological": null,
+    "shared_oracle_arms": [
+     "reloaded_core",
+     "reloaded_owl_full",
+     "reloaded_owl_shuffled",
+     "trepan_original"
+    ],
+    "single_oracle_for_shared_arms": true,
+    "unchanged_after": true,
+    "queries_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611
+    }
+   },
+   "protocol_audit": {
+    "run_id": "wine:seed42",
+    "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+    "events": [
+     {
+      "phase": "selection",
+      "role": "train",
+      "operation": "fit_all_models_on_train",
+      "details": {
+       "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523"
+      }
+     },
+     {
+      "phase": "selection",
+      "role": "validation",
+      "operation": "oracle_gate_inner_cv_on_train_only",
+      "details": {
+       "folds": 3
+      }
+     },
+     {
+      "phase": "final_evaluation",
+      "role": "test",
+      "operation": "final_metrics_all_arms_once",
+      "details": {
+       "n_test": 45
+      }
+     }
+    ],
+    "test_used_for_selection": false,
+    "test_used_for_feature_selection": false,
+    "test_used_for_oracle_selection": false,
+    "test_used_for_hyperparameter_selection": false,
+    "test_used_for_counterfactual_selection": false,
+    "test_used_for_tree_selection": false,
+    "locked_test_used": true,
+    "final_test_evaluated": true,
+    "final_evaluation_recorded": true,
+    "valid": true
+   },
+   "tuning_execution_count": 1,
+   "timing": {
+    "preprocessing_time": 4.7044999973877566e-05,
+    "ontology_total_time": 0.6652859480000188,
+    "ontology_shuffled_build_time": 0.0002981089996865194,
+    "mlp_training_time": 0.007006962000104977,
+    "oracle_freeze_time": 0.0013289409998833435,
+    "oracle_gate_time": 4.914000328426482e-06,
+    "tuning_time": 178.19737599600012,
+    "mlp_arm_time": 0.00869645800003127,
+    "metrics_time": 0.11055212500059497,
+    "c45_time": 0.06941136400018877,
+    "original_time": 1.3765332980001403,
+    "reloaded_core_time": 1.2740435080004318,
+    "reloaded_owl_time": 36.06593467399989,
+    "reloaded_shuffled_time": 35.740464291999615,
+    "total_time": 253.4087859479996,
+    "ontology_mapping_time": 0.07119916800002102,
+    "reasoning_time": 0.5742749020000701
+   },
+   "work": {
+    "n_samples": 178,
+    "n_train": 133,
+    "n_test": 45,
+    "n_features_raw": 13,
+    "n_features_processed": 16,
+    "n_classes": 3,
+    "number_cv_fits": 165,
+    "number_trepan_fits": 169,
+    "candidate_count": 6,
+    "oracle_query_samples_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611
+    },
+    "oracle_predict_calls_per_scope": {
+     "structural_tuning": 4261,
+     "trepan_original": 32,
+     "reloaded_core": 32,
+     "reloaded_owl_full": 123,
+     "reloaded_owl_shuffled": 124
+    },
+    "oracle_queries_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611
+    },
+    "oracle_calls_per_scope": {
+     "structural_tuning": 4261,
+     "trepan_original": 32,
+     "reloaded_core": 32,
+     "reloaded_owl_full": 123,
+     "reloaded_owl_shuffled": 124
+    },
+    "synthetic_queries_per_arm": {
+     "trepan_original": 10556,
+     "reloaded_core": 10556,
+     "reloaded_owl_full": 10203,
+     "reloaded_owl_shuffled": 11601
+    },
+    "semantic_feature_count": 3,
+    "number_reasoner_calls": 1
+   }
+  }
+ ],
+ "skipped_arms": [],
+ "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7",
+ "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+ "manifest": {
+  "experiment_id": "20261013T221258_wine_41feab56",
+  "timestamp": "2026-10-13T22:12:58.488005+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "db417ff2db1145a76114de8199c734016e44ce1b",
+  "dataset": "wine",
+  "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7",
+  "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+  "config_hash": "41feab56727b84a44a60ba4961a623190911f53224fd6e4b03bf6d54373ab9c7",
+  "seeds": [
+   42
+  ],
+  "split_hash": "45b18f0490c374e97e35e7970fdf8ed31690a2e8a333e259067c190090090d49",
+  "library_versions": {
+   "numpy": "1.26.4",
+   "scipy": "1.15.2",
+   "pandas": "2.2.3",
+   "sklearn": "1.6.1",
+   "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+   "mlp_original",
+   "c45",
+   "trepan_original",
+   "reloaded_core",
+   "reloaded_owl_full",
+   "reloaded_owl_shuffled"
+  ]
+ }
+}

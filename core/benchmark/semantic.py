@@ -80,6 +80,53 @@ class NoSemanticProvider:
                                reason="sem ontologia: semantic_available=false")
 
 
+class ConventionalFeatureProvider:
+    """CONTROLO de engenharia convencional de features (sem ontologia): mesma FORMA do enriquecimento OWL (colunas originais + agregados = média
+    padronizada de um grupo de colunas), mas os grupos vêm dos DADOS DE TREINO (agrupamento hierárquico de ligação média sobre 1−|ρ_Spearman|), não de
+    uma ontologia. Número de agregados ≤ ``n_target`` (o do OWL, para orçamento comparável) e ≤ p//2; só grupos com ≥2 colunas. Determinístico, sem RNG,
+    agnóstico ao dataset. Estrutura semântica neutra (pesos 1, sem grupos, relatedness identidade, depths 0)."""
+    name = "conventional_features"
+
+    def __init__(self, n_target: int):
+        self.n_target = int(n_target)
+
+    def build(self, X_train, feature_names, seed: int = 0) -> SemanticContext:
+        from scipy.cluster.hierarchy import fcluster, linkage
+        from scipy.spatial.distance import squareform
+        from scipy.stats import rankdata
+        X = np.asarray(X_train, dtype=float)
+        names = [str(n) for n in feature_names]
+        p = X.shape[1]
+        k = min(self.n_target, p // 2)
+        sd = X.std(axis=0)
+        ok = np.where(sd > 1e-12)[0]
+        if k < 1 or len(ok) < 2:
+            return SemanticContext("none", self.name, False, names, names, list(range(p)), [], reason="sem grupos convencionais possíveis")
+        ranks = np.column_stack([rankdata(X[:, j]) for j in ok])
+        corr = np.nan_to_num(np.corrcoef(ranks, rowvar=False), nan=0.0)
+        dist = np.clip(1.0 - np.abs(corr), 0.0, None)
+        np.fill_diagonal(dist, 0.0)
+        labels = fcluster(linkage(squareform(dist, checks=False), method="average"), t=min(k, len(ok) - 1), criterion="maxclust")
+        groups = [ok[np.where(labels == c)[0]] for c in sorted(set(labels))]
+        groups = [g for g in groups if len(g) >= 2]
+        if not groups:
+            return SemanticContext("none", self.name, False, names, names, list(range(p)), [], reason="sem grupos convencionais com ≥2 colunas")
+        centers = X.mean(axis=0)
+        scales = np.where(sd > 1e-12, sd, 1.0)
+
+        def transform(Z):
+            Z = np.asarray(Z, dtype=float)
+            derived = [((Z[:, g] - centers[g]) / scales[g]).mean(axis=1) for g in groups]
+            return np.column_stack([Z] + derived)
+
+        enriched = names + [f"conv_g{i}_mean" for i in range(len(groups))]
+        n = len(enriched)
+        return SemanticContext("conventional", self.name, True, names, enriched, list(range(p)), list(range(p, n)), transform,
+                               np.ones(n), [None] * n, np.eye(n), np.zeros(n), ontology_valid=None,
+                               reason="controlo de engenharia convencional (sem ontologia)",
+                               info={"conventional_groups": [[names[j] for j in g] for g in groups], "n_target": self.n_target})
+
+
 class GroupSemanticProvider:
     """Estrutura semântica sem OWL: grupos de features -> agregados padronizados (ajustados no treino).
 
@@ -230,8 +277,14 @@ class ShuffledSemanticProvider:
     def build(self, X_train, feature_names, seed: int = 0) -> SemanticContext:
         return self.from_context(self.base.build(X_train, feature_names, seed), seed)
 
-    def from_context(self, ctx: SemanticContext, seed: int = 0) -> SemanticContext:
-        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning)."""
+    def from_context(self, ctx: SemanticContext, seed: int = 0, mode: str = "both") -> SemanticContext:
+        """Permuta uma semântica JÁ construída (resultado idêntico a ``build``, sem recarregar a OWL nem repetir o reasoning).
+
+        ``mode`` (controlos P2, Doc. 23): ``both`` (histórico: colunas de origem E estrutura permutadas), ``structure`` (features VERDADEIRAS, estrutura
+        — pesos/grupos/relatedness/profundidades — permutada) ou ``features`` (features calculadas sobre colunas permutadas, estrutura VERDADEIRA).
+        Os sorteios do RNG são os mesmos nos três modos (``both`` inalterado)."""
+        if mode not in ("both", "structure", "features"):
+            raise ValueError("mode deve ser both|structure|features")
         if not ctx.available:
             ctx.provider = self.name
             return ctx
@@ -247,10 +300,15 @@ class ShuffledSemanticProvider:
             full[:, :n_orig] = Z                      # as features originais mantêm-se (só a semântica é destruída)
             return full
 
+        use_perm_structure = mode in ("both", "structure")
+        use_shuffled_transform = mode in ("both", "features")
+        ident = np.arange(n)
+        sperm = perm if use_perm_structure else ident
         sh = SemanticContext(
             "shuffled", self.name, True, ctx.base_names, ctx.enriched_names, ctx.orig_idx, ctx.onto_idx,
-            shuffled_transform, ctx.weights[perm], [ctx.groups[i] for i in perm], ctx.relatedness[np.ix_(perm, perm)],
-            ctx.depths[perm], ontology_valid=ctx.ontology_valid, reason="controlo negativo: semântica permutada",
+            shuffled_transform if use_shuffled_transform else real_transform, ctx.weights[sperm], [ctx.groups[i] for i in sperm],
+            ctx.relatedness[np.ix_(sperm, sperm)], ctx.depths[sperm], ontology_valid=ctx.ontology_valid,
+            reason="controlo negativo: semântica permutada" if mode == "both" else f"controlo parcial P2: {mode} permutado",
             semantic_time=ctx.semantic_time, reasoner_time=ctx.reasoner_time,
             info={**ctx.info, "shuffle_seed": int(seed) + self.seed_offset, "original_ontology_hash": ctx.info.get("ontology_hash"),
                   "counts_before": structure_counts(ctx), "n_ontology_graph_nodes": ctx.info.get("n_ontology_graph_nodes"),

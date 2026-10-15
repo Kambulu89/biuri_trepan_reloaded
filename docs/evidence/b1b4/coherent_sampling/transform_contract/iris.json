@@ -1,0 +1,79 @@
+{
+ "dataset": "iris",
+ "seed": 42,
+ "available": true,
+ "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+ "reason": "",
+ "real": {
+  "n_original": 4,
+  "n_derived": 2,
+  "enriched_dim": 6,
+  "deterministic": true,
+  "originals_unchanged": true,
+  "row_independent_batch_vs_single_max_abs_diff": 0.0,
+  "permutation_invariant_max_abs_diff": 0.0,
+  "projector_recomputes_derived_max_abs_diff": 0.0,
+  "query_projector_equals_train_transform_max_abs_diff": 0.0,
+  "extreme_inputs": {
+   "k=3sd_finite": true,
+   "k=3sd_max_abs_derived_sd_units": 4.6430880415057,
+   "k=10sd_finite": true,
+   "k=10sd_max_abs_derived_sd_units": 15.476960138352329,
+   "k=50sd_finite": true,
+   "k=50sd_max_abs_derived_sd_units": 77.38480069176164
+  },
+  "nan_input": "rejects: OntologySchemaError"
+ },
+ "shuffled": {
+  "n_original": 4,
+  "n_derived": 2,
+  "enriched_dim": 6,
+  "deterministic": true,
+  "originals_unchanged": true,
+  "row_independent_batch_vs_single_max_abs_diff": 0.0,
+  "permutation_invariant_max_abs_diff": 0.0,
+  "projector_recomputes_derived_max_abs_diff": 0.0,
+  "query_projector_equals_train_transform_max_abs_diff": 0.0,
+  "extreme_inputs": {
+   "k=3sd_finite": true,
+   "k=3sd_max_abs_derived_sd_units": 4.125379733202264,
+   "k=10sd_finite": true,
+   "k=10sd_max_abs_derived_sd_units": 13.751265777340876,
+   "k=50sd_finite": true,
+   "k=50sd_max_abs_derived_sd_units": 68.7563288867044
+  },
+  "nan_input": "rejects: OntologySchemaError"
+ },
+ "plausibility_real": {
+  "real_heldout": {
+   "any_derived_out_of_train_range": 0.05263157894736842,
+   "mean_excess_sd_units": 0.013731070289161543,
+   "p99_abs_z": 2.8778476710271184
+  },
+  "synthetic_coherent_root_marginal": {
+   "any_derived_out_of_train_range": 0.0575,
+   "mean_excess_sd_units": 0.00738879195706487,
+   "p99_abs_z": 2.744908503108882
+  }
+ },
+ "plausibility_shuffled": {
+  "real_heldout": {
+   "any_derived_out_of_train_range": 0.05263157894736842,
+   "mean_excess_sd_units": 0.005631941538299668,
+   "p99_abs_z": 2.0806063488455964
+  },
+  "synthetic_coherent_root_marginal": {
+   "any_derived_out_of_train_range": 0.15275,
+   "mean_excess_sd_units": 0.02368386154944217,
+   "p99_abs_z": 2.429039406455388
+  }
+ },
+ "spaces": {
+  "dataset_original_dim": 4,
+  "tree_space_enriched_dim": 6,
+  "oracle_input_dim": 4,
+  "oracle_sees_columns": "orig_idx = 0..p-1 (OriginalOracleProjection)",
+  "queries_reach_oracle_as": "enriched rows projected to original columns",
+  "preprocessing": "none (numeric matrix as loaded); scaling lives inside the MLP pipeline fitted on train"
+ }
+}

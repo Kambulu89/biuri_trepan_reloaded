@@ -1,3 +1,5 @@
+> **ERRATA (Fase 0 B1–B4):** no §7, «bónus 5–9× o ganho de informação» e «limiar abaixo da resolução (1/143…)» foram corrigidos em `docs/b1b4/01_AUDITORIA_TECNICA.md` §3 (escalas misturadas; resolução = amostra de decisão do nó). O restante da auditoria (isolamento OWL) não é afetado.
+
 # Auditoria do isolamento dos mundos OWL e da influência ontológica no TREPAN Reloaded
 
 Relatório técnico. Estado: ramo `claude/repository-architecture-analysis-s1vl5a`, partindo da `main` em `c0b2405`.

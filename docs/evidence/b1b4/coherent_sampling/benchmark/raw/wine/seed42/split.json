@@ -1,0 +1,397 @@
+{
+ "dataset": "wine",
+ "master_seed": 42,
+ "splits": [
+  {
+   "split_id": "seed42",
+   "seed": 42,
+   "repeat": 0,
+   "fold": 0,
+   "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523",
+   "n_train": 133,
+   "n_test": 45,
+   "scheme": "holdout",
+   "stratified": true
+  }
+ ],
+ "semantic_report": [
+  {
+   "split_id": "seed42",
+   "provider": "owl_real",
+   "semantic_available": true,
+   "ontology_valid": true,
+   "reason": "",
+   "n_derived_features": 3,
+   "semantic_time": 0.09146931700024652,
+   "reasoner_time": 0.8456805369999074,
+   "info": {
+    "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+    "reasoner": "hermit",
+    "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+    "n_ontology_graph_nodes": 21,
+    "mapped_feature_count": 13,
+    "unmapped_feature_count": 0,
+    "reasoning_applied": true,
+    "reasoner_consistent": true,
+    "feature_coverage": 1.0
+   },
+   "real_structure_signature": "120a2912c4ef3283",
+   "shuffled_structure_signature": "309d03ebe00b294b",
+   "mlp_enrichment_accepted": false,
+   "oracle_gate": {
+    "gate_margin": 0.01,
+    "available": false,
+    "accepted": false,
+    "reason": "semântica indisponível"
+   },
+   "trepan_semantics_available": true,
+   "selected_oracle": "mlp_original",
+   "structural_protocol": {
+    "structural_tuning_ontology_blind": true,
+    "enabled": true,
+    "semantic_inputs_given_to_tuning": false,
+    "test_used": false,
+    "tuning_oracle_id": "53437bfa7c0a9cc7",
+    "source": "scientific_tuning_frozen",
+    "selected": {
+     "min_sample": 399,
+     "max_queries": 101746,
+     "max_nodes": 63,
+     "max_depth": 31,
+     "max_n": 4,
+     "beam_width": 2,
+     "min_samples_leaf": 2,
+     "max_features_per_node": 12,
+     "purity_epsilon": 0.01
+    },
+    "structure_selected": {
+     "purity_epsilon": 0.01,
+     "max_nodes": 63
+    },
+    "tuning_status": "non_discriminative_grid",
+    "status_reason": "all_candidates_statistically_equivalent",
+    "selection_basis": "parsimony_tiebreak_among_indistinguishable",
+    "selected_config_full_cv": "purity_epsilon=0.01, max_nodes=63",
+    "initial_node_grid": [
+     31,
+     63
+    ],
+    "final_node_grid": [
+     31,
+     63
+    ],
+    "expansion_stop_reason": "validation_plateau",
+    "fraction_at_node_cap": 1.0,
+    "cv_plan": {
+     "scheme": "RepeatedStratifiedKFold (conjunto de treino apenas)",
+     "folds": 3,
+     "repeats": 5,
+     "seeds": [
+      42,
+      1051,
+      2060,
+      3069,
+      4078
+     ],
+     "n_splits": 15,
+     "test_set_used": false
+    },
+    "test_used_for_selection": false,
+    "tuning_time_s": 289.818408996,
+    "engineering_profile": {
+     "fold_preparation": 0.0035407869997925445,
+     "candidate_construction": 0.0022098670001469145,
+     "tree_fit_total": 288.1356034219991,
+     "synthetic_generation": 51.81835676400351,
+     "oracle_prediction": 4.3233613099935155,
+     "local_model_fit": 31.709062418003896,
+     "split_search": 192.19571284599647,
+     "tree_construction_other": 8.089110084001732,
+     "metric_computation": 1.0482466539997404,
+     "bootstrap_selection": 0.2979960459999802,
+     "memo_copy": 0.002037828999618796,
+     "fits_executed": 150,
+     "fits_reused": 15,
+     "fits_resumed": 0,
+     "total_instrumented": 289.4896346049984
+    },
+    "candidate_count": 6,
+    "number_cv_fits": 90,
+    "number_capacity_fits": 75,
+    "oof_fidelity_mean": 0.9157912457912458
+   },
+   "preprocessing": {
+    "representation": "numeric_matrix_as_loaded",
+    "imputation": "none",
+    "encoding": "none",
+    "feature_selection": "none",
+    "scaling": "estimator_internal_pipeline_fit_on_train_only",
+    "semantic_enrichment": "provider_fit_on_train_only",
+    "fit_partition": "train",
+    "test_used_in_fit": false,
+    "n_fit_rows": 133,
+    "n_features": 13,
+    "feature_names_hash": "f262820ea0928519eacf2017b5f824baa55f6bb311bbeb882df591c3f37b1299",
+    "train_index_hash": "5d41e04d4fce39e6d4cfaa33174e5a13eb1129422a0a8a71369fc2bcc280786b",
+    "train_matrix_hash": "dba8f8958958aac603c6e455f38e2961e2667d4ce2bcd1109aaf9913af50643e",
+    "scientific_preprocessing_id": "84947d56a9cab865",
+    "preprocessing_id": "daac74bae9997468"
+   },
+   "negative_control": {
+    "shuffle_seed": 7961,
+    "original_ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+    "shuffled_ontology_hash": "18ab9b82dd01b700257c8d9ff9732e8ae63d8c17d731d30ab658c71796ea44fe",
+    "counts_before": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 16,
+     "n_relations": 78,
+     "relatedness_sum": 55.570944000000004,
+     "n_semantic_features": 3,
+     "n_nonunit_weights": 3
+    },
+    "counts_after": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 16,
+     "n_relations": 78,
+     "relatedness_sum": 55.570944000000004,
+     "n_semantic_features": 3,
+     "n_nonunit_weights": 3
+    },
+    "n_ontology_graph_nodes": 21
+   },
+   "oracle_contract": {
+    "oracle_id_original": "53437bfa7c0a9cc7",
+    "oracle_id_ontological": null,
+    "shared_oracle_arms": [
+     "coh_active_off",
+     "coh_active_off_shuf",
+     "coh_features",
+     "coh_full",
+     "coh_full_shuf",
+     "conv_coh",
+     "hist_active_off",
+     "reloaded_core",
+     "reloaded_owl_full",
+     "reloaded_owl_shuffled",
+     "trepan_original",
+     "trepan_original_enr"
+    ],
+    "single_oracle_for_shared_arms": true,
+    "unchanged_after": true,
+    "queries_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611,
+     "trepan_original_enr": 10115,
+     "hist_active_off": 24871,
+     "coh_full": 25894,
+     "coh_active_off": 24871,
+     "coh_features": 24871,
+     "coh_full_shuf": 25541,
+     "coh_active_off_shuf": 24873,
+     "conv_coh": 24871
+    }
+   },
+   "protocol_audit": {
+    "run_id": "wine:seed42",
+    "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+    "events": [
+     {
+      "phase": "selection",
+      "role": "train",
+      "operation": "fit_all_models_on_train",
+      "details": {
+       "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523"
+      }
+     },
+     {
+      "phase": "selection",
+      "role": "validation",
+      "operation": "oracle_gate_inner_cv_on_train_only",
+      "details": {
+       "folds": 3
+      }
+     },
+     {
+      "phase": "final_evaluation",
+      "role": "test",
+      "operation": "final_metrics_all_arms_once",
+      "details": {
+       "n_test": 45
+      }
+     }
+    ],
+    "test_used_for_selection": false,
+    "test_used_for_feature_selection": false,
+    "test_used_for_oracle_selection": false,
+    "test_used_for_hyperparameter_selection": false,
+    "test_used_for_counterfactual_selection": false,
+    "test_used_for_tree_selection": false,
+    "locked_test_used": true,
+    "final_test_evaluated": true,
+    "final_evaluation_recorded": true,
+    "valid": true
+   },
+   "tuning_execution_count": 1,
+   "timing": {
+    "preprocessing_time": 5.1139999868610175e-05,
+    "ontology_total_time": 0.9622206110000207,
+    "ontology_shuffled_build_time": 0.0006673170000794926,
+    "mlp_training_time": 0.013610961000040334,
+    "oracle_freeze_time": 0.0025091429999974935,
+    "oracle_gate_time": 6.7570001647254685e-06,
+    "tuning_time": 289.82023946899994,
+    "mlp_arm_time": 0.012432450000005701,
+    "metrics_time": 0.38579633199879027,
+    "c45_time": 0.14490786499982278,
+    "original_time": 2.25580897299983,
+    "reloaded_core_time": 2.20439697300003,
+    "reloaded_owl_time": 48.65910110999994,
+    "reloaded_shuffled_time": 47.932046250999974,
+    "trepan_original_enr_time": 4.038833769000121,
+    "hist_active_off_time": 48.53341079300003,
+    "coh_full_time": 57.036510487999976,
+    "coh_active_off_time": 51.870045650000066,
+    "coh_features_time": 8.421251634999862,
+    "coh_full_shuf_time": 52.45058692099997,
+    "coh_active_off_shuf_time": 51.855982308999955,
+    "conv_coh_time": 5.0515795710000475,
+    "total_time": 671.2778652920001,
+    "ontology_mapping_time": 0.09146931700024652,
+    "reasoning_time": 0.8456805369999074
+   },
+   "work": {
+    "n_samples": 178,
+    "n_train": 133,
+    "n_test": 45,
+    "n_features_raw": 13,
+    "n_features_processed": 16,
+    "n_classes": 3,
+    "number_cv_fits": 165,
+    "number_trepan_fits": 177,
+    "candidate_count": 6,
+    "oracle_query_samples_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611,
+     "trepan_original_enr": 10115,
+     "hist_active_off": 24871,
+     "coh_full": 25894,
+     "coh_active_off": 24871,
+     "coh_features": 24871,
+     "coh_full_shuf": 25541,
+     "coh_active_off_shuf": 24873,
+     "conv_coh": 24871
+    },
+    "oracle_predict_calls_per_scope": {
+     "structural_tuning": 4261,
+     "trepan_original": 32,
+     "reloaded_core": 32,
+     "reloaded_owl_full": 123,
+     "reloaded_owl_shuffled": 124,
+     "trepan_original_enr": 32,
+     "hist_active_off": 94,
+     "coh_full": 123,
+     "coh_active_off": 94,
+     "coh_features": 94,
+     "coh_full_shuf": 126,
+     "coh_active_off_shuf": 95,
+     "conv_coh": 94
+    },
+    "oracle_queries_per_scope": {
+     "structural_tuning": 1626492,
+     "trepan_original": 10689,
+     "reloaded_core": 10689,
+     "reloaded_owl_full": 26999,
+     "reloaded_owl_shuffled": 25611,
+     "trepan_original_enr": 10115,
+     "hist_active_off": 24871,
+     "coh_full": 25894,
+     "coh_active_off": 24871,
+     "coh_features": 24871,
+     "coh_full_shuf": 25541,
+     "coh_active_off_shuf": 24873,
+     "conv_coh": 24871
+    },
+    "oracle_calls_per_scope": {
+     "structural_tuning": 4261,
+     "trepan_original": 32,
+     "reloaded_core": 32,
+     "reloaded_owl_full": 123,
+     "reloaded_owl_shuffled": 124,
+     "trepan_original_enr": 32,
+     "hist_active_off": 94,
+     "coh_full": 123,
+     "coh_active_off": 94,
+     "coh_features": 94,
+     "coh_full_shuf": 126,
+     "coh_active_off_shuf": 95,
+     "conv_coh": 94
+    },
+    "synthetic_queries_per_arm": {
+     "trepan_original": 10556,
+     "reloaded_core": 10556,
+     "reloaded_owl_full": 10203,
+     "reloaded_owl_shuffled": 11601,
+     "trepan_original_enr": 9982,
+     "hist_active_off": 11516,
+     "coh_full": 11269,
+     "coh_active_off": 11239,
+     "coh_features": 11547,
+     "coh_full_shuf": 11701,
+     "coh_active_off_shuf": 10018,
+     "conv_coh": 11592
+    },
+    "semantic_feature_count": 3,
+    "number_reasoner_calls": 1
+   }
+  }
+ ],
+ "skipped_arms": [],
+ "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7",
+ "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+ "manifest": {
+  "experiment_id": "20261014T143122_wine_3f70643f",
+  "timestamp": "2026-10-14T14:31:22.836843+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "91b4892fd4b43e86c5f4a58a4b6c0eb12fcf95cf",
+  "dataset": "wine",
+  "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7",
+  "ontology_hash": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+  "config_hash": "3f70643f9bcd4a17a12034454ed080a44b02ac90ecbfe938f9856e556e1de579",
+  "seeds": [
+   42
+  ],
+  "split_hash": "45b18f0490c374e97e35e7970fdf8ed31690a2e8a333e259067c190090090d49",
+  "library_versions": {
+   "numpy": "1.26.4",
+   "scipy": "1.15.2",
+   "pandas": "2.2.3",
+   "sklearn": "1.6.1",
+   "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+   "mlp_original",
+   "c45",
+   "trepan_original",
+   "reloaded_core",
+   "reloaded_owl_full",
+   "reloaded_owl_shuffled",
+   "trepan_original_enr",
+   "hist_active_off",
+   "coh_full",
+   "coh_active_off",
+   "coh_features",
+   "coh_full_shuf",
+   "coh_active_off_shuf",
+   "conv_coh"
+  ]
+ }
+}

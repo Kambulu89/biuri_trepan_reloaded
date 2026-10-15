@@ -1,0 +1,165 @@
+{
+ "dataset": "iris",
+ "seed": 42,
+ "structure_tuning": false,
+ "canonical": {
+  "trepan_original": {
+   "fid": 0.8947368421052632,
+   "acc": 0.9473684210526315,
+   "nodes": 29,
+   "pred_hash": "a402ea74976a331e"
+  },
+  "reloaded_core": {
+   "fid": 0.8947368421052632,
+   "acc": 0.9473684210526315,
+   "nodes": 29,
+   "pred_hash": "a402ea74976a331e"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9736842105263158,
+   "acc": 0.9736842105263158,
+   "nodes": 31,
+   "pred_hash": "63440a43ecacd2c1"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.8947368421052632,
+   "acc": 0.9473684210526315,
+   "nodes": 27,
+   "pred_hash": "a402ea74976a331e"
+  }
+ },
+ "det": {
+  "trepan_original": {
+   "fid": 0.9210526315789473,
+   "acc": 0.9736842105263158,
+   "nodes": 29,
+   "pred_hash": "1d64b18b8d16e5d4"
+  },
+  "reloaded_core": {
+   "fid": 0.9210526315789473,
+   "acc": 0.9736842105263158,
+   "nodes": 29,
+   "pred_hash": "1d64b18b8d16e5d4"
+  },
+  "reloaded_owl_full": {
+   "fid": 0.9473684210526315,
+   "acc": 1.0,
+   "nodes": 31,
+   "pred_hash": "531c8d9d907f035f"
+  },
+  "reloaded_owl_shuffled": {
+   "fid": 0.8947368421052632,
+   "acc": 0.9473684210526315,
+   "nodes": 27,
+   "pred_hash": "a402ea74976a331e"
+  }
+ },
+ "noise_canonical": [
+  {
+   "trepan_original": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 31,
+    "pred_hash": "a402ea74976a331e"
+   },
+   "reloaded_core": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 31,
+    "pred_hash": "a402ea74976a331e"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9473684210526315,
+    "acc": 0.9473684210526315,
+    "nodes": 31,
+    "pred_hash": "35571d93642baed1"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "a402ea74976a331e"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 27,
+    "pred_hash": "8b474c0c8563dde9"
+   },
+   "reloaded_core": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 27,
+    "pred_hash": "8b474c0c8563dde9"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9473684210526315,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "35571d93642baed1"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "a402ea74976a331e"
+   }
+  }
+ ],
+ "noise_det": [
+  {
+   "trepan_original": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "1d64b18b8d16e5d4"
+   },
+   "reloaded_core": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "1d64b18b8d16e5d4"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9473684210526315,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "35571d93642baed1"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "a402ea74976a331e"
+   }
+  },
+  {
+   "trepan_original": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "1d64b18b8d16e5d4"
+   },
+   "reloaded_core": {
+    "fid": 0.9210526315789473,
+    "acc": 0.9736842105263158,
+    "nodes": 29,
+    "pred_hash": "1d64b18b8d16e5d4"
+   },
+   "reloaded_owl_full": {
+    "fid": 0.9473684210526315,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "35571d93642baed1"
+   },
+   "reloaded_owl_shuffled": {
+    "fid": 0.8947368421052632,
+    "acc": 0.9473684210526315,
+    "nodes": 27,
+    "pred_hash": "a402ea74976a331e"
+   }
+  }
+ ]
+}
