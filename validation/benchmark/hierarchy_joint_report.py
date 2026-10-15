@@ -17,8 +17,15 @@ from pathlib import Path
 import numpy as np
 
 from core import hierarchy_contract as H
-from validation.benchmark.diag_b2_analysis import load
-from validation.benchmark.sampler_c_analysis import replicas as _replica_rows_value
+
+
+def load(root: Path):
+    """Registos brutos COMPLETOS por unidade e braço (``row``, ``predictions``, ``labels``, ...): necessários à verificação estrita de comparabilidade."""
+    units = {}
+    for ud in sorted((root / "raw").glob("*/seed*")):
+        key = (ud.parent.name, int(ud.name[4:]))
+        units[key] = {f.stem: json.loads(f.read_text()) for f in ud.glob("*.json") if f.name not in ("split.json", "UNIT_SHA256.json")}
+    return units
 
 ACC, FID = "accuracy_real_labels", "fidelity_to_oracle"
 COMPL = ("precision_macro_real_labels", "macro_f1_real_labels")
@@ -46,7 +53,7 @@ SPECS = {
     "sampler_c": {"R": ("fam", "D"), "Oeq": ("fam", "B"), "C45": ("arm", "c45"), "controls": {},
                   "title": "Reloaded OWL + amostrador C (D) vs Original + amostrador C (B)"},
     # histórico (amostrador marginal): C vs A; controlo permutado inexistente nesta campanha
-    "sampler_c_historical": {"R": ("fam", "C"), "Oeq": ("fam", "A"), "C45": ("arm", "c45"), "controls": {}, "title": "Reloaded OWL histórico (C) vs Original histórico (A)"},
+    "sampler_c_historical": {"R": ("fam", "C"), "Oeq": ("fam", "A"), "C45": ("arm", "c45"), "controls": {}, "cross_run": True, "title": "Reloaded OWL histórico (C) vs Original histórico (A)"},
     # Doc. 22: amostragem coerente (mesma representação enriquecida: Original equivalente = trepan_original_enr)
     "coherent": {"R": ("arm", "coh_full"), "Oeq": ("arm", "trepan_original_enr"), "C45": ("arm", "c45"),
                  "controls": {"permuted_ontology": ("arm", "coh_full_shuf"), "conventional_features": ("arm", "conv_coh")},
@@ -67,7 +74,7 @@ def _get(arms, cx_arms, ref):
 
 
 def _mean(rows, key):
-    v = [r.get(key) for r in rows if r.get(key) is not None]
+    v = [r["row"].get(key) for r in rows if r["row"].get(key) is not None]
     return float(np.mean(v)) if v else None
 
 
@@ -85,13 +92,16 @@ def report(units: dict, cx: dict, spec_name: str) -> dict:
             u_vals[u] = None
             continue
         rows = {f"R{i}": r for i, r in enumerate(R)} | {f"O{i}": r for i, r in enumerate(O)} | {"C45": C[0]} | {f"{k}{i}": r for k, rs in ctrl.items() for i, r in enumerate(rs)}
-        cmp_ = H.check_comparability(rows)
+        cmp_ = H.check_comparability(rows, relaxed=("experimental_configuration",) if spec.get("cross_run") else ())
         if not cmp_["comparable"]:
             problems.append({"unit": u, "problems": cmp_["problems"]})
         u_vals[u] = {"R": (_mean(R, ACC), _mean(R, FID)), "O": (_mean(O, ACC), _mean(O, FID)), "C": (_mean(C, ACC), _mean(C, FID)),
                      "ctrl": {k: ((_mean(rs, ACC), _mean(rs, FID)) if rs else None) for k, rs in ctrl.items()}, "n_rep": (len(R), len(O)),
                      "compl": {m: {"R": _mean(R, m), "O": _mean(O, m), "C45": _mean(C, m)} for m in COMPL}}
-    out["comparability"] = {"checked_units": sum(v is not None for v in u_vals.values()), "problems": problems, "all_comparable": not problems}
+    out["comparability"] = {"level": "strict", "properties_verified": list(H.STRICT_PROPERTIES), "checked_units": sum(v is not None for v in u_vals.values()), "problems": problems,
+                            "all_comparable": not problems, "relaxed": ["experimental_configuration"] if spec.get("cross_run") else [],
+                            "note": "réplicas de C vêm de uma execução anterior (Doc. 23): config_hash difere só pela marca de piloto; instâncias, rótulos, partição, oráculo e previsões do oráculo verificados"
+                            if spec.get("cross_run") else ""}
     if problems:
         out["verdict"] = "INSUFFICIENT_EVIDENCE: instâncias/oráculo não comparáveis"
         return out

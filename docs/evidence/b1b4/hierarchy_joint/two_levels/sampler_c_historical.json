@@ -13,9 +13,27 @@
  },
  "inference_status": "explorat\u00f3rio: DEV j\u00e1 observado, n\u00e3o confirmat\u00f3rio",
  "comparability": {
+  "level": "strict",
+  "properties_verified": [
+   "instance_identity_and_order",
+   "true_labels",
+   "class_mapping_and_order",
+   "partitioning",
+   "dataset_identity",
+   "base_representation_and_preprocessing",
+   "oracle_identity",
+   "oracle_predictions_on_test",
+   "model_version",
+   "experimental_configuration",
+   "query_budget"
+  ],
   "checked_units": 18,
   "problems": [],
-  "all_comparable": true
+  "all_comparable": true,
+  "relaxed": [
+   "experimental_configuration"
+  ],
+  "note": "r\u00e9plicas de C v\u00eam de uma execu\u00e7\u00e3o anterior (Doc. 23): config_hash difere s\u00f3 pela marca de piloto; inst\u00e2ncias, r\u00f3tulos, parti\u00e7\u00e3o, or\u00e1culo e previs\u00f5es do or\u00e1culo verificados"
  },
  "level1_direct_ontological_gain": {
   "definition": "A_R vs A_Oeq e F_R vs F_Oeq (mesma estrat\u00e9gia de amostragem/or\u00e1culo/parti\u00e7\u00f5es/or\u00e7amento)",

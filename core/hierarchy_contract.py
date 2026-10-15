@@ -123,9 +123,78 @@ def is_scientific_success(verdict: Mapping[str, object]) -> bool:
     return verdict.get("state") == JOINT_HIERARCHY_SATISFIED
 
 
-def check_comparability(rows: Mapping[str, Mapping[str, object]], *, oracle_key: str = "oracle_id", c45_oracle_key: str = "fidelity_oracle_id") -> Dict[str, object]:
-    """``rows``: nome do braço -> {split_hash, n_test, oracle_id (árvores TREPAN) | fidelity_oracle_id (C4.5)}. Mesmas instâncias (split_hash e n_test iguais) e mesmo
-    MLP/oráculo (o oracle_id das árvores TREPAN coincide com o oráculo contra o qual a fidelidade do C4.5 foi medida)."""
+STRICT_PROPERTIES = ("instance_identity_and_order", "true_labels", "class_mapping_and_order", "partitioning", "dataset_identity", "base_representation_and_preprocessing",
+                     "oracle_identity", "oracle_predictions_on_test", "model_version", "experimental_configuration", "query_budget")
+
+
+def _eq(vals):
+    vals = list(vals)
+    return all(v == vals[0] for v in vals[1:])
+
+
+def check_comparability(records: Mapping[str, Mapping[str, object]], *, level: str = "strict", relaxed: Iterable[str] = (), oracle_key: str = "oracle_id",
+                        c45_oracle_key: str = "fidelity_oracle_id") -> Dict[str, object]:
+    """Comparabilidade ESTRITA entre braços. ``records``: nome do braço -> registo bruto completo (``raw_store.write_unit``: ``row``, ``predictions``, ``labels``, ...).
+    Propriedades verificadas diretamente nos dados ou por identificadores criptográficos cujo contrato as garante:
+      instance_identity_and_order   ``predictions.test_row_index`` idênticos (mesma sequência, mesma ordem);
+      true_labels                    ``predictions.y_true`` idênticos;
+      class_mapping_and_order        ``labels`` e ``minority_label`` idênticos;
+      partitioning                   ``split_id``, ``split_hash`` (hash dos índices de treino e teste), ``n_train``, ``n_test``;
+      dataset_identity               ``dataset_content_hash`` e ``dataset_hash``;
+      base_representation_and_preprocessing  ``base_representation_hash`` (matriz de treino) e ``preprocessing_id``; as representações ENRIQUECIDAS (``feature_space``, ``ontology_hash``)
+                                     são diferenças DOCUMENTADAS (devolvidas em ``documented_differences``), nunca ocultas;
+      oracle_identity                ``oracle_id`` igual em todas as árvores TREPAN e igual ao ``fidelity_oracle_id`` do C4.5;
+      oracle_predictions_on_test     previsões do oráculo sobre as instâncias de teste idênticas (o mesmo MLP produz as mesmas saídas);
+      model_version                  ``oracle_version``/``oracle_name`` idênticos;
+      experimental_configuration     ``config_hash`` e ``manifest_sha256`` idênticos;
+      query_budget                   ``tree_max_nodes``, ``query_budget``, ``tree_max_n`` iguais nas árvores TREPAN (orçamento estrutural controlado).
+    Propriedade não verificável (campo ausente) ⇒ ``ok=None`` ⇒ NÃO comparável (``unverifiable``): igualdade do nº de amostras nunca basta. ``relaxed`` isenta propriedades
+    nomeadas (p.ex. ``experimental_configuration`` ao juntar réplicas de execuções diferentes) e regista a isenção. ``level="basic"`` (legado) verifica apenas
+    ``split_hash``/``n_test``/oráculo sobre registos mínimos."""
+    if level == "basic":
+        return _check_basic(records, oracle_key, c45_oracle_key)
+    relaxed = set(relaxed)
+    rows = {k: (v.get("row") or v) for k, v in records.items()}
+    top = {k: v for k, v in records.items()}
+    pred = {k: (v.get("predictions") or {}) for k, v in records.items()}
+    trepan = [k for k, r in rows.items() if r.get(oracle_key)]
+    checks: Dict[str, Dict[str, object]] = {}
+
+    def put(name, ok, detail=""):
+        checks[name] = {"ok": ok, "detail": detail, "relaxed": name in relaxed}
+
+    def same(getter, name, *, subset=None):
+        keys = subset if subset is not None else list(records)
+        vals = [getter(k) for k in keys]
+        if any(v is None for v in vals) or not keys:
+            put(name, None, "campo ausente em " + ",".join(k for k, v in zip(keys, vals) if v is None))
+        else:
+            put(name, _eq(vals), "" if _eq(vals) else "valores diferentes")
+
+    same(lambda k: tuple(pred[k].get("test_row_index") or ()) or None, "instance_identity_and_order")
+    same(lambda k: tuple(pred[k].get("y_true") or ()) or None, "true_labels")
+    same(lambda k: (tuple(top[k].get("labels") or ()) or None, str(rows[k].get("minority_label"))) if top[k].get("labels") else None, "class_mapping_and_order")
+    same(lambda k: (rows[k].get("split_id"), rows[k].get("split_hash"), rows[k].get("n_train"), rows[k].get("n_test")) if rows[k].get("split_hash") else None, "partitioning")
+    same(lambda k: (rows[k].get("dataset_content_hash"), rows[k].get("dataset_hash")) if rows[k].get("dataset_hash") else None, "dataset_identity")
+    same(lambda k: (rows[k].get("base_representation_hash"), rows[k].get("preprocessing_id")) if rows[k].get("base_representation_hash") else None, "base_representation_and_preprocessing")
+    oracles = {rows[k].get(oracle_key) for k in trepan} | {rows[k].get(c45_oracle_key) for k in rows if rows[k].get(c45_oracle_key)}
+    put("oracle_identity", (len(oracles) == 1) if oracles else None, "" if len(oracles) == 1 else f"oráculos: {sorted(map(str, oracles))}")
+    op = {}
+    for k in records:
+        d = pred[k].get("oracle_predictions")
+        op[k] = None if not d else tuple(sorted((str(n), tuple(v)) for n, v in d.items()))
+    same(lambda k: op[k], "oracle_predictions_on_test")
+    same(lambda k: (rows[k].get("oracle_version"), rows[k].get("oracle_name")) if rows[k].get("oracle_version") else None, "model_version", subset=trepan)
+    same(lambda k: (rows[k].get("config_hash"), top[k].get("manifest_sha256")) if rows[k].get("config_hash") else None, "experimental_configuration")
+    same(lambda k: tuple(((top[k].get("config") or {}).get("structural") or {}).get(f) for f in ("tree_max_nodes", "query_budget", "tree_max_n")), "query_budget", subset=trepan)
+    unver = [n for n, c in checks.items() if c["ok"] is None and n not in relaxed]
+    fail = [n for n, c in checks.items() if c["ok"] is False and n not in relaxed]
+    doc_diff = {"feature_space": sorted({str(rows[k].get("feature_space")) for k in rows}), "ontology_hash": sorted({str(rows[k].get("ontology_hash")) for k in rows})}
+    return {"comparable": not unver and not fail, "level": "strict", "checks": checks, "failed": fail, "unverifiable": unver, "relaxed": sorted(relaxed),
+            "documented_differences": doc_diff, "problems": [f"{n}: {checks[n]['detail']}" for n in fail + unver]}
+
+
+def _check_basic(rows, oracle_key, c45_oracle_key):
     problems: List[str] = []
     splits = {r.get("split_hash") for r in rows.values()}
     ntest = {r.get("n_test") for r in rows.values()}
@@ -136,7 +205,7 @@ def check_comparability(rows: Mapping[str, Mapping[str, object]], *, oracle_key:
     oracles = {r.get(oracle_key) for r in rows.values() if r.get(oracle_key)} | {r.get(c45_oracle_key) for r in rows.values() if r.get(c45_oracle_key)}
     if len(oracles) != 1:
         problems.append(f"oráculo/MLP de referência diferente ou ausente ({sorted(map(str, oracles))})")
-    return {"comparable": not problems, "problems": problems}
+    return {"comparable": not problems, "level": "basic", "problems": problems}
 
 
 def _t_ci(vals: Sequence[float], alpha: float):

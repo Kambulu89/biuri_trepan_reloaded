@@ -96,14 +96,79 @@ def test_attribution_requires_gain_over_every_required_control_and_never_by_omis
 
 
 # ------------------------------------------------------------------------------- mesmas instâncias, mesmo MLP
-def test_comparability_requires_same_split_and_same_oracle():
-    ok = {"o": {"split_hash": "s", "n_test": 38, "oracle_id": "m"}, "r": {"split_hash": "s", "n_test": 38, "oracle_id": "m"}, "c": {"split_hash": "s", "n_test": 38, "fidelity_oracle_id": "m"}}
-    assert H.check_comparability(ok)["comparable"]
-    bad_split = {**ok, "r": {"split_hash": "x", "n_test": 38, "oracle_id": "m"}}
-    assert not H.check_comparability(bad_split)["comparable"]
-    bad_oracle = {**ok, "c": {"split_hash": "s", "n_test": 38, "fidelity_oracle_id": "OTHER"}}
-    assert not H.check_comparability(bad_oracle)["comparable"]
-    assert not H.check_comparability({"o": {"split_hash": None, "n_test": 1, "oracle_id": "m"}})["comparable"]
+def test_basic_level_is_legacy_only():
+    ok = {"o": {"split_hash": "s", "n_test": 38, "oracle_id": "m"}, "c": {"split_hash": "s", "n_test": 38, "fidelity_oracle_id": "m"}}
+    assert H.check_comparability(ok, level="basic")["comparable"]
+    assert not H.check_comparability({**ok, "c": {"split_hash": "x", "n_test": 38, "fidelity_oracle_id": "m"}}, level="basic")["comparable"]
+    assert not H.check_comparability(ok)["comparable"]                      # o nível estrito NÃO aceita registos mínimos (igualdade de n_test não basta)
+
+
+def rec(arm_kind="trepan", **kw):
+    """Registo bruto mínimo mas completo para o nível estrito."""
+    base = {"labels": [0, 1, 2], "manifest_sha256": "mf", "config": {"structural": {"tree_max_nodes": 31.0, "query_budget": 1000.0, "tree_max_n": 3.0}},
+            "predictions": {"test_row_index": [1, 4, 7], "y_true": [0, 1, 2], "oracle_predictions": {"mlp": [0, 1, 2]}},
+            "row": {"minority_label": "1", "split_id": "seed1", "split_hash": "sh", "n_train": 10, "n_test": 3, "dataset_content_hash": "dc", "dataset_hash": "dh",
+                    "base_representation_hash": "br", "preprocessing_id": "pp", "oracle_version": "v1", "oracle_name": "MLP", "config_hash": "ch", "feature_space": "original",
+                    "ontology_hash": "none"}}
+    if arm_kind == "trepan":
+        base["row"]["oracle_id"] = "M"
+    else:
+        base["row"]["fidelity_oracle_id"] = "M"
+    import copy
+    r = copy.deepcopy(base)
+    for k, v in kw.items():
+        node = r
+        path = k.split("__")
+        for p_ in path[:-1]:
+            node = node[p_]
+        node[path[-1]] = v
+    return r
+
+
+def test_strict_comparability_accepts_identical_instances_and_oracle_and_documents_representation_differences():
+    recs = {"orig": rec(), "owl": rec(row__feature_space="enriched", row__ontology_hash="abc"), "c45": rec("c45")}
+    r = H.check_comparability(recs)
+    assert r["comparable"] and not r["failed"] and not r["unverifiable"]
+    assert r["documented_differences"]["feature_space"] == ["enriched", "original"]           # representação enriquecida = diferença documentada, não oculta
+
+
+@pytest.mark.parametrize("mutation,prop", [
+    ({"predictions__test_row_index": [4, 1, 7]}, "instance_identity_and_order"),            # mesma coleção, ORDEM diferente
+    ({"predictions__test_row_index": [1, 4, 8]}, "instance_identity_and_order"),
+    ({"predictions__y_true": [0, 1, 1]}, "true_labels"),
+    ({"labels": [0, 2, 1]}, "class_mapping_and_order"),                                      # mapeamento/ordem das classes
+    ({"row__split_hash": "other"}, "partitioning"),
+    ({"row__n_test": 4}, "partitioning"),
+    ({"row__dataset_hash": "x"}, "dataset_identity"),
+    ({"row__base_representation_hash": "x"}, "base_representation_and_preprocessing"),
+    ({"row__preprocessing_id": "x"}, "base_representation_and_preprocessing"),
+    ({"row__oracle_id": "OTHER"}, "oracle_identity"),
+    ({"predictions__oracle_predictions": {"mlp": [0, 1, 1]}}, "oracle_predictions_on_test"),
+    ({"row__oracle_version": "v2"}, "model_version"),
+    ({"row__config_hash": "zz"}, "experimental_configuration"),
+    ({"manifest_sha256": "other"}, "experimental_configuration"),
+    ({"config__structural__query_budget": 2000.0}, "query_budget"),
+])
+def test_strict_comparability_detects_each_property(mutation, prop):
+    recs = {"orig": rec(), "owl": rec(**mutation), "c45": rec("c45")}
+    r = H.check_comparability(recs)
+    assert not r["comparable"] and prop in r["failed"], (prop, r["failed"])
+
+
+def test_strict_comparability_missing_information_is_not_comparable_and_same_n_is_not_enough():
+    bare = {"o": {"row": {"split_hash": "s", "n_test": 38, "oracle_id": "m"}}, "c": {"row": {"split_hash": "s", "n_test": 38, "fidelity_oracle_id": "m"}}}
+    r = H.check_comparability(bare)
+    assert not r["comparable"] and "instance_identity_and_order" in r["unverifiable"] and "true_labels" in r["unverifiable"]
+    no_preds = {"orig": rec(), "owl": rec(), "c45": rec("c45")}
+    del no_preds["owl"]["predictions"]["y_true"]
+    assert "true_labels" in H.check_comparability(no_preds)["unverifiable"]
+
+
+def test_relaxed_properties_are_exempt_and_recorded():
+    recs = {"orig": rec(), "owl": rec(row__config_hash="from_other_run"), "c45": rec("c45")}
+    assert not H.check_comparability(recs)["comparable"]
+    r = H.check_comparability(recs, relaxed=("experimental_configuration",))
+    assert r["comparable"] and r["relaxed"] == ["experimental_configuration"]
 
 
 # ------------------------------------------------------------------------------- evidência: estado lógico separado; unidade = dataset
