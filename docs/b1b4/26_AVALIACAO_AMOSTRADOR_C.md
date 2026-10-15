@@ -1,0 +1,38 @@
+# Doc. 26 — Avaliação do amostrador C (conjunta empírica + perturbação controlada)
+
+Estado: **EXPERIMENTAL, desligado por omissão, DEV exploratório (`observed_only`)**. Confirmatório intocado. B1/B2-C/amostragem coerente **não promovidos**. Este documento começa pelo **pré-registo** (escrito e commitado ANTES de qualquer execução); resultados e análise serão acrescentados abaixo sem alterar o pré-registo.
+
+## 0. Pré-registo
+
+### 0.1 Contrato do amostrador (implementação: `core/query_sampling.py`)
+- Usa **só** as linhas de treino passadas ao ajuste (global e locais por nó); não vê rótulos de teste; não conhece datasets (esquema inferido dos dados: binária, grupo one-hot por exclusão mútua com soma 1, discreta inteira nominal, contínua).
+- Linha-base real + perturbação: contínuas com ruído gaussiano (0,25·DP local, piso 0,1·DP global) recortado a [lo−0,1·amp, hi+0,1·amp] do treino global; grupos one-hot reamostrados **conjuntamente** (p=0,2); discretas reamostradas do vocabulário observado (p=0,2); binárias trocadas (p=0,05); linhas que sairiam iguais à base sofrem perturbação forçada de uma unidade categórica.
+- Determinístico: RNG = SeedSequence([random_state, réplica, 0xC5]); a **réplica isola a aleatoriedade do amostrador** sem alterar a do algoritmo. Parâmetros **fixados antes** (sem ajuste com resultados): `noise_scale=0.25, p_resample=0.2, p_flip=0.05, margin=0.1, scale_floor=0.1`.
+- Respeita transformadores existentes: no Reloaded o projetor ontológico recalcula as derivadas depois do sorteio (coerência algébrica); rejeição por restrições do caminho e teste de adoção do modelo local **herdados** do Original.
+- Ativação: só dentro de `joint_sampler_context(...)` e **igual no Original e no Reloaded** (o Original canónico não é modificado; fora do contexto nada muda). O tuning estrutural (checkpoint) nunca vê o amostrador C.
+
+### 0.2 Braços (mesmos dados, partições, MLP/oráculo congelado, orçamento estrutural em checkpoint, parâmetros, ontologia)
+| Id | Braço | Fonte |
+|---|---|---|
+| A | TREPAN Original histórico (amostrador marginal) | `trepan_original` (r=0, existente) + `sc_A_r1,2` (seed_offset 1000·r) |
+| B | Original + amostrador C | `sc_B_r0..2` |
+| C | Reloaded OWL histórico (amostrador marginal) | `reloaded_owl_full` (r=0) + `cx_h_on_n_r1,2` (Doc. 23; digits só r=0,1) |
+| D | Reloaded OWL + amostrador C | `sc_D_r0..2` |
+| E | Reloaded sem OWL, amostrador marginal | `reloaded_core` (r=0) + `sc_E_r1,2` |
+| F | Reloaded sem OWL + amostrador C | `sc_F_r0..2` |
+Sementes: **treino/partição** = semente mestra {42,7,123,2024,11 (digits: 42,7,123)} (MLP e divisão); **algoritmo** = semente mestra (fixa nos braços B/D/F; nas réplicas dos braços com amostrador marginal A/C/E o RNG do amostrador e o do algoritmo são o mesmo fluxo, logo a réplica usa `seed_offset`=1000·r — limitação registada); **amostragem do amostrador C** = réplica r∈{0,1,2}. Réplicas dentro de uma unidade **não** são unidades independentes: cada unidade (dataset, semente mestra) usa a média das réplicas; unidades do mesmo dataset não são datasets independentes (reporta-se também a média macro por dataset, n=4).
+
+### 0.3 Contrastes e hipóteses (primário ΔF = fidelidade ao oráculo; secundário ΔAcc; terciários nós, profundidade, consultas, custo)
+- **EQ-hist** A vs E; **EQ-C** B vs F: esperada igualdade **exata** (fidelidade, accuracy, nós, fluxo de consultas) em todas as unidades/réplicas. Qualquer diferença ⇒ violação do contrato EQ, resultados do Reloaded sob C suspensos.
+- Família inferencial (5 contrastes, Holm): **B−A** (efeito genérico do amostrador no Original), **D−B** (efeito do Reloaded enriquecido sob C: contraste ontológico principal; D−F equivale-se a D−B se EQ-C se verifica), **D−C** (efeito de C no Reloaded), **C−A** (efeito ontológico no contexto histórico), **(D−B)−(C−A)** (modificação do efeito ontológico pelo amostrador). Inferência exploratória: t emparelhado por unidade (18 unidades), EP entre unidades, + média macro por dataset; não se declara significância confirmatória.
+- Critérios (declarados antes): **«C melhora o Original»** só se B−A > 0 em ΔF e ΔAcc ≥ 0 com |ΔF| > 2 EP. **«Ganho ontológico sob C»** só se D−B > 0 em ΔF **e** ΔAcc, ambos > 2 EP, no mesmo sentido. A plausibilidade melhorada **não** basta para declarar sucesso. Hierarquia (`Acc_D > Acc_B > Acc_C4.5`; `Fid_D > Fid_B`) reportada como `HIERARCHY_SATISFIED|NOT_SATISFIED|INFEASIBLE|INSUFFICIENT_EVIDENCE` (contagem por unidade; sem impor).
+- Também por réplica: desvio entre réplicas dentro de célula (RNG do amostrador) vs efeito.
+- Métricas de consulta efetivas (por árvore): fora de intervalo, KS por coluna, cópias exatas de linhas de treino, unicidade, razão NN consultas→treino, diversidade, violações de one-hot/vocabulário/binárias, violação algébrica das derivadas, fração perto da fronteira e cobertura de fronteira (margem do MLP), TV/entropia de rótulos. Custo: tempo de treino da árvore, geração sintética, consultas.
+
+### 0.4 Controlo computacional (teto: estimativa inicial ≈ 1,5 CPU-h; se o piloto projetar mais, apresenta-se antes de expandir)
+Verificações antes: testes sintéticos (determinismo, réplica, one-hot/vocabulário/cópias, EQ B≡F sintético) · piloto funcional iris/42 (custo por braço, retoma de checkpoint: `tuning_fits_resumed` = nº total de ajustes; fingerprint v2 inalterado; referências r=0 idênticas ao benchmark anterior) · só depois a campanha, uma unidade por processo, retoma por unidade, sem duplicar benchmarks.
+
+### 0.5 Datasets categóricos reais (P1) — a pré-registar em separado antes de os correr (secção 5 a abrir)
+
+## Alterações de protocolo
+(nenhuma até ao momento)
