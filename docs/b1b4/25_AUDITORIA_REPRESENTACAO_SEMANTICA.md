@@ -44,3 +44,6 @@ Permutações podem criar artefactos de escala (mitigado: derivadas padronizadas
 
 ## 6. Decisões pendentes
 Autorizar (ou não) B3-a…d e dataset(s)/ontologias adicionais com categóricas reais. Nada será implementado antes de autorização.
+
+## 7. Seguimento (Docs. 26–27)
+A auditoria adicional do espaço semântico (Doc. 27 §1) mostrou que, nas TBoxes DEV, a **relatedness entre todos os pares de features originais é constante (0,712)**, logo não discrimina e é idêntica para a ontologia verdadeira e a permutada; só a partição em grupos distingue. Isto reforça HA2 (a ontologia é conhecimento de domínio válido mas pobre em relações) e explica o resultado «verdadeira ≈ permutada» do Doc. 23. B3-a ficou em desenho (`DESIGN_AUTHORIZED`); B3-b só desenho; B3-c/B3-d adiados. Nada foi implementado no núcleo.

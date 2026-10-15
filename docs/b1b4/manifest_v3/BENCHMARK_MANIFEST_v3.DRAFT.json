@@ -262,8 +262,12 @@
   "COHERENT_SAMPLING": "PARTIAL_NOT_PROMOTED",
   "B2A": "NOT_IMPLEMENTED",
   "B2B": "NOT_IMPLEMENTED",
-  "B3": "DESIGN_ONLY",
-  "B4": "NOT_IMPLEMENTED"
+  "B3": "SPLIT_INTO_B3A_B3B_B3C_B3D",
+  "B4": "NOT_IMPLEMENTED",
+  "B3A": "DESIGN_AUTHORIZED",
+  "B3B": "DESIGN_ONLY",
+  "B3C": "DEFERRED",
+  "B3D": "DEFERRED"
  },
  "investigation_causal_plausibility": {
   "docs": [
@@ -282,5 +286,45 @@
    "representation-only (lambda=0)"
   ],
   "experimental_samplers": "validation/experimental/query_samplers.py (strategies As,C,D + DomainConstrained; not in core, not default)"
+ },
+ "experimental_sampler_C": {
+  "status": "EXPERIMENTAL / NOT_PROMOTED (flag off by default)",
+  "module": "core/query_sampling.py",
+  "activation": "joint_sampler_context (explicit, identical for Original and Reloaded)",
+  "docs": [
+   "docs/b1b4/26_AVALIACAO_AMOSTRADOR_C.md",
+   "docs/b1b4/27_PROPOSTA_B3_RESTRICOES_ONTOLOGICAS.md"
+  ],
+  "evidence": [
+   "docs/evidence/b1b4/sampler_c/",
+   "docs/evidence/b1b4/b3a_design/"
+  ],
+  "arms": {
+   "A": "Original marginal",
+   "B": "Original + C",
+   "C": "Reloaded OWL marginal",
+   "D": "Reloaded OWL + C",
+   "E": "Reloaded no-OWL marginal",
+   "F": "Reloaded no-OWL + C"
+  },
+  "frozen_parameters": {
+   "noise_scale": 0.25,
+   "p_resample": 0.2,
+   "p_flip": 0.05,
+   "margin": 0.1,
+   "scale_floor": 0.1
+  },
+  "seeds": {
+   "train_partition": "master seeds",
+   "algorithm": "master seed (+1000*r only for marginal-sampler replicas)",
+   "sampling": "replica 0..2"
+  },
+  "protocol_amendments": [
+   "A1 (before results): exact one-hot partition detection; empirical-frequency resampling of discrete columns"
+  ],
+  "categorical_dev": {
+   "german_credit": "pilot 1 unit (seed 42); 4 units not run (cost)",
+   "adult": "not run"
+  }
  }
 }
