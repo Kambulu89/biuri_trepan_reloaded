@@ -320,3 +320,189 @@ class ShuffledSemanticProvider:
             [str(sh.info["original_ontology_hash"]), str(sh.info["shuffle_seed"]), sh.info["perm_hash"],
              sh.info["shuffled_structure_signature"]]).encode()).hexdigest()
         return sh
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Controlos ontológicos do Doc. 29 (EXPERIMENTAIS; nunca usados por omissão). Ambos reutilizam o MESMO processador/quality gate/reasoner que a OWL real, por isso mantêm
+# dimensão, receita de agregação, ESCALA (o processador é reajustado ao treino com as colunas já trocadas) e custo de pesquisa. Não alteram o núcleo do TREPAN.
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+def column_groups(ctx: SemanticContext) -> List[Optional[str]]:
+    """Rótulo de grupo de cada coluna ORIGINAL (None = sem mapeamento/geral)."""
+    out = []
+    for i in ctx.orig_idx:
+        g = ctx.groups[i] if ctx.groups is not None and i < len(ctx.groups) else None
+        out.append(None if (g is None or str(g).lower() in {"general", "none", ""}) else str(g))
+    return out
+
+
+def group_retention(groups: Sequence[Optional[str]], perm: np.ndarray) -> float:
+    """Fração dos pares de colunas CO-AGRUPADAS na ontologia real que continuam co-agrupados depois de a coluna j passar a transportar a entidade ``perm[j]``."""
+    g = list(groups)
+    n = len(g)
+    pairs = [(i, j) for i in range(n) for j in range(i + 1, n) if g[i] is not None and g[i] == g[j]]
+    if not pairs:
+        return 0.0
+    return float(np.mean([g[perm[i]] is not None and g[perm[i]] == g[perm[j]] for i, j in pairs]))
+
+
+def chance_retention(groups: Sequence[Optional[str]]) -> float:
+    """Valor esperado de ``group_retention`` sob permutação uniforme: P(duas colunas distintas partilham o grupo) = Σ n_g(n_g−1) / (n(n−1))."""
+    from collections import Counter
+    n = len(groups)
+    if n < 2:
+        return 0.0
+    c = Counter(x for x in groups if x is not None)
+    return float(sum(v * (v - 1) for v in c.values()) / (n * (n - 1)))
+
+
+def scale_strata(X_train, *, min_block: int = 8) -> np.ndarray:
+    """Estrato de ESCALA de cada coluna (genérico, só treino): colunas ordenadas por log10(DP) e cortadas em ⌊p/min_block⌋ blocos contíguos de tamanho quase igual (≥ ``min_block``
+    quando p ≥ ``min_block``; um só bloco se p < 2·``min_block``). Permutar só DENTRO de cada estrato evita razões/agregados absurdos entre colunas de magnitudes muito
+    diferentes (artefacto de escala que tornaria o controlo artificialmente pior), sem usar nomes de datasets."""
+    X = np.asarray(X_train, dtype=float)
+    p = X.shape[1]
+    k = max(1, p // int(min_block))
+    order = np.argsort(np.log10(np.maximum(X.std(axis=0), 1e-12)), kind="stable")
+    strata = np.zeros(p, dtype=int)
+    for b, idx in enumerate(np.array_split(order, k)):
+        strata[idx] = b
+    return strata
+
+
+def _stratified_permutation(rng, strata: Optional[np.ndarray], n: int) -> np.ndarray:
+    if strata is None:
+        return rng.permutation(n)
+    perm = np.arange(n)
+    for s in np.unique(strata):
+        idx = np.where(strata == s)[0]
+        perm[idx] = rng.permutation(idx)
+    return perm
+
+
+def select_destructive_permutation(groups: Sequence[Optional[str]], seed: int, *, strata: Optional[np.ndarray] = None, max_candidates: int = 5000) -> Tuple[np.ndarray, dict]:
+    """Primeira permutação (fluxo de candidatas independente por semente: ``default_rng([seed, c])``, c = 0, 1, ...; opcionalmente só dentro de estratos de escala) cuja retenção de pares
+    co-agrupados é ≤ à esperada ao acaso e que não fixa todas as colunas. Critério SÓ estrutural (sem rótulos nem resultados). Se não existir, devolve a de menor retenção
+    e regista ``met_criterion=False``."""
+    n = len(groups)
+    thr = chance_retention(groups)
+    best = None
+    for c in range(max_candidates):
+        p = _stratified_permutation(np.random.default_rng([int(seed), c]), strata, n)
+        r = group_retention(groups, p)
+        fixed = float(np.mean(p == np.arange(n)))
+        if fixed < 1.0 and r <= thr + 1e-12:
+            return p, {"seed_used": int(seed), "candidate_index": c, "candidates_tried": c + 1, "retention": r, "chance_retention": thr, "fixed_point_fraction": fixed, "met_criterion": True,
+                       "scale_stratified": strata is not None}
+        if best is None or r < best[1]:
+            best = (p, r, c, fixed)
+    return best[0], {"seed_used": int(seed), "candidate_index": best[2], "candidates_tried": max_candidates, "retention": best[1], "chance_retention": thr, "fixed_point_fraction": best[3], "met_criterion": False,
+                     "scale_stratified": strata is not None}
+
+
+class NamePermutedOwlProvider:
+    """CONTROLO «ontologia permutada» (acoplado): a MESMA OWL, mas o quality gate/matching/processador recebem as colunas com os NOMES permutados (a coluna j passa a
+    transportar a entidade da coluna ``perm[j]``). Destrói a correspondência coluna↔entidade (pertença a grupos, composição de cada derivada, relações); preserva o nº de
+    entidades/grupos, a distribuição de tamanhos dos grupos, a dimensão e a receita das derivadas, pesos/profundidades/relatedness do grafo, o estado do quality gate (mesmo
+    conjunto de nomes) e a ESCALA (processador reajustado ao treino já com colunas trocadas). A estrutura permanece COERENTE com as derivadas (como numa ontologia real aplicada às colunas erradas)."""
+    name = "owl_name_permuted"
+
+    def __init__(self, base: "OwlSemanticProvider", perm_seed: int):
+        self.base, self.perm_seed = base, int(perm_seed)
+
+    def build(self, X_train, feature_names, seed: int = 0, real_ctx: Optional[SemanticContext] = None) -> SemanticContext:
+        names = [str(n) for n in feature_names]
+        real = real_ctx if real_ctx is not None else self.base.build(X_train, names, seed)
+        if not real.available:
+            return real
+        perm, meta = select_destructive_permutation(column_groups(real), self.perm_seed, strata=scale_strata(X_train))
+        if not meta["met_criterion"]:                           # estratos de escala alinhados com os grupos não permitem destruir a correspondência: usa permutação livre (a porta de validade decide)
+            perm, meta = select_destructive_permutation(column_groups(real), self.perm_seed)
+            meta["scale_stratified"] = False
+            meta["stratified_attempt_failed"] = True
+        permuted_names = [names[j] for j in perm]
+        ctx = self.base.build(np.asarray(X_train, dtype=float), permuted_names, seed)
+        if not ctx.available:                                  # o conjunto de nomes é o mesmo ⇒ o gate não deve divergir; se divergir, regista-se (nunca se finge controlo)
+            ctx.reason = "controlo permutado indisponível: " + ctx.reason
+            return ctx
+        ctx.provider, ctx.source = self.name, "shuffled"
+        ctx.base_names = names
+        ctx.enriched_names = names + list(ctx.enriched_names[len(names):])
+        ctx.reason = "controlo negativo: ontologia permutada (nomes de colunas permutados; acoplado)"
+        ctx.info = {**ctx.info, "control": "name_permuted", "perm_meta": meta, "perm_hash": hashlib.sha256(perm.astype(np.int64).tobytes()).hexdigest()[:16],
+                    "real_structure_signature": real.structure_signature(), "original_ontology_hash": real.info.get("ontology_hash"),
+                    "shuffled_structure_signature": ctx.structure_signature(), "shuffled_ontology_hash": hashlib.sha256(
+                        "|".join([str(real.info.get("ontology_hash")), str(self.perm_seed), str(meta["candidate_index"]), ctx.structure_signature()]).encode()).hexdigest()}
+        return ctx
+
+
+class DecoupledRandomOwlProvider:
+    """CONTROLO «grupos semânticos aleatórios» (desacoplado): composição das derivadas = a da OWL aplicada a nomes permutados por uma permutação A; rótulos de grupo,
+    pesos, profundidades e relatedness = os da OWL real permutados por uma permutação B INDEPENDENTE (dentro das colunas originais e dentro das derivadas). Mantém tamanhos e nº
+    de grupos, dimensão, receita e escala; destrói também o acoplamento entre rótulos e composição (o que o controlo acoplado preserva). Em TBoxes só de partição os dois controlos
+    coincidem em lei; distinguem-se em ontologias com mais estrutura."""
+    name = "owl_random_groups"
+
+    def __init__(self, base: "OwlSemanticProvider", seed_a: int, seed_b: int):
+        self.base, self.seed_a, self.seed_b = base, int(seed_a), int(seed_b)
+
+    def build(self, X_train, feature_names, seed: int = 0, real_ctx: Optional[SemanticContext] = None) -> SemanticContext:
+        names = [str(n) for n in feature_names]
+        real = real_ctx if real_ctx is not None else self.base.build(X_train, names, seed)
+        if not real.available:
+            return real
+        ctx = NamePermutedOwlProvider(self.base, self.seed_a).build(X_train, names, seed, real_ctx=real)
+        if not ctx.available:
+            return ctx
+        n_o, n = len(real.orig_idx), real.n_features
+        rng = np.random.default_rng(self.seed_b)
+        perm = np.concatenate([rng.permutation(n_o), n_o + rng.permutation(n - n_o)])
+        ctx.provider = self.name
+        ctx.weights = real.weights[perm]
+        ctx.groups = [real.groups[i] for i in perm]
+        ctx.relatedness = real.relatedness[np.ix_(perm, perm)]
+        ctx.depths = real.depths[perm]
+        ctx.reason = "controlo negativo: grupos semânticos aleatórios (composição e rótulos independentes)"
+        ctx.info = {**ctx.info, "control": "random_groups", "seed_a": self.seed_a, "seed_b": self.seed_b, "structure_perm_hash": hashlib.sha256(perm.astype(np.int64).tobytes()).hexdigest()[:16],
+                    "shuffled_structure_signature": ctx.structure_signature()}
+        return ctx
+
+
+def control_validity(real: SemanticContext, ctx: SemanticContext, X_train, *, max_std_factor: float = 100.0) -> dict:
+    """Porta de validade A PRIORI de um controlo (nunca usa resultados): mesma dimensão derivada que a OWL real, valores finitos e escala das derivadas não superior a
+    ``max_std_factor`` × a da OWL real. Evita controlos artificialmente piores por artefactos de permutação (derivadas descartadas, razões com denominadores quase nulos)."""
+    if not ctx.available:
+        return {"valid": False, "reasons": ["indisponível: " + ctx.reason]}
+    n_o = len(real.orig_idx)
+    Er, Ec = real.enrich(X_train)[:, n_o:], ctx.enrich(X_train)[:, n_o:]
+    reasons = []
+    if Ec.shape[1] != Er.shape[1]:
+        reasons.append(f"dimensão derivada {Ec.shape[1]} ≠ {Er.shape[1]}")
+    if not np.isfinite(Ec).all():
+        reasons.append("derivadas não finitas")
+    pm = (ctx.info or {}).get("perm_meta")
+    if pm is not None and not pm.get("met_criterion", True):
+        reasons.append("permutação não cumpre o critério de destruição (retenção > acaso)")
+    if Ec.shape[1] and Er.shape[1] and float(Ec.std(axis=0).max()) > max_std_factor * float(Er.std(axis=0).max()):
+        reasons.append(f"escala {float(Ec.std(axis=0).max()):.3g} > {max_std_factor}× a da OWL real ({float(Er.std(axis=0).max()):.3g})")
+    return {"valid": not reasons, "reasons": reasons, "n_derived": int(Ec.shape[1]), "n_derived_real": int(Er.shape[1]), "std_max": float(Ec.std(axis=0).max()) if Ec.size else 0.0,
+            "std_max_real": float(Er.std(axis=0).max()) if Er.size else 0.0}
+
+
+def build_valid_control(kind: str, base: "OwlSemanticProvider", real: SemanticContext, X_train, feature_names, seed: int, seed_a: int, seed_b: int, *, max_attempts: int = 4) -> Tuple[SemanticContext, dict]:
+    """Constrói um controlo ``kind ∈ {"permuted","random_groups"}`` aplicando a porta de validade a sucessivas permutações (semente + 997·tentativa, pré-definidas). Se nenhuma
+    for válida, recorre ao controlo PARCIAL «estrutura permutada» (features reais, estrutura permutada: dimensão e escala exatas, mas a representação conserva o conteúdo
+    das derivadas verdadeiras) e regista ``variant='structure_only_fallback'`` — a limitação fica explícita e o controlo nunca é apresentado como o completo."""
+    attempts = []
+    for a in range(max_attempts):
+        if kind == "permuted":
+            ctx = NamePermutedOwlProvider(base, seed_a + 997 * a).build(X_train, feature_names, seed, real_ctx=real)
+        else:
+            ctx = DecoupledRandomOwlProvider(base, seed_a + 997 * a, seed_b + 997 * a).build(X_train, feature_names, seed, real_ctx=real)
+        v = control_validity(real, ctx, X_train)
+        attempts.append({"attempt": a, "valid": v["valid"], "reasons": v["reasons"]})
+        if v["valid"]:
+            ctx.info = {**ctx.info, "control_validity": v, "control_variant": "full", "attempts": attempts}
+            return ctx, {"variant": "full", "attempts": attempts, "validity": v}
+    fb = ShuffledSemanticProvider(None).from_context(base.build(X_train, feature_names, seed), seed_a, mode="structure")
+    fb.info = {**fb.info, "control_variant": "structure_only_fallback", "attempts": attempts}
+    return fb, {"variant": "structure_only_fallback", "attempts": attempts, "validity": control_validity(real, fb, X_train)}
