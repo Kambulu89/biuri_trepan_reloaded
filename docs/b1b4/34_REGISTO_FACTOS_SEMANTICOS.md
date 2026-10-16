@@ -5,13 +5,13 @@ Estado: **IMPLEMENTADO EM `validation/` (experimental); `core/` NÃO alterado.**
 ## 0. Encerramento da B3.0 (ordem 1–2)
 | verificação | resultado |
 |---|---|
-| CI do commit `9bc7cbb` (API pública, jobs individuais) | ver §7 (preenchido só com os fluxos concluídos) |
+| CI do commit `9bc7cbb` (API pública, jobs individuais) | **Windows 3.11 success · Windows 3.12 success · agnosticism-guard success** (todos os fluxos concluídos) |
 | Integridade dos artefactos M29 (`validation/benchmark/b31_integrity.py`, reproduzível) | **302/302** hashes (20 diretórios de unidade) coincidem |
 | `split.json` repostos | **20/20** presentes e com o hash registado **na altura da execução** em cada `UNIT_SHA256.json` (a proveniência é o registo por unidade escrito pelo executor, independente da cópia; os ficheiros foram copiados sem alteração da diretoria de saída da campanha) |
 | Relatório M29 regenerado só dos brutos versionados | **JSON idêntico** (igualdade exata); F29≡A29 18/18; comparabilidade estrita 18/18 sem problemas |
 | Estado congelado | `docs/evidence/b1b4/b31/freeze_B30.json` (hashes de árvore git por caminho, `core/` incluído); etiqueta local `b30-freeze` em `9bc7cbb` (o *push* da etiqueta foi recusado pelo remoto: o congelamento fica provado pelos hashes de árvore e pelo commit) |
 | `core/` | idêntico entre `9bc7cbb` e o estado atual (`git diff --stat 9bc7cbb HEAD -- core` vazio) |
-| Testes de regressão/agnosticismo | ver §7 |
+| Testes de regressão/agnosticismo | **428 passed, 40 skipped** + verificador estático OK (§7) |
 A campanha M29 não foi repetida.
 
 ## 1. Papel do registo
@@ -68,10 +68,13 @@ O predicado `is_eliminable(fact)` é o **único** ponto onde se autoriza elimina
 «Zero inferências novas numa ontologia consistente» é classificado `NO_NEW_INFERENCES`, **não** falha do reasoner nem da propagação (distinção implementada em `propagation_report`: `PROPAGATED` / `NO_NEW_INFERENCES` / `PROPAGATION_FAILURE_OR_IRRELEVANT`). Destinos de propagação por facto: `RECOGNIZED_EXPLICIT`, `RECOGNIZED_INFERRED`, `DISCARDED` (+razão), `BLOCKED_BY_MATCHING`, `IRRELEVANT_TO_FEATURES`, `REACHED_CANDIDATE`.
 
 ## 7. Testes e CI
-@@TESTS@@
+Testes B3.1 (todos em `tests/`, só `validation/`): `test_b31_facts_relatedness.py` (26+2: campos/proveniência/ids determinísticos, separação dos estatutos, nenhum facto eliminável a partir da ontologia, domínio/disjunção/facetas não são validadores fechados, mundo aberto, inferência HermiT chega aos atributos, relatório de propagação, ontologia inconsistente sem factos úteis, matching bloqueia, relações documentadas e empíricas, política de uso permitido, relatedness: propriedades, ordem, sub-propriedade, equivalência, ancestral genérico, renomeação, empate perfeito, Wu–Palmer), `test_b31_steering_identifiability.py` (EQ sem unidades, rastreabilidade, congelamento v1/v2, estrutura das 12 variantes, abstenção) e `test_b31_protocol.py` (revisor não humano rejeitado, validação independente só com 3 revisões humanas + passos automáticos).
+**Regressão desta fase** (execução local, Python 3.11): `tests/test_eq_reloaded_original.py`, agnosticismo (`test_agnosticism_contract`, `test_dataset_agnosticism`, `test_v92_static_guards`), contrato de hierarquia conjunta, M29 (relatório e executor), B3.0, B3.1, amostrador C, controlos ontológicos e B3-a (contrato): **428 passed, 40 skipped, 0 failed** (os 40 *skips* são pré-existentes: cenários dependentes de plataforma/GUI). Verificador estático de agnosticismo: OK.
+**Nota de compatibilidade:** `test_validation_is_allowed_to_know_the_core…` faz `ast.parse` de todos os ficheiros de `validation/`; uma *f-string* aninhada (válida só em Python ≥ 3.12) no relatório da identificabilidade falhou em 3.11 e foi corrigida; todos os `b3*.py` e `test_b3*.py` são agora sintaticamente válidos em 3.11.
+**CI (API pública do GitHub):** commit `9bc7cbb` (B3.0): `windows-tests (3.11)` **success**, `windows-tests (3.12)` **success**, `agnosticism-guard` **success**. Commits seguintes da B3.1: o *guard* passa em todos; o estado do Windows do commit final está no relatório de entrega (só declarado verde com todos os fluxos concluídos).
 
 ## 8. Limitações
 1. A dedução de fecho de atributos (domínio por super-propriedade) é calculada pelo compilador (RDFS/OWL), não consultada ao HermiT; o reasoner valida consistência e fornece as inferências de classes.
 2. Perfil OWL 2 DL: **não verificado formalmente** (sem *profile checker* no ambiente); o protocolo (Doc. 37) usa um proxy explícito (sem *punning* + classificação HermiT sem erro).
-3. O matching é lexical (herdado): ver Doc. 32 §5; um empate perfeito (score ≥ 0,98) entre duas entidades é aceite pelo gate do núcleo — achado da B3.1 (§Doc. 36 §6), não corrigido no núcleo.
-4. `MATCH_FAILURE` não tem axiomas de origem nem entidade fiável em versões anteriores do compilador (corrigido, ver Doc. 36 §7 — desvio pós-congelamento registado).
+3. O matching é lexical (herdado): ver Doc. 32 §5; um empate perfeito (score ≥ 0,98) entre duas entidades é aceite pelo gate do núcleo — achado da B3.1 (Doc. 36 §6), não corrigido no núcleo; o registo trata-o como `PERFECT_TIE_AMBIGUOUS`.
+4. Versões anteriores do compilador deixavam `MATCH_FAILURE` sem axiomas de origem e aceitavam empates perfeitos de matching; corrigido e registado como desvio pós-congelamento (Doc. 36 §3 e §8; 300 comparações sem diferenças).

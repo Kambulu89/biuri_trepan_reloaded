@@ -125,3 +125,13 @@ def test_traceability_chain_for_a_semantically_influenced_candidate(specs):
                     assert e["winning_unit"] is not None and e["score_changed"] is False
                     assert e["units_searched"] and "candidate_exists_without_owl" in e["units_searched"][0]
         assert found > 0, "nenhuma decisão influenciada nas 16 sementes de verificação da cadeia (o teste exige exemplos para validar a rastreabilidade)"
+
+
+def test_frozen_v2_is_a_preregistered_refinement_with_new_disjoint_seeds():
+    from validation.benchmark.b31_identifiability import FROZEN_V2
+    import hashlib
+    v1, v2 = _frozen(), json.loads(FROZEN_V2.read_text())
+    assert v2["version"] == 2 and v2["harness"]["pool_parity"] is True
+    assert v2["problems"] == v1["problems"] and v2["criteria"] == v1["criteria"] and v2["variants"] == v1["variants"]       # mesmos problemas, critérios e variantes
+    assert set(v2["evaluation_seeds"]).isdisjoint(v1["evaluation_seeds"]) and set(v2["evaluation_seeds"]).isdisjoint(CAL_SEEDS)
+    assert v2["supersedes"]["sha256"] == hashlib.sha256(FROZEN.read_bytes()).hexdigest()
