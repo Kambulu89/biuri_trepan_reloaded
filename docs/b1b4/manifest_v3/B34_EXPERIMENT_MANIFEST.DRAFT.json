@@ -1,0 +1,158 @@
+{
+ "manifest": "B34_EXPERIMENT_MANIFEST",
+ "status": "DRAFT_NOT_FROZEN",
+ "frozen": false,
+ "phase": "B3.4",
+ "depends_on": "docs/b1b4/44_PROTOCOLO_B34_CONHECIMENTO_PREVIO.md",
+ "note": "rascunho; nenhum parâmetro é vinculativo até congelamento explícito (hash do código + commit separado) autorizado pelo responsável; não altera nem substitui BENCHMARK_MANIFEST_v1/v2/v3 nem protocolos congelados",
+ "restrictions": {
+  "scope": "validation/ apenas",
+  "core_changes": "nenhuma",
+  "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED",
+  "dev_or_confirmatory_datasets": "não usados"
+ },
+ "study_type": "EXTERNAL_KNOWLEDGE_BENEFIT (E vs A–D,I,K) + equal-information contrast (E vs J)",
+ "generator": {
+  "name": "LATENT_CONCEPT_V1",
+  "streams": {
+   "domain": "estrutura de conceitos e nomes (única entrada do construtor de ontologia)",
+   "rule": "conceitos-alvo A,B, limiar, tipo de regra",
+   "data": "latentes, ruído dos indicadores, rótulos"
+  },
+  "indicator_model": "x_cj = lambda_cj*z_c + sqrt(1-lambda_cj^2)*eps_cj, lambda~U(0.6,0.85), escala aleatória por indicador",
+  "target": "y = 1[z_A>Phi^-1(q)] XOR 1[z_B>Phi^-1(q)] com ruído de rótulo eta; A,B ocultos",
+  "oracle": "MLP sklearn (StandardScaler + MLP(32), max_iter 800) treinado nos n rótulos de treino",
+  "n_test": 4000,
+  "n_validation": "0 (sem validação usada pelos modelos; calibração só em sementes de calibração)"
+ },
+ "cells": {
+  "M0_NULL": {
+   "purpose": "calibração do método (erro tipo I): rótulos independentes dos atributos",
+   "n_train": 120,
+   "K": 8,
+   "g": 6,
+   "eta": 0.5,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 20,
+   "axis": "controlo nulo"
+  },
+  "M1_FEW_60": {
+   "axis": "S1+S2",
+   "n_train": 60,
+   "K": 8,
+   "g": 6,
+   "eta": 0.05,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 30
+  },
+  "M2_FEW_120": {
+   "axis": "S1+S2 (célula de referência)",
+   "n_train": 120,
+   "K": 8,
+   "g": 6,
+   "eta": 0.05,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 30
+  },
+  "M3_FEW_240": {
+   "axis": "S1+S2 (n maior; dose-resposta)",
+   "n_train": 240,
+   "K": 8,
+   "g": 6,
+   "eta": 0.05,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 30
+  },
+  "M4_NOISE_HIGH": {
+   "axis": "S3",
+   "n_train": 120,
+   "K": 8,
+   "g": 6,
+   "eta": 0.2,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 30
+  },
+  "M5_HIGHDIM": {
+   "axis": "S4",
+   "n_train": 120,
+   "K": 16,
+   "g": 6,
+   "eta": 0.05,
+   "q": 0.65,
+   "coverage_missing_prob": 0.0,
+   "eval_seeds": 30
+  },
+  "M6_INCOMPLETE": {
+   "axis": "S5",
+   "n_train": 120,
+   "K": 8,
+   "g": 6,
+   "eta": 0.05,
+   "q": 0.65,
+   "coverage_missing_prob": 0.4,
+   "eval_seeds": 30
+  }
+ },
+ "arms": {
+  "A_ORIG": "Original canónico, mf limitado",
+  "B_WIDE": "Original, mf=p",
+  "C_GEN_INTERACTION": "orientação por unidades de rastreio genérico de interações por pares (maior ganho)",
+  "D_PAIR_STAT": "idem com filtro de significância por permutação de rótulos (só treino) e fallback ao Original",
+  "E_OWL_TRUE": "orientação por ontologia derivada da especificação de domínio (partição verdadeira dos indicadores)",
+  "F_OWL_PERM": "ontologia permutada (mesmos tamanhos)",
+  "G_OWL_RAND": "ontologia aleatória",
+  "H_OWL_NEUTRALIZED": "ontologia verdadeira com as relações dos conceitos relevantes neutralizadas",
+  "I_CONV": "agrupamento por correlação (engenharia convencional)",
+  "J_GROUPS_NO_OWL": "a MESMA partição de E como lista simples de grupos, sem OWL (conhecimento prévio equivalente)",
+  "K1_WIDE_BEAM_CAND": "WIDE com beam calibrado a candidatos avaliados de E",
+  "K2_WIDE_BEAM_CPU": "WIDE com beam calibrado ao CPU de E",
+  "N_IRRELEVANT": "ontologia verdadeira sobre outros atributos",
+  "N_INCOMPLETE": "ontologia com um conceito relevante amputado",
+  "N_MISLEADING": "relações semanticamente erradas (conceitos relevantes divididos com intrusos)"
+ },
+ "seeds": {
+  "calibration": [
+   4000,
+   4019
+  ],
+  "evaluation": "5000+100*cell_index+i, i=0..29 (M0: i=0..19)",
+  "stability": "6000+100*cell_index+i, i=0..19 (só células que passam os critérios principais)",
+  "diagnostic_memory": [
+   7000,
+   7009
+  ],
+  "disjoint_from": "0–39, 200–239, 300–319, 400–429, 500–509, 1000–1029, 2000–2029, 3000–3019"
+ },
+ "budget_contrasts": [
+  "candidatos avaliados (K1)",
+  "literais (pool_parity: mesmo orçamento de literais por pesquisa)",
+  "consultas ao oráculo (mesmos max_queries/min_sample; contagem real reportada)",
+  "CPU de ajuste (K2)",
+  "compilação OWL e rastreio incluídos no custo total",
+  "memória (tracemalloc, sementes 7000–7009)",
+  "limites de árvore iguais (max_nodes, max_depth, max_n)"
+ ],
+ "statuses": [
+  "RULE_RECOVERY_GAIN",
+  "FIDELITY_GAIN",
+  "ACCURACY_GAIN",
+  "JOINT_GAIN",
+  "ONTOLOGY_ATTRIBUTED_GAIN",
+  "NO_ONTOLOGICAL_ADVANTAGE",
+  "INSUFFICIENT_EVIDENCE"
+ ],
+ "cpu_estimate_hours": {
+  "calibration": 1.2,
+  "evaluation": 4.6,
+  "stability": 0.7,
+  "memory": 0.4,
+  "total": 6.9,
+  "hard_cap": 9.0
+ },
+ "stopping": "sem novas famílias, sementes ou critérios após ver resultados; hard cap de CPU; parar no primeiro veredicto global; não propor B3.5 automaticamente"
+}
