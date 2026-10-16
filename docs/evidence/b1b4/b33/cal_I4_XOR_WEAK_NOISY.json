@@ -1,0 +1,100 @@
+{
+ "family": {
+  "key": "I4_XOR_WEAK_NOISY",
+  "rule": "xor",
+  "layout": "within",
+  "eta": 0.1,
+  "n_groups": 8,
+  "group_size": 4,
+  "n_train": 1000,
+  "max_queries": 4000,
+  "mf_grid": [
+   16,
+   20,
+   24,
+   28,
+   30
+  ],
+  "ontology_true_variant": "TRUE",
+  "q": 0.65
+ },
+ "mf": {
+  "rates": {
+   "16": 0.2,
+   "20": 0.3,
+   "24": 0.55,
+   "28": 0.8,
+   "30": 1.0
+  },
+  "chosen": 24,
+  "within_target_band": true
+ },
+ "beam": {
+  "reference_C": {
+   "eval_calls": 15037.083333333334,
+   "cpu_fit_s": 1.6764649335833337
+  },
+  "table": {
+   "2": {
+    "eval_calls": 5675.833333333333,
+    "cpu_fit_s": 0.9890063899166677
+   },
+   "3": {
+    "eval_calls": 6116.75,
+    "cpu_fit_s": 1.1050942860833384
+   },
+   "4": {
+    "eval_calls": 6546.083333333333,
+    "cpu_fit_s": 1.255734594416668
+   },
+   "6": {
+    "eval_calls": 7446.333333333333,
+    "cpu_fit_s": 1.5011639730833342
+   },
+   "8": {
+    "eval_calls": 8336.916666666666,
+    "cpu_fit_s": 1.9753772030833285
+   },
+   "12": {
+    "eval_calls": 10111.833333333334,
+    "cpu_fit_s": 2.6260792220000013
+   },
+   "16": {
+    "eval_calls": 11944.333333333334,
+    "cpu_fit_s": 3.3595771927499953
+   },
+   "24": {
+    "eval_calls": 15693.333333333334,
+    "cpu_fit_s": 4.946695394500007
+   },
+   "32": {
+    "eval_calls": 19442.916666666668,
+    "cpu_fit_s": 6.422765269499995
+   },
+   "48": {
+    "eval_calls": 27263.416666666668,
+    "cpu_fit_s": 9.453735357000014
+   }
+  },
+  "bw_j1": 24,
+  "bw_j2": 6
+ },
+ "spec": {
+  "name": "I4_XOR_WEAK_NOISY",
+  "n_groups": 8,
+  "group_size": 4,
+  "rule": "within_group",
+  "rule_m": 2,
+  "n_train": 1000,
+  "scale_sigma": 0.7,
+  "min_sample": 400,
+  "max_queries": 4000,
+  "max_nodes": 7,
+  "max_depth": 3,
+  "max_n": 4,
+  "beam_width": 2,
+  "min_samples_leaf": 3,
+  "max_features_per_node": 24,
+  "n_test": 4000
+ }
+}
