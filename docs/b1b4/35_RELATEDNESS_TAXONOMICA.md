@@ -34,8 +34,8 @@ Simetria, reflexividade, limites [0,1]; ordem «mesmo conceito > conceitos irmã
 ### 5.1 Ontologia sintética de 3 níveis (`Root ⊃ Mid1{L1,L2} , Mid2{L3}`; atributos `fa,fb∈L1`, `fc∈L2`, `fd∈L3`)
 | par | histórica | Lin | Wu–Palmer |
 |---|---|---|---|
-| fa–fb (mesmo conceito L1) | 0,7124 | 0,500 | @@WUP_SAME@@ |
-| fa–fc (irmãos sob Mid1) | 0,7124 | 0,208 | @@WUP_SIB@@ |
+| fa–fb (mesmo conceito L1) | 0,7124 | 0,500 | 0,667 |
+| fa–fc (irmãos sob Mid1) | 0,7124 | 0,208 | 0,333 |
 | fa–fd (ramos distintos) | 0,7124 | 0,000 | 0,000 |
 A histórica é **constante**; a taxonómica ordena segundo a hierarquia.
 

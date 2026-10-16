@@ -31,6 +31,7 @@ from validation.benchmark.b31_steering import SemanticSteeredTrepan
 HERE = Path(__file__).resolve()
 ROOT = HERE.parents[2]
 FROZEN = ROOT / "docs/evidence/b1b4/b31/problems_frozen.json"
+FROZEN_V2 = ROOT / "docs/evidence/b1b4/b31/problems_frozen_v2.json"
 CODE_FILES = ("validation/benchmark/b31_facts.py", "validation/benchmark/b31_relatedness.py", "validation/benchmark/b31_steering.py", "validation/benchmark/b31_identifiability.py")
 
 TOPICS = ["thermal", "optical", "acoustic", "magnetic", "chemical", "kinetic", "electric", "spatial"]
@@ -220,7 +221,7 @@ def conventional_units(X, names, n_groups: int, group_size: int):
     return units
 
 
-def fit_variant(spec: ProblemSpec, inst: Dict[str, Any], variant: str, seed: int, tmp: Path, *, unit_budget: int = 3) -> Dict[str, Any]:
+def fit_variant(spec: ProblemSpec, inst: Dict[str, Any], variant: str, seed: int, tmp: Path, *, unit_budget: int = 3, pool_parity: bool = False) -> Dict[str, Any]:
     kw = dict(min_sample=spec.min_sample, max_queries=spec.max_queries, max_nodes=spec.max_nodes, max_depth=spec.max_depth, max_n=spec.max_n, beam_width=spec.beam_width,
               min_samples_leaf=spec.min_samples_leaf, max_features_per_node=spec.max_features_per_node, random_state=seed)
     p = inst["X"].shape[1]
@@ -233,12 +234,12 @@ def fit_variant(spec: ProblemSpec, inst: Dict[str, Any], variant: str, seed: int
         model = TrepanOriginalClassifier(**dict(kw, max_features_per_node=p))
     elif variant == "CONV":
         units = conventional_units(inst["X"], inst["names"], spec.n_groups, spec.group_size)
-        model = SemanticSteeredTrepan(units=units, unit_budget=unit_budget, **kw)
+        model = SemanticSteeredTrepan(units=units, unit_budget=unit_budget, pool_parity=pool_parity, **kw)
     else:
         owl = build_ontology(variant, inst, seed, tmp)
         reg = compile_registry(owl, inst["names"])
         units = semantic_units(reg, inst["names"]) if reg.ontology_status == "VALID" else []
-        model = SemanticSteeredTrepan(units=units, unit_budget=unit_budget, registry=reg, **kw)
+        model = SemanticSteeredTrepan(units=units, unit_budget=unit_budget, registry=reg, pool_parity=pool_parity, **kw)
     model.fit(inst["X"], oracle=inst["oracle"], feature_names=inst["names"])
     nodes = [n for n in model.iter_nodes() if not n.is_leaf and n.test is not None]
     rule = set(inst["rule_idx"])
@@ -316,12 +317,29 @@ def freeze(out: Path = FROZEN) -> Dict[str, Any]:
     return doc
 
 
-def evaluate(allow_drift: bool = False, seeds=EVAL_SEEDS, variants=ALL_VARIANTS, out: Optional[Path] = None) -> Dict[str, Any]:
-    fz = json.loads(FROZEN.read_text())
+def freeze_v2(out: Path = FROZEN_V2, eval_seeds=tuple(range(100, 140))) -> Dict[str, Any]:
+    """v2: MESMOS problemas e critérios que a v1; a única mudança do arnês é a paridade do orçamento de literais (diagnóstico da v1: pesquisa dentro da unidade limitada a
+    max(8, 3·|unidade|) = 12 literais, contra 3·max_features_per_node = 84 no Original). Sementes de avaliação novas e disjuntas de calibração, v1 e diagnóstico."""
+    v1 = json.loads(FROZEN.read_text())
+    assert set(eval_seeds).isdisjoint(set(range(1000, 1030))) and set(eval_seeds).isdisjoint(set(EVAL_SEEDS)) and set(eval_seeds).isdisjoint(set(range(9000, 9016)))
+    doc = {k: v1[k] for k in ("problems", "calibration", "variants", "criteria")}
+    doc.update({"frozen": True, "version": 2, "purpose": "congelado ANTES de avaliar a v2; v1 mantida e reportada", "evaluation_seeds": list(eval_seeds),
+                "harness": {"pool_parity": True, "reason": "diagnóstico v1: a unidade com a regra era pesquisada (rank 0) mas o conjunto de literais da pesquisa restrita (max(8,3·|unidade|)=12) impedia montar o m-of-n de 4 atributos; v2 dá o mesmo orçamento de literais do Original",
+                            "diagnosis_seeds": [9000, 9015]},
+                "supersedes": {"file": "problems_frozen.json", "sha256": hashlib.sha256(FROZEN.read_bytes()).hexdigest(), "v1_outcome": "C1–C4 e D2 NÃO cumpridos (ver identifiability_analysis.json)"},
+                "code_sha256": code_hash(), "calibration_used_only_original": True})
+    out.write_text(json.dumps(doc, indent=1))
+    return doc
+
+
+def evaluate(frozen: Path = FROZEN, allow_drift: bool = False, seeds=None, variants=ALL_VARIANTS, out: Optional[Path] = None) -> Dict[str, Any]:
+    fz = json.loads(Path(frozen).read_text())
+    seeds = tuple(fz["evaluation_seeds"] if seeds is None else seeds)
     drift = {f: (h, code_hash()[f]) for f, h in fz["code_sha256"].items() if code_hash()[f] != h}
     if drift and not allow_drift:
         raise SystemExit(f"código alterado desde o congelamento: {sorted(drift)} (use --allow-drift e registe o desvio)")
-    res: Dict[str, Any] = {"frozen_code_drift": {k: list(v) for k, v in drift.items()}, "problems": {}}
+    parity = bool(fz.get("harness", {}).get("pool_parity", False))
+    res: Dict[str, Any] = {"frozen_file": Path(frozen).name, "frozen_code_drift": {k: list(v) for k, v in drift.items()}, "pool_parity": parity, "problems": {}}
     with tempfile.TemporaryDirectory() as td:
         for pname, sd in fz["problems"].items():
             spec = ProblemSpec(**sd)
@@ -329,10 +347,10 @@ def evaluate(allow_drift: bool = False, seeds=EVAL_SEEDS, variants=ALL_VARIANTS,
             for s in seeds:
                 inst = make_instance(spec, s)
                 for v in variants:
-                    rows.append(fit_variant(spec, inst, v, s, Path(td), unit_budget=fz["criteria"]["unit_budget"]))
+                    rows.append(fit_variant(spec, inst, v, s, Path(td), unit_budget=fz["criteria"]["unit_budget"], pool_parity=parity))
             res["problems"][pname] = rows
     if out:
-        out.write_text(json.dumps(res, indent=1))
+        Path(out).write_text(json.dumps(res, indent=1))
     return res
 
 
@@ -340,16 +358,23 @@ def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("freeze")
+    sub.add_parser("freeze-v2")
     e = sub.add_parser("evaluate")
     e.add_argument("--out", required=True)
+    e.add_argument("--frozen", default=str(FROZEN))
     e.add_argument("--allow-drift", action="store_true")
-    e.add_argument("--n-seeds", type=int, default=len(EVAL_SEEDS))
+    e.add_argument("--n-seeds", type=int, default=0)
     a = ap.parse_args()
     if a.cmd == "freeze":
         d = freeze()
         print(json.dumps({"calibration": {k: v["rates"] for k, v in d["calibration"].items()}, "chosen": {k: v["max_features_per_node"] for k, v in d["problems"].items()}}, indent=1))
+    elif a.cmd == "freeze-v2":
+        d = freeze_v2()
+        print("v2 congelada; sementes", d["evaluation_seeds"][0], "-", d["evaluation_seeds"][-1])
     else:
-        evaluate(a.allow_drift, EVAL_SEEDS[:a.n_seeds], ALL_VARIANTS, Path(a.out))
+        fz = json.loads(Path(a.frozen).read_text())
+        seeds = tuple(fz["evaluation_seeds"][:a.n_seeds]) if a.n_seeds else None
+        evaluate(Path(a.frozen), a.allow_drift, seeds, ALL_VARIANTS, Path(a.out))
 
 
 if __name__ == "__main__":

@@ -118,12 +118,19 @@ def build_index(reg: FactRegistry, features: Sequence[str]) -> ConceptIndex:
     # propriedade que NÃO está noutro atributo (prop:self só do próprio) tem |E|=1: informativa mas sem partilha
     informative = {c for c, e in ext.items() if 0 < len(e) < n or (len(e) == n == 1)}
     ic = {c: -math.log(len(ext[c]) / n) for c in informative}
-    # pais entre conceitos informativos (taxonomia): c é pai de d se E(d) ⊂ E(c) estrito e não existe intermédio (aprox. por inclusão de extensão)
+    # pais (taxonomia DECLARADA, só entre conceitos informativos): classes pelo fecho de antepassados do registo; pseudo-conceito de propriedade pelos restantes conceitos do atributo
+    anc = (reg.taxonomy or {}).get("ancestors", {})
     parents: Dict[str, set] = {c: set() for c in informative}
     for c in informative:
-        for d in informative:
-            if c != d and ext[c] < ext[d]:
-                parents[c].add(d)
+        if not (c.startswith("prop:") or c.startswith("doc:")):
+            parents[c] = {a for a in anc.get(c, {}) if a in informative and a != c}
+    for f in feats:
+        e = reg.feature_entity.get(f)
+        if not e:
+            continue
+        selfc = f"prop:{cn(e)}"
+        if selfc in informative:
+            parents[selfc] |= {d for d in concepts_of[f] if d != selfc and d in informative and not d.startswith("doc:")}
     disj = []
     for fd in reg.by_kind(Kind.CONCEPT_DISJOINTNESS):
         if fd.use_state != UseState.REJECTED.value:
@@ -139,7 +146,7 @@ def _depth(ix: ConceptIndex, c: str, memo: Dict[str, int]) -> int:
     if c in memo:
         return memo[c]
     ps = ix.parents.get(c, set())
-    memo[c] = 1 if not ps else 1 + min(_depth(ix, p, memo) for p in ps)
+    memo[c] = 1 if not ps else 1 + max(_depth(ix, p, memo) for p in ps)       # caminho mais longo desde a raiz informativa
     return memo[c]
 
 

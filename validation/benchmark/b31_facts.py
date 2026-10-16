@@ -278,7 +278,7 @@ def concept_closure(classes: Sequence[str], sub: Sequence[Tuple[str, str]], equi
     for kind, lst, inf in (("sub", sub, False), ("sub", inferred_sub, True)):
         for c, p in lst:
             if c in uf.p and p in uf.p:
-                edges.setdefault(uf.find(c), []).append((uf.find(p), "inferred" if inf else "asserted", inf, f"{c} SubClassOf {p}"))
+                edges.setdefault(uf.find(c), []).append((uf.find(p), "inferred" if inf else "asserted", inf, f"{c} SubClassOf {p}" + (" [inferred]" if inf else "")))
     anc: Dict[str, Dict[str, Tuple[str, Tuple[str, ...]]]] = {}
     for c in classes:
         root = uf.find(c)
@@ -359,12 +359,17 @@ def compile_registry(owl_path: str | Path, feature_names: Sequence[str], *, docu
     prov_r = dict(prov, reasoner=rr)
     props = set(ex["props"])
     for d in decisions:
-        reg.feature_entity[d.feature] = d.entity_name if d.accepted else None
+        tie = bool(d.accepted and d.ambiguity_margin <= 1e-12)           # empate perfeito entre duas entidades: o gate do núcleo aceita-o (score ≥ 0,98); aqui é ambíguo
+        usable = bool(d.accepted and not tie)
+        reg.feature_entity[d.feature] = d.entity_name if usable else None
         reg.match_confidence[d.feature] = float(d.score)
-        if not d.accepted:
-            reg.add(SemanticFact(make_id(Kind.MATCH_FAILURE.value, [d.feature], [d.status]), Kind.MATCH_FAILURE.value, (str(d.runner_up_entity or ""),), (d.feature,), (),
+        if not usable:
+            status = "PERFECT_TIE_AMBIGUOUS" if tie else d.status
+            ents = (str(d.entity_name),) if d.entity_name else ()
+            reg.add(SemanticFact(make_id(Kind.MATCH_FAILURE.value, [d.feature], [status]), Kind.MATCH_FAILURE.value, ents, (d.feature,),
+                                 (f"match {d.feature}: {status} (melhor candidato {d.entity_name or 'nenhum'}, score {d.score:.2f}, margem {d.ambiguity_margin:.2f})",),
                                  dict(prov_r, matching_step="OntologyQualityGate.match_features"), Epistemic.UNKNOWN.value, Derivation.NOT_APPLICABLE.value, rr, float(d.score),
-                                 {"level": "tabular_attribute"}, ("attribute has no accepted ontology entity",), PermittedUse.NONE.value, UseState.REJECTED.value, d.status))
+                                 {"level": "tabular_attribute"}, ("atributo sem entidade ontológica aceite",), PermittedUse.NONE.value, UseState.REJECTED.value, status))
     # --- fecho de conceitos (SEM aplicar se bloqueado: factos ficam REJECTED com razão)
     anc = concept_closure(ex["classes"], ex["sub"], ex["equiv"], inf_sub, inf_eq)
     reg.taxonomy = {"classes": ex["classes"], "ancestors": {c: {a: v[0] for a, v in d.items()} for c, d in anc.items()}}

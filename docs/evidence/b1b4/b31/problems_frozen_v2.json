@@ -1,0 +1,190 @@
+{
+ "problems": {
+  "P1_within_group": {
+   "name": "P1_within_group",
+   "n_groups": 8,
+   "group_size": 4,
+   "rule": "within_group",
+   "rule_m": 2,
+   "n_train": 300,
+   "scale_sigma": 0.7,
+   "min_sample": 400,
+   "max_queries": 4000,
+   "max_nodes": 7,
+   "max_depth": 3,
+   "max_n": 4,
+   "beam_width": 2,
+   "min_samples_leaf": 3,
+   "max_features_per_node": 28,
+   "n_test": 4000
+  },
+  "P2_cross_group": {
+   "name": "P2_cross_group",
+   "n_groups": 8,
+   "group_size": 4,
+   "rule": "cross_group",
+   "rule_m": 2,
+   "n_train": 300,
+   "scale_sigma": 0.7,
+   "min_sample": 400,
+   "max_queries": 4000,
+   "max_nodes": 7,
+   "max_depth": 3,
+   "max_n": 4,
+   "beam_width": 2,
+   "min_samples_leaf": 3,
+   "max_features_per_node": 28,
+   "n_test": 4000
+  }
+ },
+ "calibration": {
+  "P1_within_group": {
+   "rates": {
+    "8": 0.0,
+    "12": 0.0,
+    "16": 0.03333333333333333,
+    "20": 0.03333333333333333,
+    "24": 0.16666666666666666,
+    "28": 0.4666666666666667
+   },
+   "chosen_max_features_per_node": 28,
+   "rule": "mf com taxa de recupera\u00e7\u00e3o do Original mais pr\u00f3xima de 0,5 e em [0,2; 0,8]; empate: menor mf",
+   "calibration_seeds": [
+    1000,
+    1029
+   ]
+  },
+  "P2_cross_group": {
+   "rates": {
+    "8": 0.0,
+    "12": 0.0,
+    "16": 0.0,
+    "20": 0.06666666666666667,
+    "24": 0.3333333333333333,
+    "28": 0.5333333333333333
+   },
+   "chosen_max_features_per_node": 28,
+   "rule": "mf com taxa de recupera\u00e7\u00e3o do Original mais pr\u00f3xima de 0,5 e em [0,2; 0,8]; empate: menor mf",
+   "calibration_seeds": [
+    1000,
+    1029
+   ]
+  }
+ },
+ "variants": {
+  "controls": [
+   "ORIG",
+   "WIDE",
+   "CONV"
+  ],
+  "ontology": [
+   "TRUE",
+   "HIERARCHY",
+   "PERM",
+   "RAND",
+   "EMPTY",
+   "IRRELEVANT",
+   "INCOMPLETE",
+   "NOISY_SUPERSET",
+   "WRONG_SPLIT",
+   "AMBIGUOUS",
+   "INCONSISTENT",
+   "BADMATCH"
+  ]
+ },
+ "criteria": {
+  "version": 1,
+  "evaluation_seeds": [
+   0,
+   39
+  ],
+  "unit_budget": 3,
+  "recovery_definition": "existe um n\u00f3 interno cujo teste m-of-n usa EXATAMENTE o conjunto de atributos da regra",
+  "fidelity_definition": "concord\u00e2ncia da \u00e1rvore com o or\u00e1culo numa amostra independente de n_test linhas (nunca usada no ajuste)",
+  "P1_within_group": {
+   "C1_true_beats_orig": "recovery(TRUE) - recovery(ORIG) >= 0.20",
+   "C2_true_beats_perm": "recovery(TRUE) - recovery(PERM) >= 0.20",
+   "C3_true_beats_rand": "recovery(TRUE) - recovery(RAND) >= 0.20",
+   "C4_true_beats_conventional": "recovery(TRUE) - recovery(CONV) >= 0.20",
+   "C5_abstention_equals_original": "EMPTY, INCONSISTENT e BADMATCH: \u00e1rvore (rules_sha) id\u00eantica \u00e0 do Original em 100% das sementes",
+   "C6_ambiguous_no_spurious_gain": "|recovery(AMBIGUOUS) - recovery(ORIG)| <= 0.10",
+   "C7_no_spurious_advantage": "IRRELEVANT, INCOMPLETE, WRONG_SPLIT: recovery - recovery(ORIG) <= 0.10",
+   "C8_bounded_harm": "para toda a variante sem\u00e2ntica: recovery - recovery(ORIG) >= -0.20 e fidelidade m\u00e9dia >= fidelidade m\u00e9dia ORIG - 0.02",
+   "C9_noisy_superset": "reportado, sem limiar (ganho parcial esperado)"
+  },
+  "P2_cross_group": {
+   "D1_true_flat_no_advantage": "recovery(TRUE) - recovery(ORIG) <= 0.10 (ontologia v\u00e1lida; a regra atravessa conceitos: sem vantagem poss\u00edvel)",
+   "D2_hierarchy_advantage": "recovery(HIERARCHY) - recovery(ORIG) >= 0.20 (pai informativo comum dos conceitos da regra)",
+   "D3_perm_no_advantage": "recovery(PERM) - recovery(ORIG) <= 0.10"
+  },
+  "controls_reported_not_judged": [
+   "WIDE (Original com max_features_per_node = p: n\u00e3o \u00e9 ontologia; mede o efeito do or\u00e7amento de atributos)"
+  ],
+  "interpretation": "crit\u00e9rios de aceita\u00e7\u00e3o t\u00e9cnica do arn\u00eas (identificabilidade); N\u00c3O s\u00e3o evid\u00eancia de superioridade do Reloaded"
+ },
+ "frozen": true,
+ "version": 2,
+ "purpose": "congelado ANTES de avaliar a v2; v1 mantida e reportada",
+ "evaluation_seeds": [
+  100,
+  101,
+  102,
+  103,
+  104,
+  105,
+  106,
+  107,
+  108,
+  109,
+  110,
+  111,
+  112,
+  113,
+  114,
+  115,
+  116,
+  117,
+  118,
+  119,
+  120,
+  121,
+  122,
+  123,
+  124,
+  125,
+  126,
+  127,
+  128,
+  129,
+  130,
+  131,
+  132,
+  133,
+  134,
+  135,
+  136,
+  137,
+  138,
+  139
+ ],
+ "harness": {
+  "pool_parity": true,
+  "reason": "diagn\u00f3stico v1: a unidade com a regra era pesquisada (rank 0) mas o conjunto de literais da pesquisa restrita (max(8,3\u00b7|unidade|)=12) impedia montar o m-of-n de 4 atributos; v2 d\u00e1 o mesmo or\u00e7amento de literais do Original",
+  "diagnosis_seeds": [
+   9000,
+   9015
+  ]
+ },
+ "supersedes": {
+  "file": "problems_frozen.json",
+  "sha256": "a8ac2753b43df1cf7d31b54b820e1a0a8a8b0206f0e8cc57c81dcacf2117b95e",
+  "v1_outcome": "C1\u2013C4 e D2 N\u00c3O cumpridos (ver identifiability_analysis.json)"
+ },
+ "code_sha256": {
+  "validation/benchmark/b31_facts.py": "9b88bf374a6b52da02a48606e79274de3ca0c5fcec5c733a7f9c646d2fe4cc5c",
+  "validation/benchmark/b31_relatedness.py": "6efa6e8d3c131b50323fe194ae8d7b2ec180f87db4ee7b52c59e9f26b78ddcc3",
+  "validation/benchmark/b31_steering.py": "112e09d65902f2e0006398c83c82ab81e6eb7d59a0b711d03c3af5455d4ef7c9",
+  "validation/benchmark/b31_identifiability.py": "7a5c2afa6464febbc446fb2fa2cae92f838aa0a5fa9e1ce55973efc59bed33fc"
+ },
+ "calibration_used_only_original": true
+}

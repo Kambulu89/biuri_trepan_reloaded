@@ -27,8 +27,9 @@ def test_signature(test: Optional[MofNTest]):
 
 
 class SemanticSteeredTrepan(TrepanOriginalClassifier):
-    def __init__(self, *, units: Optional[Sequence[SemanticUnit]] = None, unit_budget: int = 3, registry: Optional[FactRegistry] = None, **kwargs):
+    def __init__(self, *, units: Optional[Sequence[SemanticUnit]] = None, unit_budget: int = 3, registry: Optional[FactRegistry] = None, pool_parity: bool = False, **kwargs):
         super().__init__(**kwargs)
+        self.pool_parity = bool(pool_parity)               # v2: a pesquisa dentro de uma unidade tem o MESMO orçamento de literais (max_features_per_node) que a do Original
         self.units = list(units) if units else []
         self.unit_budget = int(unit_budget)
         self.registry = registry
@@ -44,6 +45,13 @@ class SemanticSteeredTrepan(TrepanOriginalClassifier):
         pr[self._restrict] = 1.0 + np.nan_to_num(np.asarray(base)[self._restrict], nan=0.0)
         return pr
 
+    def _candidate_literals(self, X, y):
+        ranked = super()._candidate_literals(X, y)
+        if self._restrict is None:
+            return ranked
+        keep = {int(i) for i in self._restrict}
+        return [(sc, lit) for sc, lit in ranked if int(lit.feature) in keep]
+
     def _unit_indices(self) -> List[np.ndarray]:
         names = list(getattr(self, "feature_names_in_", None) or [])
         pos = {n: i for i, n in enumerate(names)}
@@ -56,7 +64,8 @@ class SemanticSteeredTrepan(TrepanOriginalClassifier):
     def _restricted_search(self, X, y, idx: np.ndarray):
         saved = self.max_features_per_node
         self._restrict = idx
-        self.max_features_per_node = int(len(idx))
+        if not self.pool_parity:
+            self.max_features_per_node = int(len(idx))
         try:
             return super()._best_mofn(X, y)
         finally:
