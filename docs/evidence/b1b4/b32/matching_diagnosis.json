@@ -1,0 +1,163 @@
+{
+ "reproduction": {
+  "tie_order1": {
+   "entity_name": "thermal_mean_a",
+   "runner_up_entity": "thermal_mean_b",
+   "score": 1.0,
+   "runner_up_score": 1.0,
+   "ambiguity_margin": 0.0,
+   "accepted": true,
+   "status": "ACCEPTED",
+   "tie_break": null
+  },
+  "tie_order2": {
+   "entity_name": "thermal_mean_b",
+   "runner_up_entity": "thermal_mean_a",
+   "score": 1.0,
+   "runner_up_score": 1.0,
+   "ambiguity_margin": 0.0,
+   "accepted": true,
+   "status": "ACCEPTED",
+   "tie_break": null
+  },
+  "near_tie_1.0_vs_runner": {
+   "entity_name": "thermal_mean",
+   "runner_up_entity": "thermal_means",
+   "score": 1.0,
+   "runner_up_score": 0.86,
+   "ambiguity_margin": 0.14,
+   "accepted": true,
+   "status": "ACCEPTED"
+  },
+  "class_vs_property_tie": {
+   "entity_name": "hasThermalMean",
+   "entity_type": "datatype_property",
+   "score": 1.0,
+   "runner_up_score": 1.0,
+   "ambiguity_margin": 0.0,
+   "accepted": true,
+   "tie_break": "datatype_property_over_class"
+  },
+  "three_way_tie_class_and_two_properties": {
+   "entity_name": "hasThermalMeanA",
+   "entity_type": "datatype_property",
+   "score": 1.0,
+   "runner_up_score": 1.0,
+   "ambiguity_margin": 0.0,
+   "accepted": true,
+   "tie_break": "datatype_property_over_class",
+   "tie_sets": {
+    "best": 1.0,
+    "top": [
+     [
+      "class",
+      "ThermalMean"
+     ],
+     [
+      "datatype_property",
+      "hasThermalMeanA"
+     ],
+     [
+      "datatype_property",
+      "hasThermalMeanB"
+     ]
+    ],
+    "n_top": 3,
+    "n_top_datatype_property": 2
+   },
+   "P1_accepts": true,
+   "P3_accepts": false
+  }
+ },
+ "impact_on_frozen_ontologies": {
+  "iris": {
+   "n_features": 4,
+   "accepted_P0": 4,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.2384615384615385,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  },
+  "wine": {
+   "n_features": 13,
+   "accepted_P0": 13,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.3793103448275862,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  },
+  "breast_cancer": {
+   "n_features": 30,
+   "accepted_P0": 30,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.26874999999999993,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  },
+  "digits": {
+   "n_features": 64,
+   "accepted_P0": 64,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.030000000000000027,
+   "n_accepted_margin_below_0.08": 56,
+   "n_accepted_with_exact_tie": 0
+  },
+  "synthetic_binary": {
+   "n_features": 9,
+   "accepted_P0": 9,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.2799999999999999,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  },
+  "synthetic_3class": {
+   "n_features": 12,
+   "accepted_P0": 12,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.14,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  },
+  "german_credit": {
+   "n_features": 61,
+   "accepted_P0": 61,
+   "changed_P1": 0,
+   "changed_features_P1": [],
+   "changed_P2": 0,
+   "changed_features_P2": [],
+   "changed_P3": 0,
+   "min_margin_among_accepted": 0.136,
+   "n_accepted_margin_below_0.08": 0,
+   "n_accepted_with_exact_tie": 0
+  }
+ },
+ "policies": {
+  "P0": "atual",
+  "P1": "rejeitar empates (margem \u2264 1e-9) sem desempate de tipo",
+  "P2": "P1 + margem m\u00ednima para 0,98 \u2264 score < 1,0"
+ }
+}

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 PENDING = "DOMAIN_REVIEW_PENDING"
+PENDING_LABEL = {"domain_expert": "DOMAIN_REVIEW_PENDING", "ontology_engineer": "ONTOLOGY_REVIEW_PENDING", "methodology": "METHODOLOGY_REVIEW_PENDING"}
 AI_NAMES = {"claude", "assistant", "ai", "model", "llm"}
 ROLES = ("domain_expert", "ontology_engineer", "methodology")
 STEPS = ("1_domain_sources_identified", "2_axioms_proposed_and_justified", "3_provenance_recorded", "4_domain_review", "5_owl2_dl_modelling", "6_consistency_and_inference",
@@ -48,7 +49,7 @@ def check_package(pkg_dir: str | Path, feature_names: List[str] | None = None) -
     for r in ROLES:
         x = rv.get(r, {})
         ok = x.get("status") == "APPROVED" and _human(x.get("reviewer_name")) and bool(x.get("date")) and bool(x.get("signature_ref"))
-        st[r] = "APPROVED_BY_HUMAN" if ok else (PENDING if r == "domain_expert" else "REVIEW_PENDING")
+        st[r] = "APPROVED_BY_HUMAN" if ok else PENDING_LABEL[r]
         if x.get("status") == "APPROVED" and not _human(x.get("reviewer_name")):
             st[r] = "REJECTED_NON_HUMAN_REVIEWER"
     res["4_domain_review"] = {"status": "PASS" if st["domain_expert"] == "APPROVED_BY_HUMAN" else "PENDING", "detail": st}

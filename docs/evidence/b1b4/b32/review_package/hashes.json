@@ -1,0 +1,24 @@
+{
+ "docs/evidence/b1b4/b32/review_package/proposals/digits_spatial_topology/proposal.json": "03ecfc8eda8744a40460d46bcca1b9ca9a986df04409c929917106092f764e28",
+ "docs/evidence/b1b4/b32/review_package/proposals/wdbc_compactness_identity_rejected/proposal.json": "49dca6818d39781b9188b1f8243bbb8d0527fe7398d5d0c9d0cde289192acb7a",
+ "docs/evidence/b1b4/b32/review_package/proposals/wdbc_geometric_approximations/proposal.json": "22f0ab7d733aa70c027930aa0e3d6d74386e4fc269e0ac9f88d2b46ff4918801",
+ "docs/evidence/b1b4/b32/review_package/proposals/wdbc_order_relations/proposal.json": "39834daaccbf7872c4c25e1cbfd2d20654840409faf8768bd2427e1ecf1ad5ae",
+ "docs/evidence/b1b4/b32/review_package/proposals/wine_phenol_subset_rejected/proposal.json": "67419fa4dc334cd3ccea6cd377cb350e083d5b8fccbd17246c66f6df7b6e83ad",
+ "docs/evidence/b1b4/b32/review_package/review_forms/DOMAIN_REVIEW.md": "10f0b7d4fb6447b915783e3fafdc74141c8c5fbdf66d9a0f5557af7cf11fc982",
+ "docs/evidence/b1b4/b32/review_package/review_forms/METHODOLOGY_REVIEW.md": "1adee5ed59a720b6ae13c8b78aefdefd1540b0b119255e8eac26e105f70c28ec",
+ "docs/evidence/b1b4/b32/review_package/review_forms/ONTOLOGY_REVIEW.md": "ff933987d615bacebe1cac6ef0a2596339d28bec15c575f7c395c9d1d7a9a601",
+ "validation/benchmark/ontologies/iris.owl": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+ "validation/benchmark/ontologies/wine.owl": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+ "validation/benchmark/ontologies/breast_cancer.owl": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+ "validation/benchmark/ontologies/digits.owl": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+ "validation/benchmark/ontologies/german_credit.owl": "7fdc41808d4169b2fcf81eaebb8e6fc536f2de185efc240634b7ccbbb99bbe1a",
+ "validation/benchmark/ontologies/synthetic_binary.owl": "43e2650bc6701e973784a387cbc98b52c0ee746f0ad72e3ff9e9cc579d395e0d",
+ "validation/benchmark/ontologies/synthetic_3class.owl": "ca94db2aa39361ea1833e94009b64676a3645793828be7cdc5b69db603e138ac",
+ "docs/evidence/b1b4/b31/problems_frozen.json": "a8ac2753b43df1cf7d31b54b820e1a0a8a8b0206f0e8cc57c81dcacf2117b95e",
+ "docs/evidence/b1b4/b31/problems_frozen_v2.json": "d90133e631ac55e840b97d6e2f3fc4dda992eeb479a3f5240b45c68e72013286",
+ "docs/evidence/b1b4/b31/freeze_B30.json": "a1b9186123585e9c6146901b591a2d8a28e20a23a0d85d36bd1dfb56a2670c2e",
+ "_environment": {
+  "scikit-learn": "1.6.1",
+  "numpy": "1.26.4"
+ }
+}

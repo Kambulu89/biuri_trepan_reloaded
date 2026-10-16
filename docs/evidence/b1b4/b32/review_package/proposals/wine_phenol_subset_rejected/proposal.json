@@ -1,0 +1,44 @@
+{
+ "package_id": "wine_phenol_subset_rejected_v1",
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "ONTOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "comparison_arms": [],
+ "axioms": [
+  {
+   "id": "wine_flav_le_phenols",
+   "axiom_text": "flavanoids <= total_phenols",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "flavanoids",
+    "total_phenols"
+   ],
+   "relation_class": "HYPOTHESIS",
+   "justification": "Flavonoides são fenóis, mas a inclusão conceptual não implica ordem entre as MEDIDAS (métodos analíticos diferentes). Mantido REJEITADO como restrição universal; usado como TESTE NEGATIVO de validação semântica.",
+   "sources": [],
+   "status_requested": "none",
+   "status_now": "REJECTED_AS_UNIVERSAL_CONSTRAINT",
+   "empirical_check_attributes_only": {
+    "violation_rate_all_178_rows": 0.3595505617977528,
+    "interpretation": "regularidade que falha: nunca axioma; não forçar na ontologia"
+   }
+  }
+ ]
+}
