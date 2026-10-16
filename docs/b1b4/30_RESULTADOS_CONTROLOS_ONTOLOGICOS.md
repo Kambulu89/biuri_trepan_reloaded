@@ -170,3 +170,6 @@ Só 4 datasets (inferência ao nível dataset, n=4: poder muito baixo; Holm/IUT 
 3. Plano curto de datasets categóricos (sem confirmatórios): usar German Credit e sintéticos já preparados só como DEV adicional para testar ontologias com relações não triviais; adiado até aprovação (German/42 não autorizado).
 4. Decidir se se mantém a hierarquia conjunta como objetivo à luz de 9/18 unidades infeasíveis (Original ≤ C4.5): reportar sempre sobre todas.
 5. Aguardar autorização antes de B3-a.
+
+## 16. Errata de leitura (B3.0; números e classificações inalterados)
+Registadas na auditoria B3.0 (Doc. 31 §3.4): (1) em breast_cancer a atribuição reportada é `NOT_ATTRIBUTED` (sem ganho direto), não `NOT_ASSESSABLE` (§8 deve ler-se: *seria* `NOT_ASSESSABLE` se houvesse ganho direto, pois o permutado só existe em fallback e E29 está confundido); (2) a confusão de orçamento de G29 aplica-se pela regra assimétrica pré-registada ao nível da média da unidade (1/18 unidades; wine:123), sendo 8/15 as réplicas de wine em [0,8; 1,25]; (3) a cópia de evidência passou a incluir os 18 `split.json`. Integridade: 302/302 hashes e relatório regenerado idêntico (Doc. 31 §1).

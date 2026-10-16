@@ -1,0 +1,32 @@
+{
+ "42": {
+  "train_rows": 0.0,
+  "original_marginal": 0.9278,
+  "sampler_C": 0.4516,
+  "n_families": 10
+ },
+ "7": {
+  "train_rows": 0.0,
+  "original_marginal": 0.9242,
+  "sampler_C": 0.4332,
+  "n_families": 10
+ },
+ "123": {
+  "train_rows": 0.0,
+  "original_marginal": 0.9232,
+  "sampler_C": 0.4396,
+  "n_families": 10
+ },
+ "2024": {
+  "train_rows": 0.0,
+  "original_marginal": 0.9272,
+  "sampler_C": 0.4424,
+  "n_families": 10
+ },
+ "11": {
+  "train_rows": 0.0,
+  "original_marginal": 0.9312,
+  "sampler_C": 0.4334,
+  "n_families": 10
+ }
+}

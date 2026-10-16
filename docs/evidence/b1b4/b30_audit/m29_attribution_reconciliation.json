@@ -1,0 +1,236 @@
+[
+ {
+  "unit": "breast_cancer:11",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "fallback",
+   "D29": "fallback",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "breast_cancer:123",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "fallback",
+   "D29": "parcial",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "breast_cancer:2024",
+  "direct": "TRADEOFF",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "fallback",
+   "D29": "fallback",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "TRADEOFF"
+ },
+ {
+  "unit": "breast_cancer:42",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "fallback",
+   "D29": "fallback",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "breast_cancer:7",
+  "direct": "TRADEOFF",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "fallback",
+   "D29": "fallback",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "digits:123",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "v\u00e1lido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "digits:42",
+  "direct": "ONTOLOGICAL_JOINT_GAIN",
+  "attribution": "NOT_ASSESSABLE",
+  "motivo": "ganho direto mas controlo(s) exigido(s) confundido(s)/ausente(s): conventional_features",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "JOINT_HIERARCHY_SATISFIED"
+ },
+ {
+  "unit": "digits:7",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "v\u00e1lido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "iris:11",
+  "direct": "EQUIVALENT",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "iris:123",
+  "direct": "TRADEOFF",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "iris:2024",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "iris:42",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "iris:7",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "wine:11",
+  "direct": "TRADEOFF",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "wine:123",
+  "direct": "EQUIVALENT",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "confundido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "wine:2024",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "confundido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ },
+ {
+  "unit": "wine:42",
+  "direct": "ONTOLOGICAL_JOINT_GAIN",
+  "attribution": "NOT_ASSESSABLE",
+  "motivo": "ganho direto mas controlo(s) exigido(s) confundido(s)/ausente(s): permuted_ontology,conventional_features",
+  "controls": {
+   "C29": "confundido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "HIERARCHY_INFEASIBLE"
+ },
+ {
+  "unit": "wine:7",
+  "direct": "NO_GAIN",
+  "attribution": "NOT_ATTRIBUTED",
+  "motivo": "sem ganho conjunto direto (nada a atribuir)",
+  "controls": {
+   "C29": "v\u00e1lido",
+   "D29": "v\u00e1lido",
+   "E29": "confundido",
+   "G29": "v\u00e1lido"
+  },
+  "global_state": "NOT_SATISFIED"
+ }
+]

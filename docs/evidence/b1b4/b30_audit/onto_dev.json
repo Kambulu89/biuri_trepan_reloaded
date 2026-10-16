@@ -1,0 +1,2004 @@
+{
+ "iris": {
+  "dataset": "iris",
+  "ontology": "iris.owl",
+  "n_train": 112,
+  "n_features": 4,
+  "reasoner": {
+   "engine": "hermit",
+   "consistent": true,
+   "keys": [
+    "consistent",
+    "duration_seconds",
+    "engine",
+    "error",
+    "error_type",
+    "executed",
+    "fallback",
+    "inconsistent_classes",
+    "inferred_axioms_count",
+    "inferred_equivalences",
+    "inferred_individual_types",
+    "inferred_object_properties",
+    "inferred_subclass_relations",
+    "java_executable",
+    "reasoner_used",
+    "reasoning_mode",
+    "unsatisfiable_classes",
+    "user_message"
+   ],
+   "inferred_subclass_pairs": 0,
+   "inferred": null
+  },
+  "quality": {
+   "status": "VALID_DOMAIN_ONTOLOGY",
+   "accepted": true,
+   "issues": [],
+   "metrics": {
+    "ambiguous_matches": 0,
+    "entity_collisions": 0,
+    "generic_match_ratio": 0.0,
+    "distinct_entity_ratio": 1.0,
+    "mapping_entropy": 1.0,
+    "semantic_specificity": 1.0,
+    "ontology_depth": 2,
+    "reasoner_used": true,
+    "reasoner_consistent": true,
+    "abox_safe": true,
+    "knowledge_split": "{'tbox': {'classes': 3, 'datatype_properties': 4, 'object_properties': 0}, 'abox",
+    "semantic_richness": "{'object_property_count': 0, 'restriction_count': 0, 'bounded_datatype_propertie",
+    "feature_coverage": 1.0,
+    "mapped_features": 4,
+    "total_features": 4,
+    "unique_mapped_entities": 4,
+    "generic_entity_ratio": 0.0,
+    "tbox_entity_count": 7,
+    "mean_matching_confidence": 1.0
+   }
+  },
+  "matching": {
+   "n_features": 4,
+   "n_accepted": 4,
+   "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "margins": [
+    0.238,
+    0.25,
+    0.238,
+    0.25
+   ],
+   "tie_breaks": 0,
+   "rejected": []
+  },
+  "graph": {
+   "nodes": 11,
+   "edge_types": {
+    "subsumption": 7,
+    "inferred_subsumption": 10,
+    "domain": 4,
+    "range": 4
+   },
+   "builtin_nodes": [
+    "DatatypeProperty",
+    "Thing"
+   ],
+   "parents": {
+    "SepalMeasurement": [
+     "DomainMeasurement"
+    ],
+    "PetalMeasurement": [
+     "DomainMeasurement"
+    ]
+   },
+   "domains": {
+    "hasSepalLengthCm": [
+     "SepalMeasurement"
+    ],
+    "hasSepalWidthCm": [
+     "SepalMeasurement"
+    ],
+    "hasPetalLengthCm": [
+     "PetalMeasurement"
+    ],
+    "hasPetalWidthCm": [
+     "PetalMeasurement"
+    ]
+   },
+   "entity_bounds": 0,
+   "integer_entities": 0
+  },
+  "derived_features": {
+   "hierarchical": [
+    {
+     "name": "onto_SepalMeasurement_aggregate",
+     "sources": [
+      "sepal length (cm)",
+      "sepal width (cm)"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_PetalMeasurement_aggregate",
+     "sources": [
+      "petal length (cm)",
+      "petal width (cm)"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    }
+   ],
+   "relational": [],
+   "constraint": [],
+   "categorical": []
+  },
+  "n_derived": 2,
+  "groups": {
+   "PetalMeasurement": [
+    "petal length (cm)",
+    "petal width (cm)",
+    "onto_PetalMeasurement_aggregate"
+   ],
+   "SepalMeasurement": [
+    "sepal length (cm)",
+    "sepal width (cm)",
+    "onto_SepalMeasurement_aggregate"
+   ]
+  },
+  "relatedness": {
+   "distinct_values_offdiag": [
+    0.0,
+    0.7124
+   ],
+   "n_pairs": 15,
+   "same_group_values": [
+    0.0,
+    0.7124
+   ],
+   "cross_group_values": [
+    0.0,
+    0.7124
+   ],
+   "pairs_ge_threshold": 6
+  },
+  "depths": {
+   "distinct": [
+    1.0
+   ],
+   "orig_features": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "weights_normalised": {
+   "orig": 0.8955,
+   "derived": 1.209
+  },
+  "structure_active_conditions": {
+   "repeated_group": true,
+   "related_above_threshold": true,
+   "weighted": true,
+   "deep": true
+  },
+  "context_available": true,
+  "context_reason": "",
+  "axiom_census": {
+   "Class": 3,
+   "DatatypeProperty": 4,
+   "comment": 2,
+   "disjointWith": 1,
+   "domain": 4,
+   "label": 7,
+   "range": 4,
+   "subClassOf": 3
+  }
+ },
+ "wine": {
+  "dataset": "wine",
+  "ontology": "wine.owl",
+  "n_train": 133,
+  "n_features": 13,
+  "reasoner": {
+   "engine": "hermit",
+   "consistent": true,
+   "keys": [
+    "consistent",
+    "duration_seconds",
+    "engine",
+    "error",
+    "error_type",
+    "executed",
+    "fallback",
+    "inconsistent_classes",
+    "inferred_axioms_count",
+    "inferred_equivalences",
+    "inferred_individual_types",
+    "inferred_object_properties",
+    "inferred_subclass_relations",
+    "java_executable",
+    "reasoner_used",
+    "reasoning_mode",
+    "unsatisfiable_classes",
+    "user_message"
+   ],
+   "inferred_subclass_pairs": 0,
+   "inferred": null
+  },
+  "quality": {
+   "status": "VALID_DOMAIN_ONTOLOGY",
+   "accepted": true,
+   "issues": [],
+   "metrics": {
+    "ambiguous_matches": 0,
+    "entity_collisions": 0,
+    "generic_match_ratio": 0.0,
+    "distinct_entity_ratio": 1.0,
+    "mapping_entropy": 1.0000000000000004,
+    "semantic_specificity": 1.0,
+    "ontology_depth": 2,
+    "reasoner_used": true,
+    "reasoner_consistent": true,
+    "abox_safe": true,
+    "knowledge_split": "{'tbox': {'classes': 4, 'datatype_properties': 13, 'object_properties': 0}, 'abo",
+    "semantic_richness": "{'object_property_count': 0, 'restriction_count': 0, 'bounded_datatype_propertie",
+    "feature_coverage": 1.0,
+    "mapped_features": 13,
+    "total_features": 13,
+    "unique_mapped_entities": 13,
+    "generic_entity_ratio": 0.0,
+    "tbox_entity_count": 17,
+    "mean_matching_confidence": 1.0
+   }
+  },
+  "matching": {
+   "n_features": 13,
+   "n_accepted": 13,
+   "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "margins": [
+    0.526,
+    0.591,
+    0.4,
+    0.503,
+    0.515,
+    0.477,
+    0.379,
+    0.379,
+    0.591,
+    0.566,
+    0.7,
+    0.71,
+    0.571
+   ],
+   "tie_breaks": 0,
+   "rejected": []
+  },
+  "graph": {
+   "nodes": 21,
+   "edge_types": {
+    "subsumption": 17,
+    "inferred_subsumption": 29,
+    "domain": 13,
+    "range": 13
+   },
+   "builtin_nodes": [
+    "DatatypeProperty",
+    "Thing"
+   ],
+   "parents": {
+    "AcidityProfile": [
+     "DomainMeasurement"
+    ],
+    "PhenolicProfile": [
+     "DomainMeasurement"
+    ],
+    "PhysicalChemicalProfile": [
+     "DomainMeasurement"
+    ]
+   },
+   "domains": {
+    "hasMalicAcid": [
+     "AcidityProfile"
+    ],
+    "hasAsh": [
+     "AcidityProfile"
+    ],
+    "hasAlcalinityOfAsh": [
+     "AcidityProfile"
+    ],
+    "hasTotalPhenols": [
+     "PhenolicProfile"
+    ],
+    "hasFlavanoids": [
+     "PhenolicProfile"
+    ],
+    "hasNonflavanoidPhenols": [
+     "PhenolicProfile"
+    ],
+    "hasProanthocyanins": [
+     "PhenolicProfile"
+    ],
+    "hasOd280Od315OfDilutedWines": [
+     "PhenolicProfile"
+    ],
+    "hasAlcohol": [
+     "PhysicalChemicalProfile"
+    ],
+    "hasMagnesium": [
+     "PhysicalChemicalProfile"
+    ],
+    "hasColorIntensity": [
+     "PhysicalChemicalProfile"
+    ],
+    "hasHue": [
+     "PhysicalChemicalProfile"
+    ],
+    "hasProline": [
+     "PhysicalChemicalProfile"
+    ]
+   },
+   "entity_bounds": 0,
+   "integer_entities": 0
+  },
+  "derived_features": {
+   "hierarchical": [
+    {
+     "name": "onto_PhysicalChemicalProfile_aggregate",
+     "sources": [
+      "alcohol",
+      "magnesium",
+      "color_intensity",
+      "hue",
+      "proline"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_AcidityProfile_aggregate",
+     "sources": [
+      "malic_acid",
+      "ash",
+      "alcalinity_of_ash"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_PhenolicProfile_aggregate",
+     "sources": [
+      "total_phenols",
+      "flavanoids",
+      "nonflavanoid_phenols",
+      "proanthocyanins",
+      "od280/od315_of_diluted_wines"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    }
+   ],
+   "relational": [],
+   "constraint": [],
+   "categorical": []
+  },
+  "n_derived": 3,
+  "groups": {
+   "AcidityProfile": [
+    "malic_acid",
+    "ash",
+    "alcalinity_of_ash",
+    "onto_AcidityProfile_aggregate"
+   ],
+   "PhenolicProfile": [
+    "total_phenols",
+    "flavanoids",
+    "nonflavanoid_phenols",
+    "proanthocyanins",
+    "od280/od315_of_diluted_wines",
+    "onto_PhenolicProfile_aggregate"
+   ],
+   "PhysicalChemicalProfile": [
+    "alcohol",
+    "magnesium",
+    "color_intensity",
+    "hue",
+    "proline",
+    "onto_PhysicalChemicalProfile_aggregate"
+   ]
+  },
+  "relatedness": {
+   "distinct_values_offdiag": [
+    0.0,
+    0.7124
+   ],
+   "n_pairs": 120,
+   "same_group_values": [
+    0.0,
+    0.7124
+   ],
+   "cross_group_values": [
+    0.0,
+    0.7124
+   ],
+   "pairs_ge_threshold": 78
+  },
+  "depths": {
+   "distinct": [
+    1.0
+   ],
+   "orig_features": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "weights_normalised": {
+   "orig": 0.9384,
+   "derived": 1.2669
+  },
+  "structure_active_conditions": {
+   "repeated_group": true,
+   "related_above_threshold": true,
+   "weighted": true,
+   "deep": true
+  },
+  "context_available": true,
+  "context_reason": "",
+  "axiom_census": {
+   "AllDisjointClasses": 1,
+   "Class": 4,
+   "DatatypeProperty": 13,
+   "comment": 2,
+   "domain": 13,
+   "label": 17,
+   "range": 13,
+   "subClassOf": 4
+  }
+ },
+ "breast_cancer": {
+  "dataset": "breast_cancer",
+  "ontology": "breast_cancer.owl",
+  "n_train": 426,
+  "n_features": 30,
+  "reasoner": {
+   "engine": "hermit",
+   "consistent": true,
+   "keys": [
+    "consistent",
+    "duration_seconds",
+    "engine",
+    "error",
+    "error_type",
+    "executed",
+    "fallback",
+    "inconsistent_classes",
+    "inferred_axioms_count",
+    "inferred_equivalences",
+    "inferred_individual_types",
+    "inferred_object_properties",
+    "inferred_subclass_relations",
+    "java_executable",
+    "reasoner_used",
+    "reasoning_mode",
+    "unsatisfiable_classes",
+    "user_message"
+   ],
+   "inferred_subclass_pairs": 0,
+   "inferred": null
+  },
+  "quality": {
+   "status": "VALID_DOMAIN_ONTOLOGY",
+   "accepted": true,
+   "issues": [],
+   "metrics": {
+    "ambiguous_matches": 0,
+    "entity_collisions": 0,
+    "generic_match_ratio": 0.0,
+    "distinct_entity_ratio": 1.0,
+    "mapping_entropy": 0.9999999999999996,
+    "semantic_specificity": 1.0,
+    "ontology_depth": 2,
+    "reasoner_used": true,
+    "reasoner_consistent": true,
+    "abox_safe": true,
+    "knowledge_split": "{'tbox': {'classes': 4, 'datatype_properties': 30, 'object_properties': 0}, 'abo",
+    "semantic_richness": "{'object_property_count': 0, 'restriction_count': 0, 'bounded_datatype_propertie",
+    "feature_coverage": 1.0,
+    "mapped_features": 30,
+    "total_features": 30,
+    "unique_mapped_entities": 30,
+    "generic_entity_ratio": 0.0,
+    "tbox_entity_count": 34,
+    "mean_matching_confidence": 1.0
+   }
+  },
+  "matching": {
+   "n_features": 30,
+   "n_accepted": 30,
+   "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "margins": [
+    0.4,
+    0.432,
+    0.4,
+    0.432,
+    0.379,
+    0.361,
+    0.28,
+    0.28,
+    0.421,
+    0.298,
+    0.37,
+    0.4,
+    0.4,
+    0.374,
+    0.361,
+    0.361,
+    0.269,
+    0.269,
+    0.4,
+    0.298,
+    0.37,
+    0.4,
+    0.4,
+    0.4,
+    0.361,
+    0.361,
+    0.269,
+    0.269,
+    0.4,
+    0.298
+   ],
+   "tie_breaks": 0,
+   "rejected": []
+  },
+  "graph": {
+   "nodes": 41,
+   "edge_types": {
+    "subsumption": 36,
+    "inferred_subsumption": 67,
+    "domain": 30,
+    "range": 30
+   },
+   "builtin_nodes": [
+    "AnnotationProperty",
+    "DatatypeProperty",
+    "Thing"
+   ],
+   "parents": {
+    "MeanMorphology": [
+     "DomainMeasurement"
+    ],
+    "ErrorMorphology": [
+     "DomainMeasurement"
+    ],
+    "WorstMorphology": [
+     "DomainMeasurement"
+    ]
+   },
+   "domains": {
+    "hasMeanRadius": [
+     "MeanMorphology"
+    ],
+    "hasMeanTexture": [
+     "MeanMorphology"
+    ],
+    "hasMeanPerimeter": [
+     "MeanMorphology"
+    ],
+    "hasMeanArea": [
+     "MeanMorphology"
+    ],
+    "hasMeanSmoothness": [
+     "MeanMorphology"
+    ],
+    "hasMeanCompactness": [
+     "MeanMorphology"
+    ],
+    "hasMeanConcavity": [
+     "MeanMorphology"
+    ],
+    "hasMeanConcavePoints": [
+     "MeanMorphology"
+    ],
+    "hasMeanSymmetry": [
+     "MeanMorphology"
+    ],
+    "hasMeanFractalDimension": [
+     "MeanMorphology"
+    ],
+    "hasRadiusError": [
+     "ErrorMorphology"
+    ],
+    "hasTextureError": [
+     "ErrorMorphology"
+    ],
+    "hasPerimeterError": [
+     "ErrorMorphology"
+    ],
+    "hasAreaError": [
+     "ErrorMorphology"
+    ],
+    "hasSmoothnessError": [
+     "ErrorMorphology"
+    ],
+    "hasCompactnessError": [
+     "ErrorMorphology"
+    ],
+    "hasConcavityError": [
+     "ErrorMorphology"
+    ],
+    "hasConcavePointsError": [
+     "ErrorMorphology"
+    ],
+    "hasSymmetryError": [
+     "ErrorMorphology"
+    ],
+    "hasFractalDimensionError": [
+     "ErrorMorphology"
+    ],
+    "hasWorstRadius": [
+     "WorstMorphology"
+    ],
+    "hasWorstTexture": [
+     "WorstMorphology"
+    ],
+    "hasWorstPerimeter": [
+     "WorstMorphology"
+    ],
+    "hasWorstArea": [
+     "WorstMorphology"
+    ],
+    "hasWorstSmoothness": [
+     "WorstMorphology"
+    ],
+    "hasWorstCompactness": [
+     "WorstMorphology"
+    ],
+    "hasWorstConcavity": [
+     "WorstMorphology"
+    ],
+    "hasWorstConcavePoints": [
+     "WorstMorphology"
+    ],
+    "hasWorstSymmetry": [
+     "WorstMorphology"
+    ],
+    "hasWorstFractalDimension": [
+     "WorstMorphology"
+    ]
+   },
+   "entity_bounds": 0,
+   "integer_entities": 0
+  },
+  "derived_features": {
+   "hierarchical": [
+    {
+     "name": "onto_MeanMorphology_aggregate",
+     "sources": [
+      "mean radius",
+      "mean texture",
+      "mean perimeter",
+      "mean area",
+      "mean smoothness",
+      "mean compactness",
+      "mean concavity",
+      "mean concave points",
+      "mean symmetry",
+      "mean fractal dimension"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_ErrorMorphology_aggregate",
+     "sources": [
+      "radius error",
+      "texture error",
+      "perimeter error",
+      "area error",
+      "smoothness error",
+      "compactness error",
+      "concavity error",
+      "concave points error",
+      "symmetry error",
+      "fractal dimension error"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_WorstMorphology_aggregate",
+     "sources": [
+      "worst radius",
+      "worst texture",
+      "worst perimeter",
+      "worst area",
+      "worst smoothness",
+      "worst compactness",
+      "worst concavity",
+      "worst concave points",
+      "worst symmetry",
+      "worst fractal dimension"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    }
+   ],
+   "relational": [
+    {
+     "name": "onto_area_worst_minus_mean",
+     "sources": [
+      "worst area",
+      "mean area"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_area_relative_worst_delta",
+     "sources": [
+      "worst area",
+      "mean area"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_area_family_contrast",
+     "sources": [
+      "worst area",
+      "mean area"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_area_normalized_error",
+     "sources": [
+      "area error",
+      "mean area",
+      "worst area"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_area_error_ratio",
+     "sources": [
+      "area error",
+      "mean area"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_compactness_worst_minus_mean",
+     "sources": [
+      "worst compactness",
+      "mean compactness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_compactness_relative_worst_delta",
+     "sources": [
+      "worst compactness",
+      "mean compactness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_compactness_family_contrast",
+     "sources": [
+      "worst compactness",
+      "mean compactness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_compactness_normalized_error",
+     "sources": [
+      "compactness error",
+      "mean compactness",
+      "worst compactness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_compactness_error_ratio",
+     "sources": [
+      "compactness error",
+      "mean compactness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concave_points_worst_minus_mean",
+     "sources": [
+      "worst concave points",
+      "mean concave points"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concave_points_relative_worst_delta",
+     "sources": [
+      "worst concave points",
+      "mean concave points"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concave_points_family_contrast",
+     "sources": [
+      "worst concave points",
+      "mean concave points"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concave_points_normalized_error",
+     "sources": [
+      "concave points error",
+      "mean concave points",
+      "worst concave points"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concave_points_error_ratio",
+     "sources": [
+      "concave points error",
+      "mean concave points"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concavity_worst_minus_mean",
+     "sources": [
+      "worst concavity",
+      "mean concavity"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concavity_relative_worst_delta",
+     "sources": [
+      "worst concavity",
+      "mean concavity"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concavity_family_contrast",
+     "sources": [
+      "worst concavity",
+      "mean concavity"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concavity_normalized_error",
+     "sources": [
+      "concavity error",
+      "mean concavity",
+      "worst concavity"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_concavity_error_ratio",
+     "sources": [
+      "concavity error",
+      "mean concavity"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_fractal_dimension_worst_minus_mean",
+     "sources": [
+      "worst fractal dimension",
+      "mean fractal dimension"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_fractal_dimension_relative_worst_delta",
+     "sources": [
+      "worst fractal dimension",
+      "mean fractal dimension"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_fractal_dimension_family_contrast",
+     "sources": [
+      "worst fractal dimension",
+      "mean fractal dimension"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_fractal_dimension_normalized_error",
+     "sources": [
+      "fractal dimension error",
+      "mean fractal dimension",
+      "worst fractal dimension"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_fractal_dimension_error_ratio",
+     "sources": [
+      "fractal dimension error",
+      "mean fractal dimension"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_perimeter_worst_minus_mean",
+     "sources": [
+      "worst perimeter",
+      "mean perimeter"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_perimeter_relative_worst_delta",
+     "sources": [
+      "worst perimeter",
+      "mean perimeter"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_perimeter_family_contrast",
+     "sources": [
+      "worst perimeter",
+      "mean perimeter"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_perimeter_normalized_error",
+     "sources": [
+      "perimeter error",
+      "mean perimeter",
+      "worst perimeter"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_perimeter_error_ratio",
+     "sources": [
+      "perimeter error",
+      "mean perimeter"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_radius_worst_minus_mean",
+     "sources": [
+      "worst radius",
+      "mean radius"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_radius_relative_worst_delta",
+     "sources": [
+      "worst radius",
+      "mean radius"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_radius_family_contrast",
+     "sources": [
+      "worst radius",
+      "mean radius"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_radius_normalized_error",
+     "sources": [
+      "radius error",
+      "mean radius",
+      "worst radius"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_radius_error_ratio",
+     "sources": [
+      "radius error",
+      "mean radius"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_smoothness_worst_minus_mean",
+     "sources": [
+      "worst smoothness",
+      "mean smoothness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_smoothness_relative_worst_delta",
+     "sources": [
+      "worst smoothness",
+      "mean smoothness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_smoothness_family_contrast",
+     "sources": [
+      "worst smoothness",
+      "mean smoothness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_smoothness_normalized_error",
+     "sources": [
+      "smoothness error",
+      "mean smoothness",
+      "worst smoothness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_smoothness_error_ratio",
+     "sources": [
+      "smoothness error",
+      "mean smoothness"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_symmetry_worst_minus_mean",
+     "sources": [
+      "worst symmetry",
+      "mean symmetry"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_symmetry_relative_worst_delta",
+     "sources": [
+      "worst symmetry",
+      "mean symmetry"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_symmetry_family_contrast",
+     "sources": [
+      "worst symmetry",
+      "mean symmetry"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_symmetry_normalized_error",
+     "sources": [
+      "symmetry error",
+      "mean symmetry",
+      "worst symmetry"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_symmetry_error_ratio",
+     "sources": [
+      "symmetry error",
+      "mean symmetry"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_texture_worst_minus_mean",
+     "sources": [
+      "worst texture",
+      "mean texture"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_texture_relative_worst_delta",
+     "sources": [
+      "worst texture",
+      "mean texture"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_texture_family_contrast",
+     "sources": [
+      "worst texture",
+      "mean texture"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_texture_normalized_error",
+     "sources": [
+      "texture error",
+      "mean texture",
+      "worst texture"
+     ],
+     "provenance": "owl_measurement_family_role"
+    },
+    {
+     "name": "onto_texture_error_ratio",
+     "sources": [
+      "texture error",
+      "mean texture"
+     ],
+     "provenance": "owl_measurement_family_role"
+    }
+   ],
+   "constraint": [],
+   "categorical": []
+  },
+  "n_derived": 53,
+  "groups": {
+   "ErrorMorphology": [
+    "radius error",
+    "texture error",
+    "perimeter error",
+    "area error",
+    "smoothness error",
+    "compactness error",
+    "concavity error",
+    "concave points error",
+    "symmetry error",
+    "fractal dimension error",
+    "onto_ErrorMorphology_aggregate"
+   ],
+   "MeanMorphology": [
+    "mean radius",
+    "mean texture",
+    "mean perimeter",
+    "mean area",
+    "mean smoothness",
+    "mean compactness",
+    "mean concavity",
+    "mean concave points",
+    "mean symmetry",
+    "mean fractal dimension",
+    "onto_MeanMorphology_aggregate"
+   ],
+   "WorstMorphology": [
+    "worst radius",
+    "worst texture",
+    "worst perimeter",
+    "worst area",
+    "worst smoothness",
+    "worst compactness",
+    "worst concavity",
+    "worst concave points",
+    "worst symmetry",
+    "worst fractal dimension",
+    "onto_WorstMorphology_aggregate"
+   ]
+  },
+  "relatedness": {
+   "distinct_values_offdiag": [
+    0.0,
+    0.7124
+   ],
+   "n_pairs": 3403,
+   "same_group_values": [
+    0.0,
+    0.7124
+   ],
+   "cross_group_values": [
+    0.0,
+    0.7124
+   ],
+   "pairs_ge_threshold": 435
+  },
+  "depths": {
+   "distinct": [
+    1.0
+   ],
+   "orig_features": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "weights_normalised": {
+   "orig": 0.8173,
+   "derived": 1.1034
+  },
+  "structure_active_conditions": {
+   "repeated_group": true,
+   "related_above_threshold": true,
+   "weighted": true,
+   "deep": true
+  },
+  "context_available": true,
+  "context_reason": "",
+  "axiom_census": {
+   "AllDisjointClasses": 1,
+   "AnnotationProperty": 2,
+   "Class": 4,
+   "DatatypeProperty": 30,
+   "comment": 2,
+   "custom_annotation_uses:measurementFamily,statisticRole": 60,
+   "domain": 30,
+   "label": 34,
+   "range": 30,
+   "subClassOf": 4
+  }
+ },
+ "digits": {
+  "dataset": "digits",
+  "ontology": "digits.owl",
+  "n_train": 1347,
+  "n_features": 64,
+  "reasoner": {
+   "engine": "hermit",
+   "consistent": true,
+   "keys": [
+    "consistent",
+    "duration_seconds",
+    "engine",
+    "error",
+    "error_type",
+    "executed",
+    "fallback",
+    "inconsistent_classes",
+    "inferred_axioms_count",
+    "inferred_equivalences",
+    "inferred_individual_types",
+    "inferred_object_properties",
+    "inferred_subclass_relations",
+    "java_executable",
+    "reasoner_used",
+    "reasoning_mode",
+    "unsatisfiable_classes",
+    "user_message"
+   ],
+   "inferred_subclass_pairs": 0,
+   "inferred": null
+  },
+  "quality": {
+   "status": "VALID_DOMAIN_ONTOLOGY",
+   "accepted": true,
+   "issues": [],
+   "metrics": {
+    "ambiguous_matches": 0,
+    "entity_collisions": 0,
+    "generic_match_ratio": 0.0,
+    "distinct_entity_ratio": 1.0,
+    "mapping_entropy": 1.0000000000000013,
+    "semantic_specificity": 1.0,
+    "ontology_depth": 2,
+    "reasoner_used": true,
+    "reasoner_consistent": true,
+    "abox_safe": true,
+    "knowledge_split": "{'tbox': {'classes': 4, 'datatype_properties': 64, 'object_properties': 0}, 'abo",
+    "semantic_richness": "{'object_property_count': 0, 'restriction_count': 0, 'bounded_datatype_propertie",
+    "feature_coverage": 1.0,
+    "mapped_features": 64,
+    "total_features": 64,
+    "unique_mapped_entities": 64,
+    "generic_entity_ratio": 0.0,
+    "tbox_entity_count": 68,
+    "mean_matching_confidence": 1.0
+   }
+  },
+  "matching": {
+   "n_features": 64,
+   "n_accepted": 64,
+   "scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "margins": [
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.229
+   ],
+   "tie_breaks": 0,
+   "rejected": []
+  },
+  "graph": {
+   "nodes": 72,
+   "edge_types": {
+    "subsumption": 68,
+    "inferred_subsumption": 131,
+    "domain": 64,
+    "range": 64
+   },
+   "builtin_nodes": [
+    "DatatypeProperty",
+    "Thing"
+   ],
+   "parents": {
+    "UpperImageRegion": [
+     "DomainMeasurement"
+    ],
+    "MiddleImageRegion": [
+     "DomainMeasurement"
+    ],
+    "LowerImageRegion": [
+     "DomainMeasurement"
+    ]
+   },
+   "domains": {
+    "hasPixel00": [
+     "UpperImageRegion"
+    ],
+    "hasPixel01": [
+     "UpperImageRegion"
+    ],
+    "hasPixel02": [
+     "UpperImageRegion"
+    ],
+    "hasPixel03": [
+     "UpperImageRegion"
+    ],
+    "hasPixel04": [
+     "UpperImageRegion"
+    ],
+    "hasPixel05": [
+     "UpperImageRegion"
+    ],
+    "hasPixel06": [
+     "UpperImageRegion"
+    ],
+    "hasPixel07": [
+     "UpperImageRegion"
+    ],
+    "hasPixel10": [
+     "UpperImageRegion"
+    ],
+    "hasPixel11": [
+     "UpperImageRegion"
+    ],
+    "hasPixel12": [
+     "UpperImageRegion"
+    ],
+    "hasPixel13": [
+     "UpperImageRegion"
+    ],
+    "hasPixel14": [
+     "UpperImageRegion"
+    ],
+    "hasPixel15": [
+     "UpperImageRegion"
+    ],
+    "hasPixel16": [
+     "UpperImageRegion"
+    ],
+    "hasPixel17": [
+     "UpperImageRegion"
+    ],
+    "hasPixel20": [
+     "UpperImageRegion"
+    ],
+    "hasPixel21": [
+     "UpperImageRegion"
+    ],
+    "hasPixel22": [
+     "UpperImageRegion"
+    ],
+    "hasPixel23": [
+     "UpperImageRegion"
+    ],
+    "hasPixel24": [
+     "UpperImageRegion"
+    ],
+    "hasPixel25": [
+     "UpperImageRegion"
+    ],
+    "hasPixel26": [
+     "UpperImageRegion"
+    ],
+    "hasPixel27": [
+     "UpperImageRegion"
+    ],
+    "hasPixel30": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel31": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel32": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel33": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel34": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel35": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel36": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel37": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel40": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel41": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel42": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel43": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel44": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel45": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel46": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel47": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel50": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel51": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel52": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel53": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel54": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel55": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel56": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel57": [
+     "MiddleImageRegion"
+    ],
+    "hasPixel60": [
+     "LowerImageRegion"
+    ],
+    "hasPixel61": [
+     "LowerImageRegion"
+    ],
+    "hasPixel62": [
+     "LowerImageRegion"
+    ],
+    "hasPixel63": [
+     "LowerImageRegion"
+    ],
+    "hasPixel64": [
+     "LowerImageRegion"
+    ],
+    "hasPixel65": [
+     "LowerImageRegion"
+    ],
+    "hasPixel66": [
+     "LowerImageRegion"
+    ],
+    "hasPixel67": [
+     "LowerImageRegion"
+    ],
+    "hasPixel70": [
+     "LowerImageRegion"
+    ],
+    "hasPixel71": [
+     "LowerImageRegion"
+    ],
+    "hasPixel72": [
+     "LowerImageRegion"
+    ],
+    "hasPixel73": [
+     "LowerImageRegion"
+    ],
+    "hasPixel74": [
+     "LowerImageRegion"
+    ],
+    "hasPixel75": [
+     "LowerImageRegion"
+    ],
+    "hasPixel76": [
+     "LowerImageRegion"
+    ],
+    "hasPixel77": [
+     "LowerImageRegion"
+    ]
+   },
+   "entity_bounds": 0,
+   "integer_entities": 0
+  },
+  "derived_features": {
+   "hierarchical": [
+    {
+     "name": "onto_UpperImageRegion_aggregate",
+     "sources": [
+      "pixel_0_0",
+      "pixel_0_1",
+      "pixel_0_2",
+      "pixel_0_3",
+      "pixel_0_4",
+      "pixel_0_5",
+      "pixel_0_6",
+      "pixel_0_7",
+      "pixel_1_0",
+      "pixel_1_1",
+      "pixel_1_2",
+      "pixel_1_3",
+      "pixel_1_4",
+      "pixel_1_5",
+      "pixel_1_6",
+      "pixel_1_7",
+      "pixel_2_0",
+      "pixel_2_1",
+      "pixel_2_2",
+      "pixel_2_3",
+      "pixel_2_4",
+      "pixel_2_5",
+      "pixel_2_6",
+      "pixel_2_7"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_MiddleImageRegion_aggregate",
+     "sources": [
+      "pixel_3_0",
+      "pixel_3_1",
+      "pixel_3_2",
+      "pixel_3_3",
+      "pixel_3_4",
+      "pixel_3_5",
+      "pixel_3_6",
+      "pixel_3_7",
+      "pixel_4_0",
+      "pixel_4_1",
+      "pixel_4_2",
+      "pixel_4_3",
+      "pixel_4_4",
+      "pixel_4_5",
+      "pixel_4_6",
+      "pixel_4_7",
+      "pixel_5_0",
+      "pixel_5_1",
+      "pixel_5_2",
+      "pixel_5_3",
+      "pixel_5_4",
+      "pixel_5_5",
+      "pixel_5_6",
+      "pixel_5_7"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    },
+    {
+     "name": "onto_LowerImageRegion_aggregate",
+     "sources": [
+      "pixel_6_0",
+      "pixel_6_1",
+      "pixel_6_2",
+      "pixel_6_3",
+      "pixel_6_4",
+      "pixel_6_5",
+      "pixel_6_6",
+      "pixel_6_7",
+      "pixel_7_0",
+      "pixel_7_1",
+      "pixel_7_2",
+      "pixel_7_3",
+      "pixel_7_4",
+      "pixel_7_5",
+      "pixel_7_6",
+      "pixel_7_7"
+     ],
+     "provenance": "owl_hierarchy_standardized_train_only"
+    }
+   ],
+   "relational": [],
+   "constraint": [],
+   "categorical": []
+  },
+  "n_derived": 3,
+  "groups": {
+   "LowerImageRegion": [
+    "pixel_6_0",
+    "pixel_6_1",
+    "pixel_6_2",
+    "pixel_6_3",
+    "pixel_6_4",
+    "pixel_6_5",
+    "pixel_6_6",
+    "pixel_6_7",
+    "pixel_7_0",
+    "pixel_7_1",
+    "pixel_7_2",
+    "pixel_7_3",
+    "pixel_7_4",
+    "pixel_7_5",
+    "pixel_7_6",
+    "pixel_7_7",
+    "onto_LowerImageRegion_aggregate"
+   ],
+   "MiddleImageRegion": [
+    "pixel_3_0",
+    "pixel_3_1",
+    "pixel_3_2",
+    "pixel_3_3",
+    "pixel_3_4",
+    "pixel_3_5",
+    "pixel_3_6",
+    "pixel_3_7",
+    "pixel_4_0",
+    "pixel_4_1",
+    "pixel_4_2",
+    "pixel_4_3",
+    "pixel_4_4",
+    "pixel_4_5",
+    "pixel_4_6",
+    "pixel_4_7",
+    "pixel_5_0",
+    "pixel_5_1",
+    "pixel_5_2",
+    "pixel_5_3",
+    "pixel_5_4",
+    "pixel_5_5",
+    "pixel_5_6",
+    "pixel_5_7",
+    "onto_MiddleImageRegion_aggregate"
+   ],
+   "UpperImageRegion": [
+    "pixel_0_0",
+    "pixel_0_1",
+    "pixel_0_2",
+    "pixel_0_3",
+    "pixel_0_4",
+    "pixel_0_5",
+    "pixel_0_6",
+    "pixel_0_7",
+    "pixel_1_0",
+    "pixel_1_1",
+    "pixel_1_2",
+    "pixel_1_3",
+    "pixel_1_4",
+    "pixel_1_5",
+    "pixel_1_6",
+    "pixel_1_7",
+    "pixel_2_0",
+    "pixel_2_1",
+    "pixel_2_2",
+    "pixel_2_3",
+    "pixel_2_4",
+    "pixel_2_5",
+    "pixel_2_6",
+    "pixel_2_7",
+    "onto_UpperImageRegion_aggregate"
+   ]
+  },
+  "relatedness": {
+   "distinct_values_offdiag": [
+    0.0,
+    0.7124
+   ],
+   "n_pairs": 2211,
+   "same_group_values": [
+    0.0,
+    0.7124
+   ],
+   "cross_group_values": [
+    0.0,
+    0.7124
+   ],
+   "pairs_ge_threshold": 2016
+  },
+  "depths": {
+   "distinct": [
+    1.0
+   ],
+   "orig_features": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "weights_normalised": {
+   "orig": 0.9846,
+   "derived": 1.3292
+  },
+  "structure_active_conditions": {
+   "repeated_group": true,
+   "related_above_threshold": true,
+   "weighted": true,
+   "deep": true
+  },
+  "context_available": true,
+  "context_reason": "",
+  "axiom_census": {
+   "AllDisjointClasses": 1,
+   "Class": 4,
+   "DatatypeProperty": 64,
+   "comment": 2,
+   "domain": 64,
+   "label": 68,
+   "range": 64,
+   "subClassOf": 4
+  }
+ }
+}

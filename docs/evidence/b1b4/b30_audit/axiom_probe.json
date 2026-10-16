@@ -1,0 +1,1569 @@
+{
+ "subClassOf": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 10
+ },
+ "equivalentClass": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--A2": [
+    "equivalent",
+    "inferred_subsumption"
+   ],
+   "A2--Thing": [
+    "subsumption"
+   ],
+   "A2--Root": [
+    "inferred_subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A2--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "equivalent",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A2"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A2"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 0.5,
+   "f3": 1.0
+  },
+  "derived": [],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 11
+ },
+ "disjointWith": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 10
+ },
+ "domain_only_flat": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Thing": [
+    "subsumption"
+   ],
+   "B--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {},
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 9
+ },
+ "no_domain": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Thing": [
+    "subsumption"
+   ],
+   "B--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "f1"
+   ],
+   "f2": [
+    "f2"
+   ],
+   "f3": [
+    "f3"
+   ]
+  },
+  "parents": {},
+  "domains": {},
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 0.0,
+   "f2": 0.0,
+   "f3": 0.0
+  },
+  "derived": [],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 9
+ },
+ "someValuesFrom": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--someValuesFrom.hasPart.some(someValuesFrom.B)": [
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--hasPart": [
+    "domain"
+   ],
+   "B--hasPart": [
+    "range"
+   ],
+   "Property--hasPart": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root",
+    "someValuesFrom.hasPart.some(someValuesFrom.B)"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ],
+   "hasPart": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "ObjectProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 13
+ },
+ "allValuesFrom": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--allValuesFrom.hasPart.only(allValuesFrom.B)": [
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--hasPart": [
+    "domain"
+   ],
+   "B--hasPart": [
+    "range"
+   ],
+   "Property--hasPart": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root",
+    "allValuesFrom.hasPart.only(allValuesFrom.B)"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ],
+   "hasPart": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "ObjectProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 13
+ },
+ "cardinality": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--cardinality.hasPart.exactly(1, owl.Thing)": [
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--hasPart": [
+    "domain"
+   ],
+   "B--hasPart": [
+    "range"
+   ],
+   "Property--hasPart": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root",
+    "cardinality.hasPart.exactly(1, owl.Thing)"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ],
+   "hasPart": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "ObjectProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 13
+ },
+ "dataSubPropertyOf": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "DatatypeProperty--fAll": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--fAll": [
+    "domain"
+   ],
+   "<class 'float'>--fAll": [
+    "range"
+   ],
+   "Property--fAll": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "f1--fAll": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "f2--fAll": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A",
+    "fAll"
+   ],
+   "f2": [
+    "A",
+    "fAll"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ],
+   "f1": [
+    "fAll"
+   ],
+   "f2": [
+    "fAll"
+   ]
+  },
+  "domains": {
+   "fAll": [
+    "A"
+   ],
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 0.6667
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 11
+ },
+ "objectPropertyInverse": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--hasPart": [
+    "domain"
+   ],
+   "B--hasPart": [
+    "range"
+   ],
+   "Property--hasPart": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--partOf": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Property--partOf": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ],
+   "hasPart": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "ObjectProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 13
+ },
+ "propertyChain": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "<class 'float'>--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "B--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--hasPart": [
+    "domain"
+   ],
+   "B--hasPart": [
+    "range"
+   ],
+   "Property--hasPart": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--hasPart2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Property--hasPart2": [
+    "inferred_subsumption"
+   ],
+   "ObjectProperty--chain": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "Property--chain": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ],
+   "B": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "B"
+   ],
+   "hasPart": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2"
+    ]
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "ObjectProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 14
+ },
+ "datatypeFacets": {
+  "accepted": {
+   "f1": "f1",
+   "f2": "f2",
+   "f3": "f3"
+  },
+  "edge_types": {
+   "Root--Thing": [
+    "subsumption"
+   ],
+   "A--Root": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "DatatypeProperty--f1": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f1": [
+    "domain"
+   ],
+   "ConstrainedDatatype(float, max_inclusive = 1.0, min_inclusive = -1.0)--f1": [
+    "range"
+   ],
+   "Property--f1": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f2": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f2": [
+    "domain"
+   ],
+   "<class 'float'>--f2": [
+    "range"
+   ],
+   "Property--f2": [
+    "inferred_subsumption"
+   ],
+   "DatatypeProperty--f3": [
+    "inferred_subsumption",
+    "subsumption"
+   ],
+   "A--f3": [
+    "domain"
+   ],
+   "<class 'float'>--f3": [
+    "range"
+   ],
+   "Property--f3": [
+    "inferred_subsumption"
+   ]
+  },
+  "edge_type_set": [
+   "domain",
+   "inferred_subsumption",
+   "range",
+   "subsumption"
+  ],
+  "groups": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "A"
+   ]
+  },
+  "parents": {
+   "A": [
+    "Root"
+   ]
+  },
+  "domains": {
+   "f1": [
+    "A"
+   ],
+   "f2": [
+    "A"
+   ],
+   "f3": [
+    "A"
+   ]
+  },
+  "relatedness": {
+   "f1--f2": 0.7124,
+   "f1--f3": 0.7124,
+   "f2--f3": 0.7124
+  },
+  "depth": {
+   "f1": 1.0,
+   "f2": 1.0,
+   "f3": 1.0
+  },
+  "derived": [
+   [
+    "hierarchical_aggregate",
+    "onto_A_aggregate",
+    [
+     "f1",
+     "f2",
+     "f3"
+    ]
+   ],
+   [
+    "constraint",
+    "onto_f1_within_min",
+    "f1"
+   ],
+   [
+    "constraint",
+    "onto_f1_within_max",
+    "f1"
+   ]
+  ],
+  "builtin_nodes": [
+   "DatatypeProperty",
+   "Thing"
+  ],
+  "reasoner": null,
+  "inferred_subclass_pairs": [],
+  "n_nodes": 10
+ }
+}
