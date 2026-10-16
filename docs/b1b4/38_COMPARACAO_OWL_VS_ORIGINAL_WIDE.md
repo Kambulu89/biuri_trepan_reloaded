@@ -177,3 +177,13 @@ Sintético; oráculo MLP deliberadamente imperfeito (a fidelidade ao MLP é um t
 
 ## 10. Testes e CI
 Testes novos B3.2: `test_b32_comparison.py` (4: contagem de recursos sem efeito nas decisões, braço eficiente ≡ arnês de paridade, controlos com o mesmo nº de pesquisas e candidatos avaliados comparáveis, integridade do pré-registo e hash do código), `test_b32_matching.py` (6), `test_b32_review_package.py` (3). Regressão local (Python 3.11): EQ Original≡Reloaded sem OWL, agnosticismo (contrato, dataset, guardas estáticas), hierarquia conjunta, M29, B3.0, B3.1, B3.2, amostrador C, controlos e B3-a: **439 passed, 40 skipped, 0 failed** (os 40 *skips* são pré-existentes); verificador estático de agnosticismo OK. CI: ver o relatório de entrega (só declarada verde com todos os fluxos concluídos).
+
+## Registo de congelação da B3.2 (decisão do utilizador após a B3.2)
+
+| Campo | Valor |
+|---|---|
+| `B32_RESULT` | `NO_ONTOLOGICAL_ADVANTAGE` |
+| `B32_SCOPE` | `SYNTHETIC_P1_P2_EVALUATED_REGIMES` (o veredicto aplica-se só aos regimes sintéticos P1/P2 avaliados; não é impossibilidade geral) |
+| `M0_M6_CORE_INTEGRATION` | `NOT_AUTHORIZED` |
+| CI final confirmada | commits `62e5a00` e `0590fa9`: Windows 3.11, Windows 3.12 e agnosticism-guard em sucesso |
+| Evidência congelada | `docs/evidence/b1b4/b32/freeze_B32.json` (SHA-256 com fins de linha normalizados de todas as evidências B3.1/B3.2 e do código b30–b32); `git diff 9bc7cbb HEAD -- core` vazio |
