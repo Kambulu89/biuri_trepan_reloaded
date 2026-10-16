@@ -1,0 +1,373 @@
+{
+ "dev": {
+  "iris": {
+   "legacy": {
+    "distinct_values": 1,
+    "values_sample": [
+     0.7124
+    ],
+    "mean_same_concept": 0.712448,
+    "mean_cross_concept": 0.712448,
+    "n_pairs": 6,
+    "n_same": 2
+   },
+   "lin": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.5
+    ],
+    "mean_same_concept": 0.5,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 6,
+    "n_same": 2
+   },
+   "wup": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.5
+    ],
+    "mean_same_concept": 0.5,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 6,
+    "n_same": 2
+   },
+   "units": [
+    [
+     "PetalMeasurement",
+     2,
+     0.693
+    ],
+    [
+     "SepalMeasurement",
+     2,
+     0.693
+    ]
+   ],
+   "registry": {
+    "ontology_status": "VALID",
+    "n_facts": 11,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 2,
+     "CONCEPT_DISJOINTNESS": 1,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 8
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 11
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 10,
+     "NONE": 1
+    },
+    "by_use_state": {
+     "AVAILABLE": 11
+    },
+    "unsupported_axioms": {}
+   }
+  },
+  "wine": {
+   "legacy": {
+    "distinct_values": 1,
+    "values_sample": [
+     0.7124
+    ],
+    "mean_same_concept": 0.712448,
+    "mean_cross_concept": 0.7124480000000003,
+    "n_pairs": 78,
+    "n_same": 23
+   },
+   "lin": {
+    "distinct_values": 3,
+    "values_sample": [
+     0.0,
+     0.3725,
+     0.5717
+    ],
+    "mean_same_concept": 0.39850333545216293,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 78,
+    "n_same": 23
+   },
+   "wup": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.5
+    ],
+    "mean_same_concept": 0.5,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 78,
+    "n_same": 23
+   },
+   "units": [
+    [
+     "AcidityProfile",
+     3,
+     1.466
+    ],
+    [
+     "PhenolicProfile",
+     5,
+     0.956
+    ],
+    [
+     "PhysicalChemicalProfile",
+     5,
+     0.956
+    ]
+   ],
+   "registry": {
+    "ontology_status": "VALID",
+    "n_facts": 32,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 26
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 32
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 29,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 32
+    },
+    "unsupported_axioms": {}
+   }
+  },
+  "breast_cancer": {
+   "legacy": {
+    "distinct_values": 1,
+    "values_sample": [
+     0.7124
+    ],
+    "mean_same_concept": 0.7124480000000001,
+    "mean_cross_concept": 0.7124480000000002,
+    "n_pairs": 435,
+    "n_same": 135
+   },
+   "lin": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.323
+    ],
+    "mean_same_concept": 0.3230075074711544,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 435,
+    "n_same": 135
+   },
+   "wup": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.5
+    ],
+    "mean_same_concept": 0.5,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 435,
+    "n_same": 135
+   },
+   "units": [
+    [
+     "ErrorMorphology",
+     10,
+     1.099
+    ],
+    [
+     "MeanMorphology",
+     10,
+     1.099
+    ],
+    [
+     "WorstMorphology",
+     10,
+     1.099
+    ]
+   ],
+   "registry": {
+    "ontology_status": "VALID",
+    "n_facts": 66,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 60
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 66
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 63,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 66
+    },
+    "unsupported_axioms": {}
+   }
+  },
+  "digits": {
+   "legacy": {
+    "distinct_values": 1,
+    "values_sample": [
+     0.7124
+    ],
+    "mean_same_concept": 0.7124480000000001,
+    "mean_cross_concept": 0.7124480000000001,
+    "n_pairs": 2016,
+    "n_same": 672
+   },
+   "lin": {
+    "distinct_values": 3,
+    "values_sample": [
+     0.0,
+     0.2358,
+     0.3333
+    ],
+    "mean_same_concept": 0.25324918144888936,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 2016,
+    "n_same": 672
+   },
+   "wup": {
+    "distinct_values": 2,
+    "values_sample": [
+     0.0,
+     0.5
+    ],
+    "mean_same_concept": 0.5,
+    "mean_cross_concept": 0.0,
+    "n_pairs": 2016,
+    "n_same": 672
+   },
+   "units": [
+    [
+     "LowerImageRegion",
+     16,
+     1.386
+    ],
+    [
+     "MiddleImageRegion",
+     24,
+     0.981
+    ],
+    [
+     "UpperImageRegion",
+     24,
+     0.981
+    ]
+   ],
+   "registry": {
+    "ontology_status": "VALID",
+    "n_facts": 134,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 128
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 134
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 131,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 134
+    },
+    "unsupported_axioms": {}
+   }
+  }
+ },
+ "synthetic": {
+  "hierarchy3": {
+   "features": [
+    "temperature_mean",
+    "temperature_peak",
+    "humidity_level",
+    "pressure_value"
+   ],
+   "legacy": [
+    [
+     1.0,
+     0.7124,
+     0.7124,
+     0.7124
+    ],
+    [
+     0.7124,
+     1.0,
+     0.7124,
+     0.7124
+    ],
+    [
+     0.7124,
+     0.7124,
+     1.0,
+     0.7124
+    ],
+    [
+     0.7124,
+     0.7124,
+     0.7124,
+     1.0
+    ]
+   ],
+   "lin": [
+    [
+     1.0,
+     0.5,
+     0.2075,
+     0.0
+    ],
+    [
+     0.5,
+     1.0,
+     0.2075,
+     0.0
+    ],
+    [
+     0.2075,
+     0.2075,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "wup": [
+    [
+     1.0,
+     1.0,
+     0.5,
+     0.0
+    ],
+    [
+     1.0,
+     1.0,
+     0.5,
+     0.0
+    ],
+    [
+     0.5,
+     0.5,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  }
+ }
+}
