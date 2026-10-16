@@ -62,3 +62,16 @@ Ambiente: scikit-learn 1.6.1, NumPy (no JSON). Hashes relevantes:
 2. Confirmar a citação UCI e as perguntas abertas de §2.1.
 3. Decidir quais pacotes seguem para ontologia OWL real (e escrever o OWL enriquecido **só depois** da revisão de domínio).
 4. Congelar (hash + commit) a ontologia enriquecida e o pré-registo antes de qualquer avaliação; comparar com ontologia original, permutada ao nível da relação, aleatória, vazia, convencional de dimensão igualada e Original WIDE (Doc. 38).
+
+## 7. Estado da preparação da revisão humana (atualização pós-B3.2, B3.3 e correção P3)
+
+Atualização restrita ao **estado de preparação**; **nenhuma revisão independente foi realizada nem declarada**. Os três papéis (especialista do domínio, engenheiro de ontologias, responsável pela metodologia) mantêm-se; **os nomes serão fornecidos pelo responsável do projeto e não foram inventados**.
+
+| Pacote | Estado de preparação | Revisão |
+|---|---|---|
+| `wdbc_order_relations` | **preparação documental** (fonte, definições, âmbito, teste empírico de ordem, perguntas abertas, formulários de revisão); não vai a avaliação sem revisão de domínio | `DOMAIN_REVIEW_PENDING`, `ONTOLOGY_REVIEW_PENDING`, `METHODOLOGY_REVIEW_PENDING` |
+| `wdbc_ratio_identities`, `wdbc_geometric_approximations` | preparados; identidade rejeitada para atributos agregados / hipótese | pendentes |
+| `wine_phenol_subset_rejected` | **permanece REJEITADO** (caso negativo de validação semântica; não se força na ontologia) | n/a (caso negativo) |
+| `digits_spatial_topology` | **sem definição semântica completa**: falta definição formal, fonte confirmada e condições de aplicação; qualquer nova proposta (incl. relações espaciais do Digits) exige as três; conhecimento não revisto fica `DOMAIN_REVIEW_PENDING` | pendentes |
+
+Contexto de decisão: a B3.3 (Doc. 42) não mostrou vantagem ontológica nos regimes sintéticos avaliados e a integração M0–M6 no núcleo continua `NOT_AUTHORIZED`; a revisão humana serve a avaliação futura de conhecimento real, não a promoção de mecanismos.
