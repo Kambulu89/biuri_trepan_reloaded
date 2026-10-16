@@ -1,0 +1,124 @@
+{
+ "unit_dirs": 20,
+ "files_checked": 302,
+ "mismatch": [],
+ "missing": [],
+ "split_json": {
+  "expected": 20,
+  "present": 20,
+  "hash_ok": 20,
+  "details": [
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/g29_pilot_patch/raw/iris/seed42/split.json",
+    "sha256": "f4365c1d3eb42f8502578925975ea78160bacd4ff9294ec300012f4c43922ee4",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/g29_pilot_patch/raw/wine/seed42/split.json",
+    "sha256": "3adb8d4d321fb4684f8f48ed06820437a1ae67724ba5355aa444ef528005c531",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/breast_cancer/seed11/split.json",
+    "sha256": "cdfa2d711ff321da89bb09e08f568f0f12d5395105da36a812f58237669c2fc7",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/breast_cancer/seed123/split.json",
+    "sha256": "f9a06155f07263fd25e03420c9918548ea3813a9f4d418884c919161bd9a2718",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/breast_cancer/seed2024/split.json",
+    "sha256": "9c8e8ff237909fdbc05786e2588e5cac0c128c16edc190b614351abfab9aaf7f",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/breast_cancer/seed42/split.json",
+    "sha256": "22fc22fc0ccf97206e49528f31c0519fc752085b3d5f13b32a1d6a2f9e7e56aa",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/breast_cancer/seed7/split.json",
+    "sha256": "898c3835f4c3780651839ff455d5bfeffdd840c8cce5b9174f23fcaf70386152",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/digits/seed123/split.json",
+    "sha256": "7ae2e224a1dd9fae5f62f27e730b28e2570b4633b2d7a55fbb89ce5cabe33748",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/digits/seed42/split.json",
+    "sha256": "54c0686c31e0c8deb554185c9c5a8fa51fd359a788ca8b3783d78a5829d643ac",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/digits/seed7/split.json",
+    "sha256": "42bed02e32c1bab496b8ec30e5e00524ed2ab54e93d7fdad0ae616b8ca1a12a1",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/iris/seed11/split.json",
+    "sha256": "d6d4f51b709a1f5ca90abb6ff70ba5ad3efe27e56afe28a45aeb7e7c52f5372d",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/iris/seed123/split.json",
+    "sha256": "e967041bd40fe7987f5459a7f3d0df5302af53c8b415fadcb7466597548aa9a6",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/iris/seed2024/split.json",
+    "sha256": "475a6d0a9b07418917110da5fb16f8fc715bc0e7321b45c7e8cd30de4ce15914",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/iris/seed42/split.json",
+    "sha256": "b9b270b5287c1cee4346c69850a732ef813e0bf0cf00dc06a62ddcb2a5b57278",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/iris/seed7/split.json",
+    "sha256": "c01904ef08d04fe10489fcc7cfe5ddde43d7b7186df4a2ec7f9a28f7b8da22c8",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/wine/seed11/split.json",
+    "sha256": "df02009affed7426a86b99c26abd329b21e19d434e086cfe66c7de89446cb804",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/wine/seed123/split.json",
+    "sha256": "663ceb59d1c45666025148efb580895fb9fb75d1da0fd9a54d064279fc216b0c",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/wine/seed2024/split.json",
+    "sha256": "9c54f03b8252a341511c7c577e242d58b2af180038e4bf7c2c97bc39c6c51ac3",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/wine/seed42/split.json",
+    "sha256": "c3be02ecff3a1054ae09bc729eb04d0bc9f4087d164445c393149fcd84f6ba98",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   },
+   {
+    "file": "docs/evidence/b1b4/m29_campaign/main/raw/wine/seed7/split.json",
+    "sha256": "2b23cf785a06829f57cac728cc909b4664f9c5492893df0d3584036675b89d69",
+    "recorded_at_run_time_in": "UNIT_SHA256.json"
+   }
+  ]
+ },
+ "files_ok": true,
+ "report_regenerated_identical": true,
+ "report_sha256": "7e58b864e9008e5ede9357980f1d19085fcfae6b01e22b6a560a64e855440119",
+ "comparability_units": {
+  "level": "strict",
+  "all_comparable": true,
+  "problems": []
+ },
+ "equivalence_F29_vs_A29": {
+  "identical": 18
+ }
+}
