@@ -152,3 +152,30 @@ CPU de ajuste+compilação+rastreio dos braços ≈ 2,26 CPU-h nas avaliações 
 * `M0_M6_CORE_INTEGRATION` permanece `NOT_AUTHORIZED`; nenhuma campanha DEV foi executada.
 * Evidência: o melhor método com custo igual ou menor que a ontologia para estas famílias é o rastreio genérico (G para sinal univariado fraco; H para ausência de sinal univariado), e o Original alargado (B) quando o espaço de atributos é pequeno.
 * Questão aberta para decisão do responsável: a ontologia só pode oferecer vantagem em regimes onde o conhecimento semântico contenha informação NÃO recuperável dos dados (p. ex. poucos exemplos, ruído que destrói o sinal estatístico mas não a relação, ou restrições semânticas que eliminem candidatos). Estes regimes não foram avaliados aqui.
+
+---
+
+## Anexo A — Encerramento formal da B3.3 (decisão do responsável)
+
+| Campo | Valor |
+|---|---|
+| `B33_STATUS` | `COMPLETED` |
+| `B33_VERDICT` | `NO_ONTOLOGICAL_ADVANTAGE` |
+| `B33_SCOPE` | `SIX_SYNTHETIC_INTERACTION_FAMILIES` |
+| `M0_M6_CORE_INTEGRATION` | `NOT_AUTHORIZED` |
+Correção P3 mantida. Artefactos congelados com hashes em `docs/evidence/b1b4/b33/freeze_B33.json`. Resultados negativos e favoráveis mantêm-se nos relatórios (favoráveis: ganho conjunto de C sobre o Original limitado em todas as famílias; vantagem de C sobre as ontologias permutada/aleatória em I3–I5; negativos: sem atribuição à ontologia, WIDE/G/H igualam, H supera C em I2). Sem repetição de sementes, sem alteração retroativa de critérios.
+
+### A.1 Verificação limpa da suite no commit exato `bb1d209`
+Execução num `git worktree` limpo em `bb1d209`: **1582 passed, 40 skipped, 0 failed** (38 min; log em `clean_full_suite_bb1d209.log`). CI do mesmo commit: Windows 3.11, Windows 3.12 e `agnosticism-guard` em sucesso. Cobre testes de equivalência (`test_eq_reloaded_original`, `test_no_ontology_mirror_original`), regressões científicas, matching P3 (13 testes), agnosticismo (65 do contrato + guarda estática) e integridade dos baselines (M29: 302/302 hashes, 20/20 `split.json`, relatório regenerado idêntico, F29≡A29 18/18; `git diff 9bc7cbb HEAD -- core` = só `core/ontology_quality.py`).
+**Falha anterior, sem ocultação:** a 1.ª execução local completa (no working tree, durante a correção P3) registou 1 falha — `tests/test_b31_facts_relatedness.py::test_perfect_tie_between_two_entities_is_not_accepted` — porque esse teste documentava o comportamento antigo do gate e foi atualizado **depois** de a suite arrancar (o módulo já estava recolhido). Passou isolado (26 passed) e passa na execução limpa acima; essa 1.ª execução, por si só, não provava que todos os testes passavam sobre o mesmo estado do código — a execução limpa sim.
+
+### A.2 Auditoria do desvio de protocolo em I6
+Factos (carimbos de data dos ficheiros e do histórico git; logs de 16/10/2026, UTC):
+1. **Quando:** o desenho de I6 com 16 conceitos (p=64) estava só no rascunho local e no código de trabalho. O 1.º arranque da calibração de I6 falhou às ≈18:18 com `IndexError` em `make_instance` (o gerador B3.1 só tem 8 temas); a alteração para 8×6 (p=48, grelha de `mf` 24–44) foi feita logo a seguir (≈18:24, nova calibração de I6 concluída 18:42:33).
+2. **Antes da avaliação?** Sim. Nenhum braço foi avaliado nas sementes de avaliação antes de 18:43:19; as primeiras avaliações só começaram depois.
+3. **Protocolo revisto congelado?** Sim: `b33_frozen.json` (18:43:07) e o commit de pré-registo `cabcf4f` (18:43:19) já contêm I6 com 8×6; o Doc. 41 nesse commit regista o desvio. **Nunca houve um pré-registo commitado com p=64**; o desvio é face à intenção de desenho inicial, não face a um congelamento anterior. Não se reescreveu o pré-registo.
+4. **Mesma dimensionalidade em todos os braços?** Sim: cada semente gera uma única instância (p=48) partilhada por todos os braços da família (`run_family`).
+5. **Efeito:** altera a **dificuldade** (menos atributos irrelevantes, espaço de candidatos ≈ 2,25× menor que o desenhado) e o custo, não só o custo; a grelha de `mf` e a calibração foram refeitas para o p efetivo. «Grande» passou a significar 1,5× as outras famílias (48 vs 32), não 2×.
+6. **Resultados consultados antes da decisão?** Nenhum resultado de **avaliação** (nem braços semânticos). Estavam já concluídas as **calibrações** de I1, I3 e I4 (só Original e recursos). A decisão foi forçada por um erro técnico e não dependeu de nenhum valor observado.
+7. **Efeito na interpretação:** I6 é um teste de orçamento/dimensionalidade moderado, não de alta dimensionalidade; a conclusão `NO_ONTOLOGICAL_ADVANTAGE` em I6 aplica-se a p=48. Isto **não** sustenta nenhuma afirmação sobre alta dimensionalidade, que a B3.4 (célula M5, p=96) trata com um gerador novo.
+Classificação: **desvio de desenho tecnicamente justificado, pré-avaliação e pré-congelamento, documentado**; não é um desvio posterior ao congelamento.
