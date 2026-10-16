@@ -172,6 +172,10 @@ def semantic_richness(entities: Dict[str, List[Any]]) -> Dict[str, Any]:
     }
 
 
+_TIE_EPS = 1e-9
+_KIND_ORDER = {"class": 0, "datatype_property": 1, "object_property": 2}
+
+
 @dataclass(frozen=True)
 class MatchDecision:
     feature: str
@@ -185,6 +189,8 @@ class MatchDecision:
     runner_up_entity: str | None = None
     status: str = "ACCEPTED"
     tie_break: str | None = None
+    # Diagnóstico explícito das rejeições por ambiguidade (política P3): tipo de ambiguidade e entidades em disputa. ``None`` nas restantes decisões.
+    ambiguity_diagnostic: Dict[str, Any] | None = None
 
 
 @dataclass
@@ -267,7 +273,12 @@ class OntologyQualityGate:
           propriedade de dados, um atributo mapeia-se à propriedade (atributos
           são medições, não conceitos); fica registado em ``tie_break``;
         * colisão: várias features nunca ficam silenciosamente na mesma
-          entidade. Só a de maior score (sem empate) mantém o match.
+          entidade. Só a de maior score (sem empate) mantém o match;
+        * empate (política P3, Doc. 43): a ordem de declaração no OWL nunca decide.
+          Empate exato entre entidades elegíveis ⇒ ``REJECTED_AMBIGUOUS`` com
+          ``ambiguity_diagnostic``; única exceção, a prioridade de tipo (exatamente
+          uma propriedade de dados empatada com classes), que ainda exige a margem
+          mínima face aos concorrentes não-classe restantes.
         """
         entities = ontology_entities(ontology)
         candidates = (
@@ -277,29 +288,62 @@ class OntologyQualityGate:
         )
         decisions: List[MatchDecision] = []
         for feature in feature_names:
+            # Ordenação estável como no contrato anterior (classes, propriedades de dados, de objetos; dentro de cada tipo pela ordem do OWL): preserva bit a bit as decisões
+            # sem empate de topo. As decisões NÃO dependem da posição no OWL: o tipo do 2.º classificado é o do tipo mais baixo do seu grupo; só o NOME do 2.º (diagnóstico) depende.
             ranked = sorted(
                 ((self._candidate_score(feature, entity), entity) for entity in candidates),
                 key=lambda pair: pair[0],
                 reverse=True,
             )
             tie_break = None
-            if len(ranked) > 1 and ranked[0][0] - ranked[1][0] < self.min_ambiguity_margin:
-                kinds = (entity_kind(ranked[0][1]), entity_kind(ranked[1][1]))
-                if kinds == ("class", "datatype_property"):
-                    ranked[0], ranked[1] = ranked[1], ranked[0]
-                    tie_break = "datatype_property_over_class"
+            diagnostic: Dict[str, Any] | None = None
             best_score, best = ranked[0] if ranked else (0.0, None)
-            runner_score, runner = ranked[1] if len(ranked) > 1 else (0.0, None)
-            margin = best_score - runner_score
-            accepted = (
-                best is not None
-                and best_score >= self.min_match_score
-                and (best_score >= 0.98 or margin >= self.min_ambiguity_margin or tie_break is not None)
-            )
+            tied = sorted(((sc, en) for sc, en in ranked if sc >= best_score - _TIE_EPS), key=lambda pair: (_KIND_ORDER.get(entity_kind(pair[1]), 3), str(getattr(pair[1], "name", "")))) if ranked else []
+            if len(tied) > 1 and best_score >= self.min_match_score:
+                # Política P3 (Doc. 43): um EMPATE exato entre entidades elegíveis nunca se resolve pela posição no OWL. Única exceção documentada: exatamente UMA propriedade
+                # de dados empatada com classes ⇒ prioridade de tipo (um atributo é uma medição). Depois da prioridade, qualquer concorrente restante (não-classe) tem de
+                # ficar a ≥ ``min_ambiguity_margin`` do escolhido; senão rejeita-se (sem exceções de score, nem sequer ≥ 0,98).
+                props = [en for _, en in tied if entity_kind(en) == "datatype_property"]
+                classes = [en for _, en in tied if entity_kind(en) == "class"]
+                if len(props) == 1 and len(props) + len(classes) == len(tied):
+                    chosen = props[0]
+                    competitors = [(sc, en) for sc, en in ranked if en is not chosen and entity_kind(en) != "class"]
+                    runner_score, runner = competitors[0] if competitors else (0.0, None)
+                    margin = best_score - runner_score
+                    tie_break = "datatype_property_over_class"
+                    best = chosen
+                    accepted = margin >= self.min_ambiguity_margin
+                    if not accepted:
+                        diagnostic = {"kind": "competitor_after_type_priority", "chosen": getattr(chosen, "name", None), "competitor": getattr(runner, "name", None),
+                                      "margin": float(margin), "required_margin": float(self.min_ambiguity_margin)}
+                else:
+                    best_score, best = tied[0]                                       # relato determinístico (tipo, nome), nunca a posição no OWL
+                    runner_score, runner = tied[1]
+                    margin = 0.0
+                    accepted = False
+                    diagnostic = {"kind": "tie_between_entities", "n_tied": len(tied), "score": float(best_score),
+                                  "tied_entities": [{"name": getattr(en, "name", None), "type": entity_kind(en)} for _, en in tied]}
+            else:
+                if len(ranked) > 1 and ranked[0][0] - ranked[1][0] < self.min_ambiguity_margin:
+                    kinds = (entity_kind(ranked[0][1]), entity_kind(ranked[1][1]))
+                    if kinds == ("class", "datatype_property"):
+                        ranked[0], ranked[1] = ranked[1], ranked[0]
+                        tie_break = "datatype_property_over_class"
+                best_score, best = ranked[0] if ranked else (0.0, None)
+                runner_score, runner = ranked[1] if len(ranked) > 1 else (0.0, None)
+                margin = best_score - runner_score
+                accepted = (
+                    best is not None
+                    and best_score >= self.min_match_score
+                    and (best_score >= 0.98 or margin >= self.min_ambiguity_margin or tie_break is not None)
+                )
             if best is None or best_score < self.min_match_score:
                 reason, status = "score_below_threshold", "REJECTED_LOW_SCORE"
             elif not accepted:
                 reason, status = "ambiguous_match", "REJECTED_AMBIGUOUS"
+                if diagnostic is None:
+                    diagnostic = {"kind": "insufficient_margin", "margin": float(margin), "required_margin": float(self.min_ambiguity_margin),
+                                  "best": getattr(best, "name", None), "runner_up": getattr(runner, "name", None)}
             else:
                 reason, status = "accepted", "ACCEPTED"
             decisions.append(MatchDecision(
@@ -314,6 +358,7 @@ class OntologyQualityGate:
                 runner_up_entity=getattr(runner, "name", None) if runner is not None else None,
                 status=status,
                 tie_break=tie_break,
+                ambiguity_diagnostic=diagnostic if status == "REJECTED_AMBIGUOUS" else None,
             ))
         return self._resolve_entity_collisions(decisions)
 
@@ -338,7 +383,7 @@ class OntologyQualityGate:
                     score=d.score, runner_up_score=d.runner_up_score,
                     ambiguity_margin=d.ambiguity_margin, accepted=False,
                     reason="entity_collision", runner_up_entity=d.runner_up_entity,
-                    status="REJECTED_ENTITY_COLLISION", tie_break=d.tie_break,
+                    status="REJECTED_ENTITY_COLLISION", tie_break=d.tie_break, ambiguity_diagnostic=d.ambiguity_diagnostic,
                 )
         return decisions
 

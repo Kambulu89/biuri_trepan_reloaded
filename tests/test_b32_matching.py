@@ -12,12 +12,12 @@ from validation.benchmark.b30_axiom_probe import dprop, klass, write
 from validation.benchmark.b32_matching import decide, decisions_for, impact, reproduce
 
 
-def test_current_gate_accepts_perfect_tie_and_choice_depends_on_declaration_order(tmp_path):
+def test_gate_after_p3_rejects_perfect_tie_independently_of_declaration_order(tmp_path):
+    """Histórico: antes da correção P3 (Doc. 43) o gate aceitava este empate escolhendo a 1.ª entidade declarada (defeito do Doc. 40). Depois da correção rejeita-o nas duas ordens."""
     r = reproduce(tmp_path)
     t1, t2 = r["tie_order1"], r["tie_order2"]
-    assert t1["accepted"] and t2["accepted"] and t1["ambiguity_margin"] == 0.0 and t1["score"] == t1["runner_up_score"] == 1.0
-    assert t1["entity_name"] != t2["entity_name"]                    # a mesma ontologia, com a ordem trocada, devolve OUTRA entidade: escolha arbitrária
-    assert {t1["entity_name"], t1["runner_up_entity"]} == {t2["entity_name"], t2["runner_up_entity"]}
+    assert not t1["accepted"] and not t2["accepted"] and t1["status"] == t2["status"] == "REJECTED_AMBIGUOUS" and t1["score"] == t1["runner_up_score"] == 1.0
+    assert t1["entity_name"] == t2["entity_name"] and t1["runner_up_entity"] == t2["runner_up_entity"]          # relato determinístico, sem depender da ordem de declaração
 
 
 def _d(score, margin, accepted=True, tie_break=None):
@@ -48,10 +48,10 @@ def test_candidate_policies_do_not_change_any_frozen_ontology_matching():
         assert row["changed_P1"] == 0 and row["changed_P2"] == 0 and row["n_accepted_with_exact_tie"] == 0, did
 
 
-def test_three_way_tie_is_masked_by_type_preference_only_p3_rejects_it(tmp_path):
+def test_three_way_tie_class_and_two_properties_is_rejected_after_p3(tmp_path):
     r = reproduce(tmp_path)["three_way_tie_class_and_two_properties"]
-    assert r["accepted"] and r["tie_break"] == "datatype_property_over_class" and r["tie_sets"]["n_top"] == 3 and r["tie_sets"]["n_top_datatype_property"] == 2
-    assert r["P1_accepts"] is True and r["P3_accepts"] is False              # P1 não cobre empates de 3 vias; P3 sim
+    assert not r["accepted"] and r["tie_sets"]["n_top"] == 3 and r["tie_sets"]["n_top_datatype_property"] == 2
+    assert r["P1_accepts"] is False and r["P3_accepts"] is False                                      # a política pura P3 coincide agora com o gate real
 
 
 def test_p3_changes_nothing_in_frozen_ontologies():

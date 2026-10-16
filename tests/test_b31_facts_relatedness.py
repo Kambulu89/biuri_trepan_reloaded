@@ -312,16 +312,16 @@ def test_documented_family_relation_increases_relatedness(tmp_path):
 
 
 def test_perfect_tie_between_two_entities_is_not_accepted(tmp_path):
-    """Achado B3.1: o gate do núcleo aceita um empate PERFEITO (score 1.0, margem 0) escolhendo arbitrariamente a 1.ª entidade; o registo trata-o como ambíguo (open world)."""
+    """Achado B3.1: o gate aceitava um empate PERFEITO (score 1.0, margem 0) escolhendo arbitrariamente a 1.ª entidade. Desde a correção P3 (Doc. 43) o gate rejeita-o com diagnóstico; o registo continua a tratá-lo como ambíguo (open world)."""
     from core.owl_runtime import load_ontology_isolated
     from core.ontology_quality import OntologyQualityGate
     body = klass("Root") + klass("A", ["Root"]) + klass("B", ["Root"]) + dprop("thermal_mean_a", "A", label="thermal_mean") + dprop("thermal_mean_b", "B", label="thermal_mean")
     path = write(tmp_path, "tie", body)
     d = OntologyQualityGate().match_features(["thermal_mean"], load_ontology_isolated(str(path)))[0]
-    assert d.accepted and d.ambiguity_margin == 0.0                                  # comportamento do núcleo (não alterado)
+    assert (not d.accepted) and d.ambiguity_margin == 0.0 and d.ambiguity_diagnostic["kind"] == "tie_between_entities"      # núcleo corrigido (P3)
     reg = compile_registry(path, ["thermal_mean"], run_reasoner=False)
     mf = reg.by_kind(Kind.MATCH_FAILURE)
-    assert mf and mf[0].rejection_reason == "PERFECT_TIE_AMBIGUOUS" and mf[0].source_axioms
+    assert mf and mf[0].rejection_reason in ("REJECTED_AMBIGUOUS", "PERFECT_TIE_AMBIGUOUS") and mf[0].source_axioms   # P3: o gate já rejeita; a salvaguarda do registo mantém-se
     assert not reg.by_kind(Kind.ATTRIBUTE_APPLIES_TO_CONCEPT) and reg.feature_entity["thermal_mean"] is None
 
 

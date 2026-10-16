@@ -1,0 +1,58 @@
+{
+ "iris": {
+  "n_features": 4,
+  "n_accepted": 4,
+  "identical_decisions": 4,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "wine": {
+  "n_features": 13,
+  "n_accepted": 13,
+  "identical_decisions": 13,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "breast_cancer": {
+  "n_features": 30,
+  "n_accepted": 30,
+  "identical_decisions": 30,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "digits": {
+  "n_features": 64,
+  "n_accepted": 64,
+  "identical_decisions": 64,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "synthetic_binary": {
+  "n_features": 9,
+  "n_accepted": 9,
+  "identical_decisions": 9,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "synthetic_3class": {
+  "n_features": 12,
+  "n_accepted": 12,
+  "identical_decisions": 12,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ },
+ "german_credit": {
+  "n_features": 61,
+  "n_accepted": 61,
+  "identical_decisions": 61,
+  "n_with_diagnostic": 0,
+  "gate_report_equal_except_matches": true,
+  "status": "REASONER_NOT_VALIDATED"
+ }
+}
