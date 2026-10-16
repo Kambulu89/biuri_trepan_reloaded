@@ -134,4 +134,4 @@ def test_frozen_v2_is_a_preregistered_refinement_with_new_disjoint_seeds():
     assert v2["version"] == 2 and v2["harness"]["pool_parity"] is True
     assert v2["problems"] == v1["problems"] and v2["criteria"] == v1["criteria"] and v2["variants"] == v1["variants"]       # mesmos problemas, critérios e variantes
     assert set(v2["evaluation_seeds"]).isdisjoint(v1["evaluation_seeds"]) and set(v2["evaluation_seeds"]).isdisjoint(CAL_SEEDS)
-    assert v2["supersedes"]["sha256"] == hashlib.sha256(FROZEN.read_bytes()).hexdigest()
+    assert v2["supersedes"]["sha256"] == hashlib.sha256(FROZEN.read_bytes().replace(b"\r\n", b"\n")).hexdigest()       # normaliza fins de linha (checkout Windows)
