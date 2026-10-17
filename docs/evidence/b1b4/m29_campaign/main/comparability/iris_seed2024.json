@@ -1,0 +1,231 @@
+{
+ "unit": "iris:2024",
+ "arms": {
+  "m29_D_k0": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_D_k1": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_D_k2": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_E_k0": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_E_k1": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_E_k2": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_G_k0": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [
+    "query_budget"
+   ],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_G_k1": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [
+    "query_budget"
+   ],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_G_k2": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [
+    "query_budget"
+   ],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_P_k0": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_P_k1": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "m29_P_k2": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "intentionally_relaxed": [],
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "None",
+     "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+     "none"
+    ]
+   }
+  },
+  "trepan_original": {
+   "identical_to_reference": true
+  }
+ },
+ "all_comparable": true
+}

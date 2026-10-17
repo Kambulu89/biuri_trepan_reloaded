@@ -1,0 +1,421 @@
+{
+ "package_id": "wdbc_order_relations_v1",
+ "ontology": {
+  "file": null,
+  "sha256": null
+ },
+ "claude_role": "preparou a proposta e os diagnósticos; NÃO valida",
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "ONTOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "preregistration": {
+  "frozen_before_evaluation": false,
+  "freeze_commit": null
+ },
+ "comparison_arms": [
+  "original",
+  "enriched",
+  "permuted",
+  "random",
+  "empty"
+ ],
+ "axioms": [
+  {
+   "id": "wdbc_worst_ge_mean_area",
+   "axiom_text": "worst(area) >= mean(area)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean area",
+    "worst area"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_compactness",
+   "axiom_text": "worst(compactness) >= mean(compactness)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean compactness",
+    "worst compactness"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_concave_points",
+   "axiom_text": "worst(concave points) >= mean(concave points)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean concave points",
+    "worst concave points"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_concavity",
+   "axiom_text": "worst(concavity) >= mean(concavity)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean concavity",
+    "worst concavity"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_fractal_dimension",
+   "axiom_text": "worst(fractal dimension) >= mean(fractal dimension)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean fractal dimension",
+    "worst fractal dimension"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_perimeter",
+   "axiom_text": "worst(perimeter) >= mean(perimeter)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean perimeter",
+    "worst perimeter"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_radius",
+   "axiom_text": "worst(radius) >= mean(radius)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean radius",
+    "worst radius"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_smoothness",
+   "axiom_text": "worst(smoothness) >= mean(smoothness)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean smoothness",
+    "worst smoothness"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_symmetry",
+   "axiom_text": "worst(symmetry) >= mean(symmetry)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean symmetry",
+    "worst symmetry"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  },
+  {
+   "id": "wdbc_worst_ge_mean_texture",
+   "axiom_text": "worst(texture) >= mean(texture)",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "mean texture",
+    "worst texture"
+   ],
+   "relation_class": "MATHEMATICAL_IDENTITY_CONDITIONAL",
+   "justification": "Pela definição documentada, «mean» = média dos valores de todos os núcleos da imagem e «worst» = média dos três maiores valores dos MESMOS núcleos; a média dos k maiores (k ≤ nº de núcleos) é ≥ à média de todos. Identidade decorrente das definições, condicional a: (i) «largest» ser o maior valor numérico; (ii) o comportamento quando a imagem tem < 3 núcleos; (iii) nenhum arredondamento que inverta a ordem.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → «Attribute Information»",
+     "excerpt": "The mean, standard error, and \"worst\" or largest (mean of the three worst/largest values) of these features were computed for each image, resulting in 30 features.  For instance, field 0 is Mean Radius, field 10 is Radius SE, field 20 is Worst Radius.\n - class:         - WDBC-Malignant         - WDBC-Beni",
+     "descr_sha256": "adf388d80160d2e2cdb3eb3f5686a3ec4169fdb575744d4b82b5eec655a9830b",
+     "verification_required": "o revisor deve conferir contra o UCI original (wdbc.names)"
+    }
+   ],
+   "conditions_analysis": {
+    "same_quantity": "sim (mesma medição por núcleo)",
+    "same_observation_set": "sim, segundo a descrição (mesma imagem)",
+    "compatible_statistical_definitions": "sim, se «worst» = média dos 3 maiores (a confirmar)",
+    "preprocessing_preserves_relation": "SÓ no espaço bruto; padronizar cada coluna com média/DP diferentes NÃO preserva a ordem → qualquer uso tem de ocorrer na escala original, nunca em colunas padronizadas",
+    "missing_values_handled": "sem valores em falta no conjunto; a relação aplica-se apenas a linhas completas"
+   },
+   "empirical_check_attributes_only": {
+    "violation_rate_all_569_rows": 0.0,
+    "min_gap_worst_minus_mean": 0.0
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (identidade condicional)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW",
+   "open_questions_for_domain_reviewer": [
+    "Qual é o nº mínimo de núcleos por imagem? «worst» com < 3 núcleos usa os disponíveis?",
+    "«largest» é sempre o maior valor numérico, incluindo para simetria e dimensão fractal?",
+    "A cópia do UCI foi arredondada de forma que possa inverter a ordem?"
+   ]
+  }
+ ]
+}

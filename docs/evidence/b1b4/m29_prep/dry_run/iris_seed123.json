@@ -1,0 +1,365 @@
+{
+ "dataset": "iris",
+ "seed": 123,
+ "real": {
+  "available": true,
+  "n_derived": 2,
+  "structure_signature": "0972b6bfec3acb93",
+  "ontology_hash": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+  "state_reason": ""
+ },
+ "controls": {
+  "m29_P_k0": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 20260123,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20260123,
+    "candidate_index": 1,
+    "candidates_tried": 2,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.5,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "270880408f621afc",
+   "structure_signature": "1f8f8cd61c179875",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k0": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 30260123,
+    "seed_b": 40260123
+   },
+   "perm_meta": {
+    "seed_used": 30260123,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.25,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "bbcefeebda2cbf31",
+   "structure_signature": "1966b03c8e86e9c0",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k1": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 20261123,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20261123,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.25,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "45a9157e73c20b7d",
+   "structure_signature": "1f8f8cd61c179875",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k1": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9501855037296789,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 30261123,
+    "seed_b": 40261123
+   },
+   "perm_meta": {
+    "seed_used": 30261123,
+    "candidate_index": 2,
+    "candidates_tried": 3,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.25,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "fb73cc10fedece46",
+   "structure_signature": "1f8f8cd61c179875",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9501855037296789,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k2": {
+   "kind": "permuted",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 20262123,
+    "seed_b": null
+   },
+   "perm_meta": {
+    "seed_used": 20262123,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.25,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "9846ca601955deb7",
+   "structure_signature": "0dee0593bac7c436",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k2": {
+   "kind": "random_groups",
+   "variant": "full",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": true,
+     "reasons": []
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "seeds": {
+    "seed_a": 30262123,
+    "seed_b": 40262123
+   },
+   "perm_meta": {
+    "seed_used": 30262123,
+    "candidate_index": 0,
+    "candidates_tried": 1,
+    "retention": 0.0,
+    "chance_retention": 0.3333333333333333,
+    "fixed_point_fraction": 0.25,
+    "met_criterion": true,
+    "scale_stratified": true
+   },
+   "perm_hash": "45a9157e73c20b7d",
+   "structure_signature": "33ebde87d3f7f60b",
+   "n_derived": 2,
+   "group_sizes": [
+    2,
+    2
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 2,
+    "n_derived_real": 2,
+    "std_max": 0.9631305216062763,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k0": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 1,
+   "n_derived_real": 2,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 1 \u2260 2"
+    ],
+    "n_derived": 1,
+    "n_derived_real": 2,
+    "std_max": 0.9569814255179576,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k1": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 1,
+   "n_derived_real": 2,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 1 \u2260 2"
+    ],
+    "n_derived": 1,
+    "n_derived_real": 2,
+    "std_max": 0.9569814255179576,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k2": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 1,
+   "n_derived_real": 2,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 1 \u2260 2"
+    ],
+    "n_derived": 1,
+    "n_derived_real": 2,
+    "std_max": 0.9569814255179576,
+    "std_max_real": 0.9900037205090485
+   },
+   "differs_from_real_structure": true
+  }
+ },
+ "distinct_control_structures": 4
+}

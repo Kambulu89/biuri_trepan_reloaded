@@ -1,0 +1,60 @@
+{
+ "B33_SCOPE": "SIX_SYNTHETIC_INTERACTION_FAMILIES",
+ "B33_STATUS": "COMPLETED",
+ "B33_VERDICT": "NO_ONTOLOGICAL_ADVANTAGE",
+ "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED",
+ "baseline_integrity": {
+  "F29_vs_A29": "18/18 idênticas",
+  "git_diff_core_vs_9bc7cbb": "apenas core/ontology_quality.py (correção P3)",
+  "m29_hash_check": "302/302 ficheiros, 20/20 split.json, relatório regenerado idêntico"
+ },
+ "ci_bb1d209": {
+  "agnosticism-guard": "success",
+  "windows-tests (3.11)": "success",
+  "windows-tests (3.12)": "success"
+ },
+ "clean_full_suite": {
+  "commit": "bb1d209",
+  "earlier_run_disclosure": "a 1.ª execução local (no working tree, durante a correção P3) teve 1 falha em tests/test_b31_facts_relatedness.py::test_perfect_tie_between_two_entities_is_not_accepted porque o ficheiro de teste foi corrigido DEPOIS de a suite arrancar; passou isolado (26 passed) e passa na execução limpa.",
+  "log": "docs/evidence/b1b4/b33/clean_full_suite_bb1d209.log",
+  "result": "1582 passed, 40 skipped, 0 failed",
+  "worktree": "git worktree limpo no commit exato"
+ },
+ "code_sha256_lf": {
+  "validation/benchmark/b33_interactions.py": "fb01d943277cb379a1fc8e3440349df61b3c973c0fed781dca7b881d6b1e84c8",
+  "validation/benchmark/b33_report.py": "41a09e4ced0236b6534928288dfb6cfd92f2db1f7eb5a652d7b0c72f2fb06c7f",
+  "validation/benchmark/b33_run.py": "c82468f170d9c69ad2e3e4c2661903d0d5cb117e3eab1d458d463c2634b8c870"
+ },
+ "final_code_commit": "bb1d209",
+ "global_verdict_preregistered": "B33_NO_ONTOLOGICAL_ADVANTAGE",
+ "p3": "7 ontologias históricas com decisões idênticas; ver matching_p3_historical_mappings.json",
+ "p3_commit": "6540bd7",
+ "protocol_commit": "cabcf4f",
+ "results_commit": "ce23c94",
+ "sha256_lf": {
+  "docs/b1b4/41_PROTOCOLO_B33_INTERACOES.md": "897feed7509c7e0611d139e8bda8ce63f1d32988e23504159d0213fb454e62a2",
+  "docs/b1b4/42_RESULTADOS_B33.md": "dcc1b24bfd503dc29df997bd9e58868c42f59589a0bf5371a00267f699f10f3f",
+  "docs/b1b4/43_CORRECAO_MATCHING_AMBIGUO.md": "fa4dd23965d0005937b2f86e32135f0c4adae78e16ec183f487062ff67171b9e",
+  "docs/evidence/b1b4/b33/analysis_b33.json": "d7b9a03b0c4e0e7a0aa072cc5f8a09f69defe8c28dbae7d2d786b5f49d08e5f5",
+  "docs/evidence/b1b4/b33/b33_frozen.json": "b4bdc53c4b1ae266632466a0d9117bdb832758ad87489f3a282405c45e54aa8d",
+  "docs/evidence/b1b4/b33/cal_I1_AND_PAIR.json": "e941c8cc8fff857978b008a46e169daac36ceb4d8be655e86ae43e01eee56ebf",
+  "docs/evidence/b1b4/b33/cal_I2_XOR_NO_SIGNAL.json": "7a45d4cae4ef43a74ba6ac3aa60461fa597880276315ecbd79e882f9970b4fab",
+  "docs/evidence/b1b4/b33/cal_I3_XOR_WEAK_SIGNAL.json": "f2c3623f5750e94e829e627939270af15ded9f27c6b2d389d0734a2d993e3a6c",
+  "docs/evidence/b1b4/b33/cal_I4_XOR_WEAK_NOISY.json": "eb173b1d9f7b2944b2e0c09a5cfc0a522614e00e9f4e513caa8b74b124814afd",
+  "docs/evidence/b1b4/b33/cal_I5_XOR_WEAK_HIERARCHY.json": "5873f48bd7e89e175a0317e197728bca648b7f5d648eb92688c5321d53e8a3ba",
+  "docs/evidence/b1b4/b33/cal_I6_XOR_WEAK_LARGE_BUDGET.json": "075e5ea6fa041b9bdc34bcc169d979a6875d3e12749e8ec6be6467658565f7fd",
+  "docs/evidence/b1b4/b33/matching_p3_historical_mappings.json": "add4900317d185dea92bc137c8e9549757b8b74d6ad82274ebfaec73ac3edc41",
+  "docs/evidence/b1b4/b33/memory_I1_AND_PAIR.json": "bc4f4aec4aad662304da125beac1c71b39d05ef967a5c59c641069ee12e514a3",
+  "docs/evidence/b1b4/b33/memory_I2_XOR_NO_SIGNAL.json": "430085441742b04787a873ff2013147036777ce4e5e0bf1906c506b836c6c97a",
+  "docs/evidence/b1b4/b33/memory_I3_XOR_WEAK_SIGNAL.json": "e8b29e0250f8ebb8bceb5a11e882383a735730ea2a0707ca25cd67c24511cbde",
+  "docs/evidence/b1b4/b33/memory_I4_XOR_WEAK_NOISY.json": "0b72ce42aa892679b633697a22074dc35e8a7fe0b0c4141a8a9f77b400ccc9b1",
+  "docs/evidence/b1b4/b33/memory_I5_XOR_WEAK_HIERARCHY.json": "e7d733c3a4d0a52c330397018a8bab935927a22c52f3624624c0bcee0026d993",
+  "docs/evidence/b1b4/b33/memory_I6_XOR_WEAK_LARGE_BUDGET.json": "ab687ea98ce2d4daa4dfa9b690d6614b7b2c2a4efd186b22b37ce2bf25af2b08",
+  "docs/evidence/b1b4/b33/results_I1_AND_PAIR.json": "a368ba582b87cd13a43c4f69f8876082d4ad593c29b07c9a04ad3a8944aa4d00",
+  "docs/evidence/b1b4/b33/results_I2_XOR_NO_SIGNAL.json": "694d000166a281c78b287c090e13ee081f33c5d10be764800060d17c3052ba70",
+  "docs/evidence/b1b4/b33/results_I3_XOR_WEAK_SIGNAL.json": "5123b272035bbf5c638aeef52dcdce9015b803f2ffc5048963d6c44e37750ae3",
+  "docs/evidence/b1b4/b33/results_I4_XOR_WEAK_NOISY.json": "1c5d962a00bda1bcb893a362bcee4468406fca14b99169e10ab196455c5f706a",
+  "docs/evidence/b1b4/b33/results_I5_XOR_WEAK_HIERARCHY.json": "aa4a5775f5b22ee39c8e11b8a90217cec55cfc7f5b4d87863711422848a53dfa",
+  "docs/evidence/b1b4/b33/results_I6_XOR_WEAK_LARGE_BUDGET.json": "938807cf35f4be64dd86a071108bdec90a1363f8349f82e29e7b26a152709673"
+ }
+}

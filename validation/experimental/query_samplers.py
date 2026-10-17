@@ -14,60 +14,8 @@ from typing import Callable, List, Optional, Sequence
 
 import numpy as np
 
+from core.query_sampling import Schema, infer_schema        # noqa: F401  (esquema genérico vive em core; reexportado aqui)
 from core.trepan_original import FeatureDistributionModel
-
-
-@dataclass
-class Schema:
-    n_features: int
-    continuous: List[int] = field(default_factory=list)
-    binary: List[int] = field(default_factory=list)            # binárias que NÃO pertencem a um grupo one-hot
-    onehot_groups: List[List[int]] = field(default_factory=list)
-    discrete: List[int] = field(default_factory=list)          # inteiras com poucos níveis (nominal por códigos, salvo declaração ordinal)
-    ordinal: List[int] = field(default_factory=list)           # declaradas pelo utilizador (subconjunto de discrete)
-    vocab: dict = field(default_factory=dict)                  # coluna -> valores observados
-    lo: Optional[np.ndarray] = None
-    hi: Optional[np.ndarray] = None
-    scale: Optional[np.ndarray] = None
-
-
-def infer_schema(X, *, max_levels: int = 20, ordinal_columns: Sequence[int] = ()) -> Schema:
-    X = np.asarray(X, dtype=float)
-    n, p = X.shape
-    sc = Schema(p, lo=X.min(axis=0), hi=X.max(axis=0), scale=np.maximum(X.std(axis=0), 1e-12))
-    is_bin = [j for j in range(p) if set(np.unique(X[:, j])).issubset({0.0, 1.0}) and len(np.unique(X[:, j])) == 2]
-    # grupos one-hot: componentes conexas do grafo de exclusão mútua, verificadas por soma de linha == 1
-    excl = {j: {k for k in is_bin if k != j and not np.any((X[:, j] == 1) & (X[:, k] == 1))} for j in is_bin}
-    seen, groups = set(), []
-    for j in is_bin:
-        if j in seen:
-            continue
-        comp, stack = set(), [j]
-        while stack:
-            u = stack.pop()
-            if u in comp:
-                continue
-            comp.add(u)
-            stack.extend(excl[u] - comp)
-        seen |= comp
-        cols = sorted(comp)
-        if len(cols) >= 2 and np.all(X[:, cols].sum(axis=1) == 1.0):
-            groups.append(cols)
-    in_group = {j for g in groups for j in g}
-    sc.onehot_groups = groups
-    sc.binary = [j for j in is_bin if j not in in_group]
-    for j in range(p):
-        if j in in_group or j in sc.binary:
-            continue
-        col = X[:, j]
-        u = np.unique(col)
-        if np.all(col == np.round(col)) and len(u) <= max_levels:
-            sc.discrete.append(j)
-            sc.vocab[j] = u
-        else:
-            sc.continuous.append(j)
-    sc.ordinal = [int(j) for j in ordinal_columns if j in sc.discrete]
-    return sc
 
 
 class _Base:

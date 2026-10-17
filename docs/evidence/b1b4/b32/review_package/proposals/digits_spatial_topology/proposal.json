@@ -1,0 +1,61 @@
+{
+ "package_id": "digits_spatial_topology_v1",
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "ONTOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "comparison_arms": [
+  "original",
+  "enriched",
+  "permuted",
+  "random",
+  "empty"
+ ],
+ "axioms": [
+  {
+   "id": "digits_pixel_grid_adjacency",
+   "axiom_text": "pixel_r_c e pixel_r2_c2 são adjacentes (4-vizinhança) sse |r−r2|+|c−c2| = 1",
+   "type": "SPATIAL_ADJACENCY (tipo de facto ainda inexistente no registo)",
+   "attributes": [
+    "pixel_0_0",
+    "pixel_0_1",
+    "…(64 atributos)"
+   ],
+   "relation_class": "FORMAL_DOMAIN_CONSTRAINT",
+   "justification": "Estrutura do próprio conjunto: «8x8 image of integer pixels» obtida por contagem de píxeis ligados em blocos 4×4 não sobrepostos de um bitmap 32×32; os nomes dos atributos codificam a posição. A relação de vizinhança é geometria do suporte (não depende dos rótulos).",
+   "sources": [
+    {
+     "citation": "scikit-learn 1.6.1 `load_digits().DESCR`; UCI Optical Recognition of Handwritten Digits",
+     "locator": "DESCR → Attribute Information; descrição do pré-processamento",
+     "verification_required": true
+    }
+   ],
+   "conditions_analysis": {
+    "nota": "é relação ESTRUTURAL entre atributos (aplicável como preferência/relatedness), não uma restrição sobre valores; não elimina candidatos nem consultas"
+   },
+   "empirical_check_attributes_only": {
+    "mean_abs_correlation_adjacent_pairs": 0.40625591534934224,
+    "mean_abs_correlation_non_adjacent_pairs": 0.10654370088774259,
+    "interpretation": "regularidade empírica compatível; não prova"
+   },
+   "status_requested": "DOMAIN_DOCUMENTED (estrutura)",
+   "status_now": "HYPOTHESIS_UNTIL_DOMAIN_REVIEW"
+  }
+ ]
+}

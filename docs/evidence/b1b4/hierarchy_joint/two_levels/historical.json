@@ -1,0 +1,556 @@
+{
+ "spec": "historical",
+ "title": "Reloaded OWL hist\u00f3rico vs Original (controlo: ontologia permutada)",
+ "n_units": 18,
+ "exclusions": "nenhuma",
+ "metrics": {
+  "principal": "accuracy_real_labels",
+  "fidelity": "fidelity_to_oracle",
+  "complementary_only": [
+   "precision_macro_real_labels",
+   "macro_f1_real_labels"
+  ]
+ },
+ "inference_status": "explorat\u00f3rio: DEV j\u00e1 observado, n\u00e3o confirmat\u00f3rio",
+ "comparability": {
+  "level": "strict",
+  "properties_verified": [
+   "instance_identity_and_order",
+   "true_labels",
+   "class_mapping_and_order",
+   "partitioning",
+   "dataset_identity",
+   "base_representation_and_preprocessing",
+   "oracle_identity",
+   "oracle_predictions_on_test",
+   "model_version",
+   "experimental_configuration",
+   "query_budget"
+  ],
+  "checked_units": 18,
+  "problems": [],
+  "all_comparable": true,
+  "relaxed": [],
+  "note": ""
+ },
+ "level1_direct_ontological_gain": {
+  "definition": "A_R vs A_Oeq e F_R vs F_Oeq (mesma estrat\u00e9gia de amostragem/or\u00e1culo/parti\u00e7\u00f5es/or\u00e7amento)",
+  "state_counts": {
+   "NO_GAIN": {
+    "n": 8,
+    "pct_of_all_units": 44.4
+   },
+   "ONTOLOGICAL_JOINT_GAIN": {
+    "n": 5,
+    "pct_of_all_units": 27.8
+   },
+   "ACCURACY_ONLY_GAIN": {
+    "n": 1,
+    "pct_of_all_units": 5.6
+   },
+   "TRADEOFF": {
+    "n": 3,
+    "pct_of_all_units": 16.7
+   },
+   "EQUIVALENT": {
+    "n": 1,
+    "pct_of_all_units": 5.6
+   }
+  },
+  "non_inferior_eligible": {
+   "n": 7,
+   "of": 18
+  },
+  "strict_joint_gain": {
+   "n": 5,
+   "of": 18
+  },
+  "attribution_to_ontology_counts": {
+   "NOT_ATTRIBUTED": 13,
+   "NOT_ASSESSABLE": 5
+  },
+  "controls_available": [
+   "permuted_ontology"
+  ],
+  "controls_missing": [
+   "random_groups",
+   "conventional_features"
+  ],
+  "evidence_vs_original_equivalent": {
+   "n_datasets": 4,
+   "per_dataset": {
+    "breast_cancer": {
+     "acc": 0.002797202797202769,
+     "fid": -0.011188811188811187,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.014501007939390029,
+     "within_dataset_sd_fid": 0.017552308248966662
+    },
+    "digits": {
+     "acc": 0.0,
+     "fid": -0.004444444444444473,
+     "n_units": 3,
+     "within_dataset_sd_acc": 0.014572085609559984,
+     "within_dataset_sd_fid": 0.013517250067329364
+    },
+    "iris": {
+     "acc": -0.00526315789473677,
+     "fid": -0.0052631578947368585,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.04324125453988155,
+     "within_dataset_sd_fid": 0.03431159160632973
+    },
+    "wine": {
+     "acc": -0.02666666666666666,
+     "fid": -0.03111111111111111,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.03975231959999626,
+     "within_dataset_sd_fid": 0.046080980785172726
+    }
+   },
+   "confirmatory": false,
+   "unit_of_inference": "dataset",
+   "reasons": [],
+   "across_datasets": {
+    "acc": {
+     "t": {
+      "mean": -0.0072831554410501655,
+      "se": 0.006673697581493119,
+      "lo": -0.028521839651857464,
+      "hi": 0.013955528769757135,
+      "between_dataset_sd": 0.013347395162986239
+     },
+     "bootstrap_ci": [
+      -0.019999999999999997,
+      0.0013986013986013845
+     ],
+     "mean": -0.0072831554410501655
+    },
+    "fid": {
+     "t": {
+      "mean": -0.013001881159775908,
+      "se": 0.006220590761466504,
+      "lo": -0.03279857724529041,
+      "hi": 0.00679481492573859,
+      "between_dataset_sd": 0.012441181522933008
+     },
+     "bootstrap_ci": [
+      -0.024649122807017546,
+      -0.004853801169590666
+     ],
+     "mean": -0.013001881159775908
+    }
+   },
+   "evidence": "NOT_SATISFIED"
+  },
+  "evidence_vs_controls": {
+   "permuted_ontology": {
+    "n_datasets": 4,
+    "per_dataset": {
+     "breast_cancer": {
+      "acc": -0.006993006993007001,
+      "fid": -0.0013986013986013956,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.021553895115276132,
+      "within_dataset_sd_fid": 0.013451317525644326
+     },
+     "digits": {
+      "acc": -0.011111111111111108,
+      "fid": -0.01777777777777778,
+      "n_units": 3,
+      "within_dataset_sd_acc": 0.02119864892037654,
+      "within_dataset_sd_fid": 0.014572085609559986
+     },
+     "iris": {
+      "acc": -0.01578947368421051,
+      "fid": 0.005263157894736836,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.023537557657892498,
+      "within_dataset_sd_fid": 0.028827503026587657
+     },
+     "wine": {
+      "acc": -0.031111111111111135,
+      "fid": -0.03555555555555556,
+      "n_units": 5,
+      "within_dataset_sd_acc": 0.04608098078517273,
+      "within_dataset_sd_fid": 0.043319085976928746
+     }
+    },
+    "confirmatory": false,
+    "unit_of_inference": "dataset",
+    "reasons": [],
+    "across_datasets": {
+     "acc": {
+      "t": {
+       "mean": -0.01625117572485994,
+       "se": 0.005269130233087752,
+       "lo": -0.03301989976721166,
+       "hi": 0.0005175483174917825,
+       "between_dataset_sd": 0.010538260466175503
+      },
+      "bootstrap_ci": [
+       -0.026111111111111127,
+       -0.009052059052059054
+      ],
+      "mean": -0.01625117572485994
+     },
+     "fid": {
+      "t": {
+       "mean": -0.012367194209299475,
+       "se": 0.009120096216758652,
+       "lo": -0.041391410718160035,
+       "hi": 0.01665702229956108,
+       "between_dataset_sd": 0.018240192433517304
+      },
+      "bootstrap_ci": [
+       -0.027016317016317022,
+       0.0019322782480677202
+      ],
+      "mean": -0.012367194209299475
+     }
+    },
+    "evidence": "NOT_SATISFIED"
+   }
+  }
+ },
+ "level2_global_hierarchy": {
+  "definition": "U1 A_R>A_O; U2 A_O>A_C; U3 A_R>A_C; U4 F_R>F_O; U5 F_R>F_C (estrito)",
+  "state_counts": {
+   "NOT_SATISFIED": {
+    "n": 5,
+    "pct_of_all_units": 27.8
+   },
+   "HIERARCHY_INFEASIBLE": {
+    "n": 13,
+    "pct_of_all_units": 72.2
+   }
+  },
+  "mode_counts": {
+   "NO_JOINT_GAIN": 5,
+   "ORIGINAL_NOT_ABOVE_C45_IN_ACCURACY": 13
+  },
+  "flags_and_conditions_true_counts": {
+   "ontological_direct_gain_state=NO_GAIN": 8,
+   "accuracy_superiority": 0,
+   "fidelity_superiority": 1,
+   "tradeoff_vs_original": 3,
+   "tradeoff_vs_c45": 2,
+   "chain_infeasible_by_baselines": 13,
+   "cond:U1_acc_R_gt_O": 8,
+   "cond:U2_acc_O_gt_C": 5,
+   "cond:U3_acc_R_gt_C": 7,
+   "cond:U4_fid_R_gt_O": 6,
+   "cond:U5_fid_R_gt_C": 5,
+   "ontological_direct_gain_state=ONTOLOGICAL_JOINT_GAIN": 5,
+   "ontological_direct_gain_state=ACCURACY_ONLY_GAIN": 1,
+   "ontological_direct_gain_state=TRADEOFF": 3,
+   "ontological_direct_gain_state=EQUIVALENT": 1
+  },
+  "evidence_vs_c45": {
+   "n_datasets": 4,
+   "per_dataset": {
+    "breast_cancer": {
+     "acc": 0.005594405594405582,
+     "fid": 0.0027972027972028137,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.011490683024583882,
+     "within_dataset_sd_fid": 0.020146657749493663
+    },
+    "digits": {
+     "acc": -0.025925925925925908,
+     "fid": -0.024444444444444418,
+     "n_units": 3,
+     "within_dataset_sd_acc": 0.0290026251117806,
+     "within_dataset_sd_fid": 0.0193728841935141
+    },
+    "iris": {
+     "acc": -0.02631578947368418,
+     "fid": -0.005263157894736836,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.0372161463782393,
+     "within_dataset_sd_fid": 0.028827503026587657
+    },
+    "wine": {
+     "acc": -0.026666666666666682,
+     "fid": -0.02666666666666666,
+     "n_units": 5,
+     "within_dataset_sd_acc": 0.06921071778843312,
+     "within_dataset_sd_fid": 0.05752079602464348
+    }
+   },
+   "confirmatory": false,
+   "unit_of_inference": "dataset",
+   "reasons": [],
+   "across_datasets": {
+    "acc": {
+     "t": {
+      "mean": -0.018328494117967796,
+      "se": 0.007975734601883454,
+      "lo": -0.04371084123365965,
+      "hi": 0.0070538529977240555,
+      "between_dataset_sd": 0.01595146920376691
+     },
+     "bootstrap_ci": [
+      -0.026491228070175434,
+      -0.002383143172616858
+     ],
+     "mean": -0.018328494117967796
+    },
+    "fid": {
+     "t": {
+      "mean": -0.013394266552161277,
+      "se": 0.007225773568396587,
+      "lo": -0.03638990294772568,
+      "hi": 0.009601369843403127,
+      "between_dataset_sd": 0.014451547136793174
+     },
+     "bootstrap_ci": [
+      -0.02555555555555554,
+      -0.0012329775487670111
+     ],
+     "mean": -0.013394266552161277
+    }
+   },
+   "evidence": "NOT_SATISFIED"
+  },
+  "note": "HIERARCHY_INFEASIBLE = Original \u2264 C4.5 em accuracy NESSA unidade com os baselines fixados; n\u00e3o exclui a unidade; n\u00e3o \u00e9 impossibilidade universal."
+ },
+ "questions": {
+  "Q1_joint_gain_over_equivalent_original": "NOT_SATISFIED",
+  "Q2_caused_by_ontological_knowledge": "NOT_ASSESSABLE",
+  "Q3_global_hierarchy_units": {
+   "JOINT_HIERARCHY_SATISFIED": 0,
+   "of_all_units": 18
+  }
+ },
+ "complementary_metric_means_over_units": {
+  "precision_macro_real_labels": {
+   "R": 0.9086607301676851,
+   "O": 0.9156418282807515,
+   "C45": 0.9250538930570354
+  },
+  "macro_f1_real_labels": {
+   "R": 0.9052076085919042,
+   "O": 0.9128224155569242,
+   "C45": 0.9222904744871335
+  }
+ },
+ "per_unit": {
+  "breast_cancer:11": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "NOT_SATISFIED",
+   "deltas": {
+    "acc_R-O": -0.020979020979021046,
+    "acc_O-C": 0.027972027972028024,
+    "acc_R-C": 0.006993006993006978,
+    "fid_R-O": -0.020979020979020935,
+    "fid_R-C": 0.020979020979021046
+   }
+  },
+  "breast_cancer:123": {
+   "level1": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.013986013986013957,
+    "acc_O-C": -0.006993006993006978,
+    "acc_R-C": 0.006993006993006978,
+    "fid_R-O": 0.013986013986014068,
+    "fid_R-C": 0.020979020979021046
+   }
+  },
+  "breast_cancer:2024": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "NOT_SATISFIED",
+   "deltas": {
+    "acc_R-O": 0.0,
+    "acc_O-C": 0.013986013986013957,
+    "acc_R-C": 0.013986013986013957,
+    "fid_R-O": -0.027972027972028024,
+    "fid_R-C": 0.0
+   }
+  },
+  "breast_cancer:42": {
+   "level1": "ACCURACY_ONLY_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.013986013986013957,
+    "acc_O-C": 0.0,
+    "acc_R-C": 0.013986013986013957,
+    "fid_R-O": 0.0,
+    "fid_R-C": 0.0
+   }
+  },
+  "breast_cancer:7": {
+   "level1": "TRADEOFF",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.006993006993006978,
+    "acc_O-C": -0.020979020979020935,
+    "acc_R-C": -0.013986013986013957,
+    "fid_R-O": -0.020979020979021046,
+    "fid_R-C": -0.027972027972028024
+   }
+  },
+  "digits:123": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": -0.013333333333333308,
+    "acc_O-C": -0.03555555555555556,
+    "acc_R-C": -0.04888888888888887,
+    "fid_R-O": -0.020000000000000018,
+    "fid_R-C": -0.046666666666666634
+   }
+  },
+  "digits:42": {
+   "level1": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.015555555555555545,
+    "acc_O-C": -0.008888888888888835,
+    "acc_R-C": 0.00666666666666671,
+    "fid_R-O": 0.0022222222222222365,
+    "fid_R-C": -0.011111111111111072
+   }
+  },
+  "digits:7": {
+   "level1": "TRADEOFF",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": -0.0022222222222222365,
+    "acc_O-C": -0.033333333333333326,
+    "acc_R-C": -0.03555555555555556,
+    "fid_R-O": 0.004444444444444362,
+    "fid_R-C": -0.015555555555555545
+   }
+  },
+  "iris:11": {
+   "level1": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.026315789473684292,
+    "acc_O-C": -0.026315789473684292,
+    "acc_R-C": 0.0,
+    "fid_R-O": 0.02631578947368418,
+    "fid_R-C": 0.0
+   }
+  },
+  "iris:123": {
+   "level1": "TRADEOFF",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.026315789473684292,
+    "acc_O-C": -0.026315789473684292,
+    "acc_R-C": 0.0,
+    "fid_R-O": -0.02631578947368418,
+    "fid_R-C": 0.0
+   }
+  },
+  "iris:2024": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": -0.05263157894736836,
+    "acc_O-C": 0.0,
+    "acc_R-C": -0.05263157894736836,
+    "fid_R-O": 0.0,
+    "fid_R-C": -0.05263157894736836
+   }
+  },
+  "iris:42": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": -0.05263157894736836,
+    "acc_O-C": -0.02631578947368418,
+    "acc_R-C": -0.07894736842105254,
+    "fid_R-O": -0.052631578947368474,
+    "fid_R-C": 0.02631578947368418
+   }
+  },
+  "iris:7": {
+   "level1": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.026315789473684292,
+    "acc_O-C": -0.026315789473684292,
+    "acc_R-C": 0.0,
+    "fid_R-O": 0.02631578947368418,
+    "fid_R-C": 0.0
+   }
+  },
+  "wine:11": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": -0.06666666666666665,
+    "acc_O-C": -0.06666666666666676,
+    "acc_R-C": -0.13333333333333341,
+    "fid_R-O": -0.0888888888888889,
+    "fid_R-C": -0.0888888888888889
+   }
+  },
+  "wine:123": {
+   "level1": "EQUIVALENT",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "NOT_SATISFIED",
+   "deltas": {
+    "acc_R-O": 0.0,
+    "acc_O-C": 0.04444444444444451,
+    "acc_R-C": 0.04444444444444451,
+    "fid_R-O": 0.0,
+    "fid_R-C": 0.0444444444444444
+   }
+  },
+  "wine:2024": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "NOT_SATISFIED",
+   "deltas": {
+    "acc_R-O": -0.022222222222222254,
+    "acc_O-C": 0.04444444444444451,
+    "acc_R-C": 0.022222222222222254,
+    "fid_R-O": -0.022222222222222254,
+    "fid_R-C": 0.022222222222222254
+   }
+  },
+  "wine:42": {
+   "level1": "NO_GAIN",
+   "attribution": "NOT_ATTRIBUTED",
+   "level2": "NOT_SATISFIED",
+   "deltas": {
+    "acc_R-O": -0.06666666666666665,
+    "acc_O-C": 0.0444444444444444,
+    "acc_R-C": -0.022222222222222254,
+    "fid_R-O": -0.06666666666666665,
+    "fid_R-C": -0.06666666666666665
+   }
+  },
+  "wine:7": {
+   "level1": "ONTOLOGICAL_JOINT_GAIN",
+   "attribution": "NOT_ASSESSABLE",
+   "level2": "HIERARCHY_INFEASIBLE",
+   "deltas": {
+    "acc_R-O": 0.022222222222222254,
+    "acc_O-C": -0.06666666666666676,
+    "acc_R-C": -0.04444444444444451,
+    "fid_R-O": 0.022222222222222254,
+    "fid_R-C": -0.0444444444444444
+   }
+  }
+ }
+}

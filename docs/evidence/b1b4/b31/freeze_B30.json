@@ -1,0 +1,17 @@
+{
+ "frozen_commit": "9bc7cbbb64a5784bbe41f879a395d3856af4ab58",
+ "purpose": "Estado congelado no fim da B3.0 / antes da B3.1 (git tree hashes: conte\u00fado exato por caminho)",
+ "trees": {
+  "docs/b1b4/30_RESULTADOS_CONTROLOS_ONTOLOGICOS.md": "8cc233e97585a4c1e5f852e6411de870b787990e",
+  "docs/b1b4/31_AUDITORIA_UTILIZACAO_OWL.md": "6a11157bd24dc11e575fed0bb51f702dc09c7f12",
+  "docs/b1b4/32_ANALISE_RELATEDNESS_E_AXIOMAS.md": "7ffadcc8e46d989cdbddd5ca06d22e3c2ece6321",
+  "docs/b1b4/33_PROPOSTA_B3_SEMANTICA_EXPRESSIVA.md": "36a4360dd3936684c1d161d3426a29c37c804ad1",
+  "tests/test_b30_semantic_audit.py": "d5d4188db5c85e5f0783c287325a895e78e0d4bb",
+  "docs/evidence/b1b4/m29_campaign": "8c872c46411fa85930cf8099f5e0d74855eef5e9",
+  "docs/evidence/b1b4/b30_audit": "3b3194c8e84840afc0acd9b4ba82d7f5cd56811d",
+  "core": "a94c73df7e684cf45e24df9df4b48e3630784fb2",
+  "docs/b1b4/manifest_v3": "1f974ee796c8d7f3490be0c01d0fc22b47438fcd"
+ },
+ "baselines_untouched": "`core/` id\u00eantico entre 9bc7cbb e b8d2428 (ver git diff)",
+ "core_diff_vs_b8d2428": "vazio"
+}

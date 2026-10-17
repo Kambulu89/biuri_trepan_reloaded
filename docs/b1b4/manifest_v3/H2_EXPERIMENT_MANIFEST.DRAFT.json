@@ -1,0 +1,56 @@
+{
+ "manifest": "H2_EXPERIMENT_MANIFEST",
+ "status": "DRAFT_NOT_FROZEN",
+ "frozen": false,
+ "state": "H2 = PROTOCOL_DRAFT / NOT_EXECUTED",
+ "depends_on": [
+  "docs/b1b4/50_SELECAO_ONTOLOGIA_EXPRESSIVA.md",
+  "docs/b1b4/51_CONTRATO_AXIOMAS_MOFN.md",
+  "docs/b1b4/52_PROTOCOLO_H2_ENRIQUECIMENTO_REAL.md"
+ ],
+ "restrictions": {
+  "scope": "validation/ apenas",
+  "core_changes": "nenhuma",
+  "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED",
+  "confirmatory_datasets": "não usados",
+  "review": "DOMAIN/ONTOLOGY/METHODOLOGY_REVIEW_PENDING; sem revisores designados"
+ },
+ "candidate_dataset": "german_credit (DEV exploratório; exposto EC1; nunca confirmatório)",
+ "ontology_proposal": "validation/benchmark/ontologies/proposals/german_credit/v0_draft (rascunho de IA, não validado)",
+ "arms": [
+  "A_ORIG",
+  "B_WIDE",
+  "C_GENERIC_INTERACTIONS",
+  "D_PARTITION_NO_OWL",
+  "E_FLAT_OWL_O1",
+  "F_EXPRESSIVE_O2",
+  "G_NEUTRALIZED_O3",
+  "H_PERMUTED_OR_RANDOM",
+  "I_CONVENTIONAL_FEATURES",
+  "J_C45"
+ ],
+ "essential_contrasts": [
+  "F vs A/B/C",
+  "F vs D/E",
+  "F vs G/H",
+  "D vs E",
+  "F vs J"
+ ],
+ "seeds": {
+  "calibration": [
+   8000,
+   8019
+  ],
+  "evaluation": "8100+",
+  "stability": "8200+",
+  "status": "proposta, disjuntas das anteriores"
+ },
+ "cpu_estimate_hours": {
+  "fase_P_sintetico": 1.5,
+  "calibracao": 0.5,
+  "fase_R_german": 0.4,
+  "estabilidade_memoria": 0.3,
+  "total": 2.7,
+  "hard_cap": 4.0
+ }
+}

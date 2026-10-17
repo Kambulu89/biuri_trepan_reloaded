@@ -23,10 +23,21 @@
 - Não alterar (nem em resposta a resultados): tuning científico (CV 5×3, purity_epsilon, max_nodes, política de expansão, critérios
   lexicográficos e de estabilidade, bootstrap diagnóstico) nem o contrato do oráculo (FrozenOracle/oracle_id).
 - Braços A–F, protocolo estrutural comum e ontology-blind, mirror desligado, C4.5 canónico: ver `validation/benchmark/BENCHMARK_MANIFEST_v*.json`.
-- A hierarquia `Accuracy_Reloaded_OWL > Accuracy_Original > Accuracy_C4.5` (e `Fidelity_Reloaded_OWL > Fidelity_Original`) é **objetivo formal pré-registado** de
-  seleção (só em treino/validação interna, nunca no teste) e de aceitação experimental — **não** um resultado que se imponha. Continua proibido: alterar ou degradar
-  os baselines, usar o teste externo na seleção, escolher seeds/datasets/ontologias depois de ver resultados, repetir unidades até obter a ordem, codificar a ordem.
-  Resultados inesperados são evidência a investigar e reportam-se (`HIERARCHY_SATISFIED|NOT_SATISFIED|INFEASIBLE|INSUFFICIENT_EVIDENCE`).
+- **REQUISITO CIENTÍFICO OBRIGATÓRIO (hierarquia conjunta).** O TREPAN Reloaded enriquecido por ontologia OWL deve ser otimizado e avaliado para alcançar **simultaneamente**:
+  - *Accuracy (rótulos reais):* `Reloaded+OWL > Original`, `Reloaded+OWL > C4.5` e `Original > C4.5`.
+  - *Fidelidade ao MLP:* `Reloaded+OWL > Original` e `Reloaded+OWL > C4.5`.
+  Todos medidos **nas mesmas instâncias** e, para a fidelidade, contra o **mesmo MLP/oráculo de referência** (FrozenOracle/`oracle_id`). Uma intervenção (B1–B4, amostragem, mecanismos
+  semânticos) **só é cientificamente bem-sucedida se as cinco condições se verificarem em conjunto**: melhorar a accuracy à custa da fidelidade (ou o inverso) é um **compromisso**
+  (`TRADEOFF_*`), nunca um sucesso. Contrato executável: `core/hierarchy_contract.py` (`evaluate_joint`, estados por unidade `JOINT_HIERARCHY_SATISFIED|TRADEOFF|NOT_SATISFIED|HIERARCHY_INFEASIBLE|INSUFFICIENT_EVIDENCE`). Se `Original ≤ C4.5` em accuracy numa unidade, a cadeia completa é `HIERARCHY_INFEASIBLE` com os resultados fixados dos baselines: reporta-se, **não se corrige**, **nenhuma unidade/dataset/seed é excluída** (percentagens sempre sobre todas as unidades; não é impossibilidade universal).
+  **Dois níveis, sempre separados:** Nível 1 = ganho ontológico direto (Reloaded+OWL vs Original *equivalente*: mesmo amostrador, oráculo, partições, orçamento; atribuição à ontologia só com ganho conjunto sobre controlos permutado, grupos aleatórios e engenharia convencional); Nível 2 = cadeia global U1–U5. O Nível 1 não substitui o 2. Não-inferioridade (`≥`, filtro de elegibilidade em validação) ≠ superioridade estrita (`>`). Estado lógico ≠ evidência (`OBSERVED_JOINT_GAIN|SUPPORTED_JOINT_GAIN`); unidade de inferência = dataset; DEV já observado nunca é confirmatório.
+  É o **objetivo** de otimização/seleção (só treino e validação interna) e o critério de aceitação — **nunca** um resultado imposto, e nenhuma superioridade se declara sem evidência experimental
+  (estado `observed_only` vs `statistically_sustained`; réplicas/unidades como no protocolo).
+- **Métricas:** a métrica preditiva principal é a **accuracy** em relação aos rótulos reais (`accuracy_real_labels`); **accuracy ≠ precision**. `precision_macro_real_labels` e `macro_f1_real_labels`
+  (e balanced accuracy, recall) são **complementares**: reportam-se sempre ao lado, nunca substituem a accuracy nem servem para declarar a hierarquia. A fidelidade é `fidelity_to_oracle`.
+- Continua proibido: alterar ou degradar os baselines (Original, C4.5, MLP, oráculo congelado), alterar resultados históricos, usar o teste externo na seleção/otimização, escolher seeds/datasets/ontologias
+  depois de ver resultados, repetir unidades até obter a ordem, codificar a ordem, introduzir melhorias independentes da ontologia só no Reloaded. Com ontologia, o ganho tem de vir de mecanismos
+  ontológicos reais e verificáveis (controlos permutado/aleatório/convencional) e o sistema permanece dataset-agnóstico. Resultados inesperados são evidência a investigar e reportam-se
+  (estados acima). Documento de referência: `docs/b1b4/28_REQUISITO_HIERARQUIA_CONJUNTA.md`.
 
 ## 2b. Arquitetura científica: Reloaded = Original + extensão ontológica (contrato de equivalência)
 - O TREPAN Reloaded **não** é um algoritmo diferente do Original: é o Original **acrescido de mecanismos de enriquecimento semântico derivados de uma ontologia OWL válida**.

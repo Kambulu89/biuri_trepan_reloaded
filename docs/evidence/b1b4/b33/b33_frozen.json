@@ -1,0 +1,700 @@
+{
+ "frozen": true,
+ "purpose": "congelado ANTES de avaliar qualquer bra\u00e7o nas sementes de avalia\u00e7\u00e3o 400\u2013429",
+ "families": {
+  "I1_AND_PAIR": {
+   "family": {
+    "key": "I1_AND_PAIR",
+    "rule": "and",
+    "layout": "within",
+    "eta": 0.0,
+    "n_groups": 8,
+    "group_size": 4,
+    "n_train": 1000,
+    "max_queries": 4000,
+    "mf_grid": [
+     16,
+     20,
+     24,
+     28,
+     30
+    ],
+    "ontology_true_variant": "TRUE",
+    "q": 0.5
+   },
+   "mf": {
+    "rates": {
+     "16": 0.2,
+     "20": 0.3,
+     "24": 0.55,
+     "28": 0.85,
+     "30": 1.0
+    },
+    "chosen": 24,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 14960.0,
+     "cpu_fit_s": 1.4818536403333316
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5358.25,
+      "cpu_fit_s": 0.7666143768333349
+     },
+     "3": {
+      "eval_calls": 5638.666666666667,
+      "cpu_fit_s": 0.8936189553333366
+     },
+     "4": {
+      "eval_calls": 5916.583333333333,
+      "cpu_fit_s": 0.9782551508333318
+     },
+     "6": {
+      "eval_calls": 6523.0,
+      "cpu_fit_s": 1.2126026304999915
+     },
+     "8": {
+      "eval_calls": 6954.5,
+      "cpu_fit_s": 1.4806814785833353
+     },
+     "12": {
+      "eval_calls": 8327.166666666666,
+      "cpu_fit_s": 1.9154476724166731
+     },
+     "16": {
+      "eval_calls": 9581.0,
+      "cpu_fit_s": 2.368727363333335
+     },
+     "24": {
+      "eval_calls": 11909.0,
+      "cpu_fit_s": 3.1123040204166608
+     },
+     "32": {
+      "eval_calls": 14334.916666666666,
+      "cpu_fit_s": 4.069155204583339
+     },
+     "48": {
+      "eval_calls": 19048.0,
+      "cpu_fit_s": 5.8096716744166725
+     }
+    },
+    "bw_j1": 32,
+    "bw_j2": 8
+   },
+   "spec": {
+    "name": "I1_AND_PAIR",
+    "n_groups": 8,
+    "group_size": 4,
+    "rule": "within_group",
+    "rule_m": 2,
+    "n_train": 1000,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 4000,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 24,
+    "n_test": 4000
+   }
+  },
+  "I2_XOR_NO_SIGNAL": {
+   "family": {
+    "key": "I2_XOR_NO_SIGNAL",
+    "rule": "xor",
+    "layout": "within",
+    "eta": 0.0,
+    "n_groups": 8,
+    "group_size": 4,
+    "n_train": 1000,
+    "max_queries": 4000,
+    "mf_grid": [
+     16,
+     20,
+     24,
+     28,
+     30
+    ],
+    "ontology_true_variant": "TRUE",
+    "q": 0.5
+   },
+   "mf": {
+    "rates": {
+     "16": 0.05,
+     "20": 0.05,
+     "24": 0.0,
+     "28": 0.1,
+     "30": 0.2
+    },
+    "chosen": 30,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 17734.083333333332,
+     "cpu_fit_s": 2.521058733000006
+    },
+    "table": {
+     "2": {
+      "eval_calls": 6186.5,
+      "cpu_fit_s": 1.383513356333334
+     },
+     "3": {
+      "eval_calls": 6954.083333333333,
+      "cpu_fit_s": 1.7437515150833367
+     },
+     "4": {
+      "eval_calls": 7716.833333333333,
+      "cpu_fit_s": 2.105949112166672
+     },
+     "6": {
+      "eval_calls": 9184.083333333334,
+      "cpu_fit_s": 2.750541701666658
+     },
+     "8": {
+      "eval_calls": 10748.583333333334,
+      "cpu_fit_s": 3.60583246566668
+     },
+     "12": {
+      "eval_calls": 13747.583333333334,
+      "cpu_fit_s": 4.923542097416662
+     },
+     "16": {
+      "eval_calls": 16587.333333333332,
+      "cpu_fit_s": 6.509035535083332
+     },
+     "24": {
+      "eval_calls": 22333.25,
+      "cpu_fit_s": 9.271139524666657
+     },
+     "32": {
+      "eval_calls": 26824.5,
+      "cpu_fit_s": 12.79565948208336
+     },
+     "48": {
+      "eval_calls": 38313.083333333336,
+      "cpu_fit_s": 17.63468712808334
+     }
+    },
+    "bw_j1": 16,
+    "bw_j2": 6
+   },
+   "spec": {
+    "name": "I2_XOR_NO_SIGNAL",
+    "n_groups": 8,
+    "group_size": 4,
+    "rule": "within_group",
+    "rule_m": 2,
+    "n_train": 1000,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 4000,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 30,
+    "n_test": 4000
+   }
+  },
+  "I3_XOR_WEAK_SIGNAL": {
+   "family": {
+    "key": "I3_XOR_WEAK_SIGNAL",
+    "rule": "xor",
+    "layout": "within",
+    "eta": 0.0,
+    "n_groups": 8,
+    "group_size": 4,
+    "n_train": 1000,
+    "max_queries": 4000,
+    "mf_grid": [
+     16,
+     20,
+     24,
+     28,
+     30
+    ],
+    "ontology_true_variant": "TRUE",
+    "q": 0.65
+   },
+   "mf": {
+    "rates": {
+     "16": 0.2,
+     "20": 0.35,
+     "24": 0.6,
+     "28": 0.8,
+     "30": 1.0
+    },
+    "chosen": 24,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 14906.333333333334,
+     "cpu_fit_s": 1.5513860147499987
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5421.75,
+      "cpu_fit_s": 0.7884073370833325
+     },
+     "3": {
+      "eval_calls": 5744.75,
+      "cpu_fit_s": 0.9766427035000026
+     },
+     "4": {
+      "eval_calls": 6076.833333333333,
+      "cpu_fit_s": 1.084864867750002
+     },
+     "6": {
+      "eval_calls": 6753.083333333333,
+      "cpu_fit_s": 1.4150225107499992
+     },
+     "8": {
+      "eval_calls": 7401.666666666667,
+      "cpu_fit_s": 1.6582572247499978
+     },
+     "12": {
+      "eval_calls": 8727.916666666666,
+      "cpu_fit_s": 2.0779866320833356
+     },
+     "16": {
+      "eval_calls": 10094.0,
+      "cpu_fit_s": 2.702491441666673
+     },
+     "24": {
+      "eval_calls": 12885.75,
+      "cpu_fit_s": 3.582369390999991
+     },
+     "32": {
+      "eval_calls": 15653.75,
+      "cpu_fit_s": 4.869401941916673
+     },
+     "48": {
+      "eval_calls": 21427.75,
+      "cpu_fit_s": 6.98493259750001
+     }
+    },
+    "bw_j1": 32,
+    "bw_j2": 8
+   },
+   "spec": {
+    "name": "I3_XOR_WEAK_SIGNAL",
+    "n_groups": 8,
+    "group_size": 4,
+    "rule": "within_group",
+    "rule_m": 2,
+    "n_train": 1000,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 4000,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 24,
+    "n_test": 4000
+   }
+  },
+  "I4_XOR_WEAK_NOISY": {
+   "family": {
+    "key": "I4_XOR_WEAK_NOISY",
+    "rule": "xor",
+    "layout": "within",
+    "eta": 0.1,
+    "n_groups": 8,
+    "group_size": 4,
+    "n_train": 1000,
+    "max_queries": 4000,
+    "mf_grid": [
+     16,
+     20,
+     24,
+     28,
+     30
+    ],
+    "ontology_true_variant": "TRUE",
+    "q": 0.65
+   },
+   "mf": {
+    "rates": {
+     "16": 0.2,
+     "20": 0.3,
+     "24": 0.55,
+     "28": 0.8,
+     "30": 1.0
+    },
+    "chosen": 24,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 15037.083333333334,
+     "cpu_fit_s": 1.6764649335833337
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5675.833333333333,
+      "cpu_fit_s": 0.9890063899166677
+     },
+     "3": {
+      "eval_calls": 6116.75,
+      "cpu_fit_s": 1.1050942860833384
+     },
+     "4": {
+      "eval_calls": 6546.083333333333,
+      "cpu_fit_s": 1.255734594416668
+     },
+     "6": {
+      "eval_calls": 7446.333333333333,
+      "cpu_fit_s": 1.5011639730833342
+     },
+     "8": {
+      "eval_calls": 8336.916666666666,
+      "cpu_fit_s": 1.9753772030833285
+     },
+     "12": {
+      "eval_calls": 10111.833333333334,
+      "cpu_fit_s": 2.6260792220000013
+     },
+     "16": {
+      "eval_calls": 11944.333333333334,
+      "cpu_fit_s": 3.3595771927499953
+     },
+     "24": {
+      "eval_calls": 15693.333333333334,
+      "cpu_fit_s": 4.946695394500007
+     },
+     "32": {
+      "eval_calls": 19442.916666666668,
+      "cpu_fit_s": 6.422765269499995
+     },
+     "48": {
+      "eval_calls": 27263.416666666668,
+      "cpu_fit_s": 9.453735357000014
+     }
+    },
+    "bw_j1": 24,
+    "bw_j2": 6
+   },
+   "spec": {
+    "name": "I4_XOR_WEAK_NOISY",
+    "n_groups": 8,
+    "group_size": 4,
+    "rule": "within_group",
+    "rule_m": 2,
+    "n_train": 1000,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 4000,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 24,
+    "n_test": 4000
+   }
+  },
+  "I5_XOR_WEAK_HIERARCHY": {
+   "family": {
+    "key": "I5_XOR_WEAK_HIERARCHY",
+    "rule": "xor",
+    "layout": "cross",
+    "eta": 0.0,
+    "n_groups": 8,
+    "group_size": 4,
+    "n_train": 1000,
+    "max_queries": 4000,
+    "mf_grid": [
+     16,
+     20,
+     24,
+     28,
+     30
+    ],
+    "ontology_true_variant": "HIERARCHY",
+    "q": 0.65
+   },
+   "mf": {
+    "rates": {
+     "16": 0.35,
+     "20": 0.4,
+     "24": 0.65,
+     "28": 0.85,
+     "30": 0.95
+    },
+    "chosen": 20,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 17886.083333333332,
+     "cpu_fit_s": 1.4903063078333336
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5382.25,
+      "cpu_fit_s": 0.9366555297500033
+     },
+     "3": {
+      "eval_calls": 5694.666666666667,
+      "cpu_fit_s": 1.180582316499996
+     },
+     "4": {
+      "eval_calls": 6010.75,
+      "cpu_fit_s": 1.2275762167499973
+     },
+     "6": {
+      "eval_calls": 6660.25,
+      "cpu_fit_s": 1.7133178826666697
+     },
+     "8": {
+      "eval_calls": 7293.916666666667,
+      "cpu_fit_s": 2.047975459499997
+     },
+     "12": {
+      "eval_calls": 8552.833333333334,
+      "cpu_fit_s": 2.5602128280000023
+     },
+     "16": {
+      "eval_calls": 9857.916666666666,
+      "cpu_fit_s": 3.364057153499997
+     },
+     "24": {
+      "eval_calls": 12556.25,
+      "cpu_fit_s": 3.971974520833342
+     },
+     "32": {
+      "eval_calls": 15214.25,
+      "cpu_fit_s": 5.016305502583331
+     },
+     "48": {
+      "eval_calls": 20595.25,
+      "cpu_fit_s": 7.004913669833319
+     }
+    },
+    "bw_j1": 48,
+    "bw_j2": 6
+   },
+   "spec": {
+    "name": "I5_XOR_WEAK_HIERARCHY",
+    "n_groups": 8,
+    "group_size": 4,
+    "rule": "cross_group",
+    "rule_m": 2,
+    "n_train": 1000,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 4000,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 20,
+    "n_test": 4000
+   }
+  },
+  "I6_XOR_WEAK_LARGE_BUDGET": {
+   "family": {
+    "key": "I6_XOR_WEAK_LARGE_BUDGET",
+    "rule": "xor",
+    "layout": "within",
+    "eta": 0.05,
+    "n_groups": 8,
+    "group_size": 6,
+    "n_train": 1500,
+    "max_queries": 2500,
+    "mf_grid": [
+     24,
+     30,
+     36,
+     40,
+     44
+    ],
+    "ontology_true_variant": "TRUE",
+    "q": 0.65
+   },
+   "mf": {
+    "rates": {
+     "24": 0.25,
+     "30": 0.35,
+     "36": 0.5,
+     "40": 0.7,
+     "44": 0.8
+    },
+    "chosen": 36,
+    "within_target_band": true
+   },
+   "beam": {
+    "reference_C": {
+     "eval_calls": 24438.5,
+     "cpu_fit_s": 3.611195515750005
+    },
+    "table": {
+     "2": {
+      "eval_calls": 8979.833333333334,
+      "cpu_fit_s": 1.8887109666666717
+     },
+     "3": {
+      "eval_calls": 9871.5,
+      "cpu_fit_s": 2.2815040322500075
+     },
+     "4": {
+      "eval_calls": 10761.416666666666,
+      "cpu_fit_s": 2.792182573499995
+     },
+     "6": {
+      "eval_calls": 12526.0,
+      "cpu_fit_s": 3.6319945983333404
+     },
+     "8": {
+      "eval_calls": 14260.416666666666,
+      "cpu_fit_s": 4.257357394416663
+     },
+     "12": {
+      "eval_calls": 17772.666666666668,
+      "cpu_fit_s": 5.724186161583337
+     },
+     "16": {
+      "eval_calls": 21282.416666666668,
+      "cpu_fit_s": 7.122366871333341
+     },
+     "24": {
+      "eval_calls": 28439.083333333332,
+      "cpu_fit_s": 10.160087443583336
+     },
+     "32": {
+      "eval_calls": 35769.583333333336,
+      "cpu_fit_s": 13.936597525666665
+     },
+     "48": {
+      "eval_calls": 50489.25,
+      "cpu_fit_s": 19.835083095749997
+     }
+    },
+    "bw_j1": 16,
+    "bw_j2": 6
+   },
+   "spec": {
+    "name": "I6_XOR_WEAK_LARGE_BUDGET",
+    "n_groups": 8,
+    "group_size": 6,
+    "rule": "within_group",
+    "rule_m": 2,
+    "n_train": 1500,
+    "scale_sigma": 0.7,
+    "min_sample": 400,
+    "max_queries": 2500,
+    "max_nodes": 7,
+    "max_depth": 3,
+    "max_n": 4,
+    "beam_width": 2,
+    "min_samples_leaf": 3,
+    "max_features_per_node": 36,
+    "n_test": 4000
+   }
+  }
+ },
+ "arms": [
+  "A_ORIG",
+  "B_WIDE",
+  "C_OWL",
+  "D_PERM",
+  "E_RAND",
+  "F_CONV",
+  "G_UNI_SCREEN",
+  "H_PAIR_SCREEN",
+  "I_NEUTRALIZED",
+  "J1_WIDE_BEAM_CAND",
+  "J2_WIDE_BEAM_CPU",
+  "N_IRRELEVANT",
+  "N_INCOMPLETE"
+ ],
+ "unit_budget": 3,
+ "seeds": {
+  "calibration": [
+   3000,
+   3019
+  ],
+  "evaluation": [
+   400,
+   429
+  ],
+  "diagnostic_memory": [
+   500,
+   509
+  ]
+ },
+ "criteria": {
+  "version": 1,
+  "unit_of_inference": "fam\u00edlia de problemas (I1\u2013I6); 30 sementes de avalia\u00e7\u00e3o 400\u2013429 por fam\u00edlia; compara\u00e7\u00f5es emparelhadas por semente; IC95 bootstrap (4000) das diferen\u00e7as m\u00e9dias",
+  "families_roles": {
+   "I1_AND_PAIR": "controlo com sinal univariado (n\u00e3o conta para o veredicto global)",
+   "I2_XOR_NO_SIGNAL": "sem sinal univariado (limite indutivo esperado)",
+   "I3..I6": "intera\u00e7\u00e3o com sinal univariado fraco (q=0,65): sem ru\u00eddo, ru\u00eddo de r\u00f3tulo, hierarquia entre conceitos irm\u00e3os, espa\u00e7o maior com or\u00e7amento mais apertado"
+  },
+  "expressiveness": "a XOR de um par N\u00c3O \u00e9 represent\u00e1vel por UM teste m-of-n; \u00e9 represent\u00e1vel por uma \u00e1rvore de 2 n\u00edveis (max_depth=3, max_nodes=7 chegam). \u00abrule_recovery\u00bb = o par de atributos no mesmo teste OU no mesmo caminho raiz\u2192folha (`recovered_path`)",
+  "difficulty_definition": "s\u00f3 pelo Original (taxa de recupera\u00e7\u00e3o com `max_features_per_node` da grelha da fam\u00edlia, mais pr\u00f3xima de 0,5 em [0,2; 0,8], sen\u00e3o a mais pr\u00f3xima) em sementes de calibra\u00e7\u00e3o 3000\u20133019; a for\u00e7a do sinal univariado vem do gerador (quantil q), nunca de variantes ontol\u00f3gicas",
+  "arms": {
+   "A": "A_ORIG (Original can\u00f3nico, or\u00e7amento limitado)",
+   "B": "B_WIDE (Original com mf=p)",
+   "C": "C_OWL (orienta\u00e7\u00e3o por ontologia verdadeira da fam\u00edlia)",
+   "D": "D_PERM",
+   "E": "E_RAND",
+   "F": "F_CONV (engenharia convencional: agrupamento por correla\u00e7\u00e3o)",
+   "G": "G_UNI_SCREEN (rastreio univariado)",
+   "H": "H_PAIR_SCREEN (rastreio gen\u00e9rico de intera\u00e7\u00f5es por pares; mesmo n\u00ba e tamanho de unidades)",
+   "I": "I_NEUTRALIZED (ontologia verdadeira com as rela\u00e7\u00f5es do par neutralizadas)",
+   "J1": "WIDE com beam calibrado a candidatos avaliados de C (s\u00f3 recursos)",
+   "J2": "WIDE com beam calibrado ao CPU de C (s\u00f3 recursos)",
+   "N": "N_IRRELEVANT, N_INCOMPLETE (negativos)"
+  },
+  "resource_contract": "compara\u00e7\u00e3o 1 (igual n\u00ba de candidatos avaliados): C vs J1; compara\u00e7\u00e3o 2 (igual CPU): C vs J2; unidades de C\u2013I com o mesmo n\u00ba/tamanho (\u22643 pesquisas); reportam-se SEPARADAMENTE candidatos dispon\u00edveis (literais listados, gerados), examinados (eval_calls), consultas e amostras ao or\u00e1culo, CPU de ajuste, CPU de compila\u00e7\u00e3o/rastreio, custo total, mem\u00f3ria (sementes 500\u2013509), n\u00f3s, profundidade, condi\u00e7\u00f5es m-of-n. N\u00e3o se alarga o espa\u00e7o de candidatos para a ontologia; n\u00e3o se declara igualdade quando s\u00f3 uma dimens\u00e3o \u00e9 igual",
+  "joint_gain": {
+   "level": "N\u00edvel 1 (C vs A equivalente: mesmo or\u00e1culo, dados, parti\u00e7\u00f5es, or\u00e7amento de ajuste, semente)",
+   "OBSERVED_JOINT_GAIN": "\u0394accuracy(C\u2212A) > 0 e \u0394fidelity(C\u2212A) > 0 (m\u00e9dias)",
+   "SUPPORTED_JOINT_GAIN": "ambos com limite inferior do IC95 > 0",
+   "TRADEOFF": "um > 0 e o outro < 0",
+   "NO_JOINT_GAIN": "caso contr\u00e1rio"
+  },
+  "attribution": {
+   "ATTRIBUTED": "SUPPORTED_JOINT_GAIN e, contra CADA controlo D, E, I (ontologia) e B, F, G, H, J1, J2 (gen\u00e9ricos), \u0394accuracy>0 e \u0394fidelity>0 com IC95 inferior > 0",
+   "NOT_ATTRIBUTED": "caso contr\u00e1rio (n\u00e3o significa que os controlos refutem a ontologia: significa aus\u00eancia de ganho direto atribu\u00edvel)"
+  },
+  "recovery_advantage": "R1: recovery(C) \u2212 max(recovery de D, E, F, G, H, I) \u2265 0,20; R2: recovery(C) \u2212 recovery(B) \u2265 0,10 e recovery(C) \u2212 max(recovery(J1), recovery(J2)) \u2265 0,10",
+  "cheaper_equivalent": "para cada controlo X: \u00abSIMPLER_EQUIVALENT\u00bb se |\u0394accuracy|\u22640,005, |\u0394fidelity|\u22640,005 face a C e custo total(X) \u2264 0,8\u00b7custo total(C) (ou X\u2265C em recovery com custo menor); reporta-se sempre",
+  "family_verdicts": {
+   "ONTOLOGICAL_ADVANTAGE": "R1 e R2 e ATTRIBUTED",
+   "RELATION_SPECIFIC_ONLY": "R1 mas n\u00e3o (R2 e ATTRIBUTED)",
+   "NO_ONTOLOGICAL_ADVANTAGE": "R1 falha",
+   "UNINFORMATIVE_NO_ARM_RECOVERS": "recovery de TODOS os bra\u00e7os < 0,10 (limite indutivo; n\u00e3o conta a favor nem contra)"
+  },
+  "global_verdict": {
+   "B33_ADVANTAGE_ESTABLISHED": "\u2265 2 das fam\u00edlias I3\u2013I6 com ONTOLOGICAL_ADVANTAGE",
+   "B33_PARTIAL": "exatamente 1",
+   "B33_NO_ONTOLOGICAL_ADVANTAGE": "0"
+  },
+  "hierarchy_exploratory": "por fam\u00edlia: Acc(C) > Acc(A) > Acc(C4.5) e Fid(C) > Fid(A) e Fid(C) > Fid(C4.5); explorat\u00f3rio (C \u00e9 Original + orienta\u00e7\u00e3o, n\u00e3o o Reloaded integrado)",
+  "no_claim": "nenhuma superioridade se declara sem evid\u00eancia; DEV/confirmat\u00f3rios n\u00e3o usados; sementes de avalia\u00e7\u00e3o n\u00e3o repetidas nem escolhidas"
+ },
+ "code_sha256": {
+  "validation/benchmark/b31_facts.py": "9b88bf374a6b52da02a48606e79274de3ca0c5fcec5c733a7f9c646d2fe4cc5c",
+  "validation/benchmark/b31_relatedness.py": "6efa6e8d3c131b50323fe194ae8d7b2ec180f87db4ee7b52c59e9f26b78ddcc3",
+  "validation/benchmark/b31_steering.py": "112e09d65902f2e0006398c83c82ab81e6eb7d59a0b711d03c3af5455d4ef7c9",
+  "validation/benchmark/b31_identifiability.py": "7a5c2afa6464febbc446fb2fa2cae92f838aa0a5fa9e1ce55973efc59bed33fc",
+  "validation/benchmark/b32_comparison.py": "a1c757e8132daa510bc516f47fa0ead3c9a96149963788a1eb88598f236366dd",
+  "validation/benchmark/b33_interactions.py": "fb01d943277cb379a1fc8e3440349df61b3c973c0fed781dca7b881d6b1e84c8",
+  "validation/benchmark/b33_run.py": "c82468f170d9c69ad2e3e4c2661903d0d5cb117e3eab1d458d463c2634b8c870",
+  "validation/benchmark/b33_report.py": "41a09e4ced0236b6534928288dfb6cfd92f2db1f7eb5a652d7b0c72f2fb06c7f"
+ },
+ "oracle": "MLP sklearn (StandardScaler + MLPClassifier(32,), max_iter 800) treinado nos r\u00f3tulos (com ru\u00eddo) da fam\u00edlia; accuracy do MLP reportada por semente",
+ "calibration_used_only": "Original (recupera\u00e7\u00e3o por caminho) e recursos (eval_calls, CPU) \u2014 nunca o desempenho dos bra\u00e7os sem\u00e2nticos"
+}

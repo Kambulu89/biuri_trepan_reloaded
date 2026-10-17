@@ -1,0 +1,474 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 11,
+ "real": {
+  "available": true,
+  "n_derived": 53,
+  "structure_signature": "ea7510ed48652ec9",
+  "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+  "state_reason": ""
+ },
+ "controls": {
+  "m29_P_k0": {
+   "kind": "permuted",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 5.67e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "escala 4.2e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 1.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 20260011,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "50ab2a513a876269",
+   "structure_signature": "916153e217df8802",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k0": {
+   "kind": "random_groups",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 1.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53",
+      "escala 1.77e+09 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 2.81e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 30260011,
+    "seed_b": 40260011
+   },
+   "perm_meta": null,
+   "perm_hash": "acb5d2ac520a6fab",
+   "structure_signature": "87faea8fd7a2a17f",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k1": {
+   "kind": "permuted",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 1.27e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 1.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 1.22e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 1.73e+09 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 20261011,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "35f1d9953a98e9a0",
+   "structure_signature": "19f48ba5bdcdc490",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k1": {
+   "kind": "random_groups",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 1.38e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 4.2e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 1.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "escala 4.12e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 30261011,
+    "seed_b": 40261011
+   },
+   "perm_meta": null,
+   "perm_hash": "f0625b01369a7123",
+   "structure_signature": "392a77409d402f95",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k2": {
+   "kind": "permuted",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 5.67e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 1.04e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53",
+      "escala 4.12e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 4.2e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 20262011,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "e82f1393bc6b0fa1",
+   "structure_signature": "8d53f83b1aebf652",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k2": {
+   "kind": "random_groups",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "escala 1.38e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 1.22e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53",
+      "escala 4.2e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 1.22e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "seeds": {
+    "seed_a": 30262011,
+    "seed_b": 40262011
+   },
+   "perm_meta": null,
+   "perm_hash": "ac8a345802aba063",
+   "structure_signature": "57162174af3bb636",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.6229135664087,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k0": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9876262041675696,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k1": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9876262041675696,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k2": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9876262041675696,
+    "std_max_real": 247.6229135664087
+   },
+   "differs_from_real_structure": true
+  }
+ },
+ "distinct_control_structures": 6
+}

@@ -1,0 +1,406 @@
+{
+ "dataset": "breast_cancer",
+ "master_seed": 123,
+ "splits": [
+  {
+   "split_id": "seed123",
+   "seed": 123,
+   "repeat": 0,
+   "fold": 0,
+   "split_hash": "78d7021413f0da2c011be11ccff0f5118cd06b4b8b264d4ee44d994a6549de8c",
+   "n_train": 426,
+   "n_test": 143,
+   "scheme": "holdout",
+   "stratified": true
+  }
+ ],
+ "semantic_report": [
+  {
+   "split_id": "seed123",
+   "provider": "owl_real",
+   "semantic_available": true,
+   "ontology_valid": true,
+   "reason": "",
+   "n_derived_features": 53,
+   "semantic_time": 1.9339262089997646,
+   "reasoner_time": 2.1958130800003346,
+   "info": {
+    "ontology_quality": "VALID_DOMAIN_ONTOLOGY",
+    "reasoner": "hermit",
+    "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+    "n_ontology_graph_nodes": 41,
+    "mapped_feature_count": 30,
+    "unmapped_feature_count": 0,
+    "reasoning_applied": true,
+    "reasoner_consistent": true,
+    "feature_coverage": 1.0
+   },
+   "real_structure_signature": "ea7510ed48652ec9",
+   "shuffled_structure_signature": "a9bbd8fdd7245dac",
+   "mlp_enrichment_accepted": false,
+   "oracle_gate": {
+    "gate_margin": 0.01,
+    "available": false,
+    "accepted": false,
+    "reason": "semântica indisponível"
+   },
+   "trepan_semantics_available": true,
+   "selected_oracle": "mlp_original",
+   "structural_protocol": {
+    "structural_tuning_ontology_blind": true,
+    "enabled": true,
+    "semantic_inputs_given_to_tuning": false,
+    "test_used": false,
+    "tuning_oracle_id": "dcd119e9224307ff",
+    "source": "scientific_tuning_frozen",
+    "selected": {
+     "min_sample": 1000,
+     "max_queries": 255001,
+     "max_nodes": 31,
+     "max_depth": 15,
+     "max_n": 4,
+     "beam_width": 2,
+     "min_samples_leaf": 2,
+     "max_features_per_node": 12,
+     "purity_epsilon": 0.02
+    },
+    "structure_selected": {
+     "purity_epsilon": 0.02,
+     "max_nodes": 31
+    },
+    "tuning_status": "non_discriminative_grid",
+    "status_reason": "all_candidates_statistically_equivalent",
+    "selection_basis": "parsimony_tiebreak_among_indistinguishable",
+    "selected_config_full_cv": "purity_epsilon=0.02, max_nodes=31",
+    "initial_node_grid": [
+     31,
+     63
+    ],
+    "final_node_grid": [
+     31,
+     63
+    ],
+    "expansion_stop_reason": "validation_plateau",
+    "fraction_at_node_cap": 1.0,
+    "cv_plan": {
+     "scheme": "RepeatedStratifiedKFold (conjunto de treino apenas)",
+     "folds": 3,
+     "repeats": 5,
+     "seeds": [
+      123,
+      1132,
+      2141,
+      3150,
+      4159
+     ],
+     "n_splits": 15,
+     "test_set_used": false
+    },
+    "test_used_for_selection": false,
+    "tuning_time_s": 0.2836234169999443,
+    "engineering_profile": {
+     "fold_preparation": 0.0034221269997942727,
+     "candidate_construction": 0.001274988000659505,
+     "tree_fit_total": 0.0,
+     "synthetic_generation": 0.0,
+     "oracle_prediction": 0.0,
+     "local_model_fit": 0.0,
+     "split_search": 0.0,
+     "tree_construction_other": 0.0,
+     "metric_computation": 0.0,
+     "bootstrap_selection": 0.23271004600019296,
+     "memo_copy": 0.0006352879995574767,
+     "fits_executed": 0,
+     "fits_reused": 15,
+     "fits_resumed": 150,
+     "total_instrumented": 0.23804244900020421
+    },
+    "candidate_count": 6,
+    "number_cv_fits": 90,
+    "number_capacity_fits": 75,
+    "oof_fidelity_mean": 0.9267605633802819
+   },
+   "preprocessing": {
+    "representation": "numeric_matrix_as_loaded",
+    "imputation": "none",
+    "encoding": "none",
+    "feature_selection": "none",
+    "scaling": "estimator_internal_pipeline_fit_on_train_only",
+    "semantic_enrichment": "provider_fit_on_train_only",
+    "fit_partition": "train",
+    "test_used_in_fit": false,
+    "n_fit_rows": 426,
+    "n_features": 30,
+    "feature_names_hash": "3d17e44c19d3b0fe941f5e416b5bc696535890ba4d4afa4cd065219c33c7e366",
+    "train_index_hash": "14be040eafbe13e3428c91f4c91e196daebf4b7b202721096ff372592af3b4e0",
+    "train_matrix_hash": "1ab77d27d6216535662ab22ae3ff3ecec5ae57fe4d237980774e5f2840933ae7",
+    "scientific_preprocessing_id": "63a5d123f3cc8b4a",
+    "preprocessing_id": "5de19489dcb64c1c"
+   },
+   "negative_control": {
+    "shuffle_seed": 8042,
+    "original_ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+    "shuffled_ontology_hash": "3f6492803045fb07efa00489eaa0ec8bc212c72c561bea14523c41bcccc6379e",
+    "counts_before": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 33,
+     "n_relations": 435,
+     "relatedness_sum": 309.91488,
+     "n_semantic_features": 53,
+     "n_nonunit_weights": 53
+    },
+    "counts_after": {
+     "n_semantic_classes": 3,
+     "n_grouped_features": 33,
+     "n_relations": 435,
+     "relatedness_sum": 309.91488,
+     "n_semantic_features": 53,
+     "n_nonunit_weights": 53
+    },
+    "n_ontology_graph_nodes": 41
+   },
+   "oracle_contract": {
+    "oracle_id_original": "dcd119e9224307ff",
+    "oracle_id_ontological": null,
+    "shared_oracle_arms": [
+     "m29_D_k0",
+     "m29_D_k1",
+     "m29_D_k2",
+     "m29_E_k0",
+     "m29_E_k1",
+     "m29_E_k2",
+     "m29_G_k0",
+     "m29_G_k1",
+     "m29_G_k2",
+     "m29_P_k0",
+     "m29_P_k1",
+     "m29_P_k2",
+     "trepan_original"
+    ],
+    "single_oracle_for_shared_arms": true,
+    "unchanged_after": true,
+    "queries_per_scope": {
+     "structural_tuning": 0,
+     "trepan_original": 13846,
+     "m29_P_k0": 31503,
+     "m29_D_k0": 31844,
+     "m29_E_k0": 30426,
+     "m29_G_k0": 38311,
+     "m29_P_k1": 35441,
+     "m29_D_k1": 35761,
+     "m29_E_k1": 30426,
+     "m29_G_k1": 37820,
+     "m29_P_k2": 37644,
+     "m29_D_k2": 31673,
+     "m29_E_k2": 30426,
+     "m29_G_k2": 35540
+    }
+   },
+   "protocol_audit": {
+    "run_id": "breast_cancer:seed123",
+    "protocol": "train/internal-validation/acceptance-holdout/locked-external-test",
+    "events": [
+     {
+      "phase": "selection",
+      "role": "train",
+      "operation": "fit_all_models_on_train",
+      "details": {
+       "split_hash": "78d7021413f0da2c011be11ccff0f5118cd06b4b8b264d4ee44d994a6549de8c"
+      }
+     },
+     {
+      "phase": "selection",
+      "role": "validation",
+      "operation": "oracle_gate_inner_cv_on_train_only",
+      "details": {
+       "folds": 3
+      }
+     },
+     {
+      "phase": "final_evaluation",
+      "role": "test",
+      "operation": "final_metrics_all_arms_once",
+      "details": {
+       "n_test": 143
+      }
+     }
+    ],
+    "test_used_for_selection": false,
+    "test_used_for_feature_selection": false,
+    "test_used_for_oracle_selection": false,
+    "test_used_for_hyperparameter_selection": false,
+    "test_used_for_counterfactual_selection": false,
+    "test_used_for_tree_selection": false,
+    "locked_test_used": true,
+    "final_test_evaluated": true,
+    "final_evaluation_recorded": true,
+    "valid": true
+   },
+   "tuning_execution_count": 1,
+   "timing": {
+    "preprocessing_time": 0.00010824300034073531,
+    "ontology_total_time": 4.206298522999987,
+    "ontology_shuffled_build_time": 0.0008784199999354314,
+    "mlp_training_time": 0.03521233799983747,
+    "oracle_freeze_time": 0.0026520540000092296,
+    "oracle_gate_time": 6.489000043075066e-06,
+    "tuning_time": 0.2842890020001505,
+    "mlp_arm_time": 0.03256033799971192,
+    "metrics_time": 83.04152765300068,
+    "c45_time": 0.6458684879999055,
+    "original_time": 1.1678556810002192,
+    "m29_P_k0_time": 96.23965362600029,
+    "m29_D_k0_time": 17.765627205000328,
+    "m29_E_k0_time": 2.659584404999805,
+    "m29_G_k0_time": 1.8506469140002082,
+    "m29_P_k1_time": 13.590869551999731,
+    "m29_D_k1_time": 13.326844220000112,
+    "m29_E_k1_time": 2.6691737480000484,
+    "m29_G_k1_time": 2.5024494270001014,
+    "m29_P_k2_time": 15.093738952999956,
+    "m29_D_k2_time": 15.416430236999986,
+    "m29_E_k2_time": 3.737891386999763,
+    "m29_G_k2_time": 2.1380504679996193,
+    "total_time": 193.374290235,
+    "ontology_mapping_time": 1.9339262089997646,
+    "reasoning_time": 2.1958130800003346
+   },
+   "work": {
+    "n_samples": 569,
+    "n_train": 426,
+    "n_test": 143,
+    "n_features_raw": 30,
+    "n_features_processed": 83,
+    "n_classes": 2,
+    "number_cv_fits": 165,
+    "number_trepan_fits": 178,
+    "candidate_count": 6,
+    "oracle_query_samples_per_scope": {
+     "structural_tuning": 0,
+     "trepan_original": 13846,
+     "m29_P_k0": 31503,
+     "m29_D_k0": 31844,
+     "m29_E_k0": 30426,
+     "m29_G_k0": 38311,
+     "m29_P_k1": 35441,
+     "m29_D_k1": 35761,
+     "m29_E_k1": 30426,
+     "m29_G_k1": 37820,
+     "m29_P_k2": 37644,
+     "m29_D_k2": 31673,
+     "m29_E_k2": 30426,
+     "m29_G_k2": 35540
+    },
+    "oracle_predict_calls_per_scope": {
+     "structural_tuning": 0,
+     "trepan_original": 16,
+     "m29_P_k0": 60,
+     "m29_D_k0": 61,
+     "m29_E_k0": 46,
+     "m29_G_k0": 16,
+     "m29_P_k1": 66,
+     "m29_D_k1": 68,
+     "m29_E_k1": 46,
+     "m29_G_k1": 16,
+     "m29_P_k2": 70,
+     "m29_D_k2": 60,
+     "m29_E_k2": 46,
+     "m29_G_k2": 17
+    },
+    "oracle_queries_per_scope": {
+     "structural_tuning": 0,
+     "trepan_original": 13846,
+     "m29_P_k0": 31503,
+     "m29_D_k0": 31844,
+     "m29_E_k0": 30426,
+     "m29_G_k0": 38311,
+     "m29_P_k1": 35441,
+     "m29_D_k1": 35761,
+     "m29_E_k1": 30426,
+     "m29_G_k1": 37820,
+     "m29_P_k2": 37644,
+     "m29_D_k2": 31673,
+     "m29_E_k2": 30426,
+     "m29_G_k2": 35540
+    },
+    "oracle_calls_per_scope": {
+     "structural_tuning": 0,
+     "trepan_original": 16,
+     "m29_P_k0": 60,
+     "m29_D_k0": 61,
+     "m29_E_k0": 46,
+     "m29_G_k0": 16,
+     "m29_P_k1": 66,
+     "m29_D_k1": 68,
+     "m29_E_k1": 46,
+     "m29_G_k1": 16,
+     "m29_P_k2": 70,
+     "m29_D_k2": 60,
+     "m29_E_k2": 46,
+     "m29_G_k2": 17
+    },
+    "synthetic_queries_per_arm": {
+     "trepan_original": 13420,
+     "m29_P_k0": 13669,
+     "m29_D_k0": 13582,
+     "m29_E_k0": 13424,
+     "m29_G_k0": 37885,
+     "m29_P_k1": 15362,
+     "m29_D_k1": 15447,
+     "m29_E_k1": 13578,
+     "m29_G_k1": 37394,
+     "m29_P_k2": 16330,
+     "m29_D_k2": 13506,
+     "m29_E_k2": 13581,
+     "m29_G_k2": 35114
+    },
+    "semantic_feature_count": 53,
+    "number_reasoner_calls": 1
+   }
+  }
+ ],
+ "skipped_arms": [],
+ "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7",
+ "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+ "manifest": {
+  "experiment_id": "20261015T130047_breast_cancer_e87c4e47",
+  "timestamp": "2026-10-15T13:00:47.275112+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "89d57eefc7fb4dc0d531fa52e5319a7fd0e9dde2",
+  "dataset": "breast_cancer",
+  "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7",
+  "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+  "config_hash": "e87c4e47f564c6f350fd8e06f8b11a328f7b0e110e5ad4bd14ee957c09e71204",
+  "seeds": [
+   123
+  ],
+  "split_hash": "458e17f52f054a9f0140a6836e48c3c1302bb72be08464e1869ff3bd2e969764",
+  "library_versions": {
+   "numpy": "1.26.4",
+   "scipy": "1.15.2",
+   "pandas": "2.2.3",
+   "sklearn": "1.6.1",
+   "owlready2": "unknown"
+  },
+  "python_version": "3.11.15 (main, Mar  3 2026, 09:26:23) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+   "mlp_original",
+   "c45",
+   "trepan_original",
+   "m29_P_k0",
+   "m29_D_k0",
+   "m29_E_k0",
+   "m29_G_k0",
+   "m29_P_k1",
+   "m29_D_k1",
+   "m29_E_k1",
+   "m29_G_k1",
+   "m29_P_k2",
+   "m29_D_k2",
+   "m29_E_k2",
+   "m29_G_k2"
+  ]
+ }
+}

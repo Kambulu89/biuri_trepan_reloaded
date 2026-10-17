@@ -1,0 +1,100 @@
+{
+ "family": {
+  "key": "I2_XOR_NO_SIGNAL",
+  "rule": "xor",
+  "layout": "within",
+  "eta": 0.0,
+  "n_groups": 8,
+  "group_size": 4,
+  "n_train": 1000,
+  "max_queries": 4000,
+  "mf_grid": [
+   16,
+   20,
+   24,
+   28,
+   30
+  ],
+  "ontology_true_variant": "TRUE",
+  "q": 0.5
+ },
+ "mf": {
+  "rates": {
+   "16": 0.05,
+   "20": 0.05,
+   "24": 0.0,
+   "28": 0.1,
+   "30": 0.2
+  },
+  "chosen": 30,
+  "within_target_band": true
+ },
+ "beam": {
+  "reference_C": {
+   "eval_calls": 17734.083333333332,
+   "cpu_fit_s": 2.521058733000006
+  },
+  "table": {
+   "2": {
+    "eval_calls": 6186.5,
+    "cpu_fit_s": 1.383513356333334
+   },
+   "3": {
+    "eval_calls": 6954.083333333333,
+    "cpu_fit_s": 1.7437515150833367
+   },
+   "4": {
+    "eval_calls": 7716.833333333333,
+    "cpu_fit_s": 2.105949112166672
+   },
+   "6": {
+    "eval_calls": 9184.083333333334,
+    "cpu_fit_s": 2.750541701666658
+   },
+   "8": {
+    "eval_calls": 10748.583333333334,
+    "cpu_fit_s": 3.60583246566668
+   },
+   "12": {
+    "eval_calls": 13747.583333333334,
+    "cpu_fit_s": 4.923542097416662
+   },
+   "16": {
+    "eval_calls": 16587.333333333332,
+    "cpu_fit_s": 6.509035535083332
+   },
+   "24": {
+    "eval_calls": 22333.25,
+    "cpu_fit_s": 9.271139524666657
+   },
+   "32": {
+    "eval_calls": 26824.5,
+    "cpu_fit_s": 12.79565948208336
+   },
+   "48": {
+    "eval_calls": 38313.083333333336,
+    "cpu_fit_s": 17.63468712808334
+   }
+  },
+  "bw_j1": 16,
+  "bw_j2": 6
+ },
+ "spec": {
+  "name": "I2_XOR_NO_SIGNAL",
+  "n_groups": 8,
+  "group_size": 4,
+  "rule": "within_group",
+  "rule_m": 2,
+  "n_train": 1000,
+  "scale_sigma": 0.7,
+  "min_sample": 400,
+  "max_queries": 4000,
+  "max_nodes": 7,
+  "max_depth": 3,
+  "max_n": 4,
+  "beam_width": 2,
+  "min_samples_leaf": 3,
+  "max_features_per_node": 30,
+  "n_test": 4000
+ }
+}

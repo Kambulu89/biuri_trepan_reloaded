@@ -1,0 +1,178 @@
+{
+ "iris": {
+  "summary": {
+   "ontology_status": "VALID",
+   "n_facts": 11,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 2,
+    "CONCEPT_DISJOINTNESS": 1,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 8
+   },
+   "by_epistemic": {
+    "LOGICALLY_ENTAILED": 11
+   },
+   "by_permitted_use": {
+    "PREFERENCE": 10,
+    "NONE": 1
+   },
+   "by_use_state": {
+    "AVAILABLE": 11
+   },
+   "unsupported_axioms": {}
+  },
+  "propagation": {
+   "by_destination": {
+    "RECOGNIZED_EXPLICIT": 10,
+    "DISCARDED": 1
+   },
+   "inference_status": "NO_NEW_INFERENCES",
+   "n_inferred_facts": 0
+  },
+  "units": [
+   [
+    "PetalMeasurement",
+    2
+   ],
+   [
+    "SepalMeasurement",
+    2
+   ]
+  ],
+  "ontology_status": "VALID"
+ },
+ "wine": {
+  "summary": {
+   "ontology_status": "VALID",
+   "n_facts": 32,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 3,
+    "CONCEPT_DISJOINTNESS": 3,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 26
+   },
+   "by_epistemic": {
+    "LOGICALLY_ENTAILED": 32
+   },
+   "by_permitted_use": {
+    "PREFERENCE": 29,
+    "NONE": 3
+   },
+   "by_use_state": {
+    "AVAILABLE": 32
+   },
+   "unsupported_axioms": {}
+  },
+  "propagation": {
+   "by_destination": {
+    "RECOGNIZED_EXPLICIT": 29,
+    "DISCARDED": 3
+   },
+   "inference_status": "NO_NEW_INFERENCES",
+   "n_inferred_facts": 0
+  },
+  "units": [
+   [
+    "AcidityProfile",
+    3
+   ],
+   [
+    "PhenolicProfile",
+    5
+   ],
+   [
+    "PhysicalChemicalProfile",
+    5
+   ]
+  ],
+  "ontology_status": "VALID"
+ },
+ "breast_cancer": {
+  "summary": {
+   "ontology_status": "VALID",
+   "n_facts": 66,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 3,
+    "CONCEPT_DISJOINTNESS": 3,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 60
+   },
+   "by_epistemic": {
+    "LOGICALLY_ENTAILED": 66
+   },
+   "by_permitted_use": {
+    "PREFERENCE": 63,
+    "NONE": 3
+   },
+   "by_use_state": {
+    "AVAILABLE": 66
+   },
+   "unsupported_axioms": {}
+  },
+  "propagation": {
+   "by_destination": {
+    "RECOGNIZED_EXPLICIT": 63,
+    "DISCARDED": 3
+   },
+   "inference_status": "NO_NEW_INFERENCES",
+   "n_inferred_facts": 0
+  },
+  "units": [
+   [
+    "ErrorMorphology",
+    10
+   ],
+   [
+    "MeanMorphology",
+    10
+   ],
+   [
+    "WorstMorphology",
+    10
+   ]
+  ],
+  "ontology_status": "VALID"
+ },
+ "digits": {
+  "summary": {
+   "ontology_status": "VALID",
+   "n_facts": 134,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 3,
+    "CONCEPT_DISJOINTNESS": 3,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 128
+   },
+   "by_epistemic": {
+    "LOGICALLY_ENTAILED": 134
+   },
+   "by_permitted_use": {
+    "PREFERENCE": 131,
+    "NONE": 3
+   },
+   "by_use_state": {
+    "AVAILABLE": 134
+   },
+   "unsupported_axioms": {}
+  },
+  "propagation": {
+   "by_destination": {
+    "RECOGNIZED_EXPLICIT": 131,
+    "DISCARDED": 3
+   },
+   "inference_status": "NO_NEW_INFERENCES",
+   "n_inferred_facts": 0
+  },
+  "units": [
+   [
+    "LowerImageRegion",
+    16
+   ],
+   [
+    "MiddleImageRegion",
+    24
+   ],
+   [
+    "UpperImageRegion",
+    24
+   ]
+  ],
+  "ontology_status": "VALID"
+ }
+}

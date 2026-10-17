@@ -1,0 +1,14 @@
+{
+ "status": "NOT_VERIFIED",
+ "note": "sem acesso de rede nesta sessão; citações de memória; os revisores têm de confirmar texto, numeração e ordem dos níveis",
+ "sources": [
+  {
+   "id": "S1",
+   "citation": "UCI Statlog (German Credit Data), dicionário de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) — CITADO DE MEMÓRIA, NÃO VERIFICADO",
+   "used_for": [
+    "T1_DEFINED_CLASS_UNION",
+    "T2_ORDINAL_ORDER"
+   ]
+  }
+ ]
+}

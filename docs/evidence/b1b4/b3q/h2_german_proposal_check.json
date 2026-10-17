@@ -1,0 +1,383 @@
+{
+ "purpose": "corre\u00e7\u00e3o sem\u00e2ntica das propostas (sem benchmark, sem r\u00f3tulos de teste)",
+ "variants": {
+  "O1": {
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O1.owl",
+   "sha256": "b4cfb9aa49f17bdcd345ad36a253fda20361a90aeab1a4199ae4b0a37ea8bb32",
+   "ontology_status": "VALID",
+   "n_facts": 127,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 5,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 122
+   },
+   "n_inferred_by_reasoner": 0,
+   "unsupported_axioms": {},
+   "mapped": 61,
+   "n_features": 61,
+   "derived_literals": []
+  },
+  "O2": {
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O2.owl",
+   "sha256": "b0752dbad9b4b384a404bea50b49a233dac93d384000e011a9408ffcbe59cb80",
+   "ontology_status": "VALID",
+   "n_facts": 243,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 65,
+    "CONCEPT_EQUIVALENCE": 4,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 173,
+    "UNSUPPORTED_AXIOM": 1
+   },
+   "n_inferred_by_reasoner": 55,
+   "unsupported_axioms": {
+    "class_expression": 14
+   },
+   "mapped": 61,
+   "n_features": 61,
+   "derived_literals": [
+    {
+     "concept": "AtLeast_employment_since_A72",
+     "size": 4,
+     "attributes": [
+      "A72",
+      "A73",
+      "A74",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A73",
+     "size": 3,
+     "attributes": [
+      "A73",
+      "A74",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A74",
+     "size": 2,
+     "attributes": [
+      "A74",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A172",
+     "size": 3,
+     "attributes": [
+      "A172",
+      "A173",
+      "A174"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A173",
+     "size": 2,
+     "attributes": [
+      "A173",
+      "A174"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A62",
+     "size": 3,
+     "attributes": [
+      "A62",
+      "A63",
+      "A64"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A63",
+     "size": 2,
+     "attributes": [
+      "A63",
+      "A64"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_status_checking_account_A12",
+     "size": 2,
+     "attributes": [
+      "A12",
+      "A13"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_HouseholdGoods",
+     "size": 3,
+     "attributes": [
+      "A42",
+      "A43",
+      "A44"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_Vehicles",
+     "size": 2,
+     "attributes": [
+      "A40",
+      "A41"
+     ],
+     "needs_reasoner": true
+    }
+   ]
+  },
+  "O3": {
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O3.owl",
+   "sha256": "ca793f3f4a82449718b0ad903505cdc008e15956fe88adbe7724a48b1bcc8327",
+   "ontology_status": "VALID",
+   "n_facts": 183,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 40,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 143
+   },
+   "n_inferred_by_reasoner": 0,
+   "unsupported_axioms": {},
+   "mapped": 61,
+   "n_features": 61,
+   "derived_literals": []
+  },
+  "H": {
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_H.owl",
+   "sha256": "d98aa79eeaaac58c3b342b7d44e143756d1e54f11cc718f718e93864ad53b5ff",
+   "ontology_status": "VALID",
+   "n_facts": 243,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 65,
+    "CONCEPT_EQUIVALENCE": 4,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 173,
+    "UNSUPPORTED_AXIOM": 1
+   },
+   "n_inferred_by_reasoner": 55,
+   "unsupported_axioms": {
+    "class_expression": 14
+   },
+   "mapped": 61,
+   "n_features": 61,
+   "derived_literals": [
+    {
+     "concept": "AtLeast_employment_since_A72",
+     "size": 4,
+     "attributes": [
+      "A71",
+      "A72",
+      "A73",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A73",
+     "size": 3,
+     "attributes": [
+      "A71",
+      "A73",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A74",
+     "size": 2,
+     "attributes": [
+      "A73",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A172",
+     "size": 3,
+     "attributes": [
+      "A171",
+      "A172",
+      "A173"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A173",
+     "size": 2,
+     "attributes": [
+      "A171",
+      "A172"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A62",
+     "size": 3,
+     "attributes": [
+      "A61",
+      "A63",
+      "A64"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A63",
+     "size": 2,
+     "attributes": [
+      "A61",
+      "A64"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_status_checking_account_A12",
+     "size": 2,
+     "attributes": [
+      "A11",
+      "A13"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_HouseholdGoods",
+     "size": 3,
+     "attributes": [
+      "A40",
+      "A41",
+      "A42"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_Vehicles",
+     "size": 2,
+     "attributes": [
+      "A43",
+      "A44"
+     ],
+     "needs_reasoner": true
+    }
+   ]
+  },
+  "I": {
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_I.owl",
+   "sha256": "2300afa58e9f8b57b0aaf6f683f4c728a9514f78be6dbaee8c4d457a7bfb2660",
+   "ontology_status": "VALID",
+   "n_facts": 246,
+   "by_kind": {
+    "CONCEPT_SUBSUMPTION": 68,
+    "CONCEPT_EQUIVALENCE": 4,
+    "ATTRIBUTE_APPLIES_TO_CONCEPT": 173,
+    "UNSUPPORTED_AXIOM": 1
+   },
+   "n_inferred_by_reasoner": 58,
+   "unsupported_axioms": {
+    "class_expression": 14
+   },
+   "mapped": 61,
+   "n_features": 61,
+   "derived_literals": [
+    {
+     "concept": "AtLeast_employment_since_A72",
+     "size": 4,
+     "attributes": [
+      "A72",
+      "A73",
+      "A74",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A73",
+     "size": 3,
+     "attributes": [
+      "A71",
+      "A73",
+      "A74"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_employment_since_A74",
+     "size": 2,
+     "attributes": [
+      "A74",
+      "A75"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A172",
+     "size": 3,
+     "attributes": [
+      "A171",
+      "A172",
+      "A173"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_job_A173",
+     "size": 2,
+     "attributes": [
+      "A172",
+      "A174"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A62",
+     "size": 3,
+     "attributes": [
+      "A61",
+      "A62",
+      "A64"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_savings_account_A63",
+     "size": 2,
+     "attributes": [
+      "A61",
+      "A62"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "AtLeast_status_checking_account_A12",
+     "size": 2,
+     "attributes": [
+      "A11",
+      "A13"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_HouseholdGoods",
+     "size": 3,
+     "attributes": [
+      "A40",
+      "A42",
+      "A43"
+     ],
+     "needs_reasoner": true
+    },
+    {
+     "concept": "Purpose_Vehicles",
+     "size": 2,
+     "attributes": [
+      "A41",
+      "A44"
+     ],
+     "needs_reasoner": true
+    }
+   ]
+  }
+ }
+}

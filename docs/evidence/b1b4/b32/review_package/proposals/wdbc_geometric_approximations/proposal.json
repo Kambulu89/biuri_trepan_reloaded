@@ -1,0 +1,45 @@
+{
+ "package_id": "wdbc_geometric_approximations_v1",
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "ONTOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "comparison_arms": [],
+ "axioms": [
+  {
+   "id": "wdbc_perimeter_radius_circle",
+   "axiom_text": "perimeter ≈ 2π·radius ; area ≈ π·radius²",
+   "type": "ORDER_OF_MAGNITUDE_RELATION",
+   "attributes": [
+    "mean perimeter",
+    "mean radius",
+    "mean area"
+   ],
+   "relation_class": "EMPIRICAL_REGULARITY",
+   "justification": "Exato só para contornos circulares; os núcleos não o são → aproximação, no máximo preferência/hipótese; nunca restrição.",
+   "sources": [],
+   "status_requested": "none",
+   "status_now": "HYPOTHESIS",
+   "empirical_check_attributes_only": {
+    "median_perimeter_over_2pi_radius": 1.0295567430649124,
+    "median_area_over_pi_radius2": 0.9809654945344499
+   }
+  }
+ ]
+}

@@ -1,0 +1,208 @@
+{
+ "seed": 100,
+ "rule_names": [
+  "acoustic_mean",
+  "acoustic_range",
+  "acoustic_peak",
+  "acoustic_trend"
+ ],
+ "summary": {
+  "n_calls": 2,
+  "n_choice_changed": 1,
+  "n_influenced_in_final_tree": 1,
+  "n_internal_nodes": 2
+ },
+ "entry": {
+  "call": 1,
+  "original_choice": [
+   3,
+   [
+    [
+     31,
+     0.000103810461,
+     false
+    ],
+    [
+     4,
+     -5.422397423317,
+     true
+    ],
+    [
+     11,
+     -0.012797809809,
+     false
+    ],
+    [
+     0,
+     0.000232182738,
+     false
+    ]
+   ]
+  ],
+  "original_score": 0.14457908890100316,
+  "final_choice": [
+   3,
+   [
+    [
+     31,
+     0.000103810461,
+     false
+    ],
+    [
+     11,
+     0.004880126675,
+     false
+    ],
+    [
+     0,
+     0.000232182738,
+     false
+    ],
+    [
+     28,
+     0.299050629731,
+     false
+    ]
+   ]
+  ],
+  "final_score": 0.25363946182843883,
+  "choice_changed": true,
+  "score_changed": false,
+  "scoring_modified": false,
+  "winning_unit": "AcousticProfile",
+  "hard_constraints_applied": 0,
+  "logical_admissibility": "n/a (prefer\u00eancia; nenhum facto HARD aplicado)",
+  "feature_names": [
+   "acoustic_mean",
+   "acoustic_range",
+   "acoustic_trend",
+   "acoustic_peak"
+  ],
+  "in_final_tree": true,
+  "semantic_facts": [
+   {
+    "fact_id": "F-ATT-1af107de1bd0",
+    "kind": "ATTRIBUTE_APPLIES_TO_CONCEPT",
+    "axioms": [
+     "acoustic_mean Domain AcousticProfile"
+    ],
+    "derivation": "ASSERTED",
+    "epistemic": "LOGICALLY_ENTAILED",
+    "permitted_use": "PREFERENCE",
+    "matching_confidence": 1.0,
+    "attribute_to_entity": {
+     "acoustic_mean": "acoustic_mean"
+    }
+   },
+   {
+    "fact_id": "F-ATT-436e14127ca4",
+    "kind": "ATTRIBUTE_APPLIES_TO_CONCEPT",
+    "axioms": [
+     "acoustic_trend Domain AcousticProfile"
+    ],
+    "derivation": "ASSERTED",
+    "epistemic": "LOGICALLY_ENTAILED",
+    "permitted_use": "PREFERENCE",
+    "matching_confidence": 1.0,
+    "attribute_to_entity": {
+     "acoustic_trend": "acoustic_trend"
+    }
+   },
+   {
+    "fact_id": "F-ATT-be0c628afe26",
+    "kind": "ATTRIBUTE_APPLIES_TO_CONCEPT",
+    "axioms": [
+     "acoustic_peak Domain AcousticProfile"
+    ],
+    "derivation": "ASSERTED",
+    "epistemic": "LOGICALLY_ENTAILED",
+    "permitted_use": "PREFERENCE",
+    "matching_confidence": 1.0,
+    "attribute_to_entity": {
+     "acoustic_peak": "acoustic_peak"
+    }
+   },
+   {
+    "fact_id": "F-ATT-e1265296325f",
+    "kind": "ATTRIBUTE_APPLIES_TO_CONCEPT",
+    "axioms": [
+     "acoustic_range Domain AcousticProfile"
+    ],
+    "derivation": "ASSERTED",
+    "epistemic": "LOGICALLY_ENTAILED",
+    "permitted_use": "PREFERENCE",
+    "matching_confidence": 1.0,
+    "attribute_to_entity": {
+     "acoustic_range": "acoustic_range"
+    }
+   }
+  ],
+  "semantically_influenced": true
+ },
+ "winning_unit_entry": {
+  "unit_concept": "AcousticProfile",
+  "unit_features": [
+   "acoustic_mean",
+   "acoustic_peak",
+   "acoustic_range",
+   "acoustic_trend"
+  ],
+  "unit_ic": 2.0794415416798357,
+  "fact_ids": [
+   "F-ATT-1af107de1bd0",
+   "F-ATT-436e14127ca4",
+   "F-ATT-be0c628afe26",
+   "F-ATT-e1265296325f"
+  ],
+  "derivations": [
+   "ASSERTED"
+  ],
+  "mean_matching_confidence": 1.0,
+  "rank_by_single_literal": 0,
+  "single_literal_score": 0.048347269364417425,
+  "candidate_signature": [
+   3,
+   [
+    [
+     31,
+     0.000103810461,
+     false
+    ],
+    [
+     11,
+     0.004880126675,
+     false
+    ],
+    [
+     0,
+     0.000232182738,
+     false
+    ],
+    [
+     28,
+     0.299050629731,
+     false
+    ]
+   ]
+  ],
+  "candidate_score": 0.25363946182843883,
+  "unit_features_all_in_original_pool": true,
+  "candidate_features": [
+   0,
+   11,
+   28,
+   31
+  ],
+  "candidate_exists_without_owl": true
+ },
+ "other_units_searched": [
+  [
+   "OpticalProfile",
+   0.037210276794105684
+  ],
+  [
+   "SpatialProfile",
+   0.031420412479824245
+  ]
+ ]
+}

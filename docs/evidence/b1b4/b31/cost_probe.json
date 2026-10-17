@@ -1,0 +1,9 @@
+{
+ "compile_with_reasoner_s": 1.137839643999996,
+ "compile_no_reasoner_s": 0.2490298160000748,
+ "original_fit_s": 0.6681850220002161,
+ "steered_fit_s": 1.2868462139999792,
+ "n_units": 8,
+ "n_facts": 72,
+ "note": "1 inst\u00e2ncia (seed 100), P1; CPU partilhada com outras tarefas"
+}

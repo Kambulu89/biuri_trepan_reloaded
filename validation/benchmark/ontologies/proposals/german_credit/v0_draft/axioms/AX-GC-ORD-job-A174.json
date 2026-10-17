@@ -1,0 +1,32 @@
+{
+ "id": "AX-GC-ORD-job-A174",
+ "statement_nl": "Em «job», os níveis A174 são todos «pelo menos A174» na ordem documentada (A171 < A172 < A173 < A174).",
+ "owl_axiom": "EquivalentClasses(AtLeast_job_A174 ObjectUnionOf(Lvl_job_A174))",
+ "entities": [
+  "job__A174"
+ ],
+ "axiom_type": "T2_ORDINAL_ORDER",
+ "source": {
+  "citation": "UCI Statlog (German Credit Data), dicionário de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) — CITADO DE MEMÓRIA, NÃO VERIFICADO",
+  "locator": "Atributo 17",
+  "verified": false
+ },
+ "scope_and_validity": "só os níveis listados; níveis não ordinais (sem conta / desconhecido) excluídos; ordem implícita na lista do dicionário — a confirmar",
+ "universality": "CONDITIONAL",
+ "epistemic_status": "HYPOTHESIS",
+ "permitted_use": "PREFERENCE",
+ "authored_by": "AI_DRAFT",
+ "derived_from_data": false,
+ "independence_from_eval": true,
+ "reviews": {
+  "domain": {
+   "status": "DOMAIN_REVIEW_PENDING"
+  },
+  "ontology": {
+   "status": "ONTOLOGY_REVIEW_PENDING"
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING"
+  }
+ }
+}

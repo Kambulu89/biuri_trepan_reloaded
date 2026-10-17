@@ -1,0 +1,84 @@
+{
+ "dataset": "german_credit",
+ "seed": 42,
+ "true": {
+  "available": true,
+  "n_groups": 5,
+  "n_original": 61,
+  "n_derived": 5,
+  "rel__enriched": {
+   "n_features": 66,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.8815850815850815,
+   "allowed_2_subset_fraction": 0.8815850815850815,
+   "allowed_3_subset_fraction": 0.7942963286713287
+  },
+  "rel__original": {
+   "n_features": 61,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 66,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.19487179487179487,
+   "allowed_2_subset_fraction": 0.19487179487179487,
+   "allowed_3_subset_fraction": 0.03699737762237762
+  },
+  "groups_only__original": {
+   "n_features": 61,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.19508196721311474,
+   "allowed_2_subset_fraction": 0.19508196721311474,
+   "allowed_3_subset_fraction": 0.03712142261739372
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ },
+ "permuted_structure": {
+  "available": true,
+  "n_groups": 5,
+  "n_original": 61,
+  "n_derived": 5,
+  "rel__enriched": {
+   "n_features": 66,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.8815850815850815,
+   "allowed_2_subset_fraction": 0.8815850815850815,
+   "allowed_3_subset_fraction": 0.7942963286713287
+  },
+  "rel__original": {
+   "n_features": 61,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 1.0,
+   "allowed_2_subset_fraction": 1.0,
+   "allowed_3_subset_fraction": 1.0
+  },
+  "groups_only__enriched": {
+   "n_features": 66,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.19487179487179487,
+   "allowed_2_subset_fraction": 0.19487179487179487,
+   "allowed_3_subset_fraction": 0.03699737762237762
+  },
+  "groups_only__original": {
+   "n_features": 61,
+   "mapped_fraction": 1.0,
+   "allowed_pair_fraction": 0.19508196721311474,
+   "allowed_2_subset_fraction": 0.19508196721311474,
+   "allowed_3_subset_fraction": 0.03712142261739372
+  },
+  "relatedness_original_pairs": {
+   "min": 0.712448,
+   "median": 0.712448,
+   "max": 0.712448,
+   "fraction_ge_threshold": 1.0
+  }
+ }
+}

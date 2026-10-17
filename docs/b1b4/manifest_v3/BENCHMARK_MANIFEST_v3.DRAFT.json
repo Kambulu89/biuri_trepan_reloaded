@@ -1,14 +1,44 @@
 {
  "acceptance_criteria": {
   "b2c_technical_completion": "ver docs/b1b4/20_B2_CONTRATO_E_PILOTO.md §10",
-  "hierarchy": "Accuracy_R_OWL > Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original (objetivo pré-registado, não imposto)",
+  "hierarchy": "REQUISITO CONJUNTO: Accuracy_R_OWL > Accuracy_Original, Accuracy_R_OWL > Accuracy_C45, Accuracy_Original > Accuracy_C45; Fidelity_R_OWL > Fidelity_Original, Fidelity_R_OWL > Fidelity_C45 (mesmas instâncias; mesmo MLP/oráculo); sucesso só com as cinco em conjunto; objetivo pré-registado, não imposto",
   "labels": [
-   "HIERARCHY_SATISFIED",
+   "JOINT_HIERARCHY_SATISFIED",
+   "TRADEOFF",
    "NOT_SATISFIED",
-   "INFEASIBLE",
+   "HIERARCHY_INFEASIBLE",
    "INSUFFICIENT_EVIDENCE"
   ],
-  "selection_uses_test": false
+  "selection_uses_test": false,
+  "hierarchy_contract": "core/hierarchy_contract.py (evaluate_joint); docs/b1b4/28_REQUISITO_HIERARQUIA_CONJUNTA.md",
+  "tradeoff_is_not_success": true,
+  "primary_predictive_metric": "accuracy_real_labels (accuracy != precision)",
+  "complementary_metrics": [
+   "precision_macro_real_labels",
+   "macro_f1_real_labels",
+   "balanced_accuracy_real_labels",
+   "weighted_f1_real_labels"
+  ],
+  "evidence_levels": [
+   "OBSERVED_JOINT_GAIN",
+   "SUPPORTED_JOINT_GAIN",
+   "TRADEOFF",
+   "NOT_SATISFIED",
+   "INSUFFICIENT_EVIDENCE"
+  ],
+  "levels": {
+   "level1": "ganho ontológico direto vs Original equivalente (+ atribuição por controlos)",
+   "level2": "cadeia global U1-U5"
+  },
+  "no_unit_excluded": true,
+  "infeasible_means": "Original<=C4.5 em accuracy nessa unidade com os baselines fixados (não impossibilidade universal)",
+  "unit_of_inference": "dataset",
+  "required_controls": [
+   "permuted_ontology",
+   "random_groups",
+   "conventional_features"
+  ],
+  "selection_eligibility": "A_R>=A_O e F_R>=F_O (validação interna); declaração exige > estrito"
  },
  "b1_variants": {
   "arms": [
@@ -118,6 +148,8 @@
  "metrics": [
   "fidelity_to_oracle",
   "accuracy_real_labels",
+  "precision_macro_real_labels",
+  "macro_f1_real_labels",
   "node_count",
   "depth",
   "oracle_queries",
@@ -262,8 +294,12 @@
   "COHERENT_SAMPLING": "PARTIAL_NOT_PROMOTED",
   "B2A": "NOT_IMPLEMENTED",
   "B2B": "NOT_IMPLEMENTED",
-  "B3": "DESIGN_ONLY",
-  "B4": "NOT_IMPLEMENTED"
+  "B3": "SPLIT_INTO_B3A_B3B_B3C_B3D",
+  "B4": "NOT_IMPLEMENTED",
+  "B3A": "DESIGN_AUTHORIZED",
+  "B3B": "DESIGN_ONLY",
+  "B3C": "DEFERRED",
+  "B3D": "DEFERRED"
  },
  "investigation_causal_plausibility": {
   "docs": [
@@ -282,5 +318,376 @@
    "representation-only (lambda=0)"
   ],
   "experimental_samplers": "validation/experimental/query_samplers.py (strategies As,C,D + DomainConstrained; not in core, not default)"
+ },
+ "experimental_sampler_C": {
+  "status": "EXPERIMENTAL / NOT_PROMOTED (flag off by default)",
+  "module": "core/query_sampling.py",
+  "activation": "joint_sampler_context (explicit, identical for Original and Reloaded)",
+  "docs": [
+   "docs/b1b4/26_AVALIACAO_AMOSTRADOR_C.md",
+   "docs/b1b4/27_PROPOSTA_B3_RESTRICOES_ONTOLOGICAS.md"
+  ],
+  "evidence": [
+   "docs/evidence/b1b4/sampler_c/",
+   "docs/evidence/b1b4/b3a_design/"
+  ],
+  "arms": {
+   "A": "Original marginal",
+   "B": "Original + C",
+   "C": "Reloaded OWL marginal",
+   "D": "Reloaded OWL + C",
+   "E": "Reloaded no-OWL marginal",
+   "F": "Reloaded no-OWL + C"
+  },
+  "frozen_parameters": {
+   "noise_scale": 0.25,
+   "p_resample": 0.2,
+   "p_flip": 0.05,
+   "margin": 0.1,
+   "scale_floor": 0.1
+  },
+  "seeds": {
+   "train_partition": "master seeds",
+   "algorithm": "master seed (+1000*r only for marginal-sampler replicas)",
+   "sampling": "replica 0..2"
+  },
+  "protocol_amendments": [
+   "A1 (before results): exact one-hot partition detection; empirical-frequency resampling of discrete columns"
+  ],
+  "categorical_dev": {
+   "german_credit": "pilot 1 unit (seed 42); 4 units not run (cost)",
+   "adult": "not run"
+  }
+ },
+ "controls_m29": {
+  "status": "EXECUTED_DEV (18 unidades; ver docs/b1b4/30_RESULTADOS_CONTROLOS_ONTOLOGICOS.md); frozen=false",
+  "doc": "docs/b1b4/29_PROTOCOLO_CONTROLOS_ONTOLOGICOS.md",
+  "arms": {
+   "A29": "Original + amostrador C (= sc_B do Doc. 26)",
+   "B29": "Reloaded OWL real + amostrador C (= sc_D)",
+   "C29": "Reloaded + ontologia PERMUTADA acoplada + C (m29_P_k)",
+   "D29": "Reloaded + GRUPOS ALEATÓRIOS desacoplados + C (m29_D_k)",
+   "E29": "Reloaded + engenharia convencional de features + C (m29_E_k)",
+   "F29": "Reloaded sem ontologia + C (= sc_F; controlo de equivalência com A29)",
+   "C45": "C4.5 canónico (inalterado)"
+  },
+  "seeds": {
+   "master_seeds": [
+    42,
+    7,
+    123,
+    2024,
+    11
+   ],
+   "digits_master_seeds": [
+    42,
+    7,
+    123
+   ],
+   "sampler_replicas": [
+    0,
+    1,
+    2
+   ],
+   "permutation_P": "20_260_000 + 1000*k + master_seed (+997*tentativa)",
+   "random_groups_D": {
+    "A": "30_260_000 + 1000*k + master_seed",
+    "B": "40_260_000 + 1000*k + master_seed"
+   },
+   "pairing": "draw k do controlo emparelhado com a réplica de amostragem k do braço real",
+   "algorithm_seed": "semente mestra (fixa)"
+  },
+  "control_validity_gate": {
+   "dimension": "n derivadas = OWL real",
+   "finite": true,
+   "scale": "std máx ≤ 100× a da OWL real",
+   "destruction": "retenção de pares co-agrupados ≤ acaso",
+   "max_attempts": 4,
+   "fallback": "estrutura permutada (features reais) rotulada structure_only_fallback; NÃO satisfaz o controlo exigido"
+  },
+  "ontology_versions_sha256": {
+   "breast_cancer": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+   "digits": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74",
+   "german_credit": "7fdc41808d4169b2fcf81eaebb8e6fc536f2de185efc240634b7ccbbb99bbe1a",
+   "iris": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+   "synthetic_3class": "ca94db2aa39361ea1833e94009b64676a3645793828be7cdc5b69db603e138ac",
+   "synthetic_binary": "43e2650bc6701e973784a387cbc98b52c0ee746f0ad72e3ff9e9cc579d395e0d",
+   "wine": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640"
+  },
+  "oracle_identities": {
+   "breast_cancer:11": {
+    "oracle_id": "b2d292ae3650f19f",
+    "oracle_version": "sklearn-pipeline;seed=11;oracle_id=b2d292ae3650f19f",
+    "split_hash": "e8e2be3fc3ce1c50640cd6c9ff46af799022ff66dc9b4959c3966d9e29b6fd31",
+    "base_representation_hash": "1bebd22559ddf493b197a7769822407e3d13d986bca27668febcb3337b320a74",
+    "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7"
+   },
+   "breast_cancer:123": {
+    "oracle_id": "dcd119e9224307ff",
+    "oracle_version": "sklearn-pipeline;seed=123;oracle_id=dcd119e9224307ff",
+    "split_hash": "78d7021413f0da2c011be11ccff0f5118cd06b4b8b264d4ee44d994a6549de8c",
+    "base_representation_hash": "1ab77d27d6216535662ab22ae3ff3ecec5ae57fe4d237980774e5f2840933ae7",
+    "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7"
+   },
+   "breast_cancer:2024": {
+    "oracle_id": "c2598c2b0440e377",
+    "oracle_version": "sklearn-pipeline;seed=2024;oracle_id=c2598c2b0440e377",
+    "split_hash": "22dce43c2943f1a98afba87054112f41de4733ac84aef116a99b65a2c2fe0191",
+    "base_representation_hash": "b5f341e748aa5be5044d9705c7fe93fd3af98ea31b8b8dcd7a1349d3367b396a",
+    "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7"
+   },
+   "breast_cancer:42": {
+    "oracle_id": "f703283d2a9405e1",
+    "oracle_version": "sklearn-pipeline;seed=42;oracle_id=f703283d2a9405e1",
+    "split_hash": "f99a02e25b620c0bde325cfc8e7c42badb4bd7ca7e871cbb4c26ce514043149e",
+    "base_representation_hash": "91decbf5a76a8159a2a235db46295583768f4ae42223005959cff9910b127b10",
+    "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7"
+   },
+   "breast_cancer:7": {
+    "oracle_id": "5914382096af8b65",
+    "oracle_version": "sklearn-pipeline;seed=7;oracle_id=5914382096af8b65",
+    "split_hash": "c92f80585f11ebe25bc3b1c16073025bebe4ca2fed83225d67e039a2a900a8f6",
+    "base_representation_hash": "ebd1b3aa890ba40d60f36d2cfb92a3f30e8f4251b4feca293b17c80290ca07ed",
+    "dataset_hash": "2b79da0e738606e89d9936ef2b406ff9152535e1d8e7c9fe6975cfdb47c050e7"
+   },
+   "digits:123": {
+    "oracle_id": "52ee2b53971b1171",
+    "oracle_version": "sklearn-pipeline;seed=123;oracle_id=52ee2b53971b1171",
+    "split_hash": "b74cdc9781185eafb8960b2c3cdcf2d7caca0dcad08bf049813e092d5b2fd571",
+    "base_representation_hash": "3a41ec97035cab8af4829ef37005cd6d0c010b694fe5b1e9fa2805939097c03c",
+    "dataset_hash": "6eb4cea3f35c407baf0c138f45bce7bb15193c4f0213aa8e78a6175ecfe6a01e"
+   },
+   "digits:42": {
+    "oracle_id": "4d39c516cd36ad73",
+    "oracle_version": "sklearn-pipeline;seed=42;oracle_id=4d39c516cd36ad73",
+    "split_hash": "8b9de671b9ad642ae460e82a87e9fae8651ae9581658c9ab2c9a51d258b1553b",
+    "base_representation_hash": "653ecae0ea4881fd7f8e43aeccc3303843656875d97ac6f5e551a7f274b70162",
+    "dataset_hash": "6eb4cea3f35c407baf0c138f45bce7bb15193c4f0213aa8e78a6175ecfe6a01e"
+   },
+   "digits:7": {
+    "oracle_id": "31d1b8f1be0e6869",
+    "oracle_version": "sklearn-pipeline;seed=7;oracle_id=31d1b8f1be0e6869",
+    "split_hash": "40df21bef1f0ba616af8184a1267bd63fc2bb73412c3b33c7a95437a79528f08",
+    "base_representation_hash": "bfb16588bf27eaba6fee42b5c4a030e41b716e3c778d907f250f22877502ac04",
+    "dataset_hash": "6eb4cea3f35c407baf0c138f45bce7bb15193c4f0213aa8e78a6175ecfe6a01e"
+   },
+   "iris:11": {
+    "oracle_id": "c3eab0a9a2db2ed9",
+    "oracle_version": "sklearn-pipeline;seed=11;oracle_id=c3eab0a9a2db2ed9",
+    "split_hash": "b9be5faf1f81f8ca416ddbfbcaeffdda07a76df48fa0933019a681f5ff967d4f",
+    "base_representation_hash": "1fc4734dc3a29b5d8521ed856a37280b987f05a000677ab47dd72c48a7a7344a",
+    "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016"
+   },
+   "iris:123": {
+    "oracle_id": "879a88347e200aae",
+    "oracle_version": "sklearn-pipeline;seed=123;oracle_id=879a88347e200aae",
+    "split_hash": "9071269c9f4abaa15f6f18301015276a35dbb2fbf3cdd057d2ee62d0fab2b080",
+    "base_representation_hash": "6c8cbd47ab35f2b25048a27488fe7c1c40c544abc8db11acd924f63f5acccb9f",
+    "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016"
+   },
+   "iris:2024": {
+    "oracle_id": "b2a0523a0e247c5c",
+    "oracle_version": "sklearn-pipeline;seed=2024;oracle_id=b2a0523a0e247c5c",
+    "split_hash": "a353c7bd1f85809c3d877da5d3e91a5ebd5c9f8d2817546d3340e36c696c9bf9",
+    "base_representation_hash": "7d76b2a9dbbe8271e16bf6b32f68c07e56e44d4ed5356c356d44dd3a0dca0dac",
+    "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016"
+   },
+   "iris:42": {
+    "oracle_id": "141e54cea2c3a213",
+    "oracle_version": "sklearn-pipeline;seed=42;oracle_id=141e54cea2c3a213",
+    "split_hash": "168640c4eff584922e23f055d74181df0808457921bb57fdf792e2a65d6c9ea2",
+    "base_representation_hash": "863ffaf2badf96e73102232a47a578f84a0c4be5d88561a33f40ec9d130e7734",
+    "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016"
+   },
+   "iris:7": {
+    "oracle_id": "124a034e1298ff3c",
+    "oracle_version": "sklearn-pipeline;seed=7;oracle_id=124a034e1298ff3c",
+    "split_hash": "e893d9b584bd33578ef40b97cf574d0a254cf7c38964440aafdc5358865b90b5",
+    "base_representation_hash": "c75ad408e7b01b0920ea93f3ad78f3b000fc453c0e03f5b2808ce9b291f4586d",
+    "dataset_hash": "4eb1820d4de2d3c965591d45d582aa5cc243aeb640fd85e916b0e02700283016"
+   },
+   "wine:11": {
+    "oracle_id": "f5572526dc25ff77",
+    "oracle_version": "sklearn-pipeline;seed=11;oracle_id=f5572526dc25ff77",
+    "split_hash": "876c775e9f378e59245659b048026bd155ebd9bb26898f765ea8a54324c9b688",
+    "base_representation_hash": "ce8ad225237519701a06ae12ba818ddc52840a3ea5c2bd9c1871be3e429cd4be",
+    "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7"
+   },
+   "wine:123": {
+    "oracle_id": "fa1622c1e84e8e6d",
+    "oracle_version": "sklearn-pipeline;seed=123;oracle_id=fa1622c1e84e8e6d",
+    "split_hash": "770b5b6c832353cb94b68911e553416d8a0d2ccfc5d2ead319510207922e81a1",
+    "base_representation_hash": "17eae67b5a3b687fc7807cec0a71ae7facbdc229bcb323a83c29a76de5428922",
+    "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7"
+   },
+   "wine:2024": {
+    "oracle_id": "4ca0c229588a82ff",
+    "oracle_version": "sklearn-pipeline;seed=2024;oracle_id=4ca0c229588a82ff",
+    "split_hash": "7078d1ae2fcc29af3d00394f4d50a42504a6cfe25a659348311db762f6831a20",
+    "base_representation_hash": "bc85171ec48da24b77afa6fce634a54cdc218e10afd796ea38da84569f710d06",
+    "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7"
+   },
+   "wine:42": {
+    "oracle_id": "53437bfa7c0a9cc7",
+    "oracle_version": "sklearn-pipeline;seed=42;oracle_id=53437bfa7c0a9cc7",
+    "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523",
+    "base_representation_hash": "dba8f8958958aac603c6e455f38e2961e2667d4ce2bcd1109aaf9913af50643e",
+    "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7"
+   },
+   "wine:7": {
+    "oracle_id": "5541a251b4955ad4",
+    "oracle_version": "sklearn-pipeline;seed=7;oracle_id=5541a251b4955ad4",
+    "split_hash": "3b30e2eb50bf2dde549545d2734f07a6359dd8dfd93fbca0d950e040b34ba192",
+    "base_representation_hash": "f010824334ba077b7c133c33507ff64422d6e2c01b26d6de8a8d9f9b07fee775",
+    "dataset_hash": "0f941f33545aadf12e10196e745113fdf8f21b64323dbf3e1d0035f350953ee7"
+   }
+  },
+  "tuning_checkpoint_fingerprints": {
+   "breast_cancer_seed11": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "breast_cancer_seed123": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "breast_cancer_seed2024": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "breast_cancer_seed42": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "breast_cancer_seed7": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "digits_seed123": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "digits_seed42": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "digits_seed7": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "iris_seed11": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "iris_seed123": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "iris_seed2024": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "iris_seed42": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "iris_seed7": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "wine_seed11": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "wine_seed123": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "wine_seed2024": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "wine_seed42": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   },
+   "wine_seed7": {
+    "fingerprint": "8946f7ee5a498578",
+    "version": 2,
+    "sidecar_sha256": "e1e9877e6cfe0dc96723868ab68d8606946fb797e07c26e1dffcdafd828f1b33"
+   }
+  },
+  "artifact_hashes": {
+   "core/query_sampling.py": "ea1d9ce67b7ed44e1b2eab2d64db68e1dbae03838e913d0f2b477964d46edbf4",
+   "core/hierarchy_contract.py": "9b39199317e29808777bd9363ddf6043a8e77e5ee57b8316cf05a7a0ec82667a",
+   "core/benchmark/semantic.py": "cf2a2f961fb217491ce6facf48a772480e537f791021ad02e60c4677cfd12a5b",
+   "validation/benchmark/run_controls_m29.py": "478ec8aab14e8849f8ffea455812736e789148db391ff07a9181e324aeadc896",
+   "validation/benchmark/m29_report.py": "f4dc0fc27c1e73ac8977a69317f184a33b5dc378e75e157d0f570a6890d89da1",
+   "validation/benchmark/hierarchy_joint_report.py": "ddd2f1b667587f065a837fa87836598f5a04209e04c3d83b3a88a74f9312a451"
+  },
+  "metrics_required": [
+   "accuracy",
+   "fidelity",
+   "precision_macro",
+   "macro_f1",
+   "node_count",
+   "leaf_count",
+   "tree_depth",
+   "m_of_n_split_count",
+   "semantic_split_count",
+   "oracle_queries",
+   "oracle_samples",
+   "training_time",
+   "semantic_gain_accuracy",
+   "semantic_gain_fidelity",
+   "ontology_attribution_status",
+   "direct_gain_status",
+   "global_hierarchy_status",
+   "evidence_level"
+  ],
+  "metric_columns": {
+   "accuracy": "accuracy_real_labels",
+   "fidelity": "fidelity_to_oracle",
+   "precision_macro": "precision_macro_real_labels",
+   "macro_f1": "macro_f1_real_labels",
+   "tree_depth": "depth",
+   "m_of_n_split_count": "m_of_n_count",
+   "oracle_samples": "total_oracle_samples",
+   "training_time": "tree_training_time"
+  },
+  "criteria": {
+   "direct_gain": "evaluate_direct_gain: DeltaAccuracy>0 e DeltaFidelity>0 vs Original equivalente (A29), estritos; não-inferioridade (>=) só elegibilidade",
+   "ontology_attribution": "attribute_to_ontology: ganho conjunto estrito sobre C29, D29 e E29 (completos); controlo em falta/parcial ⇒ NOT_ASSESSABLE",
+   "global_superiority": "evaluate_global: U1-U5 estritas; Original<=C4.5 ⇒ HIERARCHY_INFEASIBLE (unidade mantida)",
+   "evidence": "classify_evidence: unidade = dataset; SUPPORTED só confirmatório com >=12 datasets independentes; DEV nunca confirmatório"
+  },
+  "comparability": "core.hierarchy_contract.check_comparability (nível estrito: instâncias+ordem, rótulos, classes, partição, dataset, representação base, oráculo e previsões, versão do modelo, configuração, orçamento)",
+  "confirmatory_data_used": false,
+  "execution": {
+   "cpu_hours_measured": 1.788,
+   "authorized_max_cpu_hours": 2.5,
+   "units": 18,
+   "results_doc": "docs/b1b4/30_RESULTADOS_CONTROLOS_ONTOLOGICOS.md",
+   "evidence_dir": "docs/evidence/b1b4/m29_campaign",
+   "m29_report_sha256": "7e58b864e9008e5ede9357980f1d19085fcfae6b01e22b6a560a64e855440119",
+   "cpu_ledger_main_sha256": "6a9c08fb32d2819d511148aad03bb796230c7f9b7ea905c0c7c3fc669bec14f5"
+  }
  }
 }

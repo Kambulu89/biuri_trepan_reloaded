@@ -1,0 +1,290 @@
+{
+ "frozen": true,
+ "purpose": "congelado ANTES de avaliar qualquer bra\u00e7o nas sementes de avalia\u00e7\u00e3o",
+ "problems": {
+  "P1prime_within_group": {
+   "name": "P1prime_within_group",
+   "n_groups": 8,
+   "group_size": 4,
+   "rule": "within_group",
+   "rule_m": 2,
+   "n_train": 300,
+   "scale_sigma": 0.7,
+   "min_sample": 400,
+   "max_queries": 4000,
+   "max_nodes": 7,
+   "max_depth": 3,
+   "max_n": 4,
+   "beam_width": 2,
+   "min_samples_leaf": 3,
+   "max_features_per_node": 28,
+   "n_test": 4000
+  },
+  "P2prime_cross_group": {
+   "name": "P2prime_cross_group",
+   "n_groups": 8,
+   "group_size": 4,
+   "rule": "cross_group",
+   "rule_m": 2,
+   "n_train": 300,
+   "scale_sigma": 0.7,
+   "min_sample": 400,
+   "max_queries": 4000,
+   "max_nodes": 7,
+   "max_depth": 3,
+   "max_n": 4,
+   "beam_width": 2,
+   "min_samples_leaf": 3,
+   "max_features_per_node": 28,
+   "n_test": 4000
+  }
+ },
+ "calibration": {
+  "P1prime_within_group": {
+   "mf": {
+    "rates": {
+     "16": 0.03333333333333333,
+     "20": 0.16666666666666666,
+     "24": 0.26666666666666666,
+     "28": 0.5666666666666667,
+     "30": 0.7666666666666667
+    },
+    "chosen": 28,
+    "within_target_band": true
+   },
+   "beam": {
+    "seeds": [
+     2000,
+     2014
+    ],
+    "reference_C": {
+     "eval_calls": 17001.6,
+     "cpu_fit_s": 2.2862080112666643
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5740.733333333334,
+      "cpu_fit_s": 1.4389542809333231
+     },
+     "3": {
+      "eval_calls": 6149.533333333334,
+      "cpu_fit_s": 1.5240172467333233
+     },
+     "4": {
+      "eval_calls": 6484.6,
+      "cpu_fit_s": 1.6146206822666764
+     },
+     "6": {
+      "eval_calls": 7316.266666666666,
+      "cpu_fit_s": 2.047413069466673
+     },
+     "8": {
+      "eval_calls": 8104.733333333334,
+      "cpu_fit_s": 2.312288161133328
+     },
+     "12": {
+      "eval_calls": 9813.8,
+      "cpu_fit_s": 2.931426768333328
+     },
+     "16": {
+      "eval_calls": 11564.2,
+      "cpu_fit_s": 3.508487217800018
+     },
+     "24": {
+      "eval_calls": 14980.733333333334,
+      "cpu_fit_s": 4.837290408666672
+     },
+     "32": {
+      "eval_calls": 18414.466666666667,
+      "cpu_fit_s": 5.863777410999986
+     },
+     "48": {
+      "eval_calls": 25253.333333333332,
+      "cpu_fit_s": 8.109718274866676
+     }
+    },
+    "bw_h1": 32,
+    "bw_h2": 8
+   }
+  },
+  "P2prime_cross_group": {
+   "mf": {
+    "rates": {
+     "16": 0.1,
+     "20": 0.2,
+     "24": 0.3333333333333333,
+     "28": 0.5666666666666667,
+     "30": 0.8
+    },
+    "chosen": 28,
+    "within_target_band": true
+   },
+   "beam": {
+    "seeds": [
+     2000,
+     2014
+    ],
+    "reference_C": {
+     "eval_calls": 15902.733333333334,
+     "cpu_fit_s": 2.0521799141333306
+    },
+    "table": {
+     "2": {
+      "eval_calls": 5578.266666666666,
+      "cpu_fit_s": 1.5557332270000037
+     },
+     "3": {
+      "eval_calls": 5953.333333333333,
+      "cpu_fit_s": 1.708880734200011
+     },
+     "4": {
+      "eval_calls": 6371.466666666666,
+      "cpu_fit_s": 1.8292964233333653
+     },
+     "6": {
+      "eval_calls": 7117.266666666666,
+      "cpu_fit_s": 2.1376471054000072
+     },
+     "8": {
+      "eval_calls": 7958.666666666667,
+      "cpu_fit_s": 2.3721914256666423
+     },
+     "12": {
+      "eval_calls": 9611.2,
+      "cpu_fit_s": 3.1229952378666592
+     },
+     "16": {
+      "eval_calls": 11338.133333333333,
+      "cpu_fit_s": 3.541168276133294
+     },
+     "24": {
+      "eval_calls": 14874.733333333334,
+      "cpu_fit_s": 4.888805177466687
+     },
+     "32": {
+      "eval_calls": 18234.466666666667,
+      "cpu_fit_s": 5.674237271266672
+     },
+     "48": {
+      "eval_calls": 25013.6,
+      "cpu_fit_s": 8.122763663000008
+     }
+    },
+    "bw_h1": 24,
+    "bw_h2": 6
+   }
+  }
+ },
+ "arms": {
+  "E1_E2": [
+   "A_ORIG",
+   "B_WIDE",
+   "C_OWL",
+   "D_PERM",
+   "E_RAND",
+   "F1_CONV",
+   "F2_SCREEN",
+   "G_NEUTRALIZED",
+   "H1_WIDE_BEAM_CAND",
+   "H2_WIDE_BEAM_CPU",
+   "N_IRRELEVANT",
+   "N_INCOMPLETE",
+   "N_WRONG_SPLIT"
+  ],
+  "E2_extra": [
+   "C_HIERARCHY"
+  ],
+  "stability": [
+   "A_ORIG",
+   "B_WIDE",
+   "C_OWL",
+   "D_PERM",
+   "E_RAND",
+   "G_NEUTRALIZED"
+  ]
+ },
+ "stability_configs": [
+  {
+   "n_groups": 6,
+   "group_size": 4,
+   "rule_m": 2
+  },
+  {
+   "n_groups": 8,
+   "group_size": 3,
+   "rule_m": 2
+  },
+  {
+   "n_groups": 8,
+   "group_size": 5,
+   "rule_m": 3
+  },
+  {
+   "n_groups": 6,
+   "group_size": 6,
+   "rule_m": 3
+  }
+ ],
+ "bw_h1": {
+  "P1prime_within_group": 32,
+  "P2prime_cross_group": 24
+ },
+ "bw_h2": {
+  "P1prime_within_group": 8,
+  "P2prime_cross_group": 6
+ },
+ "seeds": {
+  "calibration": [
+   2000,
+   2029
+  ],
+  "evaluation": [
+   200,
+   239
+  ],
+  "stability": [
+   300,
+   319
+  ],
+  "memory": [
+   200,
+   209
+  ]
+ },
+ "criteria": {
+  "version": 1,
+  "unit_of_analysis": "problema sint\u00e9tico (P1', P2'); sementes de avalia\u00e7\u00e3o 200\u2013239; compara\u00e7\u00f5es emparelhadas por semente; ICs bootstrap (4000) das diferen\u00e7as m\u00e9dias",
+  "resource_equivalence_contract": {
+   "same": "dados, MLP (or\u00e1culo), inst\u00e2ncias de treino/teste, semente, min_sample, max_queries, max_nodes/depth, max_n, min_samples_leaf",
+   "comparison_1_equal_candidates": "C, D, E, F1, F2, G (e negativos) fazem o MESMO n\u00ba de pesquisas por unidade (\u2264 3) sobre unidades de igual tamanho; H1 iguala os candidatos AVALIADOS (`eval_calls`) de C pelo `beam_width` calibrado (s\u00f3 recursos). Reporta-se a raz\u00e3o efetiva de `eval_calls`; N\u00c3O se afirma igualdade das restantes dimens\u00f5es",
+   "comparison_2_equal_cpu_queries": "H2 iguala o CPU de AJUSTE (`process_time`) de C (calibrado s\u00f3 em CPU); consultas e amostras ao or\u00e1culo reportadas \u00e0 parte (diferem s\u00f3 pela forma da \u00e1rvore); compila\u00e7\u00e3o da ontologia (reasoner Java) reportada em separado",
+   "not_equalised": "mem\u00f3ria (medida em subconjunto), complexidade da \u00e1rvore e candidatos GERADOS n\u00e3o s\u00e3o igualados; s\u00e3o reportados"
+  },
+  "ontological_advantage": {
+   "O1_relation_specific": "recovery(C) \u2212 max(recovery(D), recovery(E), recovery(F1), recovery(F2), recovery(G)) \u2265 0.20",
+   "O2_vs_generic_equal_candidates": "fidelity(C) \u2212 fidelity(H1) \u2265 +0.005 com limite inferior do IC95 > 0, OU recovery(C) \u2212 recovery(H1) \u2265 0.10",
+   "O3_vs_generic_equal_cpu": "idem contra H2",
+   "O4_vs_wide": "pelo menos um de: (a) fidelity(C) \u2212 fidelity(B) \u2265 +0.005 com IC95 inferior > 0; (b) cpu_fit(C)/cpu_fit(B) \u2264 0.8 e recovery(C) \u2265 recovery(B) \u2212 0.05; (c) n\u00f3s internos(C) \u2264 0.8\u00b7n\u00f3s internos(B) com fidelity(C) \u2265 fidelity(B) \u2212 0.005; (d) DP da fidelidade(C) \u2264 0.8\u00b7DP(B) com fidelity(C) \u2265 fidelity(B) \u2212 0.005",
+   "verdicts": {
+    "ONTOLOGICAL_ADVANTAGE_OVER_GENERIC": "O1 e O2 e O3 e O4",
+    "RELATION_SPECIFIC_ONLY": "O1 mas n\u00e3o todos de O2\u2013O4",
+    "NO_ONTOLOGICAL_ADVANTAGE": "O1 falha"
+   },
+   "note": "uma vantagem sobre A (Original limitado) isolada N\u00c3O conta se WIDE iguala a recupera\u00e7\u00e3o com menos recursos (pedido B3.2 \u00a75)"
+  },
+  "hierarchy_exploratory": "por problema: Acc(C) > Acc(A) > Acc(C4.5) e Fid(C) > Fid(A), Fid(C) > Fid(C4.5); reportado como explorat\u00f3rio (C = Original + orienta\u00e7\u00e3o, n\u00e3o o Reloaded)",
+  "stability_E3": "recupera\u00e7\u00e3o de A, B, C, D, E, G em 4 configura\u00e7\u00f5es gen\u00e9ricas distintas (n_groups, group_size, rule_m) com mf = round(0.875\u00b7p), 20 sementes novas (300\u2013319), or\u00e1culo de forma fechada",
+  "memory": "tracemalloc em 10 sementes (200\u2013209) para A, B, C, H2"
+ },
+ "code_sha256": {
+  "validation/benchmark/b31_facts.py": "9b88bf374a6b52da02a48606e79274de3ca0c5fcec5c733a7f9c646d2fe4cc5c",
+  "validation/benchmark/b31_relatedness.py": "6efa6e8d3c131b50323fe194ae8d7b2ec180f87db4ee7b52c59e9f26b78ddcc3",
+  "validation/benchmark/b31_steering.py": "112e09d65902f2e0006398c83c82ab81e6eb7d59a0b711d03c3af5455d4ef7c9",
+  "validation/benchmark/b31_identifiability.py": "7a5c2afa6464febbc446fb2fa2cae92f838aa0a5fa9e1ce55973efc59bed33fc",
+  "validation/benchmark/b32_comparison.py": "a1c757e8132daa510bc516f47fa0ead3c9a96149963788a1eb88598f236366dd",
+  "validation/benchmark/b32_run.py": "0f845ed74d560be78a0752150f790c1f4848a2a7b84f68ce7b31ca2c0155b180"
+ },
+ "b31_v2_frozen_sha256": "d90133e631ac55e840b97d6e2f3fc4dda992eeb479a3f5240b45c68e72013286",
+ "oracle": "MLP sklearn (StandardScaler + MLPClassifier(32,), max_iter 800) treinado nos r\u00f3tulos reais da regra (n_train=300); accuracy do MLP \u2248 0,80 (or\u00e1culo imperfeito, deliberado)",
+ "calibration_used_only": "Original (recupera\u00e7\u00e3o) e recursos (eval_calls, CPU) \u2014 nunca desempenho dos bra\u00e7os sem\u00e2nticos"
+}

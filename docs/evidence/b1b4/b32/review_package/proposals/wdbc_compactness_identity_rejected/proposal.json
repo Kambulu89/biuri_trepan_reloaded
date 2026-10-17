@@ -1,0 +1,49 @@
+{
+ "package_id": "wdbc_compactness_identity_rejected_v1",
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "ONTOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "comparison_arms": [],
+ "axioms": [
+  {
+   "id": "wdbc_compactness_mean_identity",
+   "axiom_text": "compactness_mean = perimeter_mean^2 / area_mean - 1",
+   "type": "MATHEMATICAL_IDENTITY",
+   "attributes": [
+    "mean compactness",
+    "mean perimeter",
+    "mean area"
+   ],
+   "relation_class": "EMPIRICAL_REGULARITY",
+   "justification": "A definição «perimeter^2 / area − 1» vale POR NÚCLEO; «mean» é a média sobre núcleos, e a média de um quociente não é o quociente das médias (desigualdade de Jensen) → NÃO é identidade para atributos agregados.",
+   "sources": [
+    {
+     "citation": "Texto de atributos incluído em scikit-learn 1.6.1 (`load_breast_cancer().DESCR`), cópia do UCI ML Breast Cancer Wisconsin (Diagnostic)",
+     "locator": "DESCR → compactness (perimeter^2 / area - 1.0)"
+    }
+   ],
+   "status_requested": "none",
+   "status_now": "REJECTED_AS_IDENTITY_FOR_AGGREGATED_ATTRIBUTES",
+   "empirical_check_attributes_only": {
+    "note": "correlação elevada mas erro relativo mediano grande (ver Doc. 33 §7 e `b30`); regularidade empírica, não restrição"
+   }
+  }
+ ]
+}

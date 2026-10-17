@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/trepan-benchmark/german-credit"
+         xmlns="http://example.org/trepan-benchmark/german-credit#">
+
+<owl:Ontology rdf:about="http://example.org/trepan-benchmark/german-credit">
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox de benchmark: contém semântica de domínio e zero instâncias do dataset.</rdfs:comment>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A estrutura foi definida apenas a partir da descrição das features; rótulos, partições e resultados do benchmark não foram consultados.</rdfs:comment>
+</owl:Ontology>
+
+<owl:DatatypeProperty rdf:about="#hasStatusCheckingAccountA11">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">status_checking_account__A11</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStatusCheckingAccountA12">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">status_checking_account__A12</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStatusCheckingAccountA13">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">status_checking_account__A13</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStatusCheckingAccountA14">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">status_checking_account__A14</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSavingsAccountA61">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">savings_account__A61</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSavingsAccountA62">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">savings_account__A62</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSavingsAccountA63">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">savings_account__A63</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSavingsAccountA64">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">savings_account__A64</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasSavingsAccountA65">
+  <rdfs:domain rdf:resource="#AccountStatus"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">savings_account__A65</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasDurationMonths">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">duration_months</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA40">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A40</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA41">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A41</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA410">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A410</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA42">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A42</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA43">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A43</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA44">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A44</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA45">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A45</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA46">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A46</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA48">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A48</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPurposeA49">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">purpose__A49</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditAmount">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_amount</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasInstallmentRatePctIncome">
+  <rdfs:domain rdf:resource="#CreditRequest"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">installment_rate_pct_income</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasEmploymentSinceA71">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">employment_since__A71</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasEmploymentSinceA72">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">employment_since__A72</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasEmploymentSinceA73">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">employment_since__A73</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasEmploymentSinceA74">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">employment_since__A74</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasEmploymentSinceA75">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">employment_since__A75</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasResidenceSince">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">residence_since</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasHousingA151">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">housing__A151</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasHousingA152">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">housing__A152</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasHousingA153">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">housing__A153</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasJobA171">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">job__A171</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasJobA172">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">job__A172</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasJobA173">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">job__A173</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasJobA174">
+  <rdfs:domain rdf:resource="#EmploymentStability"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">job__A174</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPersonalStatusSexA91">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">personal_status_sex__A91</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPersonalStatusSexA92">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">personal_status_sex__A92</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPersonalStatusSexA93">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">personal_status_sex__A93</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPersonalStatusSexA94">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">personal_status_sex__A94</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasAgeYears">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">age_years</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPeopleLiableCount">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">people_liable_count</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTelephoneA191">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">telephone__A191</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasTelephoneA192">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">telephone__A192</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasForeignWorkerA201">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">foreign_worker__A201</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasForeignWorkerA202">
+  <rdfs:domain rdf:resource="#PersonalProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">foreign_worker__A202</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditHistoryA30">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_history__A30</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditHistoryA31">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_history__A31</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditHistoryA32">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_history__A32</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditHistoryA33">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_history__A33</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasCreditHistoryA34">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">credit_history__A34</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherDebtorsA101">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_debtors__A101</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherDebtorsA102">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_debtors__A102</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherDebtorsA103">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_debtors__A103</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPropertyA121">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">property__A121</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPropertyA122">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">property__A122</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPropertyA123">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">property__A123</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasPropertyA124">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">property__A124</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherInstallmentPlansA141">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_installment_plans__A141</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherInstallmentPlansA142">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_installment_plans__A142</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasOtherInstallmentPlansA143">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">other_installment_plans__A143</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasExistingCreditsCount">
+  <rdfs:domain rdf:resource="#DebtAndAssets"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">existing_credits_count</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#DomainMeasurement">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">german_credit domain measurement</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#AccountStatus">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AccountStatus</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CreditRequest">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CreditRequest</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#EmploymentStability">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EmploymentStability</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PersonalProfile">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PersonalProfile</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DebtAndAssets">
+  <rdfs:subClassOf rdf:resource="#DomainMeasurement"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DebtAndAssets</rdfs:label>
+</owl:Class>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#AccountStatus"/>
+    <rdf:Description rdf:about="#CreditRequest"/>
+    <rdf:Description rdf:about="#EmploymentStability"/>
+    <rdf:Description rdf:about="#PersonalProfile"/>
+    <rdf:Description rdf:about="#DebtAndAssets"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>

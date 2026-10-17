@@ -53,3 +53,6 @@ Resultados autorizados a reportar: métricas deste documento (exploratórias DEV
 
 ## 8. Limitações
 Sem categóricas reais nos DEV (apenas sintético misto); AUC depende do classificador; substituto ≠ TREPAN; cobertura da fronteira depende do limiar de margem (0,2/0,3 fixados antes); uma única divisão 75/25 por unidade.
+
+## 9. Seguimento (Doc. 26)
+O teste proposto em §7.1 foi executado (Doc. 26): o amostrador C, ativado igualmente no Original e no Reloaded, melhora o Original (ΔF +0,017, ΔAcc +0,023 nos DEV numéricos; exploratório) mas **não** revela ganho do Reloaded OWL sob C (D−B < 0). Num dataset categórico real (German, 1 unidade) o amostrador marginal viola a exclusividade one-hot em ~99,9 % das consultas e C em 0 %. Dois ajustes de desenho (A1: deteção exata de grupos one-hot; reamostragem de discretas por frequência empírica) foram feitos **antes** de analisar resultados e estão registados no Doc. 26. As ressalvas deste documento (substituto ≠ TREPAN) mantêm-se para a Parte 3–5 e foram superadas na medição dentro da árvore (Doc. 26 §4).

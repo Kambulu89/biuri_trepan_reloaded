@@ -1,0 +1,525 @@
+{
+ "dataset": "breast_cancer",
+ "seed": 42,
+ "real": {
+  "available": true,
+  "n_derived": 53,
+  "structure_signature": "ea7510ed48652ec9",
+  "ontology_hash": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+  "state_reason": ""
+ },
+ "controls": {
+  "m29_P_k0": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.7,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 4.06e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 1.22e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 20260042,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "332eb6ab0160b0b2",
+   "structure_signature": "da61761b8e7d4552",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k0": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.5,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 4.06e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 30260042,
+    "seed_b": 40260042
+   },
+   "perm_meta": null,
+   "perm_hash": "9b31ebae47486317",
+   "structure_signature": "3f7728871c3027ec",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k1": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.6666666666666666,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 2.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 20261042,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "b8c576f9497a4945",
+   "structure_signature": "873ae4c32b4aae8d",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k1": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.7666666666666667,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 48 \u2260 53",
+      "escala 1.28e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 47 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 30261042,
+    "seed_b": 40261042
+   },
+   "perm_meta": null,
+   "perm_hash": "c8df40406a072808",
+   "structure_signature": "2832d1f8a5c6d422",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_P_k2": {
+   "kind": "permuted",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.5333333333333333,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194grupo/entidade e composi\u00e7\u00e3o de cada derivada",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 8e+09 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 46 \u2260 53",
+      "escala 1.22e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 1.82e+09 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 51 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 20262042,
+    "seed_b": null
+   },
+   "perm_meta": null,
+   "perm_hash": "b71f93c6e995c6fe",
+   "structure_signature": "c31a03d097341d05",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_D_k2": {
+   "kind": "random_groups",
+   "feature_order_ok": true,
+   "fit_on_train_only": true,
+   "features_lost": 0,
+   "columns_whose_group_changed_fraction": 0.5666666666666667,
+   "co_grouped_pairs_real": 135,
+   "selection_criterion": "structural_only (reten\u00e7\u00e3o de pares co-agrupados \u2264 acaso; sem accuracy/fidelidade/dados de teste)",
+   "relations_destroyed": "correspond\u00eancia coluna\u2194entidade, composi\u00e7\u00e3o das derivadas e acoplamento r\u00f3tulo\u2194composi\u00e7\u00e3o",
+   "oracle_unchanged": "o MLP s\u00f3 v\u00ea as colunas originais (OriginalOracleProjection): a permuta\u00e7\u00e3o n\u00e3o altera o or\u00e1culo",
+   "variant": "structure_only_fallback",
+   "attempts": [
+    {
+     "attempt": 0,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 52 \u2260 53",
+      "escala 4.06e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 1,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 4.38e+11 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 2,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 49 \u2260 53",
+      "escala 2.83e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    },
+    {
+     "attempt": 3,
+     "valid": false,
+     "reasons": [
+      "dimens\u00e3o derivada 50 \u2260 53",
+      "escala 5.95e+10 > 100.0\u00d7 a da OWL real (248)"
+     ]
+    }
+   ],
+   "validity": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "seeds": {
+    "seed_a": 30262042,
+    "seed_b": 40262042
+   },
+   "perm_meta": null,
+   "perm_hash": "b29924c302e7ec4a",
+   "structure_signature": "a2c8e00b74da2ec1",
+   "n_derived": 53,
+   "group_sizes": [
+    10,
+    10,
+    10
+   ],
+   "validity_check": {
+    "valid": true,
+    "reasons": [],
+    "n_derived": 53,
+    "n_derived_real": 53,
+    "std_max": 247.67382048486152,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k0": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9884397423133077,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k1": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9884397423133077,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  },
+  "m29_E_k2": {
+   "kind": "conventional_features",
+   "variant": "full",
+   "n_derived": 5,
+   "n_derived_real": 53,
+   "dimension_matched": false,
+   "note": "n_derived = min(n_OWL, p//2) e s\u00f3 grupos com \u22652 colunas: a dimens\u00e3o pode diferir da OWL (documentado)",
+   "validity_check": {
+    "valid": false,
+    "reasons": [
+     "dimens\u00e3o derivada 5 \u2260 53"
+    ],
+    "n_derived": 5,
+    "n_derived_real": 53,
+    "std_max": 0.9884397423133077,
+    "std_max_real": 247.67382048486152
+   },
+   "differs_from_real_structure": true
+  }
+ },
+ "distinct_control_structures": 6
+}

@@ -1,0 +1,60 @@
+{
+ "unit": "wine:42",
+ "arms": {
+  "m29_G_k0": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+     "None",
+     "none"
+    ]
+   }
+  },
+  "m29_G_k1": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+     "None",
+     "none"
+    ]
+   }
+  },
+  "m29_G_k2": {
+   "strict_comparable": true,
+   "failed_strict": [],
+   "unverifiable": [],
+   "comparable_with_config_relaxed": true,
+   "documented_differences": {
+    "feature_space": [
+     "enriched",
+     "original"
+    ],
+    "ontology_hash": [
+     "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+     "None",
+     "none"
+    ]
+   }
+  },
+  "trepan_original": {
+   "identical_to_reference": true
+  }
+ },
+ "all_comparable": true
+}

@@ -1,0 +1,44 @@
+{
+ "package_id": "wine_phenol_subset_rejected_v0",
+ "axioms": [
+  {
+   "id": "wine_flav_le_phenols",
+   "axiom_text": "flavanoids <= total_phenols",
+   "type": "ORDER_RELATION",
+   "attributes": [
+    "flavanoids",
+    "total_phenols"
+   ],
+   "relation_class": "HYPOTHESIS",
+   "justification": "flavonoides s\u00e3o fen\u00f3is; a inclus\u00e3o conceptual n\u00e3o implica ordem entre as MEDIDAS (m\u00e9todos anal\u00edticos diferentes)",
+   "sources": [],
+   "empirical_check_training_only": {
+    "violation_rate_all_rows": 0.3595505617977528,
+    "interpretation": "regularidade que falha: N\u00c3O \u00e9 axioma"
+   },
+   "status_requested": "none",
+   "status_now": "REJECTED_AS_AXIOM"
+  }
+ ],
+ "reviews": {
+  "domain_expert": {
+   "status": "DOMAIN_REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "ontology_engineer": {
+   "status": "REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  },
+  "methodology": {
+   "status": "REVIEW_PENDING",
+   "reviewer_name": null,
+   "date": null,
+   "signature_ref": null
+  }
+ },
+ "comparison_arms": []
+}

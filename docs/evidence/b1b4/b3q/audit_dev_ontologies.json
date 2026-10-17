@@ -1,0 +1,551 @@
+{
+ "usage_existing_results": {
+  "breast_cancer": {
+   "CONTROL_PERMUTED (M29 P)": {
+    "n_units": 15,
+    "semantic_features_generated": 53.0,
+    "semantic_features_used": 7.27,
+    "ontology_influenced_splits": 15.13,
+    "internal_nodes": 16.93,
+    "m_of_n_count": 16.0,
+    "semantic_decision_changed_count": 5.0,
+    "mapped_feature_count": 30.0,
+    "fraction_internal_nodes_influenced": 0.915,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "CONTROL_RANDOM (M29 D)": {
+    "n_units": 15,
+    "semantic_features_generated": 53.0,
+    "semantic_features_used": 7.0,
+    "ontology_influenced_splits": 14.93,
+    "internal_nodes": 16.93,
+    "m_of_n_count": 15.53,
+    "semantic_decision_changed_count": 5.53,
+    "mapped_feature_count": 30.0,
+    "fraction_internal_nodes_influenced": 0.909,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "TRUE_ONTOLOGY (sc_D)": {
+    "n_units": 15,
+    "semantic_features_generated": 53.0,
+    "semantic_features_used": 6.67,
+    "ontology_influenced_splits": 15.47,
+    "internal_nodes": 16.4,
+    "m_of_n_count": 15.67,
+    "semantic_decision_changed_count": 5.4,
+    "mapped_feature_count": 30.0,
+    "fraction_internal_nodes_influenced": 0.971,
+    "ontology_category_counts": {
+     "ontology_effectively_used": 15
+    }
+   }
+  },
+  "digits": {
+   "CONTROL_PERMUTED (M29 P)": {
+    "n_units": 9,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 0.0,
+    "ontology_influenced_splits": 125.67,
+    "internal_nodes": 126.11,
+    "m_of_n_count": 123.0,
+    "semantic_decision_changed_count": 25.22,
+    "mapped_feature_count": 64.0,
+    "fraction_internal_nodes_influenced": 0.997,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 9
+    }
+   },
+   "CONTROL_RANDOM (M29 D)": {
+    "n_units": 9,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 0.0,
+    "ontology_influenced_splits": 125.67,
+    "internal_nodes": 125.67,
+    "m_of_n_count": 123.11,
+    "semantic_decision_changed_count": 22.0,
+    "mapped_feature_count": 64.0,
+    "fraction_internal_nodes_influenced": 1.0,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 9
+    }
+   },
+   "TRUE_ONTOLOGY (sc_D)": {
+    "n_units": 9,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 0.0,
+    "ontology_influenced_splits": 125.67,
+    "internal_nodes": 126.0,
+    "m_of_n_count": 124.44,
+    "semantic_decision_changed_count": 26.78,
+    "mapped_feature_count": 64.0,
+    "fraction_internal_nodes_influenced": 0.997,
+    "ontology_category_counts": {
+     "ontology_effectively_used": 9
+    }
+   }
+  },
+  "iris": {
+   "CONTROL_PERMUTED (M29 P)": {
+    "n_units": 15,
+    "semantic_features_generated": 2.0,
+    "semantic_features_used": 2.0,
+    "ontology_influenced_splits": 17.0,
+    "internal_nodes": 17.13,
+    "m_of_n_count": 13.4,
+    "semantic_decision_changed_count": 10.67,
+    "mapped_feature_count": 4.0,
+    "fraction_internal_nodes_influenced": 1.016,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "CONTROL_RANDOM (M29 D)": {
+    "n_units": 15,
+    "semantic_features_generated": 2.0,
+    "semantic_features_used": 2.0,
+    "ontology_influenced_splits": 17.6,
+    "internal_nodes": 16.8,
+    "m_of_n_count": 12.87,
+    "semantic_decision_changed_count": 10.4,
+    "mapped_feature_count": 4.0,
+    "fraction_internal_nodes_influenced": 1.067,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "TRUE_ONTOLOGY (sc_D)": {
+    "n_units": 15,
+    "semantic_features_generated": 2.0,
+    "semantic_features_used": 2.0,
+    "ontology_influenced_splits": 17.6,
+    "internal_nodes": 17.33,
+    "m_of_n_count": 14.13,
+    "semantic_decision_changed_count": 10.53,
+    "mapped_feature_count": 4.0,
+    "fraction_internal_nodes_influenced": 1.031,
+    "ontology_category_counts": {
+     "ontology_effectively_used": 15
+    }
+   }
+  },
+  "wine": {
+   "CONTROL_PERMUTED (M29 P)": {
+    "n_units": 15,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 2.4,
+    "ontology_influenced_splits": 11.13,
+    "internal_nodes": 15.8,
+    "m_of_n_count": 13.4,
+    "semantic_decision_changed_count": 4.13,
+    "mapped_feature_count": 13.0,
+    "fraction_internal_nodes_influenced": 0.723,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "CONTROL_RANDOM (M29 D)": {
+    "n_units": 15,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 2.6,
+    "ontology_influenced_splits": 11.67,
+    "internal_nodes": 17.2,
+    "m_of_n_count": 14.47,
+    "semantic_decision_changed_count": 5.47,
+    "mapped_feature_count": 13.0,
+    "fraction_internal_nodes_influenced": 0.708,
+    "ontology_category_counts": {
+     "ontology_available_but_not_effective": 15
+    }
+   },
+   "TRUE_ONTOLOGY (sc_D)": {
+    "n_units": 15,
+    "semantic_features_generated": 3.0,
+    "semantic_features_used": 2.87,
+    "ontology_influenced_splits": 9.67,
+    "internal_nodes": 12.67,
+    "m_of_n_count": 11.13,
+    "semantic_decision_changed_count": 4.2,
+    "mapped_feature_count": 13.0,
+    "fraction_internal_nodes_influenced": 0.754,
+    "ontology_category_counts": {
+     "ontology_effectively_used": 15
+    }
+   }
+  }
+ },
+ "ontologies": {
+  "iris": {
+   "owl": "validation/benchmark/ontologies/iris.owl",
+   "census": {
+    "by_function": {
+     "ANOTACAO": 9,
+     "DECLARACAO": 7,
+     "AGRUPAMENTO": 4,
+     "TIPAGEM": 4,
+     "RAIZ": 1,
+     "TAXONOMIA": 2,
+     "DISJUNCAO": 1
+    },
+    "custom_annotation_properties_used": {},
+    "groups": {
+     "SepalMeasurement": [
+      "hasSepalLengthCm",
+      "hasSepalWidthCm"
+     ],
+     "PetalMeasurement": [
+      "hasPetalLengthCm",
+      "hasPetalWidthCm"
+     ]
+    }
+   },
+   "fact_registry": {
+    "ontology_status": "VALID",
+    "n_facts": 11,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 2,
+     "CONCEPT_DISJOINTNESS": 1,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 8
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 11
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 10,
+     "NONE": 1
+    },
+    "by_use_state": {
+     "AVAILABLE": 11
+    },
+    "unsupported_axioms": {},
+    "n_usable": 10,
+    "n_hard_constraints": 0
+   },
+   "data_support": {
+    "dataset": "iris",
+    "train_n": 112,
+    "split_hash_ok": true,
+    "split_hash": "168640c4eff584922e23f055d74181df0808457921bb57fdf792e2a65d6c9ea2",
+    "n_pairs": 6,
+    "n_same_group_pairs": 2,
+    "n_mapped_features": 4,
+    "mean_synergy_same": -0.00936462778568048,
+    "mean_synergy_cross": 0.0,
+    "diff_synergy": -0.00936462778568048,
+    "p_perm_synergy": 1.0,
+    "mean_pair_acc_same": 0.8524182076813656,
+    "mean_pair_acc_cross": 0.9550734945471788,
+    "diff_pair_acc": -0.10265528686581327,
+    "p_perm_pair_acc": 1.0,
+    "best_single_acc": 0.9551920341394027,
+    "note": "diagn\u00f3stico de dados de TREINO; mede suporte estat\u00edstico da parti\u00e7\u00e3o, n\u00e3o qualidade da ontologia"
+   }
+  },
+  "wine": {
+   "owl": "validation/benchmark/ontologies/wine.owl",
+   "census": {
+    "by_function": {
+     "ANOTACAO": 19,
+     "DECLARACAO": 17,
+     "AGRUPAMENTO": 13,
+     "TIPAGEM": 13,
+     "RAIZ": 1,
+     "TAXONOMIA": 3,
+     "DISJUNCAO": 1
+    },
+    "custom_annotation_properties_used": {},
+    "groups": {
+     "AcidityProfile": [
+      "hasAlcalinityOfAsh",
+      "hasAsh",
+      "hasMalicAcid"
+     ],
+     "PhenolicProfile": [
+      "hasFlavanoids",
+      "hasNonflavanoidPhenols",
+      "hasOd280Od315OfDilutedWines",
+      "hasProanthocyanins",
+      "hasTotalPhenols"
+     ],
+     "PhysicalChemicalProfile": [
+      "hasAlcohol",
+      "hasColorIntensity",
+      "hasHue",
+      "hasMagnesium",
+      "hasProline"
+     ]
+    }
+   },
+   "fact_registry": {
+    "ontology_status": "VALID",
+    "n_facts": 32,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 26
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 32
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 29,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 32
+    },
+    "unsupported_axioms": {},
+    "n_usable": 29,
+    "n_hard_constraints": 0
+   },
+   "data_support": {
+    "dataset": "wine",
+    "train_n": 133,
+    "split_hash_ok": true,
+    "split_hash": "830c8dde57d73474652884f58afdb26a7589e088927d3d3414a57048e3164523",
+    "n_pairs": 78,
+    "n_same_group_pairs": 23,
+    "n_mapped_features": 13,
+    "mean_synergy_same": 0.036466110379153836,
+    "mean_synergy_cross": 0.04923477196204468,
+    "diff_synergy": -0.01276866158289084,
+    "p_perm_synergy": 0.848575712143928,
+    "mean_pair_acc_same": 0.6994656712048015,
+    "mean_pair_acc_cross": 0.7042393633302724,
+    "diff_pair_acc": -0.004773692125470852,
+    "p_perm_pair_acc": 0.6586706646676662,
+    "best_single_acc": 0.7518518518518519,
+    "note": "diagn\u00f3stico de dados de TREINO; mede suporte estat\u00edstico da parti\u00e7\u00e3o, n\u00e3o qualidade da ontologia"
+   }
+  },
+  "breast_cancer": {
+   "owl": "validation/benchmark/ontologies/breast_cancer.owl",
+   "census": {
+    "by_function": {
+     "ANOTACAO": 36,
+     "DECLARACAO": 36,
+     "AGRUPAMENTO": 30,
+     "TIPAGEM": 30,
+     "ANOTACAO_PERSONALIZADA": 60,
+     "RAIZ": 1,
+     "TAXONOMIA": 3,
+     "DISJUNCAO": 1
+    },
+    "custom_annotation_properties_used": {
+     "measurementFamily": 30,
+     "statisticRole": 30
+    },
+    "groups": {
+     "MeanMorphology": [
+      "hasMeanArea",
+      "hasMeanCompactness",
+      "hasMeanConcavePoints",
+      "hasMeanConcavity",
+      "hasMeanFractalDimension",
+      "hasMeanPerimeter",
+      "hasMeanRadius",
+      "hasMeanSmoothness",
+      "hasMeanSymmetry",
+      "hasMeanTexture"
+     ],
+     "ErrorMorphology": [
+      "hasAreaError",
+      "hasCompactnessError",
+      "hasConcavePointsError",
+      "hasConcavityError",
+      "hasFractalDimensionError",
+      "hasPerimeterError",
+      "hasRadiusError",
+      "hasSmoothnessError",
+      "hasSymmetryError",
+      "hasTextureError"
+     ],
+     "WorstMorphology": [
+      "hasWorstArea",
+      "hasWorstCompactness",
+      "hasWorstConcavePoints",
+      "hasWorstConcavity",
+      "hasWorstFractalDimension",
+      "hasWorstPerimeter",
+      "hasWorstRadius",
+      "hasWorstSmoothness",
+      "hasWorstSymmetry",
+      "hasWorstTexture"
+     ]
+    }
+   },
+   "fact_registry": {
+    "ontology_status": "VALID",
+    "n_facts": 66,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 60
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 66
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 63,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 66
+    },
+    "unsupported_axioms": {},
+    "n_usable": 63,
+    "n_hard_constraints": 0
+   },
+   "data_support": {
+    "dataset": "breast_cancer",
+    "train_n": 426,
+    "split_hash_ok": true,
+    "split_hash": "f99a02e25b620c0bde325cfc8e7c42badb4bd7ca7e871cbb4c26ce514043149e",
+    "n_pairs": 435,
+    "n_same_group_pairs": 135,
+    "n_mapped_features": 30,
+    "mean_synergy_same": 0.010502521300643382,
+    "mean_synergy_cross": 0.012574334898278569,
+    "diff_synergy": -0.0020718135976351866,
+    "p_perm_synergy": 0.8540729635182409,
+    "mean_pair_acc_same": 0.8274908711528429,
+    "mean_pair_acc_cross": 0.8335915492957747,
+    "diff_pair_acc": -0.0061006781429318035,
+    "p_perm_pair_acc": 0.9080459770114943,
+    "best_single_acc": 0.9154929577464789,
+    "note": "diagn\u00f3stico de dados de TREINO; mede suporte estat\u00edstico da parti\u00e7\u00e3o, n\u00e3o qualidade da ontologia"
+   }
+  },
+  "digits": {
+   "owl": "validation/benchmark/ontologies/digits.owl",
+   "census": {
+    "by_function": {
+     "ANOTACAO": 70,
+     "DECLARACAO": 68,
+     "AGRUPAMENTO": 64,
+     "TIPAGEM": 64,
+     "RAIZ": 1,
+     "TAXONOMIA": 3,
+     "DISJUNCAO": 1
+    },
+    "custom_annotation_properties_used": {},
+    "groups": {
+     "UpperImageRegion": [
+      "hasPixel00",
+      "hasPixel01",
+      "hasPixel02",
+      "hasPixel03",
+      "hasPixel04",
+      "hasPixel05",
+      "hasPixel06",
+      "hasPixel07",
+      "hasPixel10",
+      "hasPixel11",
+      "hasPixel12",
+      "hasPixel13",
+      "hasPixel14",
+      "hasPixel15",
+      "hasPixel16",
+      "hasPixel17",
+      "hasPixel20",
+      "hasPixel21",
+      "hasPixel22",
+      "hasPixel23",
+      "hasPixel24",
+      "hasPixel25",
+      "hasPixel26",
+      "hasPixel27"
+     ],
+     "MiddleImageRegion": [
+      "hasPixel30",
+      "hasPixel31",
+      "hasPixel32",
+      "hasPixel33",
+      "hasPixel34",
+      "hasPixel35",
+      "hasPixel36",
+      "hasPixel37",
+      "hasPixel40",
+      "hasPixel41",
+      "hasPixel42",
+      "hasPixel43",
+      "hasPixel44",
+      "hasPixel45",
+      "hasPixel46",
+      "hasPixel47",
+      "hasPixel50",
+      "hasPixel51",
+      "hasPixel52",
+      "hasPixel53",
+      "hasPixel54",
+      "hasPixel55",
+      "hasPixel56",
+      "hasPixel57"
+     ],
+     "LowerImageRegion": [
+      "hasPixel60",
+      "hasPixel61",
+      "hasPixel62",
+      "hasPixel63",
+      "hasPixel64",
+      "hasPixel65",
+      "hasPixel66",
+      "hasPixel67",
+      "hasPixel70",
+      "hasPixel71",
+      "hasPixel72",
+      "hasPixel73",
+      "hasPixel74",
+      "hasPixel75",
+      "hasPixel76",
+      "hasPixel77"
+     ]
+    }
+   },
+   "fact_registry": {
+    "ontology_status": "VALID",
+    "n_facts": 134,
+    "by_kind": {
+     "CONCEPT_SUBSUMPTION": 3,
+     "CONCEPT_DISJOINTNESS": 3,
+     "ATTRIBUTE_APPLIES_TO_CONCEPT": 128
+    },
+    "by_epistemic": {
+     "LOGICALLY_ENTAILED": 134
+    },
+    "by_permitted_use": {
+     "PREFERENCE": 131,
+     "NONE": 3
+    },
+    "by_use_state": {
+     "AVAILABLE": 134
+    },
+    "unsupported_axioms": {},
+    "n_usable": 131,
+    "n_hard_constraints": 0
+   },
+   "data_support": {
+    "dataset": "digits",
+    "train_n": 1347,
+    "split_hash_ok": true,
+    "split_hash": "8b9de671b9ad642ae460e82a87e9fae8651ae9581658c9ab2c9a51d258b1553b",
+    "n_pairs": 2016,
+    "n_same_group_pairs": 672,
+    "n_mapped_features": 64,
+    "mean_synergy_same": 0.03239893767455014,
+    "mean_synergy_cross": 0.0313427988121752,
+    "diff_synergy": 0.0010561388623749404,
+    "p_perm_synergy": 0.23138430784607697,
+    "mean_pair_acc_same": 0.24968293739173472,
+    "mean_pair_acc_cross": 0.24881847226641213,
+    "diff_pair_acc": 0.0008644651253225943,
+    "p_perm_pair_acc": 0.37631184407796103,
+    "best_single_acc": 0.2717149220489978,
+    "note": "diagn\u00f3stico de dados de TREINO; mede suporte estat\u00edstico da parti\u00e7\u00e3o, n\u00e3o qualidade da ontologia"
+   }
+  }
+ }
+}
