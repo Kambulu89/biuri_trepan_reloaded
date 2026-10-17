@@ -1,0 +1,33 @@
+{
+ "id": "AX-GC-TAX-purpose-Vehicles",
+ "statement_nl": "Em «purpose», A40, A41 formam a categoria «Vehicles» (agrupamento taxonómico proposto).",
+ "owl_axiom": "EquivalentClasses(Purpose_Vehicles ObjectUnionOf(Lvl_purpose_A40 Lvl_purpose_A41))",
+ "entities": [
+  "purpose__A40",
+  "purpose__A41"
+ ],
+ "axiom_type": "T1_DEFINED_CLASS_UNION",
+ "source": {
+  "citation": "UCI Statlog (German Credit Data), dicionário de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) — CITADO DE MEMÓRIA, NÃO VERIFICADO",
+  "locator": "Atributo 4",
+  "verified": false
+ },
+ "scope_and_validity": "agrupamento proposto pelo rascunho; critério de pertença a validar por especialista",
+ "universality": "CONDITIONAL",
+ "epistemic_status": "HYPOTHESIS",
+ "permitted_use": "PREFERENCE",
+ "authored_by": "AI_DRAFT",
+ "derived_from_data": false,
+ "independence_from_eval": true,
+ "reviews": {
+  "domain": {
+   "status": "DOMAIN_REVIEW_PENDING"
+  },
+  "ontology": {
+   "status": "ONTOLOGY_REVIEW_PENDING"
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING"
+  }
+ }
+}

@@ -1,0 +1,92 @@
+{
+ "manifest": "B34_EXPERIMENT_MANIFEST_v2",
+ "status": "PROPOSAL_NOT_FROZEN",
+ "frozen": false,
+ "state": "B34 = DESIGN_ONLY / NOT_EXECUTED",
+ "phase": "B3.4 v2 (proposta)",
+ "depends_on": "docs/b1b4/49_REVISAO_B34_V2.md",
+ "preserves": {
+  "v1_doc": "docs/b1b4/44_PROTOCOLO_B34_CONHECIMENTO_PREVIO.md (corpo v1, commit 66ad1a9)",
+  "v1_body_sha256_rstrip": "1d90943e997ee0f700f65724f12eefbd944c3c0de99265fba1682d2f8f8dc4a9",
+  "v1_manifest": "docs/b1b4/manifest_v3/B34_EXPERIMENT_MANIFEST.DRAFT.json (não alterado nos parâmetros)"
+ },
+ "restrictions": {
+  "scope": "validation/ apenas",
+  "core_changes": "nenhuma",
+  "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED",
+  "dev_or_confirmatory_datasets": "não usados",
+  "campaign": "NÃO autorizada"
+ },
+ "hypothesis": "H1 apenas (conhecimento estrutural prévio); H2 em docs/b1b4/52_PROTOCOLO_H2_ENRIQUECIMENTO_REAL.md",
+ "revisions": {
+  "R1": "P1/P2 descritivas",
+  "R2": "H1-only",
+  "R3": "portas só de dados (recuperabilidade multi-método, aprendibilidade do oráculo); limiares definitivos pelos revisores",
+  "R4": "nomes opacos",
+  "R5": "texto de informação substituído (Doc. 48 §3)",
+  "R6": "decomposição H2 só como estudo futuro",
+  "R7": "orçamento + portas",
+  "R8_proposed": "família aditiva por conceito (a decidir)"
+ },
+ "gates": {
+  "G1_oracle_learnable": {
+   "statistic": "mediana(acc MLP) - mediana(maioritária) nas sementes de calibração",
+   "reference_exploratory": 0.05,
+   "definitive": "A DECIDIR pelos revisores e pré-registar"
+  },
+  "G2_not_redundant": {
+   "unsupervised": "melhor-de-métodos ARI mediano e pureza",
+   "reference_exploratory_ARI": 0.5,
+   "sensitivity": [
+    0.3,
+    0.5,
+    0.7
+   ],
+   "supervised_generic_hit_rate_reference": 0.9,
+   "definitive": "A DECIDIR pelos revisores e pré-registar"
+  },
+  "forbidden": "escolher cargas/ruído com base no desempenho de qualquer braço OWL"
+ },
+ "evidence": [
+  "docs/evidence/b1b4/b3q/recoverability_protocol.json",
+  "docs/evidence/b1b4/b3q/learnability.json",
+  "docs/evidence/b1b4/b3q/additive_gate.json"
+ ],
+ "cells_proposed": "a decidir após as portas (ver Doc. 49 §4)",
+ "arms": {
+  "A_ORIG": "Original canónico, mf limitado",
+  "B_WIDE": "Original, mf=p",
+  "C_GEN_INTERACTION": "orientação por unidades de rastreio genérico de interações por pares (maior ganho)",
+  "D_PAIR_STAT": "idem com filtro de significância por permutação de rótulos (só treino) e fallback ao Original",
+  "E_OWL_TRUE": "orientação por ontologia derivada da especificação de domínio (partição verdadeira dos indicadores)",
+  "F_OWL_PERM": "ontologia permutada (mesmos tamanhos)",
+  "G_OWL_RAND": "ontologia aleatória",
+  "H_OWL_NEUTRALIZED": "ontologia verdadeira com as relações dos conceitos relevantes neutralizadas",
+  "I_CONV": "agrupamento por correlação (engenharia convencional)",
+  "J_GROUPS_NO_OWL": "a MESMA partição de E como lista simples de grupos, sem OWL (conhecimento prévio equivalente)",
+  "K1_WIDE_BEAM_CAND": "WIDE com beam calibrado a candidatos avaliados de E",
+  "K2_WIDE_BEAM_CPU": "WIDE com beam calibrado ao CPU de E",
+  "N_IRRELEVANT": "ontologia verdadeira sobre outros atributos",
+  "N_INCOMPLETE": "ontologia com um conceito relevante amputado",
+  "N_MISLEADING": "relações semanticamente erradas (conceitos relevantes divididos com intrusos)"
+ },
+ "seeds": {
+  "calibration": [
+   4000,
+   4019
+  ],
+  "evaluation": "5000+100*cell_index+i, i=0..29 (M0: i=0..19)",
+  "stability": "6000+100*cell_index+i, i=0..19 (só células que passam os critérios principais)",
+  "diagnostic_memory": [
+   7000,
+   7009
+  ],
+  "disjoint_from": "0–39, 200–239, 300–319, 400–429, 500–509, 1000–1029, 2000–2029, 3000–3019"
+ },
+ "cpu_estimate_hours": {
+  "portas": 0.3,
+  "restante_como_v1": 6.9,
+  "total": 7.2,
+  "hard_cap": 9.0
+ }
+}

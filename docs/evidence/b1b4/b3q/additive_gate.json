@@ -1,0 +1,136 @@
+{
+ "reps": 20,
+ "K": 8,
+ "g": 6,
+ "labels_used": "s\u00f3 treino/valida\u00e7\u00e3o do gerador em sementes de calibra\u00e7\u00e3o; sem ontologia, sem TREPAN, sem teste da avalia\u00e7\u00e3o",
+ "results": {
+  "s1.0_n60": {
+   "mlp_acc_median": 0.658,
+   "mlp_acc_p10": 0.64,
+   "majority_median": 0.5082500000000001,
+   "screen_hit_rate_corr": 0.6916666666666667,
+   "screen_hit_rate_L1": 0.825,
+   "mean_abs_corr_true_indicators": 0.30595084576623316
+  },
+  "s1.0_n120": {
+   "mlp_acc_median": 0.7245,
+   "mlp_acc_p10": 0.7039,
+   "majority_median": 0.5055,
+   "screen_hit_rate_corr": 0.8916666666666668,
+   "screen_hit_rate_L1": 0.9916666666666666,
+   "mean_abs_corr_true_indicators": 0.3028806597465297
+  },
+  "s1.0_n240": {
+   "mlp_acc_median": 0.7987500000000001,
+   "mlp_acc_p10": 0.78105,
+   "majority_median": 0.50775,
+   "screen_hit_rate_corr": 0.9916666666666668,
+   "screen_hit_rate_L1": 1.0,
+   "mean_abs_corr_true_indicators": 0.29805213428906707
+  },
+  "s1.0_n1000": {
+   "mlp_acc_median": 0.83575,
+   "mlp_acc_p10": 0.824,
+   "majority_median": 0.50475,
+   "screen_hit_rate_corr": 1.0,
+   "screen_hit_rate_L1": 1.0,
+   "mean_abs_corr_true_indicators": 0.2995925544970466
+  },
+  "s2.0_n60": {
+   "mlp_acc_median": 0.62775,
+   "mlp_acc_p10": 0.59135,
+   "majority_median": 0.50625,
+   "screen_hit_rate_corr": 0.5666666666666667,
+   "screen_hit_rate_L1": 0.6,
+   "mean_abs_corr_true_indicators": 0.2534966650288173
+  },
+  "s2.0_n120": {
+   "mlp_acc_median": 0.65525,
+   "mlp_acc_p10": 0.63145,
+   "majority_median": 0.5095,
+   "screen_hit_rate_corr": 0.7833333333333334,
+   "screen_hit_rate_L1": 0.8500000000000002,
+   "mean_abs_corr_true_indicators": 0.2449418473746363
+  },
+  "s2.0_n240": {
+   "mlp_acc_median": 0.6992499999999999,
+   "mlp_acc_p10": 0.69065,
+   "majority_median": 0.50725,
+   "screen_hit_rate_corr": 0.9166666666666666,
+   "screen_hit_rate_L1": 0.95,
+   "mean_abs_corr_true_indicators": 0.24188068823616113
+  },
+  "s2.0_n1000": {
+   "mlp_acc_median": 0.72375,
+   "mlp_acc_p10": 0.7092,
+   "majority_median": 0.50725,
+   "screen_hit_rate_corr": 1.0,
+   "screen_hit_rate_L1": 1.0,
+   "mean_abs_corr_true_indicators": 0.25482935697701997
+  },
+  "s3.0_n60": {
+   "mlp_acc_median": 0.579,
+   "mlp_acc_p10": 0.5596500000000001,
+   "majority_median": 0.5077499999999999,
+   "screen_hit_rate_corr": 0.4749999999999999,
+   "screen_hit_rate_L1": 0.4499999999999999,
+   "mean_abs_corr_true_indicators": 0.21329814066228017
+  },
+  "s3.0_n120": {
+   "mlp_acc_median": 0.6085,
+   "mlp_acc_p10": 0.5924,
+   "majority_median": 0.51125,
+   "screen_hit_rate_corr": 0.6166666666666668,
+   "screen_hit_rate_L1": 0.6583333333333334,
+   "mean_abs_corr_true_indicators": 0.2046799979651218
+  },
+  "s3.0_n240": {
+   "mlp_acc_median": 0.6399999999999999,
+   "mlp_acc_p10": 0.6256,
+   "majority_median": 0.50725,
+   "screen_hit_rate_corr": 0.8250000000000002,
+   "screen_hit_rate_L1": 0.8666666666666666,
+   "mean_abs_corr_true_indicators": 0.20740832532803072
+  },
+  "s3.0_n1000": {
+   "mlp_acc_median": 0.6485000000000001,
+   "mlp_acc_p10": 0.63185,
+   "majority_median": 0.507,
+   "screen_hit_rate_corr": 1.0,
+   "screen_hit_rate_L1": 1.0,
+   "mean_abs_corr_true_indicators": 0.2045872209193509
+  },
+  "s4.0_n60": {
+   "mlp_acc_median": 0.56,
+   "mlp_acc_p10": 0.5377,
+   "majority_median": 0.5075,
+   "screen_hit_rate_corr": 0.29166666666666663,
+   "screen_hit_rate_L1": 0.29166666666666663,
+   "mean_abs_corr_true_indicators": 0.16797551737927183
+  },
+  "s4.0_n120": {
+   "mlp_acc_median": 0.583,
+   "mlp_acc_p10": 0.56405,
+   "majority_median": 0.50625,
+   "screen_hit_rate_corr": 0.55,
+   "screen_hit_rate_L1": 0.4999999999999999,
+   "mean_abs_corr_true_indicators": 0.1793032862241965
+  },
+  "s4.0_n240": {
+   "mlp_acc_median": 0.5922499999999999,
+   "mlp_acc_p10": 0.57675,
+   "majority_median": 0.511,
+   "screen_hit_rate_corr": 0.7500000000000001,
+   "screen_hit_rate_L1": 0.7416666666666667,
+   "mean_abs_corr_true_indicators": 0.1758839682127193
+  },
+  "s4.0_n1000": {
+   "mlp_acc_median": 0.5925,
+   "mlp_acc_p10": 0.5762,
+   "majority_median": 0.51225,
+   "screen_hit_rate_corr": 1.0,
+   "screen_hit_rate_L1": 0.9916666666666668,
+   "mean_abs_corr_true_indicators": 0.16788232040627907
+  }
+ }
+}

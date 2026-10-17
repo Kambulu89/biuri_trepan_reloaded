@@ -1,0 +1,35 @@
+{
+ "id": "AX-GC-ORD-employment_since-A72",
+ "statement_nl": "Em «employment_since», os níveis A72, A73, A74, A75 são todos «pelo menos A72» na ordem documentada (A71 < A72 < A73 < A74 < A75).",
+ "owl_axiom": "EquivalentClasses(AtLeast_employment_since_A72 ObjectUnionOf(Lvl_employment_since_A72 Lvl_employment_since_A73 Lvl_employment_since_A74 Lvl_employment_since_A75))",
+ "entities": [
+  "employment_since__A72",
+  "employment_since__A73",
+  "employment_since__A74",
+  "employment_since__A75"
+ ],
+ "axiom_type": "T2_ORDINAL_ORDER",
+ "source": {
+  "citation": "UCI Statlog (German Credit Data), dicionário de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) — CITADO DE MEMÓRIA, NÃO VERIFICADO",
+  "locator": "Atributo 7",
+  "verified": false
+ },
+ "scope_and_validity": "só os níveis listados; níveis não ordinais (sem conta / desconhecido) excluídos; ordem implícita na lista do dicionário — a confirmar",
+ "universality": "CONDITIONAL",
+ "epistemic_status": "HYPOTHESIS",
+ "permitted_use": "PREFERENCE",
+ "authored_by": "AI_DRAFT",
+ "derived_from_data": false,
+ "independence_from_eval": true,
+ "reviews": {
+  "domain": {
+   "status": "DOMAIN_REVIEW_PENDING"
+  },
+  "ontology": {
+   "status": "ONTOLOGY_REVIEW_PENDING"
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING"
+  }
+ }
+}

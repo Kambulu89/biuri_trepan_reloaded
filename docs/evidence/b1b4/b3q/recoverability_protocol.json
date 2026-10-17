@@ -1,0 +1,890 @@
+{
+ "protocol": "B3-Q / Doc. 49 \u00a73: protocolo da PORTA DE RECUPERABILIDADE da parti\u00e7\u00e3o de conceitos (s\u00f3 X de treino; nunca r\u00f3tulos nem teste; nenhuma ontologia, nenhum modelo TREPAN).\nCompara m\u00e9todos n\u00e3o supervisionados plaus\u00edveis (agrupamento hier\u00e1rquico por |Spearman| e por |Pearson|, espectral sobre |Pearson|, k-means sobre o perfil de correla\u00e7\u00e3o, an\u00e1lise fatorial com\nvarimax) com K conhecido e um m\u00e9todo com K estimado (silhueta). Mede: ARI global; pureza m\u00e9dia por conceito (recupera\u00e7\u00e3o PARCIAL dos conceitos); variabilidade entre r\u00e9plicas (p10/p50/p90);\nsensibilidade ao m\u00e9todo (melhor-de-todos = o mais favor\u00e1vel aos DADOS, logo o mais conservador para o conhecimento externo). Gerador = LATENT_CONCEPT_V1 (Doc. 44) s\u00f3 nos indicadores X.",
+ "reps": 40,
+ "K": 8,
+ "g": 6,
+ "labels_used": false,
+ "test_data_used": false,
+ "results": {
+  "lam0.6-0.85_K8_g6_n30": {
+   "hier_spearman": {
+    "ari_p10": 0.6387265527936394,
+    "ari_median": 0.7768902447709058,
+    "ari_p90": 0.9488978946327963,
+    "purity_median": 0.9375
+   },
+   "hier_pearson": {
+    "ari_p10": 0.7158926454487589,
+    "ari_median": 0.8036597632402624,
+    "ari_p90": 0.9540081051695167,
+    "purity_median": 0.9375
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.8456327234427674,
+    "ari_median": 0.9488978946327963,
+    "ari_p90": 1.0,
+    "purity_median": 0.9791666666666667
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.8423219230722148,
+    "ari_median": 0.9488978946327963,
+    "ari_p90": 1.0,
+    "purity_median": 0.9791666666666667
+   },
+   "factor_varimax": {
+    "ari_p10": 0.722569051534767,
+    "ari_median": 0.8498439602682714,
+    "ari_p90": 0.9488978946327963,
+    "purity_median": 0.9375
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.7098081777147144,
+    "ari_median": 0.8423758355798971,
+    "ari_p90": 0.9471520239969823,
+    "purity_median": 0.9166666666666667
+   },
+   "_best_of_methods_median_ari": 0.9488978946327963,
+   "_best_of_methods_median_purity": 0.9791666666666667,
+   "_range_of_median_ari_across_methods": [
+    0.7768902447709058,
+    0.9488978946327963
+   ]
+  },
+  "lam0.6-0.85_K8_g6_n60": {
+   "hier_spearman": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.6-0.85_K8_g6_n120": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.6-0.85_K8_g6_n240": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.6-0.85_K8_g6_n1000": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.45-0.65_K8_g6_n30": {
+   "hier_spearman": {
+    "ari_p10": 0.15427824249157707,
+    "ari_median": 0.2683660522402922,
+    "ari_p90": 0.41742445662377986,
+    "purity_median": 0.6145833333333334
+   },
+   "hier_pearson": {
+    "ari_p10": 0.21355377390805694,
+    "ari_median": 0.3219711374337241,
+    "ari_p90": 0.4541734842377477,
+    "purity_median": 0.6666666666666666
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.1815151013452162,
+    "ari_median": 0.3556131006670417,
+    "ari_p90": 0.5444240399272126,
+    "purity_median": 0.6458333333333333
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.20423276386803557,
+    "ari_median": 0.32479897853416995,
+    "ari_p90": 0.5018054746651136,
+    "purity_median": 0.625
+   },
+   "factor_varimax": {
+    "ari_p10": 0.17665514987393782,
+    "ari_median": 0.3095972943929899,
+    "ari_p90": 0.4430425386183259,
+    "purity_median": 0.625
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.15240374806496937,
+    "ari_median": 0.2893351252484157,
+    "ari_p90": 0.44994915266190405,
+    "purity_median": 0.53125
+   },
+   "_best_of_methods_median_ari": 0.3556131006670417,
+   "_best_of_methods_median_purity": 0.6666666666666666,
+   "_range_of_median_ari_across_methods": [
+    0.2683660522402922,
+    0.3556131006670417
+   ]
+  },
+  "lam0.45-0.65_K8_g6_n60": {
+   "hier_spearman": {
+    "ari_p10": 0.518912873380849,
+    "ari_median": 0.6857193252527866,
+    "ari_p90": 0.8570500123434348,
+    "purity_median": 0.8854166666666666
+   },
+   "hier_pearson": {
+    "ari_p10": 0.5653222745169479,
+    "ari_median": 0.7313240076026836,
+    "ari_p90": 0.8986663724245675,
+    "purity_median": 0.8958333333333334
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.6572395782957733,
+    "ari_median": 0.8524168555130922,
+    "ari_p90": 0.9488978946327963,
+    "purity_median": 0.9375
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.6394828401139578,
+    "ari_median": 0.812189903245286,
+    "ari_p90": 0.9488978946327963,
+    "purity_median": 0.9166666666666667
+   },
+   "factor_varimax": {
+    "ari_p10": 0.556455034251332,
+    "ari_median": 0.7252765086488174,
+    "ari_p90": 0.9488978946327963,
+    "purity_median": 0.8854166666666666
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.5138963252592921,
+    "ari_median": 0.7274859308782606,
+    "ari_p90": 0.8939260131488568,
+    "purity_median": 0.8020833333333334
+   },
+   "_best_of_methods_median_ari": 0.8524168555130922,
+   "_best_of_methods_median_purity": 0.9375,
+   "_range_of_median_ari_across_methods": [
+    0.6857193252527866,
+    0.8524168555130922
+   ]
+  },
+  "lam0.45-0.65_K8_g6_n120": {
+   "hier_spearman": {
+    "ari_p10": 0.9015898930021448,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.9429368377083058,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.45-0.65_K8_g6_n240": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.45-0.65_K8_g6_n1000": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.35-0.55_K8_g6_n30": {
+   "hier_spearman": {
+    "ari_p10": 0.0487513372621941,
+    "ari_median": 0.11563419704301628,
+    "ari_p90": 0.1899553548121681,
+    "purity_median": 0.47916666666666663
+   },
+   "hier_pearson": {
+    "ari_p10": 0.05073027271983937,
+    "ari_median": 0.13469216443780627,
+    "ari_p90": 0.24487697599992012,
+    "purity_median": 0.5
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.025664769653116714,
+    "ari_median": 0.09968300916749948,
+    "ari_p90": 0.2229448146908689,
+    "purity_median": 0.4583333333333333
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.04404512790134738,
+    "ari_median": 0.1294034596568319,
+    "ari_p90": 0.2416303787785783,
+    "purity_median": 0.46875
+   },
+   "factor_varimax": {
+    "ari_p10": 0.03295719737638341,
+    "ari_median": 0.10825928497118997,
+    "ari_p90": 0.19900399566374458,
+    "purity_median": 0.46875
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.06260546810990636,
+    "ari_median": 0.1330556444031872,
+    "ari_p90": 0.18856601701335304,
+    "purity_median": 0.3958333333333333
+   },
+   "_best_of_methods_median_ari": 0.13469216443780627,
+   "_best_of_methods_median_purity": 0.5,
+   "_range_of_median_ari_across_methods": [
+    0.09968300916749948,
+    0.13469216443780627
+   ]
+  },
+  "lam0.35-0.55_K8_g6_n60": {
+   "hier_spearman": {
+    "ari_p10": 0.17328082943764667,
+    "ari_median": 0.30157870033548484,
+    "ari_p90": 0.4528098761271865,
+    "purity_median": 0.6354166666666666
+   },
+   "hier_pearson": {
+    "ari_p10": 0.18130335769327785,
+    "ari_median": 0.33026148668619326,
+    "ari_p90": 0.47016752786709454,
+    "purity_median": 0.6458333333333334
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.20301529096617138,
+    "ari_median": 0.35930710111472675,
+    "ari_p90": 0.538273801671961,
+    "purity_median": 0.6666666666666666
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.20216520620810968,
+    "ari_median": 0.33816049111531027,
+    "ari_p90": 0.48085888383789543,
+    "purity_median": 0.6354166666666666
+   },
+   "factor_varimax": {
+    "ari_p10": 0.17018115310245177,
+    "ari_median": 0.340119073237344,
+    "ari_p90": 0.4655532563959126,
+    "purity_median": 0.6458333333333333
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.20132510470717394,
+    "ari_median": 0.3432546319789159,
+    "ari_p90": 0.48480148992527367,
+    "purity_median": 0.5520833333333333
+   },
+   "_best_of_methods_median_ari": 0.35930710111472675,
+   "_best_of_methods_median_purity": 0.6666666666666666,
+   "_range_of_median_ari_across_methods": [
+    0.30157870033548484,
+    0.35930710111472675
+   ]
+  },
+  "lam0.35-0.55_K8_g6_n120": {
+   "hier_spearman": {
+    "ari_p10": 0.5045079190036825,
+    "ari_median": 0.627458719329047,
+    "ari_p90": 0.8194800078786685,
+    "purity_median": 0.8333333333333333
+   },
+   "hier_pearson": {
+    "ari_p10": 0.5279555825053222,
+    "ari_median": 0.6732774162049868,
+    "ari_p90": 0.8981682095725823,
+    "purity_median": 0.8958333333333333
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.6691156197078258,
+    "ari_median": 0.7908888673952994,
+    "ari_p90": 1.0,
+    "purity_median": 0.90625
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.5681400522294225,
+    "ari_median": 0.6978080857282026,
+    "ari_p90": 0.8624993797604559,
+    "purity_median": 0.8541666666666667
+   },
+   "factor_varimax": {
+    "ari_p10": 0.5548106670113775,
+    "ari_median": 0.7089127923594538,
+    "ari_p90": 0.8986663724245675,
+    "purity_median": 0.875
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.5213623381986986,
+    "ari_median": 0.6045777895103699,
+    "ari_p90": 0.8491615480333704,
+    "purity_median": 0.71875
+   },
+   "_best_of_methods_median_ari": 0.7908888673952994,
+   "_best_of_methods_median_purity": 0.90625,
+   "_range_of_median_ari_across_methods": [
+    0.6045777895103699,
+    0.7908888673952994
+   ]
+  },
+  "lam0.35-0.55_K8_g6_n240": {
+   "hier_spearman": {
+    "ari_p10": 0.8029358425556656,
+    "ari_median": 0.9744489473163982,
+    "ari_p90": 1.0,
+    "purity_median": 0.9895833333333334
+   },
+   "hier_pearson": {
+    "ari_p10": 0.8939260131488568,
+    "ari_median": 0.9488978946327963,
+    "ari_p90": 1.0,
+    "purity_median": 0.9791666666666667
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.8939260131488568,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 0.9030789978039977,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.84410247698727,
+    "ari_median": 0.9527499630135357,
+    "ari_p90": 1.0,
+    "purity_median": 0.9791666666666667
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    0.9488978946327963,
+    1.0
+   ]
+  },
+  "lam0.35-0.55_K8_g6_n1000": {
+   "hier_spearman": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  },
+  "lam0.25-0.45_K8_g6_n30": {
+   "hier_spearman": {
+    "ari_p10": -0.002541042366213566,
+    "ari_median": 0.04228495863766739,
+    "ari_p90": 0.09709719427607325,
+    "purity_median": 0.3958333333333333
+   },
+   "hier_pearson": {
+    "ari_p10": -0.027225719415702274,
+    "ari_median": 0.03412271791565659,
+    "ari_p90": 0.11009163291872208,
+    "purity_median": 0.41666666666666663
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.0070672241082984895,
+    "ari_median": 0.049245903432235616,
+    "ari_p90": 0.08870013489891364,
+    "purity_median": 0.3958333333333333
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": -0.0024504142531489486,
+    "ari_median": 0.03087854684839539,
+    "ari_p90": 0.08719458421840406,
+    "purity_median": 0.375
+   },
+   "factor_varimax": {
+    "ari_p10": 0.0026692753336594174,
+    "ari_median": 0.04372873546241342,
+    "ari_p90": 0.0960265447736535,
+    "purity_median": 0.3958333333333333
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": -0.004431666179116173,
+    "ari_median": 0.040911886349885206,
+    "ari_p90": 0.08050125526332196,
+    "purity_median": 0.3125
+   },
+   "_best_of_methods_median_ari": 0.049245903432235616,
+   "_best_of_methods_median_purity": 0.41666666666666663,
+   "_range_of_median_ari_across_methods": [
+    0.03087854684839539,
+    0.049245903432235616
+   ]
+  },
+  "lam0.25-0.45_K8_g6_n60": {
+   "hier_spearman": {
+    "ari_p10": 0.02867245268393784,
+    "ari_median": 0.08816262820465967,
+    "ari_p90": 0.1733629320644293,
+    "purity_median": 0.45833333333333337
+   },
+   "hier_pearson": {
+    "ari_p10": 0.04496807742694476,
+    "ari_median": 0.09521456497239023,
+    "ari_p90": 0.187579641708398,
+    "purity_median": 0.46875
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.028856147380796948,
+    "ari_median": 0.12646547333059607,
+    "ari_p90": 0.17586370119390798,
+    "purity_median": 0.46875
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.03934734391170282,
+    "ari_median": 0.10122887449120727,
+    "ari_p90": 0.17752641200728575,
+    "purity_median": 0.4583333333333333
+   },
+   "factor_varimax": {
+    "ari_p10": 0.020809024236194126,
+    "ari_median": 0.09770608919072601,
+    "ari_p90": 0.20491494245409714,
+    "purity_median": 0.4583333333333333
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.05039016531714146,
+    "ari_median": 0.10988578774710314,
+    "ari_p90": 0.192606136188771,
+    "purity_median": 0.375
+   },
+   "_best_of_methods_median_ari": 0.12646547333059607,
+   "_best_of_methods_median_purity": 0.46875,
+   "_range_of_median_ari_across_methods": [
+    0.08816262820465967,
+    0.12646547333059607
+   ]
+  },
+  "lam0.25-0.45_K8_g6_n120": {
+   "hier_spearman": {
+    "ari_p10": 0.10336074899829412,
+    "ari_median": 0.20508243191695769,
+    "ari_p90": 0.32314964950746095,
+    "purity_median": 0.5625
+   },
+   "hier_pearson": {
+    "ari_p10": 0.10360942231571955,
+    "ari_median": 0.22289096392436009,
+    "ari_p90": 0.34937519462202116,
+    "purity_median": 0.5833333333333334
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.12006437833812861,
+    "ari_median": 0.22834050435976122,
+    "ari_p90": 0.3220315967390222,
+    "purity_median": 0.5416666666666667
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.12225942157691745,
+    "ari_median": 0.19326469049068706,
+    "ari_p90": 0.3379041272367312,
+    "purity_median": 0.5416666666666666
+   },
+   "factor_varimax": {
+    "ari_p10": 0.1021112001599152,
+    "ari_median": 0.21049180826119437,
+    "ari_p90": 0.3435328229985786,
+    "purity_median": 0.5520833333333334
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.12558112665807925,
+    "ari_median": 0.2136630341747956,
+    "ari_p90": 0.3257288012580138,
+    "purity_median": 0.45833333333333326
+   },
+   "_best_of_methods_median_ari": 0.22834050435976122,
+   "_best_of_methods_median_purity": 0.5833333333333334,
+   "_range_of_median_ari_across_methods": [
+    0.19326469049068706,
+    0.22834050435976122
+   ]
+  },
+  "lam0.25-0.45_K8_g6_n240": {
+   "hier_spearman": {
+    "ari_p10": 0.30382291617991775,
+    "ari_median": 0.47617998208890305,
+    "ari_p90": 0.647943147803261,
+    "purity_median": 0.75
+   },
+   "hier_pearson": {
+    "ari_p10": 0.38370701998749124,
+    "ari_median": 0.5346375593355412,
+    "ari_p90": 0.6655301922254295,
+    "purity_median": 0.7916666666666666
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 0.4142921164099182,
+    "ari_median": 0.5773116970223022,
+    "ari_p90": 0.8007932944900436,
+    "purity_median": 0.7916666666666667
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.30477649506622767,
+    "ari_median": 0.4462342604719229,
+    "ari_p90": 0.5954358623197651,
+    "purity_median": 0.7083333333333334
+   },
+   "factor_varimax": {
+    "ari_p10": 0.3904623886280642,
+    "ari_median": 0.5301531494418796,
+    "ari_p90": 0.7028041111001914,
+    "purity_median": 0.7708333333333333
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.3619334566054163,
+    "ari_median": 0.49295149986033193,
+    "ari_p90": 0.692423954876913,
+    "purity_median": 0.6354166666666666
+   },
+   "_best_of_methods_median_ari": 0.5773116970223022,
+   "_best_of_methods_median_purity": 0.7916666666666667,
+   "_range_of_median_ari_across_methods": [
+    0.4462342604719229,
+    0.5773116970223022
+   ]
+  },
+  "lam0.25-0.45_K8_g6_n1000": {
+   "hier_spearman": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_pearson": {
+    "ari_p10": 0.9948897894632797,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "spectral_abs_pearson": {
+    "ari_p10": 1.0,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "kmeans_corr_profile": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "factor_varimax": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "hier_spearman_K_estimated": {
+    "ari_p10": 0.9488978946327963,
+    "ari_median": 1.0,
+    "ari_p90": 1.0,
+    "purity_median": 1.0
+   },
+   "_best_of_methods_median_ari": 1.0,
+   "_best_of_methods_median_purity": 1.0,
+   "_range_of_median_ari_across_methods": [
+    1.0,
+    1.0
+   ]
+  }
+ }
+}

@@ -77,3 +77,21 @@ def test_b33_freeze_hashes_still_match_and_b34_manifest_not_frozen():
         assert hashlib.sha256((ROOT / f).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == h, f
     m = json.loads((ROOT / "docs/b1b4/manifest_v3/B34_EXPERIMENT_MANIFEST.DRAFT.json").read_text())
     assert m["frozen"] is False and m["state"] == "B34 = DESIGN_ONLY / NOT_EXECUTED"
+
+
+def test_b34_v1_preserved_manifests_not_frozen_and_gate_evidence_consistent():
+    m2 = json.loads((ROOT / "docs/b1b4/manifest_v3/B34_EXPERIMENT_MANIFEST.v2.DRAFT.json").read_text())
+    h2 = json.loads((ROOT / "docs/b1b4/manifest_v3/H2_EXPERIMENT_MANIFEST.DRAFT.json").read_text())
+    assert m2["frozen"] is False and h2["frozen"] is False and m2["restrictions"]["campaign"] == "NÃO autorizada" and h2["restrictions"]["M0_M6_CORE_INTEGRATION"] == "NOT_AUTHORIZED"
+    doc = (ROOT / "docs/b1b4/44_PROTOCOLO_B34_CONHECIMENTO_PREVIO.md").read_text()
+    body = doc.split("\n---\n\n## Histórico de versões")[0]
+    assert hashlib.sha256(body.rstrip("\n").encode()).hexdigest() == m2["preserves"]["v1_body_sha256_rstrip"]      # v1 preservada integralmente
+    rec = json.loads((ROOT / "docs/evidence/b1b4/b3q/recoverability_protocol.json").read_text())
+    assert rec["labels_used"] is False and rec["test_data_used"] is False
+    lrn = json.loads((ROOT / "docs/evidence/b1b4/b3q/learnability.json").read_text())["results"]
+    assert lrn["xor_lam0.25-0.45_n120"]["mlp_accuracy_median"] <= lrn["xor_lam0.25-0.45_n120"]["majority_rate_median"] + 0.01   # XOR não aprendido com cargas fracas
+    add = json.loads((ROOT / "docs/evidence/b1b4/b3q/additive_gate.json").read_text())["results"]
+    w = add["s2.0_n60"]
+    assert w["mlp_acc_median"] - w["majority_median"] >= 0.05 and max(w["screen_hit_rate_corr"], w["screen_hit_rate_L1"]) <= 0.9    # janela G1∧G2 da família aditiva
+    r = add["s2.0_n240"]
+    assert max(r["screen_hit_rate_corr"], r["screen_hit_rate_L1"]) > 0.9                                                     # redundante para os genéricos em n=240

@@ -1,0 +1,34 @@
+{
+ "id": "AX-GC-TAX-purpose-HouseholdGoods",
+ "statement_nl": "Em «purpose», A42, A43, A44 formam a categoria «HouseholdGoods» (agrupamento taxonómico proposto).",
+ "owl_axiom": "EquivalentClasses(Purpose_HouseholdGoods ObjectUnionOf(Lvl_purpose_A42 Lvl_purpose_A43 Lvl_purpose_A44))",
+ "entities": [
+  "purpose__A42",
+  "purpose__A43",
+  "purpose__A44"
+ ],
+ "axiom_type": "T1_DEFINED_CLASS_UNION",
+ "source": {
+  "citation": "UCI Statlog (German Credit Data), dicionário de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) — CITADO DE MEMÓRIA, NÃO VERIFICADO",
+  "locator": "Atributo 4",
+  "verified": false
+ },
+ "scope_and_validity": "agrupamento proposto pelo rascunho; critério de pertença a validar por especialista",
+ "universality": "CONDITIONAL",
+ "epistemic_status": "HYPOTHESIS",
+ "permitted_use": "PREFERENCE",
+ "authored_by": "AI_DRAFT",
+ "derived_from_data": false,
+ "independence_from_eval": true,
+ "reviews": {
+  "domain": {
+   "status": "DOMAIN_REVIEW_PENDING"
+  },
+  "ontology": {
+   "status": "ONTOLOGY_REVIEW_PENDING"
+  },
+  "methodology": {
+   "status": "METHODOLOGY_REVIEW_PENDING"
+  }
+ }
+}
