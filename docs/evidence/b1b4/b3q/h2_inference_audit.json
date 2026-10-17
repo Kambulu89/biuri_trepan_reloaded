@@ -1,0 +1,1052 @@
+{
+ "cards": [
+  {
+   "card": "AX-GC-ORD-status_checking_account-A12",
+   "variable": "status_checking_account",
+   "statement": "Em \u00abstatus_checking_account\u00bb, os n\u00edveis A12, A13 s\u00e3o todos \u00abpelo menos A12\u00bb na ordem documentada (A11 < A12 < A13).",
+   "entities": [
+    "status_checking_account__A12",
+    "status_checking_account__A13"
+   ],
+   "type_claim": "ORDINAL parcial (A11<A12<A13 por montante); A14 \u00absem conta\u00bb \u00e9 NOMINAL e fica de fora",
+   "depends_on_hypotheses": [
+    "A13 agrega \u00ab\u2265 200 DM\u00bb e \u00abcess\u00e3o de ordenado \u2265 1 ano\u00bb: heterog\u00e9neo, ordem total assumida",
+    "A14 n\u00e3o orden\u00e1vel"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-status_checking_account-A13",
+   "variable": "status_checking_account",
+   "statement": "Em \u00abstatus_checking_account\u00bb, os n\u00edveis A13 s\u00e3o todos \u00abpelo menos A13\u00bb na ordem documentada (A11 < A12 < A13).",
+   "entities": [
+    "status_checking_account__A13"
+   ],
+   "type_claim": "ORDINAL parcial (A11<A12<A13 por montante); A14 \u00absem conta\u00bb \u00e9 NOMINAL e fica de fora",
+   "depends_on_hypotheses": [
+    "A13 agrega \u00ab\u2265 200 DM\u00bb e \u00abcess\u00e3o de ordenado \u2265 1 ano\u00bb: heterog\u00e9neo, ordem total assumida",
+    "A14 n\u00e3o orden\u00e1vel"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "TRIVIAL_SINGLETON_NO_CONTENT (uni\u00e3o de um \u00fanico n\u00edvel \u2261 o pr\u00f3prio n\u00edvel; sem literal)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 0
+  },
+  {
+   "card": "AX-GC-ORD-savings_account-A62",
+   "variable": "savings_account",
+   "statement": "Em \u00absavings_account\u00bb, os n\u00edveis A62, A63, A64 s\u00e3o todos \u00abpelo menos A62\u00bb na ordem documentada (A61 < A62 < A63 < A64).",
+   "entities": [
+    "savings_account__A62",
+    "savings_account__A63",
+    "savings_account__A64"
+   ],
+   "type_claim": "ORDINAL (intervalos de montante A61<A62<A63<A64); A65 \u00abdesconhecido/sem poupan\u00e7a\u00bb NOMINAL e fora",
+   "depends_on_hypotheses": [
+    "intervalos tal como no dicion\u00e1rio (n\u00e3o verificados)",
+    "A65 fora da ordem"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-savings_account-A63",
+   "variable": "savings_account",
+   "statement": "Em \u00absavings_account\u00bb, os n\u00edveis A63, A64 s\u00e3o todos \u00abpelo menos A63\u00bb na ordem documentada (A61 < A62 < A63 < A64).",
+   "entities": [
+    "savings_account__A63",
+    "savings_account__A64"
+   ],
+   "type_claim": "ORDINAL (intervalos de montante A61<A62<A63<A64); A65 \u00abdesconhecido/sem poupan\u00e7a\u00bb NOMINAL e fora",
+   "depends_on_hypotheses": [
+    "intervalos tal como no dicion\u00e1rio (n\u00e3o verificados)",
+    "A65 fora da ordem"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-savings_account-A64",
+   "variable": "savings_account",
+   "statement": "Em \u00absavings_account\u00bb, os n\u00edveis A64 s\u00e3o todos \u00abpelo menos A64\u00bb na ordem documentada (A61 < A62 < A63 < A64).",
+   "entities": [
+    "savings_account__A64"
+   ],
+   "type_claim": "ORDINAL (intervalos de montante A61<A62<A63<A64); A65 \u00abdesconhecido/sem poupan\u00e7a\u00bb NOMINAL e fora",
+   "depends_on_hypotheses": [
+    "intervalos tal como no dicion\u00e1rio (n\u00e3o verificados)",
+    "A65 fora da ordem"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "TRIVIAL_SINGLETON_NO_CONTENT (uni\u00e3o de um \u00fanico n\u00edvel \u2261 o pr\u00f3prio n\u00edvel; sem literal)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 0
+  },
+  {
+   "card": "AX-GC-ORD-employment_since-A72",
+   "variable": "employment_since",
+   "statement": "Em \u00abemployment_since\u00bb, os n\u00edveis A72, A73, A74, A75 s\u00e3o todos \u00abpelo menos A72\u00bb na ordem documentada (A71 < A72 < A73 < A74 < A75).",
+   "entities": [
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "type_claim": "ORDINAL (dura\u00e7\u00e3o: A71 desempregado < A72 <1 a < A73 1\u20134 < A74 4\u20137 < A75 \u22657)",
+   "depends_on_hypotheses": [
+    "A71 \u00abdesempregado\u00bb \u00e9 um estado, n\u00e3o uma dura\u00e7\u00e3o: coloc\u00e1-lo abaixo de \u00ab<1 ano\u00bb \u00e9 conven\u00e7\u00e3o a confirmar"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 6
+  },
+  {
+   "card": "AX-GC-ORD-employment_since-A73",
+   "variable": "employment_since",
+   "statement": "Em \u00abemployment_since\u00bb, os n\u00edveis A73, A74, A75 s\u00e3o todos \u00abpelo menos A73\u00bb na ordem documentada (A71 < A72 < A73 < A74 < A75).",
+   "entities": [
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "type_claim": "ORDINAL (dura\u00e7\u00e3o: A71 desempregado < A72 <1 a < A73 1\u20134 < A74 4\u20137 < A75 \u22657)",
+   "depends_on_hypotheses": [
+    "A71 \u00abdesempregado\u00bb \u00e9 um estado, n\u00e3o uma dura\u00e7\u00e3o: coloc\u00e1-lo abaixo de \u00ab<1 ano\u00bb \u00e9 conven\u00e7\u00e3o a confirmar"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-employment_since-A74",
+   "variable": "employment_since",
+   "statement": "Em \u00abemployment_since\u00bb, os n\u00edveis A74, A75 s\u00e3o todos \u00abpelo menos A74\u00bb na ordem documentada (A71 < A72 < A73 < A74 < A75).",
+   "entities": [
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "type_claim": "ORDINAL (dura\u00e7\u00e3o: A71 desempregado < A72 <1 a < A73 1\u20134 < A74 4\u20137 < A75 \u22657)",
+   "depends_on_hypotheses": [
+    "A71 \u00abdesempregado\u00bb \u00e9 um estado, n\u00e3o uma dura\u00e7\u00e3o: coloc\u00e1-lo abaixo de \u00ab<1 ano\u00bb \u00e9 conven\u00e7\u00e3o a confirmar"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_PENDING_SOURCE",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-employment_since-A75",
+   "variable": "employment_since",
+   "statement": "Em \u00abemployment_since\u00bb, os n\u00edveis A75 s\u00e3o todos \u00abpelo menos A75\u00bb na ordem documentada (A71 < A72 < A73 < A74 < A75).",
+   "entities": [
+    "employment_since__A75"
+   ],
+   "type_claim": "ORDINAL (dura\u00e7\u00e3o: A71 desempregado < A72 <1 a < A73 1\u20134 < A74 4\u20137 < A75 \u22657)",
+   "depends_on_hypotheses": [
+    "A71 \u00abdesempregado\u00bb \u00e9 um estado, n\u00e3o uma dura\u00e7\u00e3o: coloc\u00e1-lo abaixo de \u00ab<1 ano\u00bb \u00e9 conven\u00e7\u00e3o a confirmar"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "TRIVIAL_SINGLETON_NO_CONTENT (uni\u00e3o de um \u00fanico n\u00edvel \u2261 o pr\u00f3prio n\u00edvel; sem literal)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 0
+  },
+  {
+   "card": "AX-GC-ORD-job-A172",
+   "variable": "job",
+   "statement": "Em \u00abjob\u00bb, os n\u00edveis A172, A173, A174 s\u00e3o todos \u00abpelo menos A172\u00bb na ordem documentada (A171 < A172 < A173 < A174).",
+   "entities": [
+    "job__A172",
+    "job__A173",
+    "job__A174"
+   ],
+   "type_claim": "ORDEM FRACA (qualifica\u00e7\u00e3o) com dimens\u00f5es misturadas (resid\u00eancia, qualifica\u00e7\u00e3o, trabalho por conta pr\u00f3pria)",
+   "depends_on_hypotheses": [
+    "a ordem A171<A172<A173<A174 \u00e9 inferida da ordem da lista, n\u00e3o de uma defini\u00e7\u00e3o",
+    "A171 mistura \u00abdesempregado\u00bb e \u00abn\u00e3o qualificado n\u00e3o residente\u00bb"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_WEAK_SEMANTICS (tratar como NOMINAL salvo fonte)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-job-A173",
+   "variable": "job",
+   "statement": "Em \u00abjob\u00bb, os n\u00edveis A173, A174 s\u00e3o todos \u00abpelo menos A173\u00bb na ordem documentada (A171 < A172 < A173 < A174).",
+   "entities": [
+    "job__A173",
+    "job__A174"
+   ],
+   "type_claim": "ORDEM FRACA (qualifica\u00e7\u00e3o) com dimens\u00f5es misturadas (resid\u00eancia, qualifica\u00e7\u00e3o, trabalho por conta pr\u00f3pria)",
+   "depends_on_hypotheses": [
+    "a ordem A171<A172<A173<A174 \u00e9 inferida da ordem da lista, n\u00e3o de uma defini\u00e7\u00e3o",
+    "A171 mistura \u00abdesempregado\u00bb e \u00abn\u00e3o qualificado n\u00e3o residente\u00bb"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "HOLD_WEAK_SEMANTICS (tratar como NOMINAL salvo fonte)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 5
+  },
+  {
+   "card": "AX-GC-ORD-job-A174",
+   "variable": "job",
+   "statement": "Em \u00abjob\u00bb, os n\u00edveis A174 s\u00e3o todos \u00abpelo menos A174\u00bb na ordem documentada (A171 < A172 < A173 < A174).",
+   "entities": [
+    "job__A174"
+   ],
+   "type_claim": "ORDEM FRACA (qualifica\u00e7\u00e3o) com dimens\u00f5es misturadas (resid\u00eancia, qualifica\u00e7\u00e3o, trabalho por conta pr\u00f3pria)",
+   "depends_on_hypotheses": [
+    "a ordem A171<A172<A173<A174 \u00e9 inferida da ordem da lista, n\u00e3o de uma defini\u00e7\u00e3o",
+    "A171 mistura \u00abdesempregado\u00bb e \u00abn\u00e3o qualificado n\u00e3o residente\u00bb"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "TRIVIAL_SINGLETON_NO_CONTENT (uni\u00e3o de um \u00fanico n\u00edvel \u2261 o pr\u00f3prio n\u00edvel; sem literal)",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 0
+  },
+  {
+   "card": "AX-GC-TAX-purpose-Vehicles",
+   "variable": "purpose",
+   "statement": "Em \u00abpurpose\u00bb, A40, A41 formam a categoria \u00abVehicles\u00bb (agrupamento taxon\u00f3mico proposto).",
+   "entities": [
+    "purpose__A40",
+    "purpose__A41"
+   ],
+   "type_claim": "NOMINAL; agrupamentos \u00abVe\u00edculos\u00bb e \u00abBens dom\u00e9sticos\u00bb s\u00e3o proposta do rascunho",
+   "depends_on_hypotheses": [
+    "nenhuma base documental conhecida para os agrupamentos; crit\u00e9rio de perten\u00e7a por definir; categorias raras (A44: 10, A410: 6, A48: 5 em treino)"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "EXCLUDE_NO_DOCUMENTARY_BASIS",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 4
+  },
+  {
+   "card": "AX-GC-TAX-purpose-HouseholdGoods",
+   "variable": "purpose",
+   "statement": "Em \u00abpurpose\u00bb, A42, A43, A44 formam a categoria \u00abHouseholdGoods\u00bb (agrupamento taxon\u00f3mico proposto).",
+   "entities": [
+    "purpose__A42",
+    "purpose__A43",
+    "purpose__A44"
+   ],
+   "type_claim": "NOMINAL; agrupamentos \u00abVe\u00edculos\u00bb e \u00abBens dom\u00e9sticos\u00bb s\u00e3o proposta do rascunho",
+   "depends_on_hypotheses": [
+    "nenhuma base documental conhecida para os agrupamentos; crit\u00e9rio de perten\u00e7a por definir; categorias raras (A44: 10, A410: 6, A48: 5 em treino)"
+   ],
+   "documentation_status": "UNVERIFIED_NO_LOCAL_DOCUMENT",
+   "epistemic_status": "HYPOTHESIS",
+   "authored_by": "AI_DRAFT",
+   "reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "decision": "EXCLUDE_NO_DOCUMENTARY_BASIS",
+   "evaluable_now": false,
+   "n_inferred_facts_with_this_concept_as_target": 6
+  }
+ ],
+ "variable_audit": {
+  "status_checking_account": {
+   "type_claim": "ORDINAL parcial (A11<A12<A13 por montante); A14 \u00absem conta\u00bb \u00e9 NOMINAL e fica de fora",
+   "depends_on_hypotheses": [
+    "A13 agrega \u00ab\u2265 200 DM\u00bb e \u00abcess\u00e3o de ordenado \u2265 1 ano\u00bb: heterog\u00e9neo, ordem total assumida",
+    "A14 n\u00e3o orden\u00e1vel"
+   ],
+   "decision": "HOLD_PENDING_SOURCE"
+  },
+  "savings_account": {
+   "type_claim": "ORDINAL (intervalos de montante A61<A62<A63<A64); A65 \u00abdesconhecido/sem poupan\u00e7a\u00bb NOMINAL e fora",
+   "depends_on_hypotheses": [
+    "intervalos tal como no dicion\u00e1rio (n\u00e3o verificados)",
+    "A65 fora da ordem"
+   ],
+   "decision": "HOLD_PENDING_SOURCE"
+  },
+  "employment_since": {
+   "type_claim": "ORDINAL (dura\u00e7\u00e3o: A71 desempregado < A72 <1 a < A73 1\u20134 < A74 4\u20137 < A75 \u22657)",
+   "depends_on_hypotheses": [
+    "A71 \u00abdesempregado\u00bb \u00e9 um estado, n\u00e3o uma dura\u00e7\u00e3o: coloc\u00e1-lo abaixo de \u00ab<1 ano\u00bb \u00e9 conven\u00e7\u00e3o a confirmar"
+   ],
+   "decision": "HOLD_PENDING_SOURCE"
+  },
+  "job": {
+   "type_claim": "ORDEM FRACA (qualifica\u00e7\u00e3o) com dimens\u00f5es misturadas (resid\u00eancia, qualifica\u00e7\u00e3o, trabalho por conta pr\u00f3pria)",
+   "depends_on_hypotheses": [
+    "a ordem A171<A172<A173<A174 \u00e9 inferida da ordem da lista, n\u00e3o de uma defini\u00e7\u00e3o",
+    "A171 mistura \u00abdesempregado\u00bb e \u00abn\u00e3o qualificado n\u00e3o residente\u00bb"
+   ],
+   "decision": "HOLD_WEAK_SEMANTICS (tratar como NOMINAL salvo fonte)"
+  },
+  "purpose": {
+   "type_claim": "NOMINAL; agrupamentos \u00abVe\u00edculos\u00bb e \u00abBens dom\u00e9sticos\u00bb s\u00e3o proposta do rascunho",
+   "depends_on_hypotheses": [
+    "nenhuma base documental conhecida para os agrupamentos; crit\u00e9rio de perten\u00e7a por definir; categorias raras (A44: 10, A410: 6, A48: 5 em treino)"
+   ],
+   "decision": "EXCLUDE_NO_DOCUMENTARY_BASIS"
+  }
+ },
+ "ontology_file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O2.owl",
+ "reasoner": {
+  "n_facts": 243,
+  "n_inferred": 55,
+  "by_kind": {
+   "CONCEPT_SUBSUMPTION": 25,
+   "CONCEPT_EQUIVALENCE": 4,
+   "ATTRIBUTE_APPLIES_TO_CONCEPT": 26
+  },
+  "inferred_by_type": {
+   "defined_class_subsumed_by_defined_class (cadeia ordinal)": 8,
+   "level_subsumed_by_defined_class": 17,
+   "attribute_applies_to_defined_class (consequ\u00eancia das subsun\u00e7\u00f5es)": 26
+  },
+  "ontology_status": "VALID",
+  "unsupported_axioms": {
+   "class_expression": 14
+  }
+ },
+ "n_literals": 10,
+ "literals": [
+  {
+   "literal": "onto_any[AtLeast_employment_since_A72]",
+   "concept": "AtLeast_employment_since_A72",
+   "family": "employment_since",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-employment_since-A72",
+    "owl": "EquivalentClasses(AtLeast_employment_since_A72 ObjectUnionOf(Lvl_employment_since_A72 Lvl_employment_since_A73 Lvl_employment_since_A74 Lvl_employment_since_A75))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_employment_since_A72",
+    "level_classes": [
+     "employment_since__A72",
+     "employment_since__A73",
+     "employment_since__A74",
+     "employment_since__A75"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 7",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 6,
+    "fact_ids": [
+     "F-ATT-e047a3b186e2",
+     "F-ATT-de833960b73e",
+     "F-ATT-46009a0d84ba"
+    ]
+   },
+   "6_arff_attributes": [
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "6b_variable_columns": [
+    "employment_since__A71",
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A72, A73, A74, A75 da vari\u00e1vel \u00abemployment_since\u00bb (equivalente a: n\u00edvel \u2209 {A71})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "TRIVIAL: nega\u00e7\u00e3o de uma \u00fanica coluna (A71 \u2264 0,5) \u2014 j\u00e1 \u00e9 um literal simples do Original",
+   "9c_trivial_negation_of_single_column": true,
+   "9b_prevalence_train": 0.9493333333333334,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_employment_since_A73]",
+   "concept": "AtLeast_employment_since_A73",
+   "family": "employment_since",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-employment_since-A73",
+    "owl": "EquivalentClasses(AtLeast_employment_since_A73 ObjectUnionOf(Lvl_employment_since_A73 Lvl_employment_since_A74 Lvl_employment_since_A75))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_employment_since_A73",
+    "level_classes": [
+     "employment_since__A73",
+     "employment_since__A74",
+     "employment_since__A75"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 7",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-62dc751c78ff",
+     "F-ATT-a93f64238389",
+     "F-ATT-3f2d1c9a406f"
+    ]
+   },
+   "6_arff_attributes": [
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "6b_variable_columns": [
+    "employment_since__A71",
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A73, A74, A75 da vari\u00e1vel \u00abemployment_since\u00bb (equivalente a: n\u00edvel \u2209 {A71, A72})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-3 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.772,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_employment_since_A74]",
+   "concept": "AtLeast_employment_since_A74",
+   "family": "employment_since",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-employment_since-A74",
+    "owl": "EquivalentClasses(AtLeast_employment_since_A74 ObjectUnionOf(Lvl_employment_since_A74 Lvl_employment_since_A75))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_employment_since_A74",
+    "level_classes": [
+     "employment_since__A74",
+     "employment_since__A75"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 7",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-026a442e19ec",
+     "F-ATT-d30c297141b5"
+    ]
+   },
+   "6_arff_attributes": [
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "6b_variable_columns": [
+    "employment_since__A71",
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A74, A75 da vari\u00e1vel \u00abemployment_since\u00bb (equivalente a: n\u00edvel \u2209 {A71, A72, A73})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-2 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.428,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_job_A172]",
+   "concept": "AtLeast_job_A172",
+   "family": "job",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-job-A172",
+    "owl": "EquivalentClasses(AtLeast_job_A172 ObjectUnionOf(Lvl_job_A172 Lvl_job_A173 Lvl_job_A174))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_job_A172",
+    "level_classes": [
+     "job__A172",
+     "job__A173",
+     "job__A174"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 17",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-6c3c3b7a3a42",
+     "F-ATT-d4193669fc9f",
+     "F-ATT-08e8ef889852"
+    ]
+   },
+   "6_arff_attributes": [
+    "job__A172",
+    "job__A173",
+    "job__A174"
+   ],
+   "6b_variable_columns": [
+    "job__A171",
+    "job__A172",
+    "job__A173",
+    "job__A174"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A172, A173, A174 da vari\u00e1vel \u00abjob\u00bb (equivalente a: n\u00edvel \u2209 {A171})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "TRIVIAL: nega\u00e7\u00e3o de uma \u00fanica coluna (A171 \u2264 0,5) \u2014 j\u00e1 \u00e9 um literal simples do Original",
+   "9c_trivial_negation_of_single_column": true,
+   "9b_prevalence_train": 0.9826666666666667,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_job_A173]",
+   "concept": "AtLeast_job_A173",
+   "family": "job",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-job-A173",
+    "owl": "EquivalentClasses(AtLeast_job_A173 ObjectUnionOf(Lvl_job_A173 Lvl_job_A174))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_job_A173",
+    "level_classes": [
+     "job__A173",
+     "job__A174"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 17",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-24460cd75cec",
+     "F-ATT-5c8d47ac67e8"
+    ]
+   },
+   "6_arff_attributes": [
+    "job__A173",
+    "job__A174"
+   ],
+   "6b_variable_columns": [
+    "job__A171",
+    "job__A172",
+    "job__A173",
+    "job__A174"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A173, A174 da vari\u00e1vel \u00abjob\u00bb (equivalente a: n\u00edvel \u2209 {A171, A172})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-2 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.784,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_savings_account_A62]",
+   "concept": "AtLeast_savings_account_A62",
+   "family": "savings_account",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-savings_account-A62",
+    "owl": "EquivalentClasses(AtLeast_savings_account_A62 ObjectUnionOf(Lvl_savings_account_A62 Lvl_savings_account_A63 Lvl_savings_account_A64))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_savings_account_A62",
+    "level_classes": [
+     "savings_account__A62",
+     "savings_account__A63",
+     "savings_account__A64"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 6",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-d027b426fb3a",
+     "F-ATT-bdf7e3a803bc",
+     "F-ATT-44f3b25333ce"
+    ]
+   },
+   "6_arff_attributes": [
+    "savings_account__A62",
+    "savings_account__A63",
+    "savings_account__A64"
+   ],
+   "6b_variable_columns": [
+    "savings_account__A61",
+    "savings_account__A62",
+    "savings_account__A63",
+    "savings_account__A64",
+    "savings_account__A65"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A62, A63, A64 da vari\u00e1vel \u00absavings_account\u00bb (equivalente a: n\u00edvel \u2209 {A61, A65})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-3 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.224,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_savings_account_A63]",
+   "concept": "AtLeast_savings_account_A63",
+   "family": "savings_account",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-savings_account-A63",
+    "owl": "EquivalentClasses(AtLeast_savings_account_A63 ObjectUnionOf(Lvl_savings_account_A63 Lvl_savings_account_A64))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_savings_account_A63",
+    "level_classes": [
+     "savings_account__A63",
+     "savings_account__A64"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 6",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-73941e73df84",
+     "F-ATT-052d97ac8447"
+    ]
+   },
+   "6_arff_attributes": [
+    "savings_account__A63",
+    "savings_account__A64"
+   ],
+   "6b_variable_columns": [
+    "savings_account__A61",
+    "savings_account__A62",
+    "savings_account__A63",
+    "savings_account__A64",
+    "savings_account__A65"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A63, A64 da vari\u00e1vel \u00absavings_account\u00bb (equivalente a: n\u00edvel \u2209 {A61, A62, A65})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-2 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.10933333333333334,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[AtLeast_status_checking_account_A12]",
+   "concept": "AtLeast_status_checking_account_A12",
+   "family": "status_checking_account",
+   "1_origin_axiom": {
+    "card": "AX-GC-ORD-status_checking_account-A12",
+    "owl": "EquivalentClasses(AtLeast_status_checking_account_A12 ObjectUnionOf(Lvl_status_checking_account_A12 Lvl_status_checking_account_A13))"
+   },
+   "2_entities": {
+    "defined_class": "AtLeast_status_checking_account_A12",
+    "level_classes": [
+     "status_checking_account__A12",
+     "status_checking_account__A13"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 1",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 5,
+    "fact_ids": [
+     "F-ATT-77df37c57cd7",
+     "F-ATT-24a33825ef5d"
+    ]
+   },
+   "6_arff_attributes": [
+    "status_checking_account__A12",
+    "status_checking_account__A13"
+   ],
+   "6b_variable_columns": [
+    "status_checking_account__A11",
+    "status_checking_account__A12",
+    "status_checking_account__A13",
+    "status_checking_account__A14"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A12, A13 da vari\u00e1vel \u00abstatus_checking_account\u00bb (equivalente a: n\u00edvel \u2209 {A11, A14})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-2 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.332,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[Purpose_HouseholdGoods]",
+   "concept": "Purpose_HouseholdGoods",
+   "family": "purpose",
+   "1_origin_axiom": {
+    "card": "AX-GC-TAX-purpose-HouseholdGoods",
+    "owl": "EquivalentClasses(Purpose_HouseholdGoods ObjectUnionOf(Lvl_purpose_A42 Lvl_purpose_A43 Lvl_purpose_A44))"
+   },
+   "2_entities": {
+    "defined_class": "Purpose_HouseholdGoods",
+    "level_classes": [
+     "purpose__A42",
+     "purpose__A43",
+     "purpose__A44"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 4",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 6,
+    "fact_ids": [
+     "F-ATT-17bff78cec82",
+     "F-ATT-7f99143f2028",
+     "F-ATT-bcfe106aee7b"
+    ]
+   },
+   "6_arff_attributes": [
+    "purpose__A42",
+    "purpose__A43",
+    "purpose__A44"
+   ],
+   "6b_variable_columns": [
+    "purpose__A40",
+    "purpose__A41",
+    "purpose__A410",
+    "purpose__A42",
+    "purpose__A43",
+    "purpose__A44",
+    "purpose__A45",
+    "purpose__A46",
+    "purpose__A48",
+    "purpose__A49"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A42, A43, A44 da vari\u00e1vel \u00abpurpose\u00bb (equivalente a: n\u00edvel \u2209 {A40, A41, A410, A45, A46, A48, A49})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-3 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.4653333333333333,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  },
+  {
+   "literal": "onto_any[Purpose_Vehicles]",
+   "concept": "Purpose_Vehicles",
+   "family": "purpose",
+   "1_origin_axiom": {
+    "card": "AX-GC-TAX-purpose-Vehicles",
+    "owl": "EquivalentClasses(Purpose_Vehicles ObjectUnionOf(Lvl_purpose_A40 Lvl_purpose_A41))"
+   },
+   "2_entities": {
+    "defined_class": "Purpose_Vehicles",
+    "level_classes": [
+     "purpose__A40",
+     "purpose__A41"
+    ]
+   },
+   "3_source": {
+    "citation": "UCI Statlog (German Credit Data), dicion\u00e1rio de dados `german.doc` (Prof. Hofmann, Univ. Hamburgo) \u2014 CITADO DE MEM\u00d3RIA, N\u00c3O VERIFICADO",
+    "locator": "Atributo 4",
+    "verified": false
+   },
+   "4_epistemic_status": "HYPOTHESIS",
+   "4b_authored_by": "AI_DRAFT",
+   "4c_reviews": {
+    "domain": "DOMAIN_REVIEW_PENDING",
+    "ontology": "ONTOLOGY_REVIEW_PENDING",
+    "methodology": "METHODOLOGY_REVIEW_PENDING"
+   },
+   "5_reasoner_result": {
+    "needs_reasoner": true,
+    "n_supporting_inferred_facts": 4,
+    "fact_ids": [
+     "F-ATT-3c8410fe741a",
+     "F-ATT-efdb4327d8bf"
+    ]
+   },
+   "6_arff_attributes": [
+    "purpose__A40",
+    "purpose__A41"
+   ],
+   "6b_variable_columns": [
+    "purpose__A40",
+    "purpose__A41",
+    "purpose__A410",
+    "purpose__A42",
+    "purpose__A43",
+    "purpose__A44",
+    "purpose__A45",
+    "purpose__A46",
+    "purpose__A48",
+    "purpose__A49"
+   ],
+   "7_tabular_meaning": "a linha pertence a um dos n\u00edveis A40, A41 da vari\u00e1vel \u00abpurpose\u00bb (equivalente a: n\u00edvel \u2209 {A410, A42, A43, A44, A45, A46, A48, A49})",
+   "8_applicability_condition": "colunas one-hot mutuamente exclusivas da mesma vari\u00e1vel; categoria desconhecida (todas a 0) \u21d2 literal 0; n\u00edveis n\u00e3o ordinais fora da extens\u00e3o",
+   "9_mofn_candidate": "1-de-2 (OR de literais positivos)",
+   "9c_trivial_negation_of_single_column": false,
+   "9b_prevalence_train": 0.3466666666666667,
+   "10_mechanism": "M-R (coluna bin\u00e1ria derivada acrescentada) + M-P (poda de candidatos redundantes por subsun\u00e7\u00e3o entre literais derivados e n\u00edveis)",
+   "11_original_can_generate": {
+    "in_hypothesis_space_with_max_n_3": true,
+    "note": "pertence ao espa\u00e7o de hip\u00f3teses, mas o Original s\u00f3 o encontra se a pesquisa (pool de literais por ganho individual + beam) l\u00e1 chegar"
+   },
+   "12_neutralizing_control": "O3 (classe primitiva, mesma estrutura sem equival\u00eancia) e abla\u00e7\u00e3o do axioma; H (ordem permutada) e I (uni\u00e3o aleat\u00f3ria de tamanho igual)"
+  }
+ ],
+ "nested_pairs_same_variable": [
+  [
+   "onto_any[AtLeast_employment_since_A73]",
+   "onto_any[AtLeast_employment_since_A72]"
+  ],
+  [
+   "onto_any[AtLeast_employment_since_A74]",
+   "onto_any[AtLeast_employment_since_A72]"
+  ],
+  [
+   "onto_any[AtLeast_employment_since_A74]",
+   "onto_any[AtLeast_employment_since_A73]"
+  ],
+  [
+   "onto_any[AtLeast_job_A173]",
+   "onto_any[AtLeast_job_A172]"
+  ],
+  [
+   "onto_any[AtLeast_savings_account_A63]",
+   "onto_any[AtLeast_savings_account_A62]"
+  ]
+ ],
+ "trivial_or_redundant": {
+  "consequent_attribute_facts": 26,
+  "derivable_from": "subsun\u00e7\u00f5es inferidas + dom\u00ednio asserido",
+  "trivial_negation_literals": [
+   "onto_any[AtLeast_employment_since_A72]",
+   "onto_any[AtLeast_job_A172]"
+  ],
+  "literals_with_prevalence_lt_0.05_or_gt_0.95": [
+   "onto_any[AtLeast_job_A172]"
+  ]
+ },
+ "train_rows": 750,
+ "labels_used": false,
+ "test_rows_used": false
+}

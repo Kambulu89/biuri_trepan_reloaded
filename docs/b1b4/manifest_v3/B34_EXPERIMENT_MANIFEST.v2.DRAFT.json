@@ -1,6 +1,6 @@
 {
  "manifest": "B34_EXPERIMENT_MANIFEST_v2",
- "status": "PROPOSAL_NOT_FROZEN",
+ "status": "R1_R7_APPROVED_FOR_PREPARATION__NOT_FROZEN",
  "frozen": false,
  "state": "B34 = DESIGN_ONLY / NOT_EXECUTED",
  "phase": "B3.4 v2 (proposta)",
@@ -32,7 +32,7 @@
   "G1_oracle_learnable": {
    "statistic": "mediana(acc MLP) - mediana(maioritária) nas sementes de calibração",
    "reference_exploratory": 0.05,
-   "definitive": "A DECIDIR pelos revisores e pré-registar"
+   "definitive": "PROPOSTA técnica em docs/b1b4/57_PROPOSTA_LIMIARES_PORTAS.md; a definir pelo responsável pela metodologia e congelar antes de avaliar variantes"
   },
   "G2_not_redundant": {
    "unsupervised": "melhor-de-métodos ARI mediano e pureza",
@@ -43,7 +43,7 @@
     0.7
    ],
    "supervised_generic_hit_rate_reference": 0.9,
-   "definitive": "A DECIDIR pelos revisores e pré-registar"
+   "definitive": "idem (Doc. 57)"
   },
   "forbidden": "escolher cargas/ruído com base no desempenho de qualquer braço OWL"
  },
@@ -88,5 +88,27 @@
   "restante_como_v1": 6.9,
   "total": 7.2,
   "hard_cap": 9.0
- }
+ },
+ "decision_record": {
+  "source": "decisão do responsável após os Docs. 49–52 (commit 21aedf2)",
+  "R1_R7": "APROVADAS para preparar a B3.4 v2, preservando o histórico",
+  "R8": "APROVADA apenas como família experimental ADICIONAL e EXPLORATÓRIA; não substitui retroativamente a hipótese XOR; não é confirmação da hipótese original; gerador a congelar antes da avaliação; o resultado continua exploratório",
+  "H1_campaign_7.2_CPU_h": "NÃO autorizada (só testes técnicos pequenos de viabilidade)",
+  "H2_campaign_2.7_CPU_h": "NÃO autorizada",
+  "core_changes": "NÃO autorizadas",
+  "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED",
+  "priority": "H2 (enriquecimento ontológico real) é a prioridade científica",
+  "german_credit": "candidato DEV exploratório, sujeito a validação documental"
+ },
+ "R8_conditions": [
+  "não substituir retroativamente a hipótese XOR",
+  "não apresentar a família aditiva como confirmação da hipótese original",
+  "congelar o gerador antes da avaliação",
+  "verificar que a ontologia não recebe o suporte exato da regra-alvo (recebe a partição, não qual conceito é o alvo)",
+  "verificar independência do conhecimento prévio face aos rótulos de teste",
+  "incluir controlos convencionais e conhecimento prévio equivalente (braço J)",
+  "documentar os casos em que a estrutura é recuperável diretamente dos dados",
+  "avaliar fidelity e accuracy separadamente",
+  "resultado exploratório"
+ ]
 }

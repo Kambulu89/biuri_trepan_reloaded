@@ -2,11 +2,16 @@
  "manifest": "H2_EXPERIMENT_MANIFEST",
  "status": "DRAFT_NOT_FROZEN",
  "frozen": false,
- "state": "H2 = PROTOCOL_DRAFT / NOT_EXECUTED",
+ "state": "H2 = PRIORITY / PLAN_AND_PROTOTYPE_VALIDATION / NOT_EXECUTED",
  "depends_on": [
   "docs/b1b4/50_SELECAO_ONTOLOGIA_EXPRESSIVA.md",
   "docs/b1b4/51_CONTRATO_AXIOMAS_MOFN.md",
-  "docs/b1b4/52_PROTOCOLO_H2_ENRIQUECIMENTO_REAL.md"
+  "docs/b1b4/52_PROTOCOLO_H2_ENRIQUECIMENTO_REAL.md",
+  "docs/b1b4/53_PLANO_H2_GERMAN_CREDIT.md",
+  "docs/b1b4/54_AUDITORIA_AXIOMAS_GERMAN_CREDIT.md",
+  "docs/b1b4/55_CONTRATO_H2_LITERAIS_MOFN.md",
+  "docs/b1b4/56_MATRIZ_EXPERIMENTAL_H2.md",
+  "docs/b1b4/57_PROPOSTA_LIMIARES_PORTAS.md"
  ],
  "restrictions": {
   "scope": "validation/ apenas",
@@ -20,12 +25,12 @@
  "arms": [
   "A_ORIG",
   "B_WIDE",
-  "C_GENERIC_INTERACTIONS",
-  "D_PARTITION_NO_OWL",
+  "C_ORIGINAL_ENRICHED_REPRESENTATION_NO_GUIDANCE",
+  "D_CORRECT_GROUPS_NO_OWL",
   "E_FLAT_OWL_O1",
   "F_EXPRESSIVE_O2",
   "G_NEUTRALIZED_O3",
-  "H_PERMUTED_OR_RANDOM",
+  "H_PERMUTED_OR_RANDOM_CONTROLLED",
   "I_CONVENTIONAL_FEATURES",
   "J_C45"
  ],
@@ -34,7 +39,8 @@
   "F vs D/E",
   "F vs G/H",
   "D vs E",
-  "F vs J"
+  "F vs J",
+  "C vs A"
  ],
  "seeds": {
   "calibration": [
@@ -46,11 +52,20 @@
   "status": "proposta, disjuntas das anteriores"
  },
  "cpu_estimate_hours": {
-  "fase_P_sintetico": 1.5,
-  "calibracao": 0.5,
-  "fase_R_german": 0.4,
-  "estabilidade_memoria": 0.3,
-  "total": 2.7,
-  "hard_cap": 4.0
+  "fase_R_german": 0.7,
+  "fase_P_sintetico_opcional": 1.5,
+  "hard_cap_fase_R": 1.0
+ },
+ "decision_record": {
+  "H2_campaign_2.7_CPU_h": "NÃO autorizada",
+  "H1_campaign_7.2_CPU_h": "NÃO autorizada",
+  "priority": "H2",
+  "german_credit": "candidato DEV exploratório sujeito a validação documental",
+  "core_changes": "NÃO autorizadas",
+  "M0_M6_CORE_INTEGRATION": "NOT_AUTHORIZED"
+ },
+ "evaluable_axiom_set": {
+  "status": "EMPTY",
+  "reason": "nenhuma fonte verificada; ver Doc. 54"
  }
 }
