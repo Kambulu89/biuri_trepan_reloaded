@@ -1,0 +1,20 @@
+{
+ "timestamp_utc": "2026-10-17T22:18:20.409327+00:00",
+ "attempts": [
+  {
+   "source_id": "S1_UCI_STATLOG_GERMAN",
+   "url": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
+   "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+   "source_id": "S2_UCI_SOUTH_GERMAN",
+   "url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
+   "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  {
+   "source_id": "S3_GROEMPING_2019",
+   "url": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf",
+   "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  }
+ ]
+}

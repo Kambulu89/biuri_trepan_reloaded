@@ -49,12 +49,30 @@ def _is_binary(col: np.ndarray) -> bool:
     return bool(np.all(np.isin(col, (0.0, 1.0))))
 
 
-def derived_union_literals(reg: FactRegistry, X: np.ndarray, names: Sequence[str], *, min_size: int = 2) -> List[DerivedLiteral]:
+def defined_union_concepts(owl_path) -> set:
+    """Nomes das classes DEFINIDAS por equivalência com uma união (``owl:equivalentClass`` + ``owl:unionOf``) no ficheiro OWL — os únicos conceitos de que o mecanismo T1/T2 deriva literais.
+    Classes organizacionais (grupos temáticos, raízes) e classes primitivas ficam de fora: um agrupamento NÃO é um axioma de definição (evita transformar partições em literais)."""
+    import xml.etree.ElementTree as ET
+    ns = {"owl": "http://www.w3.org/2002/07/owl#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"}
+    root = ET.parse(owl_path).getroot()
+    out = set()
+    for el in root.findall("owl:Class", ns):
+        name = (el.get("{%s}about" % ns["rdf"]) or "").split("#")[-1]
+        for eq in el.findall("owl:equivalentClass", ns):
+            if eq.findall(".//owl:unionOf", ns):
+                out.add(name)
+    return out
+
+
+def derived_union_literals(reg: FactRegistry, X: np.ndarray, names: Sequence[str], *, min_size: int = 2, only_concepts: Optional[set] = None) -> List[DerivedLiteral]:
     """Literais derivados para conceitos cuja extensão tem ≥ ``min_size`` atributos BINÁRIOS da MESMA família (variável) — evita misturar variáveis. Descarta extensões constantes no treino
-    e duplicados (mesmo conjunto de atributos)."""
+    e duplicados (mesmo conjunto de atributos). Se ``only_concepts`` for dado (recomendado: ``defined_union_concepts``), só se consideram classes definidas por união; sem ele consideram-se
+    TODOS os conceitos (inclui grupos organizacionais — comportamento de prototipagem, não usar em arms experimentais)."""
     pos = {n: i for i, n in enumerate(names)}
     seen: Dict[Tuple[str, ...], DerivedLiteral] = {}
     for c, e in sorted(concept_extensions(reg).items()):
+        if only_concepts is not None and c not in only_concepts:
+            continue
         attrs = tuple(sorted(a for a in e["attributes"] if a in pos))
         if len(attrs) < min_size or len({family_of(a) for a in attrs}) != 1:
             continue

@@ -1,7 +1,7 @@
 # Ficha de revisão — especialista do domínio
 
 Proposta: `german_credit/v0_draft` (rascunho de IA, NÃO validado). Papel: **DOMÍNIO**.
-Âmbito desta ficha (só o que é da sua competência): verdade e âmbito das afirmações, significado das categorias, classificação nominal/ordinal, fonte documental. NÃO avalia OWL nem metodologia.
+Âmbito desta ficha (só o que é da sua competência): verdade e âmbito das afirmações, significado das categorias, classificação nominal/ordinal/desconhecida/não aplicável, fonte documental, divergências do South German Credit. NÃO avalia OWL nem metodologia.
 
 | Campo | Valor |
 |---|---|
@@ -10,7 +10,34 @@ Proposta: `german_credit/v0_draft` (rascunho de IA, NÃO validado). Papel: **DOM
 | Referência de assinatura | _(a preencher por pessoa designada — vazio)_ |
 | Decisão global (`APPROVED` / `REJECTED` / `CHANGES_REQUESTED`) | _(a preencher por pessoa designada — vazio)_ |
 
-Fontes a confirmar (todas `NOT_VERIFIED`): dicionário de dados `german.doc` do UCI Statlog (atributos 1, 4, 6, 7, 17).
+Fontes indicadas pelo responsável (a OBTER e a consultar; até lá `NOT_VERIFIED`): (S1) UCI Statlog German Credit — `german.doc`; (S2) UCI South German Credit (versão com tabela de códigos corrigida); (S3) U. Grömping (2019), Report 2019-004, Beuth Hochschule. Compare os códigos de S1 com S2/S3 e registe divergências ANTES de validar qualquer ficha. **Não assuma ordenação a partir dos códigos.**
+
+### Parte A — correspondência dos 20 atributos (preencher com base nas fontes)
+
+| N.º | Atributo | Códigos observados no ficheiro | Definição em S1 | Corrigida em S2/S3? | Nominal / ordinal / desconhecida / n.a. | Direção da codificação (se numérica) |
+|---|---|---|---|---|---|---|
+| 1 | `status_checking_account` | A11, A12, A13, A14 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 2 | `duration_months` | numérico: 4.0–72.0 (33 valores distintos) | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 3 | `credit_history` | A30, A31, A32, A33, A34 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 4 | `purpose` | A40, A41, A410, A42, A43, A44, A45, A46, A48, A49 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 5 | `credit_amount` | numérico: 250.0–18424.0 (921 valores distintos) | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 6 | `savings_account` | A61, A62, A63, A64, A65 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 7 | `employment_since` | A71, A72, A73, A74, A75 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 8 | `installment_rate_pct_income` | 1, 2, 3, 4 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 9 | `personal_status_sex` | A91, A92, A93, A94 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 10 | `other_debtors` | A101, A102, A103 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 11 | `residence_since` | 1, 2, 3, 4 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 12 | `property` | A121, A122, A123, A124 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 13 | `age_years` | numérico: 19.0–75.0 (53 valores distintos) | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 14 | `other_installment_plans` | A141, A142, A143 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 15 | `housing` | A151, A152, A153 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 16 | `existing_credits_count` | 1, 2, 3, 4 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 17 | `job` | A171, A172, A173, A174 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 18 | `people_liable_count` | 1, 2 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 19 | `telephone` | A191, A192 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+| 20 | `foreign_worker` | A201, A202 | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ | _(a preencher por pessoa designada — vazio)_ |
+
+### Parte B — fichas de axioma
 
 | Ficha | Afirmação | Fonte (citação / localizador) | Verdadeira? | Nominal/ordinal confirmado? | Âmbito e exceções | Estado |
 |---|---|---|---|---|---|---|

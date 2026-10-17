@@ -1,0 +1,168 @@
+{
+ "purpose": "VERIFICAÇÃO DE FUNCIONAMENTO; sem métricas de desempenho; rascunho de IA não validado",
+ "instance_hash": "d26b8522924a968a",
+ "train_rows": 750,
+ "params": {
+  "min_sample": 300,
+  "max_queries": 3000,
+  "max_nodes": 7,
+  "max_depth": 3,
+  "max_n": 3,
+  "beam_width": 2,
+  "min_samples_leaf": 5,
+  "max_features_per_node": 12,
+  "random_state": 42
+ },
+ "arms": {
+  "A_ORIG": {
+   "n_derived": 0,
+   "n_internal_nodes": 3,
+   "oracle_calls": 1,
+   "queries": 0,
+   "pruned_total": {},
+   "literals": []
+  },
+  "C_ENRICHED_NO_GUIDANCE": {
+   "n_derived": 10,
+   "n_internal_nodes": 2,
+   "oracle_calls": 3,
+   "queries": 37,
+   "pruned_total": {},
+   "literals": [
+    {
+     "literal": "onto_any[AtLeast_employment_since_A72]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_employment_since_A73]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_employment_since_A74]",
+     "candidate_evaluations": 45,
+     "pruned": {},
+     "chosen_in_nodes": [
+      0
+     ]
+    },
+    {
+     "literal": "onto_any[AtLeast_job_A172]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_job_A173]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_savings_account_A62]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_savings_account_A63]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_status_checking_account_A12]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[Purpose_HouseholdGoods]",
+     "candidate_evaluations": 6,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[Purpose_Vehicles]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    }
+   ]
+  },
+  "F_EXPRESSIVE_MP": {
+   "n_derived": 10,
+   "n_internal_nodes": 2,
+   "oracle_calls": 3,
+   "queries": 37,
+   "pruned_total": {},
+   "literals": [
+    {
+     "literal": "onto_any[AtLeast_employment_since_A72]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_employment_since_A73]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_employment_since_A74]",
+     "candidate_evaluations": 45,
+     "pruned": {},
+     "chosen_in_nodes": [
+      0
+     ]
+    },
+    {
+     "literal": "onto_any[AtLeast_job_A172]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_job_A173]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_savings_account_A62]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_savings_account_A63]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[AtLeast_status_checking_account_A12]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[Purpose_HouseholdGoods]",
+     "candidate_evaluations": 6,
+     "pruned": {},
+     "chosen_in_nodes": []
+    },
+    {
+     "literal": "onto_any[Purpose_Vehicles]",
+     "candidate_evaluations": 0,
+     "pruned": {},
+     "chosen_in_nodes": []
+    }
+   ]
+  }
+ }
+}

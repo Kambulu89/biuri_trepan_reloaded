@@ -8,6 +8,8 @@ from pathlib import Path
 
 from validation.benchmark.h2_german_proposal import OUT, cards
 
+ROOT_EV = Path(__file__).resolve().parents[2] / "docs/evidence/b1b4/h2"
+
 BLANK = "_(a preencher por pessoa designada — vazio)_"
 
 
@@ -18,8 +20,17 @@ def header(role, title, scope):
 
 
 def domain_form(cs):
-    t = header("DOMÍNIO", "especialista do domínio", "verdade e âmbito das afirmações, significado das categorias, classificação nominal/ordinal, fonte documental. NÃO avalia OWL nem metodologia.")
-    t += "Fontes a confirmar (todas `NOT_VERIFIED`): dicionário de dados `german.doc` do UCI Statlog (atributos 1, 4, 6, 7, 17).\n\n| Ficha | Afirmação | Fonte (citação / localizador) | Verdadeira? | Nominal/ordinal confirmado? | Âmbito e exceções | Estado |\n|---|---|---|---|---|---|---|\n"
+    t = header("DOMÍNIO", "especialista do domínio", "verdade e âmbito das afirmações, significado das categorias, classificação nominal/ordinal/desconhecida/não aplicável, fonte documental, divergências do South German Credit. NÃO avalia OWL nem metodologia.")
+    t += ("Fontes indicadas pelo responsável (a OBTER e a consultar; até lá `NOT_VERIFIED`): (S1) UCI Statlog German Credit — `german.doc`; (S2) UCI South German Credit (versão com tabela de códigos corrigida); "
+          "(S3) U. Grömping (2019), Report 2019-004, Beuth Hochschule. Compare os códigos de S1 com S2/S3 e registe divergências ANTES de validar qualquer ficha. **Não assuma ordenação a partir dos códigos.**\n\n")
+    t += "### Parte A — correspondência dos 20 atributos (preencher com base nas fontes)\n\n| N.º | Atributo | Códigos observados no ficheiro | Definição em S1 | Corrigida em S2/S3? | Nominal / ordinal / desconhecida / n.a. | Direção da codificação (se numérica) |\n|---|---|---|---|---|---|---|\n"
+    try:
+        inv = json.loads((ROOT_EV / "german_inventory.json").read_text())
+        for a in inv["attributes"]:
+            t += f"| {a['assumed_attribute_number']} | `{a['attribute_name_in_project']}` | {(', '.join(map(str, a['observed_codes_counts_all_1000_rows'].keys())) if 'min' not in a['observed_codes_counts_all_1000_rows'] else 'numérico: %s–%s (%s valores distintos)' % (a['observed_codes_counts_all_1000_rows']['min'], a['observed_codes_counts_all_1000_rows']['max'], a['observed_codes_counts_all_1000_rows']['n_distinct']))} | {BLANK} | {BLANK} | {BLANK} | {BLANK} |\n"
+    except Exception:
+        t += f"| — | (inventário em falta) | | | | | |\n"
+    t += "\n### Parte B — fichas de axioma\n\n| Ficha | Afirmação | Fonte (citação / localizador) | Verdadeira? | Nominal/ordinal confirmado? | Âmbito e exceções | Estado |\n|---|---|---|---|---|---|---|\n"
     for c in cs:
         t += f"| `{c.id}` | {c.statement_nl} | {c.source['citation']} / {c.source['locator']} | {BLANK} | {BLANK} | {BLANK} | `DOMAIN_REVIEW_PENDING` |\n"
     return t

@@ -1,0 +1,557 @@
+{
+ "file": "validation/counterfactual_research/datasets/originales/german.data",
+ "file_sha256": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+ "n_rows": 1000,
+ "n_attribute_columns": 20,
+ "class_column": "coluna 21 (não usada neste inventário)",
+ "n_encoded_features": 61,
+ "encoding": "numéricas inalteradas (7); nominais one-hot com os níveis OBSERVADOS por ordem lexicográfica (13 → 54 colunas)",
+ "attributes": [
+  {
+   "file_column": 1,
+   "attribute_name_in_project": "status_checking_account",
+   "assumed_attribute_number": 1,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A11": 274,
+    "A12": 269,
+    "A13": 63,
+    "A14": 394
+   },
+   "n_encoded_columns": 4,
+   "encoded_columns": [
+    "status_checking_account__A11",
+    "status_checking_account__A12",
+    "status_checking_account__A13",
+    "status_checking_account__A14"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 2,
+   "attribute_name_in_project": "duration_months",
+   "assumed_attribute_number": 2,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "min": 4.0,
+    "max": 72.0,
+    "n_distinct": 33
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "duration_months"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 3,
+   "attribute_name_in_project": "credit_history",
+   "assumed_attribute_number": 3,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A30": 40,
+    "A31": 49,
+    "A32": 530,
+    "A33": 88,
+    "A34": 293
+   },
+   "n_encoded_columns": 5,
+   "encoded_columns": [
+    "credit_history__A30",
+    "credit_history__A31",
+    "credit_history__A32",
+    "credit_history__A33",
+    "credit_history__A34"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 4,
+   "attribute_name_in_project": "purpose",
+   "assumed_attribute_number": 4,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A40": 234,
+    "A41": 103,
+    "A410": 12,
+    "A42": 181,
+    "A43": 280,
+    "A44": 12,
+    "A45": 22,
+    "A46": 50,
+    "A48": 9,
+    "A49": 97
+   },
+   "n_encoded_columns": 10,
+   "encoded_columns": [
+    "purpose__A40",
+    "purpose__A41",
+    "purpose__A410",
+    "purpose__A42",
+    "purpose__A43",
+    "purpose__A44",
+    "purpose__A45",
+    "purpose__A46",
+    "purpose__A48",
+    "purpose__A49"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 5,
+   "attribute_name_in_project": "credit_amount",
+   "assumed_attribute_number": 5,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "min": 250.0,
+    "max": 18424.0,
+    "n_distinct": 921
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "credit_amount"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 6,
+   "attribute_name_in_project": "savings_account",
+   "assumed_attribute_number": 6,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A61": 603,
+    "A62": 103,
+    "A63": 63,
+    "A64": 48,
+    "A65": 183
+   },
+   "n_encoded_columns": 5,
+   "encoded_columns": [
+    "savings_account__A61",
+    "savings_account__A62",
+    "savings_account__A63",
+    "savings_account__A64",
+    "savings_account__A65"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 7,
+   "attribute_name_in_project": "employment_since",
+   "assumed_attribute_number": 7,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A71": 62,
+    "A72": 172,
+    "A73": 339,
+    "A74": 174,
+    "A75": 253
+   },
+   "n_encoded_columns": 5,
+   "encoded_columns": [
+    "employment_since__A71",
+    "employment_since__A72",
+    "employment_since__A73",
+    "employment_since__A74",
+    "employment_since__A75"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 8,
+   "attribute_name_in_project": "installment_rate_pct_income",
+   "assumed_attribute_number": 8,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": true,
+   "observed_codes_counts_all_1000_rows": {
+    "1": 136,
+    "2": 231,
+    "3": 157,
+    "4": 476
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "installment_rate_pct_income"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 9,
+   "attribute_name_in_project": "personal_status_sex",
+   "assumed_attribute_number": 9,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A91": 50,
+    "A92": 310,
+    "A93": 548,
+    "A94": 92
+   },
+   "n_encoded_columns": 4,
+   "encoded_columns": [
+    "personal_status_sex__A91",
+    "personal_status_sex__A92",
+    "personal_status_sex__A93",
+    "personal_status_sex__A94"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 10,
+   "attribute_name_in_project": "other_debtors",
+   "assumed_attribute_number": 10,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A101": 907,
+    "A102": 41,
+    "A103": 52
+   },
+   "n_encoded_columns": 3,
+   "encoded_columns": [
+    "other_debtors__A101",
+    "other_debtors__A102",
+    "other_debtors__A103"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 11,
+   "attribute_name_in_project": "residence_since",
+   "assumed_attribute_number": 11,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": true,
+   "observed_codes_counts_all_1000_rows": {
+    "1": 130,
+    "2": 308,
+    "3": 149,
+    "4": 413
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "residence_since"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 12,
+   "attribute_name_in_project": "property",
+   "assumed_attribute_number": 12,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A121": 282,
+    "A122": 232,
+    "A123": 332,
+    "A124": 154
+   },
+   "n_encoded_columns": 4,
+   "encoded_columns": [
+    "property__A121",
+    "property__A122",
+    "property__A123",
+    "property__A124"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 13,
+   "attribute_name_in_project": "age_years",
+   "assumed_attribute_number": 13,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "min": 19.0,
+    "max": 75.0,
+    "n_distinct": 53
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "age_years"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 14,
+   "attribute_name_in_project": "other_installment_plans",
+   "assumed_attribute_number": 14,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A141": 139,
+    "A142": 47,
+    "A143": 814
+   },
+   "n_encoded_columns": 3,
+   "encoded_columns": [
+    "other_installment_plans__A141",
+    "other_installment_plans__A142",
+    "other_installment_plans__A143"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 15,
+   "attribute_name_in_project": "housing",
+   "assumed_attribute_number": 15,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A151": 179,
+    "A152": 713,
+    "A153": 108
+   },
+   "n_encoded_columns": 3,
+   "encoded_columns": [
+    "housing__A151",
+    "housing__A152",
+    "housing__A153"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 16,
+   "attribute_name_in_project": "existing_credits_count",
+   "assumed_attribute_number": 16,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": true,
+   "observed_codes_counts_all_1000_rows": {
+    "1": 633,
+    "2": 333,
+    "3": 28,
+    "4": 6
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "existing_credits_count"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 17,
+   "attribute_name_in_project": "job",
+   "assumed_attribute_number": 17,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A171": 22,
+    "A172": 200,
+    "A173": 630,
+    "A174": 148
+   },
+   "n_encoded_columns": 4,
+   "encoded_columns": [
+    "job__A171",
+    "job__A172",
+    "job__A173",
+    "job__A174"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 18,
+   "attribute_name_in_project": "people_liable_count",
+   "assumed_attribute_number": 18,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "numérico (inalterado)",
+   "project_marks_ordinal_coded": true,
+   "observed_codes_counts_all_1000_rows": {
+    "1": 845,
+    "2": 155
+   },
+   "n_encoded_columns": 1,
+   "encoded_columns": [
+    "people_liable_count"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 19,
+   "attribute_name_in_project": "telephone",
+   "assumed_attribute_number": 19,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A191": 596,
+    "A192": 404
+   },
+   "n_encoded_columns": 2,
+   "encoded_columns": [
+    "telephone__A191",
+    "telephone__A192"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  },
+  {
+   "file_column": 20,
+   "attribute_name_in_project": "foreign_worker",
+   "assumed_attribute_number": 20,
+   "number_assumption": "ordem das colunas do ficheiro = numeração do dicionário (A CONFIRMAR em german.doc)",
+   "kind_in_project_loader": "nominal (one-hot)",
+   "project_marks_ordinal_coded": false,
+   "observed_codes_counts_all_1000_rows": {
+    "A201": 963,
+    "A202": 37
+   },
+   "n_encoded_columns": 2,
+   "encoded_columns": [
+    "foreign_worker__A201",
+    "foreign_worker__A202"
+   ],
+   "documented_definition": "PENDING_SOURCE",
+   "documented_ordinal_status": "PENDING_SOURCE",
+   "south_german_correction": "PENDING_SOURCE"
+  }
+ ],
+ "encoded_columns_total": 61,
+ "priority_of_derived_literals": {
+  "basis": "variância no treino (holdout seed 42) — critério de prioridade do Original para o pool de literais (`_feature_priority_scores`)",
+  "mf12_is_Original_default": true,
+  "rows": [
+   {
+    "literal": "onto_any[AtLeast_employment_since_A72]",
+    "variance": 0.048099555555555555,
+    "rank_by_variance_among_71_columns": 59,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": false
+   },
+   {
+    "literal": "onto_any[AtLeast_employment_since_A73]",
+    "variance": 0.17601600000000003,
+    "rank_by_variance_among_71_columns": 30,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": true
+   },
+   {
+    "literal": "onto_any[AtLeast_employment_since_A74]",
+    "variance": 0.244816,
+    "rank_by_variance_among_71_columns": 10,
+    "in_pool_mf12": true,
+    "in_pool_mf20": true,
+    "in_pool_mf30": true
+   },
+   {
+    "literal": "onto_any[AtLeast_job_A172]",
+    "variance": 0.01703288888888889,
+    "rank_by_variance_among_71_columns": 68,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": false
+   },
+   {
+    "literal": "onto_any[AtLeast_job_A173]",
+    "variance": 0.16934400000000002,
+    "rank_by_variance_among_71_columns": 32,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": false
+   },
+   {
+    "literal": "onto_any[AtLeast_savings_account_A62]",
+    "variance": 0.173824,
+    "rank_by_variance_among_71_columns": 31,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": false
+   },
+   {
+    "literal": "onto_any[AtLeast_savings_account_A63]",
+    "variance": 0.09737955555555555,
+    "rank_by_variance_among_71_columns": 45,
+    "in_pool_mf12": false,
+    "in_pool_mf20": false,
+    "in_pool_mf30": false
+   },
+   {
+    "literal": "onto_any[AtLeast_status_checking_account_A12]",
+    "variance": 0.221776,
+    "rank_by_variance_among_71_columns": 18,
+    "in_pool_mf12": false,
+    "in_pool_mf20": true,
+    "in_pool_mf30": true
+   },
+   {
+    "literal": "onto_any[Purpose_HouseholdGoods]",
+    "variance": 0.2487982222222222,
+    "rank_by_variance_among_71_columns": 8,
+    "in_pool_mf12": true,
+    "in_pool_mf20": true,
+    "in_pool_mf30": true
+   },
+   {
+    "literal": "onto_any[Purpose_Vehicles]",
+    "variance": 0.22648888888888882,
+    "rank_by_variance_among_71_columns": 16,
+    "in_pool_mf12": false,
+    "in_pool_mf20": true,
+    "in_pool_mf30": true
+   }
+  ]
+ },
+ "note": "a prioridade por variância depende da escala bruta das colunas numéricas (credit_amount, duration, age dominam); não assume a configuração de `max_features_per_node` do benchmark real"
+}

@@ -11,7 +11,7 @@ from typing import Any, Dict, List
 
 import numpy as np
 
-from validation.benchmark.h2_axiom_mechanisms import derived_union_literals, family_of
+from validation.benchmark.h2_axiom_mechanisms import defined_union_concepts, derived_union_literals, family_of
 from validation.benchmark.h2_german_proposal import OUT, build, cards, ORDINAL, TAXONOMY
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,7 +40,7 @@ def main(out: str, max_n: int = 3):
     Xtr = X[sp.train_idx]
     owl = OUT / "german_credit_O2.owl"
     reg = compile_registry(str(owl), names, run_reasoner=True)
-    lits = derived_union_literals(reg, Xtr, names)
+    lits = derived_union_literals(reg, Xtr, names, only_concepts=defined_union_concepts(owl))
     by_card = {c.id: c for c in cards()}
     fam_cols: Dict[str, List[str]] = {}
     for n in names:
