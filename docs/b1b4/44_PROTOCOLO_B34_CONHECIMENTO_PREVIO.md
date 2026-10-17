@@ -178,3 +178,10 @@ Implementar gerador e testes T-IND em `validation/` → testes de funcionamento 
 
 ## 17. Revisão humana
 Mantêm-se três responsabilidades (domínio, engenharia de ontologias, metodologia). Nomes por designar; nenhuma assinatura ou aprovação foi inventada; as ontologias sintéticas da B3.4 são construídas por código e **não** são «ontologias independentes validadas» (a independência é de dados e rótulos, não uma validação humana). Nenhuma ontologia é declarada independentemente validada antes de existirem aprovações verificáveis.
+
+---
+
+## Histórico de versões (acrescentado; o corpo acima, v1 = commit `66ad1a9`, não foi alterado)
+* **v1** (`66ad1a9`): desenho original.
+* **v2 (PROPOSTA, não vigente)**: revisões R1–R7 do Doc. 48 §5 — P1/P2 passam a observações descritivas, estudo declarado H1-only, cargas λ ~ U(0,25; 0,45) com porta de recuperabilidade, nomes opacos, texto de informação substituído pela especificação do Doc. 48 §3. Só entram em vigor por decisão explícita **antes** do congelamento. Estado: `B34 = DESIGN_ONLY / NOT_EXECUTED`; manifest `frozen = false`.
+* Motivo principal: a auditoria B3-Q mostrou que, com λ ~ U(0,60; 0,85), a partição de conceitos é recuperável dos dados (ARI ≥ 0,99 com n ≥ 60), pelo que o conhecimento seria redundante e H1 não seria testável (Doc. 48 §3, F4).

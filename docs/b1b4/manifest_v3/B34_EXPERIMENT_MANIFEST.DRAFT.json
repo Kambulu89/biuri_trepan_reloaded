@@ -154,5 +154,20 @@
   "total": 6.9,
   "hard_cap": 9.0
  },
- "stopping": "sem novas famílias, sementes ou critérios após ver resultados; hard cap de CPU; parar no primeiro veredicto global; não propor B3.5 automaticamente"
+ "stopping": "sem novas famílias, sementes ou critérios após ver resultados; hard cap de CPU; parar no primeiro veredicto global; não propor B3.5 automaticamente",
+ "state": "B34 = DESIGN_ONLY / NOT_EXECUTED",
+ "revisions_pending_decision": {
+  "source": "docs/b1b4/48_REVISAO_CIENTIFICA_B34.md §5",
+  "items": [
+   "R1 P1/P2 descritivas",
+   "R2 H1-only",
+   "R3 lambda U(0.25,0.45) + porta de recuperabilidade (corte a decidir pelos revisores)",
+   "R4 nomes opacos",
+   "R5 texto de informação substituído",
+   "R6 decomposição D/E/F de H2 só como estudo futuro",
+   "R7 CPU inalterado (+0.05 h)"
+  ],
+  "parameters_changed": false,
+  "note": "os parâmetros acima (cargas lambda=U(0.6,0.85), nomes tema_medida) são os da v1 e NÃO devem ser congelados: a v2 só vigora se aprovada"
+ }
 }

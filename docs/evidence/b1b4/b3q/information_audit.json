@@ -1,0 +1,31 @@
+{
+ "model": "B3-Q / Doc. 48 \u00a73: auditoria matem\u00e1tica das quantidades de informa\u00e7\u00e3o do Doc. 44 (gerador LATENT_CONCEPT_V1). C\u00e1lculo exato (lgamma), sem simula\u00e7\u00e3o.\n\nModelo: \u03a9 = pares (P, {A,B}) com P parti\u00e7\u00e3o uniforme dos p=K\u00b7g atributos rotulados em K blocos N\u00c3O rotulados de tamanho g (|\u03a9_P| = p!/((g!)^K K!)) e {A,B} par n\u00e3o ordenado de blocos\nuniforme e independente de P. Suporte da regra S = A \u222a B (2g atributos). Entropia de Shannon em bits. Pressupostos: prior uniforme sobre parti\u00e7\u00f5es e sobre pares; independ\u00eancia P \u22a5 {A,B};\nX (dados) n\u00e3o considerado em H/I \u00abincondicionais\u00bb; a redund\u00e2ncia com X \u00e9 medida \u00e0 parte (``b3q_partition_recoverability``).",
+ "cells": [
+  {
+   "K": 8,
+   "g": 6,
+   "p": 48,
+   "H_partition_bits": 111.71553924067553,
+   "H_support_bits": 36.01978816426845,
+   "H_support_given_partition_bits": 4.807354922057601,
+   "I_support_partition_bits": 31.212433242210846,
+   "fraction_of_partition_info_relevant_to_support": 0.2793920474659127,
+   "search_level_candidate_pairs_attributes": 1128,
+   "search_level_candidate_pairs_concepts": 28,
+   "search_level_reduction_factor": 40.285714285714285
+  },
+  {
+   "K": 16,
+   "g": 6,
+   "p": 96,
+   "H_partition_bits": 302.1573677827456,
+   "H_support_bits": 49.15008446663995,
+   "H_support_given_partition_bits": 6.906890595608517,
+   "I_support_partition_bits": 42.24319387103144,
+   "fraction_of_partition_info_relevant_to_support": 0.1398052749168928,
+   "search_level_candidate_pairs_attributes": 4560,
+   "search_level_candidate_pairs_concepts": 120,
+   "search_level_reduction_factor": 38.0
+  }
+ ]
+}
