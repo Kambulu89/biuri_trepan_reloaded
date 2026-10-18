@@ -18,7 +18,7 @@ from validation.benchmark import h2_synthetic as S
 from validation.benchmark.b31_facts import compile_registry
 from validation.benchmark.h2_axiom_mechanisms import defined_union_concepts, derived_union_literals
 from validation.benchmark.h2_pool_study import (LADDER, Ceilings, PoolTrepan, ablate_literal, cards_by_concept, comparability, consumption, fit_pool_arm, ladder_state,
-                                                match_generic_by_evaluated, original_buildable)
+                                                match_generic_by_evaluated, original_buildable, resource_report)
 
 P = dict(min_sample=150, max_queries=600, max_nodes=5, max_depth=3, max_n=1, beam_width=2, min_samples_leaf=3, max_features_per_node=3, random_state=5)
 
@@ -79,16 +79,34 @@ def test_original_equivalent_buildability_is_measured_per_pool(world):
     assert t(wide)["equivalent_test_buildable_in_some_search"] or t(wide)["extension_cols_all_in_feature_pool_searches"] > 0
 
 
-def test_comparability_contract_flags_every_violation(world):
+def test_configuration_comparability_is_separate_from_realized_resource_match(world):
     X, names, lits = world
     a = fit_pool_arm(X, names, lits, S.TruthOracle(), P, extras="derived", mf=3 + len(lits))
     b = fit_pool_arm(X, names, [], S.TruthOracle(), P, extras="none", mf=3 + len(lits))
-    tol = {"feature_slots": 0.0, "mofn_generated": 0.0}
-    ok = comparability(a, a, same_instances=True, same_oracle=True, same_params_except_pool=True, tol=tol)
-    assert ok["status"] == "COMPARABLE"
-    bad = comparability(a, b, same_instances=True, same_oracle=False, same_params_except_pool=True, tol=tol)
-    assert bad["status"] == "NOT_COMPARABLE" and "same_oracle" in bad["violations"]
-    assert comparability(a, a, same_instances=False, same_oracle=True, same_params_except_pool=True, tol=tol)["status"] == "NOT_COMPARABLE"
+    ceil = Ceilings(eligible_literals=40, evaluated_candidates=5000, oracle_queries=P["max_queries"], nodes=P["max_nodes"])
+    same = comparability(a, a, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={"mofn_evaluated": 0.0}, ceilings=ceil, design_equalized=("feature_slots",))
+    assert same["status"] == "CONFIGURATION_COMPARABLE" and same["realized_resource_match"]["grade"] == "EXACT"
+    # consumos diferentes sob o MESMO teto: continua configuração comparável (o grau realizado é descritivo)
+    ab = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={"mofn_evaluated": 0.0, "queries": 0.0}, ceilings=ceil, design_equalized=("feature_slots",))
+    assert ab["status"] == "CONFIGURATION_COMPARABLE" and ab["realized_resource_match"]["grade"] in ("EXACT", "WITHIN_TOLERANCE", "PARTIAL")
+    if ab["measures"]["mofn_evaluated"]["rel_diff"] > 0:
+        assert "mofn_evaluated" in ab["realized_resource_match"]["dimensions_outside_tolerance"] and ab["realized_resource_match"]["grade"] == "PARTIAL"
+    bad = comparability(a, b, same_instances=True, same_oracle=False, same_params_except_pool=True, tol={}, ceilings=ceil)
+    assert bad["status"] == "NOT_COMPARABLE" and "same_oracle" in bad["configuration_violations"]
+    assert comparability(a, a, same_instances=False, same_oracle=True, same_params_except_pool=True, tol={})["status"] == "NOT_COMPARABLE"
+    # o desenho declara igualar as vagas e elas diferem ⇒ não comparável por configuração
+    c = fit_pool_arm(X, names, [], S.TruthOracle(), P, extras="none", mf=3)
+    d = comparability(a, c, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={"feature_slots": 0.0}, design_equalized=("feature_slots",))
+    assert d["status"] == "NOT_COMPARABLE" and "DESIGN_NOT_EQUALIZED:feature_slots" in d["configuration_violations"]
+
+
+def test_resource_report_covers_every_required_dimension(world):
+    X, names, lits = world
+    a = fit_pool_arm(X, names, lits, S.TruthOracle(), P, extras="derived", mf=3 + len(lits))
+    r = resource_report(a, Ceilings(evaluated_candidates=900, oracle_queries=600), extra_fits=3)
+    assert r["candidates"]["ceiling_evaluated"] == 900 and r["queries"]["ceiling"] == 600 and r["queries"]["executed"] == a["queries"]
+    assert r["literals"]["derived"] == len(lits) and r["trees_built"] == 4 and r["cpu_seconds"] >= 0 and r["peak_memory_mb"] > 0
+    assert {"n_tests", "total_literals_in_tests", "max_literals_in_a_test"} <= set(r["tree"]) and r["representation"]["n_derived_columns"] == len(lits)
 
 
 def test_states_are_separate_and_benefit_is_never_assessed():
@@ -105,20 +123,18 @@ def test_states_are_separate_and_benefit_is_never_assessed():
     assert LADDER == ("LITERAL_VALID", "LITERAL_ELIGIBLE", "LITERAL_EVALUATED", "LITERAL_SELECTED", "SPLIT_CHANGED", "BENEFIT_OBSERVED")
 
 
-def test_ceilings_are_authorizations_not_consumption_and_decide_comparability(world):
+def test_ceilings_are_authorizations_not_consumption_and_decide_configuration(world):
     X, names, lits = world
     a = fit_pool_arm(X, names, lits, S.TruthOracle(), P, extras="derived", mf=3 + len(lits))
     b = fit_pool_arm(X, names, [], S.TruthOracle(), P, extras="none", mf=3 + len(lits))
     cons = consumption(a)
     assert cons["eligible_literals"] == a["feature_slots"] and cons["nodes"] == a["n_internal_nodes"] and cons["cpu_seconds"] is not None and cons["rows_consulted"] is not None
     ok = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(nodes=P["max_nodes"], oracle_queries=P["max_queries"]))
-    assert ok["status"] == "COMPARABLE" and ok["ceilings"]["a"]["authorized"] and ok["cpu_modality"]["decides_status"] is False
+    assert ok["status"] == "CONFIGURATION_COMPARABLE" and ok["ceilings"]["a"]["authorized"] and ok["cpu_modality"]["decides_status"] is False
     tight = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(eligible_literals=1))
-    assert tight["status"] == "NOT_COMPARABLE" and any(v.startswith("CEILING_EXCEEDED") for v in tight["violations"])
+    assert tight["status"] == "NOT_COMPARABLE" and any(v.startswith("CEILING_EXCEEDED") for v in tight["configuration_violations"])
     cpu = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(cpu_seconds=-1.0))
     assert cpu["cpu_modality"]["decides_status"] is True and cpu["status"] == "NOT_COMPARABLE"                       # CPU só decide se tiver teto
-    strict = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={"queries": 0.0, "mofn_evaluated": 10.0})
-    assert strict["status_candidates_and_ceilings"] == "COMPARABLE" or "mofn_evaluated" in strict["violations_excluding_outcomes"]
 
 
 def test_generic_matching_scans_the_whole_range_and_reports_feasibility(world):

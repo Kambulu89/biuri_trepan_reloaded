@@ -30,7 +30,7 @@ def _sha(p: Path) -> str:
 def _summ(a: Dict[str, Any]) -> Dict[str, Any]:
     c = a["trace"]["pool"]["counters"]
     return {"feature_slots": a["feature_slots"], "beam_width": a["beam_width"], "n_columns": a["n_columns"], "n_derived": a["trace"]["n_derived"], "counters": c, "queries": a["queries"],
-            "oracle_calls": a["oracle_calls"], "rows_consulted": a["rows_consulted"], "cpu_seconds": round(a["cpu_seconds"], 3), "n_internal_nodes": a["n_internal_nodes"], "depth": a["depth"],
+            "oracle_calls": a["oracle_calls"], "rows_consulted": a["rows_consulted"], "cpu_seconds": round(a["cpu_seconds"], 3), "peak_memory_mb": round(a["peak_memory_mb"], 2), "complexity": a["complexity"], "n_internal_nodes": a["n_internal_nodes"], "depth": a["depth"],
             "n_searches": a["trace"]["pool"]["n_searches"], "stop_reasons": a["stop_reasons"],
             "rules_sha": hashlib.sha256(json.dumps(a["model"].export_rules(), default=str).encode()).hexdigest()[:16]}
 
@@ -45,7 +45,7 @@ def run_seed(seed: int) -> Dict[str, Any]:
     from validation.benchmark.h2_axiom_mechanisms import defined_union_concepts, derived_union_literals
     from validation.benchmark.h2_harness import instance_hash
     from validation.benchmark.h2_pool_study import (Ceilings, ablate_literal, cards_by_concept, comparability, fit_pool_arm, ladder_state, match_generic_by_evaluated,
-                                                    original_buildable)
+                                                    original_buildable, resource_report)
     DC.register()
     ds, _, _ = D.REGISTRY["german_credit"].load()
     names = [str(n) for n in ds.feature_names]
@@ -101,12 +101,15 @@ def run_seed(seed: int) -> Dict[str, Any]:
     from validation.benchmark.h2_pool_study import check_ceilings
     for k, a in arms.items():
         out["ceilings"]["arms_exceeding"][k] = check_ceilings(a, ceil)["exceeded"]
+    extra = {"F_GENERIC_MATCHED_EVALUATED": len(range(mf0, len(names) + 1)) - 1, "C_OWL_PRIORITY": r, "A_PLUS_ENRICHED": r}          # ajustes auxiliares (varrimento de F; ablações)
+    for k, a in arms.items():
+        out["arms"][k]["resources"] = resource_report(a, ceil, extra_fits=extra.get(k, 0))
     out["comparability"] = {}
-    for b_key in ("B_WIDE_GENERIC", "F_GENERIC_MATCHED_EVALUATED", "D_PERMUTED_PRIORITY", "E_RANDOM_BASE", "E_RANDOM_RELATIONS", "A_LIMITED"):
-        tol = dict(TOL)
-        if b_key in ("F_GENERIC_MATCHED_EVALUATED", "A_LIMITED"):
-            tol.pop("feature_slots")                      # F iguala candidatos avaliados / A não iguala vagas por construção: reporta-se, não se exige
-        out["comparability"][f"C_OWL_PRIORITY vs {b_key}"] = comparability(arms["C_OWL_PRIORITY"], arms[b_key], same_instances=True, same_oracle=True, same_params_except_pool=True, tol=tol, ceilings=ceil)
+    # O desenho de cada contraste declara o que IGUALA: vagas (B, D, E) ou candidatos avaliados (F). A_LIMITED serve de referência: tem MENOS vagas, logo C vs A não é atribuível à ontologia.
+    for b_key, eq in (("B_WIDE_GENERIC", ("feature_slots",)), ("F_GENERIC_MATCHED_EVALUATED", ("mofn_evaluated",)), ("D_PERMUTED_PRIORITY", ("feature_slots",)), ("E_RANDOM_BASE", ("feature_slots",)),
+                      ("E_RANDOM_RELATIONS", ("feature_slots",)), ("A_LIMITED", ("feature_slots",))):
+        out["comparability"][f"C_OWL_PRIORITY vs {b_key}"] = comparability(arms["C_OWL_PRIORITY"], arms[b_key], same_instances=True, same_oracle=True, same_params_except_pool=True,
+                                                                          tol=dict(TOL), ceilings=ceil, design_equalized=eq)
     out["original_equivalent_buildable"] = {k: original_buildable(arms[k]["model"], lits["O2"], names) for k in ("A_LIMITED", "B_WIDE_GENERIC", "F_GENERIC_MATCHED_EVALUATED", "C_OWL_PRIORITY")}
     # sensibilidade ao tamanho do feixe (paragem antecipada, candidatos inválidos/duplicados por feixe)
     out["beam_sensitivity"] = {}

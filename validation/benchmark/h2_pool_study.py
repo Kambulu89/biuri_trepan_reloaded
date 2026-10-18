@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import time
+import tracemalloc
 from collections import Counter
 
 import numpy as np
@@ -147,14 +148,24 @@ def fit_pool_arm(X_base: np.ndarray, names: Sequence[str], derived: Sequence[Der
     m = PoolTrepan(derived=list(derived), base_names=list(names), prune_redundant=prune, forced=forced, masked=[n_base + k for k in masked_derived], **p)
     m._feature_names_for_sig = list(na)
     q0, r0 = getattr(oracle, "calls", 0), getattr(oracle, "rows", None)
+    already = tracemalloc.is_tracing()
+    if not already:
+        tracemalloc.start()
+    tracemalloc.reset_peak()
     t0 = time.process_time()
     m.fit(Xa, oracle=oracle, feature_names=na)
     cpu = time.process_time() - t0
+    peak_mb = tracemalloc.get_traced_memory()[1] / 1e6
+    if not already:
+        tracemalloc.stop()
+    tests = [n.test for n in m.iter_nodes() if not n.is_leaf and n.test is not None]
+    complexity = {"n_tests": len(tests), "total_literals_in_tests": int(sum(len(t.literals) for t in tests)), "max_literals_in_a_test": int(max((len(t.literals) for t in tests), default=0)),
+                  "derived_literals_in_tests": int(sum(1 for t in tests for l in t.literals if l.feature >= n_base))}
     tr = m.semantic_trace_
     internal = [n for n in m.iter_nodes() if not n.is_leaf]
     stops = Counter(str(n.stop_reason) for n in m.iter_nodes() if n.is_leaf)
     return {"model": m, "trace": tr, "names": list(na), "queries": int(m.membership_queries_), "oracle_calls": getattr(oracle, "calls", 0) - q0,
-            "rows_consulted": (None if r0 is None else int(getattr(oracle, "rows", 0) - r0)), "cpu_seconds": float(cpu), "stop_reasons": dict(stops),
+            "rows_consulted": (None if r0 is None else int(getattr(oracle, "rows", 0) - r0)), "cpu_seconds": float(cpu), "peak_memory_mb": float(peak_mb), "complexity": complexity, "stop_reasons": dict(stops),
             "n_internal_nodes": len(internal), "depth": int(m.get_depth()), "feature_slots": int(m.max_features_per_node), "beam_width": int(m.beam_width), "n_columns": Xa.shape[1], "forced": forced}
 
 
@@ -243,10 +254,30 @@ def check_ceilings(arm: Dict[str, Any], ceilings: Ceilings) -> Dict[str, Any]:
     return {"authorized": {k: v for k, v in ceilings.__dict__.items() if v is not None}, "consumed": used, "exceeded": over}
 
 
+REALIZED_DIMENSIONS = ("mofn_generated", "mofn_evaluated", "simple_evaluated", "queries", "rows_consulted", "n_internal_nodes", "depth")
+
+
+def resource_report(arm: Dict[str, Any], ceilings: Optional[Ceilings] = None, *, extra_fits: int = 0) -> Dict[str, Any]:
+    """Relatório obrigatório de recursos de UM braço: tetos AUTORIZADOS vs consumos EFETIVOS (candidatos, consultas, nós, vagas), nº de literais, CPU, memória, árvores construídas, complexidade e
+    diferenças de representação. ``extra_fits`` = ajustes auxiliares (calibração/ablação) imputáveis ao braço."""
+    c = arm["trace"]["pool"]["counters"]
+    ceil = (ceilings.__dict__ if ceilings is not None else {})
+    return {"authorized": {k: v for k, v in ceil.items() if v is not None},
+            "candidates": {"ceiling_evaluated": ceil.get("evaluated_candidates"), "generated": c["mofn_generated"], "evaluated": c["mofn_evaluated"], "simple_evaluated": c["simple_evaluated"], "invalid": c.get("invalid_mofn")},
+            "queries": {"ceiling": ceil.get("oracle_queries"), "executed": arm["queries"], "oracle_calls": arm["oracle_calls"], "rows_consulted": arm.get("rows_consulted")},
+            "literals": {"feature_slots": arm["feature_slots"], "columns": arm["n_columns"], "derived": arm["trace"]["n_derived"], "forced_columns": list(arm["forced"])},
+            "cpu_seconds": arm.get("cpu_seconds"), "peak_memory_mb": arm.get("peak_memory_mb"), "trees_built": 1 + int(extra_fits), "tree": {"internal_nodes": arm["n_internal_nodes"], "depth": arm["depth"], **arm.get("complexity", {})},
+            "representation": {"n_base_columns": arm["n_columns"] - arm["trace"]["n_derived"], "n_derived_columns": arm["trace"]["n_derived"], "beam_width": arm.get("beam_width")}}
+
+
 def comparability(a: Dict[str, Any], b: Dict[str, Any], *, same_instances: bool, same_oracle: bool, same_params_except_pool: bool, tol: Dict[str, float],
-                  ceilings: Optional[Ceilings] = None) -> Dict[str, Any]:
-    """Contrato (Doc. 61 §3): condições estruturais + razão relativa nas quantidades igualadas + (se fornecidos) tetos autorizados respeitados por AMBOS os braços. Qualquer falha → NOT_COMPARABLE.
-    As tolerâncias e os tetos são PROPOSTA; o CPU é reportado como modalidade distinta e só decide se tiver teto."""
+                  ceilings: Optional[Ceilings] = None, design_equalized: Sequence[str] = ()) -> Dict[str, Any]:
+    """Dois conceitos SEPARADOS (Doc. 62 §4):
+    * ``configuration`` — ``CONFIGURATION_COMPARABLE`` se os braços receberam condições e limites compatíveis com o contraste: mesmas instâncias, oráculo e parâmetros (exceto o pool), mesmo feixe, ambos
+      DENTRO dos tetos autorizados e as dimensões que o DESENHO do contraste declara igualar (``design_equalized``, p. ex. vagas, ou candidatos avaliados no braço F) dentro da tolerância. Consumos
+      diferentes sob o mesmo teto NÃO tornam o contraste não comparável.
+    * ``realized_resource_match`` — grau descritivo de correspondência do consumo EFETIVO (nunca decide a comparabilidade): ``EXACT`` | ``WITHIN_TOLERANCE`` | ``PARTIAL`` + diferenças relativas.
+    Tolerâncias e tetos são PROPOSTA (não congelados). Não se igualam consumos a posteriori."""
     def rel(x, y):
         return abs(x - y) / max(1.0, max(abs(x), abs(y)))
     ca, cb = a["trace"]["pool"]["counters"], b["trace"]["pool"]["counters"]
@@ -255,24 +286,29 @@ def comparability(a: Dict[str, Any], b: Dict[str, Any], *, same_instances: bool,
                 "depth": (a["depth"], b["depth"]), "beam_width": (a.get("beam_width", 0), b.get("beam_width", 0))}
     if a.get("rows_consulted") is not None and b.get("rows_consulted") is not None:
         measures["rows_consulted"] = (a["rows_consulted"], b["rows_consulted"])
-    out = {"same_instances": same_instances, "same_oracle": same_oracle, "same_params_except_pool": same_params_except_pool, "measures": {}, "violations": []}
+    structural = {"same_instances": same_instances, "same_oracle": same_oracle, "same_params_except_pool": same_params_except_pool}
+    cfg_viol = [k for k, v in structural.items() if not v]
+    if measures["beam_width"][0] != measures["beam_width"][1]:
+        cfg_viol.append("beam_width")
+    per = {}
     for k, (x, y) in measures.items():
-        r = rel(x, y)
-        out["measures"][k] = {"a": x, "b": y, "rel_diff": round(r, 4), "tolerance": tol.get(k)}
-        if k in tol and r > tol[k]:
-            out["violations"].append(k)
-    for flag in ("same_instances", "same_oracle", "same_params_except_pool"):
-        if not out[flag]:
-            out["violations"].append(flag)
-    out["cpu_modality"] = {"a": a.get("cpu_seconds"), "b": b.get("cpu_seconds"), "decides_status": bool(ceilings and ceilings.cpu_seconds is not None)}
+        per[k] = {"a": x, "b": y, "rel_diff": round(rel(x, y), 4), "tolerance": tol.get(k)}
+    for k in design_equalized:
+        if k in per and per[k]["rel_diff"] > (tol.get(k) or 0.0):
+            cfg_viol.append(f"DESIGN_NOT_EQUALIZED:{k}")
+    out = {"structural": structural, "design_equalized": list(design_equalized), "measures": per,
+           "cpu_modality": {"a": a.get("cpu_seconds"), "b": b.get("cpu_seconds"), "decides_status": bool(ceilings and ceilings.cpu_seconds is not None)},
+           "memory_mb": {"a": a.get("peak_memory_mb"), "b": b.get("peak_memory_mb")}}
     if ceilings is not None:
         out["ceilings"] = {"a": check_ceilings(a, ceilings), "b": check_ceilings(b, ceilings)}
         for side in ("a", "b"):
-            out["violations"] += [f"CEILING_EXCEEDED[{side}]:{k}" for k in out["ceilings"][side]["exceeded"]]
-    out["status"] = "COMPARABLE" if not out["violations"] else "NOT_COMPARABLE"              # estrito: tudo igualado dentro da tolerância
-    OUTCOMES = {"queries", "n_internal_nodes", "depth", "rows_consulted"}                       # consequências da forma da árvore, não recursos igualáveis por construção
-    out["violations_excluding_outcomes"] = [v for v in out["violations"] if v not in OUTCOMES]
-    out["status_candidates_and_ceilings"] = "COMPARABLE" if not out["violations_excluding_outcomes"] else "NOT_COMPARABLE"   # candidatos igualados + tetos respeitados; consumos reportados
+            cfg_viol += [f"CEILING_EXCEEDED[{side}]:{k}" for k in out["ceilings"][side]["exceeded"]]
+    out["configuration_violations"] = cfg_viol
+    out["status"] = "CONFIGURATION_COMPARABLE" if not cfg_viol else "NOT_COMPARABLE"
+    outside = [k for k in REALIZED_DIMENSIONS if k in per and k in tol and per[k]["rel_diff"] > tol[k]]
+    exact = all(per[k]["rel_diff"] == 0.0 for k in REALIZED_DIMENSIONS if k in per)
+    out["realized_resource_match"] = {"grade": "EXACT" if exact else ("WITHIN_TOLERANCE" if not outside else "PARTIAL"), "dimensions_outside_tolerance": outside,
+                                      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"}
     return out
 
 

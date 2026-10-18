@@ -87,14 +87,64 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.58,
+     "cpu_seconds": 0.995,
+     "peak_memory_mb": 1.9,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "abb4767d8a46a9cf"
+     "rules_sha": "abb4767d8a46a9cf",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 408,
+       "evaluated": 392,
+       "simple_evaluated": 372,
+       "invalid": 16
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 0.9953314809999991,
+      "peak_memory_mb": 1.901332,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "A_PLUS_ENRICHED": {
      "feature_slots": 12,
@@ -115,7 +165,14 @@
      "queries": 37,
      "oracle_calls": 3,
      "rows_consulted": 787,
-     "cpu_seconds": 0.575,
+     "cpu_seconds": 1.086,
+     "peak_memory_mb": 2.05,
+     "complexity": {
+      "n_tests": 2,
+      "total_literals_in_tests": 5,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 2,
      "depth": 2,
      "n_searches": 3,
@@ -123,7 +180,50 @@
       "STOP_MAX_NODES": 2,
       "STOP_PRUNED": 1
      },
-     "rules_sha": "c1525c8ef0db77ac"
+     "rules_sha": "c1525c8ef0db77ac",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 424,
+       "evaluated": 371,
+       "simple_evaluated": 412,
+       "invalid": 53
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 37,
+       "oracle_calls": 3,
+       "rows_consulted": 787
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.0858726280000006,
+      "peak_memory_mb": 2.051842,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 2,
+       "depth": 2,
+       "n_tests": 2,
+       "total_literals_in_tests": 5,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "B_WIDE_GENERIC": {
      "feature_slots": 22,
@@ -144,14 +244,64 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.726,
+     "cpu_seconds": 1.412,
+     "peak_memory_mb": 2.1,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "d856577601d7aa9a"
+     "rules_sha": "d856577601d7aa9a",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 864,
+       "evaluated": 821,
+       "simple_evaluated": 436,
+       "invalid": 43
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.4115410130000008,
+      "peak_memory_mb": 2.095004,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "C_OWL_PRIORITY": {
      "feature_slots": 22,
@@ -172,14 +322,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.787,
+     "cpu_seconds": 1.546,
+     "peak_memory_mb": 2.09,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "2001970b5297d350"
+     "rules_sha": "2001970b5297d350",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 800,
+       "evaluated": 758,
+       "simple_evaluated": 452,
+       "invalid": 42
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.5457476979999996,
+      "peak_memory_mb": 2.087808,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "D_PERMUTED_PRIORITY": {
      "feature_slots": 22,
@@ -200,14 +411,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.625,
+     "cpu_seconds": 1.518,
+     "peak_memory_mb": 2.39,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "8eab09c96a6e9f05"
+     "rules_sha": "8eab09c96a6e9f05",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 844,
+       "evaluated": 813,
+       "simple_evaluated": 436,
+       "invalid": 31
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.5176258879999995,
+      "peak_memory_mb": 2.387087,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_BASE": {
      "feature_slots": 22,
@@ -228,14 +500,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.604,
+     "cpu_seconds": 1.57,
+     "peak_memory_mb": 2.08,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "8b91934729384681"
+     "rules_sha": "8b91934729384681",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 848,
+       "evaluated": 811,
+       "simple_evaluated": 414,
+       "invalid": 37
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": [
+        0,
+        2,
+        13,
+        15,
+        18,
+        26,
+        36,
+        45,
+        47,
+        53
+       ]
+      },
+      "cpu_seconds": 1.570228251999998,
+      "peak_memory_mb": 2.082893,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_RELATIONS": {
      "feature_slots": 22,
@@ -256,14 +589,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.627,
+     "cpu_seconds": 1.359,
+     "peak_memory_mb": 2.21,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 3
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "89fc2349e2c3b387"
+     "rules_sha": "89fc2349e2c3b387",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 964,
+       "evaluated": 936,
+       "simple_evaluated": 424,
+       "invalid": 28
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.359467318,
+      "peak_memory_mb": 2.211517,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 3
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "F_GENERIC_MATCHED_EVALUATED": {
      "feature_slots": 21,
@@ -284,14 +678,64 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.736,
+     "cpu_seconds": 1.422,
+     "peak_memory_mb": 2.08,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "d856577601d7aa9a"
+     "rules_sha": "d856577601d7aa9a",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 810,
+       "evaluated": 769,
+       "simple_evaluated": 430,
+       "invalid": 41
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 21,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.4222811069999999,
+      "peak_memory_mb": 2.077366,
+      "trees_built": 50,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     }
    },
    "tree_identical_to_A": {
@@ -326,9 +770,14 @@
    },
    "comparability": {
     "C_OWL_PRIORITY vs B_WIDE_GENERIC": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -385,11 +834,14 @@
        "tolerance": null
       }
      },
-     "violations": [],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.7262656669999998,
+      "a": 1.5457476979999996,
+      "b": 1.4115410130000008,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 2.095004
      },
      "ceilings": {
       "a": {
@@ -405,7 +857,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -422,25 +874,34 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7262656669999998
+        "cpu_seconds": 1.4115410130000008
        },
        "exceeded": []
       }
      },
-     "status": "COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "WITHIN_TOLERANCE",
+      "dimensions_outside_tolerance": [],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs F_GENERIC_MATCHED_EVALUATED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "mofn_evaluated"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 21,
        "rel_diff": 0.0455,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 800,
@@ -491,11 +952,14 @@
        "tolerance": null
       }
      },
-     "violations": [],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.7360326300000004,
+      "a": 1.5457476979999996,
+      "b": 1.4222811069999999,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 2.077366
      },
      "ceilings": {
       "a": {
@@ -511,7 +975,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -528,19 +992,28 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7360326300000004
+        "cpu_seconds": 1.4222811069999999
        },
        "exceeded": []
       }
      },
-     "status": "COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "WITHIN_TOLERANCE",
+      "dimensions_outside_tolerance": [],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs D_PERMUTED_PRIORITY": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -597,11 +1070,14 @@
        "tolerance": null
       }
      },
-     "violations": [],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.6246573299999998,
+      "a": 1.5457476979999996,
+      "b": 1.5176258879999995,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 2.387087
      },
      "ceilings": {
       "a": {
@@ -617,7 +1093,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -634,19 +1110,28 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.6246573299999998
+        "cpu_seconds": 1.5176258879999995
        },
        "exceeded": []
       }
      },
-     "status": "COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "WITHIN_TOLERANCE",
+      "dimensions_outside_tolerance": [],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_BASE": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -703,11 +1188,14 @@
        "tolerance": null
       }
      },
-     "violations": [],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.6035463239999999,
+      "a": 1.5457476979999996,
+      "b": 1.570228251999998,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 2.082893
      },
      "ceilings": {
       "a": {
@@ -723,7 +1211,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -740,19 +1228,28 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.6035463239999999
+        "cpu_seconds": 1.570228251999998
        },
        "exceeded": []
       }
      },
-     "status": "COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "WITHIN_TOLERANCE",
+      "dimensions_outside_tolerance": [],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_RELATIONS": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -809,14 +1306,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.6265665399999989,
+      "a": 1.5457476979999996,
+      "b": 1.359467318,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 2.211517
      },
      "ceilings": {
       "a": {
@@ -832,7 +1329,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -849,28 +1346,37 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.6265665399999989
+        "cpu_seconds": 1.359467318
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs A_LIMITED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 12,
        "rel_diff": 0.4545,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 800,
@@ -921,14 +1427,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
      "cpu_modality": {
-      "a": 0.7867363999999988,
-      "b": 0.5803187500000009,
+      "a": 1.5457476979999996,
+      "b": 0.9953314809999991,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.087808,
+      "b": 1.901332
      },
      "ceilings": {
       "a": {
@@ -944,7 +1450,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.7867363999999988
+        "cpu_seconds": 1.5457476979999996
        },
        "exceeded": []
       },
@@ -961,17 +1467,23 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.5803187500000009
+        "cpu_seconds": 0.9953314809999991
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
+     "configuration_violations": [
+      "DESIGN_NOT_EQUALIZED:feature_slots"
      ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "status": "NOT_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     }
    },
    "original_equivalent_buildable": {
@@ -3014,14 +3526,64 @@
      "queries": 27,
      "oracle_calls": 2,
      "rows_consulted": 777,
-     "cpu_seconds": 0.557,
+     "cpu_seconds": 1.07,
+     "peak_memory_mb": 2.11,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "d15ec45dbf69f3e2"
+     "rules_sha": "d15ec45dbf69f3e2",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 412,
+       "evaluated": 411,
+       "simple_evaluated": 400,
+       "invalid": 1
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 27,
+       "oracle_calls": 2,
+       "rows_consulted": 777
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.0702235139999914,
+      "peak_memory_mb": 2.113906,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "A_PLUS_ENRICHED": {
      "feature_slots": 12,
@@ -3042,14 +3604,64 @@
      "queries": 27,
      "oracle_calls": 2,
      "rows_consulted": 777,
-     "cpu_seconds": 0.576,
+     "cpu_seconds": 1.123,
+     "peak_memory_mb": 2.38,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "d15ec45dbf69f3e2"
+     "rules_sha": "d15ec45dbf69f3e2",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 420,
+       "evaluated": 418,
+       "simple_evaluated": 400,
+       "invalid": 2
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 27,
+       "oracle_calls": 2,
+       "rows_consulted": 777
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.1226275470000076,
+      "peak_memory_mb": 2.380776,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "B_WIDE_GENERIC": {
      "feature_slots": 22,
@@ -3070,14 +3682,64 @@
      "queries": 57,
      "oracle_calls": 2,
      "rows_consulted": 807,
-     "cpu_seconds": 0.75,
+     "cpu_seconds": 1.463,
+     "peak_memory_mb": 2.15,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "99223b328147db4c"
+     "rules_sha": "99223b328147db4c",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 1008,
+       "evaluated": 995,
+       "simple_evaluated": 464,
+       "invalid": 13
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 57,
+       "oracle_calls": 2,
+       "rows_consulted": 807
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.4634014980000245,
+      "peak_memory_mb": 2.15101,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "C_OWL_PRIORITY": {
      "feature_slots": 22,
@@ -3098,14 +3760,75 @@
      "queries": 127,
      "oracle_calls": 2,
      "rows_consulted": 877,
-     "cpu_seconds": 0.701,
+     "cpu_seconds": 1.426,
+     "peak_memory_mb": 2.58,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "f0398f7e5621a9a8"
+     "rules_sha": "f0398f7e5621a9a8",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 840,
+       "evaluated": 786,
+       "simple_evaluated": 470,
+       "invalid": 54
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 127,
+       "oracle_calls": 2,
+       "rows_consulted": 877
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.4261740860000032,
+      "peak_memory_mb": 2.579393,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "D_PERMUTED_PRIORITY": {
      "feature_slots": 22,
@@ -3126,14 +3849,75 @@
      "queries": 16,
      "oracle_calls": 2,
      "rows_consulted": 766,
-     "cpu_seconds": 0.797,
+     "cpu_seconds": 1.505,
+     "peak_memory_mb": 2.42,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "7ba5d861ec49745e"
+     "rules_sha": "7ba5d861ec49745e",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 848,
+       "evaluated": 828,
+       "simple_evaluated": 456,
+       "invalid": 20
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 16,
+       "oracle_calls": 2,
+       "rows_consulted": 766
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.505090077999995,
+      "peak_memory_mb": 2.420016,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_BASE": {
      "feature_slots": 22,
@@ -3154,14 +3938,75 @@
      "queries": 16,
      "oracle_calls": 2,
      "rows_consulted": 766,
-     "cpu_seconds": 0.704,
+     "cpu_seconds": 1.312,
+     "peak_memory_mb": 2.14,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "7ba5d861ec49745e"
+     "rules_sha": "7ba5d861ec49745e",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 836,
+       "evaluated": 813,
+       "simple_evaluated": 454,
+       "invalid": 23
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 16,
+       "oracle_calls": 2,
+       "rows_consulted": 766
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": [
+        0,
+        12,
+        13,
+        19,
+        28,
+        32,
+        35,
+        41,
+        45,
+        50
+       ]
+      },
+      "cpu_seconds": 1.3115025629999764,
+      "peak_memory_mb": 2.141192,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_RELATIONS": {
      "feature_slots": 22,
@@ -3182,14 +4027,75 @@
      "queries": 13,
      "oracle_calls": 2,
      "rows_consulted": 763,
-     "cpu_seconds": 0.631,
+     "cpu_seconds": 1.449,
+     "peak_memory_mb": 2.03,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 8,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "5ea5889eab3e7424"
+     "rules_sha": "5ea5889eab3e7424",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 824,
+       "evaluated": 788,
+       "simple_evaluated": 442,
+       "invalid": 36
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 13,
+       "oracle_calls": 2,
+       "rows_consulted": 763
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.448991876000008,
+      "peak_memory_mb": 2.026914,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 8,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "F_GENERIC_MATCHED_EVALUATED": {
      "feature_slots": 19,
@@ -3210,14 +4116,64 @@
      "queries": 16,
      "oracle_calls": 2,
      "rows_consulted": 766,
-     "cpu_seconds": 0.637,
+     "cpu_seconds": 1.29,
+     "peak_memory_mb": 2.1,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "a6022f904149c710"
+     "rules_sha": "a6022f904149c710",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 806,
+       "evaluated": 789,
+       "simple_evaluated": 438,
+       "invalid": 17
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 16,
+       "oracle_calls": 2,
+       "rows_consulted": 766
+      },
+      "literals": {
+       "feature_slots": 19,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.2900387649999914,
+      "peak_memory_mb": 2.09878,
+      "trees_built": 50,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     }
    },
    "tree_identical_to_A": {
@@ -3252,9 +4208,14 @@
    },
    "comparability": {
     "C_OWL_PRIORITY vs B_WIDE_GENERIC": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -3311,15 +4272,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated",
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.7502672869999998,
+      "a": 1.4261740860000032,
+      "b": 1.4634014980000245,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.15101
      },
      "ceilings": {
       "a": {
@@ -3335,7 +4295,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3352,28 +4312,38 @@
         "oracle_queries": 57,
         "rows_consulted": 807,
         "nodes": 3,
-        "cpu_seconds": 0.7502672869999998
+        "cpu_seconds": 1.4634014980000245
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated",
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs F_GENERIC_MATCHED_EVALUATED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "mofn_evaluated"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 19,
        "rel_diff": 0.1364,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 840,
@@ -3424,13 +4394,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.6372758750000003,
+      "a": 1.4261740860000032,
+      "b": 1.2900387649999914,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.09878
      },
      "ceilings": {
       "a": {
@@ -3446,7 +4417,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3463,19 +4434,30 @@
         "oracle_queries": 16,
         "rows_consulted": 766,
         "nodes": 3,
-        "cpu_seconds": 0.6372758750000003
+        "cpu_seconds": 1.2900387649999914
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs D_PERMUTED_PRIORITY": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -3532,13 +4514,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.7968063049999898,
+      "a": 1.4261740860000032,
+      "b": 1.505090077999995,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.420016
      },
      "ceilings": {
       "a": {
@@ -3554,7 +4537,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3571,19 +4554,30 @@
         "oracle_queries": 16,
         "rows_consulted": 766,
         "nodes": 3,
-        "cpu_seconds": 0.7968063049999898
+        "cpu_seconds": 1.505090077999995
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_BASE": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -3640,13 +4634,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.7038134590000027,
+      "a": 1.4261740860000032,
+      "b": 1.3115025629999764,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.141192
      },
      "ceilings": {
       "a": {
@@ -3662,7 +4657,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3679,19 +4674,30 @@
         "oracle_queries": 16,
         "rows_consulted": 766,
         "nodes": 3,
-        "cpu_seconds": 0.7038134590000027
+        "cpu_seconds": 1.3115025629999764
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_RELATIONS": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -3748,13 +4754,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.6307213130000093,
+      "a": 1.4261740860000032,
+      "b": 1.448991876000008,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.026914
      },
      "ceilings": {
       "a": {
@@ -3770,7 +4777,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3787,25 +4794,36 @@
         "oracle_queries": 13,
         "rows_consulted": 763,
         "nodes": 3,
-        "cpu_seconds": 0.6307213130000093
+        "cpu_seconds": 1.448991876000008
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs A_LIMITED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 12,
        "rel_diff": 0.4545,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 840,
@@ -3856,15 +4874,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated",
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.7008939299999923,
-      "b": 0.5565153920000085,
+      "a": 1.4261740860000032,
+      "b": 1.0702235139999914,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.579393,
+      "b": 2.113906
      },
      "ceilings": {
       "a": {
@@ -3880,7 +4897,7 @@
         "oracle_queries": 127,
         "rows_consulted": 877,
         "nodes": 3,
-        "cpu_seconds": 0.7008939299999923
+        "cpu_seconds": 1.4261740860000032
        },
        "exceeded": []
       },
@@ -3897,17 +4914,24 @@
         "oracle_queries": 27,
         "rows_consulted": 777,
         "nodes": 3,
-        "cpu_seconds": 0.5565153920000085
+        "cpu_seconds": 1.0702235139999914
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
+     "configuration_violations": [
+      "DESIGN_NOT_EQUALIZED:feature_slots"
      ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "status": "NOT_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated",
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     }
    },
    "original_equivalent_buildable": {
@@ -5943,7 +6967,14 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.56,
+     "cpu_seconds": 0.931,
+     "peak_memory_mb": 2.07,
+     "complexity": {
+      "n_tests": 2,
+      "total_literals_in_tests": 5,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 2,
      "depth": 2,
      "n_searches": 3,
@@ -5951,7 +6982,50 @@
       "STOP_MAX_NODES": 2,
       "STOP_PRUNED": 1
      },
-     "rules_sha": "2371560845676458"
+     "rules_sha": "2371560845676458",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 336,
+       "evaluated": 329,
+       "simple_evaluated": 348,
+       "invalid": 7
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 0.9305428950000305,
+      "peak_memory_mb": 2.067086,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 2,
+       "depth": 2,
+       "n_tests": 2,
+       "total_literals_in_tests": 5,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "A_PLUS_ENRICHED": {
      "feature_slots": 12,
@@ -5971,7 +7045,14 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.516,
+     "cpu_seconds": 1.005,
+     "peak_memory_mb": 2.5,
+     "complexity": {
+      "n_tests": 1,
+      "total_literals_in_tests": 2,
+      "max_literals_in_a_test": 2,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 1,
      "depth": 1,
      "n_searches": 3,
@@ -5979,7 +7060,50 @@
       "STOP_PRUNED": 1,
       "STOP_MAX_NODES": 1
      },
-     "rules_sha": "8df9d986b58ad0dc"
+     "rules_sha": "8df9d986b58ad0dc",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 176,
+       "evaluated": 171,
+       "simple_evaluated": 228,
+       "invalid": 5
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 12,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.0050462769999626,
+      "peak_memory_mb": 2.503717,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 1,
+       "depth": 1,
+       "n_tests": 1,
+       "total_literals_in_tests": 2,
+       "max_literals_in_a_test": 2,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "B_WIDE_GENERIC": {
      "feature_slots": 22,
@@ -6000,14 +7124,64 @@
      "queries": 21,
      "oracle_calls": 2,
      "rows_consulted": 771,
-     "cpu_seconds": 0.593,
+     "cpu_seconds": 1.529,
+     "peak_memory_mb": 2.15,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 7,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "6c35d15c76fbd6c1"
+     "rules_sha": "6c35d15c76fbd6c1",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 688,
+       "evaluated": 624,
+       "simple_evaluated": 460,
+       "invalid": 64
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 21,
+       "oracle_calls": 2,
+       "rows_consulted": 771
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.5293947800000183,
+      "peak_memory_mb": 2.153059,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 7,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "C_OWL_PRIORITY": {
      "feature_slots": 22,
@@ -6028,14 +7202,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.647,
+     "cpu_seconds": 1.267,
+     "peak_memory_mb": 2.31,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "717740a5c0164544"
+     "rules_sha": "717740a5c0164544",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 688,
+       "evaluated": 674,
+       "simple_evaluated": 408,
+       "invalid": 14
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.2673777779999682,
+      "peak_memory_mb": 2.30828,
+      "trees_built": 11,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "D_PERMUTED_PRIORITY": {
      "feature_slots": 22,
@@ -6056,14 +7291,75 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.618,
+     "cpu_seconds": 1.409,
+     "peak_memory_mb": 2.16,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 9,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 2
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "95042906bd549221"
+     "rules_sha": "95042906bd549221",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 812,
+       "evaluated": 788,
+       "simple_evaluated": 414,
+       "invalid": 24
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.4094072350000033,
+      "peak_memory_mb": 2.161438,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 9,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 2
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_BASE": {
      "feature_slots": 22,
@@ -6084,7 +7380,14 @@
      "queries": 0,
      "oracle_calls": 1,
      "rows_consulted": 750,
-     "cpu_seconds": 0.615,
+     "cpu_seconds": 1.542,
+     "peak_memory_mb": 2.24,
+     "complexity": {
+      "n_tests": 2,
+      "total_literals_in_tests": 6,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 2,
      "depth": 2,
      "n_searches": 3,
@@ -6092,7 +7395,61 @@
       "STOP_MAX_NODES": 2,
       "STOP_PRUNED": 1
      },
-     "rules_sha": "3d4da342292dc8f8"
+     "rules_sha": "3d4da342292dc8f8",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 908,
+       "evaluated": 879,
+       "simple_evaluated": 420,
+       "invalid": 29
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 0,
+       "oracle_calls": 1,
+       "rows_consulted": 750
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": [
+        2,
+        13,
+        25,
+        26,
+        28,
+        33,
+        35,
+        47,
+        50,
+        52
+       ]
+      },
+      "cpu_seconds": 1.5415798559999985,
+      "peak_memory_mb": 2.235459,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 2,
+       "depth": 2,
+       "n_tests": 2,
+       "total_literals_in_tests": 6,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     },
     "E_RANDOM_RELATIONS": {
      "feature_slots": 22,
@@ -6113,7 +7470,14 @@
      "queries": 19,
      "oracle_calls": 2,
      "rows_consulted": 769,
-     "cpu_seconds": 0.595,
+     "cpu_seconds": 1.279,
+     "peak_memory_mb": 2.36,
+     "complexity": {
+      "n_tests": 2,
+      "total_literals_in_tests": 6,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 1
+     },
      "n_internal_nodes": 2,
      "depth": 2,
      "n_searches": 3,
@@ -6121,7 +7485,61 @@
       "STOP_MAX_NODES": 2,
       "STOP_PRUNED": 1
      },
-     "rules_sha": "e975183bae87ebc4"
+     "rules_sha": "e975183bae87ebc4",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 768,
+       "evaluated": 714,
+       "simple_evaluated": 458,
+       "invalid": 54
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 19,
+       "oracle_calls": 2,
+       "rows_consulted": 769
+      },
+      "literals": {
+       "feature_slots": 22,
+       "columns": 71,
+       "derived": 10,
+       "forced_columns": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+       ]
+      },
+      "cpu_seconds": 1.2786862539999788,
+      "peak_memory_mb": 2.362161,
+      "trees_built": 1,
+      "tree": {
+       "internal_nodes": 2,
+       "depth": 2,
+       "n_tests": 2,
+       "total_literals_in_tests": 6,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 1
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 10,
+       "beam_width": 2
+      }
+     }
     },
     "F_GENERIC_MATCHED_EVALUATED": {
      "feature_slots": 24,
@@ -6142,14 +7560,64 @@
      "queries": 21,
      "oracle_calls": 2,
      "rows_consulted": 771,
-     "cpu_seconds": 0.676,
+     "cpu_seconds": 1.314,
+     "peak_memory_mb": 2.15,
+     "complexity": {
+      "n_tests": 3,
+      "total_literals_in_tests": 7,
+      "max_literals_in_a_test": 3,
+      "derived_literals_in_tests": 0
+     },
      "n_internal_nodes": 3,
      "depth": 3,
      "n_searches": 3,
      "stop_reasons": {
       "STOP_MAX_NODES": 4
      },
-     "rules_sha": "6c35d15c76fbd6c1"
+     "rules_sha": "6c35d15c76fbd6c1",
+     "resources": {
+      "authorized": {
+       "eligible_literals": 40,
+       "evaluated_candidates": 1200,
+       "oracle_queries": 3000,
+       "nodes": 7
+      },
+      "candidates": {
+       "ceiling_evaluated": 1200,
+       "generated": 768,
+       "evaluated": 691,
+       "simple_evaluated": 472,
+       "invalid": 77
+      },
+      "queries": {
+       "ceiling": 3000,
+       "executed": 21,
+       "oracle_calls": 2,
+       "rows_consulted": 771
+      },
+      "literals": {
+       "feature_slots": 24,
+       "columns": 61,
+       "derived": 0,
+       "forced_columns": []
+      },
+      "cpu_seconds": 1.3140777549999711,
+      "peak_memory_mb": 2.146544,
+      "trees_built": 50,
+      "tree": {
+       "internal_nodes": 3,
+       "depth": 3,
+       "n_tests": 3,
+       "total_literals_in_tests": 7,
+       "max_literals_in_a_test": 3,
+       "derived_literals_in_tests": 0
+      },
+      "representation": {
+       "n_base_columns": 61,
+       "n_derived_columns": 0,
+       "beam_width": 2
+      }
+     }
     }
    },
    "tree_identical_to_A": {
@@ -6184,9 +7652,14 @@
    },
    "comparability": {
     "C_OWL_PRIORITY vs B_WIDE_GENERIC": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -6243,13 +7716,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.5934643129999984,
+      "a": 1.2673777779999682,
+      "b": 1.5293947800000183,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.153059
      },
      "ceilings": {
       "a": {
@@ -6265,7 +7739,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6282,25 +7756,36 @@
         "oracle_queries": 21,
         "rows_consulted": 771,
         "nodes": 3,
-        "cpu_seconds": 0.5934643129999984
+        "cpu_seconds": 1.5293947800000183
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [],
-     "status_candidates_and_ceilings": "COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs F_GENERIC_MATCHED_EVALUATED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "mofn_evaluated"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 24,
        "rel_diff": 0.0833,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 688,
@@ -6351,14 +7836,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "queries"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.6761702619999994,
+      "a": 1.2673777779999682,
+      "b": 1.3140777549999711,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.146544
      },
      "ceilings": {
       "a": {
@@ -6374,7 +7859,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6391,21 +7876,31 @@
         "oracle_queries": 21,
         "rows_consulted": 771,
         "nodes": 3,
-        "cpu_seconds": 0.6761702619999994
+        "cpu_seconds": 1.3140777549999711
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "queries"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs D_PERMUTED_PRIORITY": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -6462,14 +7957,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.6177609850000181,
+      "a": 1.2673777779999682,
+      "b": 1.4094072350000033,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.161438
      },
      "ceilings": {
       "a": {
@@ -6485,7 +7980,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6502,22 +7997,31 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.6177609850000181
+        "cpu_seconds": 1.4094072350000033
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_BASE": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -6574,16 +8078,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated",
-      "n_internal_nodes",
-      "depth"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.6151899559999947,
+      "a": 1.2673777779999682,
+      "b": 1.5415798559999985,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.235459
      },
      "ceilings": {
       "a": {
@@ -6599,7 +8101,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6616,22 +8118,33 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 2,
-        "cpu_seconds": 0.6151899559999947
+        "cpu_seconds": 1.5415798559999985
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated",
+       "n_internal_nodes",
+       "depth"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs E_RANDOM_RELATIONS": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
@@ -6688,16 +8201,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "queries",
-      "n_internal_nodes",
-      "depth"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.5952118460000122,
+      "a": 1.2673777779999682,
+      "b": 1.2786862539999788,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.362161
      },
      "ceilings": {
       "a": {
@@ -6713,7 +8224,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6730,27 +8241,39 @@
         "oracle_queries": 19,
         "rows_consulted": 769,
         "nodes": 2,
-        "cpu_seconds": 0.5952118460000122
+        "cpu_seconds": 1.2786862539999788
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated"
-     ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "configuration_violations": [],
+     "status": "CONFIGURATION_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "queries",
+       "n_internal_nodes",
+       "depth"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     },
     "C_OWL_PRIORITY vs A_LIMITED": {
-     "same_instances": true,
-     "same_oracle": true,
-     "same_params_except_pool": true,
+     "structural": {
+      "same_instances": true,
+      "same_oracle": true,
+      "same_params_except_pool": true
+     },
+     "design_equalized": [
+      "feature_slots"
+     ],
      "measures": {
       "feature_slots": {
        "a": 22,
        "b": 12,
        "rel_diff": 0.4545,
-       "tolerance": null
+       "tolerance": 0.0
       },
       "mofn_generated": {
        "a": 688,
@@ -6801,16 +8324,14 @@
        "tolerance": null
       }
      },
-     "violations": [
-      "mofn_generated",
-      "mofn_evaluated",
-      "n_internal_nodes",
-      "depth"
-     ],
      "cpu_modality": {
-      "a": 0.647356340000016,
-      "b": 0.5601023330000032,
+      "a": 1.2673777779999682,
+      "b": 0.9305428950000305,
       "decides_status": false
+     },
+     "memory_mb": {
+      "a": 2.30828,
+      "b": 2.067086
      },
      "ceilings": {
       "a": {
@@ -6826,7 +8347,7 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 3,
-        "cpu_seconds": 0.647356340000016
+        "cpu_seconds": 1.2673777779999682
        },
        "exceeded": []
       },
@@ -6843,17 +8364,25 @@
         "oracle_queries": 0,
         "rows_consulted": 750,
         "nodes": 2,
-        "cpu_seconds": 0.5601023330000032
+        "cpu_seconds": 0.9305428950000305
        },
        "exceeded": []
       }
      },
-     "status": "NOT_COMPARABLE",
-     "violations_excluding_outcomes": [
-      "mofn_generated",
-      "mofn_evaluated"
+     "configuration_violations": [
+      "DESIGN_NOT_EQUALIZED:feature_slots"
      ],
-     "status_candidates_and_ceilings": "NOT_COMPARABLE"
+     "status": "NOT_COMPARABLE",
+     "realized_resource_match": {
+      "grade": "PARTIAL",
+      "dimensions_outside_tolerance": [
+       "mofn_generated",
+       "mofn_evaluated",
+       "n_internal_nodes",
+       "depth"
+      ],
+      "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+     }
     }
    },
    "original_equivalent_buildable": {
