@@ -1,0 +1,464 @@
+{
+ "source": "docs/evidence/b1b4/b3q/generic_estimator_sensitivity.json",
+ "reps": 20,
+ "seed_base": 9800,
+ "taus": [
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9
+ ],
+ "cells": [
+  "s2.0_n60",
+  "s2.0_n120",
+  "s2.0_n240",
+  "s3.0_n60",
+  "s3.0_n120",
+  "s3.0_n240"
+ ],
+ "estimators": [
+  "corr",
+  "L1_C0.3",
+  "L1_CV",
+  "mutual_info",
+  "random_forest",
+  "best_of_all"
+ ],
+ "table": {
+  "corr": {
+   "0.5": {
+    "pass_point": [
+     "s3.0_n60"
+    ],
+    "pass_conservative": [
+     "s3.0_n60"
+    ]
+   },
+   "0.6": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s3.0_n60"
+    ]
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   }
+  },
+  "L1_C0.3": {
+   "0.5": {
+    "pass_point": [
+     "s3.0_n60"
+    ],
+    "pass_conservative": []
+   },
+   "0.6": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ],
+    "pass_conservative": [
+     "s3.0_n60"
+    ]
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   }
+  },
+  "L1_CV": {
+   "0.5": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ],
+    "pass_conservative": [
+     "s3.0_n60"
+    ]
+   },
+   "0.6": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ]
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   }
+  },
+  "mutual_info": {
+   "0.5": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   },
+   "0.6": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   }
+  },
+  "random_forest": {
+   "0.5": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ],
+    "pass_conservative": [
+     "s3.0_n60"
+    ]
+   },
+   "0.6": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ]
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s2.0_n240",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120",
+     "s3.0_n240"
+    ]
+   }
+  },
+  "best_of_all": {
+   "0.5": {
+    "pass_point": [],
+    "pass_conservative": []
+   },
+   "0.6": {
+    "pass_point": [
+     "s3.0_n60"
+    ],
+    "pass_conservative": []
+   },
+   "0.7": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60"
+    ]
+   },
+   "0.8": {
+    "pass_point": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   },
+   "0.9": {
+    "pass_point": [
+     "s2.0_n60",
+     "s2.0_n120",
+     "s3.0_n60",
+     "s3.0_n120"
+    ],
+    "pass_conservative": [
+     "s2.0_n60",
+     "s3.0_n60",
+     "s3.0_n120"
+    ]
+   }
+  }
+ },
+ "decisions_at_tau_0.8": {
+  "s2.0_n60": {
+   "corr": true,
+   "L1_C0.3": true,
+   "L1_CV": true,
+   "mutual_info": true,
+   "random_forest": true,
+   "best_of_all": true
+  },
+  "s2.0_n120": {
+   "corr": true,
+   "L1_C0.3": false,
+   "L1_CV": false,
+   "mutual_info": true,
+   "random_forest": true,
+   "best_of_all": false
+  },
+  "s2.0_n240": {
+   "corr": false,
+   "L1_C0.3": false,
+   "L1_CV": false,
+   "mutual_info": true,
+   "random_forest": false,
+   "best_of_all": false
+  },
+  "s3.0_n60": {
+   "corr": true,
+   "L1_C0.3": true,
+   "L1_CV": true,
+   "mutual_info": true,
+   "random_forest": true,
+   "best_of_all": true
+  },
+  "s3.0_n120": {
+   "corr": true,
+   "L1_C0.3": true,
+   "L1_CV": true,
+   "mutual_info": true,
+   "random_forest": true,
+   "best_of_all": true
+  },
+  "s3.0_n240": {
+   "corr": false,
+   "L1_C0.3": false,
+   "L1_CV": false,
+   "mutual_info": true,
+   "random_forest": false,
+   "best_of_all": false
+  }
+ },
+ "cells_where_estimator_choice_changes_the_decision_at_tau_0.8": [
+  "s2.0_n120",
+  "s2.0_n240",
+  "s3.0_n240"
+ ],
+ "note": "nenhuma escolha feita; 'passa' = o método genérico NÃO resolve a tarefa (taxa ≤ τ); a escolha do estimador de referência altera a decisão nas células indicadas"
+}

@@ -1,0 +1,5855 @@
+{
+ "purpose": "ANÁLISE ESTRUTURAL do pool; sem accuracy/fidelidade a rótulos reais; rascunho de IA não validado; não é avaliação",
+ "ontology_hashes_lf": {
+  "O2": "b0752dbad9b4b384a404bea50b49a233dac93d384000e011a9408ffcbe59cb80",
+  "H": "d98aa79eeaaac58c3b342b7d44e143756d1e54f11cc718f718e93864ad53b5ff",
+  "I": "2300afa58e9f8b57b0aaf6f683f4c728a9514f78be6dbaee8c4d457a7bfb2660"
+ },
+ "params": {
+  "min_sample": 300,
+  "max_queries": 3000,
+  "max_nodes": 7,
+  "max_depth": 3,
+  "max_n": 3,
+  "beam_width": 2,
+  "min_samples_leaf": 5,
+  "max_features_per_node": 12,
+  "random_state": 42
+ },
+ "tolerances_proposal_not_frozen": {
+  "feature_slots": 0.0,
+  "mofn_generated": 0.1,
+  "mofn_evaluated": 0.1,
+  "queries": 0.1,
+  "n_internal_nodes": 0.1,
+  "depth": 0.0
+ },
+ "seeds": [
+  42,
+  43,
+  44
+ ],
+ "runs": [
+  {
+   "seed": 42,
+   "instance_hash": "d26b8522924a968a",
+   "train_rows": 750,
+   "r_extra_slots": 10,
+   "random_base_extras": [
+    "status_checking_account__A11",
+    "status_checking_account__A13",
+    "purpose__A42",
+    "purpose__A44",
+    "purpose__A48",
+    "employment_since__A71",
+    "other_debtors__A101",
+    "other_installment_plans__A141",
+    "other_installment_plans__A143",
+    "job__A172"
+   ],
+   "b_matched_mf": 21,
+   "arms": {
+    "A": {
+     "feature_slots": 12,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 372,
+      "simple_evaluated": 372,
+      "mofn_generated": 408,
+      "mofn_evaluated": 392
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "abb4767d8a46a9cf"
+    },
+    "A_PLUS_ENRICHED": {
+     "feature_slots": 12,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 412,
+      "simple_evaluated": 412,
+      "mofn_generated": 424,
+      "mofn_evaluated": 371
+     },
+     "queries": 37,
+     "oracle_calls": 3,
+     "n_internal_nodes": 2,
+     "depth": 2,
+     "n_searches": 3,
+     "rules_sha": "c1525c8ef0db77ac"
+    },
+    "B_WIDE_GENERIC": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 436,
+      "simple_evaluated": 436,
+      "mofn_generated": 864,
+      "mofn_evaluated": 821
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "d856577601d7aa9a"
+    },
+    "C_ONTOLOGY_PRIORITY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 452,
+      "simple_evaluated": 452,
+      "mofn_generated": 800,
+      "mofn_evaluated": 758
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "2001970b5297d350"
+    },
+    "R_RANDOM_BASE": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 414,
+      "simple_evaluated": 414,
+      "mofn_generated": 848,
+      "mofn_evaluated": 811
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "8b91934729384681"
+    },
+    "P_PERMUTED_ONTOLOGY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 436,
+      "simple_evaluated": 436,
+      "mofn_generated": 844,
+      "mofn_evaluated": 813
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "8eab09c96a6e9f05"
+    },
+    "I_RANDOM_RELATIONS": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 424,
+      "simple_evaluated": 424,
+      "mofn_generated": 964,
+      "mofn_evaluated": 936
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "89fc2349e2c3b387"
+    },
+    "B_MATCHED_CANDIDATES": {
+     "feature_slots": 21,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 430,
+      "simple_evaluated": 430,
+      "mofn_generated": 810,
+      "mofn_evaluated": 769
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "d856577601d7aa9a"
+    }
+   },
+   "original_equivalent_buildable": {
+    "A": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_WIDE_GENERIC": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 1,
+      "equivalent_test_buildable_in_some_search": true
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_MATCHED_CANDIDATES": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 1,
+      "equivalent_test_buildable_in_some_search": true
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ]
+   },
+   "tree_identical_to_A": {
+    "A": true,
+    "A_PLUS_ENRICHED": false,
+    "B_WIDE_GENERIC": false,
+    "C_ONTOLOGY_PRIORITY": false,
+    "R_RANDOM_BASE": false,
+    "P_PERMUTED_ONTOLOGY": false,
+    "I_RANDOM_RELATIONS": false,
+    "B_MATCHED_CANDIDATES": false
+   },
+   "comparability": {
+    "C_ONTOLOGY_PRIORITY vs B_WIDE_GENERIC": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 864,
+       "rel_diff": 0.0741,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 821,
+       "rel_diff": 0.0767,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 436,
+       "rel_diff": 0.0354,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [],
+     "status": "COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs B_MATCHED_CANDIDATES": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 21,
+       "rel_diff": 0.0455,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 810,
+       "rel_diff": 0.0123,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 769,
+       "rel_diff": 0.0143,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 430,
+       "rel_diff": 0.0487,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [],
+     "status": "COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs R_RANDOM_BASE": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 848,
+       "rel_diff": 0.0566,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 811,
+       "rel_diff": 0.0654,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 414,
+       "rel_diff": 0.0841,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [],
+     "status": "COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs P_PERMUTED_ONTOLOGY": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 844,
+       "rel_diff": 0.0521,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 813,
+       "rel_diff": 0.0677,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 436,
+       "rel_diff": 0.0354,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [],
+     "status": "COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs I_RANDOM_RELATIONS": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 964,
+       "rel_diff": 0.1701,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 936,
+       "rel_diff": 0.1902,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 424,
+       "rel_diff": 0.0619,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs A": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 12,
+       "rel_diff": 0.4545,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 800,
+       "b": 408,
+       "rel_diff": 0.49,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 758,
+       "b": 392,
+       "rel_diff": 0.4828,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 452,
+       "b": 372,
+       "rel_diff": 0.177,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated"
+     ],
+     "status": "NOT_COMPARABLE"
+    }
+   },
+   "literals": {
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 58,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 2,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 18,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 29,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 42,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 2
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 30,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 67,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 2
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 24,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 31,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 30,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 2,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 18,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 44,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 2,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 14,
+      "chosen_in_nodes": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1,
+        2
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.001991693065190342
+      },
+      "ladder": {
+       "highest_state": "SPLIT_DECISION_CHANGED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": true
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 17,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 36,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 7,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 42,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 15,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ],
+    "A_PLUS_ENRICHED": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 58,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 29,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 2,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 45,
+      "chosen_in_nodes": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1,
+        2
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.00894232240495424
+      },
+      "ladder": {
+       "highest_state": "SPLIT_DECISION_CHANGED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": true
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 67,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 31,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 30,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 44,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 17,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 7,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 15,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "seed": 43,
+   "instance_hash": "7003d4dadcb792e8",
+   "train_rows": 750,
+   "r_extra_slots": 10,
+   "random_base_extras": [
+    "status_checking_account__A11",
+    "purpose__A410",
+    "purpose__A42",
+    "purpose__A49",
+    "employment_since__A73",
+    "personal_status_sex__A91",
+    "personal_status_sex__A94",
+    "property__A122",
+    "other_installment_plans__A141",
+    "housing__A153"
+   ],
+   "b_matched_mf": 19,
+   "arms": {
+    "A": {
+     "feature_slots": 12,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 400,
+      "simple_evaluated": 400,
+      "mofn_generated": 412,
+      "mofn_evaluated": 411
+     },
+     "queries": 27,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "d15ec45dbf69f3e2"
+    },
+    "A_PLUS_ENRICHED": {
+     "feature_slots": 12,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 400,
+      "simple_evaluated": 400,
+      "mofn_generated": 420,
+      "mofn_evaluated": 418
+     },
+     "queries": 27,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "d15ec45dbf69f3e2"
+    },
+    "B_WIDE_GENERIC": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 464,
+      "simple_evaluated": 464,
+      "mofn_generated": 1008,
+      "mofn_evaluated": 995
+     },
+     "queries": 57,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "99223b328147db4c"
+    },
+    "C_ONTOLOGY_PRIORITY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 470,
+      "simple_evaluated": 470,
+      "mofn_generated": 840,
+      "mofn_evaluated": 786
+     },
+     "queries": 127,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "f0398f7e5621a9a8"
+    },
+    "R_RANDOM_BASE": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 454,
+      "simple_evaluated": 454,
+      "mofn_generated": 836,
+      "mofn_evaluated": 813
+     },
+     "queries": 16,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "7ba5d861ec49745e"
+    },
+    "P_PERMUTED_ONTOLOGY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 456,
+      "simple_evaluated": 456,
+      "mofn_generated": 848,
+      "mofn_evaluated": 828
+     },
+     "queries": 16,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "7ba5d861ec49745e"
+    },
+    "I_RANDOM_RELATIONS": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 442,
+      "simple_evaluated": 442,
+      "mofn_generated": 824,
+      "mofn_evaluated": 788
+     },
+     "queries": 13,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "5ea5889eab3e7424"
+    },
+    "B_MATCHED_CANDIDATES": {
+     "feature_slots": 19,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 438,
+      "simple_evaluated": 438,
+      "mofn_generated": 806,
+      "mofn_evaluated": 789
+     },
+     "queries": 16,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "a6022f904149c710"
+    }
+   },
+   "original_equivalent_buildable": {
+    "A": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_WIDE_GENERIC": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 1,
+      "equivalent_test_buildable_in_some_search": true
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_MATCHED_CANDIDATES": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ]
+   },
+   "tree_identical_to_A": {
+    "A": true,
+    "A_PLUS_ENRICHED": true,
+    "B_WIDE_GENERIC": false,
+    "C_ONTOLOGY_PRIORITY": false,
+    "R_RANDOM_BASE": false,
+    "P_PERMUTED_ONTOLOGY": false,
+    "I_RANDOM_RELATIONS": false,
+    "B_MATCHED_CANDIDATES": false
+   },
+   "comparability": {
+    "C_ONTOLOGY_PRIORITY vs B_WIDE_GENERIC": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 1008,
+       "rel_diff": 0.1667,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 995,
+       "rel_diff": 0.2101,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 464,
+       "rel_diff": 0.0128,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 57,
+       "rel_diff": 0.5512,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated",
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs B_MATCHED_CANDIDATES": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 19,
+       "rel_diff": 0.1364,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 806,
+       "rel_diff": 0.0405,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 789,
+       "rel_diff": 0.0038,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 438,
+       "rel_diff": 0.0681,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 16,
+       "rel_diff": 0.874,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs R_RANDOM_BASE": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 836,
+       "rel_diff": 0.0048,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 813,
+       "rel_diff": 0.0332,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 454,
+       "rel_diff": 0.034,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 16,
+       "rel_diff": 0.874,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs P_PERMUTED_ONTOLOGY": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 848,
+       "rel_diff": 0.0094,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 828,
+       "rel_diff": 0.0507,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 456,
+       "rel_diff": 0.0298,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 16,
+       "rel_diff": 0.874,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs I_RANDOM_RELATIONS": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 824,
+       "rel_diff": 0.019,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 788,
+       "rel_diff": 0.0025,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 442,
+       "rel_diff": 0.0596,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 13,
+       "rel_diff": 0.8976,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs A": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 12,
+       "rel_diff": 0.4545,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 840,
+       "b": 412,
+       "rel_diff": 0.5095,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 786,
+       "b": 411,
+       "rel_diff": 0.4771,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 470,
+       "b": 400,
+       "rel_diff": 0.1489,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 127,
+       "b": 27,
+       "rel_diff": 0.7874,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated",
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    }
+   },
+   "literals": {
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 54,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 26,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 2,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 18,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 2
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 30,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 66,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 29,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 32,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 43,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 2,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 134,
+      "chosen_in_nodes": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1,
+        2
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.0006326202338204912
+      },
+      "ladder": {
+       "highest_state": "SPLIT_DECISION_CHANGED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": true
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 16,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 2
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 26,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 6,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 17,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ],
+    "A_PLUS_ENRICHED": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 54,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 26,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 2,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 14,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 66,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 29,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 32,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 43,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 16,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 2,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 13,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 6,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 17,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 2,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 2,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "seed": 44,
+   "instance_hash": "78659434d4c12c23",
+   "train_rows": 750,
+   "r_extra_slots": 10,
+   "random_base_extras": [
+    "status_checking_account__A13",
+    "purpose__A42",
+    "savings_account__A65",
+    "employment_since__A71",
+    "employment_since__A73",
+    "personal_status_sex__A92",
+    "personal_status_sex__A94",
+    "other_installment_plans__A143",
+    "housing__A153",
+    "job__A171"
+   ],
+   "b_matched_mf": 22,
+   "arms": {
+    "A": {
+     "feature_slots": 12,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 348,
+      "simple_evaluated": 348,
+      "mofn_generated": 336,
+      "mofn_evaluated": 329
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 2,
+     "depth": 2,
+     "n_searches": 3,
+     "rules_sha": "2371560845676458"
+    },
+    "A_PLUS_ENRICHED": {
+     "feature_slots": 12,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 228,
+      "simple_evaluated": 228,
+      "mofn_generated": 176,
+      "mofn_evaluated": 171
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 1,
+     "depth": 1,
+     "n_searches": 3,
+     "rules_sha": "8df9d986b58ad0dc"
+    },
+    "B_WIDE_GENERIC": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 460,
+      "simple_evaluated": 460,
+      "mofn_generated": 688,
+      "mofn_evaluated": 624
+     },
+     "queries": 21,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "6c35d15c76fbd6c1"
+    },
+    "C_ONTOLOGY_PRIORITY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 408,
+      "simple_evaluated": 408,
+      "mofn_generated": 688,
+      "mofn_evaluated": 674
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "717740a5c0164544"
+    },
+    "R_RANDOM_BASE": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 420,
+      "simple_evaluated": 420,
+      "mofn_generated": 908,
+      "mofn_evaluated": 879
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 2,
+     "depth": 2,
+     "n_searches": 3,
+     "rules_sha": "3d4da342292dc8f8"
+    },
+    "P_PERMUTED_ONTOLOGY": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 414,
+      "simple_evaluated": 414,
+      "mofn_generated": 812,
+      "mofn_evaluated": 788
+     },
+     "queries": 0,
+     "oracle_calls": 1,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "95042906bd549221"
+    },
+    "I_RANDOM_RELATIONS": {
+     "feature_slots": 22,
+     "n_columns": 71,
+     "n_derived": 10,
+     "counters": {
+      "simple_generated": 458,
+      "simple_evaluated": 458,
+      "mofn_generated": 768,
+      "mofn_evaluated": 714
+     },
+     "queries": 19,
+     "oracle_calls": 2,
+     "n_internal_nodes": 2,
+     "depth": 2,
+     "n_searches": 3,
+     "rules_sha": "e975183bae87ebc4"
+    },
+    "B_MATCHED_CANDIDATES": {
+     "feature_slots": 22,
+     "n_columns": 61,
+     "n_derived": 0,
+     "counters": {
+      "simple_generated": 460,
+      "simple_evaluated": 460,
+      "mofn_generated": 688,
+      "mofn_evaluated": 624
+     },
+     "queries": 21,
+     "oracle_calls": 2,
+     "n_internal_nodes": 3,
+     "depth": 3,
+     "n_searches": 3,
+     "rules_sha": "6c35d15c76fbd6c1"
+    }
+   },
+   "original_equivalent_buildable": {
+    "A": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_WIDE_GENERIC": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 1,
+      "equivalent_test_buildable_in_some_search": true
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "B_MATCHED_CANDIDATES": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 1,
+      "equivalent_test_buildable_in_some_search": true
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ],
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "extension_cols": 4,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "extension_cols": 3,
+      "complement_cols": 1,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "extension_cols": 3,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "extension_cols": 2,
+      "complement_cols": 3,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "extension_cols": 2,
+      "complement_cols": 2,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "extension_cols": 3,
+      "complement_cols": 7,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "extension_cols": 2,
+      "complement_cols": 8,
+      "searches": 3,
+      "extension_cols_all_in_feature_pool_searches": 0,
+      "positive_form_buildable_searches": 0,
+      "complement_form_buildable_searches": 0,
+      "equivalent_test_buildable_in_some_search": false
+     }
+    ]
+   },
+   "tree_identical_to_A": {
+    "A": true,
+    "A_PLUS_ENRICHED": false,
+    "B_WIDE_GENERIC": false,
+    "C_ONTOLOGY_PRIORITY": false,
+    "R_RANDOM_BASE": false,
+    "P_PERMUTED_ONTOLOGY": false,
+    "I_RANDOM_RELATIONS": false,
+    "B_MATCHED_CANDIDATES": false
+   },
+   "comparability": {
+    "C_ONTOLOGY_PRIORITY vs B_WIDE_GENERIC": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 688,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 624,
+       "rel_diff": 0.0742,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 460,
+       "rel_diff": 0.113,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 21,
+       "rel_diff": 1.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs B_MATCHED_CANDIDATES": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 688,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 624,
+       "rel_diff": 0.0742,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 460,
+       "rel_diff": 0.113,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 21,
+       "rel_diff": 1.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "queries"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs R_RANDOM_BASE": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 908,
+       "rel_diff": 0.2423,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 879,
+       "rel_diff": 0.2332,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 420,
+       "rel_diff": 0.0286,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated",
+      "n_internal_nodes",
+      "depth"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs P_PERMUTED_ONTOLOGY": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 812,
+       "rel_diff": 0.1527,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 788,
+       "rel_diff": 0.1447,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 414,
+       "rel_diff": 0.0145,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 3,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs I_RANDOM_RELATIONS": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 22,
+       "rel_diff": 0.0,
+       "tolerance": 0.0
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 768,
+       "rel_diff": 0.1042,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 714,
+       "rel_diff": 0.056,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 458,
+       "rel_diff": 0.1092,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 19,
+       "rel_diff": 1.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "queries",
+      "n_internal_nodes",
+      "depth"
+     ],
+     "status": "NOT_COMPARABLE"
+    },
+    "C_ONTOLOGY_PRIORITY vs A": {
+     "same_instances": true,
+     "same_oracle": true,
+     "same_params_except_pool": true,
+     "measures": {
+      "feature_slots": {
+       "a": 22,
+       "b": 12,
+       "rel_diff": 0.4545,
+       "tolerance": null
+      },
+      "mofn_generated": {
+       "a": 688,
+       "b": 336,
+       "rel_diff": 0.5116,
+       "tolerance": 0.1
+      },
+      "mofn_evaluated": {
+       "a": 674,
+       "b": 329,
+       "rel_diff": 0.5119,
+       "tolerance": 0.1
+      },
+      "simple_evaluated": {
+       "a": 408,
+       "b": 348,
+       "rel_diff": 0.1471,
+       "tolerance": null
+      },
+      "queries": {
+       "a": 0,
+       "b": 0,
+       "rel_diff": 0.0,
+       "tolerance": 0.1
+      },
+      "n_internal_nodes": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.1
+      },
+      "depth": {
+       "a": 3,
+       "b": 2,
+       "rel_diff": 0.3333,
+       "tolerance": 0.0
+      }
+     },
+     "violations": [
+      "mofn_generated",
+      "mofn_evaluated",
+      "n_internal_nodes",
+      "depth"
+     ],
+     "status": "NOT_COMPARABLE"
+    }
+   },
+   "literals": {
+    "C_ONTOLOGY_PRIORITY": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 53,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 28,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 42,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 42,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 66,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 30,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 2,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 18,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 31,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 2,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 18,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 47,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 2,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 134,
+      "chosen_in_nodes": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1,
+        2
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.0047914737271625985
+      },
+      "ladder": {
+       "highest_state": "SPLIT_DECISION_CHANGED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": true
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 18,
+      "root_reason": "IN_LITERAL_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 3
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 40,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 7,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 15,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ],
+    "A_PLUS_ENRICHED": [
+     {
+      "literal": "onto_any[AtLeast_employment_since_A72]",
+      "concept": "AtLeast_employment_since_A72",
+      "attributes": [
+       "employment_since__A72",
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-e047a3b186e2",
+       "F-ATT-de833960b73e",
+       "F-ATT-46009a0d84ba",
+       "F-ATT-b5f0516ff172"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 53,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 4,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": false,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A72]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A73]",
+      "concept": "AtLeast_employment_since_A73",
+      "attributes": [
+       "employment_since__A73",
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-62dc751c78ff",
+       "F-ATT-a93f64238389",
+       "F-ATT-3f2d1c9a406f"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 28,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A73]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_employment_since_A74]",
+      "concept": "AtLeast_employment_since_A74",
+      "attributes": [
+       "employment_since__A74",
+       "employment_since__A75"
+      ],
+      "fact_ids": [
+       "F-ATT-026a442e19ec",
+       "F-ATT-d30c297141b5"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 9,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 1,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 1,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 16,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_employment_since_A74]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A172]",
+      "concept": "AtLeast_job_A172",
+      "attributes": [
+       "job__A172",
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-6c3c3b7a3a42",
+       "F-ATT-d4193669fc9f",
+       "F-ATT-08e8ef889852"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 66,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 1,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A172]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_job_A173]",
+      "concept": "AtLeast_job_A173",
+      "attributes": [
+       "job__A173",
+       "job__A174"
+      ],
+      "fact_ids": [
+       "F-ATT-24460cd75cec",
+       "F-ATT-5c8d47ac67e8"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 30,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_job_A173]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A62]",
+      "concept": "AtLeast_savings_account_A62",
+      "attributes": [
+       "savings_account__A62",
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-d027b426fb3a",
+       "F-ATT-bdf7e3a803bc",
+       "F-ATT-44f3b25333ce"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 31,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A62]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_savings_account_A63]",
+      "concept": "AtLeast_savings_account_A63",
+      "attributes": [
+       "savings_account__A63",
+       "savings_account__A64"
+      ],
+      "fact_ids": [
+       "F-ATT-73941e73df84",
+       "F-ATT-052d97ac8447"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 47,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 3,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_savings_account_A63]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[AtLeast_status_checking_account_A12]",
+      "concept": "AtLeast_status_checking_account_A12",
+      "attributes": [
+       "status_checking_account__A12",
+       "status_checking_account__A13"
+      ],
+      "fact_ids": [
+       "F-ATT-77df37c57cd7",
+       "F-ATT-24a33825ef5d"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 18,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 2,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 1
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 2,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": true,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 14,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[AtLeast_status_checking_account_A12]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "LITERAL_EVALUATED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_HouseholdGoods]",
+      "concept": "Purpose_HouseholdGoods",
+      "attributes": [
+       "purpose__A42",
+       "purpose__A43",
+       "purpose__A44"
+      ],
+      "fact_ids": [
+       "F-ATT-17bff78cec82",
+       "F-ATT-7f99143f2028",
+       "F-ATT-bcfe106aee7b"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 7,
+      "root_reason": "BELOW_LITERAL_POOL_CUTOFF",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 0,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 3,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 3,
+       "complement_cols": 7,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 6,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_HouseholdGoods]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": true,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     },
+     {
+      "literal": "onto_any[Purpose_Vehicles]",
+      "concept": "Purpose_Vehicles",
+      "attributes": [
+       "purpose__A40",
+       "purpose__A41"
+      ],
+      "fact_ids": [
+       "F-ATT-3c8410fe741a",
+       "F-ATT-efdb4327d8bf"
+      ],
+      "needs_reasoner": true,
+      "root_variance_rank": 15,
+      "root_reason": "NOT_IN_FEATURE_POOL",
+      "reasons_by_search": {
+       "NOT_IN_FEATURE_POOL": 3,
+       "NO_VALID_SPLIT_CANDIDATE": 0,
+       "BELOW_LITERAL_POOL_CUTOFF": 0,
+       "IN_LITERAL_POOL": 0
+      },
+      "original_equivalent": {
+       "extension_cols": 2,
+       "complement_cols": 8,
+       "positive_form_fits_max_n": true,
+       "complement_form_fits_max_n": false,
+       "positive_form_buildable_from_literal_pool": false,
+       "complement_form_buildable_from_literal_pool": false
+      },
+      "candidate_evaluations": 0,
+      "chosen_in_nodes": [],
+      "ablation": {
+       "literal": "onto_any[Purpose_Vehicles]",
+       "chosen_in_searches": [],
+       "searches_changed_by_ablation": [],
+       "changed": false,
+       "root_score_delta_oracle_labels": 0.0
+      },
+      "ladder": {
+       "highest_state": "FACT_COMPILED",
+       "reached": {
+        "AXIOM_AVAILABLE": true,
+        "AXIOM_VALIDATED": true,
+        "FACT_COMPILED": true,
+        "LITERAL_ELIGIBLE": false,
+        "LITERAL_EVALUATED": false,
+        "SPLIT_DECISION_CHANGED": false
+       },
+       "OBSERVED_BENEFIT": "NOT_ASSESSED"
+      }
+     }
+    ]
+   }
+  }
+ ]
+}
