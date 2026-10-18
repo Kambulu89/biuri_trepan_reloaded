@@ -1,4 +1,4 @@
-# Doc. 62 — Relatório consolidado H2 (atualizado após a decisão sobre `0bafe28`): CI, fontes, validação documental, fichas, contrato de comparabilidade, piloto técnico, agnosticismo, limiares e decisão sobre a H2-R
+# Doc. 62 — Relatório consolidado H2 (estado final da CI de `3ba45af`; aguarda fontes e decisão): CI, fontes, validação documental, fichas, contrato de comparabilidade, piloto técnico, agnosticismo, limiares e decisão sobre a H2-R
 
 Estado: **preparação técnica; H2-R, H2-P completa e H1 suspensas (não executadas)**; `core/`, TREPAN Original, C4.5 e MLP intocados; sem merge; sem datasets confirmatórios. As análises são **estruturais**: nenhuma accuracy, fidelidade a rótulos reais ou teste foi calculada ou consultada. **Os axiomas German Credit são rascunhos de IA não validados e as fontes não foram consultadas: nada aqui é avaliação causal do benefício ontológico nem conhecimento de domínio confirmado.** Objetivo experimental (não demonstrado): `Acc(Reloaded_OWL) > Acc(Original) > Acc(C4.5)`; `Fid(Reloaded_OWL) > Fid(Original)` e `> Fid(C4.5)`, nas mesmas instâncias e contra o mesmo MLP, por conhecimento ontológico verdadeiro; `Reloaded(None) ≡ Original`.
 
@@ -9,13 +9,14 @@ Estado: **preparação técnica; H2-R, H2-P completa e H1 suspensas (não execut
 | `557c381` | ✔ | ✔ | ✔ |
 | `d1121a4` | ✔ | ✘ | ✘ — causa única: teste que comparava o hash **bruto** de `german.data` (CRLF no Windows); corrigido |
 | `ca6bf44` | ✔ | ✔ | ✔ |
-| `0bafe28` (Doc. 62 anterior, testes de equivalência, metamórficos e do adaptador H2 incluídos na suíte completa) | ✔ | ✔ (≈ 59 min) | ✔ |
-| commits desta atualização | pendente (por consultar após o push) | pendente (por consultar após o push) | pendente (por consultar após o push) |
-Local (conjunto relevante: pool, metamórficos, piloto, subconjunto OWL, harness, fontes/inventário, auditoria, rastreio, contrato, agnosticismo ×3, manifesto/C4.5): **Python 3.11: 165 passed in 276.63s (0:04:36); Python 3.12: 165 passed, 14 warnings in 276.13s (0:04:36)**. Nenhuma falha por diagnosticar.
+| `0bafe28` | ✔ | ✔ (≈ 59 min) | ✔ |
+| `3ba45af` (HEAD do ramo; inclui o contrato revisto, o piloto e a correção de solidez) | ✔ | ✔ | ✔ |
+| commits posteriores a `3ba45af` | — (nenhum código novo; só esta atualização do Doc. 62, cuja CI será consultada após o push) | — | — |
+Local, em HEAD (`3ba45af`), conjunto de equivalência, matching (P3, categórico, auditoria), agnosticismo (contrato, dataset, guardas estáticos), baselines (manifesto e C4.5, política C4.5, equivalência de desempenho), B3.3 e H2 (pool, metamórficos, piloto, harness, fontes/inventário, auditoria, rastreio, contrato): **250 passed em Python 3.11 e 250 passed em Python 3.12**; guard estático OK. Nenhuma falha por diagnosticar.
 `main` = `f1b2955`; o ramo tem à frente apenas trabalho de `validation/`, `tests/`, `docs/`. Nenhuma alteração a `core/` desde `f1b2955`; sem novos merges.
 
 ## 2. Fontes German Credit: recebidas ou pendentes
-**Pendentes.** Nenhum ficheiro foi fornecido (nem existe no ambiente) e a rede continua a recusar os três URLs (`403 CONNECT`; `network_probe.json`, 2026-10-18): S1 `german.doc` (https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc); S2 South German Credit (https://archive.ics.uci.edu/dataset/573/south+german+credit+update); S3 Grömping (2019) (https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf). Nenhuma fonte é declarada verificada; origem e versão por registar.
+**Pendentes.** Nenhum ficheiro foi fornecido (nem existe no ambiente) e a rede continua a recusar os três URLs (`403 CONNECT`; `network_probe.json`, 2026-10-18; **não se insiste**: aguarda-se o envio dos ficheiros): S1 `german.doc` (https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc); S2 South German Credit (https://archive.ics.uci.edu/dataset/573/south+german+credit+update; o responsável indicou a forma abreviada `…/573/south+german+credit+`, equivalente para efeitos de registo); S3 Grömping (2019) (https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf). Nenhuma fonte é declarada verificada; origem e versão por registar.
 
 ## 3. Resultados da validação documental
 **Não executável sem os ficheiros** (passos 1–10 do protocolo prontos: `h2_sources register` regista origem, versão declarada e hashes bruto e canónico e só marca «consultado» se extrair texto; `compare_codes` compara dicionários; depois reavaliar as 14 fichas, classificar relações verdadeiras/ambíguas/inválidas, confirmar categorias, validar hierarquias, identificar o que é formalizável em OWL, excluir axiomas sem justificação, preservar dados e preparar o pacote de revisão; a documentação corrigida **não** justifica automaticamente os axiomas propostos).
