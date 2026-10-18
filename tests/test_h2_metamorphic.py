@@ -130,3 +130,54 @@ def test_rejected_and_neutral_ontologies_behave_as_the_original(base):
     assert lits == []
     b = fit_pool_arm(X, names, lits, o2, P, extras="derived", mf=P["max_features_per_node"])                    # S2: ontologia válida sem estrutura ativa
     assert json.dumps(a.export_rules(), default=str) == json.dumps(b["model"].export_rules(), default=str) and (o1.calls, o1.rows) == (o2.calls, o2.rows)
+
+
+def _compile(text, names, tmp):
+    p = Path(tmp) / f"o{abs(hash(text)) % 10**8}.owl"
+    p.write_text(text, encoding="utf-8")
+    return compile_registry(str(p), names, run_reasoner=True), p
+
+
+def test_ambiguous_matching_never_yields_an_incomplete_derived_literal(tmp_path):
+    """Se um atributo da família tem matching ambíguo, o OR das colunas mapeadas NÃO é a extensão do conceito: o literal tem de ser recusado e a recusa registada (solidez), em qualquer configuração."""
+    from validation.benchmark.b30_axiom_probe import dprop
+    for fams, k_true in (({"alpha": 4, "beta": 3}, 2), ({"q": 3, "r": 6}, 1), ({"x": 7}, 3)):
+        X, names, _ = S.make_generic_data(150, 5, fams, 2, 1, k_true=k_true)
+        fam0, k0 = next(iter(fams.items()))
+        good = S.build_generic_owl(names, fams, k_true, "TRUE")
+        bad = good.replace("</rdf:RDF>", dprop(f"has_dup_{fam0}_L{k0}", f"Lvl_{fam0}_L{k0}", label=f"{fam0}__L{k0}") + "</rdf:RDF>")
+        reg, p = _compile(bad, names, tmp_path)
+        rej = []
+        lits = derived_union_literals(reg, X, names, only_concepts=defined_union_concepts(p), rejected=rej)
+        assert reg.feature_entity[f"{fam0}__L{k0}"] is None                                               # o atributo ambíguo fica sem entidade (P3)
+        assert not any(l.family == fam0 for l in lits) and rej                                           # nenhum literal incompleto; rejeição registada
+        assert all(r["reason"] == "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH" and f"{fam0}__L{k0}" in r["unresolved_attributes"] for r in rej)
+        reg2, p2 = _compile(good, names, tmp_path)
+        assert derived_union_literals(reg2, X, names, only_concepts=defined_union_concepts(p2))           # com matching limpo os literais existem
+
+
+def test_unmodeled_attribute_without_candidate_does_not_block_sound_literals(tmp_path):
+    """Um atributo SEM entidade candidata (não modelado) não torna a extensão insegura: em mundo aberto fica fora do conceito."""
+    fams = {"alpha": 4}
+    X, names, _ = S.make_generic_data(150, 6, fams, 2, 1, k_true=2)
+    names2 = names + ["extra__never_modeled"]
+    X2 = np.column_stack([X, np.zeros(len(X))])
+    reg, p = _compile(S.build_generic_owl(names, fams, 2, "TRUE"), names2, tmp_path)
+    lits = derived_union_literals(reg, X2, names2, only_concepts=defined_union_concepts(p))
+    assert _truth_ext("alpha", 4, 2) in {frozenset(l.attributes) for l in lits}
+
+
+def test_unknown_categories_mixed_numeric_and_categorical_columns():
+    from validation.benchmark.h2_trace import augment
+    fams = {"alpha": 4, "beta": 3}
+    X, names, _ = S.make_generic_data(150, 7, fams, 2, 2, k_true=2)
+    lits = _owl_to_literals(S.build_generic_owl(names, fams, 2, "TRUE"), names, X)
+    Xn = X.copy()
+    grp = [i for i, n in enumerate(names) if n.startswith("alpha__")]
+    Xn[:5, grp] = 0.0                                                                                   # categoria nunca vista: nenhum nível ativo
+    Xa, na = augment(Xn, names, lits)
+    d = {n: Xa[:, i] for i, n in enumerate(na) if n.startswith("onto_any[")}
+    alpha_cols = [v for k, v in d.items() if "alpha" in k]
+    assert alpha_cols and all(np.all(v[:5] == 0.0) for v in alpha_cols)                                  # derivadas = 0 nessas linhas (nunca atribuídas a um nível)
+    assert all(set(np.unique(v)) <= {0.0, 1.0} for v in d.values())                                     # binárias mesmo com colunas numéricas de escala distinta na mesma matriz
+    assert Xa.shape[1] == X.shape[1] + len(lits)
