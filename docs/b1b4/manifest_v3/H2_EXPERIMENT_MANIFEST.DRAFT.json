@@ -105,5 +105,51 @@
   },
   "campaigns_authorized": false,
   "core_changes": false
+ },
+ "post_ca6bf44_update": {
+  "date": "2026-10-18",
+  "frozen": false,
+  "report": "docs/b1b4/62_RELATORIO_CONSOLIDADO_H2.md",
+  "campaigns_authorized": false,
+  "core_changes": false,
+  "hash_policy": {
+   "raw": "proveniência (bytes da cópia de trabalho)",
+   "canonical": "CRLF->LF explícito; nunca substitui o bruto"
+  },
+  "pool_arms": [
+   "A_LIMITED",
+   "B_WIDE_GENERIC",
+   "C_OWL_PRIORITY",
+   "D_PERMUTED_PRIORITY",
+   "E_RANDOM_BASE",
+   "E_RANDOM_RELATIONS",
+   "F_GENERIC_MATCHED_EVALUATED",
+   "A_PLUS_ENRICHED"
+  ],
+  "ceilings_proposal_not_frozen": {
+   "eligible_literals": 40,
+   "evaluated_candidates": 1200,
+   "oracle_queries": 3000,
+   "nodes": 7,
+   "rows_consulted": null,
+   "cpu_seconds": "modalidade distinta; só decide se tiver teto"
+  },
+  "literal_states": [
+   "LITERAL_VALID",
+   "LITERAL_ELIGIBLE",
+   "LITERAL_EVALUATED",
+   "LITERAL_SELECTED",
+   "SPLIT_CHANGED",
+   "BENEFIT_OBSERVED(NOT_ASSESSED)"
+  ],
+  "sources": {
+   "S1": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc",
+   "S2": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
+   "S3": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf",
+   "status": "BLOCKED_NETWORK_POLICY_403; nenhuma fonte consultada"
+  },
+  "thresholds_frozen": false,
+  "evaluable_axiom_set": "EMPTY",
+  "german_credit_as_causal_evaluation": "NOT_ALLOWED_UNTIL_SOURCES_AND_AXIOM_VALIDATION"
  }
 }

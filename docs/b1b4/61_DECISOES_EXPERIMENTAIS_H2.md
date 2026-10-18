@@ -1,5 +1,7 @@
 # Doc. 61 — Decisões experimentais H2: limiares, contrato de comparação entre pools, revisores, custos e auditoria de CI/ramo
 
+> **Atualizado pelo Doc. 62** (relatório consolidado após `ca6bf44`): braços A–F renomeados, tetos autorizados vs consumos, estados separados dos literais, verificação dos pressupostos da regra de decisão, hashes bruto/canónico e estimativa de custo revista. Em caso de divergência prevalece o Doc. 62.
+
 Estado: **proposta para decisão**; nada congelado; campanhas H2-P, H2-R e H1 **não executadas e não autorizadas**; `core/` intocado; sem merge. As análises desta fase são **estruturais** (contagens de candidatos, consultas, nós, ganho de informação sobre as etiquetas do oráculo no treino): **nenhuma accuracy, fidelidade a rótulos reais ou teste foi calculada ou consultada**. Os axiomas German Credit são rascunhos de IA não validados: não são conhecimento de domínio cientificamente confirmado.
 
 ## 1. Auditoria de CI, ramo e `main`

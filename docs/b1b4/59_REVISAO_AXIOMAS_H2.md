@@ -49,7 +49,8 @@ Leituras (factuais, sem desempenho): (i) **todos os 10 são lógica e semanticam
 ## 4. Conclusões e pendências
 1. Nenhuma ficha é validada; nenhuma promovida; a revisão humana não existe. 2. A reconciliação 55/29 está fechada (unidades distintas). 3. Os literais são corretos *condicionalmente*. 4. Reapreciação após S1–S3: preencher `PENDING_SOURCE`, reavaliar a ordem de cada atributo, corrigir/excluir fichas. 5. Nenhuma conclusão causal ou de desempenho.
 
-## 5. Elegibilidade dos literais: porque oito dos dez ficam fora do pool (análise por etapas; Doc. 61 §3)
+## 5. Elegibilidade dos literais: porque oito dos dez ficam fora do pool
+> **Nomenclatura (Doc. 62 §5):** os estados passaram a `LITERAL_VALID → LITERAL_ELIGIBLE → LITERAL_EVALUATED → LITERAL_SELECTED → SPLIT_CHANGED → BENEFIT_OBSERVED`, registados de forma independente; nas tabelas abaixo `EVAL` = `LITERAL_EVALUATED` e `CHG` = `SPLIT_CHANGED`. Os braços foram renomeados A_LIMITED, B_WIDE_GENERIC, C_OWL_PRIORITY, D_PERMUTED_PRIORITY, E_RANDOM_*, F_GENERIC_MATCHED_EVALUATED; a evidência `pool_study_german.json` foi regenerada (mesmos holdouts, mesmos contadores). (análise por etapas; Doc. 61 §3)
 Evidência: `docs/evidence/b1b4/h2/pool_study_german.json` (treino de holdouts 42, 43, 44; MLP próprio por holdout; mesmas instâncias e mesmo oráculo em todos os braços; **sem accuracy, sem fidelidade a rótulos reais, sem teste**). Rascunho de IA não validado: nada aqui é conhecimento de domínio confirmado.
 **Etapas que podem excluir um literal** (por ordem): (1) *pool de features* do nó = top-`max_features_per_node` por **variância** (sem rótulos; é o critério do Original); (2) geração de candidatos simples (folhas ≥ `min_samples_leaf`, limiar de fronteira); (3) *pool de literais* do m-of-n = top `max(8, 3·mf)` por ganho de informação sobre as etiquetas **do oráculo**; (4) avaliação como candidato; (5) escolha.
 **Respostas às 8 perguntas.**
