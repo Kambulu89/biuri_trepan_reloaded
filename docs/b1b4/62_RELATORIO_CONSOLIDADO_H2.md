@@ -2,6 +2,22 @@
 
 Estado: **preparação técnica; H2-R, H2-P completa e H1 suspensas (não executadas)**; `core/`, TREPAN Original, C4.5 e MLP intocados; sem merge; sem datasets confirmatórios. As análises são **estruturais**: nenhuma accuracy, fidelidade a rótulos reais ou teste foi calculada ou consultada. **Os axiomas German Credit são rascunhos de IA não validados e as fontes não foram consultadas: nada aqui é avaliação causal do benefício ontológico nem conhecimento de domínio confirmado.** Objetivo experimental (não demonstrado): `Acc(Reloaded_OWL) > Acc(Original) > Acc(C4.5)`; `Fid(Reloaded_OWL) > Fid(Original)` e `> Fid(C4.5)`, nas mesmas instâncias e contra o mesmo MLP, por conhecimento ontológico verdadeiro; `Reloaded(None) ≡ Original`.
 
+## 0. Encerramento formal da fase H2 (decisão do responsável; merge das alterações estáveis para `main`)
+A fase corrente é **encerrada como preparação experimental**; o objetivo imediato passa a ser uma versão funcional para instalação e testes no Windows (`docs/INSTALACAO_WINDOWS.md`). Estado consolidado (todos os resultados negativos, relatórios, evidências, manifests e hashes são **preservados**; nada foi apagado):
+| Linha | Estado |
+|---|---|
+| B1 | experimental, não promovida |
+| B2-C | experimental, não promovida |
+| B3.1 | concluída tecnicamente |
+| B3.2 | `NO_ONTOLOGICAL_ADVANTAGE` nos regimes avaliados |
+| B3.3 | `NO_ONTOLOGICAL_ADVANTAGE` nos regimes avaliados |
+| B3-Q | auditoria concluída |
+| H1 / B3.4 | desenho preparado; campanha **não executada** |
+| H2 | preparação técnica concluída; avaliação científica **pendente** |
+| German Credit | fontes oficiais e revisão humana **pendentes** (sem dependência operacional: a aplicação não as usa) |
+| M0–M6 | integração produtiva **não autorizada** |
+Nenhum ganho ontológico é declarado: as desigualdades `Acc(Reloaded_OWL) > Acc(Original) > Acc(C4.5)` e `Fid(Reloaded_OWL) > Fid(Original)`, `> Fid(C4.5)` continuam **objetivos não demonstrados** e não são condição do merge técnico; o merge aprova uma versão de software para testes, não uma conclusão científica. Os protótipos H2 vivem em `validation/` (nenhuma importação a partir de `core/`, `gui/`, `counterfactuals/` ou `run_biuri.py`) e **não** são ativados pela aplicação. A investigação H2 fica suspensa até nova decisão.
+
 ## 1. Estado final da CI
 | Commit | Agnosticism guard | Windows 3.11 | Windows 3.12 |
 |---|---|---|---|
