@@ -17,10 +17,15 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 SOURCES = {
-    "S1_UCI_STATLOG_GERMAN": {"declared_url": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data", "expected": ["german.doc", "german.data"], "role": "documentação original (códigos clássicos)"},
-    "S2_UCI_SOUTH_GERMAN": {"declared_url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update", "expected": ["codetable / SouthGermanCredit.*"], "role": "versão com tabela de códigos corrigida"},
+    "S1_UCI_STATLOG_GERMAN": {"declared_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc", "declared_url_alt": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data", "expected": ["german.doc", "german.data"], "role": "documentação original (códigos clássicos)"},
+    "S2_UCI_SOUTH_GERMAN": {"declared_url": "https://archive.ics.uci.edu/dataset/522/south+german+credit", "declared_url_alt": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update", "expected": ["codetable / SouthGermanCredit.*"], "role": "versão com tabela de códigos corrigida"},
     "S3_GROEMPING_2019": {"declared_url": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf", "expected": ["Report-2019-004.pdf"], "role": "relatório (Grömping, 2019) sobre erros na tabela de códigos clássica"},
 }
+
+
+def sha256_file_lf(p) -> str:
+    """SHA-256 após normalizar CRLF→LF (estável entre Linux e Windows com ``autocrlf``); o hash bruto continua em ``sha256_file``."""
+    return hashlib.sha256(Path(p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def sha256_file(p) -> str:

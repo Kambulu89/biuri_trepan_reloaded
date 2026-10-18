@@ -1,10 +1,11 @@
 {
  "status": "BLOCKED_NETWORK_POLICY_403",
- "summary": "nenhum ficheiro das fontes foi obtido nesta sessão: o proxy de saída recusa (403 CONNECT) archive.ics.uci.edu e www1.beuth-hochschule.de; não se contornou a política",
+ "summary": "nenhum ficheiro obtido; URLs atualizadas pelo responsável (german.doc em ml/machine-learning-databases/statlog/german; South German = UCI dataset 522); o proxy continua a recusar (403 CONNECT); sem contornar; a aguardar ficheiros",
  "probe": "docs/evidence/b1b4/h2/network_probe.json",
  "sources": {
   "S1_UCI_STATLOG_GERMAN": {
-   "declared_url": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
+   "declared_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc",
+   "declared_url_alt": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
    "expected": [
     "german.doc",
     "german.data"
@@ -12,7 +13,8 @@
    "role": "documentação original (códigos clássicos)"
   },
   "S2_UCI_SOUTH_GERMAN": {
-   "declared_url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
+   "declared_url": "https://archive.ics.uci.edu/dataset/522/south+german+credit",
+   "declared_url_alt": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
    "expected": [
     "codetable / SouthGermanCredit.*"
    ],
@@ -30,8 +32,8 @@
  "content_consulted": false,
  "origin_verified": false,
  "what_is_needed": [
-  "german.doc (UCI Statlog, dataset 144)",
-  "ficheiros do South German Credit (UCI dataset 573), incluindo a tabela de códigos",
+  "german.doc (UCI Statlog)",
+  "documentação/tabela de códigos do South German Credit (UCI dataset 522)",
   "Report-2019-004.pdf (Grömping, 2019)"
  ],
  "how_to_register": "python -m validation.benchmark.h2_sources register --german-doc PATH --south-file PATH [--south-file PATH …] --report-pdf PATH --out docs/evidence/b1b4/h2/sources_manifest.json",

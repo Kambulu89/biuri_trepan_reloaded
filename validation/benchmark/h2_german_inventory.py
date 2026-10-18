@@ -53,7 +53,7 @@ def main(out: str):
     for k, l in enumerate(lits):
         r = rank[len(enc_names) + k]
         pri.append({"literal": l.name, "variance": der_var[k], "rank_by_variance_among_%d_columns" % len(allv): r, "in_pool_mf12": r <= 12, "in_pool_mf20": r <= 20, "in_pool_mf30": r <= 30})
-    doc = {"file": str(f.relative_to(ROOT)), "file_sha256": hashlib.sha256(Path(f).read_bytes()).hexdigest(), "n_rows": int(len(raw)), "n_attribute_columns": 20, "class_column": "coluna 21 (não usada neste inventário)",
+    doc = {"file": str(f.relative_to(ROOT)), "file_sha256": hashlib.sha256(Path(f).read_bytes()).hexdigest(), "file_sha256_lf_normalized": hashlib.sha256(Path(f).read_bytes().replace(b"\r\n", b"\n")).hexdigest(), "n_rows": int(len(raw)), "n_attribute_columns": 20, "class_column": "coluna 21 (não usada neste inventário)",
            "n_encoded_features": len(enc_names), "encoding": "numéricas inalteradas (7); nominais one-hot com os níveis OBSERVADOS por ordem lexicográfica (13 → 54 colunas)", "attributes": attrs,
            "encoded_columns_total": sum(a["n_encoded_columns"] for a in attrs), "priority_of_derived_literals": {"basis": "variância no treino (holdout seed 42) — critério de prioridade do Original para o pool de literais (`_feature_priority_scores`)", "mf12_is_Original_default": True, "rows": pri},
            "note": "a prioridade por variância depende da escala bruta das colunas numéricas (credit_amount, duration, age dominam); não assume a configuração de `max_features_per_node` do benchmark real"}

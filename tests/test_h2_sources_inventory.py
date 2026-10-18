@@ -64,6 +64,6 @@ def test_german_inventory_is_factual_and_leaves_documentation_pending():
     assert len(num) == 7 and len(nom) == 13 and sum(a["n_encoded_columns"] for a in nom) == 54
     assert len(inv["file_sha256"]) == 64
     g = ROOT / "validation/counterfactual_research/datasets/originales/german.data"
-    assert S.sha256_file(g) == inv["file_sha256"]                                                    # o ficheiro histórico não foi alterado
+    assert S.sha256_file_lf(g) == inv["file_sha256_lf_normalized"]                                                    # o ficheiro histórico não foi alterado
     pri = inv["priority_of_derived_literals"]["rows"]
     assert len(pri) == 10 and sum(r["in_pool_mf12"] for r in pri) == 2                                # só 2 de 10 literais entram no pool do Original por variância (mf=12)
