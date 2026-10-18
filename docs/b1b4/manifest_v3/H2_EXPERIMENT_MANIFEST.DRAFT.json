@@ -151,5 +151,31 @@
   "thresholds_frozen": false,
   "evaluable_axiom_set": "EMPTY",
   "german_credit_as_causal_evaluation": "NOT_ALLOWED_UNTIL_SOURCES_AND_AXIOM_VALIDATION"
+ },
+ "post_0bafe28_update": {
+  "date": "2026-10-18",
+  "frozen": false,
+  "campaigns_authorized": false,
+  "core_changes": false,
+  "report": "docs/b1b4/62_RELATORIO_CONSOLIDADO_H2.md",
+  "comparability_contract": {
+   "CONFIGURATION_COMPARABLE": "condições e limites compatíveis com o contraste (instâncias, oráculo, parâmetros, feixe, tetos respeitados, dimensões igualadas pelo desenho)",
+   "REALIZED_RESOURCE_MATCH": "grau descritivo do consumo efetivo (EXACT|WITHIN_TOLERANCE|PARTIAL); nunca decide a comparabilidade"
+  },
+  "pilot": {
+   "evidence": "docs/evidence/b1b4/h2/pilot_synthetic.json",
+   "limits_declared_before_execution": {
+    "max_wall_seconds": 300,
+    "max_fits": 300,
+    "max_peak_memory_mb": 1500
+   },
+   "performance_metrics_computed": false
+  },
+  "soundness_fix": "derived_union_literals recusa extensões incompletas por matching ambíguo (INCOMPLETE_EXTENSION_UNRESOLVED_MATCH)",
+  "sources": {
+   "S2": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
+   "status": "BLOCKED_NETWORK_POLICY_403; nenhuma fonte consultada"
+  },
+  "h2_r_decision": "NOT_AUTHORIZED; condições (a)-(g) no Doc. 62 §10"
  }
 }
