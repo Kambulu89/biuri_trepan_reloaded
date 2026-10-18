@@ -35,7 +35,7 @@ def main(out, reps=20, K=8, g=6):
                 for k, v in h.items():
                     hits[k].append(v)
                 hits["best_of_all"].append(max(h.values()))
-            res[f"s{s}_n{n}"] = {k: {"mean": float(np.mean(v)), "se": float(np.std(v, ddof=1) / np.sqrt(len(v)))} for k, v in hits.items()}
+            res[f"s{s}_n{n}"] = {k: {"mean": float(np.mean(v)), "se": float(np.std(v, ddof=1) / np.sqrt(len(v))), "values": [float(x) for x in v]} for k, v in hits.items()}
             print(f"s={s} n={n}: " + ", ".join(f"{k} {np.mean(v):.2f}" for k, v in hits.items()), flush=True)
     json.dump({"reps": reps, "seed_base": 9800, "results": res}, open(out, "w"), indent=1)
 

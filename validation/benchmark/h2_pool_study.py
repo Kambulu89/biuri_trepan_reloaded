@@ -9,7 +9,11 @@ Etapas por literal derivado (cada uma pode rejeitá-lo, por esta ordem): (1) *po
 (5) escolha. Estados da escada: AXIOM_AVAILABLE → AXIOM_VALIDATED → FACT_COMPILED → LITERAL_ELIGIBLE → LITERAL_EVALUATED → SPLIT_DECISION_CHANGED → OBSERVED_BENEFIT (este último NÃO é avaliado aqui)."""
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
+
+import time
+from collections import Counter
 
 import numpy as np
 
@@ -17,7 +21,14 @@ from core.trepan_original import TrepanOriginalClassifier
 from validation.benchmark.h2_axiom_mechanisms import DerivedLiteral
 from validation.benchmark.h2_trace import DerivedLiteralTrepan, augment
 
-LADDER = ("AXIOM_AVAILABLE", "AXIOM_VALIDATED", "FACT_COMPILED", "LITERAL_ELIGIBLE", "LITERAL_EVALUATED", "SPLIT_DECISION_CHANGED", "OBSERVED_BENEFIT")
+LADDER = ("LITERAL_VALID", "LITERAL_ELIGIBLE", "LITERAL_EVALUATED", "LITERAL_SELECTED", "SPLIT_CHANGED", "BENEFIT_OBSERVED")
+STATE_MEANING = {
+    "LITERAL_VALID": "o literal vem de um axioma disponível, consistente no reasoner, com facto compilado e atributos mapeados (validade TÉCNICA; NÃO é verdade de domínio, que fica em domain_validation)",
+    "LITERAL_ELIGIBLE": "entrou no pool de features E no pool de literais do m-of-n em pelo menos uma pesquisa de split",
+    "LITERAL_EVALUATED": "foi avaliado como candidato (simples ou dentro de um m-of-n) pelo critério interno do TREPAN",
+    "LITERAL_SELECTED": "faz parte do teste escolhido em pelo menos um nó da árvore completa",
+    "SPLIT_CHANGED": "a ablação controlada do axioma/literal (máscara sem libertar a vaga) altera pelo menos uma decisão de split",
+    "BENEFIT_OBSERVED": "ganho CONJUNTO de accuracy e fidelidade, atribuído por contrastes emparelhados e controlos válidos (NÃO avaliado neste arnês: NOT_ASSESSED)"}
 REJECTION = ("NOT_IN_FEATURE_POOL", "NO_VALID_SPLIT_CANDIDATE", "BELOW_LITERAL_POOL_CUTOFF", "IN_LITERAL_POOL")
 
 
@@ -107,12 +118,14 @@ class PoolTrepan(DerivedLiteralTrepan):
                             "root_reason": (self._classify(col, root) if root else None), "reasons_by_search": reasons,
                             "original_equivalent": {"extension_cols": len(ext), "complement_cols": len(comp), "positive_form_fits_max_n": 0 < len(ext) <= self.max_n, "complement_form_fits_max_n": 0 < len(comp) <= self.max_n,
                                                     "positive_form_buildable_from_literal_pool": pos_any, "complement_form_buildable_from_literal_pool": comp_any}})
-        counters = {"simple_generated": 0, "simple_evaluated": 0, "mofn_generated": 0, "mofn_evaluated": 0}
+        counters: Dict[str, int] = {"simple_generated": 0, "simple_evaluated": 0, "mofn_generated": 0, "mofn_evaluated": 0}
         for n in self.iter_nodes():
             c = (getattr(n, "stats", None) or {}).get("candidate_counters")
             if c:
-                for key in counters:
-                    counters[key] += int(c.get(key, 0))
+                for key, v in c.items():                                         # TODOS os contadores (rejeições, duplicados, candidatos semânticos…)
+                    counters[key] = counters.get(key, 0) + int(v)
+        counters["duplicates_removed"] = counters["simple_generated"] - counters["simple_evaluated"]
+        counters["invalid_mofn"] = counters["mofn_generated"] - counters["mofn_evaluated"]
         return {"n_searches": len(self._pool_log), "feature_slots": int(self.max_features_per_node), "forced": list(self.forced), "masked": list(self.masked), "literals": per_lit,
                 "counters": counters, "search_scores": [s["score"] if s else None for s in self._search_log]}
 
@@ -133,27 +146,33 @@ def fit_pool_arm(X_base: np.ndarray, names: Sequence[str], derived: Sequence[Der
         p["max_features_per_node"] = int(mf)
     m = PoolTrepan(derived=list(derived), base_names=list(names), prune_redundant=prune, forced=forced, masked=[n_base + k for k in masked_derived], **p)
     m._feature_names_for_sig = list(na)
-    q0 = getattr(oracle, "calls", 0)
+    q0, r0 = getattr(oracle, "calls", 0), getattr(oracle, "rows", None)
+    t0 = time.process_time()
     m.fit(Xa, oracle=oracle, feature_names=na)
+    cpu = time.process_time() - t0
     tr = m.semantic_trace_
     internal = [n for n in m.iter_nodes() if not n.is_leaf]
-    return {"model": m, "trace": tr, "names": list(na), "queries": int(m.membership_queries_), "oracle_calls": getattr(oracle, "calls", 0) - q0, "n_internal_nodes": len(internal),
-            "depth": int(m.get_depth()), "feature_slots": int(m.max_features_per_node), "n_columns": Xa.shape[1], "forced": forced}
+    stops = Counter(str(n.stop_reason) for n in m.iter_nodes() if n.is_leaf)
+    return {"model": m, "trace": tr, "names": list(na), "queries": int(m.membership_queries_), "oracle_calls": getattr(oracle, "calls", 0) - q0,
+            "rows_consulted": (None if r0 is None else int(getattr(oracle, "rows", 0) - r0)), "cpu_seconds": float(cpu), "stop_reasons": dict(stops),
+            "n_internal_nodes": len(internal), "depth": int(m.get_depth()), "feature_slots": int(m.max_features_per_node), "beam_width": int(m.beam_width), "n_columns": Xa.shape[1], "forced": forced}
 
 
-def ladder_state(lit_trace: Dict[str, Any], pool_lit: Dict[str, Any], *, validated: bool, changed_by_ablation: Optional[bool]) -> Dict[str, Any]:
-    """Estado mais alto atingido, com cada nível exigindo os anteriores. ``OBSERVED_BENEFIT`` fica sempre ``NOT_ASSESSED`` (precisa de benchmark com controlos; não executado)."""
-    reached = {"AXIOM_AVAILABLE": True, "AXIOM_VALIDATED": bool(validated), "FACT_COMPILED": bool(lit_trace.get("fact_ids"))}
+def ladder_state(lit_trace: Dict[str, Any], pool_lit: Dict[str, Any], *, valid: bool, selected: bool, changed_by_ablation: Optional[bool]) -> Dict[str, Any]:
+    """Estados SEPARADOS por literal (nenhum implica o seguinte): válido ≠ elegível ≠ avaliado ≠ selecionado ≠ split alterado ≠ benefício. ``reached`` guarda cada um independentemente;
+    ``highest_consecutive`` é o último estado da escada sem lacunas. ``BENEFIT_OBSERVED`` fica sempre ``NOT_ASSESSED`` (precisa de benchmark com controlos; não executado)."""
+    reached = {"LITERAL_VALID": bool(valid)}
     reached["LITERAL_ELIGIBLE"] = pool_lit["reasons_by_search"].get("IN_LITERAL_POOL", 0) > 0
     reached["LITERAL_EVALUATED"] = lit_trace.get("candidate_evaluations", 0) > 0
-    reached["SPLIT_DECISION_CHANGED"] = bool(changed_by_ablation)
+    reached["LITERAL_SELECTED"] = bool(selected)
+    reached["SPLIT_CHANGED"] = bool(changed_by_ablation)
     top = None
-    for s in LADDER[:-1]:
-        if reached[s]:
-            top = s
+    for st in LADDER[:-1]:
+        if reached[st]:
+            top = st
         else:
             break
-    return {"highest_state": top, "reached": reached, "OBSERVED_BENEFIT": "NOT_ASSESSED"}
+    return {"highest_consecutive": top, "reached": reached, "BENEFIT_OBSERVED": "NOT_ASSESSED"}
 
 
 def ablate_literal(X_base: np.ndarray, names: Sequence[str], derived: Sequence[DerivedLiteral], make_oracle, params: Dict[str, Any], k: int, *, extras: str, mf: int,
@@ -198,13 +217,44 @@ def original_buildable(model: "PoolTrepan", derived: Sequence[DerivedLiteral], b
 
 
 # ----------------------------------------------------------------------------------------------- contrato de comparação
-def comparability(a: Dict[str, Any], b: Dict[str, Any], *, same_instances: bool, same_oracle: bool, same_params_except_pool: bool, tol: Dict[str, float]) -> Dict[str, Any]:
-    """Contrato (Doc. 61 §3): condições estruturais obrigatórias + razão relativa nas quantidades igualadas (tolerâncias são PROPOSTA, não congeladas). Qualquer falha → NOT_COMPARABLE."""
+@dataclass(frozen=True)
+class Ceilings:
+    """Tetos AUTORIZADOS (declarados antes de qualquer resultado; PROPOSTA, não congelados) — distintos dos recursos EFETIVAMENTE CONSUMIDOS. ``None`` = sem teto nessa dimensão.
+    O CPU é uma modalidade de comparação distinta: só entra no estado se tiver teto."""
+    eligible_literals: Optional[int] = None          # vagas de features do pool (colunas elegíveis por pesquisa)
+    evaluated_candidates: Optional[int] = None       # candidatos m-of-n avaliados (total na árvore)
+    oracle_queries: Optional[int] = None             # consultas sintéticas ao oráculo (membership queries)
+    rows_consulted: Optional[int] = None             # linhas enviadas ao oráculo
+    nodes: Optional[int] = None                      # nós internos
+    cpu_seconds: Optional[float] = None
+
+
+def consumption(arm: Dict[str, Any]) -> Dict[str, Any]:
+    c = arm["trace"]["pool"]["counters"]
+    return {"eligible_literals": arm["feature_slots"], "evaluated_candidates": c["mofn_evaluated"], "oracle_queries": arm["queries"], "rows_consulted": arm.get("rows_consulted"),
+            "nodes": arm["n_internal_nodes"], "cpu_seconds": arm.get("cpu_seconds")}
+
+
+def check_ceilings(arm: Dict[str, Any], ceilings: Ceilings) -> Dict[str, Any]:
+    used, over = consumption(arm), []
+    for k, lim in ceilings.__dict__.items():
+        if lim is not None and used.get(k) is not None and used[k] > lim:
+            over.append(k)
+    return {"authorized": {k: v for k, v in ceilings.__dict__.items() if v is not None}, "consumed": used, "exceeded": over}
+
+
+def comparability(a: Dict[str, Any], b: Dict[str, Any], *, same_instances: bool, same_oracle: bool, same_params_except_pool: bool, tol: Dict[str, float],
+                  ceilings: Optional[Ceilings] = None) -> Dict[str, Any]:
+    """Contrato (Doc. 61 §3): condições estruturais + razão relativa nas quantidades igualadas + (se fornecidos) tetos autorizados respeitados por AMBOS os braços. Qualquer falha → NOT_COMPARABLE.
+    As tolerâncias e os tetos são PROPOSTA; o CPU é reportado como modalidade distinta e só decide se tiver teto."""
     def rel(x, y):
         return abs(x - y) / max(1.0, max(abs(x), abs(y)))
     ca, cb = a["trace"]["pool"]["counters"], b["trace"]["pool"]["counters"]
     measures = {"feature_slots": (a["feature_slots"], b["feature_slots"]), "mofn_generated": (ca["mofn_generated"], cb["mofn_generated"]), "mofn_evaluated": (ca["mofn_evaluated"], cb["mofn_evaluated"]),
-                "simple_evaluated": (ca["simple_evaluated"], cb["simple_evaluated"]), "queries": (a["queries"], b["queries"]), "n_internal_nodes": (a["n_internal_nodes"], b["n_internal_nodes"]), "depth": (a["depth"], b["depth"])}
+                "simple_evaluated": (ca["simple_evaluated"], cb["simple_evaluated"]), "queries": (a["queries"], b["queries"]), "n_internal_nodes": (a["n_internal_nodes"], b["n_internal_nodes"]),
+                "depth": (a["depth"], b["depth"]), "beam_width": (a.get("beam_width", 0), b.get("beam_width", 0))}
+    if a.get("rows_consulted") is not None and b.get("rows_consulted") is not None:
+        measures["rows_consulted"] = (a["rows_consulted"], b["rows_consulted"])
     out = {"same_instances": same_instances, "same_oracle": same_oracle, "same_params_except_pool": same_params_except_pool, "measures": {}, "violations": []}
     for k, (x, y) in measures.items():
         r = rel(x, y)
@@ -214,5 +264,41 @@ def comparability(a: Dict[str, Any], b: Dict[str, Any], *, same_instances: bool,
     for flag in ("same_instances", "same_oracle", "same_params_except_pool"):
         if not out[flag]:
             out["violations"].append(flag)
-    out["status"] = "COMPARABLE" if not out["violations"] else "NOT_COMPARABLE"
+    out["cpu_modality"] = {"a": a.get("cpu_seconds"), "b": b.get("cpu_seconds"), "decides_status": bool(ceilings and ceilings.cpu_seconds is not None)}
+    if ceilings is not None:
+        out["ceilings"] = {"a": check_ceilings(a, ceilings), "b": check_ceilings(b, ceilings)}
+        for side in ("a", "b"):
+            out["violations"] += [f"CEILING_EXCEEDED[{side}]:{k}" for k in out["ceilings"][side]["exceeded"]]
+    out["status"] = "COMPARABLE" if not out["violations"] else "NOT_COMPARABLE"              # estrito: tudo igualado dentro da tolerância
+    OUTCOMES = {"queries", "n_internal_nodes", "depth", "rows_consulted"}                       # consequências da forma da árvore, não recursos igualáveis por construção
+    out["violations_excluding_outcomes"] = [v for v in out["violations"] if v not in OUTCOMES]
+    out["status_candidates_and_ceilings"] = "COMPARABLE" if not out["violations_excluding_outcomes"] else "NOT_COMPARABLE"   # candidatos igualados + tetos respeitados; consumos reportados
+    return out
+
+
+def match_generic_by_evaluated(fit_for_mf, target_evaluated: int, mf_range: Sequence[int], *, tolerance: float) -> Dict[str, Any]:
+    """Braço F: pool GENÉRICO (sem OWL) cujo ``max_features_per_node`` iguala os candidatos m-of-n AVALIADOS do braço de referência. Regra pré-declarada: percorre TODO o intervalo (sem paragem
+    antecipada), escolhe o menor |Δ| relativo (empate → menor mf) usando só contagens (sem rótulos reais nem desempenho). Se o melhor ficar acima da tolerância, ``feasible=False`` (→ NOT_COMPARABLE)."""
+    best = None
+    for mf in mf_range:
+        arm = fit_for_mf(mf)
+        ev = arm["trace"]["pool"]["counters"]["mofn_evaluated"]
+        gap = abs(ev - target_evaluated) / max(1.0, float(target_evaluated))
+        if best is None or gap < best[0] - 1e-12:
+            best = (gap, mf, arm)
+    return {"arm": best[2], "mf": best[1], "relative_gap": float(best[0]), "feasible": bool(best[0] <= tolerance)}
+
+
+def cards_by_concept(cards_dir) -> Dict[str, Dict[str, Any]]:
+    """Liga cada ficha de axioma (JSON externo) ao conceito que define, lendo o axioma OWL funcional (``EquivalentClasses(<conceito> …)``). Genérico: não conhece nomes."""
+    import json
+    import re
+    from pathlib import Path
+    out: Dict[str, Dict[str, Any]] = {}
+    for f in sorted(Path(cards_dir).glob("*.json")):
+        c = json.loads(f.read_text(encoding="utf-8"))
+        m = re.match(r"\s*EquivalentClasses\(\s*(\S+)", c.get("owl_axiom", ""))
+        if m:
+            out[m.group(1)] = {"card_id": c.get("id"), "authored_by": c.get("authored_by"), "epistemic_status": c.get("epistemic_status"), "source_verified": bool(c.get("source", {}).get("verified")),
+                               "reviews": {k: v.get("status") for k, v in c.get("reviews", {}).items()}, "domain_validation": "PENDING" if c.get("epistemic_status") != "VALIDATED" else "VALIDATED"}
     return out

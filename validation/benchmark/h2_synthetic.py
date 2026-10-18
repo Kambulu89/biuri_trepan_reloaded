@@ -77,3 +77,93 @@ def write_owl(tmp: Path, variant: str, **kw) -> Path:
     p = Path(tmp) / f"synthetic_{variant}.owl"
     p.write_text(build_owl(variant, **kw), encoding="utf-8")
     return p
+
+
+# ----------------------------------------------------------------------------------------------- gerador GENÉRICO (famílias/níveis/ruído/numéricas arbitrários; testes metamórficos)
+def make_generic_data(n: int, seed: int, families: Dict[str, int], n_noise: int, n_num: int, k_true: int, *, p_unknown: float = 0.15, n_classes: int = 2, shuffle: bool = False
+                      ) -> Tuple[np.ndarray, List[str], "GenericTruth"]:
+    """``families``: {nome: nº de níveis ordinais (a ordem é a das colunas)}; a PRIMEIRA família define a verdade ``nível ≥ k_true`` (k_true = nº de níveis abaixo do limiar). Cada família tem ainda um nível
+    «desconhecido» extra (não ordinal). Com ``n_classes`` > 2 a verdade é o nível da 1.ª família discretizado em classes. Devolve X, nomes e o oráculo de forma fechada."""
+    rng = np.random.default_rng(seed)
+    cols, names = [], []
+    first_lv = None
+    for fi, (fam, k) in enumerate(families.items()):
+        unk = rng.random(n) < p_unknown
+        lv = np.where(unk, k, rng.integers(0, k, size=n))
+        cols.append(np.eye(k + 1)[lv])
+        names += [f"{fam}__L{j + 1}" for j in range(k)] + [f"{fam}__U"]
+        if fi == 0:
+            first_lv, first_k = lv, k
+    for j in range(n_noise):
+        cols.append(rng.integers(0, 2, size=(n, 1)))
+        names.append(f"noise__{j}")
+    scales = [50.0, 200.0, 7.0, 1000.0]
+    for j in range(n_num):
+        cols.append((rng.normal(size=(n, 1)) * scales[j % len(scales)]))
+        names.append(f"num__{j}")
+    X = np.column_stack(cols).astype(float)
+    fam0 = list(families)[0]
+    return X, names, GenericTruth(names, [f"{fam0}__L{j + 1}" for j in range(first_k)], k_true, n_classes)
+
+
+class GenericTruth:
+    """Oráculo de forma fechada sobre as colunas pelo NOME (invariante à ordem das colunas): 1[nível da 1.ª família ≥ k_true] (ou discretização em ``n_classes``). Só vê colunas base.
+    ``level_names`` = nomes das colunas dos níveis ordinais 1..k da 1.ª família; ``rename``/``reorder`` produzem o MESMO oráculo noutra nomenclatura/ordem (relações metamórficas)."""
+    def __init__(self, names: Sequence[str], level_names: Sequence[str], k_true: int, n_classes: int = 2):
+        self.names, self.level_names, self.k_true, self.n_classes = list(names), list(level_names), int(k_true), int(n_classes)
+        self.calls, self.rows, self.seen = 0, 0, []
+
+    def rename(self, fn) -> "GenericTruth":
+        return GenericTruth([fn(n) for n in self.names], [fn(n) for n in self.level_names], self.k_true, self.n_classes)
+
+    def reorder(self, names: Sequence[str]) -> "GenericTruth":
+        assert sorted(names) == sorted(self.names)
+        return GenericTruth(names, self.level_names, self.k_true, self.n_classes)
+
+    def predict(self, X):
+        X = np.asarray(X)
+        assert X.shape[1] == len(self.names), "o oráculo só pode ver as colunas base"
+        self.calls += 1
+        self.rows += len(X)
+        self.seen.append(X.copy())
+        pos = {n: i for i, n in enumerate(self.names)}
+        k = len(self.level_names)
+        lv = sum((j + 1) * (X[:, pos[nm]] > 0.5) for j, nm in enumerate(self.level_names))              # 0 = desconhecido; 1..k = nível
+        if self.n_classes == 2:
+            return (lv > self.k_true).astype(int)
+        return np.minimum(self.n_classes - 1, (lv * self.n_classes) // (k + 1)).astype(int)
+
+
+def build_generic_owl(names: Sequence[str], families: Dict[str, int], k_true: int, variant: str = "TRUE", *, shuffle_seed: int = None) -> str:
+    """OWL VERDADEIRO para a 1.ª família (``AtLeast_Lj`` = união dos níveis ≥ j para j = 1..k) ou controlo: PERM (ordem trocada) | NEUTRAL (sem definições) | FLAT. Os rótulos das propriedades são os
+    nomes dos atributos. ``shuffle_seed`` embaralha a ordem de declaração (metamórfico)."""
+    parts: List[str] = [klass("Root")]
+    for fam in families:
+        parts.append(klass(f"G_{fam}", ["Root"]))
+    parts += [klass("G_noise", ["Root"]), klass("G_num", ["Root"])]
+    for fam, k in families.items():
+        if variant in ("TRUE", "PERM", "NEUTRAL"):
+            for j in range(1, k + 1):
+                parts.append(klass(f"Lvl_{fam}_L{j}", [f"G_{fam}"]))
+    fam0, k0 = next(iter(families.items()))
+    if variant in ("TRUE", "PERM", "NEUTRAL"):
+        order = list(range(1, k0 + 1))
+        if variant == "PERM":
+            order = order[1::2] + order[0::2]                                        # ordem trocada, determinística
+        for pos in range(1, len(order)):
+            members = [f"Lvl_{fam0}_L{x}" for x in order[pos:]]
+            nm = f"AtLeast_{fam0}_L{order[pos]}"
+            parts.append(_union(nm, members, f"G_{fam0}") if variant != "NEUTRAL" else klass(nm, [f"G_{fam0}"]))
+    for n in names:
+        fam = n.split("__")[0]
+        if fam in families:
+            dom = f"Lvl_{n.replace('__', '_')}" if (variant in ("TRUE", "PERM", "NEUTRAL") and not n.endswith("__U")) else f"G_{fam}"
+        elif fam == "noise":
+            dom = "G_noise"
+        else:
+            dom = "G_num"
+        parts.append(dprop("has_" + n, dom, label=n))
+    if shuffle_seed is not None:
+        rs = np.random.RandomState(shuffle_seed)
+        rs.shuffle(parts)
+    return HEADER.replace("example.org/b30", "example.org/h2/generic").replace("b30#", "h2generic#") + "".join(parts) + FOOTER

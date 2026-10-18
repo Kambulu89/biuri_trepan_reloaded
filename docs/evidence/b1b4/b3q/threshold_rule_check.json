@@ -1,0 +1,1112 @@
+{
+ "source": "docs/evidence/b1b4/b3q/generic_estimator_sensitivity_raw.json",
+ "reps": 20,
+ "values_are_multiples_of": 0.16666666666666666,
+ "all_values_in_grid": true,
+ "rules": [
+  "normal_1.645",
+  "t_19_0.95",
+  "bonferroni_36",
+  "bootstrap_95"
+ ],
+ "decisions": {
+  "normal_1.645": {
+   "0.5": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.6": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.7": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.8": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.9": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    }
+   }
+  },
+  "t_19_0.95": {
+   "0.5": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.6": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.7": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.8": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.9": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    }
+   }
+  },
+  "bonferroni_36": {
+   "0.5": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.6": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.7": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.8": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.9": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   }
+  },
+  "bootstrap_95": {
+   "0.5": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.6": {
+    "s2.0_n60": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.7": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.8": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    }
+   },
+   "0.9": {
+    "s2.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s2.0_n120": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    },
+    "s2.0_n240": {
+     "corr": false,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": false,
+     "best_of_all": false
+    },
+    "s3.0_n60": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n120": {
+     "corr": true,
+     "L1_C0.3": true,
+     "L1_CV": true,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": true
+    },
+    "s3.0_n240": {
+     "corr": true,
+     "L1_C0.3": false,
+     "L1_CV": false,
+     "mutual_info": true,
+     "random_forest": true,
+     "best_of_all": false
+    }
+   }
+  }
+ },
+ "agreement_between_rules": {
+  "0.5": {
+   "n_tests": 36,
+   "n_rule_disagreements": 3,
+   "disagreements": [
+    "s3.0_n60|corr",
+    "s3.0_n60|L1_CV",
+    "s3.0_n60|random_forest"
+   ]
+  },
+  "0.6": {
+   "n_tests": 36,
+   "n_rule_disagreements": 2,
+   "disagreements": [
+    "s2.0_n60|L1_CV",
+    "s3.0_n60|L1_C0.3"
+   ]
+  },
+  "0.7": {
+   "n_tests": 36,
+   "n_rule_disagreements": 3,
+   "disagreements": [
+    "s2.0_n60|best_of_all",
+    "s3.0_n120|L1_C0.3",
+    "s3.0_n120|random_forest"
+   ]
+  },
+  "0.8": {
+   "n_tests": 36,
+   "n_rule_disagreements": 1,
+   "disagreements": [
+    "s2.0_n120|random_forest"
+   ]
+  },
+  "0.9": {
+   "n_tests": 36,
+   "n_rule_disagreements": 3,
+   "disagreements": [
+    "s2.0_n120|L1_CV",
+    "s3.0_n240|corr",
+    "s3.0_n240|random_forest"
+   ]
+  }
+ },
+ "operating_characteristic_normal_rule_n20": {
+  "0.5": {
+   "0.0": 0.05695,
+   "0.05": 0.0043,
+   "0.1": 0.0001,
+   "0.15": 0.0
+  },
+  "0.6": {
+   "0.0": 0.0522,
+   "0.05": 0.00265,
+   "0.1": 5e-05,
+   "0.15": 0.0
+  },
+  "0.7": {
+   "0.0": 0.04775,
+   "0.05": 0.00205,
+   "0.1": 0.0,
+   "0.15": 0.0
+  },
+  "0.8": {
+   "0.0": 0.0441,
+   "0.05": 0.00085,
+   "0.1": 0.0,
+   "0.15": 0.0
+  },
+  "0.9": {
+   "0.0": 0.0382,
+   "0.05": 0.0,
+   "0.1": 0.0,
+   "0.15": 0.0
+  }
+ },
+ "mean_pairwise_correlation_between_estimators_within_cell": {
+  "s2.0_n60": 0.33,
+  "s2.0_n120": 0.306,
+  "s2.0_n240": 0.413,
+  "s3.0_n60": 0.381,
+  "s3.0_n120": 0.495,
+  "s3.0_n240": 0.434
+ },
+ "notes": [
+  "a regra normal usa quantil z=1,645 com n=20 réplicas de valores discretos limitados a [0,1]: o nível real pode exceder 5 %",
+  "36 comparações (6 células × 6 estimadores) ⇒ multiplicidade; Bonferroni é conservadora",
+  "estimadores partilham os dados de cada réplica (correlação ≠ 0): best_of_all é um máximo de estimadores dependentes (viés otimista para o método genérico, ou seja, conservador para a porta)",
+  "nada aqui é evidência confirmatória nem escolhe limiares"
+ ]
+}

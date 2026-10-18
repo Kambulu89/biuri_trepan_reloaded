@@ -17,7 +17,8 @@ from core.trepan_original import TrepanOriginalClassifier
 from validation.benchmark import h2_synthetic as S
 from validation.benchmark.b31_facts import compile_registry
 from validation.benchmark.h2_axiom_mechanisms import defined_union_concepts, derived_union_literals
-from validation.benchmark.h2_pool_study import LADDER, PoolTrepan, ablate_literal, comparability, fit_pool_arm, ladder_state, original_buildable
+from validation.benchmark.h2_pool_study import (LADDER, Ceilings, PoolTrepan, ablate_literal, cards_by_concept, comparability, consumption, fit_pool_arm, ladder_state,
+                                                match_generic_by_evaluated, original_buildable)
 
 P = dict(min_sample=150, max_queries=600, max_nodes=5, max_depth=3, max_n=1, beam_width=2, min_samples_leaf=3, max_features_per_node=3, random_state=5)
 
@@ -90,14 +91,56 @@ def test_comparability_contract_flags_every_violation(world):
     assert comparability(a, a, same_instances=False, same_oracle=True, same_params_except_pool=True, tol=tol)["status"] == "NOT_COMPARABLE"
 
 
-def test_ladder_requires_each_level_and_never_assesses_benefit():
+def test_states_are_separate_and_benefit_is_never_assessed():
     lit = {"fact_ids": ["f1"], "candidate_evaluations": 3}
     pool = {"reasons_by_search": {"IN_LITERAL_POOL": 1}}
-    s = ladder_state(lit, pool, validated=True, changed_by_ablation=True)
-    assert s["highest_state"] == "SPLIT_DECISION_CHANGED" and s["OBSERVED_BENEFIT"] == "NOT_ASSESSED"
-    assert ladder_state(lit, pool, validated=False, changed_by_ablation=True)["highest_state"] == "AXIOM_AVAILABLE"       # sem validação, os níveis seguintes não contam
-    assert ladder_state({"fact_ids": []}, {"reasons_by_search": {}}, validated=True, changed_by_ablation=False)["highest_state"] == "AXIOM_VALIDATED"
-    assert LADDER[-1] == "OBSERVED_BENEFIT"
+    s = ladder_state(lit, pool, valid=True, selected=False, changed_by_ablation=False)
+    assert s["reached"] == {"LITERAL_VALID": True, "LITERAL_ELIGIBLE": True, "LITERAL_EVALUATED": True, "LITERAL_SELECTED": False, "SPLIT_CHANGED": False}
+    assert s["highest_consecutive"] == "LITERAL_EVALUATED" and s["BENEFIT_OBSERVED"] == "NOT_ASSESSED"               # avaliado ≠ selecionado ≠ split alterado
+    s2 = ladder_state(lit, pool, valid=True, selected=True, changed_by_ablation=True)
+    assert s2["highest_consecutive"] == "SPLIT_CHANGED" and s2["BENEFIT_OBSERVED"] == "NOT_ASSESSED"               # split alterado ≠ benefício
+    s3 = ladder_state(lit, {"reasons_by_search": {"BELOW_LITERAL_POOL_CUTOFF": 2}}, valid=True, selected=False, changed_by_ablation=False)
+    assert s3["reached"]["LITERAL_EVALUATED"] and not s3["reached"]["LITERAL_ELIGIBLE"] and s3["highest_consecutive"] == "LITERAL_VALID"   # avaliado como candidato simples sem elegibilidade m-of-n
+    assert ladder_state(lit, pool, valid=False, selected=True, changed_by_ablation=True)["highest_consecutive"] is None       # sem validade técnica não há escada
+    assert LADDER == ("LITERAL_VALID", "LITERAL_ELIGIBLE", "LITERAL_EVALUATED", "LITERAL_SELECTED", "SPLIT_CHANGED", "BENEFIT_OBSERVED")
+
+
+def test_ceilings_are_authorizations_not_consumption_and_decide_comparability(world):
+    X, names, lits = world
+    a = fit_pool_arm(X, names, lits, S.TruthOracle(), P, extras="derived", mf=3 + len(lits))
+    b = fit_pool_arm(X, names, [], S.TruthOracle(), P, extras="none", mf=3 + len(lits))
+    cons = consumption(a)
+    assert cons["eligible_literals"] == a["feature_slots"] and cons["nodes"] == a["n_internal_nodes"] and cons["cpu_seconds"] is not None and cons["rows_consulted"] is not None
+    ok = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(nodes=P["max_nodes"], oracle_queries=P["max_queries"]))
+    assert ok["status"] == "COMPARABLE" and ok["ceilings"]["a"]["authorized"] and ok["cpu_modality"]["decides_status"] is False
+    tight = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(eligible_literals=1))
+    assert tight["status"] == "NOT_COMPARABLE" and any(v.startswith("CEILING_EXCEEDED") for v in tight["violations"])
+    cpu = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={}, ceilings=Ceilings(cpu_seconds=-1.0))
+    assert cpu["cpu_modality"]["decides_status"] is True and cpu["status"] == "NOT_COMPARABLE"                       # CPU só decide se tiver teto
+    strict = comparability(a, b, same_instances=True, same_oracle=True, same_params_except_pool=True, tol={"queries": 0.0, "mofn_evaluated": 10.0})
+    assert strict["status_candidates_and_ceilings"] == "COMPARABLE" or "mofn_evaluated" in strict["violations_excluding_outcomes"]
+
+
+def test_generic_matching_scans_the_whole_range_and_reports_feasibility(world):
+    X, names, lits = world
+    ref = fit_pool_arm(X, names, lits, S.TruthOracle(), dict(P, max_n=2), extras="derived", mf=3 + len(lits))
+    target = ref["trace"]["pool"]["counters"]["mofn_evaluated"]
+    calls = []
+    def fit(mf):
+        calls.append(mf)
+        return fit_pool_arm(X, names, [], S.TruthOracle(), dict(P, max_n=2), extras="none", mf=mf)
+    m = match_generic_by_evaluated(fit, target, range(3, len(names) + 1), tolerance=0.5)
+    assert calls == list(range(3, len(names) + 1)) and 3 <= m["mf"] <= len(names)                                    # sem paragem antecipada
+    assert m["feasible"] == (m["relative_gap"] <= 0.5)
+    impossible = match_generic_by_evaluated(fit, 10 ** 9, range(3, 6), tolerance=0.1)
+    assert impossible["feasible"] is False                                                                          # inviável ⇒ NOT_COMPARABLE a jusante
+
+
+def test_cards_are_linked_generically_and_never_validated_by_default(tmp_path):
+    (tmp_path / "c1.json").write_text(json.dumps({"id": "X1", "owl_axiom": "EquivalentClasses(Foo ObjectUnionOf(A B))", "authored_by": "AI_DRAFT", "epistemic_status": "HYPOTHESIS",
+                                                  "source": {"verified": False}, "reviews": {"domain": {"status": "DOMAIN_REVIEW_PENDING"}}}))
+    c = cards_by_concept(tmp_path)["Foo"]
+    assert c["card_id"] == "X1" and c["domain_validation"] == "PENDING" and c["source_verified"] is False and c["reviews"]["domain"] == "DOMAIN_REVIEW_PENDING"
 
 
 def test_machinery_is_dimension_agnostic():
