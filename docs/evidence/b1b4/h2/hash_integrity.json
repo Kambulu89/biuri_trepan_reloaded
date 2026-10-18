@@ -1,0 +1,91 @@
+{
+ "policy": "raw (proveniência) e canónico (CRLF->LF) são identificações distintas; nenhum substitui o outro",
+ "files": [
+  {
+   "sha256_raw": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+   "sha256_canonical": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 79793,
+   "sha256_git_blob": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+   "file": "validation/counterfactual_research/datasets/originales/german.data"
+  },
+  {
+   "sha256_raw": "7fdc41808d4169b2fcf81eaebb8e6fc536f2de185efc240634b7ccbbb99bbe1a",
+   "sha256_canonical": "7fdc41808d4169b2fcf81eaebb8e6fc536f2de185efc240634b7ccbbb99bbe1a",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 20957,
+   "sha256_git_blob": "7fdc41808d4169b2fcf81eaebb8e6fc536f2de185efc240634b7ccbbb99bbe1a",
+   "file": "validation/benchmark/ontologies/german_credit.owl"
+  },
+  {
+   "sha256_raw": "b4cfb9aa49f17bdcd345ad36a253fda20361a90aeab1a4199ae4b0a37ea8bb32",
+   "sha256_canonical": "b4cfb9aa49f17bdcd345ad36a253fda20361a90aeab1a4199ae4b0a37ea8bb32",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 18933,
+   "sha256_git_blob": "b4cfb9aa49f17bdcd345ad36a253fda20361a90aeab1a4199ae4b0a37ea8bb32",
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O1.owl"
+  },
+  {
+   "sha256_raw": "b0752dbad9b4b384a404bea50b49a233dac93d384000e011a9408ffcbe59cb80",
+   "sha256_canonical": "b0752dbad9b4b384a404bea50b49a233dac93d384000e011a9408ffcbe59cb80",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 25995,
+   "sha256_git_blob": "b0752dbad9b4b384a404bea50b49a233dac93d384000e011a9408ffcbe59cb80",
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O2.owl"
+  },
+  {
+   "sha256_raw": "ca793f3f4a82449718b0ad903505cdc008e15956fe88adbe7724a48b1bcc8327",
+   "sha256_canonical": "ca793f3f4a82449718b0ad903505cdc008e15956fe88adbe7724a48b1bcc8327",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 22917,
+   "sha256_git_blob": "ca793f3f4a82449718b0ad903505cdc008e15956fe88adbe7724a48b1bcc8327",
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_O3.owl"
+  },
+  {
+   "sha256_raw": "d98aa79eeaaac58c3b342b7d44e143756d1e54f11cc718f718e93864ad53b5ff",
+   "sha256_canonical": "d98aa79eeaaac58c3b342b7d44e143756d1e54f11cc718f718e93864ad53b5ff",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 25995,
+   "sha256_git_blob": "d98aa79eeaaac58c3b342b7d44e143756d1e54f11cc718f718e93864ad53b5ff",
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_H.owl"
+  },
+  {
+   "sha256_raw": "2300afa58e9f8b57b0aaf6f683f4c728a9514f78be6dbaee8c4d457a7bfb2660",
+   "sha256_canonical": "2300afa58e9f8b57b0aaf6f683f4c728a9514f78be6dbaee8c4d457a7bfb2660",
+   "canonicalization": "CRLF->LF (\\r\\n -> \\n), apenas",
+   "raw_equals_canonical": true,
+   "n_crlf": 0,
+   "size_bytes": 25995,
+   "sha256_git_blob": "2300afa58e9f8b57b0aaf6f683f4c728a9514f78be6dbaee8c4d457a7bfb2660",
+   "file": "validation/benchmark/ontologies/proposals/german_credit/v0_draft/german_credit_I.owl"
+  }
+ ],
+ "protected_unchanged": {
+  "reference": "f1b2955",
+  "protected_paths": [
+   "core",
+   "validation/counterfactual_research",
+   "docs/evidence/b1b4/b31",
+   "docs/evidence/b1b4/b32",
+   "docs/evidence/b1b4/b33",
+   "docs/b1b4/manifest_v3/BENCHMARK_MANIFEST_v3.DRAFT.json",
+   "docs/b1b4/manifest_v2/BENCHMARK_MANIFEST_v2.DRAFT.json",
+   "validation/benchmark/BENCHMARK_MANIFEST_v1.json",
+   "validation/benchmark/ontologies/german_credit.owl"
+  ],
+  "changed": [],
+  "unchanged": true
+ }
+}

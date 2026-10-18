@@ -1,0 +1,679 @@
+{
+ "criteria": {
+  "explicit": "asserções no ficheiro OWL (declarações, subClassOf, domain, range, equivalências por união)",
+  "hermit": "axiomas inferidos pelo HermiT (subsunções entre classes nomeadas não asseridas + equivalências)",
+  "registry": "factos do registo B3.1 com derivação INFERRED_BY_REASONER (inclui consequentes ATTRIBUTE_APPLIES_TO_CONCEPT que o registo acrescenta a partir das subsunções)"
+ },
+ "explicit_axioms_O2": {
+  "owl:Class declarations": 41,
+  "rdfs:subClassOf (asserted)": 40,
+  "owl:equivalentClass (definitions by union)": 14,
+  "owl:DatatypeProperty declarations": 61,
+  "rdfs:domain (asserted)": 61,
+  "rdfs:range (asserted)": 61
+ },
+ "registry_facts_by_kind_and_derivation": {
+  "ATTRIBUTE_APPLIES_TO_CONCEPT|ASSERTED": 61,
+  "ATTRIBUTE_APPLIES_TO_CONCEPT|DERIVED_CLOSURE": 86,
+  "ATTRIBUTE_APPLIES_TO_CONCEPT|INFERRED_BY_REASONER": 26,
+  "CONCEPT_EQUIVALENCE|INFERRED_BY_REASONER": 4,
+  "CONCEPT_SUBSUMPTION|ASSERTED": 40,
+  "CONCEPT_SUBSUMPTION|INFERRED_BY_REASONER": 25,
+  "UNSUPPORTED_AXIOM|NOT_APPLICABLE": 1
+ },
+ "registry_total_facts": 243,
+ "hermit_inferred_axioms": 29,
+ "registry_inferred_facts": 55,
+ "inferred_by_kind": {
+  "CONCEPT_SUBSUMPTION": 25,
+  "CONCEPT_EQUIVALENCE": 4,
+  "ATTRIBUTE_APPLIES_TO_CONCEPT": 26
+ },
+ "reconciliation": {
+  "hermit_subsumptions": 25,
+  "hermit_equivalences": 4,
+  "hermit_total": 29,
+  "registry_consequents_attribute_applies": 26,
+  "registry_total": 55
+ },
+ "classification_of_the_55": {
+  "new_nonimmediate_inferences (cadeia entre classes definidas)": 8,
+  "immediate_consequences_of_definitions (nível ⊑ classe definida)": 17,
+  "trivial_equivalences (união singleton)": 4,
+  "consequent_attribute_facts": 26
+ },
+ "redundant": {
+  "attribute_facts_derivable_from_subsumption_plus_domain": 26,
+  "trivial_equivalences": 4
+ },
+ "effectively_usable": {
+  "attribute_facts_feeding_the_10_literals": 26,
+  "chain_subsumptions_among_literal_concepts_used_by_pruning": 4
+ },
+ "literals": [
+  {
+   "literal": "onto_any[AtLeast_employment_since_A72]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A72",
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "extension_levels": [
+     "A72",
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_employment_since__A72",
+     "has_employment_since__A73",
+     "has_employment_since__A74",
+     "has_employment_since__A75"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A71",
+     "A72",
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 38,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 4,
+    "complement_form_size": 1,
+    "in_space": true,
+    "trivial_single_column_negation": true
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": true,
+    "nested_in_literals": [],
+    "contains_literals": [
+     "onto_any[AtLeast_employment_since_A73]",
+     "onto_any[AtLeast_employment_since_A74]"
+    ],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.9493333333333334,
+    "variance_train": 0.048099555555555555
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_employment_since_A73]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "extension_levels": [
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_employment_since__A73",
+     "has_employment_since__A74",
+     "has_employment_since__A75"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A71",
+     "A72",
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 171,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 3,
+    "complement_form_size": 2,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [
+     "onto_any[AtLeast_employment_since_A72]"
+    ],
+    "contains_literals": [
+     "onto_any[AtLeast_employment_since_A74]"
+    ],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.772,
+    "variance_train": 0.17601600000000003
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_employment_since_A74]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A74",
+     "A75"
+    ],
+    "extension_levels": [
+     "A74",
+     "A75"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_employment_since__A74",
+     "has_employment_since__A75"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A71",
+     "A72",
+     "A73",
+     "A74",
+     "A75"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 429,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 2,
+    "complement_form_size": 3,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [
+     "onto_any[AtLeast_employment_since_A72]",
+     "onto_any[AtLeast_employment_since_A73]"
+    ],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.428,
+    "variance_train": 0.244816
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_job_A172]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A172",
+     "A173",
+     "A174"
+    ],
+    "extension_levels": [
+     "A172",
+     "A173",
+     "A174"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_job__A172",
+     "has_job__A173",
+     "has_job__A174"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A171",
+     "A172",
+     "A173",
+     "A174"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 13,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 3,
+    "complement_form_size": 1,
+    "in_space": true,
+    "trivial_single_column_negation": true
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": true,
+    "nested_in_literals": [],
+    "contains_literals": [
+     "onto_any[AtLeast_job_A173]"
+    ],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.9826666666666667,
+    "variance_train": 0.01703288888888889
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_job_A173]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A173",
+     "A174"
+    ],
+    "extension_levels": [
+     "A173",
+     "A174"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_job__A173",
+     "has_job__A174"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A171",
+     "A172",
+     "A173",
+     "A174"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 162,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 2,
+    "complement_form_size": 2,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [
+     "onto_any[AtLeast_job_A172]"
+    ],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.784,
+    "variance_train": 0.16934400000000002
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_savings_account_A62]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A62",
+     "A63",
+     "A64"
+    ],
+    "extension_levels": [
+     "A62",
+     "A63",
+     "A64"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_savings_account__A62",
+     "has_savings_account__A63",
+     "has_savings_account__A64"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A61",
+     "A62",
+     "A63",
+     "A64",
+     "A65"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 582,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 3,
+    "complement_form_size": 2,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [],
+    "contains_literals": [
+     "onto_any[AtLeast_savings_account_A63]"
+    ],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.224,
+    "variance_train": 0.173824
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_savings_account_A63]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A63",
+     "A64"
+    ],
+    "extension_levels": [
+     "A63",
+     "A64"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_savings_account__A63",
+     "has_savings_account__A64"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A61",
+     "A62",
+     "A63",
+     "A64",
+     "A65"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 668,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 2,
+    "complement_form_size": 3,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [
+     "onto_any[AtLeast_savings_account_A62]"
+    ],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.10933333333333334,
+    "variance_train": 0.09737955555555555
+   }
+  },
+  {
+   "literal": "onto_any[AtLeast_status_checking_account_A12]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A12",
+     "A13"
+    ],
+    "extension_levels": [
+     "A12",
+     "A13"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_status_checking_account__A12",
+     "has_status_checking_account__A13"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A11",
+     "A12",
+     "A13",
+     "A14"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 501,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 2,
+    "complement_form_size": 2,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.332,
+    "variance_train": 0.221776
+   }
+  },
+  {
+   "literal": "onto_any[Purpose_HouseholdGoods]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A42",
+     "A43",
+     "A44"
+    ],
+    "extension_levels": [
+     "A42",
+     "A43",
+     "A44"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_purpose__A42",
+     "has_purpose__A43",
+     "has_purpose__A44"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A40",
+     "A41",
+     "A410",
+     "A42",
+     "A43",
+     "A44",
+     "A45",
+     "A46",
+     "A48",
+     "A49"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 401,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 3,
+    "complement_form_size": 7,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.4653333333333333,
+    "variance_train": 0.2487982222222222
+   }
+  },
+  {
+   "literal": "onto_any[Purpose_Vehicles]",
+   "1_logical_correctness": {
+    "extension_equals_union_members_in_OWL": true,
+    "union_levels": [
+     "A40",
+     "A41"
+    ],
+    "extension_levels": [
+     "A40",
+     "A41"
+    ],
+    "consistent_hermit": true
+   },
+   "2_matching_correct": {
+    "each_level_attribute_matched_to_its_property": true,
+    "matched_entities": [
+     "has_purpose__A40",
+     "has_purpose__A41"
+    ]
+   },
+   "3_one_hot_semantics": {
+    "family_columns": [
+     "A40",
+     "A41",
+     "A410",
+     "A42",
+     "A43",
+     "A44",
+     "A45",
+     "A46",
+     "A48",
+     "A49"
+    ],
+    "rows_with_no_level_train": 0,
+    "rows_with_multiple_levels_train": 0,
+    "literal_is_OR_of_extension_columns": true
+   },
+   "4_unknown_values": {
+    "rows_with_literal_0_because_level_outside_extension_or_unknown": 490,
+    "unknown_never_mapped_to_a_level": true
+   },
+   "5_original_max_n_3": {
+    "positive_form_size": 2,
+    "complement_form_size": 8,
+    "in_space": true,
+    "trivial_single_column_negation": false
+   },
+   "6_duplication": {
+    "duplicates_existing_single_column": false,
+    "nested_in_literals": [],
+    "contains_literals": [],
+    "same_extension_as_other_literal": false
+   },
+   "7_reasoner_dependency": {
+    "derivable_without_reasoner": false,
+    "needs_reasoner_flag": true
+   },
+   "8_search_influence_potential": {
+    "prevalence_train": 0.3466666666666667,
+    "variance_train": 0.22648888888888882
+   }
+  }
+ ],
+ "n_literals_with_reasoner_dependency": 10
+}

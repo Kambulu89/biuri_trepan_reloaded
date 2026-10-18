@@ -49,13 +49,54 @@ def _is_binary(col: np.ndarray) -> bool:
     return bool(np.all(np.isin(col, (0.0, 1.0))))
 
 
-def derived_union_literals(reg: FactRegistry, X: np.ndarray, names: Sequence[str], *, min_size: int = 2) -> List[DerivedLiteral]:
+def defined_union_concepts(owl_path) -> set:
+    """Nomes das classes DEFINIDAS por equivalência com uma união (``owl:equivalentClass`` + ``owl:unionOf``) no ficheiro OWL — os únicos conceitos de que o mecanismo T1/T2 deriva literais.
+    Classes organizacionais (grupos temáticos, raízes) e classes primitivas ficam de fora: um agrupamento NÃO é um axioma de definição (evita transformar partições em literais)."""
+    import xml.etree.ElementTree as ET
+    ns = {"owl": "http://www.w3.org/2002/07/owl#", "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"}
+    root = ET.parse(owl_path).getroot()
+    out = set()
+    for el in root.findall("owl:Class", ns):
+        name = (el.get("{%s}about" % ns["rdf"]) or "").split("#")[-1]
+        for eq in el.findall("owl:equivalentClass", ns):
+            if eq.findall(".//owl:unionOf", ns):
+                out.add(name)
+    return out
+
+
+def _unsafe_unmatched(reg: FactRegistry, names: Sequence[str]) -> Dict[str, str]:
+    """Atributos de dados cujo matching FALHOU de forma que torna a extensão de um conceito possivelmente INCOMPLETA: empate/ambiguidade/colisão ou com um melhor candidato existente na ontologia.
+    Um atributo sem qualquer entidade candidata (não modelado) NÃO é inseguro: em mundo aberto, o nível não modelado fica fora do conceito."""
+    out: Dict[str, str] = {}
+    pos = set(names)
+    for f in reg.by_kind(Kind.MATCH_FAILURE):
+        reason = str(f.rejection_reason or "")
+        if any(a in pos for a in f.attributes) and (f.entities or any(k in reason for k in ("AMBIGUOUS", "TIE", "COLLISION"))):
+            for a in f.attributes:
+                out[a] = reason or "MATCH_FAILURE_WITH_CANDIDATE"
+    return out
+
+
+def derived_union_literals(reg: FactRegistry, X: np.ndarray, names: Sequence[str], *, min_size: int = 2, only_concepts: Optional[set] = None,
+                           rejected: Optional[list] = None) -> List[DerivedLiteral]:
     """Literais derivados para conceitos cuja extensão tem ≥ ``min_size`` atributos BINÁRIOS da MESMA família (variável) — evita misturar variáveis. Descarta extensões constantes no treino
-    e duplicados (mesmo conjunto de atributos)."""
+    e duplicados (mesmo conjunto de atributos). Se ``only_concepts`` for dado (recomendado: ``defined_union_concepts``), só se consideram classes definidas por união; sem ele consideram-se
+    TODOS os conceitos (inclui grupos organizacionais — comportamento de prototipagem, não usar em arms experimentais).
+    SOLIDEZ: se algum atributo da MESMA família do conceito teve um matching ambíguo/falhado (``_unsafe_unmatched``), a extensão pode estar incompleta e o OR seria um literal INCORRETO; nesse
+    caso o literal NÃO é criado e a rejeição regista-se em ``rejected`` (lista opcional de dicionários)."""
     pos = {n: i for i, n in enumerate(names)}
+    unsafe = _unsafe_unmatched(reg, names)
     seen: Dict[Tuple[str, ...], DerivedLiteral] = {}
     for c, e in sorted(concept_extensions(reg).items()):
+        if only_concepts is not None and c not in only_concepts:
+            continue
         attrs = tuple(sorted(a for a in e["attributes"] if a in pos))
+        if attrs and len({family_of(a) for a in attrs}) == 1:
+            bad = sorted(a for a in unsafe if family_of(a) == family_of(attrs[0]))
+            if bad:                                                     # extensão possivelmente incompleta (matching ambíguo): o OR seria incorreto — avaliado ANTES do filtro de tamanho
+                if rejected is not None:
+                    rejected.append({"concept": c, "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH", "unresolved_attributes": bad, "match_status": {a: unsafe[a] for a in bad}})
+                continue
         if len(attrs) < min_size or len({family_of(a) for a in attrs}) != 1:
             continue
         if not all(_is_binary(X[:, pos[a]]) for a in attrs):

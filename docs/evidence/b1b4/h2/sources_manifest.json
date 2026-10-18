@@ -1,0 +1,41 @@
+{
+ "status": "BLOCKED_NETWORK_POLICY_403",
+ "summary": "nenhum ficheiro obtido; URLs declaradas pelo responsável (decisão pós-ca6bf44: S2 = UCI dataset 573 «update»; 522 mantido como alternativo); o proxy continua a recusar (403 CONNECT); sem contornar; a aguardar ficheiros",
+ "probe": "docs/evidence/b1b4/h2/network_probe.json",
+ "sources": {
+  "S1_UCI_STATLOG_GERMAN": {
+   "declared_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc",
+   "declared_url_alt": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
+   "expected": [
+    "german.doc",
+    "german.data"
+   ],
+   "role": "documentação original (códigos clássicos)"
+  },
+  "S2_UCI_SOUTH_GERMAN": {
+   "declared_url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
+   "declared_url_alt": "https://archive.ics.uci.edu/dataset/522/south+german+credit",
+   "expected": [
+    "codetable / SouthGermanCredit.*"
+   ],
+   "role": "versão com tabela de códigos corrigida"
+  },
+  "S3_GROEMPING_2019": {
+   "declared_url": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf",
+   "expected": [
+    "Report-2019-004.pdf"
+   ],
+   "role": "relatório (Grömping, 2019) sobre erros na tabela de códigos clássica"
+  }
+ },
+ "files": [],
+ "content_consulted": false,
+ "origin_verified": false,
+ "what_is_needed": [
+  "german.doc (UCI Statlog)",
+  "documentação/tabela de códigos do South German Credit (UCI dataset 522)",
+  "Report-2019-004.pdf (Grömping, 2019)"
+ ],
+ "how_to_register": "python -m validation.benchmark.h2_sources register --german-doc PATH --south-file PATH [--south-file PATH …] --report-pdf PATH --out docs/evidence/b1b4/h2/sources_manifest.json",
+ "environment_fix": "Network access do ambiente: acrescentar archive.ics.uci.edu e www1.beuth-hochschule.de a Allowed domains (https://code.claude.com/docs/en/cloud-environments#network-access), ou fornecer os ficheiros no repositório/anexo"
+}

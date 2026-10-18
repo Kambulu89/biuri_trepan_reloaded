@@ -1,0 +1,3271 @@
+{
+ "purpose": "PILOTO TÉCNICO sintético; sem accuracy/fidelidade; não autoriza conclusões de superioridade",
+ "limits_declared_before_execution": {
+  "max_wall_seconds": 300,
+  "max_fits": 300,
+  "max_peak_memory_mb": 1500
+ },
+ "ceilings_proposal": {
+  "eligible_literals": 40,
+  "evaluated_candidates": 1200,
+  "oracle_queries": 800,
+  "nodes": 5
+ },
+ "configs": [
+  {
+   "config": {
+    "id": "U1",
+    "families": {
+     "a": 5
+    },
+    "k_true": 2,
+    "n_noise": 4,
+    "n_num": 2,
+    "n_classes": 2,
+    "n": 240,
+    "seed": 101
+   },
+   "n_features": 12,
+   "n_classes": 2,
+   "n_derived_true": 3,
+   "runs": {
+    "max_n=1": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 1
+     },
+     "F_matching": {
+      "mf": 3,
+      "relative_gap": 0.0,
+      "feasible": true,
+      "scan_fits": 10
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_a_L3]",
+      "axiom_fact_ids": [
+       "F-ATT-372eb24fe159",
+       "F-ATT-31a73b3f7bdc",
+       "F-ATT-ce5a7c807849"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 4,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_a_L3]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.5491296404753736
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 182,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.08175306999999954,
+       "peak_memory_mb": 68.144824,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 182,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.078610179,
+       "peak_memory_mb": 68.347595,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 196,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 14,
+        "oracle_calls": 2,
+        "rows_consulted": 254
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.07062325400000002,
+       "peak_memory_mb": 68.542532,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 146,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 60,
+        "oracle_calls": 3,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.07141899400000007,
+       "peak_memory_mb": 68.79023,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 196,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.05209616199999978,
+       "peak_memory_mb": 68.991913,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 1,
+        "depth": 1,
+        "n_tests": 1,
+        "total_literals_in_tests": 1,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 1
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 194,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": [
+         0,
+         5,
+         6
+        ]
+       },
+       "cpu_seconds": 0.0466140510000006,
+       "peak_memory_mb": 69.129729,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 192,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.04978342300000005,
+       "peak_memory_mb": 69.353692,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 182,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.052911775000000105,
+       "peak_memory_mb": 69.516569,
+       "trees_built": 10,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    },
+    "max_n=3": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 3
+     },
+     "F_matching": {
+      "mf": 6,
+      "relative_gap": 0.6222,
+      "feasible": false,
+      "scan_fits": 10
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:mofn_evaluated"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_a_L3]",
+      "axiom_fact_ids": [
+       "F-ATT-372eb24fe159",
+       "F-ATT-31a73b3f7bdc",
+       "F-ATT-ce5a7c807849"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 34,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_a_L3]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.5491296404753736
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 12,
+        "evaluated": 10,
+        "simple_evaluated": 182,
+        "invalid": 2
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.10398920400000033,
+       "peak_memory_mb": 69.248854,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 4,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 12,
+        "evaluated": 10,
+        "simple_evaluated": 182,
+        "invalid": 2
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.10958033300000025,
+       "peak_memory_mb": 69.445176,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 4,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 76,
+        "evaluated": 73,
+        "simple_evaluated": 194,
+        "invalid": 3
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.18502187499999945,
+       "peak_memory_mb": 69.590979,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 64,
+        "evaluated": 45,
+        "simple_evaluated": 146,
+        "invalid": 19
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 60,
+        "oracle_calls": 3,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.17751664499999986,
+       "peak_memory_mb": 69.851527,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 112,
+        "evaluated": 100,
+        "simple_evaluated": 196,
+        "invalid": 12
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.2757353870000001,
+       "peak_memory_mb": 70.048832,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 3,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 3
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 96,
+        "evaluated": 84,
+        "simple_evaluated": 194,
+        "invalid": 12
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": [
+         2,
+         5,
+         9
+        ]
+       },
+       "cpu_seconds": 0.2458551299999998,
+       "peak_memory_mb": 70.258611,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 1,
+        "depth": 1,
+        "n_tests": 1,
+        "total_literals_in_tests": 1,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 112,
+        "evaluated": 107,
+        "simple_evaluated": 198,
+        "invalid": 5
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 15,
+        "derived": 3,
+        "forced_columns": [
+         12,
+         13,
+         14
+        ]
+       },
+       "cpu_seconds": 0.2795709069999992,
+       "peak_memory_mb": 70.419169,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 1,
+        "depth": 1,
+        "n_tests": 1,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 3,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 76,
+        "evaluated": 73,
+        "simple_evaluated": 194,
+        "invalid": 3
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 6,
+        "columns": 12,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.16812568699999986,
+       "peak_memory_mb": 70.683356,
+       "trees_built": 10,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 12,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    }
+   },
+   "checks": {
+    "1_compile": {
+     "ontology_valid": true,
+     "matching_complete": true,
+     "true_extension_expected": [
+      "a__L3",
+      "a__L4",
+      "a__L5"
+     ],
+     "true_literal_present": true,
+     "perm_does_not_express_truth": true,
+     "neutral_and_flat_have_no_literals": true,
+     "ambiguous_match_rejects_incomplete_literals": true,
+     "ambiguous_rejections": [
+      {
+       "concept": "AtLeast_a_L2",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "a__L5"
+       ],
+       "match_status": {
+        "a__L5": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_a_L3",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "a__L5"
+       ],
+       "match_status": {
+        "a__L5": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_a_L4",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "a__L5"
+       ],
+       "match_status": {
+        "a__L5": "REJECTED_AMBIGUOUS"
+       }
+      }
+     ]
+    },
+    "4_ceilings_control": {
+     "tight_ceiling_gives_NOT_COMPARABLE": true
+    }
+   }
+  },
+  {
+   "config": {
+    "id": "U2",
+    "families": {
+     "q": 3,
+     "r": 6
+    },
+    "k_true": 1,
+    "n_noise": 2,
+    "n_num": 3,
+    "n_classes": 3,
+    "n": 240,
+    "seed": 102
+   },
+   "n_features": 16,
+   "n_classes": 3,
+   "n_derived_true": 1,
+   "runs": {
+    "max_n=1": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 1
+     },
+     "F_matching": {
+      "mf": 3,
+      "relative_gap": 0.0,
+      "feasible": true,
+      "scan_fits": 12
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "EXACT",
+        "dimensions_outside_tolerance": [],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "WITHIN_TOLERANCE",
+        "dimensions_outside_tolerance": [],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "WITHIN_TOLERANCE",
+        "dimensions_outside_tolerance": [],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "WITHIN_TOLERANCE",
+        "dimensions_outside_tolerance": [],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_q_L2]",
+      "axiom_fact_ids": [
+       "F-ATT-e80e62b3164a",
+       "F-ATT-bc6ab660d266"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 2,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_q_L2]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.9365552594819413
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 268,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.09332954599999965,
+       "peak_memory_mb": 69.04626,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 268,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.09534528599999881,
+       "peak_memory_mb": 69.264068,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 272,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.0904900719999997,
+       "peak_memory_mb": 69.465764,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 272,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.07279167500000128,
+       "peak_memory_mb": 69.69208,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 1
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 274,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 25,
+        "oracle_calls": 2,
+        "rows_consulted": 265
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.07550977100000011,
+       "peak_memory_mb": 69.972494,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 1
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 274,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": [
+         1
+        ]
+       },
+       "cpu_seconds": 0.07226454000000082,
+       "peak_memory_mb": 70.189255,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 272,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 17,
+        "oracle_calls": 2,
+        "rows_consulted": 257
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.0818415219999995,
+       "peak_memory_mb": 70.467225,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 268,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.0873440590000012,
+       "peak_memory_mb": 70.668609,
+       "trees_built": 12,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    },
+    "max_n=3": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 3
+     },
+     "F_matching": {
+      "mf": 5,
+      "relative_gap": 0.0,
+      "feasible": true,
+      "scan_fits": 12
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "WITHIN_TOLERANCE",
+        "dimensions_outside_tolerance": [],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_q_L2]",
+      "axiom_fact_ids": [
+       "F-ATT-e80e62b3164a",
+       "F-ATT-bc6ab660d266"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 20,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_q_L2]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.9182828220613277
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 32,
+        "evaluated": 13,
+        "simple_evaluated": 268,
+        "invalid": 19
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.13874929199999997,
+       "peak_memory_mb": 70.36075,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 3,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 32,
+        "evaluated": 13,
+        "simple_evaluated": 268,
+        "invalid": 19
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.1486356750000013,
+       "peak_memory_mb": 70.576218,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 3,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 44,
+        "evaluated": 30,
+        "simple_evaluated": 270,
+        "invalid": 14
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.14637761899999902,
+       "peak_memory_mb": 70.773832,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 44,
+        "evaluated": 39,
+        "simple_evaluated": 272,
+        "invalid": 5
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.12046046599999904,
+       "peak_memory_mb": 70.991242,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 4,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 1
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 60,
+        "evaluated": 51,
+        "simple_evaluated": 272,
+        "invalid": 9
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 24,
+        "oracle_calls": 2,
+        "rows_consulted": 264
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.14442025299999983,
+       "peak_memory_mb": 71.272752,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 28,
+        "evaluated": 23,
+        "simple_evaluated": 272,
+        "invalid": 5
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": [
+         2
+        ]
+       },
+       "cpu_seconds": 0.11672046900000055,
+       "peak_memory_mb": 71.49656,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 3,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 88,
+        "evaluated": 71,
+        "simple_evaluated": 274,
+        "invalid": 17
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 16,
+        "oracle_calls": 2,
+        "rows_consulted": 256
+       },
+       "literals": {
+        "feature_slots": 4,
+        "columns": 17,
+        "derived": 1,
+        "forced_columns": [
+         16
+        ]
+       },
+       "cpu_seconds": 0.18152525300000022,
+       "peak_memory_mb": 71.775195,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 4,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 1,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 56,
+        "evaluated": 39,
+        "simple_evaluated": 274,
+        "invalid": 17
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 240
+       },
+       "literals": {
+        "feature_slots": 5,
+        "columns": 16,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.1678760170000011,
+       "peak_memory_mb": 72.186095,
+       "trees_built": 12,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 16,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    }
+   },
+   "checks": {
+    "1_compile": {
+     "ontology_valid": true,
+     "matching_complete": true,
+     "true_extension_expected": [
+      "q__L2",
+      "q__L3"
+     ],
+     "true_literal_present": true,
+     "perm_does_not_express_truth": true,
+     "neutral_and_flat_have_no_literals": true,
+     "ambiguous_match_rejects_incomplete_literals": true,
+     "ambiguous_rejections": [
+      {
+       "concept": "AtLeast_q_L2",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "q__L3"
+       ],
+       "match_status": {
+        "q__L3": "REJECTED_AMBIGUOUS"
+       }
+      }
+     ]
+    },
+    "4_ceilings_control": {
+     "tight_ceiling_gives_NOT_COMPARABLE": true
+    }
+   }
+  },
+  {
+   "config": {
+    "id": "U3",
+    "families": {
+     "x": 7,
+     "y": 2,
+     "z": 4
+    },
+    "k_true": 4,
+    "n_noise": 8,
+    "n_num": 3,
+    "n_classes": 2,
+    "n": 300,
+    "seed": 103
+   },
+   "n_features": 27,
+   "n_classes": 2,
+   "n_derived_true": 5,
+   "runs": {
+    "max_n=1": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 1
+     },
+     "F_matching": {
+      "mf": 3,
+      "relative_gap": 0.0,
+      "feasible": true,
+      "scan_fits": 16
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_x_L5]",
+      "axiom_fact_ids": [
+       "F-ATT-783472716e36",
+       "F-ATT-97acd6dae939",
+       "F-ATT-d43a24eeb072"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 4,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_x_L5]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.42220151999190497
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 132,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.12110638999999779,
+       "peak_memory_mb": 70.613015,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 132,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.12001195099999862,
+       "peak_memory_mb": 70.913649,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 142,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.1625837689999976,
+       "peak_memory_mb": 71.084984,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 280,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 49,
+        "oracle_calls": 2,
+        "rows_consulted": 349
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.18649908400000115,
+       "peak_memory_mb": 71.3786,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 284,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.1033019359999976,
+       "peak_memory_mb": 71.826815,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 1,
+        "depth": 1,
+        "n_tests": 1,
+        "total_literals_in_tests": 1,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 1
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 288,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": [
+         0,
+         1,
+         4,
+         5,
+         11
+        ]
+       },
+       "cpu_seconds": 0.0965524120000012,
+       "peak_memory_mb": 72.118934,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 284,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.10571074899999999,
+       "peak_memory_mb": 72.553433,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 0,
+        "evaluated": 0,
+        "simple_evaluated": 132,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.1430677540000005,
+       "peak_memory_mb": 73.010892,
+       "trees_built": 16,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    },
+    "max_n=3": {
+     "params": {
+      "min_sample": 150,
+      "max_queries": 800,
+      "max_nodes": 5,
+      "max_depth": 3,
+      "beam_width": 2,
+      "min_samples_leaf": 3,
+      "max_features_per_node": 3,
+      "random_state": 7,
+      "max_n": 3
+     },
+     "F_matching": {
+      "mf": 7,
+      "relative_gap": 0.0541,
+      "feasible": true,
+      "scan_fits": 16
+     },
+     "equivalence": {
+      "A_equals_Original": true,
+      "valid_ontology_without_active_structure_equals_Original": true
+     },
+     "ceilings_exceeded": {
+      "A_LIMITED": [],
+      "A_PLUS_ENRICHED": [],
+      "B_WIDE_GENERIC": [],
+      "C_OWL_PRIORITY": [],
+      "D_PERMUTED_PRIORITY": [],
+      "E_RANDOM_BASE": [],
+      "E_RANDOM_RELATIONS": [],
+      "F_GENERIC_MATCHED_EVALUATED": []
+     },
+     "comparability": {
+      "C vs B_WIDE_GENERIC": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs D_PERMUTED_PRIORITY": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_BASE": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs E_RANDOM_RELATIONS": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs F_GENERIC_MATCHED_EVALUATED": {
+       "status": "CONFIGURATION_COMPARABLE",
+       "violations": [],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "queries"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      },
+      "C vs A_LIMITED": {
+       "status": "NOT_COMPARABLE",
+       "violations": [
+        "DESIGN_NOT_EQUALIZED:feature_slots"
+       ],
+       "realized_resource_match": {
+        "grade": "PARTIAL",
+        "dimensions_outside_tolerance": [
+         "mofn_evaluated",
+         "queries",
+         "n_internal_nodes",
+         "depth"
+        ],
+        "note": "descritivo: consumos distintos sob o mesmo teto não invalidam o contraste"
+       }
+      }
+     },
+     "true_literal_trace": {
+      "literal": "onto_any[AtLeast_x_L5]",
+      "axiom_fact_ids": [
+       "F-ATT-783472716e36",
+       "F-ATT-97acd6dae939",
+       "F-ATT-d43a24eeb072"
+      ],
+      "needs_reasoner": true,
+      "pool_reason_A_PLUS_root": "NOT_IN_FEATURE_POOL",
+      "pool_reason_C_root": "IN_LITERAL_POOL",
+      "candidate_evaluations_C": 46,
+      "chosen_in_nodes_C": [
+       0
+      ],
+      "ablation": {
+       "literal": "onto_any[AtLeast_x_L5]",
+       "chosen_in_searches": [
+        0
+       ],
+       "searches_changed_by_ablation": [
+        0,
+        1
+       ],
+       "changed": true,
+       "root_score_delta_oracle_labels": 0.42220151999190497
+      },
+      "ladder": {
+       "highest_consecutive": "SPLIT_CHANGED",
+       "reached": {
+        "LITERAL_VALID": true,
+        "LITERAL_ELIGIBLE": true,
+        "LITERAL_EVALUATED": true,
+        "LITERAL_SELECTED": true,
+        "SPLIT_CHANGED": true
+       },
+       "BENEFIT_OBSERVED": "NOT_ASSESSED"
+      }
+     },
+     "resources": {
+      "A_LIMITED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 20,
+        "evaluated": 20,
+        "simple_evaluated": 132,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.15656022400000325,
+       "peak_memory_mb": 72.177575,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "A_PLUS_ENRICHED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 20,
+        "evaluated": 20,
+        "simple_evaluated": 132,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 3,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.16019199200000145,
+       "peak_memory_mb": 72.473707,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "B_WIDE_GENERIC": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 60,
+        "evaluated": 60,
+        "simple_evaluated": 142,
+        "invalid": 0
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.24134956500000015,
+       "peak_memory_mb": 72.674481,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 0,
+        "depth": 0,
+        "n_tests": 0,
+        "total_literals_in_tests": 0,
+        "max_literals_in_a_test": 0,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "C_OWL_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 88,
+        "evaluated": 74,
+        "simple_evaluated": 280,
+        "invalid": 14
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 49,
+        "oracle_calls": 2,
+        "rows_consulted": 349
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.18253328999999852,
+       "peak_memory_mb": 72.992293,
+       "trees_built": 2,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 2,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 2
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "D_PERMUTED_PRIORITY": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 168,
+        "evaluated": 148,
+        "simple_evaluated": 284,
+        "invalid": 20
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.27144941699999947,
+       "peak_memory_mb": 73.433314,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 3,
+        "max_literals_in_a_test": 2,
+        "derived_literals_in_tests": 3
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_BASE": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 168,
+        "evaluated": 160,
+        "simple_evaluated": 282,
+        "invalid": 8
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": [
+         2,
+         4,
+         7,
+         17,
+         21
+        ]
+       },
+       "cpu_seconds": 0.2739434060000008,
+       "peak_memory_mb": 73.889984,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 1,
+        "depth": 1,
+        "n_tests": 1,
+        "total_literals_in_tests": 1,
+        "max_literals_in_a_test": 1,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      },
+      "E_RANDOM_RELATIONS": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 240,
+        "evaluated": 222,
+        "simple_evaluated": 286,
+        "invalid": 18
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 14,
+        "oracle_calls": 2,
+        "rows_consulted": 314
+       },
+       "literals": {
+        "feature_slots": 8,
+        "columns": 32,
+        "derived": 5,
+        "forced_columns": [
+         27,
+         28,
+         29,
+         30,
+         31
+        ]
+       },
+       "cpu_seconds": 0.32667923800000054,
+       "peak_memory_mb": 74.179926,
+       "trees_built": 1,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 6,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 6
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 5,
+        "beam_width": 2
+       }
+      },
+      "F_GENERIC_MATCHED_EVALUATED": {
+       "authorized": {
+        "eligible_literals": 40,
+        "evaluated_candidates": 1200,
+        "oracle_queries": 800,
+        "nodes": 5
+       },
+       "candidates": {
+        "ceiling_evaluated": 1200,
+        "generated": 80,
+        "evaluated": 78,
+        "simple_evaluated": 280,
+        "invalid": 2
+       },
+       "queries": {
+        "ceiling": 800,
+        "executed": 0,
+        "oracle_calls": 1,
+        "rows_consulted": 300
+       },
+       "literals": {
+        "feature_slots": 7,
+        "columns": 27,
+        "derived": 0,
+        "forced_columns": []
+       },
+       "cpu_seconds": 0.19440148400000012,
+       "peak_memory_mb": 74.978527,
+       "trees_built": 16,
+       "tree": {
+        "internal_nodes": 2,
+        "depth": 2,
+        "n_tests": 2,
+        "total_literals_in_tests": 5,
+        "max_literals_in_a_test": 3,
+        "derived_literals_in_tests": 0
+       },
+       "representation": {
+        "n_base_columns": 27,
+        "n_derived_columns": 0,
+        "beam_width": 2
+       }
+      }
+     }
+    }
+   },
+   "checks": {
+    "1_compile": {
+     "ontology_valid": true,
+     "matching_complete": true,
+     "true_extension_expected": [
+      "x__L5",
+      "x__L6",
+      "x__L7"
+     ],
+     "true_literal_present": true,
+     "perm_does_not_express_truth": true,
+     "neutral_and_flat_have_no_literals": true,
+     "ambiguous_match_rejects_incomplete_literals": true,
+     "ambiguous_rejections": [
+      {
+       "concept": "AtLeast_x_L2",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "x__L7"
+       ],
+       "match_status": {
+        "x__L7": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_x_L3",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "x__L7"
+       ],
+       "match_status": {
+        "x__L7": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_x_L4",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "x__L7"
+       ],
+       "match_status": {
+        "x__L7": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_x_L5",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "x__L7"
+       ],
+       "match_status": {
+        "x__L7": "REJECTED_AMBIGUOUS"
+       }
+      },
+      {
+       "concept": "AtLeast_x_L6",
+       "reason": "INCOMPLETE_EXTENSION_UNRESOLVED_MATCH",
+       "unresolved_attributes": [
+        "x__L7"
+       ],
+       "match_status": {
+        "x__L7": "REJECTED_AMBIGUOUS"
+       }
+      }
+     ]
+    },
+    "4_ceilings_control": {
+     "tight_ceiling_gives_NOT_COMPARABLE": true
+    }
+   }
+  }
+ ],
+ "status": "COMPLETED",
+ "consumption": {
+  "wall_seconds": 40.7,
+  "fits": 136,
+  "peak_memory_mb": 75.3
+ }
+}

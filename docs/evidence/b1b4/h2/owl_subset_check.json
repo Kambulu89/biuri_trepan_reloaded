@@ -1,0 +1,49 @@
+{
+ "checks": [
+  {
+   "file": "german_credit_O1.owl",
+   "named_classes": 6,
+   "datatype_properties": 61,
+   "defined_unions": 0,
+   "problems": [],
+   "subset_check": "PASS",
+   "scope": "verificação parcial de subconjunto; NÃO é validação formal OWL 2 DL"
+  },
+  {
+   "file": "german_credit_O2.owl",
+   "named_classes": 41,
+   "datatype_properties": 61,
+   "defined_unions": 14,
+   "problems": [],
+   "subset_check": "PASS",
+   "scope": "verificação parcial de subconjunto; NÃO é validação formal OWL 2 DL"
+  },
+  {
+   "file": "german_credit_O3.owl",
+   "named_classes": 41,
+   "datatype_properties": 61,
+   "defined_unions": 0,
+   "problems": [],
+   "subset_check": "PASS",
+   "scope": "verificação parcial de subconjunto; NÃO é validação formal OWL 2 DL"
+  },
+  {
+   "file": "german_credit_H.owl",
+   "named_classes": 41,
+   "datatype_properties": 61,
+   "defined_unions": 14,
+   "problems": [],
+   "subset_check": "PASS",
+   "scope": "verificação parcial de subconjunto; NÃO é validação formal OWL 2 DL"
+  },
+  {
+   "file": "german_credit_I.owl",
+   "named_classes": 41,
+   "datatype_properties": 61,
+   "defined_unions": 14,
+   "problems": [],
+   "subset_check": "PASS",
+   "scope": "verificação parcial de subconjunto; NÃO é validação formal OWL 2 DL"
+  }
+ ]
+}

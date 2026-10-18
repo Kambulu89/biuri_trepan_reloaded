@@ -109,7 +109,7 @@ def cards():
 def main(evidence_out: str):
     from validation.benchmark import datasets as D, datasets_categorical as DC
     from validation.benchmark.b31_facts import compile_registry
-    from validation.benchmark.h2_axiom_mechanisms import derived_union_literals
+    from validation.benchmark.h2_axiom_mechanisms import defined_union_concepts, derived_union_literals
     DC.register()
     spec = D.REGISTRY["german_credit"]
     ds, _, _ = spec.load()
@@ -122,7 +122,7 @@ def main(evidence_out: str):
         p = OUT / f"german_credit_{v}.owl"
         p.write_text(build(v, names, groups), encoding="utf-8")
         reg = compile_registry(str(p), names, run_reasoner=True)
-        lits = derived_union_literals(reg, X, names)
+        lits = derived_union_literals(reg, X, names, only_concepts=defined_union_concepts(p))
         s = reg.summary()
         rows[v] = {"file": str(p.relative_to(ROOT)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "ontology_status": reg.ontology_status, "n_facts": s["n_facts"], "by_kind": s["by_kind"],
                    "n_inferred_by_reasoner": sum(1 for f in reg.facts if f.derivation == "INFERRED_BY_REASONER"), "unsupported_axioms": s["unsupported_axioms"],

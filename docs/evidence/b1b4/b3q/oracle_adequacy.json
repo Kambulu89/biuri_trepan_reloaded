@@ -1,0 +1,78 @@
+{
+ "reps": 15,
+ "seed_base": 9700,
+ "results": {
+  "s1.0_n60": {
+   "importance_share_true_indicators_median": 0.7291917973461984,
+   "p10": 0.5739449980071755,
+   "p90": 0.8973251619823732,
+   "chance_share": 0.125
+  },
+  "s1.0_n120": {
+   "importance_share_true_indicators_median": 0.8365633074935378,
+   "p10": 0.6883472535237428,
+   "p90": 0.9522404759956032,
+   "chance_share": 0.125
+  },
+  "s1.0_n240": {
+   "importance_share_true_indicators_median": 0.8926056338028178,
+   "p10": 0.7978935503386712,
+   "p90": 0.9428300313005193,
+   "chance_share": 0.125
+  },
+  "s1.0_n1000": {
+   "importance_share_true_indicators_median": 0.8863065326633154,
+   "p10": 0.8425515245114487,
+   "p90": 0.9623271286952457,
+   "chance_share": 0.125
+  },
+  "s2.0_n60": {
+   "importance_share_true_indicators_median": 0.7651515151515177,
+   "p10": 0.5867583410309586,
+   "p90": 0.8856917740761359,
+   "chance_share": 0.125
+  },
+  "s2.0_n120": {
+   "importance_share_true_indicators_median": 0.7381738173817365,
+   "p10": 0.6118899428936166,
+   "p90": 0.908089847259658,
+   "chance_share": 0.125
+  },
+  "s2.0_n240": {
+   "importance_share_true_indicators_median": 0.8449612403100792,
+   "p10": 0.7326521941814754,
+   "p90": 0.9345243153960245,
+   "chance_share": 0.125
+  },
+  "s2.0_n1000": {
+   "importance_share_true_indicators_median": 0.7619279454722476,
+   "p10": 0.6425646908526028,
+   "p90": 0.9297210745572668,
+   "chance_share": 0.125
+  },
+  "s3.0_n60": {
+   "importance_share_true_indicators_median": 0.5552677029360941,
+   "p10": 0.44611089831616974,
+   "p90": 0.7776694112571974,
+   "chance_share": 0.125
+  },
+  "s3.0_n120": {
+   "importance_share_true_indicators_median": 0.6462205700123892,
+   "p10": 0.5277906182228695,
+   "p90": 0.8554067277306343,
+   "chance_share": 0.125
+  },
+  "s3.0_n240": {
+   "importance_share_true_indicators_median": 0.7252657399836443,
+   "p10": 0.5715151588649025,
+   "p90": 0.8738701298701284,
+   "chance_share": 0.125
+  },
+  "s3.0_n1000": {
+   "importance_share_true_indicators_median": 0.705238467552779,
+   "p10": 0.5975466550256462,
+   "p90": 0.8583799891638074,
+   "chance_share": 0.125
+  }
+ }
+}

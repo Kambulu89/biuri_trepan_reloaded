@@ -130,3 +130,11 @@ Uma célula é **informativa para H1** se, nas sementes de calibração: (G1) o 
 
 ## 5. Decisões necessárias antes de congelar a v2
 1. Aprovar R1–R7 e decidir R8 (família aditiva vs XOR). 2. Fixar os limiares definitivos Δ_o, τ_u, τ_s (revisores). 3. Designar os revisores. 4. Decidir se, dado V4, o estudo H1 com oráculo treinado nos mesmos n exemplos vale a pena, ou se se prefere enquadrar H1 apenas como validação do mecanismo em sintético (Doc. 52 fase P) e deslocar o esforço para H2 em dados reais.
+
+---
+
+## Registo de decisão (acrescentado após a decisão do responsável sobre os Docs. 49–52; o corpo acima não foi alterado)
+* **R1–R7 APROVADAS** para preparar a B3.4 v2, preservando o histórico (v1 = Doc. 44 + commit `66ad1a9`; v2 = este documento + `B34_EXPERIMENT_MANIFEST.v2.DRAFT.json`, `frozen = false`).
+* **R8 APROVADA só como família experimental adicional e exploratória.** Condições: não substitui retroativamente a hipótese XOR; não é apresentada como confirmação da hipótese original; o gerador é congelado antes da avaliação; verifica-se que a ontologia **não** recebe o suporte exato da regra-alvo (recebe a partição em blocos, não *qual* bloco é o alvo — ver T-IND-1); verifica-se a independência dos rótulos de teste; incluem-se controlos convencionais e conhecimento prévio equivalente (braço J); documentam-se os casos em que a estrutura é recuperável diretamente dos dados; fidelity e accuracy avaliam-se separadamente. O resultado continua exploratório.
+* **Campanha H1 (7,2 CPU-h): NÃO autorizada.** Apenas testes técnicos pequenos de viabilidade. **Campanha H2 (2,7 CPU-h): NÃO autorizada.** `core/` e M0–M6: não autorizados.
+* **Prioridade científica: H2.** Limiares Δ_o, τ_u, τ_s: proposta técnica em `57_PROPOSTA_LIMIARES_PORTAS.md` (a rever pelo responsável pela metodologia e a congelar antes de avaliar variantes).

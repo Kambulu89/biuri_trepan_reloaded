@@ -1,0 +1,42 @@
+{
+ "O1": {
+  "consistent": true,
+  "unsatisfiable_classes": [],
+  "inferred_axioms_count": 0,
+  "engine": "hermit",
+  "error": null,
+  "executed": true
+ },
+ "O2": {
+  "consistent": true,
+  "unsatisfiable_classes": [],
+  "inferred_axioms_count": 29,
+  "engine": "hermit",
+  "error": null,
+  "executed": true
+ },
+ "O3": {
+  "consistent": true,
+  "unsatisfiable_classes": [],
+  "inferred_axioms_count": 0,
+  "engine": "hermit",
+  "error": null,
+  "executed": true
+ },
+ "H": {
+  "consistent": true,
+  "unsatisfiable_classes": [],
+  "inferred_axioms_count": 29,
+  "engine": "hermit",
+  "error": null,
+  "executed": true
+ },
+ "I": {
+  "consistent": true,
+  "unsatisfiable_classes": [],
+  "inferred_axioms_count": 32,
+  "engine": "hermit",
+  "error": null,
+  "executed": true
+ }
+}
