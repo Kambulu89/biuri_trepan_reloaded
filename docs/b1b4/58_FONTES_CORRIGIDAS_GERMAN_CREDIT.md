@@ -2,11 +2,15 @@
 
 Estado: **BLOQUEADO por política de rede; nenhuma fonte foi obtida nem consultada.** Só `validation/` e documentação; `core/`, `german.data`, ontologia congelada e benchmarks históricos intocados. Nenhum conteúdo de fonte é afirmado neste documento: tudo o que depende de `german.doc`, da tabela corrigida do South German Credit ou do relatório de Grömping (2019) está `PENDING_SOURCE`.
 
+## 0. Atualização (decisão do responsável após os Docs. 58–61)
+URLs corrigidas pelo responsável: **S1** `https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc`; **S2** `https://archive.ics.uci.edu/dataset/522/south+german+credit` (o URL `…/573/south+german+credit+update` usado antes **não** é o indicado e fica só como alternativo registado); **S3** inalterado. Nova tentativa (`network_probe.json`, 2026-10-18): os três pedidos continuam com `Tunnel connection failed: 403 Forbidden` (política de rede do ambiente). **Não se contornou, nenhuma fonte foi consultada, nenhuma é declarada verificada.** A instrução é aguardar os ficheiros fornecidos. Procedimento pronto para quando existirem (sem alterações de código): (1) `h2_sources register …` regista origem declarada e SHA-256; (2) comparar o dicionário original com a documentação corrigida (`compare_codes`); (3) listar divergências de códigos/categorias; (4) reavaliar as 14 fichas (Doc. 59); (5) verificar a correspondência 20 atributos ↔ 61 features (§3–4); (6) classificar categorias em ordinais/nominais/desconhecidas; (7) preservar dados e baselines; (8) manter os axiomas em revisão pendente até validação independente.
+**Nota de integridade do hash:** o SHA-256 *bruto* de `german.data` difere entre Linux (LF) e Windows (CRLF por `autocrlf`); um teste que comparava o hash bruto falhou na CI Windows de `d1121a4`. Passou a registar-se também o hash **normalizado CRLF→LF** (`file_sha256_lf_normalized`), que é o estável entre plataformas; o ficheiro de dados não foi alterado.
+
 ## 1. Fontes pedidas e o que foi tentado
 | Id | Fonte (URL declarada pelo responsável) | Ficheiro esperado | Resultado |
 |---|---|---|---|
-| S1 | https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data | `german.doc`, `german.data` | **não obtido** — proxy de saída: `403 CONNECT` |
-| S2 | https://archive.ics.uci.edu/dataset/573/south+german+credit+update | tabela de códigos / ficheiros South German | **não obtido** — idem |
+| S1 | https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc | `german.doc` | **não obtido** — proxy de saída: `403 CONNECT` |
+| S2 | https://archive.ics.uci.edu/dataset/522/south+german+credit | tabela de códigos / ficheiros South German | **não obtido** — idem |
 | S3 | https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf | `Report-2019-004.pdf` | **não obtido** — idem |
 Evidência: `docs/evidence/b1b4/h2/network_probe.json` (tentativas com a mensagem de erro) e `sources_manifest.json` (`status = BLOCKED_NETWORK_POLICY_403`, `files = []`, `content_consulted = false`, `origin_verified = false`). A política **não foi contornada** (sem espelhos, sem cópias de terceiros, sem citar de memória).
 

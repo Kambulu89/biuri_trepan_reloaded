@@ -48,3 +48,33 @@ Leituras (factuais, sem desempenho): (i) **todos os 10 são lógica e semanticam
 
 ## 4. Conclusões e pendências
 1. Nenhuma ficha é validada; nenhuma promovida; a revisão humana não existe. 2. A reconciliação 55/29 está fechada (unidades distintas). 3. Os literais são corretos *condicionalmente*. 4. Reapreciação após S1–S3: preencher `PENDING_SOURCE`, reavaliar a ordem de cada atributo, corrigir/excluir fichas. 5. Nenhuma conclusão causal ou de desempenho.
+
+## 5. Elegibilidade dos literais: porque oito dos dez ficam fora do pool (análise por etapas; Doc. 61 §3)
+Evidência: `docs/evidence/b1b4/h2/pool_study_german.json` (treino de holdouts 42, 43, 44; MLP próprio por holdout; mesmas instâncias e mesmo oráculo em todos os braços; **sem accuracy, sem fidelidade a rótulos reais, sem teste**). Rascunho de IA não validado: nada aqui é conhecimento de domínio confirmado.
+**Etapas que podem excluir um literal** (por ordem): (1) *pool de features* do nó = top-`max_features_per_node` por **variância** (sem rótulos; é o critério do Original); (2) geração de candidatos simples (folhas ≥ `min_samples_leaf`, limiar de fronteira); (3) *pool de literais* do m-of-n = top `max(8, 3·mf)` por ganho de informação sobre as etiquetas **do oráculo**; (4) avaliação como candidato; (5) escolha.
+**Respostas às 8 perguntas.**
+1. *Quais são excluídos e porquê.* Com o pool do Original (12 vagas, braço A+: colunas derivadas presentes mas só pela variância) 8/10 ficam fora **na etapa 1** (`NOT_IN_FEATURE_POOL`) nos três holdouts (colunas numéricas em escala bruta dominam a variância; os literais de prevalência extrema têm variância ≈ 0,02–0,10); `Purpose_HouseholdGoods` entra no pool de features mas fica abaixo do corte do pool de literais; só `AtLeast_employment_since_A74` entra no pool de literais (2/3 holdouts) e `Purpose_HouseholdGoods` recebe avaliações residuais (6, no holdout 42). Ver tabela (coluna «A+»).
+2. *São logicamente válidos?* Sim, condicionalmente aos axiomas (§3); a exclusão **não** é por invalidez lógica.
+3. *Redundantes ou relevantes?* 2 são negações triviais de uma coluna, 5 pares estão aninhados; todos são redundantes no sentido de expressividade (existem no espaço do Original), nenhum pelo critério estatístico.
+4. *Rejeitados antes da avaliação estatística?* Sim: a etapa 1 usa só variância (pré-estatística, sem rótulos); a etapa 3 já usa ganho de informação.
+5. *O que o Original já consegue construir.* O teste equivalente (1-de-n das colunas da extensão, ou AND dos complementares, n ≤ `max_n`=3) é formável a partir do pool de literais em **0/10** literais com o pool do Original (todos os holdouts), em **1/10** com o pool alargado B (`AtLeast_status_checking_account_A12`, 3/3 holdouts; no braço B_MATCHED, 2/3) e **0/10** em C (as colunas base dos níveis não estão no pool; o literal derivado ocupa a vaga). O Original *pode* representar estes testes no espaço de hipóteses, mas **não os forma na prática** com o pool defeito: a diferença é de oportunidade de pesquisa.
+6. *Disponíveis / examinados / consultados (separados).* Disponíveis = candidatos gerados (`simple_generated`, `mofn_generated`); examinados = avaliados (`simple_evaluated`, `mofn_evaluated`); consultados = consultas sintéticas ao MLP (`queries`, `oracle_calls`). Com `min_sample`=300 e 750 linhas de treino o MLP quase não é consultado (0–127 consultas por árvore): **a dimensão «consultas» não discrimina** nestas condições. Tabela dos braços abaixo.
+7. *Poderiam alterar splits?* Com vagas reservadas (C), a ablação por máscara (a coluna sai do pool **sem libertar a vaga**) altera a decisão de split para **1 literal em 10** (`AtLeast_savings_account_A63`) em 3/3 holdouts, com diferenças de ganho de informação na raiz muito pequenas (0,0006–0,005, etiquetas do oráculo no treino); os outros 9 não alteram nenhuma decisão. Sem vagas reservadas (A+), apenas `AtLeast_employment_since_A74` altera num holdout.
+8. *Oportunidade vs benefício.* O estado `LITERAL_EVALUATED` mede **oportunidade**; `SPLIT_DECISION_CHANGED`, **influência**; `OBSERVED_BENEFIT` **não foi avaliado** (exige accuracy+fidelidade com controlos, não executado). Ausência de oportunidade (etapa 1) ≠ ausência de benefício.
+
+**Rastreio por literal** (abreviaturas: NPF = fora do pool de features, BLC = abaixo do corte do pool de literais, ILP = no pool de literais, NVS = sem candidato válido; EVAL = avaliado, CHG = decisão de split alterada na ablação, FACT = só compilado):
+
+| Literal | rank de variância (0-base, 71 col.) s42,43,44 | A+ (pool 12) raiz | C (+r vagas) raiz | avaliações como candidato (C) | ablação altera split (C) | escolhido (C) | estado mais alto (C) |
+|---|---|---|---|---|---|---|---|
+| `onto_any[AtLeast_employment_since_A72]` | 58,54,53 | NPF,NPF,NPF | ILP,BLC,BLC | 18,6,6 | 0,0,0 | 0,0,0 | EVAL,FACT,FACT |
+| `onto_any[AtLeast_employment_since_A73]` | 29,26,28 | NPF,NPF,NPF | ILP,ILP,ILP | 42,18,42 | 0,0,0 | 0,0,0 | EVAL,EVAL,EVAL |
+| `onto_any[AtLeast_employment_since_A74]` | 9,9,9 | ILP,ILP,BLC | ILP,ILP,ILP | 30,30,42 | 0,0,0 | 0,0,0 | EVAL,EVAL,EVAL |
+| `onto_any[AtLeast_job_A172]` | 67,66,66 | NPF,NPF,NPF | BLC,BLC,BLC | 24,6,6 | 0,0,0 | 0,0,0 | EVAL,FACT,FACT |
+| `onto_any[AtLeast_job_A173]` | 31,29,30 | NPF,NPF,NPF | BLC,BLC,BLC | 6,6,18 | 0,0,0 | 0,0,0 | FACT,FACT,EVAL |
+| `onto_any[AtLeast_savings_account_A62]` | 30,32,31 | NPF,NPF,NPF | ILP,BLC,ILP | 18,6,18 | 0,0,0 | 0,0,0 | EVAL,FACT,EVAL |
+| `onto_any[AtLeast_savings_account_A63]` | 44,43,47 | NPF,NPF,NPF | ILP,ILP,ILP | 14,134,134 | 1,1,1 | 1,1,1 | CHG,CHG,CHG |
+| `onto_any[AtLeast_status_checking_account_A12]` | 17,16,18 | NPF,NPF,NPF | ILP,ILP,ILP | 36,26,40 | 0,0,0 | 0,0,0 | EVAL,EVAL,EVAL |
+| `onto_any[Purpose_HouseholdGoods]` | 7,6,7 | BLC,BLC,BLC | ILP,BLC,BLC | 42,6,6 | 0,0,0 | 0,0,0 | EVAL,FACT,FACT |
+| `onto_any[Purpose_Vehicles]` | 15,17,15 | NPF,NPF,NPF | BLC,BLC,BLC | 6,6,6 | 0,0,0 | 0,0,0 | FACT,FACT,FACT |
+
+O rastreio completo por literal (proveniência `fact_ids`, inferência, atributos mapeados, razão por pesquisa, forma equivalente do Original, candidatos avaliados, escolha, efeito por ablação, escada `AXIOM_AVAILABLE → … → OBSERVED_BENEFIT`) está em `pool_study_german.json`, campo `literals`.

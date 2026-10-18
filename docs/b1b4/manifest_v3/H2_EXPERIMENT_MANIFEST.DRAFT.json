@@ -67,5 +67,43 @@
  "evaluable_axiom_set": {
   "status": "EMPTY",
   "reason": "nenhuma fonte verificada; ver Doc. 54"
+ },
+ "post_doc61_update": {
+  "date": "2026-10-18",
+  "frozen": false,
+  "sources": {
+   "S1": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc",
+   "S2": "https://archive.ics.uci.edu/dataset/522/south+german+credit",
+   "S3": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf",
+   "status": "BLOCKED_NETWORK_POLICY_403; aguardar ficheiros; nenhuma fonte verificada"
+  },
+  "pool_study": {
+   "evidence": "docs/evidence/b1b4/h2/pool_study_german.json",
+   "strategies": [
+    "A",
+    "A_PLUS_ENRICHED",
+    "B_WIDE_GENERIC",
+    "C_ONTOLOGY_PRIORITY",
+    "R_RANDOM_BASE",
+    "P_PERMUTED_ONTOLOGY",
+    "I_RANDOM_RELATIONS",
+    "B_MATCHED_CANDIDATES"
+   ],
+   "comparability_tolerances_proposal_not_frozen": {
+    "feature_slots": 0,
+    "mofn_generated": 0.1,
+    "mofn_evaluated": 0.1,
+    "queries": 0.1,
+    "n_internal_nodes": 0.1,
+    "depth": 0
+   },
+   "performance_metrics_computed": false
+  },
+  "thresholds": {
+   "frozen": false,
+   "sensitivity": "docs/evidence/b1b4/b3q/threshold_sensitivity.json"
+  },
+  "campaigns_authorized": false,
+  "core_changes": false
  }
 }
