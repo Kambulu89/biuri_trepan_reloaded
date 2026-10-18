@@ -18,7 +18,7 @@ from typing import Any, Dict, Optional
 
 SOURCES = {
     "S1_UCI_STATLOG_GERMAN": {"declared_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc", "declared_url_alt": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data", "expected": ["german.doc", "german.data"], "role": "documentação original (códigos clássicos)"},
-    "S2_UCI_SOUTH_GERMAN": {"declared_url": "https://archive.ics.uci.edu/dataset/522/south+german+credit", "declared_url_alt": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update", "expected": ["codetable / SouthGermanCredit.*"], "role": "versão com tabela de códigos corrigida"},
+    "S2_UCI_SOUTH_GERMAN": {"declared_url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update", "declared_url_alt": "https://archive.ics.uci.edu/dataset/522/south+german+credit", "expected": ["codetable / SouthGermanCredit.*"], "role": "versão com tabela de códigos corrigida"},
     "S3_GROEMPING_2019": {"declared_url": "https://www1.beuth-hochschule.de/FB_II/reports/Report-2019-004.pdf", "expected": ["Report-2019-004.pdf"], "role": "relatório (Grömping, 2019) sobre erros na tabela de códigos clássica"},
 }
 
@@ -93,7 +93,8 @@ def compare_codes(original: Dict[Any, Dict[str, str]], corrected: Dict[Any, Dict
 
 def file_record(path, source_id: str, label: str = "") -> Dict[str, Any]:
     p = Path(path)
-    rec: Dict[str, Any] = {"source_id": source_id, "label": label or p.name, "declared_url": SOURCES[source_id]["declared_url"], "file": p.name, "sha256": sha256_file(p), "size_bytes": p.stat().st_size,
+    rec: Dict[str, Any] = {"source_id": source_id, "label": label or p.name, "declared_url": SOURCES[source_id]["declared_url"], "file": p.name, "sha256": sha256_file(p), "sha256_raw": sha256_file(p), "sha256_canonical": sha256_file_lf(p) if p.suffix.lower() in {".doc", ".txt", ".csv", ".data", ".arff", ".json", ".md", ".xml"} else sha256_file(p),
+                           "canonicalization": "CRLF->LF (apenas)" if p.suffix.lower() in {".doc", ".txt", ".csv", ".data", ".arff", ".json", ".md", ".xml"} else "none", "size_bytes": p.stat().st_size,
                            "origin_verified": False, "origin_note": "origem DECLARADA pelo responsável; o hash local não prova a origem (os repositórios não publicam hashes)", "content_consulted": False, "n_attribute_blocks": 0}
     if p.suffix.lower() == ".zip":
         with zipfile.ZipFile(p) as z:

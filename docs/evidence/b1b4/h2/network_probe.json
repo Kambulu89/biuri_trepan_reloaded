@@ -1,5 +1,5 @@
 {
- "timestamp_utc": "2026-10-18T06:30:53.730622+00:00",
+ "timestamp_utc": "2026-10-18T07:21:17.279868+00:00",
  "attempts": [
   {
    "source_id": "S1_UCI_STATLOG_GERMAN",
@@ -8,7 +8,7 @@
   },
   {
    "source_id": "S2_UCI_SOUTH_GERMAN",
-   "url": "https://archive.ics.uci.edu/dataset/522/south+german+credit",
+   "url": "https://archive.ics.uci.edu/dataset/573/south+german+credit+update",
    "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
   },
   {

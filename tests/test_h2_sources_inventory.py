@@ -67,3 +67,27 @@ def test_german_inventory_is_factual_and_leaves_documentation_pending():
     assert S.sha256_file_lf(g) == inv["file_sha256_lf_normalized"]                                                    # o ficheiro histórico não foi alterado
     pri = inv["priority_of_derived_literals"]["rows"]
     assert len(pri) == 10 and sum(r["in_pool_mf12"] for r in pri) == 2                                # só 2 de 10 literais entram no pool do Original por variância (mf=12)
+
+
+def test_raw_and_canonical_hashes_are_distinct_identifications(tmp_path):
+    from validation.benchmark import h2_hash_integrity as HI
+    lf, crlf = tmp_path / "a.data", tmp_path / "b.data"
+    lf.write_bytes(b"x y\nz w\n")
+    crlf.write_bytes(b"x y\r\nz w\r\n")
+    a, b = HI.hashes(lf), HI.hashes(crlf)
+    assert a["sha256_raw"] != b["sha256_raw"] and a["sha256_canonical"] == b["sha256_canonical"]            # o canónico não troca o bruto
+    assert a["raw_equals_canonical"] and not b["raw_equals_canonical"] and b["n_crlf"] == 2 and "CRLF->LF" in b["canonicalization"]
+    binf = tmp_path / "c.pdf"
+    binf.write_bytes(b"%PDF\r\n\x00")
+    h = HI.hashes(binf)
+    assert h["canonicalization"] == "none" and h["sha256_raw"] == h["sha256_canonical"]                    # binários não se normalizam
+    rec = S.file_record(crlf, "S1_UCI_STATLOG_GERMAN")
+    assert rec["sha256_raw"] == b["sha256_raw"] and rec["sha256_canonical"] == b["sha256_canonical"] and rec["origin_verified"] is False
+
+
+def test_inventory_records_raw_and_canonical_and_raw_checked_only_where_bytes_match():
+    inv = json.loads((ROOT / "docs/evidence/b1b4/h2/german_inventory.json").read_text())
+    g = ROOT / "validation/counterfactual_research/datasets/originales/german.data"
+    assert S.sha256_file_lf(g) == inv["sha256_canonical"] == inv["file_sha256_lf_normalized"]
+    if b"\r\n" not in g.read_bytes():                                                                   # checkout LF: o bruto tem de coincidir com o registado
+        assert S.sha256_file(g) == inv["sha256_raw"]
