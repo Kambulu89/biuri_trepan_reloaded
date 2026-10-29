@@ -150,7 +150,7 @@ def test_comparison_chart_has_no_gate_banner_title_annotations_or_legend(qapp):
         assert forbidden not in joined, forbidden
     assert fig._suptitle is None or not fig._suptitle.get_text()
     assert all(ax.get_legend() is None for ax in fig.axes)
-    assert "Precision Macro" in texts and "93.0%" in texts and "94.4%" in texts
+    assert "Precision" in texts and "Precision Macro" not in texts and "93.0%" in texts and "94.4%" in texts
 
 
 def test_comparison_dialog_no_longer_builds_the_c45_gate_banner():
@@ -158,3 +158,46 @@ def test_comparison_dialog_no_longer_builds_the_c45_gate_banner():
     from gui.pyqt_metrics_visualizer import MetricsVisualizer
     src = inspect.getsource(MetricsVisualizer._show_comparison_chart)
     assert "_c45_gate_summary_text" not in src and "gate_label" not in src
+
+
+def _chart_with_c45(qapp):
+    from gui.pyqt_metrics_visualizer import MetricsVisualizer
+    v = MetricsVisualizer()
+    for name, prec, fid, kind in (("MLP Original", 93.0, 0, None), ("Trepan-Original", 94.4, 97.8, "oracle"),
+                                  ("C4.5-Nativo", 89.0, 0, "agreement"), ("Trepan-Reloaded", 93.0, 100.0, "oracle")):
+        v.add_model_data(name, prec, fid, accuracy=prec, sample_size=45, fidelity_kind=kind)
+    return v, v._create_bar_chart()
+
+
+def test_visual_labels_show_c45_and_precision_without_changing_the_values(qapp):
+    """Pedido visual: «C4.5-Nativo» → «C4.5» e «Precision Macro/Precisão Macro» → «Precision»; os valores e as chaves internas ficam iguais."""
+    v, res = _chart_with_c45(qapp)
+    fig = getattr(res, "figure", res)
+    ax1 = fig.axes[0]
+    ticks = [t.get_text() for t in ax1.get_xticklabels()]
+    assert "C4.5" in ticks and not any("Nativo" in t for t in ticks)
+    assert ax1.get_title() == "Precision" and ax1.get_ylabel() == "Precision (%)"
+    assert [round(p.get_height(), 1) for p in ax1.patches] == [93.0, 94.4, 89.0, 93.0]
+    assert "C4.5-Nativo" in v.models_data                                                   # a chave interna não muda
+
+
+def test_chart_image_can_be_downloaded(qapp, tmp_path, monkeypatch):
+    from PyQt6.QtWidgets import QFileDialog, QMessageBox
+    v, res = _chart_with_c45(qapp)
+    out = tmp_path / "comparacao.png"
+    monkeypatch.setattr(QFileDialog, "getSaveFileName", staticmethod(lambda *a, **k: (str(out), "PNG (*.png)")))
+    monkeypatch.setattr(QMessageBox, "information", staticmethod(lambda *a, **k: QMessageBox.StandardButton.Ok))
+    assert v._download_chart_image(res) == str(out)
+    assert out.exists() and out.stat().st_size > 5000 and out.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n"
+    monkeypatch.setattr(QFileDialog, "getSaveFileName", staticmethod(lambda *a, **k: ("", "")))
+    assert v._download_chart_image(res) is None                                              # cancelar não grava nada
+
+
+def test_counterfactual_combo_shows_c45_but_keeps_the_internal_model_name(qapp):
+    from gui.counterfactual_panel import CounterfactualPanel
+    panel = CounterfactualPanel()
+    panel.configure(n_instances=3, class_labels={0: "a", 1: "b"}, available_models=["MLP Original", "C4.5-Nativo"], dataset_name="d")
+    texts = [panel.model_combo.itemText(i) for i in range(panel.model_combo.count())]
+    assert "C4.5" in texts and "C4.5-Nativo" not in texts
+    panel.model_combo.setCurrentIndex(texts.index("C4.5"))
+    assert panel.options()["target_model"] == "C4.5-Nativo"

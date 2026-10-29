@@ -183,7 +183,8 @@ class CounterfactualPanel(QWidget):
         self.controls_grid.setVerticalSpacing(6)
 
         self.model_combo = QComboBox()
-        self.model_combo.addItems(self.MODEL_NAMES)
+        for _name in self.MODEL_NAMES:
+            self.model_combo.addItem(self._display_model_name(_name), _name)      # só o rótulo muda; o nome interno fica em userData
         self.instance_spin = QSpinBox()
         self.instance_spin.setRange(0, 0)
         self.desired_combo = QComboBox()
@@ -426,8 +427,18 @@ class CounterfactualPanel(QWidget):
         self.export_button.clicked.connect(
             lambda: self.export_requested.emit(dict(self.current_result))
         )
-        self.model_combo.currentTextChanged.connect(self._sync_methods)
-        self._sync_methods(self.model_combo.currentText())
+        self.model_combo.currentIndexChanged.connect(lambda _i: self._sync_methods(self._current_model()))
+        self._sync_methods(self._current_model())
+
+    @staticmethod
+    def _display_model_name(name: str) -> str:
+        """Rótulo mostrado na interface (apenas visual): «C4.5-Nativo» aparece como «C4.5»."""
+        return "C4.5" if name == "C4.5-Nativo" else name
+
+    def _current_model(self) -> str:
+        """Nome interno do modelo selecionado (independente do rótulo visual)."""
+        data = self.model_combo.currentData()
+        return str(data) if data else self.model_combo.currentText()
 
     def _field_cell(self, label_text: str, field: QWidget) -> QFrame:
         cell = QFrame()
@@ -781,12 +792,12 @@ class CounterfactualPanel(QWidget):
             "APENAS DATASET CARREGADO" if has_dataset else "AGUARDA TREINO"
         )
         self.instance_spin.setRange(0, max(0, int(n_instances) - 1))
-        current = self.model_combo.currentText()
+        current = self._current_model()
         self.model_combo.clear()
         for name in self.MODEL_NAMES:
             if name in set(available_models):
-                self.model_combo.addItem(name)
-        index = self.model_combo.findText(current)
+                self.model_combo.addItem(self._display_model_name(name), name)
+        index = self.model_combo.findData(current)
         if index >= 0:
             self.model_combo.setCurrentIndex(index)
         self.desired_combo.clear()
@@ -807,7 +818,7 @@ class CounterfactualPanel(QWidget):
         )
         self._global_ready = (
             self._generation_ready
-            and self.model_combo.currentText() in {
+            and self._current_model() in {
                 "Trepan Original", "Trepan Reloaded", "C4.5-Nativo"
             }
         )
@@ -837,7 +848,7 @@ class CounterfactualPanel(QWidget):
 
     def options(self) -> Dict[str, Any]:
         return {
-            "target_model": self.model_combo.currentText(),
+            "target_model": self._current_model(),
             "instance_index": self.instance_spin.value(),
             "desired_class": self.desired_combo.currentData(),
             "method": self.method_combo.currentData(),

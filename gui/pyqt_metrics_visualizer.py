@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, 
     QTableWidget, QTableWidgetItem, QScrollArea, QFrame,
-    QDialog, QDialogButtonBox, QGroupBox, QSplitter, QApplication
+    QDialog, QDialogButtonBox, QGroupBox, QSplitter, QApplication, QFileDialog, QMessageBox
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont, QPalette, QColor, QPainter, QPen, QBrush
@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from core.metrics_view_model import claim_banner
+
+
+def display_model_name(name):
+    """Rótulo mostrado ao utilizador (apenas visual): «C4.5-Nativo» aparece como «C4.5». As chaves internas dos dados não mudam."""
+    return str(name).replace('C4.5-Nativo', 'C4.5')
 
 
 class MetricsVisualizer(QWidget):
@@ -126,7 +131,7 @@ class MetricsVisualizer(QWidget):
                     continue
                 delta = (item.get('deltas') or {}).get('precision_macro')
                 status = 'ATINGIU O BASELINE' if item.get('accepted') else 'ABAIXO DO BASELINE'
-                delta_txt = '' if delta is None else f" ({float(delta) * 100:+.1f} pp em Precisão Macro)"
+                delta_txt = '' if delta is None else f" ({float(delta) * 100:+.1f} pp em Precision)"
                 parts.append(f"{label}: {status}{delta_txt}")
             if parts:
                 return (
@@ -153,7 +158,7 @@ class MetricsVisualizer(QWidget):
                 continue
             delta = value - c45
             status = 'ATINGIU O BASELINE' if delta >= -1e-9 else 'ABAIXO DO BASELINE'
-            parts.append(f"{label}: {status} ({delta:+.1f} pp em Precisão Macro)")
+            parts.append(f"{label}: {status} ({delta:+.1f} pp em Precision)")
         return (
             "Gate C4.5 (baseline supervisionado; não é oráculo): "
             + ('  |  '.join(parts) if parts else 'sem TREPAN comparável')
@@ -183,18 +188,45 @@ class MetricsVisualizer(QWidget):
         chart_widget = self._create_bar_chart(figsize=figsize)
         layout.addWidget(chart_widget)
         
+        download_btn = QPushButton("💾 Descarregar imagem")
+        download_btn.setToolTip("Guardar este gráfico de comparação como imagem (PNG, JPG, SVG ou PDF)")
+        download_btn.clicked.connect(lambda: self._download_chart_image(chart_widget, dialog))
+        layout.addWidget(download_btn)
+
         close_btn = QPushButton("Cerrar")
         close_btn.clicked.connect(dialog.accept)
         layout.addWidget(close_btn)
         
         dialog.setLayout(layout)
         dialog.exec()
+
+    def _download_chart_image(self, chart_widget, parent=None):
+        """Guarda EXATAMENTE a figura mostrada (só exporta; não recalcula nem altera métricas)."""
+        figure = getattr(chart_widget, 'figure', None)
+        if figure is None:
+            QMessageBox.warning(parent or self, "Descarregar imagem", "Não há gráfico para guardar.")
+            return None
+        path, selected = QFileDialog.getSaveFileName(
+            parent or self, "Guardar imagem da comparação de modelos", "comparacao_modelos.png",
+            "PNG (*.png);;JPEG (*.jpg *.jpeg);;SVG (*.svg);;PDF (*.pdf)")
+        if not path:
+            return None
+        import os
+        if not os.path.splitext(path)[1]:
+            path += {'JPEG': '.jpg', 'SVG': '.svg', 'PDF': '.pdf'}.get((selected or '').split(' ')[0], '.png')
+        try:
+            figure.savefig(path, dpi=200, bbox_inches='tight', facecolor='white')
+        except Exception as exc:
+            QMessageBox.warning(parent or self, "Descarregar imagem", f"Não foi possível guardar a imagem:\n{exc}")
+            return None
+        QMessageBox.information(parent or self, "Descarregar imagem", f"Imagem guardada em:\n{path}")
+        return path
         
     def _create_bar_chart(self, figsize=(9, 6)):
         print("[DIAG] Gráfico de barras — datos en self.models_data:")
         for name, data in self.models_data.items():
             print(
-                f"  {name}: Precisão Macro={data['precision']:.1f}%, "
+                f"  {name}: Precision={data['precision']:.1f}%, "
                 f"Exatidão(auditoria)={float(data.get('accuracy') or 0):.1f}%, "
                 f"Fidelity={'n/a (sem Oracle)' if data.get('fidelity_kind', 'oracle') is None else format(data['fidelity'], '.1f') + '%'}"
             )
@@ -224,7 +256,7 @@ class MetricsVisualizer(QWidget):
             if matching_keys:
                 key = matching_keys[0]
                 precision_models.append(key)
-                # Pedido do projeto: a comparação principal apresenta Precisão Macro,
+                # Pedido do projeto: a comparação principal apresenta Precision,
                 # nunca Accuracy disfarçada de Precisão.
                 precision_values.append(self.models_data[key]['precision'])
                 for ordered_name in precision_order:
@@ -274,12 +306,12 @@ class MetricsVisualizer(QWidget):
             x_pos1 = np.arange(len(precision_models))
             bars1 = ax1.bar(x_pos1, precision_values, width=bar_width, color=precision_colors_list, 
                            edgecolor='black', linewidth=1.5)
-            ax1.set_title('Precision Macro', fontsize=14, fontweight='bold')
-            ax1.set_ylabel('Precisão Macro (%)')
+            ax1.set_title('Precision', fontsize=14, fontweight='bold')
+            ax1.set_ylabel('Precision (%)')
             ax1.set_ylim(0, 110)
             ax1.set_facecolor('#F5F5F5')
             ax1.set_xticks(x_pos1)
-            ax1.set_xticklabels(precision_models, rotation=0, ha='center')
+            ax1.set_xticklabels([display_model_name(n) for n in precision_models], rotation=0, ha='center')
             
             # C4.5 é mostrado como baseline real, nunca como oráculo. A linha
             # permite ver imediatamente se os TREPAN atingiram o objetivo sem
@@ -384,7 +416,7 @@ class MetricsVisualizer(QWidget):
 RESUMO DA EXECUÇÃO
 
 Os modelos são apresentados sem ranking global automático.
-A comparação principal apresenta Precisão Macro contra os rótulos reais. Accuracy/Exatidão permanece disponível apenas como métrica adicional de auditoria.
+A comparação principal apresenta Precision contra os rótulos reais. Accuracy/Exatidão permanece disponível apenas como métrica adicional de auditoria.
 As fidelidades só são comparadas diretamente quando usam a mesma referência de oráculo.
 
 {claim['text']}
@@ -456,7 +488,7 @@ As fidelidades só são comparadas diretamente quando usam a mesma referência d
         
         layout = QVBoxLayout()
         
-        name_label = QLabel(f"🤖 {model_name}")
+        name_label = QLabel(f"🤖 {display_model_name(model_name)}")
         name_label.setFont(QFont("Arial", 16, QFont.Weight.Bold))
         name_label.setStyleSheet("color: white;")
         layout.addWidget(name_label)
@@ -464,7 +496,7 @@ As fidelidades só são comparadas diretamente quando usam a mesma referência d
         metrics_layout = QHBoxLayout()
         
         precision_label = QLabel(
-            f"Precisão Macro: {data['precision']:.1f}%  |  Recall/BA: {balanced:.1f}%  |  Macro-F1: {macro_f1:.1f}%  |  Exatidão(auditoria): {accuracy:.1f}%"
+            f"Precision: {data['precision']:.1f}%  |  Recall/BA: {balanced:.1f}%  |  Macro-F1: {macro_f1:.1f}%  |  Exatidão(auditoria): {accuracy:.1f}%"
         )
         precision_label.setFont(QFont("Arial", 12))
         precision_label.setStyleSheet("color: white;")
@@ -566,12 +598,12 @@ As fidelidades só são comparadas diretamente quando usam a mesma referência d
         avg_precision = np.mean(precisions)
         avg_fidelity = np.mean(fidelities) if fidelities else float('nan')
         
-        points.append(f"📈 Precisão Macro média geral: {avg_precision:.1f}%")
+        points.append(f"📈 Precision média geral: {avg_precision:.1f}%")
         points.append(f"🎯 Fidelidade média de controlo ao MLP Original (TREPAN): {avg_fidelity:.1f}%" if fidelities else "🎯 Fidelidade de controlo indisponível")
         points.append("📏 " + self._c45_gate_summary_text())
         
         if avg_precision < 80:
-            points.append("⚠️ A Precisão Macro geral pode ser melhorada")
+            points.append("⚠️ A Precision geral pode ser melhorada")
         
         if fidelities and avg_fidelity < 75:
             points.append("⚠️ La fidelidad general puede mejorarse")
@@ -586,7 +618,7 @@ As fidelidades só são comparadas diretamente quando usam a mesma referência d
         if 'MLP' in self.models_data:
             mlp_data = self.models_data['MLP']
             if mlp_data['precision'] > 90:
-                points.append("ℹ️ O MLP apresentou alta Precisão Macro nesta partição")
+                points.append("ℹ️ O MLP apresentou alta Precision nesta partição")
         
         points.append("🔄 Considere combinar modelos para obtener un mejor resultado")
         

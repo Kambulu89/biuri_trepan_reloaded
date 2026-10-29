@@ -80,8 +80,8 @@ def test_visualization_offers_the_c45_tree(trained):
     w, outcome = trained
     w.visualize_tree()
     options = dict(w.tree_widget.tree_options)
-    assert {"Trepan-Original", "Trepan-Reloaded", "C4.5-Nativo"} <= set(options)
-    assert options["C4.5-Nativo"] is outcome.artifacts["c45_native"]
+    assert {"Trepan-Original", "Trepan-Reloaded", "C4.5"} <= set(options) and "C4.5-Nativo" not in options     # rótulo visual «C4.5»
+    assert options["C4.5"] is outcome.artifacts["c45_native"]
     assert w.c45_tree is outcome.artifacts["c45_native"]
 
 
