@@ -530,7 +530,7 @@ class TreeVisualizationWidget(QWidget):
                 ))
             
             if self.c45_tree:
-                tree_options.append(("C4.5-Nativo", self.c45_tree))
+                tree_options.append(("C4.5", self.c45_tree))
                 if not default_tree:
                     default_tree = self.c45_tree
 
@@ -4427,7 +4427,7 @@ Asegúrese de que:
                 self.trepan.extractor.c45_baseline = self.c45_tree
                 perf.end_stage("C4.5", t_c45)
                 tree_rules_all += (
-                    f"\n🌳 C4.5-Nativo (datos originales, etiquetas reales):\n"
+                    f"\n🌳 C4.5 (datos originales, etiquetas reales):\n"
                     f"Entrenada con {len(X_train_dom)} muestras.\n"
                 )
 
