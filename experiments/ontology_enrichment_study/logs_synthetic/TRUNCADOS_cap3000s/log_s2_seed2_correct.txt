@@ -1,0 +1,68 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 10:49:24,320] A new study created in memory with name: no-name-8d980223-ea20-4694-bd96-feddb245793e
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Falha no treino científico BIURI
+Traceback (most recent call last):
+  File "/home/user/biuri_trepan_reloaded/gui/training_worker.py", line 36, in run
+    result = self.app._execute_training_pipeline(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 4211, in _execute_training_pipeline
+    self._prepare_ontology_train_test()
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 2518, in _prepare_ontology_train_test
+    test_enriched = transformer.transform(test_frame)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 251, in transform
+    generated = {
+                ^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 252, in <dictcomp>
+    spec["name"]: self._apply_spec(base, spec) for spec in self.feature_specs_
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 997, in _apply_spec
+    raise OntologySchemaError(
+core.ontology_processor.OntologySchemaError: Categorias sem mapping OWL em component_code: ['coupling_B2'].
+[995e2ace9ccb] O treino do modelo falhou.
+Traceback (most recent call last):
+  File "/home/user/biuri_trepan_reloaded/gui/training_worker.py", line 36, in run
+    result = self.app._execute_training_pipeline(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 4211, in _execute_training_pipeline
+    self._prepare_ontology_train_test()
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 2518, in _prepare_ontology_train_test
+    test_enriched = transformer.transform(test_frame)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 251, in transform
+    generated = {
+                ^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 252, in <dictcomp>
+    spec["name"]: self._apply_spec(base, spec) for spec in self.feature_specs_
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 997, in _apply_spec
+    raise OntologySchemaError(
+core.ontology_processor.OntologySchemaError: Categorias sem mapping OWL em component_code: ['coupling_B2'].
+
+[995e2ace9ccb] error.training: O treino do modelo falhou.
+This plugin does not support propagateSizeHints()

@@ -1,0 +1,2 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 11:29:25,392] A new study created in memory with name: no-name-cf92ac19-f5b1-4140-a45b-02aa0271e6a9

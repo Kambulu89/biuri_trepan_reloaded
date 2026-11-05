@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dct="http://purl.org/dc/terms/"
+         xml:base="https://w3id.org/xai-ontologies/breast_cancer_wisconsin_diagnostic" xmlns="https://w3id.org/xai-ontologies/breast_cancer_wisconsin_diagnostic#">
+
+<owl:Ontology rdf:about="https://w3id.org/xai-ontologies/breast_cancer_wisconsin_diagnostic">
+  <dct:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Breast Cancer Wisconsin (Diagnostic) — ontologia de domínio enriquecida para o BIURI</dct:title>
+  <dct:source rdf:resource="https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic"/>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox de domínio (zero instâncias; rótulos e resultados não consultados). Conhecimento de domínio codificado: (1) as 30 features são 10 medidas morfológicas do núcleo celular × 3 estatísticas — média (mean), erro padrão (error) e pior valor (worst, média dos três maiores valores); cada propriedade declara a sua measurementFamily e o seu statisticRole, o que permite ao BIURI relacionar a mesma característica entre estatísticas; (2) as medidas agrupam-se, segundo a descrição do dicionário do dataset, em geometria de tamanho (raio, perímetro, área), indentação do contorno (compacidade, concavidade, pontos côncavos), regularidade da fronteira (suavidade, simetria, dimensão fractal) e textura de intensidade; cada propriedade tem como domínio a classe «estatística × subfamília»; (3) todas as medidas são grandezas não negativas (faceta xsd:minInclusive 0). ESTATUTO: descrição citada de memória do dicionário público do dataset, NÃO verificada neste ambiente; revisão humana pendente.</rdfs:comment>
+  <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">biuri-3.0</owl:versionInfo>
+</owl:Ontology>
+
+<owl:AnnotationProperty rdf:about="#measurementFamily"/>
+<owl:AnnotationProperty rdf:about="#statisticRole"/>
+
+<owl:Class rdf:about="#NuclearMeasurement"><rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nuclear measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MeanStatisticMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><owl:disjointWith rdf:resource="#StandardErrorStatisticMeasurement"/><owl:disjointWith rdf:resource="#WorstStatisticMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mean statistic measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#StandardErrorStatisticMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><owl:disjointWith rdf:resource="#WorstStatisticMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandardError statistic measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#WorstStatisticMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Worst statistic measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#SizeGeometryMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><owl:disjointWith rdf:resource="#ContourIndentationMeasurement"/><owl:disjointWith rdf:resource="#BoundaryRegularityMeasurement"/><owl:disjointWith rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SizeGeometry measurement family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#ContourIndentationMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><owl:disjointWith rdf:resource="#BoundaryRegularityMeasurement"/><owl:disjointWith rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ContourIndentation measurement family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#BoundaryRegularityMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><owl:disjointWith rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BoundaryRegularity measurement family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#IntensityTextureMeasurement"><rdfs:subClassOf rdf:resource="#NuclearMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IntensityTexture measurement family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MeanSizeGeometryMeasurement"><rdfs:subClassOf rdf:resource="#MeanStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#SizeGeometryMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mean SizeGeometry measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MeanContourIndentationMeasurement"><rdfs:subClassOf rdf:resource="#MeanStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#ContourIndentationMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mean ContourIndentation measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MeanBoundaryRegularityMeasurement"><rdfs:subClassOf rdf:resource="#MeanStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#BoundaryRegularityMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mean BoundaryRegularity measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MeanIntensityTextureMeasurement"><rdfs:subClassOf rdf:resource="#MeanStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mean IntensityTexture measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#StandardErrorSizeGeometryMeasurement"><rdfs:subClassOf rdf:resource="#StandardErrorStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#SizeGeometryMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandardError SizeGeometry measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#StandardErrorContourIndentationMeasurement"><rdfs:subClassOf rdf:resource="#StandardErrorStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#ContourIndentationMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandardError ContourIndentation measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#StandardErrorBoundaryRegularityMeasurement"><rdfs:subClassOf rdf:resource="#StandardErrorStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#BoundaryRegularityMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandardError BoundaryRegularity measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#StandardErrorIntensityTextureMeasurement"><rdfs:subClassOf rdf:resource="#StandardErrorStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StandardError IntensityTexture measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#WorstSizeGeometryMeasurement"><rdfs:subClassOf rdf:resource="#WorstStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#SizeGeometryMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Worst SizeGeometry measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#WorstContourIndentationMeasurement"><rdfs:subClassOf rdf:resource="#WorstStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#ContourIndentationMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Worst ContourIndentation measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#WorstBoundaryRegularityMeasurement"><rdfs:subClassOf rdf:resource="#WorstStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#BoundaryRegularityMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Worst BoundaryRegularity measurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#WorstIntensityTextureMeasurement"><rdfs:subClassOf rdf:resource="#WorstStatisticMeasurement"/><rdfs:subClassOf rdf:resource="#IntensityTextureMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Worst IntensityTexture measurement</rdfs:label></owl:Class>
+
+<owl:DatatypeProperty rdf:about="#hasMeanRadiusValue">
+  <rdfs:domain rdf:resource="#MeanSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_radius</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanPerimeterValue">
+  <rdfs:domain rdf:resource="#MeanSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_smoothness</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanAreaValue">
+  <rdfs:domain rdf:resource="#MeanSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_fractal_dimension</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanCompactnessValue">
+  <rdfs:domain rdf:resource="#MeanContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_concavity</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanConcavityValue">
+  <rdfs:domain rdf:resource="#MeanContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanConcavePointsValue">
+  <rdfs:domain rdf:resource="#MeanContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_fractal_dimension</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanSmoothnessValue">
+  <rdfs:domain rdf:resource="#MeanBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanSymmetryValue">
+  <rdfs:domain rdf:resource="#MeanBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_compactness</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanFractalDimensionValue">
+  <rdfs:domain rdf:resource="#MeanBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_area</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasMeanTextureValue">
+  <rdfs:domain rdf:resource="#MeanIntensityTextureMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorRadiusValue">
+  <rdfs:domain rdf:resource="#StandardErrorSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorPerimeterValue">
+  <rdfs:domain rdf:resource="#StandardErrorSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_texture</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorAreaValue">
+  <rdfs:domain rdf:resource="#StandardErrorSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_texture</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorCompactnessValue">
+  <rdfs:domain rdf:resource="#StandardErrorContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorConcavityValue">
+  <rdfs:domain rdf:resource="#StandardErrorContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_concave_points</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorConcavePointsValue">
+  <rdfs:domain rdf:resource="#StandardErrorContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorSmoothnessValue">
+  <rdfs:domain rdf:resource="#StandardErrorBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorSymmetryValue">
+  <rdfs:domain rdf:resource="#StandardErrorBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_smoothness</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorFractalDimensionValue">
+  <rdfs:domain rdf:resource="#StandardErrorBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_symmetry</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasStandardErrorTextureValue">
+  <rdfs:domain rdf:resource="#StandardErrorIntensityTextureMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">error</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstRadiusValue">
+  <rdfs:domain rdf:resource="#WorstSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_symmetry</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">radius</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstPerimeterValue">
+  <rdfs:domain rdf:resource="#WorstSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_concave_points</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">perimeter</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstAreaValue">
+  <rdfs:domain rdf:resource="#WorstSizeGeometryMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_perimeter</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">area</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstCompactnessValue">
+  <rdfs:domain rdf:resource="#WorstContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_perimeter</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">compactness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstConcavityValue">
+  <rdfs:domain rdf:resource="#WorstContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstConcavePointsValue">
+  <rdfs:domain rdf:resource="#WorstContourIndentationMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_area</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concave_points</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstSmoothnessValue">
+  <rdfs:domain rdf:resource="#WorstBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_radius</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">smoothness</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstSymmetryValue">
+  <rdfs:domain rdf:resource="#WorstBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mean_compactness</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">symmetry</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstFractalDimensionValue">
+  <rdfs:domain rdf:resource="#WorstBoundaryRegularityMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">concavity_error</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fractal_dimension</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#hasWorstTextureValue">
+  <rdfs:domain rdf:resource="#WorstIntensityTextureMeasurement"/>
+  <rdfs:range><rdfs:Datatype><owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/><owl:withRestrictions rdf:parseType="Collection"><rdf:Description><xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0</xsd:minInclusive></rdf:Description></owl:withRestrictions></rdfs:Datatype></rdfs:range>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst_concavity</rdfs:label>
+  <measurementFamily rdf:datatype="http://www.w3.org/2001/XMLSchema#string">texture</measurementFamily>
+  <statisticRole rdf:datatype="http://www.w3.org/2001/XMLSchema#string">worst</statisticRole>
+</owl:DatatypeProperty>
+
+</rdf:RDF>

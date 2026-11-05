@@ -1,0 +1,162 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 06:54:51,868] A new study created in memory with name: no-name-ad941c13-7d6c-4c76-a96d-f2cb2394c53a
+[36b84700bb5b] single_seed: Resultado de uma única seed (42). Não mede variabilidade.
+[36b84700bb5b] non_discriminative_grid: Tuning da estrutura do TREPAN: os dados de treino/CV não discriminam as configurações avaliadas (toda a grelha é estatisticamente equivalente). A configuração final foi escolhida por parcimónia/desempate entre candidatos indistinguíveis, e não por superioridade demonstrada de fidelity.
+[DEBUG] Treinando MLP com 120 features (originais ARFF: 120).
+
+[MLP OPTIMIZATION - MLP Original]
+Method: optuna
+Best params: {'hidden_layer_sizes': [131, 29, 36], 'activation': 'tanh', 'solver': 'lbfgs', 'alpha': 0.00017654048052495074, 'learning_rate_init': 0.00036324869566766035, 'max_iter': 1229, 'early_stopping': True, 'validation_fraction': 0.1, 'n_iter_no_change': 10, 'random_state': 42}
+Best CV score: 0.8343
+Test accuracy: 0.0000
+Test precision: 0.0000
+Test recall: 0.0000
+Test f1: 0.0000
+Convergence: status=converged_before_iteration_cap n_iter=10 max_iter=1229 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_070513.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_070513.csv
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: 2a6af0bf6975d65f997908d959c04b9fdfe056db5abcbd6f74182dc325ec10a3
+Transformer: pipeline
+Expected n_features: 120
+Received X shape: (175, 120)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 120
+
+[PERFORMANCE] MLP Original
+  tempo: 779.40s
+  features: 120
+  trials: 35
+  melhor score: 0.8667
+  parou por: timeout
+[INFO] Modelo guardado em cache: 0de91ac418c905fbcd445ef7216703b161b1f349b84b5058d9f266c7afe0d490.pkl
+
+[MLP ORIGINAL DIAGNOSTIC]
+X_train_original shape: (175, 120)
+X_test_original shape: (75, 120)
+MLP n_features_in_: 120
+Unique y_train real: 2
+Unique y_test real: 2
+Unique y_pred_mlp_train: 2
+Unique y_pred_mlp_test: 2
+Distribution y_train real: {0: 98, 1: 77}
+Distribution y_test real: {0: 42, 1: 33}
+Distribution y_pred_mlp_train: {0: 98, 1: 77}
+Distribution y_pred_mlp_test: {0: 44, 1: 31}
+Accuracy: 0.8667
+Precision weighted: 0.8669
+Recall weighted: 0.8667
+F1 weighted: 0.8661
+Balanced accuracy: 0.8615
+Confusion matrix:
+[[38  4]
+ [ 6 27]]
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: 2a6af0bf6975d65f997908d959c04b9fdfe056db5abcbd6f74182dc325ec10a3
+Transformer: pipeline
+Expected n_features: 120
+Received X shape: (175, 120)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 120
+
+[PERFORMANCE] C4.5
+  tempo: 31.28s
+
+[PERFORMANCE] Trepan Original
+  tempo: 997.06s
+  melhor score: 0.6000
+
+[PERFORMANCE] Trepan Reloaded
+  tempo: 0.00s
+  melhor score: 0.6000
+
+============================================================
+[PIPELINE TRAINING AUDIT]
+dataset: s1_seed1.arff
+============================================================
+
+[MLP ORIGINAL]
+features: 120
+optimization: optuna
+accuracy: 86.7%
+precision: 86.7%
+recall: 86.7%
+f1: 86.6%
+
+[MLP_RESIDUAL_ONTOLÓGICO]
+status: not available (no valid ontology / enriched features)
+
+[ONTOLOGY ACCEPTANCE]
+status: not evaluated
+
+[TREPAN ORIGINAL]
+oracle: MLP Original
+accuracy: 54.7%
+fidelity: 60.0%
+
+[TREPAN RELOADED]
+oracle: MLP Original
+accuracy: 54.7%
+fidelity: 60.0%
+
+[C4.5]
+accuracy: 68.0%
+precision: 67.7%
+recall: 67.9%
+f1: 67.7%
+[INFO] Auditoria guardada em:
+  /home/user/biuri_trepan_reloaded/results/pipeline_audit/pipeline_audit_training_s1_seed1_arff_20261105_072249.json
+  /home/user/biuri_trepan_reloaded/results/pipeline_audit/pipeline_audit_training_s1_seed1_arff_20261105_072249.csv
+[INFO] Log de performance guardado em: /home/user/biuri_trepan_reloaded/results/performance_logs/performance_scientific_s1_seed1_arff_20261105_072249.json
+
+============================================================
+[FINAL MODEL AUDIT]
+============================================================
+
+MLP Original:
+  accuracy: 0.8666666666666667
+  f1: 0.8661337209302326
+  balanced_accuracy: 0.8614718614718615
+  unique predictions: 2
+  prediction distribution: {0: 44, 1: 31}
+  degenerate: False
+
+C4.5-Nativo:
+  accuracy: 0.68
+  f1: 0.6771879483500718
+  balanced_accuracy: 0.6785714285714286
+  unique predictions: 2
+
+Trepan Original:
+  accuracy: 0.5466666666666666
+  fidelity to MLP Original: 0.6
+  number of nodes: 47
+  number of leaves: 24
+  tree is trivial: False
+  oracle unique predictions: None
+
+Trepan Reloaded:
+  accuracy: 0.5466666666666666
+  fidelity to selected oracle: 0.6
+  selected oracle: MLP Original
+  number of nodes: 47
+  number of leaves: 24
+  tree is trivial: False
+  oracle unique predictions: None
+
+MLP Onto/Residual:
+  exists: False
+  accepted: N/A
+[DIAG] compare_all_models: n_test=75, n_features=120, n_classes=2
+fim 1811.4 modelos: []
