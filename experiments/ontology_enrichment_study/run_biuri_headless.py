@@ -1,7 +1,7 @@
 """Executa o fluxo INTERATIVO da GUI do BIURI em modo offscreen (sem alterar o código do BIURI): carrega ARFF (+OWL), treina, compara métricas e imprime o que a aplicação mostra."""
 import os, sys, time, json, re
 os.environ["QT_QPA_PLATFORM"]="offscreen"
-sys.path.insert(0, "/home/user/biuri_trepan_reloaded")
+sys.path.insert(0, os.environ.get("BIURI_ROOT", "/home/user/biuri_trepan_reloaded"))
 from PyQt6.QtWidgets import QApplication, QMessageBox
 msgs=[]
 for n in ("warning","information","critical","question"):

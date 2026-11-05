@@ -1,0 +1,384 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 15:12:59,023] A new study created in memory with name: no-name-b84da00b-8144-47c4-b5e8-88fc2d44ad5c
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+ontologia carregada: True
+[DEBUG] Treinando MLP com 120 features (originais ARFF: 120).
+
+[MLP OPTIMIZATION - MLP Original]
+Method: optuna
+Best params: {'hidden_layer_sizes': [176, 24, 52], 'activation': 'tanh', 'solver': 'lbfgs', 'alpha': 0.0016166757691473993, 'learning_rate_init': 0.0001134894639856466, 'max_iter': 1145, 'early_stopping': True, 'validation_fraction': 0.1, 'n_iter_no_change': 10, 'random_state': 42}
+Best CV score: 0.8514
+Test accuracy: 0.0000
+Test precision: 0.0000
+Test recall: 0.0000
+Test f1: 0.0000
+Convergence: status=converged_before_iteration_cap n_iter=10 max_iter=1145 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_151511.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_151511.csv
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: 2a6af0bf6975d65f997908d959c04b9fdfe056db5abcbd6f74182dc325ec10a3
+Transformer: pipeline
+Expected n_features: 120
+Received X shape: (175, 120)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 120
+
+[PERFORMANCE] MLP Original
+  tempo: 155.81s
+  features: 120
+  trials: 50
+  melhor score: 0.9067
+
+[MLP ORIGINAL DIAGNOSTIC]
+X_train_original shape: (175, 120)
+X_test_original shape: (75, 120)
+MLP n_features_in_: 120
+Unique y_train real: 2
+Unique y_test real: 2
+Unique y_pred_mlp_train: 2
+Unique y_pred_mlp_test: 2
+Distribution y_train real: {0: 98, 1: 77}
+Distribution y_test real: {0: 42, 1: 33}
+Distribution y_pred_mlp_train: {0: 98, 1: 77}
+Distribution y_pred_mlp_test: {0: 41, 1: 34}
+Accuracy: 0.9067
+Precision weighted: 0.9073
+Recall weighted: 0.9067
+F1 weighted: 0.9068
+Balanced accuracy: 0.9069
+Confusion matrix:
+[[38  4]
+ [ 3 30]]
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: 2a6af0bf6975d65f997908d959c04b9fdfe056db5abcbd6f74182dc325ec10a3
+Transformer: pipeline
+Expected n_features: 120
+Received X shape: (175, 120)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 120
+[ONTOLOGY FIT] escopo=training_only linhas=175
+[ONTOLOGY FIT] originais=120 mapeadas=120 derivadas=20 total=140
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico (residual matrix)
+Feature space: residual
+Schema hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Transformer: unspecified
+Expected n_features: 5
+Received X shape: (131, 5)
+Feature names: []
+Using cache: False
+Operation: fit
+Scaler n_features_in_: None
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico
+Feature space: residual
+Schema hash: 126a310c5cec71240a26d8c835bbcd9cbffb8930ef27f3cc4bd335ad80a84135
+Transformer: unspecified
+Expected n_features: 5
+Received X shape: (131, 5)
+Feature names: ['base_prob_0', 'base_prob_1', 'onto_residual_0', 'onto_residual_1', 'onto_residual_2']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: None
+
+[MLP OPTIMIZATION - MLP Residual Ontológico]
+Method: grid_search
+Best params: {'activation': 'relu', 'alpha': 0.001, 'early_stopping': False, 'hidden_layer_sizes': [64, 32], 'max_iter': 1500, 'solver': 'lbfgs'}
+Best CV score: 0.8239
+Test accuracy: 0.7955
+Test precision: 0.7973
+Test recall: 0.7955
+Test f1: 0.7960
+Convergence: status=converged_before_iteration_cap n_iter=179 max_iter=1500 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_152300.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s1_seed1_arff_20261105_152300.csv
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico
+Feature space: residual
+Schema hash: 126a310c5cec71240a26d8c835bbcd9cbffb8930ef27f3cc4bd335ad80a84135
+Transformer: pipeline
+Expected n_features: 5
+Received X shape: (131, 5)
+Feature names: ['base_prob_0', 'base_prob_1', 'onto_residual_0', 'onto_residual_1', 'onto_residual_2']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 5
+[INFO] Gate semântico=ACCEPT_PARTIAL_FEATURES | pesos híbridos candidato={'original': 0.5, 'ontological': 0.0, 'residual': 0.5} | pesos finais={'original': 0.5, 'ontological': 0.0, 'residual': 0.5} | gate estrito=True | BA professor=0.927 | BA C4.5=0.755 | Oráculo=Oráculo Híbrido Ontológico OOF
+[INFO] Seleção ontológica ajustada no treino e aplicada ao dataset: {'scope': 'development_oof_only', 'test_used': False, 'config': {'cv_folds': 5, 'random_state': 42, 'min_predictive_gain': 0.002, 'max_noninferiority_loss': 0.0, 'min_selection_stability': 0.4, 'max_semantic_features': 40, 'near_constant_std': 1e-06, 'duplicate_correlation': 0.999999, 'complexity_penalty': 0.02, 'max_complexity_ratio': 0.6, 'min_matching_confidence': 0.72, 'min_quality_coverage': 0.35, 'balanced_accuracy_weight': 0.35, 'macro_f1_weight': 0.35, 'accuracy_weight': 0.15, 'minority_recall_weight': 0.15, 'max_single_feature_audits': 16}, 'base_indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119], 'candidate_semantic_indices': [120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139], 'candidate_semantic_names': ['onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'rejections': [], 'feature_audit': [{'feature': 'onto_ThermalSubsystemMeasurement_aggregate', 'index': 120, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': True, 'rejection_reason': None, 'duplicate_of': None, 'fold_stability': 0.6, 'mean_mutual_information': 0.056711716056724225, 'effect_on_metrics': {'accuracy_delta': 0.01526717557251911, 'balanced_accuracy_delta': 0.015470004723665665, 'macro_f1_delta': 0.015443560271146461, 'minority_recall_delta': 0.017241379310344862}}, {'feature': 'onto_VibrationSubsystemMeasurement_aggregate', 'index': 121, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.01006521850267994, 'effect_on_metrics': None}, {'feature': 'onto_PressureSubsystemMeasurement_aggregate', 'index': 122, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.009976077602898847, 'effect_on_metrics': None}, {'feature': 'onto_FlowSubsystemMeasurement_aggregate', 'index': 123, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': True, 'rejection_reason': None, 'duplicate_of': None, 'fold_stability': 1.0, 'mean_mutual_information': 0.19621285295531182, 'effect_on_metrics': {'accuracy_delta': 0.022900763358778664, 'balanced_accuracy_delta': 0.027633443552196546, 'macro_f1_delta': 0.024517104025300718, 'minority_recall_delta': 0.022201228153046815}}, {'feature': 'onto_AcousticSubsystemMeasurement_aggregate', 'index': 124, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.016871524803534398, 'effect_on_metrics': None}, {'feature': 'onto_VoltageSubsystemMeasurement_aggregate', 'index': 125, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.030348020068247994, 'effect_on_metrics': None}, {'feature': 'onto_CurrentSubsystemMeasurement_aggregate', 'index': 126, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.0047312722843616765, 'effect_on_metrics': None}, {'feature': 'onto_HumiditySubsystemMeasurement_aggregate', 'index': 127, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.021935852662466802, 'effect_on_metrics': None}, {'feature': 'onto_TorqueSubsystemMeasurement_aggregate', 'index': 128, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.4, 'mean_mutual_information': 0.04065586668670771, 'effect_on_metrics': {'accuracy_delta': 0.007633587786259555, 'balanced_accuracy_delta': 0.006849315068493178, 'macro_f1_delta': 0.007351557800305941, 'minority_recall_delta': 0.0}}, {'feature': 'onto_SpeedSubsystemMeasurement_aggregate', 'index': 129, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.0032978207749121856, 'effect_on_metrics': None}, {'feature': 'onto_LevelSubsystemMeasurement_aggregate', 'index': 130, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.004973871683592623, 'effect_on_metrics': None}, {'feature': 'onto_ConductivitySubsystemMeasurement_aggregate', 'index': 131, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.026242040801835786, 'effect_on_metrics': None}, {'feature': 'onto_OxygenSubsystemMeasurement_aggregate', 'index': 132, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.4, 'mean_mutual_information': 0.03568236309195085, 'effect_on_metrics': {'accuracy_delta': 0.0, 'balanced_accuracy_delta': 0.0, 'macro_f1_delta': 0.0, 'minority_recall_delta': 0.0}}, {'feature': 'onto_LightSubsystemMeasurement_aggregate', 'index': 133, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.0, 'effect_on_metrics': None}, {'feature': 'onto_StrainSubsystemMeasurement_aggregate', 'index': 134, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.015290751405734859, 'effect_on_metrics': None}, {'feature': 'onto_PositionSubsystemMeasurement_aggregate', 'index': 135, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.01417457423606705, 'effect_on_metrics': None}, {'feature': 'onto_DisplacementSubsystemMeasurement_aggregate', 'index': 136, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.0, 'mean_mutual_information': 0.0, 'effect_on_metrics': None}, {'feature': 'onto_DensitySubsystemMeasurement_aggregate', 'index': 137, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': True, 'rejection_reason': None, 'duplicate_of': None, 'fold_stability': 0.8, 'mean_mutual_information': 0.05474146562071884, 'effect_on_metrics': {'accuracy_delta': 0.007633587786259555, 'balanced_accuracy_delta': 0.006849315068493178, 'macro_f1_delta': 0.007351557800305941, 'minority_recall_delta': 0.0}}, {'feature': 'onto_ViscositySubsystemMeasurement_aggregate', 'index': 138, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.4, 'mean_mutual_information': 0.031771147739391783, 'effect_on_metrics': {'accuracy_delta': 0.01526717557251911, 'balanced_accuracy_delta': 0.015470004723665665, 'macro_f1_delta': 0.015443560271146461, 'minority_recall_delta': 0.017241379310344862}}, {'feature': 'onto_TurbiditySubsystemMeasurement_aggregate', 'index': 139, 'constant_rate': 0.007633587786259542, 'accepted_by_semantic_gate': False, 'rejection_reason': 'not_in_best_oof_subset', 'duplicate_of': None, 'fold_stability': 0.2, 'mean_mutual_information': 0.018318682454635703, 'effect_on_metrics': None}], 'ontology_quality': {'accepted': True, 'status': 'VALID_DOMAIN_ONTOLOGY', 'reasoner_executed': True, 'reasoner_consistent': True, 'feature_coverage': 1.0, 'mean_matching_confidence': 1.0, 'generic_entity_ratio': 0.0}, 'fold_local_semantic_refit': {'enabled': True, 'scope': 'inner_fold_training_only', 'reason': 'ontology_train_statistics_recomputed_per_fold', 'folds': [{'fold': 0, 'scope': 'inner_fold_training_only', 'fit_rows': 104, 'validation_rows': 27, 'recalibrated_kinds': ['hierarchical_aggregate'], 'schema': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'state_mutated': False}, {'fold': 1, 'scope': 'inner_fold_training_only', 'fit_rows': 105, 'validation_rows': 26, 'recalibrated_kinds': ['hierarchical_aggregate'], 'schema': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'state_mutated': False}, {'fold': 2, 'scope': 'inner_fold_training_only', 'fit_rows': 105, 'validation_rows': 26, 'recalibrated_kinds': ['hierarchical_aggregate'], 'schema': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'state_mutated': False}, {'fold': 3, 'scope': 'inner_fold_training_only', 'fit_rows': 105, 'validation_rows': 26, 'recalibrated_kinds': ['hierarchical_aggregate'], 'schema': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'state_mutated': False}, {'fold': 4, 'scope': 'inner_fold_training_only', 'fit_rows': 105, 'validation_rows': 26, 'recalibrated_kinds': ['hierarchical_aggregate'], 'schema': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_VibrationSubsystemMeasurement_aggregate', 'onto_PressureSubsystemMeasurement_aggregate', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_AcousticSubsystemMeasurement_aggregate', 'onto_VoltageSubsystemMeasurement_aggregate', 'onto_CurrentSubsystemMeasurement_aggregate', 'onto_HumiditySubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_SpeedSubsystemMeasurement_aggregate', 'onto_LevelSubsystemMeasurement_aggregate', 'onto_ConductivitySubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_LightSubsystemMeasurement_aggregate', 'onto_StrainSubsystemMeasurement_aggregate', 'onto_PositionSubsystemMeasurement_aggregate', 'onto_DisplacementSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate', 'onto_TurbiditySubsystemMeasurement_aggregate'], 'state_mutated': False}]}, 'gate_estimator': {'family': 'MLPClassifier', 'source': 'mlp_original_hyperparameters', 'reference_reused': True}, 'accepted': True, 'status': 'ACCEPT_PARTIAL_FEATURES', 'cv_folds': 5, 'baseline': {'accuracy': 0.7786259541984732, 'balanced_accuracy': 0.7765706188001888, 'macro_f1': 0.7760683760683761, 'minority_recall': 0.7586206896551724, 'semantic_feature_count': 0, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.0, 'complexity_penalty_value': 0.0, 'utility_before_complexity': 0.7740106447820445, 'utility': 0.7740106447820445}, 'selected_candidate': {'accuracy': 0.8091603053435115, 'balanced_accuracy': 0.8075106282475201, 'macro_f1': 0.806955496610669, 'minority_recall': 0.7931034482758621, 'semantic_feature_count': 3, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.024390243902439025, 'complexity_penalty_value': 0.00048780487804878054, 'utility_before_complexity': 0.8054027067432721, 'utility': 0.8049149018652233, 'candidate': 'semantic_top_3', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123, 137, 120], 'semantic_indices': [123, 137, 120], 'semantic_names': ['onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate']}, 'candidate_results': [{'candidate': 'original_only', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119], 'accuracy': 0.7786259541984732, 'balanced_accuracy': 0.7765706188001888, 'macro_f1': 0.7760683760683761, 'minority_recall': 0.7586206896551724, 'semantic_feature_count': 0, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.0, 'complexity_penalty_value': 0.0, 'utility_before_complexity': 0.7740106447820445, 'utility': 0.7740106447820445}, {'accuracy': 0.8015267175572519, 'balanced_accuracy': 0.8042040623523854, 'macro_f1': 0.8005854800936768, 'minority_recall': 0.7808219178082192, 'semantic_feature_count': 1, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.008264462809917356, 'complexity_penalty_value': 0.00016528925619834712, 'utility_before_complexity': 0.7990286351609424, 'utility': 0.7988633459047441, 'candidate': 'semantic_top_1', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123], 'semantic_indices': [123], 'semantic_names': ['onto_FlowSubsystemMeasurement_aggregate']}, {'accuracy': 0.8091603053435115, 'balanced_accuracy': 0.8075106282475201, 'macro_f1': 0.806955496610669, 'minority_recall': 0.7931034482758621, 'semantic_feature_count': 3, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.024390243902439025, 'complexity_penalty_value': 0.00048780487804878054, 'utility_before_complexity': 0.8054027067432721, 'utility': 0.8049149018652233, 'candidate': 'semantic_top_3', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123, 137, 120], 'semantic_indices': [123, 137, 120], 'semantic_names': ['onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate']}, {'accuracy': 0.7938931297709924, 'balanced_accuracy': 0.7938119981105338, 'macro_f1': 0.7921490274431451, 'minority_recall': 0.7931034482758621, 'semantic_feature_count': 5, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.04, 'complexity_penalty_value': 0.0008, 'utility_before_complexity': 0.7931358456508156, 'utility': 0.7923358456508156, 'candidate': 'semantic_top_5', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123, 137, 120, 128, 132], 'semantic_indices': [123, 137, 120, 128, 132], 'semantic_names': ['onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate']}, {'accuracy': 0.7938931297709924, 'balanced_accuracy': 0.7938119981105338, 'macro_f1': 0.7921490274431451, 'minority_recall': 0.7931034482758621, 'semantic_feature_count': 6, 'candidate_semantic_pool_size': 20, 'base_feature_count': 120, 'complexity_ratio': 0.047619047619047616, 'complexity_penalty_value': 0.0009523809523809524, 'utility_before_complexity': 0.7931358456508156, 'utility': 0.7921834646984347, 'candidate': 'semantic_top_6', 'indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123, 137, 120, 128, 132, 138], 'semantic_indices': [123, 137, 120, 128, 132, 138], 'semantic_names': ['onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate', 'onto_TorqueSubsystemMeasurement_aggregate', 'onto_OxygenSubsystemMeasurement_aggregate', 'onto_ViscositySubsystemMeasurement_aggregate']}], 'utility_gain': 0.030904257083178788, 'balanced_accuracy_gain': 0.030940009447331218, 'macro_f1_gain': 0.030887120542292923, 'complexity_penalty_delta': 0.00048780487804878054, 'informational_novelty_ratio': 1.0, 'complexity_excess': False, 'selected_indices': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 123, 137, 120], 'selected_feature_names': ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', 'vibration_sensor_3', 'vibration_sensor_4', 'vibration_sensor_5', 'vibration_sensor_6', 'pressure_sensor_1', 'pressure_sensor_2', 'pressure_sensor_3', 'pressure_sensor_4', 'pressure_sensor_5', 'pressure_sensor_6', 'flow_sensor_1', 'flow_sensor_2', 'flow_sensor_3', 'flow_sensor_4', 'flow_sensor_5', 'flow_sensor_6', 'acoustic_sensor_1', 'acoustic_sensor_2', 'acoustic_sensor_3', 'acoustic_sensor_4', 'acoustic_sensor_5', 'acoustic_sensor_6', 'voltage_sensor_1', 'voltage_sensor_2', 'voltage_sensor_3', 'voltage_sensor_4', 'voltage_sensor_5', 'voltage_sensor_6', 'current_sensor_1', 'current_sensor_2', 'current_sensor_3', 'current_sensor_4', 'current_sensor_5', 'current_sensor_6', 'humidity_sensor_1', 'humidity_sensor_2', 'humidity_sensor_3', 'humidity_sensor_4', 'humidity_sensor_5', 'humidity_sensor_6', 'torque_sensor_1', 'torque_sensor_2', 'torque_sensor_3', 'torque_sensor_4', 'torque_sensor_5', 'torque_sensor_6', 'speed_sensor_1', 'speed_sensor_2', 'speed_sensor_3', 'speed_sensor_4', 'speed_sensor_5', 'speed_sensor_6', 'level_sensor_1', 'level_sensor_2', 'level_sensor_3', 'level_sensor_4', 'level_sensor_5', 'level_sensor_6', 'conductivity_sensor_1', 'conductivity_sensor_2', 'conductivity_sensor_3', 'conductivity_sensor_4', 'conductivity_sensor_5', 'conductivity_sensor_6', 'oxygen_sensor_1', 'oxygen_sensor_2', 'oxygen_sensor_3', 'oxygen_sensor_4', 'oxygen_sensor_5', 'oxygen_sensor_6', 'light_sensor_1', 'light_sensor_2', 'light_sensor_3', 'light_sensor_4', 'light_sensor_5', 'light_sensor_6', 'strain_sensor_1', 'strain_sensor_2', 'strain_sensor_3', 'strain_sensor_4', 'strain_sensor_5', 'strain_sensor_6', 'position_sensor_1', 'position_sensor_2', 'position_sensor_3', 'position_sensor_4', 'position_sensor_5', 'position_sensor_6', 'displacement_sensor_1', 'displacement_sensor_2', 'displacement_sensor_3', 'displacement_sensor_4', 'displacement_sensor_5', 'displacement_sensor_6', 'density_sensor_1', 'density_sensor_2', 'density_sensor_3', 'density_sensor_4', 'density_sensor_5', 'density_sensor_6', 'viscosity_sensor_1', 'viscosity_sensor_2', 'viscosity_sensor_3', 'viscosity_sensor_4', 'viscosity_sensor_5', 'viscosity_sensor_6', 'turbidity_sensor_1', 'turbidity_sensor_2', 'turbidity_sensor_3', 'turbidity_sensor_4', 'turbidity_sensor_5', 'turbidity_sensor_6', 'onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate'], 'selected_semantic_indices': [123, 137, 120], 'selected_semantic_names': ['onto_FlowSubsystemMeasurement_aggregate', 'onto_DensitySubsystemMeasurement_aggregate', 'onto_ThermalSubsystemMeasurement_aggregate'], 'selection_stability': {'onto_ThermalSubsystemMeasurement_aggregate': 0.6, 'onto_VibrationSubsystemMeasurement_aggregate': 0.0, 'onto_PressureSubsystemMeasurement_aggregate': 0.0, 'onto_FlowSubsystemMeasurement_aggregate': 1.0, 'onto_AcousticSubsystemMeasurement_aggregate': 0.2, 'onto_VoltageSubsystemMeasurement_aggregate': 0.2, 'onto_CurrentSubsystemMeasurement_aggregate': 0.0, 'onto_HumiditySubsystemMeasurement_aggregate': 0.2, 'onto_TorqueSubsystemMeasurement_aggregate': 0.4, 'onto_SpeedSubsystemMeasurement_aggregate': 0.0, 'onto_LevelSubsystemMeasurement_aggregate': 0.0, 'onto_ConductivitySubsystemMeasurement_aggregate': 0.2, 'onto_OxygenSubsystemMeasurement_aggregate': 0.4, 'onto_LightSubsystemMeasurement_aggregate': 0.0, 'onto_StrainSubsystemMeasurement_aggregate': 0.2, 'onto_PositionSubsystemMeasurement_aggregate': 0.2, 'onto_DisplacementSubsystemMeasurement_aggregate': 0.0, 'onto_DensitySubsystemMeasurement_aggregate': 0.8, 'onto_ViscositySubsystemMeasurement_aggregate': 0.4, 'onto_TurbiditySubsystemMeasurement_aggregate': 0.2}, 'mean_mutual_information': {'onto_ThermalSubsystemMeasurement_aggregate': 0.056711716056724225, 'onto_VibrationSubsystemMeasurement_aggregate': 0.01006521850267994, 'onto_PressureSubsystemMeasurement_aggregate': 0.009976077602898847, 'onto_FlowSubsystemMeasurement_aggregate': 0.19621285295531182, 'onto_AcousticSubsystemMeasurement_aggregate': 0.016871524803534398, 'onto_VoltageSubsystemMeasurement_aggregate': 0.030348020068247994, 'onto_CurrentSubsystemMeasurement_aggregate': 0.0047312722843616765, 'onto_HumiditySubsystemMeasurement_aggregate': 0.021935852662466802, 'onto_TorqueSubsystemMeasurement_aggregate': 0.04065586668670771, 'onto_SpeedSubsystemMeasurement_aggregate': 0.0032978207749121856, 'onto_LevelSubsystemMeasurement_aggregate': 0.004973871683592623, 'onto_ConductivitySubsystemMeasurement_aggregate': 0.026242040801835786, 'onto_OxygenSubsystemMeasurement_aggregate': 0.03568236309195085, 'onto_LightSubsystemMeasurement_aggregate': 0.0, 'onto_StrainSubsystemMeasurement_aggregate': 0.015290751405734859, 'onto_PositionSubsystemMeasurement_aggregate': 0.01417457423606705, 'onto_DisplacementSubsystemMeasurement_aggregate': 0.0, 'onto_DensitySubsystemMeasurement_aggregate': 0.05474146562071884, 'onto_ViscositySubsystemMeasurement_aggregate': 0.031771147739391783, 'onto_TurbiditySubsystemMeasurement_aggregate': 0.018318682454635703}, 'single_feature_effects': {'onto_FlowSubsystemMeasurement_aggregate': {'accuracy_delta': 0.022900763358778664, 'balanced_accuracy_delta': 0.027633443552196546, 'macro_f1_delta': 0.024517104025300718, 'minority_recall_delta': 0.022201228153046815}, 'onto_DensitySubsystemMeasurement_aggregate': {'accuracy_delta': 0.007633587786259555, 'balanced_accuracy_delta': 0.006849315068493178, 'macro_f1_delta': 0.007351557800305941, 'minority_recall_delta': 0.0}, 'onto_ThermalSubsystemMeasurement_aggregate': {'accuracy_delta': 0.01526717557251911, 'balanced_accuracy_delta': 0.015470004723665665, 'macro_f1_delta': 0.015443560271146461, 'minority_recall_delta': 0.017241379310344862}, 'onto_TorqueSubsystemMeasurement_aggregate': {'accuracy_delta': 0.007633587786259555, 'balanced_accuracy_delta': 0.006849315068493178, 'macro_f1_delta': 0.007351557800305941, 'minority_recall_delta': 0.0}, 'onto_OxygenSubsystemMeasurement_aggregate': {'accuracy_delta': 0.0, 'balanced_accuracy_delta': 0.0, 'macro_f1_delta': 0.0, 'minority_recall_delta': 0.0}, 'onto_ViscositySubsystemMeasurement_aggregate': {'accuracy_delta': 0.01526717557251911, 'balanced_accuracy_delta': 0.015470004723665665, 'macro_f1_delta': 0.015443560271146461, 'minority_recall_delta': 0.017241379310344862}}, 'single_feature_audit_limit': 16, 'reason': 'validated_predictive_gain'}
+
+[ORÁCULO_HÍBRIDO_ONTOLÓGICO_OOF DIAGNOSTIC]
+Unique y_pred_train: 2
+Unique y_pred_test: 2
+Distribution y_pred_train: {0: 104, 1: 71}
+Distribution y_pred_test: {0: 104, 1: 71}
+
+[PERFORMANCE] Professor Híbrido Ontológico
+  tempo: 516.66s
+  features: 123
+  trials: 36
+  melhor score: 0.7955
+
+[PERFORMANCE] C4.5
+  tempo: 19.44s
+
+[PERFORMANCE] Trepan Original
+  tempo: 602.03s
+  melhor score: 0.7867
+
+[TREPAN RELOADED CONTEXT]
+Ontology enabled: True
+Ontology accepted: True
+Selected oracle: Oráculo Híbrido Ontológico OOF
+Oracle feature_space: enriched
+Oracle expected features: 123
+Trepan feature_space: enriched
+X_train shape: (175, 123)
+X_test shape: (75, 123)
+Feature names count: 123
+
+[MODEL INPUT CHECK]
+Model: Oráculo Híbrido Ontológico OOF
+Feature space: enriched
+Schema hash: 062162267e00f3656423a6b5c6425a11edffadfb63e83256f2bbb9fee0af5ef7
+Transformer: unspecified
+Expected n_features: 123
+Received X shape: (175, 123)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: predict
+Scaler n_features_in_: 123
+
+[MODEL INPUT CHECK]
+Model: Oráculo Híbrido Ontológico OOF
+Feature space: enriched
+Schema hash: 062162267e00f3656423a6b5c6425a11edffadfb63e83256f2bbb9fee0af5ef7
+Transformer: unspecified
+Expected n_features: 123
+Received X shape: (175, 123)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: predict
+Scaler n_features_in_: 123
+
+[MODEL INPUT CHECK]
+Model: Oráculo Híbrido Ontológico OOF
+Feature space: enriched
+Schema hash: 062162267e00f3656423a6b5c6425a11edffadfb63e83256f2bbb9fee0af5ef7
+Transformer: unspecified
+Expected n_features: 123
+Received X shape: (75, 123)
+Feature names: ['thermal_sensor_1', 'thermal_sensor_2', 'thermal_sensor_3', 'thermal_sensor_4', 'thermal_sensor_5', 'thermal_sensor_6', 'vibration_sensor_1', 'vibration_sensor_2', '...']
+Using cache: False
+Operation: predict
+Scaler n_features_in_: 123
+
+[ORÁCULO_HÍBRIDO_ONTOLÓGICO_OOF DIAGNOSTIC]
+Unique y_pred_train: 2
+Unique y_pred_test: 2
+Distribution y_pred_train: {0: 104, 1: 71}
+Distribution y_pred_test: {0: 43, 1: 32}
+[INFO] Dataset: 120 features ARFF originais, 123 colunas na matriz, oráculo=Oráculo Híbrido Ontológico OOF (123 features)
+[INFO] Ontology matching entities:
+   - Classes: 21
+   - DatatypeProperties: 120
+   - ObjectProperties: 0
+   - Elegíveis para features: 141 (classes=21, datatype=120, object=0)
+[INFO] Feature mapping:
+   - thermal_sensor_1 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - thermal_sensor_2 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - thermal_sensor_3 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - thermal_sensor_4 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - thermal_sensor_5 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - thermal_sensor_6 -> hasThermalSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_1 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_2 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_3 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_4 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_5 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - vibration_sensor_6 -> hasVibrationSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_1 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_2 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_3 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_4 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_5 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - pressure_sensor_6 -> hasPressureSensor1Value [datatype_property] score=0.85
+   - flow_sensor_1 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - flow_sensor_2 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - flow_sensor_3 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - flow_sensor_4 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - flow_sensor_5 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - flow_sensor_6 -> hasFlowSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_1 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_2 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_3 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_4 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_5 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - acoustic_sensor_6 -> hasAcousticSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_1 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_2 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_3 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_4 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_5 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - voltage_sensor_6 -> hasVoltageSensor1Value [datatype_property] score=0.85
+   - current_sensor_1 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - current_sensor_2 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - current_sensor_3 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - current_sensor_4 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - current_sensor_5 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - current_sensor_6 -> hasCurrentSensor1Value [datatype_property] score=0.85
+   - humidity_sensor_1 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - humidity_sensor_2 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - humidity_sensor_3 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - humidity_sensor_4 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - humidity_sensor_5 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - humidity_sensor_6 -> hasHumiditySensor1Value [datatype_property] score=0.85
+   - torque_sensor_1 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - torque_sensor_2 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - torque_sensor_3 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - torque_sensor_4 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - torque_sensor_5 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - torque_sensor_6 -> hasTorqueSensor1Value [datatype_property] score=0.85
+   - speed_sensor_1 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - speed_sensor_2 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - speed_sensor_3 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - speed_sensor_4 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - speed_sensor_5 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - speed_sensor_6 -> hasSpeedSensor1Value [datatype_property] score=0.85
+   - level_sensor_1 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - level_sensor_2 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - level_sensor_3 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - level_sensor_4 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - level_sensor_5 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - level_sensor_6 -> hasLevelSensor1Value [datatype_property] score=0.85
+   - conductivity_sensor_1 -> hasConductivitySensor1Value [datatype_property] score=0.85
+   - conductivity_sensor_2 -> hasConductivitySensor1Value [datatype_property] score=0.85
+   - conductivity_sensor_3 -> hasConductivitySensor1Value [datatype_property] score=0.85
+   - conductivity_sensor_4 -> hasConductivitySensor1Value [datatype_property] score=0.85Falha no treino científico BIURI
+Traceback (most recent call last):
+  File "/home/user/biuri_trepan_reloaded/gui/training_worker.py", line 36, in run
+    result = self.app._execute_training_pipeline(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 4626, in _execute_training_pipeline
+    tree_rules_reloaded = self.trepan.extractor.extract_tree_with_ontology(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 827, in extract_tree_with_ontology
+    return self._extract_historical_reloaded_core(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 1117, in _extract_historical_reloaded_core
+    ).fit(
+      ^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 507, in fit
+    fitted = super().fit(
+             ^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_original.py", line 781, in fit
+    decision_X, decision_y, local_model = self._decision_sample(node)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 874, in _decision_sample
+    X, y, model = super()._decision_sample(node)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_original.py", line 632, in _decision_sample
+    qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 1940, in _draw_membership_queries
+    return self._draw_membership_queries_unfiltered(model, n, constraints, node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 1976, in _draw_membership_queries_unfiltered
+    projected = np.asarray(projector(raw), dtype=float)
+                           ^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 880, in projector
+    transformed, names = processor.transform_matrix(base, base_names)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 309, in transform_matrix
+    enriched = self.transform(frame)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 259, in transform
+    raise OntologySchemaError(
+core.ontology_processor.OntologySchemaError: O transform não reproduziu exatamente o schema ajustado no treino.
+[e744f643335e] O treino do modelo falhou.
+Traceback (most recent call last):
+  File "/home/user/biuri_trepan_reloaded/gui/training_worker.py", line 36, in run
+    result = self.app._execute_training_pipeline(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py", line 4626, in _execute_training_pipeline
+    tree_rules_reloaded = self.trepan.extractor.extract_tree_with_ontology(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 827, in extract_tree_with_ontology
+    return self._extract_historical_reloaded_core(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 1117, in _extract_historical_reloaded_core
+    ).fit(
+      ^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 507, in fit
+    fitted = super().fit(
+             ^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_original.py", line 781, in fit
+    decision_X, decision_y, local_model = self._decision_sample(node)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 874, in _decision_sample
+    X, y, model = super()._decision_sample(node)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_original.py", line 632, in _decision_sample
+    qx = self._draw_membership_queries(local_model, needed, node.constraints, node)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 1940, in _draw_membership_queries
+    return self._draw_membership_queries_unfiltered(model, n, constraints, node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_historical.py", line 1976, in _draw_membership_queries_unfiltered
+    projected = np.asarray(projector(raw), dtype=float)
+                           ^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/trepan_reloaded_extractor.py", line 880, in projector
+    transformed, names = processor.transform_matrix(base, base_names)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 309, in transform_matrix
+    enriched = self.transform(frame)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/biuri_trepan_reloaded/core/ontology_processor.py", line 259, in transform
+    raise OntologySchemaError(
+core.ontology_processor.OntologySchemaError: O transform não reproduziu exatamente o schema ajustado no treino.
+
+[e744f643335e] error.training: O treino do modelo falhou.
+This plugin does not support propagateSizeHints()
