@@ -4261,12 +4261,10 @@ Asegúrese de que:
                         self.X_encoded_aug = X_encoded_aug
                         self.feature_names_augmented = feature_names_aug
                         if self.ontology_transformer is not None:
-                            selected_set = set(feature_names_aug)
-                            self.ontology_transformer.feature_specs_ = [
-                                spec for spec in self.ontology_transformer.feature_specs_
-                                if spec['name'] in selected_set
-                            ]
-                            self.ontology_transformer.output_features_ = list(feature_names_aug)
+                            from core.onto_feature_selector import align_processor_to_selection
+                            align_processor_to_selection(
+                                self.ontology_transformer, feature_names_aug
+                            )
                             self.trepan.extractor.ontology_processor = self.ontology_transformer
                         print(
                             "[INFO] Seleção ontológica ajustada no treino e "

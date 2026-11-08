@@ -202,3 +202,22 @@ def filter_audited_ontology_features(audit: dict) -> List[str]:
             continue
         accepted.append(str(row["name"]))
     return accepted
+
+
+def align_processor_to_selection(processor, selected_feature_names: Sequence[str]) -> None:
+    """Restringe um OntologyProcessor ajustado às features selecionadas, mantendo o esquema coerente.
+
+    ``OntologyProcessor.transform`` emite as colunas base seguidas dos specs pela ORDEM de
+    ``feature_specs_`` e valida-a contra ``output_features_``. A seleção devolve os nomes por ordem de
+    seleção (ganho), que pode diferir da ordem original dos specs; sem reordenar, o esquema congelado
+    diverge e o transform levanta ``OntologySchemaError`` quando há >= 2 features semânticas selecionadas.
+    Propriedade geral do esquema (independente de dataset): os specs seguem a ordem de ``selected_feature_names``.
+    """
+    names = [str(n) for n in selected_feature_names]
+    order = {n: i for i, n in enumerate(names)}
+    processor.feature_specs_ = sorted(
+        (spec for spec in processor.feature_specs_ if spec["name"] in order),
+        key=lambda spec: order[spec["name"]],
+    )
+    processor.output_features_ = names
+
