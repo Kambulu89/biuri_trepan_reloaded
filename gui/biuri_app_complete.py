@@ -36,6 +36,7 @@ from core.protocol_audit import stable_sha256_strings
 from core.ontology_quality import OntologyQualityGate
 from core.ontology_reasoner import run_owl_reasoner
 from core.arff_schema import parse_arff_class_order
+from core.dataset_schema import read_arff_header
 from core.metrics_comparator import MetricsComparator
 from core.mlp_trainer import MLPTrainer
 from core.natural_language_explainer import NaturalLanguageExplainer
@@ -52,6 +53,7 @@ from gui.surrogate_improvement_dialog import SurrogateImprovementDialog
 from gui.metrics_worker import MetricsWorker
 from gui import theme
 from dataclasses import asdict
+from gui.dataset_config_support import DatasetConfigMixin
 from gui.audit_panel import AuditPanel
 from gui.audit_controller import AuditController, dataset_fingerprint_of, progress_text
 from gui.strings import tr
@@ -324,9 +326,9 @@ class DataLoadDialog(QDialog):
         if file_type == "arff":
             file_path, _ = QFileDialog.getOpenFileName(
                 self, 
-                "Seleccione archivo de datos ARFF", 
+                "Seleccione archivo de datos (ARFF o CSV)", 
                 "", 
-                "Archivos ARFF (*.arff)"
+                "Datasets (*.arff *.csv *.tsv *.txt);;Archivos ARFF (*.arff);;Archivos CSV/TSV (*.csv *.tsv *.txt)"
             )
             if file_path:
                 self.arff_path_edit.setText(file_path)
@@ -805,7 +807,7 @@ class MetricsComparisonWidget(QWidget):
             )
 
 
-class BiuriApp(QMainWindow):
+class BiuriApp(DatasetConfigMixin, QMainWindow):
     
     def __init__(self):
         super().__init__()
@@ -1071,6 +1073,10 @@ class BiuriApp(QMainWindow):
         )
 
         pipeline_layout.addWidget(self.btn_load_data)
+        self.btn_dataset_config = QPushButton("⚙ Configurar dataset")
+        self.btn_dataset_config.setToolTip("Coluna-alvo, ordem das classes e tipos das colunas (CSV/ARFF)")
+        self.btn_dataset_config.setAccessibleName("Configurar dataset")
+        pipeline_layout.addWidget(self.btn_dataset_config)
 
         train_cluster = QWidget()
         train_cluster_layout = QVBoxLayout(train_cluster)
@@ -1435,6 +1441,7 @@ que la red se vuelve interpretable.
             self.results_text.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
 
         self.btn_load_data.clicked.connect(self.load_data)
+        self.btn_dataset_config.clicked.connect(self.open_dataset_config_dialog)
         self.btn_train_model.clicked.connect(self.train_model)
         self.btn_generate_explanation.clicked.connect(self.generate_explanation)
         self.btn_visualize_tree.clicked.connect(self.visualize_tree)
@@ -1709,7 +1716,8 @@ que la red se vuelve interpretable.
 
                 # Depois carregar dados ARFF
                 self.show_progress("Cargando datos...")
-                self.load_data_from_file(arff_path)
+                self._dataset_encoding = dialog.encoding_combo.currentText()
+                self.load_data_from_file(arff_path, interactive=True)
                 
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Error al cargar archivos: {str(e)}")
@@ -2583,8 +2591,8 @@ que la red se vuelve interpretable.
             ]
         return augmentation
 
-    def load_data_from_file(self, file_path):
-        result = self._load_data_from_file_impl(file_path)
+    def load_data_from_file(self, file_path, interactive=False):
+        result = self._load_data_from_file_impl(file_path, interactive=interactive)
         self._on_dataset_loaded(file_path)
         return result
 
@@ -2618,22 +2626,30 @@ que la red se vuelve interpretable.
                 import logging
                 logging.getLogger("biuri.gui").warning("Verificação de stale falhou: %s", exc)
 
-    def _load_data_from_file_impl(self, file_path):
+    def _load_data_from_file_impl(self, file_path, interactive=False):
         
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
         if hasattr(self, "clarity_trail"):
             self.clarity_trail.reset()
-        if file_path.endswith('.arff'):
-            relation_name, attributes, num_instances_from_header = self._extract_arff_header_info(file_path)
-            
-            data, meta = arff.loadarff(file_path)
-            df = pd.DataFrame(data)
-            
-            str_df = df.select_dtypes([object])
-            str_df = str_df.stack().str.decode('utf-8').unstack()
-            for col in str_df:
-                df[col] = str_df[col]
+        _is_arff = file_path.lower().endswith('.arff')
+        if _is_arff or file_path.lower().endswith(('.csv', '.tsv', '.txt')):
+            if _is_arff:
+                relation_name, attributes, num_instances_from_header = self._extract_arff_header_info(file_path)
+                
+                data, meta = arff.loadarff(file_path)
+                df = pd.DataFrame(data)
+                
+                str_df = df.select_dtypes([object])
+                str_df = str_df.stack().str.decode('utf-8').unstack()
+                for col in str_df:
+                    df[col] = str_df[col]
+                # Esquema do dataset: alvo/ordem/tipos. ARFF por omissão (alvo = última coluna, ordem declarada,
+                # sem correções manuais) devolve o dataframe intacto, exatamente como antes.
+                df, dataset_schema = self._prepare_dataset_schema(
+                    file_path, df, 'arff', arff_header=read_arff_header(file_path), interactive=interactive)
+            else:
+                df, relation_name, attributes, dataset_schema = self._load_tabular_dataset(file_path, interactive=interactive)
             
             original_features = list(df.columns[:-1])
             target_col = df.columns[-1]
@@ -2679,16 +2695,21 @@ que la red se vuelve interpretable.
             if derived_attributes:
                 combined_attributes = combined_attributes + derived_attributes
 
-            class_order = parse_arff_class_order(file_path, str(target_col))
+            class_order = parse_arff_class_order(file_path, str(target_col)) if _is_arff else []
             if not class_order:
                 class_order = list(df.iloc[:, -1].unique())
+            _schema_order_source = 'arff_header'
+            if not dataset_schema.is_default_arff():
+                # ordem validada (modelo treinado > manual > ARFF > determinística); mapeamento rótulo→índice guardado
+                class_order = list(dataset_schema.class_order)
+                _schema_order_source = dataset_schema.class_order_source
             self.arff_meta = {
                 'file_name': os.path.basename(file_path),
                 'sample_count': len(df),
                 'features': original_features,
                 'target': target_col,
                 'classes': class_order,
-                'class_order_source': 'arff_header',
+                'class_order_source': _schema_order_source,
                 'relation_name': relation_name,
                 'attributes': list(attributes) if attributes else [],
                 'num_instances': len(df),
@@ -2696,6 +2717,7 @@ que la red se vuelve interpretable.
                 'derived_attributes': derived_attributes,
                 'dual_pipeline': self._uses_dual_data_pipeline(),
             }
+            self.arff_meta.update(self._schema_meta_fields(dataset_schema))
             if augmentation_info:
                 self.arff_meta['augmentation'] = augmentation_info
             if self.feature_names_augmented:
@@ -2710,6 +2732,7 @@ que la red se vuelve interpretable.
                 len(y_all),
             )
             if hasattr(self.trepan.mlp_trainer, 'arff_meta') and self.trepan.mlp_trainer.arff_meta is not None:
+                self.trepan.mlp_trainer.arff_meta.update(self._schema_meta_fields(dataset_schema))
                 self.trepan.mlp_trainer.arff_meta['original_features'] = original_features
                 self.trepan.mlp_trainer.arff_meta['derived_attributes'] = derived_attributes
                 if augmentation_info:
@@ -2797,6 +2820,8 @@ que la red se vuelve interpretable.
             info_text += "🎯 Lo que queremos predecir: {}\n".format(self.arff_meta['target'])
             info_text += "🏷️ Valores de la Clase: {}\n".format(", ".join([str(c) for c in self.arff_meta['classes']]))
             info_text += "   (Total: {} valores únicos)\n\n".format(len(self.arff_meta['classes']))
+            info_text += "⚙ Configuración del dataset (revísela con «⚙ Configurar dataset»):\n"
+            info_text += self.dataset_schema_summary() + "\n\n"
             if augmentation_info and self.ontology_feature_summary:
                 mapped_n = augmentation_info.get('mapped_features', 0)
                 total_n = augmentation_info.get('total_features', len(self.ontology_feature_summary))
@@ -2844,7 +2869,7 @@ que la red se vuelve interpretable.
             )
 
         else:
-            raise ValueError("Formato de archivo no soportado. Utilice archivos ARFF.")
+            raise ValueError("Formato de archivo no soportado. Utilice archivos ARFF, CSV o TSV.")
 
         self.show_results(info_text)
         n_rows = len(self.current_data) if self.current_data is not None else 0
@@ -3910,6 +3935,8 @@ Asegúrese de que:
             return
         if self._warn_if_busy("entrenar"):
             return
+        if not self._validate_dataset_before_training():
+            return
         if self._get_execution_mode() is ExecutionMode.SCIENTIFIC_BENCHMARK:
             self._launch_benchmark_worker()
             return
@@ -4124,6 +4151,10 @@ Asegúrese de que:
                     n_features=n_orig_features,
                     feature_names=orig_feature_names,
                     training_mode=preset.key,
+                    schema_signature=(
+                        self.dataset_schema.cache_signature()
+                        if getattr(self, 'dataset_schema', None) is not None else None
+                    ),
                 )
                 cached = load_cached_training(
                     cache_key,

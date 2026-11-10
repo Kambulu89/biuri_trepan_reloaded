@@ -143,8 +143,9 @@ def build_cache_key(
     semantic_pipeline_version: str = SEMANTIC_PIPELINE_VERSION,
     semantic_config_hash: Optional[str] = None,
     matching_hash: Optional[str] = None,
+    schema_signature: Optional[str] = None,
 ) -> str:
-    return _stable_hash(
+    payload = (
         {
             # Um MLP treinado com outra versão/config das features ontológicas nunca é reutilizado.
             "semantic_pipeline_version": semantic_pipeline_version,
@@ -163,6 +164,10 @@ def build_cache_key(
             "training_mode": training_mode or preset.key,
         }
     )
+    # Só entra na chave quando o esquema do dataset não é o comportamento anterior (chaves existentes ficam iguais).
+    if schema_signature is not None:
+        payload["dataset_schema"] = schema_signature
+    return _stable_hash(payload)
 
 
 def _entry_path(cache_key: str) -> Path:
