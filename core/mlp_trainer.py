@@ -67,6 +67,13 @@ class MLPTrainer:
         return value
 
     def _column_needs_encoder(self, X, col_idx):
+        # Esquema validado do dataset: categóricas cujos códigos parecem números nunca são tratadas como numéricas.
+        # Sem a chave (ARFF por omissão, modelos antigos) este ramo não existe e nada muda.
+        forced = (self.arff_meta or {}).get('forced_categorical_columns')
+        if forced:
+            names = (self.arff_meta or {}).get('original_features') or (self.arff_meta or {}).get('features') or []
+            if col_idx < len(names) and names[col_idx] in forced:
+                return True
         for sample in X:
             val = self._normalize_cell(sample[col_idx])
             if val == "" or (isinstance(val, float) and np.isnan(val)):

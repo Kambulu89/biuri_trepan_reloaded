@@ -52,3 +52,19 @@ Diagnóstico (Objetivo 4):
 ## 5. Reprodução
 `gen_synthetic.py <dir> <seed>` → `run_batch.sh`/`run_sensibilidade_patch.sh` (BIURI_ROOT aponta para cópia com o patch) → `parse_runs.py <logs>`.
 Windows: carregar `s1_seed1.arff` + `s1_seed1_correct.owl` em 📁 Carregar dados e treinar (sem o patch falhará com o erro acima enquanto o defeito existir).
+
+## 6. Adenda — repetição do S1 (seed 1) com o código corrigido no repositório (main 8d61012)
+Logs: `logs_synthetic/REPETICAO_codigo_corrigido/`. Execução sequencial, Linux headless, 1 split (n_teste=75).
+
+**Correção confirmada:** o braço `correct` já não falha (`OntologySchemaError` ausente); gates e professor idênticos aos da cópia com patch (determinísticos): gate de utilidade `ACCEPT_PARTIAL_FEATURES` nos 3 braços com ontologia, professor `ACEITE`, ganho líquido +0,031 / +0,019 / +0,011 (correta / permutada / aleatória).
+
+| Braço | Árvore Original | Reloaded (repetição) | Reloaded (corrida anterior com patch) |
+|---|---|---|---|
+| correta | 72,0 % (41 nós) | 64,0 % (63 nós) | 73,3 % (53 nós) |
+| permutada | 72,0 % | 61,3 % (45 nós) | 60,0 % (51 nós) |
+| aleatória | 72,0 % | 74,7 % (43 nós) | 68,0 % (49 nós) |
+
+**Conclusões (observed_only):**
+1. A precisão da árvore Reloaded varia entre execuções com o **mesmo** professor e a mesma ontologia (até ~9 pp: correta 73,3 → 64,0; aleatória 68,0 → 74,7). Logo as diferenças de árvore entre correta/permutada/aleatória **estão dentro do ruído de execução** e não permitem ordenar os braços nem atribuir ganho à ontologia. A afirmação anterior "Reloaded 73,3 % vs Original 72,0 %" não deve ser lida como ganho.
+2. Os resultados dos gates e do professor, esses sim, são reprodutíveis (iguais nas duas execuções).
+3. Braço `none` (sem ontologia): MLP 86,7 % e árvore Original 54,6 % — **diferente** do Original dos braços com ontologia (MLP 90,7 %, árvore 72,0 %). O oráculo/MLP não é o mesmo entre `none` e os braços com ontologia, por isso **não é uma comparação válida do Nível 1** (exige mesmo oráculo). Causa não investigada.
