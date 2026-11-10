@@ -1,0 +1,16 @@
+--- /home/user/biuri_trepan_reloaded/gui/biuri_app_complete.py	2026-11-03 19:40:17.936148309 +0000
++++ /tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/repo_patched/gui/biuri_app_complete.py	2026-11-05 16:11:48.933615712 +0000
+@@ -4262,10 +4262,11 @@
+                         self.feature_names_augmented = feature_names_aug
+                         if self.ontology_transformer is not None:
+                             selected_set = set(feature_names_aug)
+-                            self.ontology_transformer.feature_specs_ = [
++                            _order = {n: i for i, n in enumerate(feature_names_aug)}
++                            self.ontology_transformer.feature_specs_ = sorted([
+                                 spec for spec in self.ontology_transformer.feature_specs_
+                                 if spec['name'] in selected_set
+-                            ]
++                            ], key=lambda spec: _order[spec['name']])  # SENSITIVITY PATCH (unofficial): spec order == frozen schema order
+                             self.ontology_transformer.output_features_ = list(feature_names_aug)
+                             self.trepan.extractor.ontology_processor = self.ontology_transformer
+                         print(

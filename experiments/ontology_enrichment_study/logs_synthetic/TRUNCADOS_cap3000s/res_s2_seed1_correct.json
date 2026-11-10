@@ -1,0 +1,14 @@
+{
+ "arff": "/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/syn/s2_seed1.arff",
+ "owl": "/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/syn/s2_seed1_correct.owl",
+ "train_seconds": 3004.9,
+ "mlp_trained": true,
+ "models": {},
+ "messages": [
+  [
+   "warning",
+   "('Operación en curso', 'Espere a que termine el proceso actual antes de comparar métricas.\\nPuede cancelar el diálogo de progreso si está disponible.')"
+  ]
+ ],
+ "text": "✅ ¡Datos cargados con éxito!\n\nℹ️ Datos cargados sin ontología (carga estándar).\n\n📋 Encabezado de la Relación (@RELATION):\n   component_failure\n\n📊 Número de Instancias (@DATA):\n   300\n\n📈 Número de Atributos (@ATTRIBUTE):\n   6\n\n📝 Lista de Atributos:\n   1. component_code ({valve_A1,valve_B2,valve_C3,valve_D4,pump_A1,pump_B2,pump_C3,pump_D4,bearing_A1,bearing_B2,bearing_C3,bearing_D4,sensorhead_A1,sensorhead_B2,sensorhead_C3,sensorhead_D4,coupling_A1,coupling_B2,coupling_C3,coupling_D4,filter_A1,filter_B2,filter_C3,filter_D4})\n   2. load_index (numeric)\n   3. age_index (numeric)\n   4. temperature_index (numeric)\n   5. runtime_index (numeric)\n   6. failure_state ({normal,fault})\n\n==================================================\n\n📄 Archivo: s2_seed1.arff\n🎯 Lo que queremos predecir: failure_state\n🏷️ Valores de la Clase: normal, fault\n   (Total: 2 valores únicos)\n\nSiguiente: entrene el modelo para obtener el oráculo opaco y el árbol sustituto que lo explica.\n\n✅ ¡Ontología cargada con éxito!\n\n📄 Archivo: s2_seed1_correct.owl\n🔖 VersionInfo: não declarada\n🔐 SHA-256: fed4c932688db051bad4eae632925318ac590856a9c494063a85401a59b966ac\n\n📚 Clases (7):\n• Component\n• ValveFamily\n• PumpFamily\n• BearingFamily\n• SensorheadFamily\n• CouplingFamily\n• FilterFamily\n\n\n🔗 Propiedades (5):\n• hasComponentCode\n• hasLoadIndex\n• hasAgeIndex\n• hasTemperatureIndex\n• hasRuntimeIndex\n\n\n🏗️ Estructura ontológica:\n   • Jerarquías identificadas: 7\n   • Tipos de datos encontrados: 1\n        - xsd:float\n\n💡 Mejoras activadas:\n   ✅ Emparejamiento robusto con etiquetas RDFS\n   ✅ Extracción de relaciones semánticas\n   ✅ Reasoner HermiT ejecutado; consistencia OWL DL verificada\n   ✅ Generación de datos sintéticos inteligente\n   ✅ Schema estricto: sin columnas sintéticas ni relleno con ceros\n\n🚀 Próximo paso: Cargue sus datos y entrene el modelo para usar Trepan-Reloaded!\n                "
+}

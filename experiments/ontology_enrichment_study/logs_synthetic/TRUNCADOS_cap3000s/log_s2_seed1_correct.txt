@@ -1,0 +1,173 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 10:50:36,509] A new study created in memory with name: no-name-6ac2cc17-ddbf-4df6-8e46-2532349e1fbb
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+ontologia carregada: True
+[DEBUG] Treinando MLP com 5 features (originais ARFF: 5).
+[WARN] Timeout global MLP (MLP Original); melhor modelo até ao momento: optuna
+
+[MLP OPTIMIZATION - MLP Original]
+Method: optuna
+Best params: {'hidden_layer_sizes': [189, 16, 14], 'activation': 'tanh', 'solver': 'lbfgs', 'alpha': 1.1544608204846114e-05, 'learning_rate_init': 0.006229181028749038, 'max_iter': 1910, 'early_stopping': True, 'validation_fraction': 0.1, 'n_iter_no_change': 10, 'random_state': 42}
+Best CV score: 0.7480
+Test accuracy: 0.0000
+Test precision: 0.0000
+Test recall: 0.0000
+Test f1: 0.0000
+Convergence: status=converged_before_iteration_cap n_iter=158 max_iter=1910 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_110104.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_110104.csv
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: d0f0b19fb7323ee696853f94827b65cc09737b036fea8c6fae4f0ff5bc815819
+Transformer: pipeline
+Expected n_features: 5
+Received X shape: (210, 5)
+Feature names: ['component_code', 'load_index', 'age_index', 'temperature_index', 'runtime_index']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 5
+
+[PERFORMANCE] MLP Original
+  tempo: 1442.62s
+  features: 5
+  trials: 14
+  melhor score: 0.8333
+  parou por: timeout
+
+[MLP ORIGINAL DIAGNOSTIC]
+X_train_original shape: (210, 5)
+X_test_original shape: (90, 5)
+MLP n_features_in_: 5
+Unique y_train real: 2
+Unique y_test real: 2
+Unique y_pred_mlp_train: 2
+Unique y_pred_mlp_test: 2
+Distribution y_train real: {0: 61, 1: 149}
+Distribution y_test real: {0: 26, 1: 64}
+Distribution y_pred_mlp_train: {0: 63, 1: 147}
+Distribution y_pred_mlp_test: {0: 33, 1: 57}
+Accuracy: 0.8333
+Precision weighted: 0.8538
+Recall weighted: 0.8333
+F1 weighted: 0.8384
+Balanced accuracy: 0.8371
+Confusion matrix:
+[[22  4]
+ [11 53]]
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: d0f0b19fb7323ee696853f94827b65cc09737b036fea8c6fae4f0ff5bc815819
+Transformer: pipeline
+Expected n_features: 5
+Received X shape: (210, 5)
+Feature names: ['component_code', 'load_index', 'age_index', 'temperature_index', 'runtime_index']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 5
+[ONTOLOGY FIT] escopo=training_only linhas=210
+[ONTOLOGY FIT] originais=5 mapeadas=5 derivadas=2 total=7
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico (residual matrix)
+Feature space: residual
+Schema hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+Transformer: unspecified
+Expected n_features: 4
+Received X shape: (157, 4)
+Feature names: []
+Using cache: False
+Operation: fit
+Scaler n_features_in_: None
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico
+Feature space: residual
+Schema hash: 79f59e771507220efbec7620ef476e6fe80176dc975465c8d16f4dd32696f447
+Transformer: unspecified
+Expected n_features: 4
+Received X shape: (157, 4)
+Feature names: ['base_prob_0', 'base_prob_1', 'onto_residual_0', 'onto_residual_1']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: None
+[WARN] Timeout global MLP (MLP Residual Ontológico); melhor modelo até ao momento: baseline
+
+[MLP OPTIMIZATION - MLP Residual Ontológico]
+Method: baseline
+Best params: {'hidden_layer_sizes': [16, 8], 'activation': 'relu', 'solver': 'lbfgs', 'alpha': 0.001, 'max_iter': 2000, 'tol': 1e-05, 'early_stopping': False, 'random_state': 42}
+Best CV score: 0.8135
+Test accuracy: 0.7547
+Test precision: 0.7345
+Test recall: 0.7547
+Test f1: 0.7277
+Convergence: status=converged_before_iteration_cap n_iter=512 max_iter=2000 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_112719.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_112719.csv
+fim 3004.9 modelos: []
+
+[MODEL INPUT CHECK]
+Model: MLP Residual Ontológico
+Feature space: residual
+Schema hash: 79f59e771507220efbec7620ef476e6fe80176dc975465c8d16f4dd32696f447
+Transformer: pipeline
+Expected n_features: 4
+Received X shape: (157, 4)
+Feature names: ['base_prob_0', 'base_prob_1', 'onto_residual_0', 'onto_residual_1']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 4

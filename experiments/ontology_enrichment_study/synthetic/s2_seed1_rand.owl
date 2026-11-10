@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xml:base="https://example.org/biuri/synthetic" xmlns="https://example.org/biuri/synthetic#">
+<owl:Ontology rdf:about="https://example.org/biuri/synthetic">
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S2 random taxonomy</rdfs:label>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taxonomia de componentes (vocabulário de valores, sem linhas do dataset). Estatuto: NEGATIVE_CONTROL random taxonomy.</rdfs:comment>
+</owl:Ontology>
+<owl:Class rdf:about="#Component"><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">component</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand4Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand4 family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand3Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand3 family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand0Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand0 family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand2Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand2 family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand5Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand5 family</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Rand1Family"><rdfs:subClassOf rdf:resource="#Component"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rand1 family</rdfs:label></owl:Class>
+<owl:NamedIndividual rdf:about="#valve_A1"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">valve_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#valve_B2"><rdf:type rdf:resource="#Rand3Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">valve_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#valve_C3"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">valve_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#valve_D4"><rdf:type rdf:resource="#Rand0Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">valve_D4</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#pump_A1"><rdf:type rdf:resource="#Rand3Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pump_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#pump_B2"><rdf:type rdf:resource="#Rand0Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pump_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#pump_C3"><rdf:type rdf:resource="#Rand3Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pump_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#pump_D4"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pump_D4</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#bearing_A1"><rdf:type rdf:resource="#Rand2Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bearing_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#bearing_B2"><rdf:type rdf:resource="#Rand3Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bearing_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#bearing_C3"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bearing_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#bearing_D4"><rdf:type rdf:resource="#Rand5Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bearing_D4</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#sensorhead_A1"><rdf:type rdf:resource="#Rand1Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sensorhead_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#sensorhead_B2"><rdf:type rdf:resource="#Rand2Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sensorhead_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#sensorhead_C3"><rdf:type rdf:resource="#Rand5Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sensorhead_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#sensorhead_D4"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sensorhead_D4</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#coupling_A1"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">coupling_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#coupling_B2"><rdf:type rdf:resource="#Rand4Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">coupling_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#coupling_C3"><rdf:type rdf:resource="#Rand0Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">coupling_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#coupling_D4"><rdf:type rdf:resource="#Rand0Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">coupling_D4</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#filter_A1"><rdf:type rdf:resource="#Rand1Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">filter_A1</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#filter_B2"><rdf:type rdf:resource="#Rand1Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">filter_B2</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#filter_C3"><rdf:type rdf:resource="#Rand5Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">filter_C3</rdfs:label></owl:NamedIndividual>
+<owl:NamedIndividual rdf:about="#filter_D4"><rdf:type rdf:resource="#Rand1Family"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">filter_D4</rdfs:label></owl:NamedIndividual>
+<owl:DatatypeProperty rdf:about="#hasComponentCode"><rdfs:domain rdf:resource="#Component"/><rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">component_code</rdfs:label></owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasLoadIndex"><rdfs:domain rdf:resource="#Component"/><rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">load_index</rdfs:label></owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasAgeIndex"><rdfs:domain rdf:resource="#Component"/><rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">age_index</rdfs:label></owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasTemperatureIndex"><rdfs:domain rdf:resource="#Component"/><rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">temperature_index</rdfs:label></owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRuntimeIndex"><rdfs:domain rdf:resource="#Component"/><rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">runtime_index</rdfs:label></owl:DatatypeProperty>
+</rdf:RDF>

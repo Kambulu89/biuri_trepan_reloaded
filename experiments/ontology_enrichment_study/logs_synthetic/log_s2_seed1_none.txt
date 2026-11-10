@@ -1,0 +1,189 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[I 2026-11-05 07:07:07,349] A new study created in memory with name: no-name-3d5dcc34-b310-42ba-931e-6f1f2a7ecff3
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+/tmp/claude-0/-home-user-biuri-trepan-reloaded/6ecf925f-9f6c-59a0-a049-2bc9f4128a64/scratchpad/venv311/lib/python3.11/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+[5f3594eaaa8d] single_seed: Resultado de uma única seed (42). Não mede variabilidade.
+[5f3594eaaa8d] non_discriminative_grid: Tuning da estrutura do TREPAN: os dados de treino/CV não discriminam as configurações avaliadas (toda a grelha é estatisticamente equivalente). A configuração final foi escolhida por parcimónia/desempate entre candidatos indistinguíveis, e não por superioridade demonstrada de fidelity.
+[5f3594eaaa8d] surrogate_above_oracle: TREPAN Original: accuracy superior à do MLP Original (92.2% vs 91.1%, +1.1 pp, cerca de ? de ? amostras de teste). O substituto é avaliado contra os rótulos reais; a diferença é pequena e não é evidência de que o substituto seja melhor que o MLP. Convém ver a fidelity ao Oracle.
+[DEBUG] Treinando MLP com 5 features (originais ARFF: 5).
+[WARN] Timeout global MLP (MLP Original); melhor modelo até ao momento: optuna
+
+[MLP OPTIMIZATION - MLP Original]
+Method: optuna
+Best params: {'hidden_layer_sizes': [189, 16, 14], 'activation': 'tanh', 'solver': 'lbfgs', 'alpha': 1.1544608204846114e-05, 'learning_rate_init': 0.006229181028749038, 'max_iter': 1910, 'early_stopping': True, 'validation_fraction': 0.1, 'n_iter_no_change': 10, 'random_state': 42}
+Best CV score: 0.7606
+Test accuracy: 0.0000
+Test precision: 0.0000
+Test recall: 0.0000
+Test f1: 0.0000
+Convergence: status=converged_before_iteration_cap n_iter=109 max_iter=1910 seed=42
+[INFO] Resultados MLP guardados em:
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_071745.json
+  /home/user/biuri_trepan_reloaded/results/mlp_optimization/mlp_optimization_s2_seed1_arff_20261105_071745.csv
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: d0f0b19fb7323ee696853f94827b65cc09737b036fea8c6fae4f0ff5bc815819
+Transformer: pipeline
+Expected n_features: 5
+Received X shape: (210, 5)
+Feature names: ['component_code', 'load_index', 'age_index', 'temperature_index', 'runtime_index']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 5
+
+[PERFORMANCE] MLP Original
+  tempo: 1588.60s
+  features: 5
+  trials: 12
+  melhor score: 0.9111
+  parou por: timeout
+[INFO] Modelo guardado em cache: 7c49cd9c2305323bc7d6f2d81608316ff55ab4f818f90b4a1440d75102bb3bfc.pkl
+
+[MLP ORIGINAL DIAGNOSTIC]
+X_train_original shape: (210, 5)
+X_test_original shape: (90, 5)
+MLP n_features_in_: 5
+Unique y_train real: 2
+Unique y_test real: 2
+Unique y_pred_mlp_train: 2
+Unique y_pred_mlp_test: 2
+Distribution y_train real: {0: 61, 1: 149}
+Distribution y_test real: {0: 26, 1: 64}
+Distribution y_pred_mlp_train: {0: 58, 1: 152}
+Distribution y_pred_mlp_test: {0: 26, 1: 64}
+Accuracy: 0.9111
+Precision weighted: 0.9111
+Recall weighted: 0.9111
+F1 weighted: 0.9111
+Balanced accuracy: 0.8918
+Confusion matrix:
+[[22  4]
+ [ 4 60]]
+
+[MODEL INPUT CHECK]
+Model: MLP Original
+Feature space: original
+Schema hash: d0f0b19fb7323ee696853f94827b65cc09737b036fea8c6fae4f0ff5bc815819
+Transformer: pipeline
+Expected n_features: 5
+Received X shape: (210, 5)
+Feature names: ['component_code', 'load_index', 'age_index', 'temperature_index', 'runtime_index']
+Using cache: False
+Operation: fit
+Scaler n_features_in_: 5
+
+[PERFORMANCE] C4.5
+  tempo: 0.87s
+
+[PERFORMANCE] Trepan Original
+  tempo: 79.83s
+  melhor score: 0.9444
+
+[PERFORMANCE] Trepan Reloaded
+  tempo: 0.00s
+  melhor score: 0.9444
+
+============================================================
+[PIPELINE TRAINING AUDIT]
+dataset: s2_seed1.arff
+============================================================
+
+[MLP ORIGINAL]
+features: 5
+optimization: optuna
+accuracy: 91.1%
+precision: 91.1%
+recall: 91.1%
+f1: 91.1%
+
+[MLP_RESIDUAL_ONTOLÓGICO]
+status: not available (no valid ontology / enriched features)
+
+[ONTOLOGY ACCEPTANCE]
+status: not evaluated
+
+[TREPAN ORIGINAL]
+oracle: MLP Original
+accuracy: 92.2%
+fidelity: 94.4%
+
+[TREPAN RELOADED]
+oracle: MLP Original
+accuracy: 92.2%
+fidelity: 94.4%
+
+[C4.5]
+accuracy: 87.8%
+precision: 85.4%
+recall: 84.6%
+f1: 85.0%
+[INFO] Auditoria guardada em:
+  /home/user/biuri_trepan_reloaded/results/pipeline_audit/pipeline_audit_training_s2_seed1_arff_20261105_072030.json
+  /home/user/biuri_trepan_reloaded/results/pipeline_audit/pipeline_audit_training_s2_seed1_arff_20261105_072030.csv
+[INFO] Log de performance guardado em: /home/user/biuri_trepan_reloaded/results/performance_logs/performance_scientific_s2_seed1_arff_20261105_072030.json
+
+============================================================
+[FINAL MODEL AUDIT]
+============================================================
+
+MLP Original:
+  accuracy: 0.9111111111111111
+  f1: 0.9111111111111111
+  balanced_accuracy: 0.8918269230769231
+  unique predictions: 2
+  prediction distribution: {0: 26, 1: 64}
+  degenerate: False
+
+C4.5-Nativo:
+  accuracy: 0.8777777777777778
+  f1: 0.8495212038303693
+  balanced_accuracy: 0.8455528846153846
+  unique predictions: 2
+
+Trepan Original:
+  accuracy: 0.9222222222222223
+  fidelity to MLP Original: 0.9444444444444444
+  number of nodes: 63
+  number of leaves: 32
+  tree is trivial: False
+  oracle unique predictions: None
+
+Trepan Reloaded:
+  accuracy: 0.9222222222222223
+  fidelity to selected oracle: 0.9444444444444444
+  selected oracle: MLP Original
+  number of nodes: 63
+  number of leaves: 32
+  tree is trivial: False
+  oracle unique predictions: None
+
+MLP Onto/Residual:
+  exists: False
+  accepted: N/A
+[DIAG] compare_all_models: n_test=90, n_features=5, n_classes=2
+fim 1672.7 modelos: []
