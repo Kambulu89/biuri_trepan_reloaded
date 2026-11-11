@@ -139,7 +139,8 @@ def test_missing_values_block_for_csv(tmp_path):
 def test_id_like_column_is_blocked(tmp_path):
     rows = "\n".join(f"campo_{i},desc_{i},{'A' if i % 2 else 'B'}" for i in range(30))
     p, df, s = _schema(tmp_path, "campo,descricao,classe\n" + rows + "\n")
-    assert _codes(validate_schema(s, df)).count("ID_LIKE_COLUMN") == 2
+    codes = _codes(validate_schema(s, df))
+    assert codes.count("ID_LIKE_COLUMN") == 2 and "LIKELY_NOT_A_DATASET" in codes        # dicionário de dados ≠ dataset
 
 
 def test_duplicate_columns_blocked(tmp_path):

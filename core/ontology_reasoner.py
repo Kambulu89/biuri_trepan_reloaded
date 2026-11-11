@@ -209,6 +209,49 @@ def java_required_message() -> str:
     )
 
 
+def explain_inconsistency(ontology, max_items: int = 5) -> List[str]:
+    """Causas prováveis (verificáveis) de uma ontologia INCONSISTENTE para OWL 2 DL, genéricas e sem depender do dataset.
+
+    1. Literais com marca de língua (``xml:lang``) em propriedades de dados cujo ``rdfs:range`` é ``xsd:string``: em OWL 2 um literal
+       com língua é ``rdf:langString`` e NÃO pertence a ``xsd:string`` → o reasoner declara a ontologia inconsistente.
+    2. ``owl:imports`` de ontologias que não foram carregadas (podem faltar axiomas/ligação à Internet).
+    """
+    findings: List[str] = []
+    try:
+        from owlready2 import locstr
+        counts: Dict[str, int] = {}
+        for prop in list(ontology.data_properties()):
+            if str not in (getattr(prop, "range", None) or []):
+                continue
+            n = sum(1 for _s, v in prop.get_relations() if isinstance(v, locstr))
+            if n:
+                counts[getattr(prop, "name", str(prop))] = n
+        for name, n in sorted(counts.items(), key=lambda kv: -kv[1])[:max_items]:
+            findings.append(f"{n} literal(ais) com xml:lang em «{name}» (range xsd:string)")
+        if len(counts) > max_items:
+            findings.append(f"... e mais {len(counts) - max_items} propriedade(s) na mesma situação")
+    except Exception:
+        pass
+    try:
+        imported = [str(getattr(o, "base_iri", o)) for o in (getattr(ontology, "imported_ontologies", []) or [])]
+        if imported:
+            findings.append("importa outras ontologias: " + ", ".join(imported[:3]))
+    except Exception:
+        pass
+    return findings
+
+
+def inconsistency_message(ontology) -> str:
+    causes = explain_inconsistency(ontology)
+    msg = ("A ontologia é LOGICAMENTE INCONSISTENTE para o reasoner OWL DL (não é falta de memória nem de Java) e por isso não foi ativada.")
+    if causes:
+        msg += "\n\nCausas prováveis:\n- " + "\n- ".join(causes)
+        if any("xml:lang" in c for c in causes):
+            msg += ("\n\nCorreção: em OWL 2 um literal com língua (xml:lang) não é xsd:string. Remova o xml:lang desses valores "
+                    "(ex.: scripts/owl_fix_langstring.py gera uma cópia corrigida) ou declare o range como rdf:langString.")
+    return msg
+
+
 def run_owl_reasoner(
     ontology,
     *,
@@ -313,6 +356,7 @@ def run_owl_reasoner(
         ).to_dict()
     except Exception as exc:
         is_missing_java = isinstance(exc, FileNotFoundError)
+        is_inconsistent = type(exc).__name__ == "OwlReadyInconsistentOntologyError"
         return ReasonerReport(
             executed=False,
             consistent=None,
@@ -323,6 +367,7 @@ def run_owl_reasoner(
             java_executable=locals().get("java_executable"),
             fallback="explicit_axioms_only",
             user_message=java_required_message() if is_missing_java else (
+                inconsistency_message(ontology) if is_inconsistent else
                 "O reasoner OWL DL falhou. A ontologia não foi ativada; "
                 "verifique a sintaxe OWL, a memória disponível e a instalação Java."
             ),
