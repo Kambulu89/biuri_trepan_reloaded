@@ -52,6 +52,19 @@ def _replace_missing(series: pd.Series, tokens: Sequence[str]) -> pd.Series:
     return series.map(conv)
 
 
+def _coerce_numeric_text(series: pd.Series) -> pd.Series:
+    """Converte para numérico uma coluna de texto cujos valores presentes são todos números; caso contrário devolve-a intacta."""
+    if pd.api.types.is_numeric_dtype(series) or pd.api.types.is_bool_dtype(series):
+        return series
+    present = series.dropna()
+    if present.empty or not all(isinstance(v, str) for v in present):
+        return series
+    coerced = pd.to_numeric(present.str.strip(), errors="coerce")
+    if coerced.isna().any() or not np.isfinite(coerced.to_numpy(dtype=float)).all():
+        return series
+    return pd.to_numeric(series.map(lambda v: v.strip() if isinstance(v, str) else v), errors="coerce")
+
+
 def _is_datetime_like(s: pd.Series) -> bool:
     non = s.dropna()
     if non.empty or pd.api.types.is_numeric_dtype(non):
@@ -308,6 +321,11 @@ def build_data_contract(
     overrides = {str(k): str(v) for k,v in (user_overrides or {}).items()}
 
     normalised = pd.DataFrame({c: _replace_missing(work[c], missing_tokens) for c in work.columns}, index=work.index)
+    # Um marcador de ausente ('?', 'NA', ...) faz o leitor de CSV devolver a coluna como texto. O tipo inferido não pode
+    # depender de existirem ausentes: se TODOS os valores presentes são números, a coluna é numérica (o alvo nunca é convertido).
+    for c in normalised.columns:
+        if c != target_name:
+            normalised[c] = _coerce_numeric_text(normalised[c])
 
     warnings_out: List[Dict[str, Any]] = []
     if duplicates:
