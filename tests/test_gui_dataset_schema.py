@@ -255,3 +255,25 @@ def test_configure_dataset_feature_is_gone(app):
     assert not hasattr(app, "btn_dataset_config") and not hasattr(app, "open_dataset_config_dialog")
     import gui.dataset_schema_support as mod
     assert not hasattr(mod, "DatasetConfigDialog")
+
+
+def test_ontology_rejection_shows_the_real_reason_not_a_generic_failure(app, tmp_path, monkeypatch):
+    """Regressão: «O treino falhou — verifique o dataset» escondia que a ontologia fora rejeitada pelo quality gate."""
+    app.load_data_from_file(_write(tmp_path, "d.csv", CSV))
+    shown = []
+    monkeypatch.setattr(app, "_show_structured_error", lambda m: shown.append(m))
+
+    class _Dlg:
+        def close(self):
+            pass
+    err = ("ValueError: Ontologia rejeitada pelo quality gate: Cobertura de matching insuficiente (0.0% < 35.0%). "
+           "| Poucas entidades ontológicas distintas foram mapeadas.")
+    app._on_training_failed(err, _Dlg())
+    assert shown, "o diálogo de erro devia abrir"
+    msg = shown[0]
+    assert "rejeitada pelo quality gate" in msg.text and "Cobertura de matching insuficiente" in msg.text
+    assert "remova a OWL" in msg.action and "Verifique o dataset" not in msg.action
+    # outros erros mantêm a mensagem genérica de sempre
+    shown.clear()
+    app._on_training_failed("ValueError: outro erro qualquer", _Dlg())
+    assert "O treino do modelo falhou" in shown[0].text and "Verifique o dataset" in shown[0].action

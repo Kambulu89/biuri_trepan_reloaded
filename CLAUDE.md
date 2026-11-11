@@ -62,3 +62,10 @@
 - Merge para `main` só a pedido explícito. Não criar PR sem pedido.
 - Resultados brutos são imutáveis e as tabelas reconstroem-se só deles; equivalência de otimizações provada com
   `validation/benchmark/equivalence_report.py` (comparação exata).
+
+## 4. Protocolo de validação (permanente — texto completo em `docs/PROTOCOLO_VALIDACAO.md`)
+- **Regra absoluta:** nunca declarar «verificado/validado/testado/corrigido/funcional/sem erros» sem ter executado o processo real que o comprova. Distinguir sempre: código escrito · análise estática · testes unitários · testes de integração · processo ponta a ponta · resultado científico.
+- Carregar dataset ≠ treino; carregar OWL ≠ consistência (HermiT); instanciar MLP ≠ treinar; teste unitário ≠ aplicação; dados sintéticos ≠ reais; consistência ontológica ≠ qualidade científica.
+- Alterações exigem a execução real correspondente (CSV → carregamento real; MLP → treino completo; TREPAN → extração real; ontologia → pipeline + reasoner; GUI → fluxo com backend). Erros reportados: **reproduzir → causa-raiz → corrigir → repetir a operação original → regressão**.
+- Fidelidade ao MLP e accuracy face aos rótulos reais reportam-se sempre separadas; teste nunca usado para escolher hiperparâmetros.
+- Fim de cada tarefa: relatório A–H com matriz (IMPLEMENTADO / EXECUTADO / VALIDADO / FALHOU / BLOQUEADO / NÃO TESTADO) e estado final com o âmbito exatamente comprovado.
