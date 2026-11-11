@@ -94,7 +94,7 @@ VOCABS = [("Atributo", "nombreAtributo", "tipoDato", "EtiquetaObjetivo", "valorE
 ])
 def test_unseen_domains_resolve_by_the_same_mechanism(tmp_path, seed, n_num, n_cat, labels, vocab, target_pos):
     csv, owl, target, num, cat = _make_domain(tmp_path, seed, n_num, n_cat, labels, vocab, target_pos)
-    onto = World().get_ontology(owl.as_uri()).load()
+    onto = World().get_ontology(str(owl.resolve())).load()
     df, meta = read_tabular_text(csv)
     decl = read_ontology_schema(onto, list(df.columns))
     s = build_schema(df, file_path=csv, source_format="csv", ontology_decl=decl)
@@ -111,7 +111,7 @@ def test_metamorphic_rename_and_reorder_gives_equivalent_resolution(tmp_path):
     other = _make_domain(tmp_path, 99, 5, 2, ["p", "q", "r"], VOCABS[1], 0)       # outros nomes, alvo noutra posição
     out = []
     for csv, owl, target, num, cat in (base, other):
-        onto = World().get_ontology(owl.as_uri()).load()
+        onto = World().get_ontology(str(owl.resolve())).load()
         df, _ = read_tabular_text(csv)
         s = build_schema(df, file_path=csv, source_format="csv", ontology_decl=read_ontology_schema(onto, list(df.columns)))
         out.append((s.target_source, s.class_order_source, sorted(c.kind for c in s.columns if c.name != s.target),
@@ -135,6 +135,6 @@ def test_vocabulary_is_extensible_without_code_changes(tmp_path):
             '<rdf:Description rdf:about="#k2"><rdf:type rdf:resource="#Zielklasse"/><Zielwert>nein</Zielwert></rdf:Description></rdf:RDF>')
     p = tmp_path / "de.owl"
     p.write_text(body, encoding="utf-8")
-    d = read_ontology_schema(World().get_ontology(p.as_uri()).load(), vocabulary=vocab)
+    d = read_ontology_schema(World().get_ontology(str(p.resolve())).load(), vocabulary=vocab)
     assert d.column_types == {"x1": "numeric"} and d.class_labels == ["ja", "nein"]
-    assert read_ontology_schema(World().get_ontology(p.as_uri()).load()).class_labels == []   # sem o vocabulário extra: nada
+    assert read_ontology_schema(World().get_ontology(str(p.resolve())).load()).class_labels == []   # sem o vocabulário extra: nada

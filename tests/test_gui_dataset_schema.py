@@ -166,9 +166,9 @@ def test_ontology_type_info_is_computed_when_ontology_loaded(app, tmp_path):
            '</rdf:RDF>')
     from owlready2 import World
     world = World()
-    onto = world.get_ontology((tmp_path / "o.owl").as_uri())
+    onto = world.get_ontology(str((tmp_path / "o.owl").resolve()))
     (tmp_path / "o.owl").write_text(owl, encoding="utf-8")
-    onto = world.get_ontology((tmp_path / "o.owl").as_uri()).load()
+    onto = world.get_ontology(str((tmp_path / "o.owl").resolve())).load()
     app.loaded_ontology = onto
     app.load_data_from_file(_write(tmp_path, "d.csv", CSV.replace("1.5", "1.5").replace("size", "size")))
     info = app._ontology_type_info(app.dataset_schema)
@@ -195,7 +195,7 @@ def _onto(tmp_path, labels=("P", "N"), attrs=(("m1", "numeric"), ("m2", "numeric
                  f'<valorEtiqueta>{v}</valorEtiqueta></rdf:Description>')
     path = tmp_path / "onto.owl"
     path.write_text(body + "</rdf:RDF>", encoding="utf-8")
-    return World().get_ontology(path.as_uri()).load()
+    return World().get_ontology(str(path.resolve())).load()
 
 
 ONTO_CSV = "m1,outcome,m2\n1.5,N,2.5\n2.5,P,3.5\n3.5,N,4.5\n4.5,P,5.5\n5.5,N,6.5\n6.5,P,7.5\n"

@@ -15,7 +15,7 @@ HEAD = ('<?xml version="1.0"?><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-r
 def _load(tmp_path, body, name="o.owl"):
     p = tmp_path / name
     p.write_text(HEAD + body + "</rdf:RDF>", encoding="utf-8")
-    return World().get_ontology(p.as_uri()).load()
+    return World().get_ontology(str(p.resolve())).load()
 
 
 def _abox(attr_cls, attr_name_prop, type_prop, label_cls, value_prop, attrs, labels, extra=""):
