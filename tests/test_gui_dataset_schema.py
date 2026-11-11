@@ -1,4 +1,4 @@
-"""Integração GUI: CSV/ARFF com esquema de dataset (alvo, ordem das classes, tipos), bloqueio pré-treino, retrocompatibilidade."""
+"""Integração GUI: esquema resolvido automaticamente (ARFF › ontologia › inferência) e validado antes do treino."""
 import os
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
@@ -16,7 +16,6 @@ from core.mlp_trainer import MLPTrainer
 from core.model_cache import build_cache_key
 from core.training_config import get_training_preset
 from gui.biuri_app_complete import BiuriApp
-from gui.dataset_config_support import DatasetConfigDialog
 
 CSV = ("code,size,flag,label\n"
        "1,1.5,yes,hi\n2,2.5,no,lo\n3,3.5,yes,hi\n1,4.5,no,lo\n2,5.5,yes,hi\n3,6.5,no,lo\n")
@@ -57,7 +56,7 @@ def test_csv_loads_with_schema_and_numeric_codes_stay_categorical(app, tmp_path)
     assert app.trepan.mlp_trainer.arff_meta['forced_categorical_columns'] == ['code']
     X, y = app.original_data
     assert X.shape == (6, 3) and list(y[:2]) == ['hi', 'lo']
-    assert load_saved_schema(app.dataset_schema.dataset_id) is not None       # persistido por dataset
+    assert load_saved_schema(app.dataset_schema.dataset_id) is not None       # esquema resolvido registado
 
 
 def test_trainer_encodes_forced_categorical_numeric_codes():
@@ -104,29 +103,22 @@ def test_pre_training_gate_allows_valid_dataset(app, tmp_path, monkeypatch):
     assert len(launched) == 1 and not app._box["critical"]
 
 
-def test_manual_request_changes_target_order_and_types_and_persists(app, tmp_path):
-    path = _write(tmp_path, "d.csv", CSV)
-    app.load_data_from_file(path)
-    app._pending_schema_request = {"manual_class_order": ["lo", "hi"], "type_overrides": {"code": {"kind": "numeric"}}}
-    app.load_data_from_file(path)
-    assert app.arff_meta['classes'] == ['lo', 'hi'] and app.arff_meta['class_order_source'] == 'manual'
-    assert app.arff_meta['forced_categorical_columns'] == []
-    app.load_data_from_file(path)                                              # recarregar aplica a configuração guardada
-    assert app.arff_meta['classes'] == ['lo', 'hi'] and app.arff_meta['column_types']['code'] == 'numeric'
 
 
-def test_trained_model_order_is_protected_and_conflict_blocks(app, tmp_path):
+def test_trained_model_order_is_protected_for_same_dataset_only(app, tmp_path):
     path = _write(tmp_path, "d.csv", CSV)
     app.load_data_from_file(path)
+    assert app._validate_dataset_before_training() is True                       # o treino arranca e regista o dataset
     tr = app.trepan.mlp_trainer
-    tr.model = object()                                                        # "modelo treinado"
+    tr.model = object()                                                        # "modelo treinado" neste dataset
     tr.label_encoder.classes_ = np.asarray(['lo', 'hi'], dtype=object)
     app.load_data_from_file(path)                                              # recarga: herda a ordem do modelo
     assert app.arff_meta['classes'] == ['lo', 'hi'] and app.arff_meta['class_order_source'] == 'trained_model'
-    app._pending_schema_request = {"manual_class_order": ["hi", "lo"]}         # pedido divergente: nunca em silêncio
-    app.load_data_from_file(path)
-    assert any(i.code == "CLASS_ORDER_CHANGES_TRAINED_MODEL" for i in app.dataset_validation.critical)
-    assert app._validate_dataset_before_training() is False
+    assert app._validate_dataset_before_training() is True
+    # um modelo treinado noutro ficheiro nunca bloqueia dados novos
+    other = _write(tmp_path, "other.csv", CSV.replace("hi", "up").replace("lo", "down"))
+    app.load_data_from_file(other)
+    assert app.arff_meta['classes'] == ['down', 'up'] and app._validate_dataset_before_training() is True
 
 
 def test_cache_key_unchanged_by_default_and_changes_with_schema():
@@ -138,19 +130,6 @@ def test_cache_key_unchanged_by_default_and_changes_with_schema():
     assert build_cache_key(**kw, schema_signature='abc') != build_cache_key(**kw, schema_signature='abd')
 
 
-def test_config_dialog_changes_target_order_and_blocks_on_critical(qapp, app, tmp_path):
-    app.load_data_from_file(_write(tmp_path, "d.csv", CSV))
-    dlg = DatasetConfigDialog(app, app._dataset_raw_df, app._dataset_make_schema, app._dataset_validate,
-                              app.dataset_schema, None)
-    assert dlg.class_list.count() == 2
-    dlg.class_list.setCurrentRow(0)
-    dlg._move(1)
-    assert dlg.request()["manual_class_order"] == ['lo', 'hi']
-    dlg.target_combo.setCurrentText('flag')
-    assert dlg.request()["manual_target"] == 'flag' and dlg.request()["manual_class_order"] is None
-    from PyQt6.QtWidgets import QDialogButtonBox
-    assert dlg.buttons.button(QDialogButtonBox.StandardButton.Ok).isEnabled()
-    dlg.close()
 
 
 def test_load_dialog_mentions_arff_and_csv(qapp):
@@ -194,3 +173,85 @@ def test_ontology_type_info_is_computed_when_ontology_loaded(app, tmp_path):
     app.load_data_from_file(_write(tmp_path, "d.csv", CSV.replace("1.5", "1.5").replace("size", "size")))
     info = app._ontology_type_info(app.dataset_schema)
     assert info is not None and getattr(app, "_ontology_check_error", None) is None
+
+
+# ---- a ontologia ativa define alvo, ordem das classes e tipos; tudo validado contra os dados
+OWL_HEAD = ('<?xml version="1.0"?><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
+            'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" '
+            'xml:base="http://ex.org/o" xmlns="http://ex.org/o#"><owl:Ontology rdf:about="http://ex.org/o"/>'
+            '<owl:Class rdf:about="#Atributo"/><owl:Class rdf:about="#EtiquetaObjetivo"/>'
+            '<owl:DatatypeProperty rdf:about="#nombreAtributo"/><owl:DatatypeProperty rdf:about="#tipoDato"/>'
+            '<owl:DatatypeProperty rdf:about="#valorEtiqueta"/>')
+
+
+def _onto(tmp_path, labels=("P", "N"), attrs=(("m1", "numeric"), ("m2", "numeric"))):
+    from owlready2 import World
+    body = OWL_HEAD
+    for n, k in attrs:
+        body += (f'<rdf:Description rdf:about="#a_{n}"><rdf:type rdf:resource="#Atributo"/>'
+                 f'<nombreAtributo>{n}</nombreAtributo><tipoDato>{k}</tipoDato></rdf:Description>')
+    for i, v in enumerate(labels, 1):
+        body += (f'<rdf:Description rdf:about="#e_{i}"><rdf:type rdf:resource="#EtiquetaObjetivo"/>'
+                 f'<valorEtiqueta>{v}</valorEtiqueta></rdf:Description>')
+    path = tmp_path / "onto.owl"
+    path.write_text(body + "</rdf:RDF>", encoding="utf-8")
+    return World().get_ontology(path.as_uri()).load()
+
+
+ONTO_CSV = "m1,outcome,m2\n1.5,N,2.5\n2.5,P,3.5\n3.5,N,4.5\n4.5,P,5.5\n5.5,N,6.5\n6.5,P,7.5\n"
+
+
+def test_ontology_defines_target_and_class_order_without_manual_config(app, tmp_path):
+    app.loaded_ontology = _onto(tmp_path)                                      # ontologia ativa antes dos dados
+    app.load_data_from_file(_write(tmp_path, "d.csv", ONTO_CSV))
+    meta = app.arff_meta
+    assert meta['target'] == 'outcome' and meta['target_source'] == 'ontology'   # a coluna-alvo NÃO é a última
+    assert meta['classes'] == ['P', 'N'] and meta['class_order_source'] == 'ontology'
+    assert meta['class_mapping'] == {'P': 0, 'N': 1}
+    assert meta['features'] == ['m1', 'm2'] and meta['ontology_schema']['class_labels'] == ['P', 'N']
+    assert not app.dataset_validation.critical
+    assert app.trepan.mlp_trainer.arff_meta['classes'] == ['P', 'N']          # o encoder do MLP recebe esta ordem
+
+
+def test_ontology_loaded_after_data_re_resolves_schema(app, tmp_path):
+    path = _write(tmp_path, "d.csv", ONTO_CSV)
+    app.load_data_from_file(path)
+    assert app.arff_meta['target'] == 'm2' and app.arff_meta['target_source'] == 'default_last'   # sem ontologia
+    app.loaded_ontology = _onto(tmp_path)
+    app._refresh_dataset_schema_after_ontology_change()
+    assert app.arff_meta['target'] == 'outcome' and app.arff_meta['classes'] == ['P', 'N']
+    app.loaded_ontology = None
+    app._refresh_dataset_schema_after_ontology_change()
+    assert app.arff_meta['target'] == 'm2'
+
+
+def test_ontology_data_conflict_blocks_training(app, tmp_path, monkeypatch):
+    app.loaded_ontology = _onto(tmp_path, labels=("X", "Y"))                   # classes que não existem no ficheiro
+    app.load_data_from_file(_write(tmp_path, "d.csv", ONTO_CSV))
+    assert "ONTOLOGY_CLASSES_MISMATCH" in [i.code for i in app.dataset_validation.critical]
+    launched = []
+    monkeypatch.setattr(app, "_launch_training_worker", lambda preset: launched.append(preset))
+    app.train_model()
+    assert launched == [] and app._box["critical"]
+
+
+def test_ontology_of_another_domain_blocks_training(app, tmp_path, monkeypatch):
+    app.loaded_ontology = _onto(tmp_path, attrs=(("foo", "numeric"), ("bar", "numeric")))
+    app.load_data_from_file(_write(tmp_path, "d.csv", ONTO_CSV))
+    assert "ONTOLOGY_DATA_UNRELATED" in [i.code for i in app.dataset_validation.critical]
+
+
+def test_ontology_declared_types_reach_the_mlp_preprocessing(app, tmp_path):
+    csv = "code,m1,outcome\n1,1.5,N\n2,2.5,P\n3,3.5,N\n1,4.5,P\n2,5.5,N\n3,6.5,P\n"
+    app.loaded_ontology = _onto(tmp_path, attrs=(("code", "numeric"), ("m1", "numeric")))
+    app.load_data_from_file(_write(tmp_path, "d.csv", csv))
+    assert app.arff_meta['column_types']['code'] == 'numeric' and app.arff_meta['forced_categorical_columns'] == []
+    app.loaded_ontology = None
+    app._refresh_dataset_schema_after_ontology_change()
+    assert 'code' in app.arff_meta['forced_categorical_columns']              # sem ontologia: códigos continuam categóricos
+
+
+def test_configure_dataset_feature_is_gone(app):
+    assert not hasattr(app, "btn_dataset_config") and not hasattr(app, "open_dataset_config_dialog")
+    import gui.dataset_schema_support as mod
+    assert not hasattr(mod, "DatasetConfigDialog")

@@ -53,7 +53,7 @@ from gui.surrogate_improvement_dialog import SurrogateImprovementDialog
 from gui.metrics_worker import MetricsWorker
 from gui import theme
 from dataclasses import asdict
-from gui.dataset_config_support import DatasetConfigMixin
+from gui.dataset_schema_support import DatasetSchemaMixin
 from gui.audit_panel import AuditPanel
 from gui.audit_controller import AuditController, dataset_fingerprint_of, progress_text
 from gui.strings import tr
@@ -807,7 +807,7 @@ class MetricsComparisonWidget(QWidget):
             )
 
 
-class BiuriApp(DatasetConfigMixin, QMainWindow):
+class BiuriApp(DatasetSchemaMixin, QMainWindow):
     
     def __init__(self):
         super().__init__()
@@ -1073,10 +1073,6 @@ class BiuriApp(DatasetConfigMixin, QMainWindow):
         )
 
         pipeline_layout.addWidget(self.btn_load_data)
-        self.btn_dataset_config = QPushButton("⚙ Configurar dataset")
-        self.btn_dataset_config.setToolTip("Coluna-alvo, ordem das classes e tipos das colunas (CSV/ARFF)")
-        self.btn_dataset_config.setAccessibleName("Configurar dataset")
-        pipeline_layout.addWidget(self.btn_dataset_config)
 
         train_cluster = QWidget()
         train_cluster_layout = QVBoxLayout(train_cluster)
@@ -1441,7 +1437,6 @@ que la red se vuelve interpretable.
             self.results_text.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
 
         self.btn_load_data.clicked.connect(self.load_data)
-        self.btn_dataset_config.clicked.connect(self.open_dataset_config_dialog)
         self.btn_train_model.clicked.connect(self.train_model)
         self.btn_generate_explanation.clicked.connect(self.generate_explanation)
         self.btn_visualize_tree.clicked.connect(self.visualize_tree)
@@ -1583,6 +1578,7 @@ que la red se vuelve interpretable.
             self._discard_trained_artifacts()
         self._invalidate_counterfactual_results(reason or "ontologia")
         self._audit_check_stale()
+        self._schedule_schema_refresh()
 
     def _discard_trained_artifacts(self):
         """Descarta TODOS os artefactos que dependem do estado ontológico (modelos, árvores, matrizes, métricas, caches, explicações, benchmark)."""
@@ -1717,7 +1713,7 @@ que la red se vuelve interpretable.
                 # Depois carregar dados ARFF
                 self.show_progress("Cargando datos...")
                 self._dataset_encoding = dialog.encoding_combo.currentText()
-                self.load_data_from_file(arff_path, interactive=True)
+                self.load_data_from_file(arff_path)
                 
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"Error al cargar archivos: {str(e)}")
@@ -2591,8 +2587,8 @@ que la red se vuelve interpretable.
             ]
         return augmentation
 
-    def load_data_from_file(self, file_path, interactive=False):
-        result = self._load_data_from_file_impl(file_path, interactive=interactive)
+    def load_data_from_file(self, file_path):
+        result = self._load_data_from_file_impl(file_path)
         self._on_dataset_loaded(file_path)
         return result
 
@@ -2626,7 +2622,7 @@ que la red se vuelve interpretable.
                 import logging
                 logging.getLogger("biuri.gui").warning("Verificação de stale falhou: %s", exc)
 
-    def _load_data_from_file_impl(self, file_path, interactive=False):
+    def _load_data_from_file_impl(self, file_path):
         
         self.ontology_augmented_columns = []
         self.ontology_feature_summary = []
@@ -2647,9 +2643,9 @@ que la red se vuelve interpretable.
                 # Esquema do dataset: alvo/ordem/tipos. ARFF por omissão (alvo = última coluna, ordem declarada,
                 # sem correções manuais) devolve o dataframe intacto, exatamente como antes.
                 df, dataset_schema = self._prepare_dataset_schema(
-                    file_path, df, 'arff', arff_header=read_arff_header(file_path), interactive=interactive)
+                    file_path, df, 'arff', arff_header=read_arff_header(file_path))
             else:
-                df, relation_name, attributes, dataset_schema = self._load_tabular_dataset(file_path, interactive=interactive)
+                df, relation_name, attributes, dataset_schema = self._load_tabular_dataset(file_path)
             
             original_features = list(df.columns[:-1])
             target_col = df.columns[-1]
@@ -2820,7 +2816,7 @@ que la red se vuelve interpretable.
             info_text += "🎯 Lo que queremos predecir: {}\n".format(self.arff_meta['target'])
             info_text += "🏷️ Valores de la Clase: {}\n".format(", ".join([str(c) for c in self.arff_meta['classes']]))
             info_text += "   (Total: {} valores únicos)\n\n".format(len(self.arff_meta['classes']))
-            info_text += "⚙ Configuración del dataset (revísela con «⚙ Configurar dataset»):\n"
+            info_text += "⚙ Esquema del dataset (resuelto automáticamente: ARFF › ontología › inferencia):\n"
             info_text += self.dataset_schema_summary() + "\n\n"
             if augmentation_info and self.ontology_feature_summary:
                 mapped_n = augmentation_info.get('mapped_features', 0)
