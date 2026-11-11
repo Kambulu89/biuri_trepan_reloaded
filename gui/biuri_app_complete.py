@@ -591,6 +591,18 @@ class TreeVisualizationWidget(QWidget):
             
             # Criar controles da árvore
             self.tree_controls = self._create_tree_controls()
+
+            # Tamanho total e profundidade máxima do modelo seleccionado (actualizados ao trocar de árvore)
+            self.tree_info_label = QLabel()
+            self.tree_info_label.setObjectName("tree_info_label")
+            self.tree_info_label.setWordWrap(True)
+            self.tree_info_label.setAccessibleName("Tamanho total e profundidade máxima da árvore")
+            self.tree_info_label.setStyleSheet(
+                f"color: {theme.TEXT}; background-color: {theme.SURFACE_CONTROL}; "
+                f"border: 1px solid {theme.BORDER_CONTROL}; border-radius: 4px; padding: 4px 8px; font-weight: bold;"
+            )
+            layout.addWidget(self.tree_info_label)
+            self._update_tree_info()
             
             # Layout com controles e árvore
             self.main_layout = QHBoxLayout()
@@ -625,6 +637,15 @@ class TreeVisualizationWidget(QWidget):
             error_label.setStyleSheet(f"color: {theme.ACTION_METRICS};")
             layout.addWidget(error_label)
     
+    def _update_tree_info(self):
+        """«Modelo — Tamanho total: N nós (…) · Profundidade máxima: D» para a árvore actualmente mostrada."""
+        label = getattr(self, 'tree_info_label', None)
+        widget = getattr(self, 'tree_widget', None)
+        if label is None or widget is None:
+            return
+        info = widget.tree_info_text()
+        label.setText(f"{self._get_current_model_name()} — {info}" if info else "")
+
     def _get_current_model_name(self):
         if hasattr(self, 'tree_combo'):
             return self.tree_combo.currentText()
@@ -649,6 +670,7 @@ class TreeVisualizationWidget(QWidget):
                     new_tree, feature_names=names,
                     algorithm=self.tree_combo.currentText() if hasattr(self, 'tree_combo') else None,
                 )
+                self._update_tree_info()
                 
                 # Recriar controles (export PNG usa feature_names actuais)
                 self.tree_controls.close()
