@@ -1,0 +1,24 @@
+{
+  "_comment": "Vocabulário genérico (multilingue) para ler o esquema do dataset declarado numa ontologia OWL. Não contém nomes de datasets. Nomes comparados em minúsculas, sem acentos e só alfanuméricos.",
+  "properties": {
+    "column_name": ["biuriColumnName", "columnName", "attributeName", "featureName", "variableName", "nombreAtributo", "nomeAtributo", "nombreColumna", "nomeColuna"],
+    "data_type": ["biuriDataType", "dataType", "datatype", "valueType", "tipoDato", "tipoDados", "tipoDeDato", "tipoDeDados"],
+    "is_target": ["biuriIsTarget", "isTarget", "esObjetivo", "eAlvo"],
+    "class_order": ["biuriClassOrder", "classOrder", "ordenClases", "ordemClasses"],
+    "class_index": ["biuriClassIndex", "classIndex", "indiceClase", "indiceClasse", "orderIndex"],
+    "class_value": ["biuriClassValue", "classValue", "labelValue", "classLabelValue", "valorEtiqueta", "valorClase", "valorClasse"],
+    "ordinal_order": ["biuriOrdinalOrder", "ordinalOrder", "ordenOrdinal", "ordemOrdinal"]
+  },
+  "classes": {
+    "target_label": ["TargetLabel", "ClassLabel", "ClassValue", "TargetClass", "EtiquetaObjetivo", "EtiquetaClase", "EtiquetaAlvo", "RotuloAlvo"],
+    "attribute": ["Attribute", "Feature", "Column", "Variable", "Atributo", "Columna", "Coluna"]
+  },
+  "kinds": {
+    "numeric": ["numeric", "numerical", "number", "real", "integer", "int", "float", "double", "decimal", "numerico", "numerica"],
+    "categorical": ["categorical", "category", "nominal", "string", "text", "categorico", "categorica", "texto"],
+    "ordinal": ["ordinal"],
+    "boolean": ["boolean", "bool", "binary", "binario", "booleano"],
+    "datetime": ["datetime", "date", "timestamp", "time", "fecha", "fechahora", "datahora", "data"]
+  },
+  "target_markers": ["target", "class", "label", "objetivo", "clase", "etiqueta", "alvo", "classe", "rotulo"]
+}

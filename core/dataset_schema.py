@@ -1,17 +1,17 @@
-"""Configuração e validação agnósticas de datasets CSV/ARFF (coluna-alvo, ordem das classes, tipos).
+"""Resolução automática e validação do esquema de datasets CSV/ARFF (coluna-alvo, ordem das classes, tipos).
 
-Contrato (sem lógica por dataset; só propriedades gerais dos dados e do ficheiro):
+Sem configuração manual. Contrato (sem lógica por dataset; só propriedades gerais dos dados, do ficheiro e da ontologia):
 
-* Coluna-alvo — precedência: escolha manual > configuração guardada do dataset > diretiva ARFF explícita
-  (``% biuri:target = nome`` ou ``@relation ... -C <n>``) > última coluna.
-* Ordem das classes — precedência: ordem do modelo/encoder já treinado (protegida) > ordem manual > ordem nominal
-  declarada no ARFF > ordenação determinística (numérica se todos os rótulos forem numéricos; senão lexicográfica).
-  O mapeamento rótulo→índice é guardado e é o MESMO usado por métricas, matrizes, probabilidades, regras e explicações
-  (todos derivam do ``OrderedLabelEncoder`` construído a partir desta ordem).
-* Tipos — numeric, categorical, ordinal, boolean, datetime. Prioridade: declarado no ARFF > manual > guardado >
+* Coluna-alvo — precedência: diretiva ARFF explícita (``% biuri:target = nome`` ou ``@relation ... -C <n>``) › alvo declarado
+  na ontologia (anotação/indivíduo marcado, ou a única coluna cujos valores coincidem com as etiquetas de classe da ontologia)
+  › última coluna. Declarações em conflito (ARFF ≠ ontologia) bloqueiam o treino.
+* Ordem das classes — precedência: ordem do modelo/encoder já treinado (protegida) › ordem nominal declarada no ARFF ›
+  ordem declarada na ontologia › ordenação determinística (numérica se todos os rótulos forem numéricos; senão lexicográfica).
+  O mapeamento rótulo→índice é guardado e é o MESMO usado por MLP, TREPAN, métricas, matrizes, probabilidades e explicações.
+* Tipos — numeric, categorical, ordinal, boolean, datetime. Prioridade: declarado no ARFF › declarado na ontologia ›
   inferência pelos valores. Códigos numéricos de poucas categorias NÃO são classificados como numéricos sem aviso.
-* Validação — relatório de incompatibilidades (críticas bloqueiam; avisos informam) entre ficheiro, esquema guardado,
-  ARFF de referência, modelo/encoder treinado e ontologia.
+* Validação — relatório de incompatibilidades (críticas bloqueiam; avisos informam) entre ficheiro, ARFF de referência,
+  ontologia, modelo/encoder treinado e pré-processamento do MLP.
 
 Nada aqui altera modelos já treinados: a ordem de um modelo treinado é só consultada e protegida.
 """
@@ -49,7 +49,7 @@ CRITICAL, WARNING, INFO = "critical", "warning", "info"
 class ColumnSpec:
     name: str
     kind: str = "numeric"
-    source: str = "inferred"            # arff_declared | inferred | manual | saved
+    source: str = "inferred"            # arff_declared | ontology | inferred
     declared: Optional[str] = None      # tipo declarado no ARFF (texto)
     categories: Optional[List[str]] = None
     ordinal_order: Optional[List[str]] = None
@@ -65,12 +65,11 @@ class DatasetSchema:
     file_name: str
     source_format: str                  # arff | csv
     target: str
-    target_source: str                  # default_last | arff_explicit | manual | saved
+    target_source: str                  # default_last | arff_explicit | ontology
     columns: List[ColumnSpec] = field(default_factory=list)   # todas as colunas, incluindo o alvo (ordem do ficheiro)
     class_order: List[str] = field(default_factory=list)
-    class_order_source: str = "sorted"  # trained_model | manual | arff_declared | sorted
+    class_order_source: str = "sorted"  # trained_model | arff_declared | ontology | sorted
     class_mapping: Dict[str, int] = field(default_factory=dict)
-    drop_missing_rows: bool = False
     separator: Optional[str] = None
     encoding: Optional[str] = None
     schema_version: int = SCHEMA_VERSION
@@ -98,7 +97,7 @@ class DatasetSchema:
     def is_default_arff(self) -> bool:
         """Esquema sem qualquer intervenção: o comportamento anterior do BIURI para ARFF mantém-se exatamente."""
         return (self.source_format == "arff" and self.target_source == "default_last"
-                and self.class_order_source == "arff_declared" and not self.drop_missing_rows
+                and self.class_order_source == "arff_declared"
                 and all(c.source in ("arff_declared", "inferred") for c in self.columns))
 
     @property
@@ -106,9 +105,9 @@ class DatasetSchema:
         return self.source_format != "arff" or not self.is_default_arff()
 
     def signature(self) -> str:
-        """Hash estável do que afeta o treino (alvo, ordem das classes, tipos, categorias ordinais, descarte de ausentes)."""
+        """Hash estável do que afeta o treino (alvo, ordem das classes, tipos, categorias ordinais)."""
         payload = {
-            "target": self.target, "class_order": list(self.class_order), "drop": bool(self.drop_missing_rows),
+            "target": self.target, "class_order": list(self.class_order),
             "columns": [[c.name, c.kind, list(c.ordinal_order or [])] for c in self.columns],
         }
         return hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()[:16]
@@ -146,8 +145,8 @@ class DatasetSchema:
 
 
 _SOURCE_LABELS = {
-    "default_last": "última coluna por omissão", "arff_explicit": "definida no ARFF", "manual": "escolha manual",
-    "saved": "configuração guardada", "trained_model": "ordem do modelo treinado", "arff_declared": "declarada no ARFF",
+    "default_last": "última coluna por omissão", "arff_explicit": "definida no ARFF", "ontology": "declarado na ontologia",
+    "trained_model": "ordem do modelo treinado", "arff_declared": "declarada no ARFF",
     "sorted": "ordenação determinística", "arff_declared_type": "declarado no ARFF", "inferred": "inferido",
 }
 
@@ -354,42 +353,51 @@ def infer_kind(values: Sequence[Any]) -> Tuple[str, bool, str]:
 
 
 # ----------------------------------------------------------------------------- construção do esquema
+def _target_from_ontology(df: pd.DataFrame, names: Sequence[str], decl) -> Tuple[Optional[str], str]:
+    """Alvo declarado na ontologia: coluna marcada, ou a ÚNICA coluna cujos valores coincidem com as etiquetas de classe."""
+    if decl is None:
+        return None, ""
+    if decl.target_column and decl.target_column in names:
+        return decl.target_column, decl.target_evidence or "declarado na ontologia"
+    labels = {_norm_text(v) for v in decl.class_labels}
+    if len(labels) >= 2:
+        hits = []
+        for n in names:
+            vals = {_norm_text(v) for v in df[n] if not is_missing(v)}
+            if len(vals) >= 2 and vals <= labels:
+                hits.append(n)
+        if len(hits) == 1:
+            return hits[0], "valores coincidem com as etiquetas de classe da ontologia"
+    return None, ""
+
+
 def build_schema(
     df: pd.DataFrame,
     *,
     file_path: str | os.PathLike,
     source_format: str,
     arff_header: Optional[Mapping[str, Any]] = None,
-    saved: Optional[DatasetSchema] = None,
-    manual_target: Optional[str] = None,
-    manual_class_order: Optional[Sequence[str]] = None,
-    type_overrides: Optional[Mapping[str, Mapping[str, Any]]] = None,
-    drop_missing_rows: Optional[bool] = None,
+    ontology_decl=None,
     trained_class_order: Optional[Sequence[str]] = None,
     separator: Optional[str] = None,
     encoding: Optional[str] = None,
 ) -> DatasetSchema:
-    """Constrói o esquema segundo as precedências do módulo. ``df`` traz os valores originais (texto ou tipos ARFF)."""
+    """Resolve o esquema automaticamente (ARFF › ontologia › inferência). ``df`` traz os valores originais (texto ou tipos ARFF)."""
     names = [str(c) for c in df.columns]
     if not names:
         raise ValueError("Dataset sem colunas.")
     header = dict(arff_header or {})
     declared = {n: d for n, d in header.get("attributes", [])}
+    decl = ontology_decl if (ontology_decl is not None and getattr(ontology_decl, "has_any", False)) else None
 
-    # --- alvo
-    if manual_target is not None:
-        target, tsrc = manual_target, "manual"
-    elif saved is not None and saved.target in names:
-        target, tsrc = saved.target, ("saved" if saved.target_source in ("manual", "saved") else saved.target_source)
-    elif header.get("target_directive") in names:
+    # --- alvo (o conflito ARFF ≠ ontologia é reportado por validate_schema; aqui prevalece o ficheiro de dados)
+    onto_target, _ev = _target_from_ontology(df, names, decl)
+    if header.get("target_directive") in names:
         target, tsrc = header["target_directive"], "arff_explicit"
+    elif onto_target is not None and onto_target != names[-1]:
+        target, tsrc = onto_target, "ontology"       # coincidir com a última coluna não altera nada (comportamento anterior)
     else:
         target, tsrc = names[-1], "default_last"
-    if target not in names:
-        raise ValueError(f"Coluna-alvo inexistente: {target!r}.")
-
-    overrides = {k: dict(v) for k, v in (type_overrides or {}).items()}
-    saved_cols = {c.name: c for c in (saved.columns if saved else [])}
 
     columns: List[ColumnSpec] = []
     for name in names:
@@ -398,22 +406,19 @@ def build_schema(
         n_missing = int(len(series) - len(present))
         n_unique = len(set(_norm_text(v) for v in present))
         spec = ColumnSpec(name=name, n_missing=n_missing, n_unique=n_unique, declared=declared.get(name))
-        decl = _declared_kind(declared[name]) if name in declared else None
-        if name in overrides and overrides[name].get("kind") in KINDS:
-            spec.kind, spec.source = overrides[name]["kind"], "manual"
-            spec.ordinal_order = list(overrides[name].get("ordinal_order") or []) or None
-        elif name in saved_cols and saved_cols[name].source in ("manual", "saved"):
-            spec.kind, spec.source = saved_cols[name].kind, "saved"
-            spec.ordinal_order = list(saved_cols[name].ordinal_order or []) or None
-        elif decl is not None:
-            spec.kind, spec.source = decl[0], "arff_declared"
+        arff_decl = _declared_kind(declared[name]) if name in declared else None
+        if arff_decl is not None:
+            spec.kind, spec.source = arff_decl[0], "arff_declared"
+        elif decl is not None and name in decl.column_types and name != target:
+            spec.kind, spec.source = decl.column_types[name], "ontology"
+            spec.note = f"tipo declarado na ontologia ({decl.type_evidence.get(name, '')})"
+            if spec.kind == "ordinal":
+                spec.ordinal_order = list(decl.ordinal_orders.get(name) or []) or None
         else:
             kind, amb, note = infer_kind(series)
             spec.kind, spec.source, spec.ambiguous, spec.note = kind, "inferred", amb, note
         if spec.kind in ("categorical", "boolean", "ordinal"):
             spec.categories = sorted(set(_norm_text(v) for v in present))
-        if spec.kind == "ordinal" and not spec.ordinal_order:
-            spec.ordinal_order = None
         columns.append(spec)
 
     # --- classes
@@ -423,25 +428,22 @@ def build_schema(
     if target in declared:
         nominal = _nominal_values(declared[target])
         declared_classes = [_norm_text(v) for v in (nominal or [])]
-    trained = [_norm_text(v) for v in (trained_class_order or [])]
-    if manual_class_order is not None:
-        order, osrc = [_norm_text(v) for v in manual_class_order], "manual"
-    elif saved is not None and saved.class_order_source == "manual" and set(saved.class_order) == set(observed) and saved.target == target:
-        order, osrc = list(saved.class_order), "manual"
+    onto_labels = [_norm_text(v) for v in (decl.class_labels if decl is not None else [])]
+    if declared_classes and set(declared_classes) >= set(observed):
+        order, osrc = declared_classes, "arff_declared"
+    elif onto_labels and set(onto_labels) == set(observed):
+        order, osrc = onto_labels, "ontology"
     else:
-        if declared_classes and set(declared_classes) >= set(observed):
-            order, osrc = declared_classes, "arff_declared"
-        else:
-            order, osrc = sort_class_labels(observed), "sorted"
-        # ordem do modelo/encoder já treinado tem prioridade sobre a derivação por omissão (só se for um rearranjo
-        # exato dos rótulos observados); quando coincide com a derivação mantém-se a etiqueta original.
-        if trained and set(trained) == set(observed) and trained != order:
-            order, osrc = list(trained), "trained_model"
-    drop = bool(drop_missing_rows) if drop_missing_rows is not None else bool(saved.drop_missing_rows if saved else False)
+        order, osrc = sort_class_labels(observed), "sorted"
+    # a ordem do modelo/encoder já treinado prevalece sobre qualquer derivação (só se for um rearranjo exato dos rótulos)
+    trained = [_norm_text(v) for v in (trained_class_order or [])]
+    if trained and set(trained) == set(observed) and trained != order:
+        order, osrc = list(trained), "trained_model"
+
     return DatasetSchema(
         dataset_id=file_fingerprint(file_path), file_name=Path(file_path).name, source_format=source_format,
         target=target, target_source=tsrc, columns=columns, class_order=order, class_order_source=osrc,
-        class_mapping={c: i for i, c in enumerate(order)}, drop_missing_rows=drop, separator=separator, encoding=encoding,
+        class_mapping={c: i for i, c in enumerate(order)}, separator=separator, encoding=encoding,
     )
 
 
@@ -452,9 +454,6 @@ def apply_schema(df: pd.DataFrame, schema: DatasetSchema) -> pd.DataFrame:
     numeric→float; categorical→texto; boolean→0.0/1.0; datetime→segundos desde 1970 (UTC); ordinal→posto na ordem declarada.
     """
     work = df.copy()
-    if schema.drop_missing_rows:
-        mask = work.apply(lambda col: col.map(is_missing))
-        work = work.loc[~mask.any(axis=1)].reset_index(drop=True)
     out: Dict[str, Any] = {}
     for spec in schema.columns:
         if spec.name == schema.target:
@@ -491,7 +490,7 @@ def validate_schema(
     df: pd.DataFrame,
     *,
     trained: Optional[Mapping[str, Any]] = None,
-    saved: Optional[DatasetSchema] = None,
+    ontology_decl=None,
     arff_reference: Optional[Mapping[str, Any]] = None,
     ontology_info: Optional[Mapping[str, Mapping[str, Any]]] = None,
     strict_missing: Optional[bool] = None,
@@ -502,12 +501,13 @@ def validate_schema(
 
     * ``trained``: {'class_order': [...], 'target': str, 'feature_names': [...]} do modelo/encoder já treinado.
     * ``arff_reference``: cabeçalho de um ARFF equivalente (``read_arff_header``).
+    * ``ontology_decl``: ``OntologySchemaDeclaration`` lida da ontologia ativa (alvo, classes, tipos declarados).
     * ``ontology_info``: {feature: {'entity': str, 'range': 'numeric'|'categorical'|'boolean'|'datetime'|None}}.
     """
     rep = ValidationReport()
     names = [str(c) for c in df.columns]
     strict = (not schema.is_default_arff()) if strict_missing is None else bool(strict_missing)
-    miss_sev = CRITICAL if (strict and not schema.drop_missing_rows) else WARNING
+    miss_sev = CRITICAL if strict else WARNING
 
     for dup in duplicate_columns:
         rep.add("DUPLICATE_COLUMN", CRITICAL, f"Coluna duplicada no cabeçalho: {dup!r}.", dup)
@@ -525,7 +525,7 @@ def validate_schema(
     target_series = df[schema.target]
     n_tmiss = int(sum(is_missing(v) for v in target_series))
     legacy = schema.is_default_arff()
-    if n_tmiss and not schema.drop_missing_rows:
+    if n_tmiss:
         rep.add("TARGET_HAS_MISSING", WARNING if legacy else CRITICAL, f"A coluna-alvo tem {n_tmiss} valores ausentes.", schema.target)
     observed = list(dict.fromkeys(_norm_text(v) for v in target_series if not is_missing(v)))
     if len(observed) < 2:
@@ -566,16 +566,18 @@ def validate_schema(
                 unknown = sorted(set(texts) - set(spec.ordinal_order))
                 if unknown:
                     rep.add("UNKNOWN_CATEGORIES", CRITICAL, f"{spec.name!r}: categorias fora da ordem ordinal: {unknown[:5]}.", spec.name)
-        if spec.kind in ("categorical", "boolean") and saved is not None:
-            try:
-                known = set(saved.column(spec.name).categories or [])
-            except KeyError:
-                known = set()
-            if known:
-                unknown = sorted(set(texts) - known)
-                if unknown:
-                    sev = CRITICAL if trained else WARNING
-                    rep.add("UNKNOWN_CATEGORIES", sev, f"{spec.name!r}: categorias desconhecidas face ao esquema guardado: {unknown[:5]}.", spec.name)
+        if spec.kind == "categorical" and texts and not legacy:
+            counts = pd.Series(texts).value_counts()
+            n_single = int((counts == 1).sum())
+            if len(counts) >= max(5, int(0.5 * len(texts))):
+                rep.add("ID_LIKE_COLUMN", CRITICAL,
+                        f"{spec.name!r} tem {len(counts)} valores distintos em {len(texts)} linhas (praticamente um por linha): "
+                        "parece um identificador ou texto livre. O encoder do MLP é ajustado só no treino e falha com categorias "
+                        "não vistas; remova a coluna do ficheiro ou corrija o tipo.", spec.name)
+            elif n_single:
+                rep.add("RARE_SINGLETON_CATEGORIES", WARNING,
+                        f"{spec.name!r}: {n_single} categoria(s) com uma única ocorrência; se caírem no teste o encoder do MLP "
+                        "falha por categoria não vista.", spec.name)
         if spec.ambiguous:
             rep.add("AMBIGUOUS_NUMERIC_CODES", WARNING, f"{spec.name!r}: {spec.note or 'tipo a confirmar'}.", spec.name)
         if spec.n_unique <= 1 and present:
@@ -611,6 +613,47 @@ def validate_schema(
                     f"A ordem das classes do modelo treinado ({t_order}) difere da configurada ({list(schema.class_order)}); "
                     "alterá-la sem descartar o modelo corromperia métricas e probabilidades.", schema.target)
 
+    # --- esquema declarado na ontologia vs ficheiro de dados
+    if ontology_decl is not None and getattr(ontology_decl, "has_any", False):
+        d = ontology_decl
+        if d.declared_columns and not (set(d.declared_columns) & set(names)):
+            rep.add("ONTOLOGY_DATA_UNRELATED", CRITICAL,
+                    f"A ontologia descreve {len(set(d.declared_columns))} atributos mas nenhum corresponde às colunas do dataset "
+                    f"(ex.: ontologia {sorted(set(d.declared_columns))[:3]} vs dataset {names[:3]}): ficheiros de domínios diferentes?")
+        elif d.declared_columns:
+            missing_cols = sorted(set(d.declared_columns) - set(names))
+            if missing_cols:
+                rep.add("ONTOLOGY_COLUMNS_NOT_IN_DATA", WARNING,
+                        f"{len(missing_cols)} atributo(s) descrito(s) na ontologia não existem no dataset: {missing_cols[:5]}.")
+        if d.target_column:
+            if d.target_column not in names:
+                rep.add("ONTOLOGY_TARGET_NOT_IN_DATA", CRITICAL,
+                        f"A ontologia declara {d.target_column!r} como alvo, mas essa coluna não existe no dataset.", d.target_column)
+            elif d.target_column != schema.target:
+                rep.add("ONTOLOGY_TARGET_CONFLICT", CRITICAL,
+                        f"Conflito de alvo: a ontologia declara {d.target_column!r}, o ficheiro de dados define {schema.target!r}.",
+                        schema.target)
+        if d.class_labels and schema.target in names:
+            onto_set = {_norm_text(v) for v in d.class_labels}
+            if onto_set != set(observed):
+                rep.add("ONTOLOGY_CLASSES_MISMATCH", CRITICAL,
+                        f"As classes da ontologia {sorted(onto_set)} não coincidem com as do alvo {schema.target!r} {sorted(observed)}.",
+                        schema.target)
+            elif [_norm_text(v) for v in d.class_labels] != list(schema.class_order):
+                rep.add("ONTOLOGY_CLASS_ORDER_DIFFERS", WARNING,
+                        f"A ordem de classes da ontologia {list(d.class_labels)} difere da usada ({list(schema.class_order)}, "
+                        f"{_SOURCE_LABELS.get(schema.class_order_source, schema.class_order_source)}); mantém-se a do ficheiro de dados/modelo.",
+                        schema.target)
+        for spec in schema.columns:
+            ok = d.column_types.get(spec.name)
+            if ok and spec.name != schema.target and spec.source == "arff_declared":
+                compatible = {"numeric": {"numeric", "ordinal"}, "categorical": {"categorical", "ordinal", "boolean"},
+                              "boolean": {"boolean", "categorical"}, "datetime": {"datetime"},
+                              "ordinal": {"ordinal", "categorical", "numeric"}}.get(ok, {ok})
+                if spec.kind not in compatible:
+                    rep.add("ONTOLOGY_TYPE_CONFLICT_DATA", CRITICAL,
+                            f"{spec.name!r}: a ontologia declara {ok} mas o ARFF declara {spec.kind}.", spec.name)
+
     # --- ontologia (tipos compatíveis com os mapeamentos)
     forced = set(schema.forced_categorical)
     for feat, info in (ontology_info or {}).items():
@@ -628,7 +671,7 @@ def validate_schema(
     return rep
 
 
-# ----------------------------------------------------------------------------- persistência por dataset
+# ----------------------------------------------------------------------------- registo do esquema resolvido (auditoria)
 def config_dir() -> Path:
     base = os.environ.get("BIURI_DATASET_CONFIG_DIR")
     return Path(base) if base else Path.home() / ".biuri" / "dataset_configs"
