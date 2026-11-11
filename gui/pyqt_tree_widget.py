@@ -410,11 +410,7 @@ class InteractiveTreeWidget(QWidget):
     def tree_stats(self):
         """Tamanho total e profundidade máxima da árvore seleccionada (da própria árvore, não do que está visível:
         filtros/colapso não alteram estes números). None se não houver modelo visual."""
-        if self.model is None:
-            return None
-        nodes = self.model.logical_node_count
-        leaves = sum(1 for n in self.model.nodes.values() if n.is_leaf)
-        return {"nodes": int(nodes), "leaves": int(leaves), "internal": int(nodes) - int(leaves), "depth": int(self.model.depth)}
+        return None if self.model is None else self.model.tree_stats()
 
     def tree_info_text(self):
         st = self.tree_stats()

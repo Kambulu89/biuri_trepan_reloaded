@@ -195,8 +195,10 @@ def default_dpi_scale(width_world: float, min_px: float = 2400.0, max_pixels: fl
 
 def export_tree(model: TreeVisualizationModel, path: str, *, fmt: Optional[str] = None, title: Optional[str] = None,
                 scientific: bool = False, show_ids: bool = False, show_legend: bool = True,
-                metadata: Optional[dict] = None, write_json: bool = False) -> dict:
-    """Exporta a árvore COMPLETA (sem filtros) para PNG/SVG/PDF. Não inclui botões/painéis da GUI."""
+                metadata: Optional[dict] = None, write_json: bool = False, show_stats: bool = True) -> dict:
+    """Exporta a árvore COMPLETA (sem filtros) para PNG/SVG/PDF. Não inclui botões/painéis da GUI.
+
+    Por baixo do título (nome do modelo) inclui sempre o tamanho total e a profundidade máxima da árvore exportada."""
     fmt = (fmt or Path(path).suffix.lstrip(".") or "png").lower()
     measure = QtTextMeasure()
     layout = compute_layout(model, measure, scientific=scientific, show_ids=show_ids)
@@ -205,15 +207,19 @@ def export_tree(model: TreeVisualizationModel, path: str, *, fmt: Optional[str] 
     x0, y0, x1, y1 = layout.bbox
     tree_w, tree_h = x1 - x0, y1 - y0
     title_h = 26.0 if title else 0.0
+    stats = model.tree_stats()
+    stats_text = tr("tree_info", **stats) if show_stats else ""
+    stats_h = 22.0 if stats_text else 0.0
+    top_h = title_h + stats_h
     legend_px = 12.0
     # legenda por baixo da árvore (alinhada à esquerda), fora da área da árvore
     n_legend = len(legend_items(model, colors)) if show_legend else 0
     legend_h = (n_legend * legend_px * 1.55 + legend_px * 0.6 + 8) if show_legend else 0.0
     legend_w = 230.0 if show_legend else 0.0
     W = max(tree_w, legend_w) + 2 * margin
-    H = tree_h + 2 * margin + title_h + legend_h
+    H = tree_h + 2 * margin + top_h + legend_h
     ox = margin + (max(tree_w, legend_w) - tree_w) / 2 - x0
-    oy = margin + title_h - y0
+    oy = margin + top_h - y0
 
     def paint(painter: QPainter):
         painter.fillRect(QRectF(0, 0, W, H), QColor("white"))
@@ -221,15 +227,20 @@ def export_tree(model: TreeVisualizationModel, path: str, *, fmt: Optional[str] 
             painter.setFont(_font(14, bold=True))
             painter.setPen(QPen(QColor("#222222")))
             painter.drawText(QRectF(margin, 6, W - 2 * margin, title_h), Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, title)
+        if stats_text:
+            painter.setFont(_font(11, bold=False))
+            painter.setPen(QPen(QColor("#444444")))
+            painter.drawText(QRectF(margin, 6 + title_h, W - 2 * margin, stats_h),
+                             Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, stats_text)
         painter.save()
         painter.translate(ox, oy)
         draw_scene(painter, model, layout, RenderOptions(scientific=scientific, show_ids=show_ids), colors)
         painter.restore()
         if show_legend:
-            draw_legend(painter, model, colors, margin, margin + title_h + tree_h + 14, legend_px)
+            draw_legend(painter, model, colors, margin, margin + top_h + tree_h + 14, legend_px)
 
     out_path = str(Path(path).with_suffix("." + fmt))
-    info = {"path": out_path, "format": fmt, "width_world": W, "height_world": H}
+    info = {"path": out_path, "format": fmt, "width_world": W, "height_world": H, "stats": stats, "stats_text": stats_text}
     if fmt == "png":
         scale = default_dpi_scale(W)
         while W * scale * H * scale > 1.2e8 and scale > 1.0:
