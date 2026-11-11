@@ -576,6 +576,18 @@ def validate_schema(
                 if unknown:
                     sev = CRITICAL if trained else WARNING
                     rep.add("UNKNOWN_CATEGORIES", sev, f"{spec.name!r}: categorias desconhecidas face ao esquema guardado: {unknown[:5]}.", spec.name)
+        if spec.kind == "categorical" and texts and not legacy:
+            counts = pd.Series(texts).value_counts()
+            n_single = int((counts == 1).sum())
+            if len(counts) >= max(5, int(0.5 * len(texts))):
+                rep.add("ID_LIKE_COLUMN", CRITICAL,
+                        f"{spec.name!r} tem {len(counts)} valores distintos em {len(texts)} linhas (praticamente um por linha): "
+                        "parece um identificador ou texto livre. O encoder do MLP é ajustado só no treino e falha com categorias "
+                        "não vistas; remova a coluna do ficheiro ou corrija o tipo.", spec.name)
+            elif n_single:
+                rep.add("RARE_SINGLETON_CATEGORIES", WARNING,
+                        f"{spec.name!r}: {n_single} categoria(s) com uma única ocorrência; se caírem no teste o encoder do MLP "
+                        "falha por categoria não vista.", spec.name)
         if spec.ambiguous:
             rep.add("AMBIGUOUS_NUMERIC_CODES", WARNING, f"{spec.name!r}: {spec.note or 'tipo a confirmar'}.", spec.name)
         if spec.n_unique <= 1 and present:

@@ -209,7 +209,7 @@ class DatasetConfigMixin:
         if onto is None:
             return None
         try:
-            from core.ontology import ontology_entities
+            from core.ontology_quality import ontology_entities
             by_name = {getattr(e, "name", ""): e for group in ontology_entities(onto).values() for e in group}
             info = {}
             for d in self.ontology_quality_gate.match_features(schema.feature_names, onto):
@@ -219,6 +219,7 @@ class DatasetConfigMixin:
             return info
         except Exception as exc:  # a verificação de compatibilidade nunca impede o carregamento
             log.warning("Compatibilidade com a ontologia não verificada: %s", exc)
+            self._ontology_check_error = str(exc)
             return None
 
     # ----------------------------------------------------------------- carregamento

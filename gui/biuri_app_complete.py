@@ -247,18 +247,18 @@ class DataLoadDialog(QDialog):
         layout = QVBoxLayout()
         
         # Título
-        title_label = QLabel("Cargar Datos ARFF y Ontología OWL")
+        title_label = QLabel("Cargar Datos (ARFF/CSV) y Ontología OWL")
         title_label.setStyleSheet("font-size: 16px; font-weight: bold; margin-bottom: 10px;")
         layout.addWidget(title_label)
         
         # Seleção de arquivo ARFF
-        arff_group = QGroupBox("📁 Archivo de Datos (ARFF)")
+        arff_group = QGroupBox("📁 Archivo de Datos (ARFF/CSV)")
         arff_layout = QHBoxLayout()
         self.arff_path_edit = QLineEdit()
-        self.arff_path_edit.setPlaceholderText("Seleccione un archivo ARFF...")
-        self.arff_path_edit.setAccessibleName("Ruta del archivo ARFF")
+        self.arff_path_edit.setPlaceholderText("Seleccione un archivo ARFF o CSV...")
+        self.arff_path_edit.setAccessibleName("Ruta del archivo de datos (ARFF/CSV)")
         arff_browse_btn = QPushButton("Buscar")
-        arff_browse_btn.setAccessibleName("Buscar archivo ARFF")
+        arff_browse_btn.setAccessibleName("Buscar archivo de datos (ARFF/CSV)")
         arff_browse_btn.clicked.connect(lambda: self.browse_file("arff"))
 
         arff_layout.addWidget(self.arff_path_edit)
@@ -293,7 +293,7 @@ class DataLoadDialog(QDialog):
 
         info_label = QLabel(
             "<b>Consejo:</b><br>"
-            "• El archivo ARFF es <b>obligatorio</b><br>"
+            "• El archivo de datos (ARFF/CSV) es <b>obligatorio</b><br>"
             "• El archivo OWL es <b>opcional</b>: si lo proporciona, se usará "
             "para enriquecer los datos con conocimiento semántico<br>"
             "• Sin OWL, los datos se cargan sin enriquecimiento ontológico"
@@ -1124,9 +1124,9 @@ class BiuriApp(DatasetConfigMixin, QMainWindow):
         pipeline_layout.addWidget(train_cluster)
         pipeline_layout.addWidget(self.btn_generate_explanation)
 
-        self.btn_load_data.setAccessibleName("Cargar datos ARFF")
+        self.btn_load_data.setAccessibleName("Cargar datos ARFF/CSV")
         self.btn_load_data.setAccessibleDescription(
-            "Abre el diálogo para cargar un archivo ARFF y una ontología OWL opcional"
+            "Abre el diálogo para cargar un archivo ARFF o CSV y una ontología OWL opcional"
         )
         self.btn_train_model.setAccessibleName("Entrenar modelo")
         self.btn_train_model.setAccessibleDescription(
@@ -1398,7 +1398,7 @@ BIURI entrena el modelo y extrae un árbol sustituto (Trepan / Trepan-Reloaded)
 cuyas reglas puede leer, comparar y mejorar.
 
 Empiece en el panel izquierdo:
-1. Cargar datos (ARFF) — ontología OWL opcional
+1. Cargar datos (ARFF/CSV) — ontología OWL opcional
 2. Entrenar modelo — el oráculo opaco
 3. Generar explicación — reglas en lenguaje claro
 
@@ -1516,7 +1516,7 @@ que la red se vuelve interpretable.
 
     def _apply_shortcut_tooltips(self):
         tips = {
-            self.btn_load_data: "Cargar ARFF / OWL (Ctrl+O)",
+            self.btn_load_data: "Cargar ARFF/CSV / OWL (Ctrl+O)",
             self.btn_train_model: "Entrenar MLP y árboles (Ctrl+T)",
             self.btn_generate_explanation: "Generar reglas legibles (Ctrl+E)",
             self.btn_visualize_tree: "Abrir Visualización (Ctrl+Shift+V)",
@@ -1699,7 +1699,7 @@ que la red se vuelve interpretable.
             owl_path = dialog.owl_path_edit.text()
             
             if not arff_path:
-                QMessageBox.warning(self, "Advertencia", "¡Por favor, seleccione un archivo ARFF!")
+                QMessageBox.warning(self, "Advertencia", "¡Por favor, seleccione un archivo de datos (ARFF/CSV)!")
                 return
             
             try:

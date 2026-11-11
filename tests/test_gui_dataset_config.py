@@ -151,3 +151,46 @@ def test_config_dialog_changes_target_order_and_blocks_on_critical(qapp, app, tm
     from PyQt6.QtWidgets import QDialogButtonBox
     assert dlg.buttons.button(QDialogButtonBox.StandardButton.Ok).isEnabled()
     dlg.close()
+
+
+def test_load_dialog_mentions_arff_and_csv(qapp):
+    from PyQt6.QtWidgets import QGroupBox, QLabel
+    from gui.biuri_app_complete import DataLoadDialog
+    dlg = DataLoadDialog()
+    titles = [g.title() for g in dlg.findChildren(QGroupBox)]
+    assert "📁 Archivo de Datos (ARFF/CSV)" in titles
+    assert not any(t.endswith("(ARFF)") for t in titles)
+    assert "ARFF/CSV" in " ".join(l.text() for l in dlg.findChildren(QLabel))
+    dlg.close()
+
+
+def test_id_like_column_blocks_training_instead_of_failing_late(app, tmp_path, monkeypatch):
+    """Tabela com uma coluna de texto única por linha (ex.: dicionário de dados, não dados): bloqueada antes do treino."""
+    rows = "\n".join(f"campo_{i},desc_{i},{'A' if i % 2 else 'B'}" for i in range(30))
+    app.load_data_from_file(_write(tmp_path, "dic.csv", "campo,descricao,classe\n" + rows + "\n"))
+    codes = [i.code for i in app.dataset_validation.critical]
+    assert "ID_LIKE_COLUMN" in codes
+    launched = []
+    monkeypatch.setattr(app, "_launch_training_worker", lambda preset: launched.append(preset))
+    app.train_model()
+    assert launched == [] and app._box["critical"]
+
+
+def test_ontology_type_info_is_computed_when_ontology_loaded(app, tmp_path):
+    """Regressão: a verificação de compatibilidade OWL↔tipos não pode falhar em silêncio (import errado)."""
+    owl = ('<?xml version="1.0"?><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
+           'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" '
+           'xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xml:base="http://ex.org/o" xmlns="http://ex.org/o#">'
+           '<owl:Ontology rdf:about="http://ex.org/o"/><owl:Class rdf:about="#Thing1"/>'
+           '<owl:DatatypeProperty rdf:about="#hasSize"><rdfs:domain rdf:resource="#Thing1"/>'
+           '<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/><rdfs:label>size</rdfs:label></owl:DatatypeProperty>'
+           '</rdf:RDF>')
+    from owlready2 import World
+    world = World()
+    onto = world.get_ontology((tmp_path / "o.owl").as_uri())
+    (tmp_path / "o.owl").write_text(owl, encoding="utf-8")
+    onto = world.get_ontology((tmp_path / "o.owl").as_uri()).load()
+    app.loaded_ontology = onto
+    app.load_data_from_file(_write(tmp_path, "d.csv", CSV.replace("1.5", "1.5").replace("size", "size")))
+    info = app._ontology_type_info(app.dataset_schema)
+    assert info is not None and getattr(app, "_ontology_check_error", None) is None
