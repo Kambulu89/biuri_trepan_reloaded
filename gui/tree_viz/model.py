@@ -125,6 +125,12 @@ class TreeVisualizationModel:
     def depth(self) -> int:
         return max((n.depth for n in self.nodes.values()), default=0)
 
+    def tree_stats(self) -> dict:
+        """Tamanho total e profundidade máxima da árvore COMPLETA (independente de filtros/colapso da vista)."""
+        nodes = int(self.logical_node_count)
+        leaves = int(sum(1 for n in self.nodes.values() if n.is_leaf))
+        return {"nodes": nodes, "leaves": leaves, "internal": nodes - leaves, "depth": int(self.depth)}
+
     def preorder(self, start: Optional[int] = None, hidden: Optional[set] = None) -> List[int]:
         out, stack = [], [self.root_id if start is None else start]
         hidden = hidden or set()
@@ -174,7 +180,7 @@ class TreeVisualizationModel:
             }
         return {
             "algorithm": self.algorithm, "source_kind": self.source_kind, "root_id": self.root_id,
-            "logical_node_count": self.logical_node_count, "class_names": self.class_names,
+            "logical_node_count": self.logical_node_count, "stats": self.tree_stats(), "class_names": self.class_names,
             "feature_names": self.feature_names,
             "nodes": [node_dict(self.nodes[i]) for i in self.preorder()],
         }

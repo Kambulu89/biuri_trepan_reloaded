@@ -583,6 +583,13 @@ def validate_schema(
         if spec.n_unique <= 1 and present:
             rep.add("CONSTANT_COLUMN", WARNING, f"{spec.name!r} é constante.", spec.name)
 
+    # --- o ficheiro parece uma tabela de metadados (dicionário de dados), não instâncias de um dataset
+    id_like = [i.column for i in rep.issues if i.code == "ID_LIKE_COLUMN"]
+    if len(id_like) >= 2 and len(id_like) >= 0.5 * max(1, len(feats)):
+        rep.add("LIKELY_NOT_A_DATASET", CRITICAL,
+                f"{len(id_like)} de {len(feats)} colunas têm um valor distinto por linha: este ficheiro parece um dicionário/tabela "
+                "de metadados (cada linha descreve uma coluna), não um dataset em que cada linha é uma instância. "
+                "Carregue o ficheiro com os dados.")
     # --- ARFF de referência
     if arff_reference:
         ref_attrs = [n for n, _ in arff_reference.get("attributes", [])]
