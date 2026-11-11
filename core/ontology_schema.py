@@ -12,6 +12,7 @@ Fontes lidas (por ordem de prioridade dentro da ontologia):
 from __future__ import annotations
 
 import json
+import os
 import re
 import unicodedata
 from dataclasses import dataclass, field
@@ -30,9 +31,26 @@ def norm(text: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "", t.lower())
 
 
-@lru_cache(maxsize=4)
-def load_vocabulary(path: Optional[str] = None) -> Dict[str, Any]:
+def _merge_vocab(base: Dict[str, Any], extra: Dict[str, Any]) -> Dict[str, Any]:
+    out = {"properties": {k: list(v) for k, v in base["properties"].items()},
+           "classes": {k: list(v) for k, v in base["classes"].items()},
+           "kinds": {k: list(v) for k, v in base["kinds"].items()}, "target_markers": list(base.get("target_markers", []))}
+    for section in ("properties", "classes", "kinds"):
+        for role, words in (extra.get(section) or {}).items():
+            out[section].setdefault(role, [])
+            out[section][role] += [w for w in words if w not in out[section][role]]
+    out["target_markers"] += [w for w in extra.get("target_markers", []) if w not in out["target_markers"]]
+    return out
+
+
+@lru_cache(maxsize=8)
+def load_vocabulary(path: Optional[str] = None, extra_path: Optional[str] = None) -> Dict[str, Any]:
+    """Vocabulário de esquema. ``extra_path`` (ou a variável BIURI_ONTOLOGY_SCHEMA_VOCABULARY) ACRESCENTA sinónimos
+    (outras línguas/convenções) sem alterar código."""
     data = json.loads(Path(path or _VOCAB_PATH).read_text(encoding="utf-8"))
+    extra = extra_path or os.environ.get("BIURI_ONTOLOGY_SCHEMA_VOCABULARY")
+    if extra:
+        data = _merge_vocab(data, json.loads(Path(extra).read_text(encoding="utf-8")))
     out = {"properties": {k: {norm(x) for x in v} for k, v in data["properties"].items()},
            "classes": {k: {norm(x) for x in v} for k, v in data["classes"].items()},
            "kinds": {}, "target_markers": {norm(x) for x in data.get("target_markers", [])}}
