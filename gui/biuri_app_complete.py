@@ -3213,8 +3213,14 @@ Asegúrese de que:
                 self.audit.sm.end()
                 self.audit.apply_buttons()
         elif self.audit is not None:
-            msg = self.audit.on_failure(error_msg, what_key="error.training", where_key="error.training_where",
-                                        action_key="error.action.training", details=details)
+            rejected = "Ontologia rejeitada pelo quality gate" in str(error_msg)
+            msg = self.audit.on_failure(
+                error_msg, what_key="error.ontology_rejected" if rejected else "error.training",
+                where_key="error.training_where",
+                action_key="error.action.ontology_rejected" if rejected else "error.action.training", details=details)
+            if rejected:   # o motivo real (issues do gate) tem de estar à vista, não só nos detalhes técnicos
+                reason = str(error_msg).split("Ontologia rejeitada pelo quality gate:", 1)[-1].strip().splitlines()[0]
+                msg.text = f"{msg.text}\n\nMotivo: {reason}"
             self._show_structured_error(msg)
             self.content_tabs.setCurrentWidget(self.audit_panel)
         else:

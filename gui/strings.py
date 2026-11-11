@@ -232,6 +232,9 @@ _CATALOG: Dict[str, Dict[str, str]] = {
         "error.counterfactual": "A geração de contrafactuais falhou.", "error.load_data": "Não foi possível carregar o dataset.",
         "error.load_ontology": "Não foi possível carregar a ontologia.", "error.export": "A exportação falhou.",
         "error.action.training": "Verifique o dataset, a coluna alvo e a configuração; consulte o registo.",
+        "error.ontology_rejected": "A ontologia foi rejeitada pelo quality gate e o treino com OWL não foi iniciado.",
+        "error.action.ontology_rejected": ("Treine sem ontologia (remova a OWL) ou carregue uma ontologia com conhecimento de domínio "
+                                           "ligado às colunas do dataset (propriedades/classes cujo rótulo coincide com as colunas)."),
         "error.action.comparison": "Verifique que o modelo está treinado e que os dados são válidos.",
         "error.action.generic": "Consulte os detalhes técnicos e o registo (ID da experiência acima).",
         "error.log_hint": "O traceback completo foi guardado no registo.",
