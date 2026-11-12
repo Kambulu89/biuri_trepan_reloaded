@@ -1,0 +1,112 @@
+{
+  "experiment_id": "20261112T005157_breast_cancer_wisconsin_diagnostic_dados_3b276f61",
+  "timestamp": "2026-11-12T00:51:57.858774+00:00",
+  "build_version": "benchmark-v1.0",
+  "git_commit": "1e45edcf0196a58ab41cfd13fa01427b658bdfe0",
+  "dataset": "breast_cancer_wisconsin_diagnostic_dados",
+  "dataset_hash": "19359e5dc6bc044ca12bebb90e5f6ed512378beaaefefd5eed01ea6667d93a7c",
+  "ontology_hash": "9c71ea17d19c36939bda8112ad8878afbb5b5cb07a2d0d7c3c69d5d88ddcbecb",
+  "config_hash": "3b276f61c7fae5cb69ac2cb304e54c9663c989454b1c56e923f9f7fb6b2b3b63",
+  "seeds": [
+    42,
+    7,
+    123,
+    2024,
+    11
+  ],
+  "split_hash": "56876a8126da46257507d0a2c6381d14702f2ddaaca711c2254de6d8861e63c6",
+  "library_versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.15.2",
+    "pandas": "2.2.3",
+    "sklearn": "1.6.1",
+    "owlready2": "unknown"
+  },
+  "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39",
+  "scheme": "holdout",
+  "arms": [
+    "mlp_original",
+    "c45",
+    "trepan_original",
+    "reloaded_core",
+    "reloaded_owl_full",
+    "reloaded_owl_shuffled",
+    "mlp_ontological",
+    "reloaded_e2e",
+    "reloaded_semantic_score",
+    "reloaded_owl_features",
+    "trepan_original_no_mofn",
+    "reloaded_owl_full_no_mofn",
+    "reloaded_owl_full_no_active_queries",
+    "reloaded_owl_full_no_error_focus"
+  ],
+  "classes": [
+    "0",
+    "1"
+  ],
+  "n_samples": 569,
+  "n_features": 30,
+  "n_classes": 2,
+  "class_counts": {
+    "0": 212,
+    "1": 357
+  },
+  "splits": [
+    {
+      "split_id": "seed42",
+      "seed": 42,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "f99a02e25b620c0bde325cfc8e7c42badb4bd7ca7e871cbb4c26ce514043149e",
+      "n_train": 426,
+      "n_test": 143,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed7",
+      "seed": 7,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "c92f80585f11ebe25bc3b1c16073025bebe4ca2fed83225d67e039a2a900a8f6",
+      "n_train": 426,
+      "n_test": 143,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed123",
+      "seed": 123,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "78d7021413f0da2c011be11ccff0f5118cd06b4b8b264d4ee44d994a6549de8c",
+      "n_train": 426,
+      "n_test": 143,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed2024",
+      "seed": 2024,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "22dce43c2943f1a98afba87054112f41de4733ac84aef116a99b65a2c2fe0191",
+      "n_train": 426,
+      "n_test": 143,
+      "scheme": "holdout",
+      "stratified": true
+    },
+    {
+      "split_id": "seed11",
+      "seed": 11,
+      "repeat": 0,
+      "fold": 0,
+      "split_hash": "e8e2be3fc3ce1c50640cd6c9ff46af799022ff66dc9b4959c3966d9e29b6fd31",
+      "n_train": 426,
+      "n_test": 143,
+      "scheme": "holdout",
+      "stratified": true
+    }
+  ]
+}
