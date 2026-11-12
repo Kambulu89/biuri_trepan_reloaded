@@ -1,0 +1,522 @@
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+........................................................................ [ 20%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+...................................s.....ss.sssssssssss....ss.ssssssssss [ 40%]
+s..................ss.sssssssssss....................................... [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+............................................                             [100%]
+=============================== warnings summary ===============================
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+
+../../venv-biuri/lib/python3.12/site-packages/matplotlib/_mathtext.py:45
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+
+tests/test_advanced_scientific_pipeline_unittest.py::AdvancedScientificPipelineTests::test_biomedical_guard_detects_patient_leakage
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:465: ConvergenceWarning: lbfgs failed to converge (status=1):
+  STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+  
+  Increase the number of iterations (max_iter) or scale the data as shown in:
+      https://scikit-learn.org/stable/modules/preprocessing.html
+  Please also refer to the documentation for alternative solver options:
+      https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+
+tests/test_benchmark_protocol.py::test_reports_contain_required_sections
+tests/test_benchmark_protocol.py::test_negative_results_are_reported_when_semantics_missing
+  /home/user/kambulu89/biuri_trepan_reloaded/core/benchmark/report.py:88: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+
+tests/test_coherent_sampling.py: 1 warning
+tests/test_counterfactual_service.py: 1 warning
+tests/test_residual_ontological_oracle.py: 3 warnings
+tests/test_scientific_experiment_contract.py: 8 warnings
+tests/test_scientific_protocol_unittest.py: 5 warnings
+tests/test_trepan_reloaded_oracle.py: 1 warning
+tests/test_universal_dataset_features.py: 1 warning
+tests/test_variable_feature_count_dual_oracle.py: 8 warnings
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (300) reached and the optimization hasn't converged yet.
+
+tests/test_counterfactual_gui.py::test_counterfactual_worker_generate_smoke
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (400) reached and the optimization hasn't converged yet.
+
+tests/test_counterfactual_improvement.py::test_improve_surrogate_returns_tree
+tests/test_counterfactual_improvement.py::test_evaluate_improvement_metrics
+tests/test_counterfactual_service.py::test_improve_surrogate_core_extractor
+tests/test_counterfactual_service.py::test_generate_counterfactuals_from_session_cogs_only
+tests/test_mlp_degenerate_oracle.py::test_diagnose_healthy_mlp
+tests/test_no_ontology_mirror_original.py::test_mirror_original_tree_same_predictions
+tests/test_no_ontology_mirror_original.py::test_no_ontology_metrics_identical_to_original
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (500) reached and the optimization hasn't converged yet.
+
+tests/test_counterfactual_improvement.py::test_improve_surrogate_returns_tree
+tests/test_counterfactual_improvement.py::test_evaluate_improvement_metrics
+tests/test_counterfactual_service.py::test_improve_surrogate_core_extractor
+  /home/user/kambulu89/biuri_trepan_reloaded/counterfactuals/surrogate_improvement.py:990: RuntimeWarning: O TREPAN histórico volta a consultar o oráculo para as sementes contrafactuais; extra_y/extra_weights são ignorados para não substituir a autoridade do oráculo.
+
+tests/test_dominance_informational.py: 2 warnings
+tests/test_mlp_onto_and_bias_weight.py: 7 warnings
+tests/test_residual_ontological_oracle.py: 6 warnings
+tests/test_trepan_reloaded_oracle.py: 1 warning
+tests/test_universal_dataset_features.py: 1 warning
+tests/test_variable_feature_count_dual_oracle.py: 2 warnings
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+
+tests/test_feature_alignment.py: 5 warnings
+tests/test_mlp_onto_and_bias_weight.py: 1 warning
+tests/test_model_bundle.py: 4 warnings
+tests/test_trepan_reloaded_context.py: 5 warnings
+tests/test_variable_feature_count_dual_oracle.py: 1 warning
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (100) reached and the optimization hasn't converged yet.
+
+tests/test_gui_dataset_schema.py: 5 warnings
+tests/test_ontology_schema.py: 6 warnings
+tests/test_schema_agnosticism.py: 7 warnings
+  /home/user/venv-biuri/lib/python3.12/site-packages/owlready2/sparql/main.py:294: DeprecationWarning: Binding 1 ('?1') is a named parameter, but you supplied a sequence which requires nameless (qmark) placeholders. Starting with Python 3.14 an sqlite3.ProgrammingError will be raised.
+
+tests/test_mlp_degenerate_oracle.py::test_log_mlp_diagnostic_prints_block
+tests/test_mlp_degenerate_oracle.py::test_log_mlp_diagnostic_prints_block
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/pipeline.py:62: FutureWarning: This Pipeline instance is not fitted yet. Call 'fit' with appropriate arguments before using other methods such as transform, predict, etc. This will raise an error in 1.8 instead of the current warning.
+
+tests/test_real_label_pipeline_v8.py::test_semantic_utility_gate_accepts_only_useful_nonduplicate_features
+tests/test_real_label_pipeline_v8.py::test_semantic_utility_gate_accepts_only_useful_nonduplicate_features
+tests/test_real_label_pipeline_v8.py::test_semantic_utility_gate_accepts_only_useful_nonduplicate_features
+tests/test_real_label_pipeline_v8.py::test_semantic_utility_gate_accepts_only_useful_nonduplicate_features
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+  STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT.
+  
+  Increase the number of iterations (max_iter) or scale the data as shown in:
+      https://scikit-learn.org/stable/modules/preprocessing.html
+
+tests/test_scientific_superiority_pipeline_v7.py::test_fidelity_comparison_c45_original_reloaded_is_valid_and_semantics_active
+tests/test_scientific_superiority_pipeline_v7.py::test_fidelity_comparison_c45_original_reloaded_is_valid_and_semantics_active
+tests/test_trepan_original_fidelity.py::test_trepan_trains_on_mlp_oracle_not_real_labels
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (800) reached and the optimization hasn't converged yet.
+
+tests/test_tiebreak_variant.py::test_cross_platform_digest_informational
+  /home/user/kambulu89/biuri_trepan_reloaded/tests/test_tiebreak_variant.py:97: UserWarning: TIEBREAK_XPLAT_DIGEST s0:O=95057818b5:V=95057818b5 s3:O=bbe492cb64:V=26f52557b1 s5:O=42273fba86:V=42273fba86 s7:O=1e9cdb597e:V=024dd76d2d all=3480f7b9b849
+
+tests/test_trepan_original_fidelity.py::test_trepan_extractor_passes_oracle_not_real_target
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (600) reached and the optimization hasn't converged yet.
+
+tests/test_variable_feature_count_dual_oracle.py::test_validate_oracle_width_raises_on_mismatch
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:691: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (50) reached and the optimization hasn't converged yet.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+
+Name                                                                                                            Stmts   Miss  Cover
+-----------------------------------------------------------------------------------------------------------------------------------
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/__init__.py                                0      0   100%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/active_query_engine.py                   180    180     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/algorithm_identity.py                     22     22     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/arff_schema.py                            88     88     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/artifacts.py                              52     52     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/__init__.py                      0      0   100%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/analysis.py                    141    141     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/domain_tbox.py                  62     62     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/io.py                           81     81     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/manifest.py                     57     57     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/metrics.py                      89     89     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/ontology_gate.py                34     34     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/preprocessing.py                13     13     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/report.py                      137    137     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/runner.py                      537    537     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/semantic.py                    352    352     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/splits.py                       59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/stats.py                       144    144     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/structure.py                    42     42     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/synthetic.py                    15     15     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/benchmark/timing.py                       22     22     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/biomedical_validation.py                  95     95     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/build_info.py                             42     42     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/c45_baseline_gate.py                      37     37     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/c45_j48_tree.py                          597    510    15%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/canonical_trepan.py                      212    212     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/classification_metrics.py                 31     31     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/component_ablation.py                     66     66     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/confirmatory_benchmark.py                 30     30     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/controlled_trepan_experiment.py          188    110    41%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/counterfactual_contract.py                32     32     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/data_contract.py                         320    320     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/data_loading.py                           40     40     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/dataset_schema.py                        491    491     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/decision_tree.py                          37     37     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/error_focused_semantic_refinement.py     128    101    21%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/evaluation_protocol.py                    83     46    45%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/execution_mode.py                         20     20     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/experiment_builders.py                   219    219     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/experiment_result.py                     284    284     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/feature_alignment.py                      99     99     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/feature_space_contract.py                 67     67     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/hierarchy_contract.py                    178    178     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/hybrid_oracle.py                         124    124     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/improve_surrogate.py                       2      2     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/inference.py                              76     76     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/logging_config.py                         16     16     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/metrics_comparator.py                   2014   2014     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/metrics_view_model.py                     23     23     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/mlp_convergence.py                        59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/mlp_diagnostic.py                        115    115     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/mlp_factory.py                            73     73     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/mlp_optimizer.py                         432    432     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/mlp_trainer.py                           346    346     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/model_bundle.py                          141    141     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/model_cache.py                           165    165     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/multiobjective_tree_selector.py           47     47     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/natural_language_explainer.py            393    393     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/onto_feature_selector.py                  97     97     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology.py                               17     17     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_acceptance.py                    76     76     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_processor.py                    578    578     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_quality.py                      333    333     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_reasoner.py                     221    221     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_schema.py                       202    202     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_semantic_graph.py               420    420     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/ontology_stage_status.py                  48     48     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/oracle_optimization.py                   113    113     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/owl_annotations.py                        35     35     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/owl_runtime.py                            50     50     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/performance_logger.py                     59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/pipeline_audit.py                        253    253     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/pipeline_v92.py                           53     53     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/plausible_counterfactuals.py              67     67     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/preprocessing.py                         138    138     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/probabilistic_distillation.py            155    133    14%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/production_inference.py                   78     78     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/production_training.py                   268    268     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/protocol_audit.py                         56     56     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/query_sampling.py                        142    142     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/residual_ontological_oracle.py            88     88     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/runtime_control.py                        17     17     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/scientific_benchmark_service.py           74     74     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/scientific_errors.py                      24     24     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/scientific_experiment_contract.py        170    170     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/scientific_validation.py                  50     50     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_attribution.py                  128    128     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_contribution_gate.py             48     48     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_controls.py                      26     26     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_enrichment.py                   297    297     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_metadata.py                     156    156     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_teacher.py                       94     94     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_utility_gate.py                 322    322     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/semantic_version.py                        1      1     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/soft_global_tree.py                       47     47     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/surrogate_acceptance.py                   43     43     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/training_config.py                       137     34    75%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/tree_build_report.py                     127    109    14%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/tree_stop_summary.py                       9      5    44%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan.py                                291    291     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_extractor.py                        8      8     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_original.py                       890    235    74%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_reloaded_context.py               104    104     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_reloaded_extractor.py            2846   2846     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_reloaded_historical.py           1131   1047     7%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/trepan_scientific_tuning.py              576    109    81%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/broken/core/tuning_checkpoint.py                      87     42    52%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/__init__.py                                 0      0   100%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/active_query_engine.py                    180    180     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/algorithm_identity.py                      22     22     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/arff_schema.py                             88     88     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/artifacts.py                               52     52     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/__init__.py                       0      0   100%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/analysis.py                     141    141     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/domain_tbox.py                   62     62     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/io.py                            81     81     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/manifest.py                      57     57     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/metrics.py                       89     89     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/ontology_gate.py                 34     34     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/preprocessing.py                 13     13     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/report.py                       137    137     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/runner.py                       537    537     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/semantic.py                     352    352     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/splits.py                        59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/stats.py                        144    144     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/structure.py                     42     42     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/synthetic.py                     15     15     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/benchmark/timing.py                        22     22     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/biomedical_validation.py                   95     95     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/build_info.py                              42     42     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/c45_baseline_gate.py                       37     37     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/c45_j48_tree.py                           597    510    15%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/canonical_trepan.py                       212    212     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/classification_metrics.py                  31     31     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/component_ablation.py                      66     66     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/confirmatory_benchmark.py                  30     30     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/controlled_trepan_experiment.py           188    110    41%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/counterfactual_contract.py                 32     32     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/data_contract.py                          320    320     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/data_loading.py                            40     40     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/dataset_schema.py                         491    491     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/decision_tree.py                           37     37     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/error_focused_semantic_refinement.py      128    101    21%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/evaluation_protocol.py                     83     46    45%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/execution_mode.py                          20     20     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/experiment_builders.py                    219    219     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/experiment_result.py                      284    284     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/feature_alignment.py                       99     99     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/feature_space_contract.py                  67     67     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/hierarchy_contract.py                     178    178     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/hybrid_oracle.py                          124    124     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/improve_surrogate.py                        2      2     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/inference.py                               76     76     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/logging_config.py                          16     16     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/metrics_comparator.py                    2014   2014     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/metrics_view_model.py                      23     23     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/mlp_convergence.py                         59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/mlp_diagnostic.py                         115    115     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/mlp_factory.py                             73     73     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/mlp_optimizer.py                          432    432     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/mlp_trainer.py                            346    346     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/model_bundle.py                           141    141     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/model_cache.py                            165    165     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/multiobjective_tree_selector.py            47     47     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/natural_language_explainer.py             393    393     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/onto_feature_selector.py                   97     97     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology.py                                17     17     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_acceptance.py                     76     76     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_processor.py                     578    578     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_quality.py                       333    333     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_reasoner.py                      221    221     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_schema.py                        202    202     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_semantic_graph.py                420    420     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/ontology_stage_status.py                   48     48     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/oracle_optimization.py                    113    113     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/owl_annotations.py                         35     35     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/owl_runtime.py                             50     50     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/performance_logger.py                      59     59     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/pipeline_audit.py                         253    253     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/pipeline_v92.py                            53     53     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/plausible_counterfactuals.py               67     67     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/preprocessing.py                          138    138     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/probabilistic_distillation.py             155    133    14%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/production_inference.py                    78     78     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/production_training.py                    268    268     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/protocol_audit.py                          56     56     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/query_sampling.py                         142    142     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/residual_ontological_oracle.py             88     88     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/runtime_control.py                         17     17     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/scientific_benchmark_service.py            74     74     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/scientific_errors.py                       24     24     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/scientific_experiment_contract.py         170    170     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/scientific_validation.py                   50     50     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_attribution.py                   128    128     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_contribution_gate.py              48     48     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_controls.py                       26     26     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_enrichment.py                    297    297     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_metadata.py                      156    156     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_teacher.py                        94     94     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_utility_gate.py                  322    322     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/semantic_version.py                         1      1     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/soft_global_tree.py                        47     47     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/surrogate_acceptance.py                    43     43     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/training_config.py                        137     34    75%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/tree_build_report.py                      127    109    14%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/tree_stop_summary.py                        9      5    44%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan.py                                 291    291     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_extractor.py                         8      8     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_original.py                        890    235    74%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_reloaded_context.py                104    104     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_reloaded_extractor.py             2846   2846     0%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_reloaded_historical.py            1168   1084     7%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/trepan_scientific_tuning.py               576    109    81%
+/tmp/pytest-of-root/pytest-0/test_tuning_rows_do_not_depend0/clean/core/tuning_checkpoint.py                       87     42    52%
+core/__init__.py                                                                                                    0      0   100%
+core/active_query_engine.py                                                                                       180     24    87%
+core/algorithm_identity.py                                                                                         22      2    91%
+core/arff_schema.py                                                                                                88     12    86%
+core/artifacts.py                                                                                                  52      5    90%
+core/benchmark/__init__.py                                                                                          0      0   100%
+core/benchmark/analysis.py                                                                                        141     20    86%
+core/benchmark/domain_tbox.py                                                                                      62      3    95%
+core/benchmark/io.py                                                                                               81      5    94%
+core/benchmark/manifest.py                                                                                         57      4    93%
+core/benchmark/metrics.py                                                                                          89      2    98%
+core/benchmark/ontology_gate.py                                                                                    34      0   100%
+core/benchmark/preprocessing.py                                                                                    13      0   100%
+core/benchmark/report.py                                                                                          137     15    89%
+core/benchmark/runner.py                                                                                          537     46    91%
+core/benchmark/semantic.py                                                                                        352     29    92%
+core/benchmark/splits.py                                                                                           59      2    97%
+core/benchmark/stats.py                                                                                           144      4    97%
+core/benchmark/structure.py                                                                                        42      0   100%
+core/benchmark/synthetic.py                                                                                        15      2    87%
+core/benchmark/timing.py                                                                                           22      0   100%
+core/biomedical_validation.py                                                                                      95     20    79%
+core/build_info.py                                                                                                 42      9    79%
+core/c45_baseline_gate.py                                                                                          37      2    95%
+core/c45_j48_tree.py                                                                                              597     95    84%
+core/canonical_trepan.py                                                                                          212     18    92%
+core/classification_metrics.py                                                                                     31      5    84%
+core/component_ablation.py                                                                                         66      6    91%
+core/confirmatory_benchmark.py                                                                                     30     30     0%
+core/controlled_trepan_experiment.py                                                                              188     18    90%
+core/counterfactual_contract.py                                                                                    32      5    84%
+core/data_contract.py                                                                                             320     73    77%
+core/data_loading.py                                                                                               40     12    70%
+core/dataset_schema.py                                                                                            491     53    89%
+core/decision_tree.py                                                                                              37     37     0%
+core/error_focused_semantic_refinement.py                                                                         128      8    94%
+core/evaluation_protocol.py                                                                                        83      9    89%
+core/execution_mode.py                                                                                             20      1    95%
+core/experiment_builders.py                                                                                       219      3    99%
+core/experiment_result.py                                                                                         284      0   100%
+core/feature_alignment.py                                                                                          99     27    73%
+core/feature_space_contract.py                                                                                     67      9    87%
+core/hierarchy_contract.py                                                                                        178      6    97%
+core/hybrid_oracle.py                                                                                             124     15    88%
+core/improve_surrogate.py                                                                                           2      2     0%
+core/inference.py                                                                                                  76     23    70%
+core/logging_config.py                                                                                             16     16     0%
+core/metrics_comparator.py                                                                                       2014   1339    34%
+core/metrics_view_model.py                                                                                         23      0   100%
+core/mlp_convergence.py                                                                                            59      2    97%
+core/mlp_diagnostic.py                                                                                            115      9    92%
+core/mlp_factory.py                                                                                                73      6    92%
+core/mlp_optimizer.py                                                                                             432    158    63%
+core/mlp_trainer.py                                                                                               346    127    63%
+core/model_bundle.py                                                                                              141     50    65%
+core/model_cache.py                                                                                               165     76    54%
+core/multiobjective_tree_selector.py                                                                               47      5    89%
+core/natural_language_explainer.py                                                                                393    356     9%
+core/onto_feature_selector.py                                                                                      97     11    89%
+core/ontology.py                                                                                                   17     17     0%
+core/ontology_acceptance.py                                                                                        76      2    97%
+core/ontology_processor.py                                                                                        578     66    89%
+core/ontology_quality.py                                                                                          333     26    92%
+core/ontology_reasoner.py                                                                                         221     39    82%
+core/ontology_schema.py                                                                                           202     20    90%
+core/ontology_semantic_graph.py                                                                                   420     52    88%
+core/ontology_stage_status.py                                                                                      48      3    94%
+core/oracle_optimization.py                                                                                       113     18    84%
+core/owl_annotations.py                                                                                            35      6    83%
+core/owl_runtime.py                                                                                                50      9    82%
+core/performance_logger.py                                                                                         59     46    22%
+core/pipeline_audit.py                                                                                            253    226    11%
+core/pipeline_v92.py                                                                                               53      0   100%
+core/plausible_counterfactuals.py                                                                                  67      8    88%
+core/preprocessing.py                                                                                             138     30    78%
+core/probabilistic_distillation.py                                                                                155     16    90%
+core/production_inference.py                                                                                       78     12    85%
+core/production_training.py                                                                                       268     18    93%
+core/protocol_audit.py                                                                                             56     13    77%
+core/query_sampling.py                                                                                            142      3    98%
+core/residual_ontological_oracle.py                                                                                88     16    82%
+core/runtime_control.py                                                                                            17      1    94%
+core/scientific_benchmark_service.py                                                                               74      9    88%
+core/scientific_errors.py                                                                                          24      0   100%
+core/scientific_experiment_contract.py                                                                            170      7    96%
+core/scientific_validation.py                                                                                      50      2    96%
+core/semantic_attribution.py                                                                                      128      8    94%
+core/semantic_contribution_gate.py                                                                                 48      2    96%
+core/semantic_controls.py                                                                                          26      1    96%
+core/semantic_enrichment.py                                                                                       297     13    96%
+core/semantic_metadata.py                                                                                         156      7    96%
+core/semantic_teacher.py                                                                                           94      0   100%
+core/semantic_utility_gate.py                                                                                     322     44    86%
+core/semantic_version.py                                                                                            1      0   100%
+core/soft_global_tree.py                                                                                           47      3    94%
+core/surrogate_acceptance.py                                                                                       43     20    53%
+core/training_config.py                                                                                           137      3    98%
+core/tree_build_report.py                                                                                         127      4    97%
+core/tree_stop_summary.py                                                                                           9      0   100%
+core/trepan.py                                                                                                    291     99    66%
+core/trepan_extractor.py                                                                                            8      2    75%
+core/trepan_original.py                                                                                           890    103    88%
+core/trepan_reloaded_context.py                                                                                   104     45    57%
+core/trepan_reloaded_extractor.py                                                                                2846   1165    59%
+core/trepan_reloaded_historical.py                                                                               1168     57    95%
+core/trepan_scientific_tuning.py                                                                                  576     19    97%
+core/tuning_checkpoint.py                                                                                          87      4    95%
+counterfactuals/__init__.py                                                                                         0      0   100%
+counterfactuals/_bootstrap.py                                                                                      20      2    90%
+counterfactuals/_paths.py                                                                                          24      5    79%
+counterfactuals/cf_mlp_trainer.py                                                                                 176    156    11%
+counterfactuals/cf_tree.py                                                                                         98      8    92%
+counterfactuals/cfkit/__init__.py                                                                                   4      0   100%
+counterfactuals/cfkit/api.py                                                                                      445     36    92%
+counterfactuals/cfkit/methods.py                                                                                  474     29    94%
+counterfactuals/cfkit/metrics.py                                                                                  119      3    97%
+counterfactuals/cfkit/result.py                                                                                    99      2    98%
+counterfactuals/cfkit/rules.py                                                                                    308     50    84%
+counterfactuals/cfkit/schema.py                                                                                   413     71    83%
+counterfactuals/cfkit/session.py                                                                                   97     21    78%
+counterfactuals/clear/CLEAR.py                                                                                     46     46     0%
+counterfactuals/clear/CLEAR_perturbations.py                                                                      415    415     0%
+counterfactuals/clear/CLEAR_regression.py                                                                         648    641     1%
+counterfactuals/clear/CLEAR_sensitivity_files.py                                                                  151    151     0%
+counterfactuals/clear/CLEAR_settings.py                                                                            81     48    41%
+counterfactuals/clear/__init__.py                                                                                   0      0   100%
+counterfactuals/clear/_pandas_compat.py                                                                            10     10     0%
+counterfactuals/cogs/__init__.py                                                                                    0      0   100%
+counterfactuals/cogs/distance.py                                                                                   20      7    65%
+counterfactuals/cogs/evolution.py                                                                                  90     31    66%
+counterfactuals/cogs/fitness.py                                                                                    20      3    85%
+counterfactuals/cogs/population.py                                                                                 44     16    64%
+counterfactuals/cogs/selection.py                                                                                  88     62    30%
+counterfactuals/cogs/util.py                                                                                       50     37    26%
+counterfactuals/cogs/variation.py                                                                                  59     30    49%
+counterfactuals/dataset_config.py                                                                                  14      1    93%
+counterfactuals/engine.py                                                                                         699    125    82%
+counterfactuals/evaluation.py                                                                                     133     27    80%
+counterfactuals/export.py                                                                                         107     11    90%
+counterfactuals/global_rules.py                                                                                   220      5    98%
+counterfactuals/improve_surrogate.py                                                                                2      0   100%
+counterfactuals/local_surrogate_tree.py                                                                           140     13    91%
+counterfactuals/pipelines/pipeline_counterfactuals.py                                                             292    240    18%
+counterfactuals/service.py                                                                                        360     85    76%
+counterfactuals/surrogate_improvement.py                                                                          410    113    72%
+counterfactuals/transfer.py                                                                                       172     19    89%
+-----------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                           68719  45780    33%
+============================= slowest 15 durations =============================
+198.05s setup    tests/test_benchmark_protocol.py::test_all_arms_share_identical_splits
+197.36s setup    tests/test_benchmark_oracle_contract.py::test_every_tree_row_records_the_frozen_oracle_it_consulted
+185.29s call     tests/test_benchmark_protocol.py::test_deterministic_seeds_reproduce_metrics
+137.23s call     tests/test_residual_ontological_oracle.py::test_train_mlp_residual_onto_integration
+117.62s setup    tests/test_benchmark_ablation_isolation.py::test_main_arms_are_exactly_a_to_f
+101.73s call     tests/test_benchmark_protocol.py::test_mlp_original_and_ontological_get_same_tuning_budget
+97.94s call     tests/test_benchmark_protocol.py::test_multiclass_dataset_runs
+85.27s call     tests/test_no_ontology_mirror_original.py::test_no_ontology_metrics_identical_to_original
+81.08s call     tests/test_benchmark_protocol.py::test_runner_only_feeds_training_rows_to_selection
+79.27s call     tests/test_benchmark_protocol.py::test_invalid_owl_does_not_discard_experiment
+77.15s call     tests/test_benchmark_protocol.py::test_negative_results_are_reported_when_semantics_missing
+75.76s setup    tests/test_dataset_agnosticism.py::test_arbitrary_schema_runs_end_to_end_with_the_same_pipeline_and_one_oracle[two_features_binary]
+73.76s call     tests/test_benchmark_protocol.py::test_no_ontology_runs_without_crash
+70.68s call     tests/test_production_semantic_v92.py::test_production_bundle_roundtrip_without_owl
+67.70s call     tests/test_dataset_agnostic_matrix_v92.py::test_wide_120x400_runs_and_reports_signal_state
+1732 passed, 40 skipped, 121 warnings in 4214.15s (1:10:14)
+exit=0
