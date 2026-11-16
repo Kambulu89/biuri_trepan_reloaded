@@ -29,7 +29,7 @@ Referência: Craven & Shavlik (1996), *Extracting Tree-Structured Representation
 ### Comportamento medido
 
 - **Critério de pureza limita a fidelidade.** Com `purity_epsilon = 0,05` um nó com 97 % de concordância pára. No Breast Cancer (semente 7, todos os atributos) a árvore ficou com 3 nós: os dois filhos pararam com 97,2 % e 97,1 % (`STOP_PURE_NODE`, `wilson_lower_bound`). É fiel à referência, mas fixa um teto de fidelidade próximo de 1 − ε por folha.
-- **Árvores muito maiores do que as do C4.5 sem vantagem.** Mediana do rácio de nós Original/C4.5 nas 10 primeiras unidades: 2,45 (até 9 no iris). O iris é resolvido pelo C4.5 com 7 nós; o Original usa 27–63.
+- **Árvores muito maiores do que as do C4.5 sem vantagem.** Mediana do rácio de nós Original/C4.5 nas 20 unidades: 2,17 (até 9 no iris). No iris o C4.5 usa em média 8,6 nós e o Original 35,8.
 - **Fidelidade no teste semelhante à de uma árvore treinada com rótulos reais.** Ver a comparação por dataset em `ANALISE_ESTATISTICA.md` e os valores por unidade em `RESULTADOS_COMPARATIVOS.csv`.
 
 **Conclusão:** a implementação segue a estrutura do TREPAN, com os desvios acima. Não a declaro «cientificamente equivalente» ao TREPAN de Craven & Shavlik; o desvio 1 altera o conjunto de divisões candidatas e depende da escala dos dados.
@@ -69,8 +69,8 @@ O Reloaded é uma subclasse do Original. Diferenças reais:
 
 Achados:
 
-1. **O contrato de equivalência verifica-se no benchmark.** O braço D (Reloaded sem ontologia) deu métricas, nós e consultas idênticos aos do Original em todas as unidades executadas. EXECUTADO.
-2. **O Reloaded com ontologia consulta o oráculo ~2,3 vezes mais** (mediana, 10 unidades) e demora ~12 vezes mais do que o Original. O orçamento não é comparável.
+1. **O contrato de equivalência verifica-se no benchmark.** O braço D (Reloaded sem ontologia) deu accuracy, fidelidade e número de nós idênticos aos do Original nas 20 unidades. EXECUTADO.
+2. **O Reloaded com ontologia consulta o oráculo 2,2 vezes mais** (mediana das 20 unidades; mínimo 2,0, máximo 2,6) e demora 11,6 vezes mais do que o Original. O orçamento não é comparável.
 3. **No pipeline de produção (`core/production_training.py`) não existe braço sem ontologia.** A diferença Reloaded − Original mistura mecanismos semânticos e não semânticos. Na semente 7 do Breast Cancer o Reloaded diferiu do Original (23 contra 27 nós, fidelidade +0,007) com impacto semântico 0 e 0 intervenções EFSR aceites.
 4. **O gate de contribuição declarava `SEMANTIC_CONTRIBUTION_SUPPORTED` nesse caso.** Corrigido (`CORRECCOES_IMPLEMENTADAS.md`).
 5. **Limites verdadeiros não geram atributos.** O indicador `valor ≥ mínimo` é constante quando o limite é um facto físico (por exemplo ≥ 0) e é eliminado pelo filtro de novidade.

@@ -11,7 +11,7 @@ Este documento fixa o protocolo usado nesta auditoria (secção 1) e o protocolo
 - **Braços:** A MLP; B C4.5 (rótulos reais); C TREPAN Original; D Reloaded sem ontologia; E Reloaded + OWL; F Reloaded + OWL permutada.
 - **Oráculo:** um MLP por unidade, congelado (`oracle_id`), consultado por C, D, E e F.
 - **Estrutura das árvores:** escolhida só no treino pelo tuning do projeto (CV 3×5), sem informação ontológica, igual em C–F.
-- **Código:** commit `df045ee` com 5 ficheiros «congelados» diferentes do manifest (P05). As correções `af02d5d` e `16e6be8` não tocam em nenhum módulo importado pelo benchmark.
+- **Código:** base `df045ee` com 5 ficheiros «congelados» diferentes do manifest (P05). As unidades correram enquanto os commits desta auditoria iam sendo criados (o `RUN_META.txt` de cada unidade regista o commit); nenhum desses commits toca num módulo importado pelo benchmark.
 - **Ambiente:** Python 3.12, numpy 1.26.4, scikit-learn 1.6.1, `OMP_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, 4 CPU.
 - **Natureza:** DEV. Estes datasets já foram observados pelo projeto; nada aqui é confirmatório.
 

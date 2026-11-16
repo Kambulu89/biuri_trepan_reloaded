@@ -16,7 +16,7 @@ Ramo local `auditoria/missao-master`. Nenhum push foi feito. Nenhum baseline, da
 ## Regressão
 
 - Suite completa antes das correções: 1732 aprovados, 40 ignorados (`evidencia/pytest_full_baseline.log`).
-- Suite completa depois das correções: ver `VALIDACAO_FUNCIONAL.md`.
+- Suite completa depois das correções: 1742 aprovados, 40 ignorados (`evidencia/pytest_full_after_fixes.log`). Os 10 testes a mais são os novos.
 
 ## O que não corrigi, e porquê
 
