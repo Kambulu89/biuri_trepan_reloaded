@@ -112,6 +112,7 @@ class OntologyProcessor:
         candidates: List[Dict[str, Any]] = []
         candidates.extend(self._fit_hierarchical_specs(train))
         candidates.extend(self._fit_relational_specs(train))
+        candidates.extend(self._fit_declared_relation_specs(train))
         candidates.extend(self._fit_constraint_specs(train))
         candidates.extend(self._fit_categorical_specs(train))
         self.feature_specs_ = self._deduplicate_specs(train, candidates)
@@ -576,6 +577,75 @@ class OntologyProcessor:
                 })
         return specs
 
+    DECLARED_RELATION_ANNOTATIONS = ("derivedRelation", "derived_relation", "biuriDerivedRelation")
+    DECLARED_RELATION_OPERATIONS = ("ratio", "product", "difference", "sum")
+
+    def _fit_declared_relation_specs(self, train: pd.DataFrame) -> List[Dict[str, Any]]:
+        """Relações entre grandezas DECLARADAS na ontologia (genérico; nenhuma regra por dataset).
+
+        Uma propriedade pode declarar, por anotação ``derivedRelation``, uma grandeza derivada dela e de outra
+        propriedade: ``"<operação>:<nome da outra propriedade>[:<expoente esquerdo>:<expoente direito>]"``, com
+        operação em ``ratio | product | difference | sum``. Exemplo: em ``hasMeanPerimeter``,
+        ``"ratio:hasMeanArea:2:1"`` declara perímetro² / área. A relação só gera uma feature se as duas
+        propriedades estiverem mapeadas em colunas numéricas; a resolução é feita pelo mapeamento coluna→entidade,
+        por isso uma ontologia com o mapeamento permutado aplica as mesmas operações a outras colunas (controlo).
+        Declarações inválidas ficam registadas em ``declared_relation_issues_`` e não geram nada.
+        """
+        by_name = self._entity_by_name()
+        column_of: Dict[str, str] = {}
+        for column, entity_name in self.column_entity_map_.items():
+            column_of.setdefault(str(entity_name), str(column))
+        self.declared_relation_issues_: List[Dict[str, Any]] = []
+        specs: List[Dict[str, Any]] = []
+        seen = set()
+        for column, entity_name in self.column_entity_map_.items():
+            entity = by_name.get(entity_name)
+            if entity is None or column not in train.columns or not self._numeric(train[column]):
+                continue
+            for raw in self._annotation_values(entity, self.DECLARED_RELATION_ANNOTATIONS):
+                parts = [part.strip() for part in str(raw).split(":")]
+                issue = {"entity": str(entity_name), "declaration": str(raw)}
+                if len(parts) not in (2, 4) or parts[0].lower() not in self.DECLARED_RELATION_OPERATIONS:
+                    self.declared_relation_issues_.append({**issue, "reason": "malformed_declaration"})
+                    continue
+                operation, other = parts[0].lower(), parts[1]
+                try:
+                    left_power = float(parts[2]) if len(parts) == 4 else 1.0
+                    right_power = float(parts[3]) if len(parts) == 4 else 1.0
+                except ValueError:
+                    self.declared_relation_issues_.append({**issue, "reason": "non_numeric_exponent"})
+                    continue
+                if not (np.isfinite(left_power) and np.isfinite(right_power)) or left_power == 0 or right_power == 0:
+                    self.declared_relation_issues_.append({**issue, "reason": "invalid_exponent"})
+                    continue
+                right_column = column_of.get(other)
+                if right_column is None or right_column == column:
+                    self.declared_relation_issues_.append({**issue, "reason": "operand_not_mapped_to_a_column"})
+                    continue
+                if right_column not in train.columns or not self._numeric(train[right_column]):
+                    self.declared_relation_issues_.append({**issue, "reason": "operand_not_numeric"})
+                    continue
+                key = (operation, str(entity_name), other, left_power, right_power)
+                if key in seen:
+                    continue
+                seen.add(key)
+                def power_token(value: float) -> str:
+                    return "" if value == 1.0 else "_pow" + self._safe_token(f"{value:g}".replace("-", "m").replace(".", "p"))
+                specs.append({
+                    "kind": "relational",
+                    "name": (f"{self.ONTO_PREFIX}{self._safe_token(entity_name)}{power_token(left_power)}_{operation}_"
+                             f"{self._safe_token(other)}{power_token(right_power)}"),
+                    "operation": f"declared_{operation}",
+                    "left": column,
+                    "right": right_column,
+                    "left_power": left_power,
+                    "right_power": right_power,
+                    "sources": [column, right_column],
+                    "owl_entities": [str(entity_name), other],
+                    "provenance": "owl_declared_relation",
+                })
+        return specs
+
     def _explicit_bounds(self, entity) -> Dict[str, Optional[float]]:
         bounds = {"low": None, "high": None}
         if entity is None:
@@ -712,6 +782,10 @@ class OntologyProcessor:
                 )
             if spec.get("kind") == "relational":
                 op = spec.get("operation")
+                if str(op).startswith("declared_"):
+                    symbol = {"declared_ratio": "/", "declared_product": "*", "declared_difference": "-", "declared_sum": "+"}.get(op, "?")
+                    return (f"({spec.get('left')})^{spec.get('left_power', 1.0):g} {symbol} "
+                            f"({spec.get('right')})^{spec.get('right_power', 1.0):g}")
                 if op == "difference":
                     return f"{spec.get('left')} - {spec.get('right')}"
                 if op == "relative_delta":
@@ -966,6 +1040,24 @@ class OntologyProcessor:
                     f"Valores ausentes nas fontes relacionais de {spec['name']}."
                 )
             operation = spec.get("operation")
+            if str(operation).startswith("declared_"):
+                with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
+                    lp = np.power(left.to_numpy(dtype=float), float(spec.get("left_power", 1.0)))
+                    rp = np.power(right.to_numpy(dtype=float), float(spec.get("right_power", 1.0)))
+                    if operation == "declared_ratio":
+                        safe = np.where(np.abs(rp) > 1e-12, rp, np.where(rp < 0, -1e-12, 1e-12))
+                        values = lp / safe
+                    elif operation == "declared_product":
+                        values = lp * rp
+                    elif operation == "declared_difference":
+                        values = lp - rp
+                    elif operation == "declared_sum":
+                        values = lp + rp
+                    else:
+                        raise OntologySchemaError(f"Operação declarada desconhecida em {spec['name']}: {operation}")
+                if not np.isfinite(values).all():
+                    raise OntologySchemaError(f"Relação declarada {spec['name']} produziu valores não finitos.")
+                return pd.Series(values, index=frame.index)
             if operation == "difference":
                 return left - right
             if operation == "relative_delta":

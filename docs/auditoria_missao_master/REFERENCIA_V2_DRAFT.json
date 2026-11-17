@@ -1,0 +1,85 @@
+{
+ "status": "DRAFT — proposta de referência v2; NÃO substitui o BENCHMARK_MANIFEST_v1.json; design_frozen=false",
+ "written_before_phase3_execution": true,
+ "base_manifest": {
+  "file": "validation/benchmark/BENCHMARK_MANIFEST_v1.json",
+  "manifest_sha256": "d444c3bc073d76e1cdb6043c128f03fdf78222d62425e1a4e8c5594f572a0053"
+ },
+ "reference_arms": {
+  "A_mlp": "MLP / FrozenOracle (inalterado)",
+  "B_c45": "C4.5 canónico com rótulos reais (inalterado)",
+  "C_original": "TREPAN Original + amostrador conjunto empírico (core/query_sampling.py, joint_sampler_context), 3 réplicas de amostragem; estrutura do tuning v1",
+  "D_reloaded_owl": "TREPAN Reloaded + OWL + amostrador conjunto, 3 réplicas",
+  "controls": "ontologia permutada, grupos aleatórios, engenharia convencional, Original com consultas igualadas (run_controls_m29)"
+ },
+ "sampler_parameters": {
+  "noise_scale": 0.25,
+  "p_resample": 0.2,
+  "p_flip": 0.05,
+  "margin": 0.1,
+  "scale_floor": 0.1,
+  "source": "valores por omissão de core/query_sampling.py, fixados pelo projeto no Doc. 26"
+ },
+ "unit_measure": "média das 3 réplicas por braço e unidade",
+ "datasets": [
+  "iris",
+  "wine",
+  "breast_cancer",
+  "digits"
+ ],
+ "master_seeds": [
+  42,
+  7,
+  123,
+  2024,
+  11
+ ],
+ "evaluation": {
+  "scheme": "holdout",
+  "test_size": 0.25,
+  "stratified": true,
+  "one_split_per_master_seed": true
+ },
+ "known_limitations": [
+  "estrutura das árvores escolhida pelo tuning com o amostrador marginal (não reafinada)",
+  "max_features_per_node inalterado (pré-seleção por variância bruta, P04)",
+  "datasets DEV já observados"
+ ],
+ "code_sha256_at_draft": {
+  "core/trepan_scientific_tuning.py": "1d98473c40cea8f9361883c34471eeaf4f26cabaf6f433c1cdc195f4835b88ee",
+  "core/scientific_experiment_contract.py": "b1ce5f8174cafdc82536f7ed20fc598dcf97b795cdecc65a1d2c63f293ccd581",
+  "core/trepan_original.py": "c3a4965724b78bcd230df863f226f3dcce15d295bbe09c1808f1aa4f55d5a331",
+  "core/trepan_reloaded_historical.py": "24feaae003ad28e5b23411e5bd80a6d142ad8c91c3dde9fabb8bb9309d37f9d0",
+  "core/c45_j48_tree.py": "bca2294a748a75e796ada6c923fd101804b81334cecdd50109ac0779def32920",
+  "core/benchmark/runner.py": "38b35ff08281e238b17d70e23ced4f77b0ca3f748ab8c6871341135eb4cef235",
+  "core/benchmark/semantic.py": "cf2a2f961fb217491ce6facf48a772480e537f791021ad02e60c4677cfd12a5b",
+  "core/benchmark/ontology_gate.py": "cafe2bbbe9f5e88e0543025fc84abaabbdcceb46d2b35f683488ee3d344adb56",
+  "core/benchmark/structure.py": "34974a4b97fff0aa42b810c16fba164be3feffe3bdeb57f55a54965bd7f4bad1",
+  "core/benchmark/metrics.py": "2e7473f3a45bbefef9094138e7b870bd435d4fd90855c14da39df56a87dd12b7",
+  "core/benchmark/analysis.py": "106cc4253bf16d7544e8b674948af951a7a814865d9daf9d171c85e68be5a211",
+  "core/query_sampling.py": "ea1d9ce67b7ed44e1b2eab2d64db68e1dbae03838e913d0f2b477964d46edbf4",
+  "core/ontology_processor.py": "46a4e5007aaeb3214895d362735fc661cb578aac7d65388ccbcf35eb65911f50",
+  "validation/benchmark/run_sampler_c.py": "c359b84ebae9c10464b1e6bc7e7a02c8077d5ea675c1a43d732c5ceae5dae3c0",
+  "validation/benchmark/run_controls_m29.py": "204c5ba5360b31afe9bfc11b6583e635c182b272d1b0a9e7d641ca0d507a92d5",
+  "validation/benchmark/run_fase3.py": "c7dc3429be05732a9b82ea209c5d9ea047b15a3f0c3212f91de40531115eb6e7"
+ },
+ "frozen_code_drift_vs_v1": [
+  "core/trepan_scientific_tuning.py",
+  "core/trepan_original.py",
+  "core/trepan_reloaded_historical.py",
+  "core/benchmark/runner.py",
+  "core/benchmark/semantic.py"
+ ],
+ "ontologies_v1_sha256": {
+  "iris": "fe73a34613393191cb3355a371be90d4aa3beed4d8239c4dd7a54a9f22c415f1",
+  "wine": "23381ea2d15f80270979d27c049565bd60839fe71d41ae3089b4796a20475640",
+  "breast_cancer": "cd79f1f009b4fd1535becf0802bab871c3e0bdff13812041b4c7e348f99cbc17",
+  "digits": "6142046aff2e52ead9bc746d4868420af8f271da5ecb3a395e19411a4f28ef74"
+ },
+ "ontologies_v2_sha256": {
+  "breast_cancer": "a6a8bd6c2bbfe5fc2496c5a8927b788b0e71bb5985b57413b1cccf925c902afb",
+  "iris": "3c470d9d91d1586fdad4de8e768bb1abea64cf28ec62c0e857cb6ac1e05895f0",
+  "wine": "e6486bae442d2539c0da2626d040cc59211fc47f8d446761fe74c5095542a0d6"
+ },
+ "dev_reference_results": "docs/auditoria_missao_master/evidencia/fase2/ (fase 2 da auditoria)"
+}
