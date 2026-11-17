@@ -74,7 +74,7 @@ A e C usam o amostrador marginal histórico.
 | Reloaded + OWL, accuracy: D − C | +0,014 [+0,005; +0,025] | +0,030 [-0,000; +0,062] | +0,001 [-0,015; +0,013] | +0,034 [+0,029; +0,042] |
 | Reloaded + OWL, fidelidade: D − C | -0,004 [-0,018; +0,011] | +0,019 [-0,010; +0,050] | -0,002 [-0,015; +0,006] | +0,034 [+0,028; +0,041] |
 
-O amostrador conjunto melhora a accuracy do Original nos quatro datasets, com intervalo acima de zero em três, e a fidelidade em três, com intervalo acima de zero em dois.
+O amostrador conjunto melhora a accuracy do Original nos quatro datasets, com intervalo acima de zero em três, e a fidelidade também nos quatro, com intervalo acima de zero em dois.
 
 ## 5. Médias por condição
 
