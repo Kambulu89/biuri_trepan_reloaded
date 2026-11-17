@@ -1,0 +1,153 @@
+réplicas por condição/unidade: {'A Original (marginal)': {'min': 3, 'max': 3}, 'B Original + conjunto': {'min': 3, 'max': 3}, 'C Reloaded+OWL (marginal)': {'min': 3, 'max': 3}, 'C4.5': {'min': 1, 'max': 1}, 'D Reloaded+OWL + conjunto': {'min': 3, 'max': 3}, 'Dg grupos aleatórios + conjunto': {'min': 3, 'max': 3}, 'E Reloaded sem OWL (marginal)': {'min': 3, 'max': 3}, 'Ec eng. convencional + conjunto': {'min': 3, 'max': 3}, 'F Reloaded sem OWL + conjunto': {'min': 3, 'max': 3}, 'G Original + conjunto, consultas igualadas': {'min': 3, 'max': 3}, 'MLP': {'min': 1, 'max': 1}, 'P permutada + conjunto': {'min': 3, 'max': 3}}
+                                                            acc    fid    nodes     samples     secs
+dataset       cond                                                                                  
+breast_cancer A Original (marginal)                       0.932  0.931   31.533   17385.800    1.575
+              B Original + conjunto                       0.937  0.935   35.933   16725.467    1.781
+              C Reloaded+OWL (marginal)                   0.935  0.934   31.000   39312.400   14.767
+              C4.5                                        0.930  0.923   17.000         NaN    0.312
+              D Reloaded+OWL + conjunto                   0.936  0.931   33.800   40075.333   13.942
+              Dg grupos aleatórios + conjunto             0.943  0.935   34.867   40172.267   17.021
+              E Reloaded sem OWL (marginal)               0.932  0.931   31.533   17811.800    1.566
+              Ec eng. convencional + conjunto             0.944  0.938   34.733   38026.000    3.333
+              F Reloaded sem OWL + conjunto               0.937  0.935   35.933   17151.467    1.786
+              G Original + conjunto, consultas igualadas  0.936  0.938   34.867   43371.133    2.974
+              MLP                                         0.962    NaN      NaN         NaN    0.007
+              P permutada + conjunto                      0.938  0.932   34.867   40722.133   39.218
+digits        A Original (marginal)                       0.824  0.823  229.267  180717.400   10.530
+              B Original + conjunto                       0.872  0.866  252.333  178284.200   11.019
+              C Reloaded+OWL (marginal)                   0.826  0.822  233.133  385709.800  103.583
+              C4.5                                        0.853  0.843  169.400         NaN    1.628
+              D Reloaded+OWL + conjunto                   0.860  0.856  252.200  383505.667   96.884
+              Dg grupos aleatórios + conjunto             0.863  0.860  252.333  384018.667  113.770
+              E Reloaded sem OWL (marginal)               0.824  0.823  229.267  182064.400   10.480
+              Ec eng. convencional + conjunto             0.880  0.874  252.733  375579.800   18.050
+              F Reloaded sem OWL + conjunto               0.872  0.866  252.333  179631.200   10.888
+              G Original + conjunto, consultas igualadas  0.882  0.872  253.000  390663.067   22.113
+              MLP                                         0.960    NaN      NaN         NaN    0.008
+              P permutada + conjunto                      0.868  0.860  253.133  383476.000  116.167
+iris          A Original (marginal)                       0.937  0.956   34.067    9812.533    0.194
+              B Original + conjunto                       0.956  0.965   35.000   10337.200    0.202
+              C Reloaded+OWL (marginal)                   0.940  0.956   34.867   22033.200    1.905
+              C4.5                                        0.958  0.963    8.600         NaN    0.014
+              D Reloaded+OWL + conjunto                   0.954  0.953   35.667   23132.200    1.818
+              Dg grupos aleatórios + conjunto             0.944  0.953   34.600   23803.467    2.400
+              E Reloaded sem OWL (marginal)               0.937  0.956   34.067    9924.533    0.197
+              Ec eng. convencional + conjunto             0.949  0.965   34.200   22870.733    0.463
+              F Reloaded sem OWL + conjunto               0.956  0.965   35.000   10449.200    0.204
+              G Original + conjunto, consultas igualadas  0.954  0.967   35.000   23452.800    0.271
+              MLP                                         0.953    NaN      NaN         NaN    0.008
+              P permutada + conjunto                      0.942  0.960   35.267   23627.400    4.528
+wine          A Original (marginal)                       0.919  0.917   39.667   10165.133    0.751
+              B Original + conjunto                       0.948  0.939   29.000   10614.933    1.482
+              C Reloaded+OWL (marginal)                   0.905  0.902   40.733   23085.800   11.586
+              C4.5                                        0.929  0.916    9.800         NaN    0.047
+              D Reloaded+OWL + conjunto                   0.935  0.921   26.333   20483.000    9.372
+              Dg grupos aleatórios + conjunto             0.945  0.923   35.400   26734.000   15.288
+              E Reloaded sem OWL (marginal)               0.919  0.917   39.667   10298.133    0.787
+              Ec eng. convencional + conjunto             0.960  0.954   27.800   20676.267    1.465
+              F Reloaded sem OWL + conjunto               0.948  0.939   29.000   10747.933    1.455
+              G Original + conjunto, consultas igualadas  0.950  0.933   32.067   26893.600    1.682
+              MLP                                         0.969    NaN      NaN         NaN    0.007
+              P permutada + conjunto                      0.921  0.911   32.600   25697.133   15.552
+dp entre réplicas:
+                   acc     fid
+dataset                      
+breast_cancer  0.0108  0.0122
+digits         0.0138  0.0147
+iris           0.0185  0.0127
+wine           0.0292  0.0257
+             contraste        dataset   media      lo      hi  pos  neg
+0           H1 acc D−B           iris -0.0018 -0.0070  0.0035    1    2
+1           H1 acc D−B           wine -0.0133 -0.0489  0.0148    1    2
+2           H1 acc D−B  breast_cancer -0.0014 -0.0079  0.0070    1    3
+3           H1 acc D−B         digits -0.0116 -0.0218  0.0003    1    4
+4        H2 acc D−C4.5           iris -0.0035 -0.0088  0.0035    1    3
+5        H2 acc D−C4.5           wine  0.0059 -0.0341  0.0400    3    2
+6        H2 acc D−C4.5  breast_cancer  0.0056 -0.0089  0.0200    3    2
+7        H2 acc D−C4.5         digits  0.0074 -0.0139  0.0270    3    2
+8        H3 acc B−C4.5           iris -0.0018 -0.0123  0.0088    1    2
+9        H3 acc B−C4.5           wine  0.0193 -0.0000  0.0385    3    1
+10       H3 acc B−C4.5  breast_cancer  0.0070 -0.0098  0.0256    2    3
+11       H3 acc B−C4.5         digits  0.0190  0.0041  0.0290    4    1
+12          H4 fid D−B           iris -0.0123 -0.0246 -0.0035    0    4
+13          H4 fid D−B           wine -0.0178 -0.0578  0.0044    1    1
+14          H4 fid D−B  breast_cancer -0.0033 -0.0089  0.0023    1    3
+15          H4 fid D−B         digits -0.0095 -0.0215  0.0053    1    4
+16       H5 fid D−C4.5           iris -0.0105 -0.0246  0.0018    1    4
+17       H5 fid D−C4.5           wine  0.0059 -0.0444  0.0474    3    2
+18       H5 fid D−C4.5  breast_cancer  0.0084 -0.0051  0.0242    2    3
+19       H5 fid D−C4.5         digits  0.0132 -0.0113  0.0347    3    2
+20             acc D−F           iris -0.0018 -0.0070  0.0035    1    2
+21             acc D−F           wine -0.0133 -0.0489  0.0148    1    2
+22             acc D−F  breast_cancer -0.0014 -0.0079  0.0070    1    3
+23             acc D−F         digits -0.0116 -0.0218  0.0003    1    4
+24             fid D−F           iris -0.0123 -0.0246 -0.0035    0    4
+25             fid D−F           wine -0.0178 -0.0578  0.0044    1    1
+26             fid D−F  breast_cancer -0.0033 -0.0089  0.0023    1    3
+27             fid D−F         digits -0.0095 -0.0215  0.0053    1    4
+28  amostrador acc B−A           iris  0.0193  0.0070  0.0316    4    0
+29  amostrador acc B−A           wine  0.0296  0.0044  0.0533    4    1
+30  amostrador acc B−A  breast_cancer  0.0047 -0.0028  0.0126    3    1
+31  amostrador acc B−A         digits  0.0474  0.0320  0.0633    5    0
+32  amostrador fid B−A           iris  0.0088 -0.0158  0.0316    3    2
+33  amostrador fid B−A           wine  0.0222  0.0000  0.0459    4    1
+34  amostrador fid B−A  breast_cancer  0.0037  0.0014  0.0065    4    0
+35  amostrador fid B−A         digits  0.0428  0.0268  0.0582    5    0
+36  amostrador acc D−C           iris  0.0140  0.0053  0.0246    4    0
+37  amostrador acc D−C           wine  0.0296 -0.0000  0.0622    3    1
+38  amostrador acc D−C  breast_cancer  0.0005 -0.0149  0.0131    3    2
+39  amostrador acc D−C         digits  0.0344  0.0287  0.0415    5    0
+40  amostrador fid D−C           iris -0.0035 -0.0175  0.0105    2    2
+41  amostrador fid D−C           wine  0.0193 -0.0104  0.0504    4    1
+42  amostrador fid D−C  breast_cancer -0.0023 -0.0149  0.0065    3    2
+43  amostrador fid D−C         digits  0.0341  0.0280  0.0410    5    0
+44          fid B−C4.5           iris  0.0018 -0.0053  0.0105    1    1
+45          fid B−C4.5           wine  0.0237 -0.0030  0.0474    4    1
+46          fid B−C4.5  breast_cancer  0.0117  0.0014  0.0252    4    1
+47          fid B−C4.5         digits  0.0227  0.0037  0.0412    4    1
+48        acc MLP−C4.5           iris -0.0053 -0.0158  0.0000    0    1
+49        acc MLP−C4.5           wine  0.0400  0.0133  0.0711    4    0
+50        acc MLP−C4.5  breast_cancer  0.0322  0.0154  0.0531    5    0
+51        acc MLP−C4.5         digits  0.1067  0.0942  0.1213    5    0
+52             acc D−P           iris  0.0123 -0.0000  0.0246    3    1
+53             acc D−P           wine  0.0133 -0.0252  0.0563    3    2
+54             acc D−P  breast_cancer -0.0028 -0.0135  0.0103    2    3
+55             acc D−P         digits -0.0073 -0.0139 -0.0006    1    4
+56             fid D−P           iris -0.0070 -0.0211  0.0105    1    3
+57             fid D−P           wine  0.0104 -0.0296  0.0533    3    2
+58             fid D−P  breast_cancer -0.0009 -0.0145  0.0098    3    2
+59             fid D−P         digits -0.0040 -0.0129  0.0049    2    3
+60            acc D−Dg           iris  0.0105 -0.0070  0.0246    3    1
+61            acc D−Dg           wine -0.0104 -0.0356  0.0133    2    3
+62            acc D−Dg  breast_cancer -0.0075 -0.0168  0.0019    1    3
+63            acc D−Dg         digits -0.0028 -0.0113  0.0076    2    3
+64            fid D−Dg           iris  0.0000 -0.0105  0.0105    1    1
+65            fid D−Dg           wine -0.0015 -0.0341  0.0267    2    2
+66            fid D−Dg  breast_cancer -0.0037 -0.0168  0.0093    2    2
+67            fid D−Dg         digits -0.0036 -0.0110  0.0086    1    4
+68            acc D−Ec           iris  0.0053 -0.0070  0.0175    2    2
+69            acc D−Ec           wine -0.0252 -0.0533 -0.0089    0    5
+70            acc D−Ec  breast_cancer -0.0084 -0.0238  0.0047    1    2
+71            acc D−Ec         digits -0.0201 -0.0293 -0.0065    1    4
+72            fid D−Ec           iris -0.0123 -0.0246  0.0000    1    4
+73            fid D−Ec           wine -0.0326 -0.0667 -0.0059    0    4
+74            fid D−Ec  breast_cancer -0.0065 -0.0233  0.0103    2    3
+75            fid D−Ec         digits -0.0176 -0.0265 -0.0041    1    4
+76             acc D−G           iris -0.0000 -0.0158  0.0228    1    3
+77             acc D−G           wine -0.0148 -0.0415  0.0044    2    3
+78             acc D−G  breast_cancer -0.0005 -0.0070  0.0061    3    2
+79             acc D−G         digits -0.0213 -0.0311 -0.0105    0    5
+80             fid D−G           iris -0.0140 -0.0246 -0.0053    0    4
+81             fid D−G           wine -0.0119 -0.0400  0.0059    2    2
+82             fid D−G  breast_cancer -0.0070 -0.0228  0.0079    1    4
+83             fid D−G         digits -0.0156 -0.0311  0.0000    2    3
+               H1  H2  H3  H4  H5  conjunta
+dataset                                    
+breast_cancer   1   3   2   1   2         0
+digits          1   3   4   1   3         1
+iris            1   1   1   0   1         0
+wine            1   3   3   1   3         0
+total 20 {'H1': 4, 'H2': 10, 'H3': 10, 'H4': 3, 'H5': 9, 'conjunta': 1}
+                H1    H2    H3    H4    H5  conjunta
+dataset seed                                        
+digits  42    True  True  True  True  True      True
