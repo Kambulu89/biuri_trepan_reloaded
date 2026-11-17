@@ -1,0 +1,104 @@
+unidades: {'breast_cancer': 5, 'iris': 5, 'wine': 5} | réplicas: {'B Original + conjunto': {'min': 3, 'max': 3}, 'C4.5': {'min': 1, 'max': 1}, 'D2 Reloaded+OWL v2 + conjunto': {'min': 3, 'max': 3}, 'Dg2 grupos aleatórios': {'min': 3, 'max': 3}, 'Ec2 eng. convencional': {'min': 3, 'max': 3}, 'F Reloaded sem OWL + conjunto': {'min': 3, 'max': 3}, 'G2 Original, consultas igualadas': {'min': 3, 'max': 3}, 'MLP': {'min': 1, 'max': 1}, 'P2 permutada': {'min': 3, 'max': 3}}
+INTEGRIDADE: diferença máxima de B entre fase 3 e fase 2 = 1.1102230246251565e-16
+                                                        acc    fid   nodes    samples    secs  derived   used
+dataset       cond                                                                                           
+breast_cancer B Original + conjunto                   0.937  0.935  35.933  16725.467   2.145     59.0  0.000
+              B fase 2                                0.937  0.935  35.933  16725.467   1.781      NaN    NaN
+              C4.5                                    0.930  0.923  17.000        NaN   0.391      NaN    NaN
+              D1 Reloaded+OWL v1 + conjunto (fase 2)  0.936  0.931  33.800  40075.333  13.942      NaN    NaN
+              D2 Reloaded+OWL v2 + conjunto           0.933  0.929  35.267  40134.933  17.265     59.0  7.267
+              Dg2 grupos aleatórios                   0.932  0.928  34.200  40244.067  17.681     59.0  7.067
+              Ec2 eng. convencional                   0.944  0.938  34.733  38026.000   3.567     59.0  0.000
+              F Reloaded sem OWL + conjunto           0.937  0.935  35.933  17151.467   2.202     59.0  0.000
+              G2 Original, consultas igualadas        0.941  0.940  35.800  42700.400   3.045     59.0  0.000
+              MLP                                     0.962    NaN     NaN        NaN   0.010      NaN    NaN
+              P2 permutada                            0.931  0.931  35.533  39638.533  43.200     59.0  7.867
+iris          B Original + conjunto                   0.956  0.965  35.000  10337.200   0.234      8.0  0.000
+              B fase 2                                0.956  0.965  35.000  10337.200   0.202      NaN    NaN
+              C4.5                                    0.958  0.963   8.600        NaN   0.017      NaN    NaN
+              D1 Reloaded+OWL v1 + conjunto (fase 2)  0.954  0.953  35.667  23132.200   1.818      NaN    NaN
+              D2 Reloaded+OWL v2 + conjunto           0.944  0.974  34.733  22928.867   2.177      8.0  4.133
+              Dg2 grupos aleatórios                   0.930  0.946  35.133  22954.733   2.980      8.0  3.533
+              Ec2 eng. convencional                   0.949  0.965  34.200  22870.733   0.453      8.0  0.000
+              F Reloaded sem OWL + conjunto           0.956  0.965  35.000  10449.200   0.234      8.0  0.000
+              G2 Original, consultas igualadas        0.953  0.968  33.800  24279.600   0.273      8.0  0.000
+              MLP                                     0.953    NaN     NaN        NaN   0.008      NaN    NaN
+              P2 permutada                            0.933  0.956  34.600  22892.133   4.074      8.0  4.200
+wine          B Original + conjunto                   0.948  0.939  29.000  10614.933   1.731      8.0  0.000
+              B fase 2                                0.948  0.939  29.000  10614.933   1.482      NaN    NaN
+              C4.5                                    0.929  0.916   9.800        NaN   0.060      NaN    NaN
+              D1 Reloaded+OWL v1 + conjunto (fase 2)  0.935  0.921  26.333  20483.000   9.372      NaN    NaN
+              D2 Reloaded+OWL v2 + conjunto           0.923  0.919  34.200  25185.133  12.463      8.0  4.800
+              Dg2 grupos aleatórios                   0.939  0.929  36.467  25800.267  14.627      8.0  4.267
+              Ec2 eng. convencional                   0.924  0.914  28.733  20891.133   1.977      8.0  0.000
+              F Reloaded sem OWL + conjunto           0.948  0.939  29.000  10747.933   1.726      8.0  0.000
+              G2 Original, consultas igualadas        0.960  0.944  33.133  32339.733   1.534      8.0  0.000
+              MLP                                     0.969    NaN     NaN        NaN   0.008      NaN    NaN
+              P2 permutada                            0.929  0.921  34.467  26303.467  16.272      8.0  4.067
+                   contraste        dataset   media      lo      hi  pos  neg
+0        H1 accuracy: D2 − B           iris -0.0123 -0.0298  0.0018    1    3
+1        H1 accuracy: D2 − B           wine -0.0252 -0.0519  0.0030    2    3
+2        H1 accuracy: D2 − B  breast_cancer -0.0042 -0.0126  0.0023    2    3
+3     H2 accuracy: D2 − C4.5           iris -0.0140 -0.0263 -0.0018    0    3
+4     H2 accuracy: D2 − C4.5           wine -0.0059 -0.0415  0.0296    2    2
+5     H2 accuracy: D2 − C4.5  breast_cancer  0.0028 -0.0182  0.0238    2    3
+6      H3 accuracy: B − C4.5           iris -0.0018 -0.0105  0.0088    1    2
+7      H3 accuracy: B − C4.5           wine  0.0193 -0.0000  0.0385    3    1
+8      H3 accuracy: B − C4.5  breast_cancer  0.0070 -0.0098  0.0256    2    3
+9      H4 fidelidade: D2 − B           iris  0.0088 -0.0035  0.0263    2    1
+10     H4 fidelidade: D2 − B           wine -0.0207 -0.0489  0.0044    1    3
+11     H4 fidelidade: D2 − B  breast_cancer -0.0061 -0.0093 -0.0028    0    5
+12  H5 fidelidade: D2 − C4.5           iris  0.0105 -0.0053  0.0368    1    1
+13  H5 fidelidade: D2 − C4.5           wine  0.0030 -0.0341  0.0400    3    2
+14  H5 fidelidade: D2 − C4.5  breast_cancer  0.0056 -0.0056  0.0205    3    1
+15      K1 accuracy: D2 − D1           iris -0.0105 -0.0263  0.0035    1    2
+16      K1 accuracy: D2 − D1           wine -0.0119 -0.0281  0.0059    2    3
+17      K1 accuracy: D2 − D1  breast_cancer -0.0028 -0.0121  0.0070    2    3
+18    K1 fidelidade: D2 − D1           iris  0.0211  0.0053  0.0404    4    0
+19    K1 fidelidade: D2 − D1           wine -0.0030 -0.0193  0.0133    2    3
+20    K1 fidelidade: D2 − D1  breast_cancer -0.0028 -0.0117  0.0061    2    3
+21          accuracy: D2 − F           iris -0.0123 -0.0298  0.0018    1    3
+22          accuracy: D2 − F           wine -0.0252 -0.0519  0.0030    2    3
+23          accuracy: D2 − F  breast_cancer -0.0042 -0.0131  0.0023    2    3
+24        fidelidade: D2 − F           iris  0.0088 -0.0035  0.0263    2    1
+25        fidelidade: D2 − F           wine -0.0207 -0.0489  0.0044    1    3
+26        fidelidade: D2 − F  breast_cancer -0.0061 -0.0093 -0.0028    0    5
+27         accuracy: D2 − P2           iris  0.0105 -0.0035  0.0316    2    1
+28         accuracy: D2 − P2           wine -0.0059 -0.0356  0.0326    1    3
+29         accuracy: D2 − P2  breast_cancer  0.0019 -0.0065  0.0084    3    1
+30       fidelidade: D2 − P2           iris  0.0175 -0.0053  0.0404    3    1
+31       fidelidade: D2 − P2           wine -0.0030 -0.0311  0.0341    1    4
+32       fidelidade: D2 − P2  breast_cancer -0.0028 -0.0112  0.0047    1    2
+33        accuracy: D2 − Dg2           iris  0.0140 -0.0088  0.0368    3    2
+34        accuracy: D2 − Dg2           wine -0.0163 -0.0444  0.0178    1    4
+35        accuracy: D2 − Dg2  breast_cancer  0.0005 -0.0135  0.0107    3    1
+36      fidelidade: D2 − Dg2           iris  0.0281  0.0088  0.0474    4    0
+37      fidelidade: D2 − Dg2           wine -0.0104 -0.0237  0.0044    1    3
+38      fidelidade: D2 − Dg2  breast_cancer  0.0005 -0.0103  0.0121    2    2
+39        accuracy: D2 − Ec2           iris -0.0053 -0.0123  0.0000    0    2
+40        accuracy: D2 − Ec2           wine -0.0015 -0.0222  0.0207    1    2
+41        accuracy: D2 − Ec2  breast_cancer -0.0112 -0.0326  0.0093    2    3
+42      fidelidade: D2 − Ec2           iris  0.0088 -0.0035  0.0246    2    1
+43      fidelidade: D2 − Ec2           wine  0.0044 -0.0178  0.0267    2    2
+44      fidelidade: D2 − Ec2  breast_cancer -0.0093 -0.0214  0.0047    1    3
+45         accuracy: D2 − G2           iris -0.0088 -0.0175 -0.0018    0    3
+46         accuracy: D2 − G2           wine -0.0370 -0.0504 -0.0237    0    5
+47         accuracy: D2 − G2  breast_cancer -0.0084 -0.0233  0.0019    2    3
+48       fidelidade: D2 − G2           iris  0.0053 -0.0070  0.0175    2    2
+49       fidelidade: D2 − G2           wine -0.0252 -0.0400 -0.0104    0    4
+50       fidelidade: D2 − G2  breast_cancer -0.0112 -0.0172 -0.0042    1    4
+               H1  H2  H3  H4  H5  conjunta
+dataset                                    
+breast_cancer   2   2   2   0   3         0
+iris            1   0   1   2   1         0
+wine            2   2   3   1   3         1
+total 15 {'H1': 5, 'H2': 4, 'H3': 6, 'H4': 3, 'H5': 7, 'conjunta': 1}
+                H1    H2    H3    H4    H5  conjunta
+dataset seed                                        
+wine    123   True  True  True  True  True      True
+dp réplicas
+                   acc     fid
+dataset                      
+breast_cancer  0.0122  0.0130
+iris           0.0144  0.0134
+wine           0.0275  0.0274
