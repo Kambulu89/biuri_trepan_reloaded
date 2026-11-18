@@ -1,0 +1,131 @@
+unidades: {'breast_cancer': 5, 'iris': 5, 'wine': 5} | réplicas: {'A': {'min': 3, 'max': 3}, 'B': {'min': 3, 'max': 3}, 'D': {'min': 3, 'max': 3}, 'E': {'min': 3, 'max': 3}, 'L': {'min': 3, 'max': 3}, 'Lq': {'min': 3, 'max': 3}, 'O': {'min': 3, 'max': 3}, 'T': {'min': 3, 'max': 3}, 'Tq': {'min': 3, 'max': 3}, 'W': {'min': 3, 'max': 3}}
+INTEGRIDADE: {'B vs fase 3': 1.1102230246251565e-16, 'O vs fase 4': 1.1102230246251565e-16, 'D vs D2 fase 3': 1.1102230246251565e-16}
+                       acc    fid   nodes    queries    samples    secs  changed  sem_splits
+dataset       kind                                                                          
+breast_cancer A      0.937  0.934  35.667  16964.800  37759.333  23.675    0.000      17.333
+              B      0.937  0.935  35.933  16725.467  16725.467   2.927    0.000       0.000
+              B_f3   0.937  0.935     NaN        NaN        NaN     NaN      NaN         NaN
+              C4.5   0.930  0.923     NaN        NaN        NaN     NaN      NaN         NaN
+              D      0.933  0.929  35.267  17457.533  40134.933  21.872    5.267      17.133
+              D2_f3  0.933  0.929     NaN        NaN        NaN     NaN      NaN         NaN
+              E      0.939  0.936  35.000  17018.533  38293.133  19.103    4.600      17.000
+              L      0.942  0.937  34.467  17356.667  38692.733  23.113    0.000      16.733
+              Lq     0.940  0.936  34.733  17609.467  39093.667  21.076    0.000      16.867
+              O      0.942  0.937  34.467  17356.667  38692.733  11.083    0.000       0.000
+              O_f4   0.942  0.937     NaN        NaN        NaN     NaN      NaN         NaN
+              T      0.942  0.937  34.467  17356.667  38692.733  22.254    0.000      16.733
+              Tq     0.940  0.936  34.733  17609.467  39093.667  21.562    0.000      16.867
+              W      0.942  0.937  34.467  17356.667  38692.733  20.199    0.000      16.733
+iris          A      0.949  0.965  32.200  10057.600  22243.667   3.062    0.000      15.600
+              B      0.956  0.965  35.000  10337.200  10337.200   0.300    0.000       0.000
+              B_f3   0.956  0.965     NaN        NaN        NaN     NaN      NaN         NaN
+              C4.5   0.958  0.963     NaN        NaN        NaN     NaN      NaN         NaN
+              D      0.944  0.974  34.733  10409.667  22928.867   2.663    2.400      16.867
+              D2_f3  0.944  0.974     NaN        NaN        NaN     NaN      NaN         NaN
+              E      0.956  0.965  33.267  10792.933  23142.133   2.622    2.733      16.133
+              L      0.956  0.965  32.600  10855.933  23140.133   2.930    0.000      15.800
+              Lq     0.946  0.958  34.200  10635.533  23049.933   2.752    0.000      16.600
+              O      0.956  0.965  32.600  10855.933  23140.133   1.893    0.000       0.000
+              O_f4   0.956  0.965     NaN        NaN        NaN     NaN      NaN         NaN
+              T      0.956  0.965  32.600  10855.933  23140.133   2.911    0.000      15.800
+              Tq     0.946  0.958  34.200  10635.533  23049.933   2.606    0.000      16.600
+              W      0.956  0.965  32.600  10855.933  23140.133   2.811    0.000      15.800
+wine          A      0.956  0.945  31.933  11529.467  25145.667  20.580    0.000      15.467
+              B      0.948  0.939  29.000  10614.933  10614.933   2.190    0.000       0.000
+              B_f3   0.948  0.939     NaN        NaN        NaN     NaN      NaN         NaN
+              C4.5   0.929  0.916     NaN        NaN        NaN     NaN      NaN         NaN
+              D      0.923  0.919  34.200  11413.600  25185.133  16.769    4.933      16.600
+              D2_f3  0.923  0.919     NaN        NaN        NaN     NaN      NaN         NaN
+              E      0.929  0.917  31.400  10841.200  23496.933  14.952    5.133      15.200
+              L      0.942  0.926  37.133  11331.667  24506.667  18.532    0.000      18.067
+              Lq     0.961  0.951  33.667  11826.467  25785.133  19.001    0.000      16.333
+              O      0.942  0.926  37.133  11331.667  24506.667  10.930    0.000       0.000
+              O_f4   0.942  0.926     NaN        NaN        NaN     NaN      NaN         NaN
+              T      0.942  0.926  37.133  11331.667  24506.667  18.460    0.000      18.067
+              Tq     0.961  0.951  33.667  11826.467  25785.133  19.274    0.000      16.333
+              W      0.942  0.926  37.133  11331.667  24506.667  17.155    0.000      18.067
+             contraste        dataset   media      lo      hi  pos  neg
+0      accuracy: W − O           iris  0.0000  0.0000  0.0000    0    0
+1      accuracy: W − O           wine  0.0000  0.0000  0.0000    0    0
+2      accuracy: W − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+3    fidelidade: W − O           iris  0.0000  0.0000  0.0000    0    0
+4    fidelidade: W − O           wine  0.0000  0.0000  0.0000    0    0
+5    fidelidade: W − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+6      accuracy: E − W           iris  0.0000 -0.0053  0.0053    1    1
+7      accuracy: E − W           wine -0.0133 -0.0222  0.0015    1    4
+8      accuracy: E − W  breast_cancer -0.0028 -0.0047 -0.0009    0    3
+9    fidelidade: E − W           iris -0.0000 -0.0053  0.0053    1    1
+10   fidelidade: E − W           wine -0.0089 -0.0178  0.0030    1    4
+11   fidelidade: E − W  breast_cancer -0.0009 -0.0037  0.0019    1    2
+12     accuracy: A − W           iris -0.0070 -0.0228  0.0070    1    3
+13     accuracy: A − W           wine  0.0133  0.0000  0.0252    3    1
+14     accuracy: A − W  breast_cancer -0.0051 -0.0145  0.0047    1    4
+15   fidelidade: A − W           iris -0.0000 -0.0105  0.0105    2    2
+16   fidelidade: A − W           wine  0.0193  0.0015  0.0370    3    1
+17   fidelidade: A − W  breast_cancer -0.0023 -0.0112  0.0093    2    3
+18     accuracy: D − O           iris -0.0123 -0.0193 -0.0088    0    5
+19     accuracy: D − O           wine -0.0193 -0.0400  0.0000    1    4
+20     accuracy: D − O  breast_cancer -0.0089 -0.0191  0.0014    2    3
+21   fidelidade: D − O           iris  0.0088 -0.0053  0.0228    3    2
+22   fidelidade: D − O           wine -0.0074 -0.0237  0.0074    2    3
+23   fidelidade: D − O  breast_cancer -0.0079 -0.0135 -0.0009    1    4
+24     accuracy: T − O           iris  0.0000  0.0000  0.0000    0    0
+25     accuracy: T − O           wine  0.0000  0.0000  0.0000    0    0
+26     accuracy: T − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+27   fidelidade: T − O           iris  0.0000  0.0000  0.0000    0    0
+28   fidelidade: T − O           wine  0.0000  0.0000  0.0000    0    0
+29   fidelidade: T − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+30     accuracy: L − O           iris  0.0000  0.0000  0.0000    0    0
+31     accuracy: L − O           wine  0.0000  0.0000  0.0000    0    0
+32     accuracy: L − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+33   fidelidade: L − O           iris  0.0000  0.0000  0.0000    0    0
+34   fidelidade: L − O           wine  0.0000  0.0000  0.0000    0    0
+35   fidelidade: L − O  breast_cancer  0.0000  0.0000  0.0000    0    0
+36    accuracy: T − Tq           iris  0.0105  0.0018  0.0193    3    0
+37    accuracy: T − Tq           wine -0.0193 -0.0385  0.0000    2    3
+38    accuracy: T − Tq  breast_cancer  0.0014 -0.0149  0.0163    2    2
+39  fidelidade: T − Tq           iris  0.0070  0.0000  0.0175    2    0
+40  fidelidade: T − Tq           wine -0.0252 -0.0356 -0.0119    0    4
+41  fidelidade: T − Tq  breast_cancer  0.0005 -0.0089  0.0098    2    3
+42    accuracy: L − Lq           iris  0.0105  0.0018  0.0193    3    0
+43    accuracy: L − Lq           wine -0.0193 -0.0385  0.0000    2    3
+44    accuracy: L − Lq  breast_cancer  0.0014 -0.0154  0.0168    2    2
+45  fidelidade: L − Lq           iris  0.0070  0.0000  0.0175    2    0
+46  fidelidade: L − Lq           wine -0.0252 -0.0356 -0.0119    0    4
+47  fidelidade: L − Lq  breast_cancer  0.0005 -0.0089  0.0098    2    3
+48     accuracy: O − B           iris -0.0000 -0.0175  0.0123    3    1
+49     accuracy: O − B           wine -0.0059 -0.0326  0.0119    2    1
+50     accuracy: O − B  breast_cancer  0.0047 -0.0047  0.0140    2    2
+51   fidelidade: O − B           iris  0.0000 -0.0140  0.0105    2    1
+52   fidelidade: O − B           wine -0.0133 -0.0385  0.0059    1    3
+53   fidelidade: O − B  breast_cancer  0.0019 -0.0047  0.0089    3    2
+54     accuracy: T − B           iris -0.0000 -0.0175  0.0123    3    1
+55     accuracy: T − B           wine -0.0059 -0.0326  0.0119    2    1
+56     accuracy: T − B  breast_cancer  0.0047 -0.0047  0.0140    2    2
+57   fidelidade: T − B           iris  0.0000 -0.0140  0.0123    2    1
+58   fidelidade: T − B           wine -0.0133 -0.0385  0.0059    1    3
+59   fidelidade: T − B  breast_cancer  0.0019 -0.0051  0.0089    3    2
+60     accuracy: L − B           iris -0.0000 -0.0175  0.0123    3    1
+61     accuracy: L − B           wine -0.0059 -0.0326  0.0119    2    1
+62     accuracy: L − B  breast_cancer  0.0047 -0.0047  0.0140    2    2
+63   fidelidade: L − B           iris  0.0000 -0.0140  0.0105    2    1
+64   fidelidade: L − B           wine -0.0133 -0.0370  0.0059    1    3
+65   fidelidade: L − B  breast_cancer  0.0019 -0.0047  0.0089    3    2
+66     accuracy: W − B           iris -0.0000 -0.0175  0.0123    3    1
+67     accuracy: W − B           wine -0.0059 -0.0326  0.0119    2    1
+68     accuracy: W − B  breast_cancer  0.0047 -0.0047  0.0140    2    2
+69   fidelidade: W − B           iris  0.0000 -0.0140  0.0105    2    1
+70   fidelidade: W − B           wine -0.0133 -0.0385  0.0059    1    3
+71   fidelidade: W − B  breast_cancer  0.0019 -0.0047  0.0084    3    2
+  candidata  elegivel  media_delta datasets_abaixo
+0         W      True          0.0              []
+1         T      True          0.0              []
+2         L      True          0.0              []
+ESCOLHIDA: O
+            contraste     metrica        dataset   media      lo      hi  pos  neg  nao_inferior
+48    accuracy: O − B    accuracy           iris -0.0000 -0.0175  0.0123    3    1          True
+49    accuracy: O − B    accuracy           wine -0.0059 -0.0326  0.0119    2    1         False
+50    accuracy: O − B    accuracy  breast_cancer  0.0047 -0.0047  0.0140    2    2          True
+51  fidelidade: O − B  fidelidade           iris  0.0000 -0.0140  0.0105    2    1          True
+52  fidelidade: O − B  fidelidade           wine -0.0133 -0.0385  0.0059    1    3         False
+53  fidelidade: O − B  fidelidade  breast_cancer  0.0019 -0.0047  0.0089    3    2          True
