@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/trepan-audit/phys_kinetic" xmlns="http://example.org/trepan-audit/phys_kinetic#">
+<owl:Ontology rdf:about="http://example.org/trepan-audit/phys_kinetic">
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox de CONTROLO POSITIVO (auditoria, fase 6). Estado de movimento de um corpo e contexto do impacto. Zero instâncias. A relação declarada é a lei física que gerou os dados; o dataset é sintético.</rdfs:comment>
+</owl:Ontology>
+<owl:AnnotationProperty rdf:about="#derivedRelation"/>
+<owl:AnnotationProperty rdf:about="#knowledgeStatus"/>
+<owl:Class rdf:about="#DomainMeasurement"><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DomainMeasurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#MotionState"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#ImpactContext"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MotionState</rdfs:label></owl:Class>
+<owl:Class rdf:about="#ImpactContext"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ImpactContext</rdfs:label></owl:Class>
+<owl:DatatypeProperty rdf:about="#hasMassKg">
+  <rdfs:domain rdf:resource="#MotionState"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mass_kg</rdfs:label>
+  <derivedRelation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">product:hasSpeed:1:2</derivedRelation>
+  <knowledgeStatus rdf:datatype="http://www.w3.org/2001/XMLSchema#string">product:hasSpeed:1:2 — PROVADO</knowledgeStatus>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">product:hasSpeed:1:2 (PROVADO): massa × velocidade² é proporcional à energia cinética, E = ½ m v² (mecânica clássica).</rdfs:comment>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasSpeed">
+  <rdfs:domain rdf:resource="#MotionState"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">speed_m_s</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasAmbientTemperature">
+  <rdfs:domain rdf:resource="#ImpactContext"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ambient_temperature_c</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasImpactAngle">
+  <rdfs:domain rdf:resource="#ImpactContext"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">impact_angle_deg</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasContactArea">
+  <rdfs:domain rdf:resource="#ImpactContext"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">contact_area_cm2</rdfs:label>
+</owl:DatatypeProperty>
+</rdf:RDF>
