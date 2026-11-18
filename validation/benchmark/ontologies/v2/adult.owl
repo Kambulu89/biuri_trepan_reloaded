@@ -1,0 +1,535 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/trepan-audit/adult" xmlns="http://example.org/trepan-audit/adult#">
+<owl:Ontology rdf:about="http://example.org/trepan-audit/adult">
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TBox do Adult Census (auditoria, fase 8): agrupamento temático dos atributos segundo o dicionário de dados UCI e uma relação declarada (saldo de capital). Zero instâncias; rótulos e resultados não consultados.</rdfs:comment>
+</owl:Ontology>
+<owl:AnnotationProperty rdf:about="#derivedRelation"/>
+<owl:AnnotationProperty rdf:about="#knowledgeStatus"/>
+<owl:Class rdf:about="#DomainMeasurement"><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DomainMeasurement</rdfs:label></owl:Class>
+<owl:Class rdf:about="#CapitalFinance"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#Demographics"/><owl:disjointWith rdf:resource="#EducationProfile"/><owl:disjointWith rdf:resource="#EmploymentProfile"/><owl:disjointWith rdf:resource="#HouseholdProfile"/><owl:disjointWith rdf:resource="#SurveyDesign"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CapitalFinance</rdfs:label></owl:Class>
+<owl:Class rdf:about="#Demographics"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#EducationProfile"/><owl:disjointWith rdf:resource="#EmploymentProfile"/><owl:disjointWith rdf:resource="#HouseholdProfile"/><owl:disjointWith rdf:resource="#SurveyDesign"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Demographics</rdfs:label></owl:Class>
+<owl:Class rdf:about="#EducationProfile"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#EmploymentProfile"/><owl:disjointWith rdf:resource="#HouseholdProfile"/><owl:disjointWith rdf:resource="#SurveyDesign"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EducationProfile</rdfs:label></owl:Class>
+<owl:Class rdf:about="#EmploymentProfile"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#HouseholdProfile"/><owl:disjointWith rdf:resource="#SurveyDesign"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EmploymentProfile</rdfs:label></owl:Class>
+<owl:Class rdf:about="#HouseholdProfile"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><owl:disjointWith rdf:resource="#SurveyDesign"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HouseholdProfile</rdfs:label></owl:Class>
+<owl:Class rdf:about="#SurveyDesign"><rdfs:subClassOf rdf:resource="#DomainMeasurement"/><rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SurveyDesign</rdfs:label></owl:Class>
+<owl:DatatypeProperty rdf:about="#hasAge">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">age</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__?</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Federal_gov">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Federal-gov</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Local_gov">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Local-gov</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Never_worked">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Never-worked</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Private">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Private</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Self_emp_inc">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Self-emp-inc</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Self_emp_not_inc">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Self-emp-not-inc</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_State_gov">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__State-gov</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasWorkclass_Without_pay">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">workclass__Without-pay</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasFnlwgt">
+  <rdfs:domain rdf:resource="#SurveyDesign"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">fnlwgt</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_10th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__10th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_11th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__11th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_12th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__12th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_1st_4th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__1st-4th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_5th_6th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__5th-6th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_7th_8th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__7th-8th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_9th">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__9th</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Assoc_acdm">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Assoc-acdm</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Assoc_voc">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Assoc-voc</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Bachelors">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Bachelors</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Doctorate">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Doctorate</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_HS_grad">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__HS-grad</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Masters">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Masters</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Preschool">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Preschool</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Prof_school">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Prof-school</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducation_Some_college">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education__Some-college</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasEducationNum">
+  <rdfs:domain rdf:resource="#EducationProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">education-num</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Divorced">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Divorced</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Married_AF_spouse">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Married-AF-spouse</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Married_civ_spouse">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Married-civ-spouse</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Married_spouse_absent">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Married-spouse-absent</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Never_married">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Never-married</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Separated">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Separated</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasMaritalStatus_Widowed">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">marital-status__Widowed</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__?</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Adm_clerical">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Adm-clerical</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Armed_Forces">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Armed-Forces</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Craft_repair">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Craft-repair</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Exec_managerial">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Exec-managerial</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Farming_fishing">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Farming-fishing</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Handlers_cleaners">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Handlers-cleaners</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Machine_op_inspct">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Machine-op-inspct</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Other_service">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Other-service</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Priv_house_serv">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Priv-house-serv</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Prof_specialty">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Prof-specialty</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Protective_serv">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Protective-serv</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Sales">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Sales</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Tech_support">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Tech-support</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasOccupation_Transport_moving">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">occupation__Transport-moving</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Husband">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Husband</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Not_in_family">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Not-in-family</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Other_relative">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Other-relative</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Own_child">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Own-child</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Unmarried">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Unmarried</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRelationship_Wife">
+  <rdfs:domain rdf:resource="#HouseholdProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relationship__Wife</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRace_Amer_Indian_Eskimo">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">race__Amer-Indian-Eskimo</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRace_Asian_Pac_Islander">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">race__Asian-Pac-Islander</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRace_Black">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">race__Black</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRace_Other">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">race__Other</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasRace_White">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">race__White</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasSex_Female">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sex__Female</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasSex_Male">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">sex__Male</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasCapitalGain">
+  <rdfs:domain rdf:resource="#CapitalFinance"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">capital-gain</rdfs:label>
+  <derivedRelation rdf:datatype="http://www.w3.org/2001/XMLSchema#string">difference:hasCapitalLoss</derivedRelation>
+  <knowledgeStatus rdf:datatype="http://www.w3.org/2001/XMLSchema#string">difference:hasCapitalLoss — PROVADO</knowledgeStatus>
+  <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">difference:hasCapitalLoss (PROVADO): ganho de capital − perda de capital é o saldo de capital do ano (definição do dicionário de dados UCI/censo).</rdfs:comment>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasCapitalLoss">
+  <rdfs:domain rdf:resource="#CapitalFinance"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">capital-loss</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasHoursPerWeek">
+  <rdfs:domain rdf:resource="#EmploymentProfile"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hours-per-week</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__?</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Cambodia">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Cambodia</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Canada">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Canada</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_China">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__China</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Columbia">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Columbia</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Cuba">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Cuba</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Dominican_Republic">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Dominican-Republic</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Ecuador">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Ecuador</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_El_Salvador">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__El-Salvador</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_England">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__England</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_France">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__France</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Germany">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Germany</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Greece">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Greece</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Guatemala">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Guatemala</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Haiti">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Haiti</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Hong">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Hong</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Hungary">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Hungary</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_India">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__India</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Iran">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Iran</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Ireland">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Ireland</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Italy">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Italy</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Jamaica">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Jamaica</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Japan">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Japan</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Mexico">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Mexico</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Peru">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Peru</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Philippines">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Philippines</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Poland">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Poland</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Portugal">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Portugal</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Puerto_Rico">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Puerto-Rico</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Scotland">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Scotland</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_South">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__South</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Taiwan">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Taiwan</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Thailand">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Thailand</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Trinadad_Tobago">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Trinadad&amp;Tobago</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_United_States">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__United-States</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Vietnam">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Vietnam</rdfs:label>
+</owl:DatatypeProperty>
+<owl:DatatypeProperty rdf:about="#hasNativeCountry_Yugoslavia">
+  <rdfs:domain rdf:resource="#Demographics"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">native-country__Yugoslavia</rdfs:label>
+</owl:DatatypeProperty>
+</rdf:RDF>
