@@ -1,0 +1,42 @@
+{"dataset": "german_credit", "seed": 11, "mlp_nested_cv_accuracy": 0.7333333333333334, "c45_cv_accuracy": 0.7093333333333334, "gap": 0.02400000000000002, "chosen_per_outer_fold": ["lbfgs_h64_a0.001", "lbfgs_h64_a1", "lbfgs_h16_a10", "lbfgs_h32x16_a10", "lbfgs_h32x16_a10"], "test_used": false}
+{"dataset": "german_credit", "seed": 123, "mlp_nested_cv_accuracy": 0.744, "c45_cv_accuracy": 0.712, "gap": 0.03200000000000003, "chosen_per_outer_fold": ["lbfgs_h64_a0.1", "lbfgs_h32x16_a10", "lbfgs_h64_a1", "lbfgs_h64_a1", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "german_credit", "seed": 2024, "mlp_nested_cv_accuracy": 0.7186666666666667, "c45_cv_accuracy": 0.704, "gap": 0.014666666666666717, "chosen_per_outer_fold": ["lbfgs_h64_a0.001", "perfil_por_omissao", "lbfgs_h64_a10", "lbfgs_h32x16_a0.01", "lbfgs_h64_a10"], "test_used": false}
+{"dataset": "german_credit", "seed": 42, "mlp_nested_cv_accuracy": 0.7013333333333334, "c45_cv_accuracy": 0.6906666666666668, "gap": 0.010666666666666602, "chosen_per_outer_fold": ["lbfgs_h32x16_a1", "lbfgs_h16_a1", "lbfgs_h16_a10", "lbfgs_h16_a0.001", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "german_credit", "seed": 7, "mlp_nested_cv_accuracy": 0.7093333333333334, "c45_cv_accuracy": 0.6786666666666668, "gap": 0.03066666666666662, "chosen_per_outer_fold": ["lbfgs_h64_a10", "lbfgs_h16_a10", "perfil_por_omissao", "lbfgs_h64_a10", "lbfgs_h64_a1"], "test_used": false}
+{"dataset": "phys_bmi", "seed": 11, "mlp_nested_cv_accuracy": 0.9433333333333334, "c45_cv_accuracy": 0.9, "gap": 0.043333333333333335, "chosen_per_outer_fold": ["lbfgs_h32x16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_bmi", "seed": 123, "mlp_nested_cv_accuracy": 0.9333333333333333, "c45_cv_accuracy": 0.9066666666666666, "gap": 0.026666666666666727, "chosen_per_outer_fold": ["lbfgs_h32x16_a10", "lbfgs_h16_a10", "lbfgs_h32x16_a10", "lbfgs_h32x16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_bmi", "seed": 2024, "mlp_nested_cv_accuracy": 0.9266666666666665, "c45_cv_accuracy": 0.8833333333333334, "gap": 0.04333333333333311, "chosen_per_outer_fold": ["lbfgs_h32x16_a10", "lbfgs_h32x16_a10", "lbfgs_h64_a10", "lbfgs_h32x16_a1", "lbfgs_h32x16_a10"], "test_used": false}
+{"dataset": "phys_bmi", "seed": 42, "mlp_nested_cv_accuracy": 0.9366666666666665, "c45_cv_accuracy": 0.89, "gap": 0.04666666666666652, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h16_a1", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_bmi", "seed": 7, "mlp_nested_cv_accuracy": 0.9266666666666665, "c45_cv_accuracy": 0.8633333333333333, "gap": 0.06333333333333324, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h32x16_a10", "lbfgs_h16_a10", "lbfgs_h32x16_a1", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_kinetic", "seed": 11, "mlp_nested_cv_accuracy": 0.9033333333333333, "c45_cv_accuracy": 0.9133333333333333, "gap": -0.010000000000000009, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h64_a1", "lbfgs_h64_a1", "lbfgs_h16_a10", "lbfgs_h16_a1"], "test_used": false}
+{"dataset": "phys_kinetic", "seed": 123, "mlp_nested_cv_accuracy": 0.9133333333333333, "c45_cv_accuracy": 0.8766666666666667, "gap": 0.036666666666666625, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h32x16_a10", "lbfgs_h64_a1", "lbfgs_h16_a10", "lbfgs_h16_a1"], "test_used": false}
+{"dataset": "phys_kinetic", "seed": 2024, "mlp_nested_cv_accuracy": 0.9199999999999999, "c45_cv_accuracy": 0.8766666666666666, "gap": 0.043333333333333335, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h32x16_a0.1", "lbfgs_h16_a1", "lbfgs_h64_a1", "lbfgs_h32x16_a1"], "test_used": false}
+{"dataset": "phys_kinetic", "seed": 42, "mlp_nested_cv_accuracy": 0.8966666666666667, "c45_cv_accuracy": 0.8800000000000001, "gap": 0.016666666666666607, "chosen_per_outer_fold": ["lbfgs_h16_a1", "lbfgs_h16_a1", "lbfgs_h64_a1", "lbfgs_h16_a1", "lbfgs_h16_a1"], "test_used": false}
+{"dataset": "phys_kinetic", "seed": 7, "mlp_nested_cv_accuracy": 0.9133333333333334, "c45_cv_accuracy": 0.9133333333333333, "gap": 1.1102230246251565e-16, "chosen_per_outer_fold": ["lbfgs_h16_a1", "lbfgs_h64_a1", "lbfgs_h64_a1", "lbfgs_h16_a1", "lbfgs_h64_a1"], "test_used": false}
+{"dataset": "phys_power", "seed": 11, "mlp_nested_cv_accuracy": 0.9033333333333333, "c45_cv_accuracy": 0.8766666666666666, "gap": 0.026666666666666727, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_power", "seed": 123, "mlp_nested_cv_accuracy": 0.8966666666666667, "c45_cv_accuracy": 0.8566666666666667, "gap": 0.040000000000000036, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_power", "seed": 2024, "mlp_nested_cv_accuracy": 0.9, "c45_cv_accuracy": 0.8800000000000001, "gap": 0.019999999999999907, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a1", "lbfgs_h16_a10", "lbfgs_h32x16_a10"], "test_used": false}
+{"dataset": "phys_power", "seed": 42, "mlp_nested_cv_accuracy": 0.9, "c45_cv_accuracy": 0.8799999999999999, "gap": 0.02000000000000013, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h64_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10"], "test_used": false}
+{"dataset": "phys_power", "seed": 7, "mlp_nested_cv_accuracy": 0.8966666666666667, "c45_cv_accuracy": 0.8733333333333334, "gap": 0.023333333333333317, "chosen_per_outer_fold": ["lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h16_a10", "lbfgs_h32x16_a1"], "test_used": false}
+{
+ "german_credit": {
+  "mean_gap": 0.022399999999999996,
+  "units": 5,
+  "eligible": true
+ },
+ "phys_bmi": {
+  "mean_gap": 0.04466666666666659,
+  "units": 5,
+  "eligible": true
+ },
+ "phys_kinetic": {
+  "mean_gap": 0.017333333333333333,
+  "units": 5,
+  "eligible": false
+ },
+ "phys_power": {
+  "mean_gap": 0.026000000000000023,
+  "units": 5,
+  "eligible": true
+ }
+}

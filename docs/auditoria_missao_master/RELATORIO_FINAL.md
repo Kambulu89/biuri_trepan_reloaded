@@ -123,7 +123,7 @@ Detalhe em `PLANO_CORRECCAO.md` e `PROTOCOLO_EXPERIMENTAL.md`.
 
 ## 9. Fases seguintes (depois deste relatório)
 
-Este relatório descreve a fase 1. Cinco fases posteriores, cada uma com pré-registo anterior à execução, estão documentadas à parte:
+Este relatório descreve a fase 1. Seis fases posteriores, cada uma com pré-registo anterior à execução, estão documentadas à parte:
 
 | Fase | O que testou | Resultado | Documentos |
 |---|---|---|---|
@@ -132,5 +132,6 @@ Este relatório descreve a fase 1. Cinco fases posteriores, cada uma com pré-re
 | 4 | Separar os atributos da ontologia v2 dos mecanismos do Reloaded (Original no espaço enriquecido, sem mecanismos, com controlos; 15 unidades) | Os atributos não mudam a árvore (O − B ≈ 0 nos três datasets); os mecanismos do Reloaded prejudicam no iris e no breast_cancer; nenhum efeito atribuível ao significado da ontologia | `FASE4_PREREGISTO.md`, `FASE4_RESULTADOS.md` |
 | 5 | Ablação dos mecanismos do Reloaded e correção (15 unidades) | O peso e o ganho modificado não alteram nenhuma decisão sem o EFSR; a perda vem das decisões aprovadas pelo EFSR; as correções pré-registadas eram inertes; a regra escolheu O (atributos sem mecanismos) | `FASE5_PREREGISTO.md`, `FASE5_RESULTADOS.md` |
 | 6 | O corrigido em datasets novos: German Credit e três controlos positivos físicos, com a estrutura do tuning e com máx. 7 nós (20 unidades) | Nenhum dataset elegível (MLP não supera o C4.5); nos controlos positivos, Reloaded > Original e > C4.5 com 7 nós, atribuível à ontologia; Original > C4.5 falha porque o MLP é pior do que o C4.5; German Credit sem ganho | `FASE6_PREREGISTO.md`, `FASE6_RESULTADOS.md` |
+| 7 | Auditoria e otimização do MLP (seleção só no treino) e nova campanha com o MLP otimizado como oráculo (20 unidades) | O MLP original memorizava os rótulos com ruído; otimizado, ganha 5–6 pontos nos físicos e passa o C4.5; a hierarquia sustenta-se no phys_power (elegível, não atribuível) e no phys_kinetic (não elegível, atribuível); German Credit sem ganho | `FASE7_PREREGISTO.md`, `FASE7_RESULTADOS.md` |
 
-Conclusão acumulada das seis fases: nos datasets reais testados (iris, wine, breast_cancer, digits, German Credit) a hipótese não se verifica; o que aproxima as árvores do MLP é o amostrador conjunto. Nos controlos positivos, em que a ontologia declara a relação verdadeira e o orçamento é restrito, o Reloaded supera o Original e o C4.5 com ganho atribuível à ontologia — o elo `Reloaded > Original` funciona quando o conhecimento é relevante. A cadeia completa continua a falhar no elo `Original > C4.5`, que depende de o MLP ser melhor do que o C4.5, condição que nenhum dataset desta auditoria cumpriu de forma clara.
+Conclusão acumulada das sete fases: nos datasets reais testados (iris, wine, breast_cancer, digits, German Credit) a hipótese não se verifica. Nos controlos positivos sintéticos, depois de corrigir a memorização de ruído do MLP, a hierarquia `Reloaded > Original > C4.5` sustenta-se num dataset elegível (sem atribuição completa à ontologia) e noutro não elegível (com atribuição). O mecanismo de atributos derivados da ontologia produz ganhos atribuíveis quando a relação declarada é verdadeira e relevante; não há ainda evidência desse ganho em dados reais.
