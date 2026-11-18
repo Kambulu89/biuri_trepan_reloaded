@@ -1,0 +1,77 @@
+unidades: {'breast_cancer': 5, 'iris': 5, 'wine': 5} | réplicas: {'B': {'min': 3, 'max': 3}, 'K': {'min': 3, 'max': 3}, 'O': {'min': 3, 'max': 3}, 'Q': {'min': 3, 'max': 3}}
+INTEGRIDADE B fase4 vs fase3: 1.1102230246251565e-16
+                      acc    fid   nodes    queries    samples    secs    used
+dataset       kind                                                            
+breast_cancer B     0.937  0.935  35.933  16725.467  16725.467   2.574   0.000
+              B3    0.937  0.935  35.933        NaN  16725.467   2.145     NaN
+              C4.5  0.930  0.923  17.000        NaN        NaN   0.391     NaN
+              D2    0.933  0.929  35.267        NaN  40134.933  17.265     NaN
+              K     0.944  0.938  34.733  17155.067  38026.000   4.177   0.000
+              MLP   0.962    NaN     NaN        NaN        NaN   0.010     NaN
+              O     0.942  0.937  34.467  17356.667  38692.733  10.384   8.800
+              Q     0.940  0.936  34.733  17609.467  39093.667  11.426  13.667
+iris          B     0.956  0.965  35.000  10337.200  10337.200   0.293   0.000
+              B3    0.956  0.965  35.000        NaN  10337.200   0.234     NaN
+              C4.5  0.958  0.963   8.600        NaN        NaN   0.017     NaN
+              D2    0.944  0.974  34.733        NaN  22928.867   2.177     NaN
+              K     0.949  0.965  34.200  10593.400  22870.733   0.525   0.000
+              MLP   0.953    NaN     NaN        NaN        NaN   0.008     NaN
+              O     0.956  0.965  32.600  10855.933  23140.133   1.800   3.333
+              Q     0.946  0.958  34.200  10635.533  23049.933   1.548   4.067
+wine          B     0.948  0.939  29.000  10614.933  10614.933   1.910   0.000
+              B3    0.948  0.939  29.000        NaN  10614.933   1.731     NaN
+              C4.5  0.929  0.916   9.800        NaN        NaN   0.060     NaN
+              D2    0.923  0.919  34.200        NaN  25185.133  12.463     NaN
+              K     0.924  0.914  28.733   9686.600  20891.133   2.055   0.000
+              MLP   0.969    NaN     NaN        NaN        NaN   0.008     NaN
+              O     0.942  0.926  37.133  11331.667  24506.667   9.987   4.867
+              Q     0.961  0.951  33.667  11826.467  25785.133  11.909   4.067
+                 contraste        dataset   media      lo      hi  pos  neg
+0       J1 accuracy: O − B           iris -0.0000 -0.0175  0.0123    3    1
+1       J1 accuracy: O − B           wine -0.0059 -0.0326  0.0119    2    1
+2       J1 accuracy: O − B  breast_cancer  0.0047 -0.0047  0.0140    2    2
+3     J1 fidelidade: O − B           iris  0.0000 -0.0140  0.0105    2    1
+4     J1 fidelidade: O − B           wine -0.0133 -0.0385  0.0045    1    3
+5     J1 fidelidade: O − B  breast_cancer  0.0019 -0.0047  0.0089    3    2
+6       J2 accuracy: O − Q           iris  0.0105  0.0018  0.0193    3    0
+7       J2 accuracy: O − Q           wine -0.0193 -0.0385  0.0000    2    3
+8       J2 accuracy: O − Q  breast_cancer  0.0014 -0.0154  0.0159    2    2
+9     J2 fidelidade: O − Q           iris  0.0070  0.0000  0.0175    2    0
+10    J2 fidelidade: O − Q           wine -0.0252 -0.0356 -0.0119    0    4
+11    J2 fidelidade: O − Q  breast_cancer  0.0005 -0.0089  0.0098    2    3
+12      J2 accuracy: O − K           iris  0.0070 -0.0018  0.0175    3    1
+13      J2 accuracy: O − K           wine  0.0178  0.0074  0.0281    4    0
+14      J2 accuracy: O − K  breast_cancer -0.0023 -0.0168  0.0079    3    2
+15    J2 fidelidade: O − K           iris  0.0000 -0.0140  0.0088    3    1
+16    J2 fidelidade: O − K           wine  0.0119 -0.0104  0.0281    4    1
+17    J2 fidelidade: O − K  breast_cancer -0.0014 -0.0098  0.0070    2    3
+18     J3 accuracy: D2 − O           iris -0.0123 -0.0193 -0.0088    0    5
+19     J3 accuracy: D2 − O           wine -0.0193 -0.0385  0.0000    1    4
+20     J3 accuracy: D2 − O  breast_cancer -0.0089 -0.0191  0.0014    2    3
+21   J3 fidelidade: D2 − O           iris  0.0088 -0.0053  0.0228    3    2
+22   J3 fidelidade: D2 − O           wine -0.0074 -0.0237  0.0074    2    3
+23   J3 fidelidade: D2 − O  breast_cancer -0.0079 -0.0135 -0.0014    1    4
+24    H accuracy: O − C4.5           iris -0.0018 -0.0105  0.0070    2    2
+25    H accuracy: O − C4.5           wine  0.0133 -0.0163  0.0385    4    1
+26    H accuracy: O − C4.5  breast_cancer  0.0117 -0.0033  0.0228    4    1
+27  H fidelidade: O − C4.5           iris  0.0018 -0.0158  0.0211    2    2
+28  H fidelidade: O − C4.5           wine  0.0104 -0.0252  0.0444    3    2
+29  H fidelidade: O − C4.5  breast_cancer  0.0135  0.0051  0.0224    4    0
+30    H accuracy: B − C4.5           iris -0.0018 -0.0105  0.0088    1    2
+31    H accuracy: B − C4.5           wine  0.0193  0.0000  0.0385    3    1
+32    H accuracy: B − C4.5  breast_cancer  0.0070 -0.0098  0.0256    2    3
+33  H fidelidade: B − C4.5           iris  0.0018 -0.0053  0.0105    1    1
+34  H fidelidade: B − C4.5           wine  0.0237 -0.0030  0.0474    4    1
+35  H fidelidade: B − C4.5  breast_cancer  0.0117  0.0014  0.0252    4    1
+               O>B acc  O>C4.5 acc  B>C4.5 acc  O>B fid  O>C4.5 fid  conjunta
+dataset                                                                      
+breast_cancer        2           4           2        3           5         0
+iris                 3           2           2        2           2         1
+wine                 2           4           3        1           3         0
+total 15 {'O>B acc': 7, 'O>C4.5 acc': 10, 'B>C4.5 acc': 7, 'O>B fid': 6, 'O>C4.5 fid': 10, 'conjunta': 1}
+dp réplicas
+                   acc     fid
+dataset                      
+breast_cancer  0.0116  0.0126
+iris           0.0119  0.0128
+wine           0.0293  0.0241

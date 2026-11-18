@@ -123,11 +123,12 @@ Detalhe em `PLANO_CORRECCAO.md` e `PROTOCOLO_EXPERIMENTAL.md`.
 
 ## 9. Fases seguintes (depois deste relatório)
 
-Este relatório descreve a fase 1. Duas fases posteriores, cada uma com pré-registo anterior à execução, estão documentadas à parte:
+Este relatório descreve a fase 1. Três fases posteriores, cada uma com pré-registo anterior à execução, estão documentadas à parte:
 
 | Fase | O que testou | Resultado | Documentos |
 |---|---|---|---|
 | 2 | A hipótese dentro do harness com o amostrador conjunto em todos os braços, 3 réplicas e os quatro controlos (20 unidades) | Hierarquia sustentada em nenhum dataset; `Original > C4.5` sustentado no digits e observado no wine e no breast_cancer; Reloaded + OWL abaixo do Original nos quatro; nenhum ganho atribuível à ontologia | `FASE2_PREREGISTO.md`, `FASE2_RESULTADOS.md` |
 | 3 | Um mecanismo ontológico novo (relações entre grandezas declaradas na ontologia) com ontologias v2 para iris, wine e breast_cancer, sob a referência com amostrador conjunto (15 unidades) | Hierarquia sustentada em nenhum dataset; as relações não ajudam segundo o critério pré-registado; a ontologia v2 não se distingue da permutada e fica abaixo do Original com as mesmas consultas | `FASE3_PREREGISTO.md`, `FASE3_RESULTADOS.md`, `REFERENCIA_V2_DRAFT.json` |
+| 4 | Separar os atributos da ontologia v2 dos mecanismos do Reloaded (Original no espaço enriquecido, sem mecanismos, com controlos; 15 unidades) | Os atributos não mudam a árvore (O − B ≈ 0 nos três datasets); os mecanismos do Reloaded prejudicam no iris e no breast_cancer; nenhum efeito atribuível ao significado da ontologia | `FASE4_PREREGISTO.md`, `FASE4_RESULTADOS.md` |
 
-Conclusão acumulada das três fases: o que aproxima as árvores do C4.5 e do MLP é o amostrador conjunto e mais consultas ao oráculo, ambos sem ontologia. Nenhum dos mecanismos ontológicos testados, antigos ou novo, produziu ganho atribuível.
+Conclusão acumulada das quatro fases: o que aproxima as árvores do C4.5 e do MLP é o amostrador conjunto e mais consultas ao oráculo, ambos sem ontologia. Os atributos derivados da ontologia não mudam a árvore quando usados sem os mecanismos do Reloaded, e esses mecanismos pioram-na em dois dos três datasets testados. Nenhuma forma de usar a ontologia testada produziu ganho atribuível.
