@@ -1,0 +1,187 @@
+{
+ "margin": 0.02,
+ "per_unit": [
+  {
+   "dataset": "german_credit",
+   "seed": 11,
+   "mlp_cv_accuracy": 0.7053333333333334,
+   "c45_cv_accuracy": 0.7093333333333334,
+   "gap": -0.0040000000000000036,
+   "test_used": false
+  },
+  {
+   "dataset": "german_credit",
+   "seed": 123,
+   "mlp_cv_accuracy": 0.7213333333333333,
+   "c45_cv_accuracy": 0.712,
+   "gap": 0.009333333333333305,
+   "test_used": false
+  },
+  {
+   "dataset": "german_credit",
+   "seed": 2024,
+   "mlp_cv_accuracy": 0.716,
+   "c45_cv_accuracy": 0.704,
+   "gap": 0.01200000000000001,
+   "test_used": false
+  },
+  {
+   "dataset": "german_credit",
+   "seed": 42,
+   "mlp_cv_accuracy": 0.728,
+   "c45_cv_accuracy": 0.6906666666666668,
+   "gap": 0.03733333333333322,
+   "test_used": false
+  },
+  {
+   "dataset": "german_credit",
+   "seed": 7,
+   "mlp_cv_accuracy": 0.6786666666666668,
+   "c45_cv_accuracy": 0.6786666666666668,
+   "gap": 0.0,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_bmi",
+   "seed": 11,
+   "mlp_cv_accuracy": 0.9199999999999999,
+   "c45_cv_accuracy": 0.9,
+   "gap": 0.019999999999999907,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_bmi",
+   "seed": 123,
+   "mlp_cv_accuracy": 0.8833333333333334,
+   "c45_cv_accuracy": 0.9066666666666666,
+   "gap": -0.023333333333333206,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_bmi",
+   "seed": 2024,
+   "mlp_cv_accuracy": 0.8833333333333334,
+   "c45_cv_accuracy": 0.8833333333333334,
+   "gap": 0.0,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_bmi",
+   "seed": 42,
+   "mlp_cv_accuracy": 0.8833333333333332,
+   "c45_cv_accuracy": 0.89,
+   "gap": -0.006666666666666821,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_bmi",
+   "seed": 7,
+   "mlp_cv_accuracy": 0.9,
+   "c45_cv_accuracy": 0.8633333333333333,
+   "gap": 0.036666666666666736,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_kinetic",
+   "seed": 11,
+   "mlp_cv_accuracy": 0.8466666666666667,
+   "c45_cv_accuracy": 0.9133333333333333,
+   "gap": -0.06666666666666665,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_kinetic",
+   "seed": 123,
+   "mlp_cv_accuracy": 0.8733333333333333,
+   "c45_cv_accuracy": 0.8766666666666667,
+   "gap": -0.0033333333333334103,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_kinetic",
+   "seed": 2024,
+   "mlp_cv_accuracy": 0.9033333333333333,
+   "c45_cv_accuracy": 0.8766666666666666,
+   "gap": 0.026666666666666727,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_kinetic",
+   "seed": 42,
+   "mlp_cv_accuracy": 0.86,
+   "c45_cv_accuracy": 0.8800000000000001,
+   "gap": -0.02000000000000013,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_kinetic",
+   "seed": 7,
+   "mlp_cv_accuracy": 0.8733333333333333,
+   "c45_cv_accuracy": 0.9133333333333333,
+   "gap": -0.040000000000000036,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_power",
+   "seed": 11,
+   "mlp_cv_accuracy": 0.8333333333333334,
+   "c45_cv_accuracy": 0.8766666666666666,
+   "gap": -0.043333333333333224,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_power",
+   "seed": 123,
+   "mlp_cv_accuracy": 0.8366666666666667,
+   "c45_cv_accuracy": 0.8566666666666667,
+   "gap": -0.020000000000000018,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_power",
+   "seed": 2024,
+   "mlp_cv_accuracy": 0.85,
+   "c45_cv_accuracy": 0.8800000000000001,
+   "gap": -0.030000000000000138,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_power",
+   "seed": 42,
+   "mlp_cv_accuracy": 0.8333333333333333,
+   "c45_cv_accuracy": 0.8799999999999999,
+   "gap": -0.046666666666666634,
+   "test_used": false
+  },
+  {
+   "dataset": "phys_power",
+   "seed": 7,
+   "mlp_cv_accuracy": 0.8733333333333334,
+   "c45_cv_accuracy": 0.8733333333333334,
+   "gap": 0.0,
+   "test_used": false
+  }
+ ],
+ "per_dataset": {
+  "german_credit": {
+   "mean_gap": 0.010933333333333305,
+   "units": 5,
+   "eligible": false
+  },
+  "phys_bmi": {
+   "mean_gap": 0.005333333333333324,
+   "units": 5,
+   "eligible": false
+  },
+  "phys_kinetic": {
+   "mean_gap": -0.0206666666666667,
+   "units": 5,
+   "eligible": false
+  },
+  "phys_power": {
+   "mean_gap": -0.028000000000000004,
+   "units": 5,
+   "eligible": false
+  }
+ }
+}
