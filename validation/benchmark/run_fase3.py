@@ -46,11 +46,17 @@ def activate_v2(dataset: str, out: Path) -> str:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     out.mkdir(parents=True, exist_ok=True)
     record = out / "ontology_v2_hashes.json"
-    known = json.loads(record.read_text(encoding="utf-8")) if record.exists() else {}
-    if known.get(dataset, digest) != digest:
-        raise SystemExit(f"A ontologia v2 de '{dataset}' mudou a meio da campanha.")
-    known[dataset] = digest
-    record.write_text(json.dumps(known, indent=1, sort_keys=True), encoding="utf-8")
+    import fcntl
+    with open(out / ".ontology_v2_hashes.lock", "w") as lock:          # unidades em paralelo escrevem o mesmo registo
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        text = record.read_text(encoding="utf-8") if record.exists() else ""
+        known = json.loads(text) if text.strip() else {}
+        if known.get(dataset, digest) != digest:
+            raise SystemExit(f"A ontologia v2 de '{dataset}' mudou a meio da campanha.")
+        known[dataset] = digest
+        tmp = record.with_suffix(".tmp")
+        tmp.write_text(json.dumps(known, indent=1, sort_keys=True), encoding="utf-8")
+        tmp.replace(record)
     return digest
 
 
