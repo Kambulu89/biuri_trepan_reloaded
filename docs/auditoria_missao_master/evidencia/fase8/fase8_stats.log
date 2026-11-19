@@ -1,0 +1,189 @@
+unidades concluídas por dataset: {'adult': 5, 'breast_cancer': 5, 'digits': 5, 'iris': 5, 'wine': 5} | reprodução do baseline: {True: 20, nan: 5}
+unidades: {'adult': 5, 'breast_cancer': 5, 'digits': 5, 'iris': 5, 'wine': 5} | réplicas: {'B': {'min': 3, 'max': 3}, 'B7': {'min': 3, 'max': 3}, 'C4.5': {'min': 1, 'max': 1}, 'MLP': {'min': 1, 'max': 1}, 'R': {'min': 3, 'max': 3}, 'R7': {'min': 3, 'max': 3}, 'Rq': {'min': 3, 'max': 3}, 'Rq7': {'min': 3, 'max': 3}}
+                          acc     f1   bacc    fid    nodes   depth     queries    secs
+dataset       kind                                                                     
+adult         B         0.828  0.749  0.736  0.889   47.267   9.533   38129.267   2.663
+              B7        0.832  0.743  0.722  0.877    5.400   2.200    2140.333   0.713
+              C4.5      0.833  0.747  0.731  0.877  135.000  35.200         NaN   4.034
+              MLP       0.816  0.733  0.721    NaN      NaN     NaN         NaN   0.010
+              MLP_orig  0.824  0.731  0.711    NaN      NaN     NaN         NaN     NaN
+              R         0.828  0.745  0.729  0.888   47.533   9.467   37943.467   5.814
+              R7        0.832  0.753  0.738  0.872    4.733   1.867    2024.067   1.005
+              Rq        0.822  0.738  0.724  0.882   47.533   9.067   38303.333   5.875
+              Rq7       0.834  0.750  0.731  0.875    5.400   2.200    2077.333   0.996
+breast_cancer B         0.940  0.936  0.934  0.948   34.333   8.000   19971.267   1.708
+              B7        0.934  0.929  0.930  0.940    6.733   2.600    2785.467   0.352
+              C4.5      0.930  0.924  0.921  0.943   17.000   5.600         NaN   0.446
+              MLP       0.973  0.971  0.967    NaN      NaN     NaN         NaN   0.010
+              MLP_orig  0.962  0.960  0.961    NaN      NaN     NaN         NaN     NaN
+              R         0.939  0.934  0.931  0.943   35.533   7.667   19721.800   6.980
+              R7        0.928  0.923  0.922  0.931    6.733   2.733    2811.267   0.848
+              Rq        0.939  0.935  0.933  0.944   36.067   8.000   20212.867   8.004
+              Rq7       0.936  0.931  0.934  0.934    6.733   2.867    2830.200   0.799
+digits        B         0.872  0.871  0.871  0.872  177.133  12.067  139529.933  10.814
+              B7        0.361  0.215  0.361  0.363    7.000   2.733    2092.867   0.506
+              C4.5      0.853  0.853  0.852  0.853  169.400  15.200         NaN   2.093
+              MLP       0.982  0.982  0.982    NaN      NaN     NaN         NaN   0.009
+              MLP_orig  0.960  0.959  0.959    NaN      NaN     NaN         NaN     NaN
+              R         0.872  0.872  0.872  0.873  176.600  11.133  140623.600  21.208
+              R7        0.365  0.216  0.365  0.366    7.000   2.667    2075.133   0.740
+              Rq        0.869  0.869  0.869  0.869  175.533  11.533  141698.867  20.864
+              Rq7       0.365  0.218  0.365  0.366    7.000   2.667    2077.333   0.750
+iris          B         0.956  0.957  0.957  0.975   33.800  10.200    7103.600   0.240
+              B7        0.947  0.948  0.948  0.963    5.667   2.333    1004.200   0.061
+              C4.5      0.958  0.958  0.958  0.974    8.600   3.800         NaN   0.021
+              MLP       0.942  0.943  0.943    NaN      NaN     NaN         NaN   0.009
+              MLP_orig  0.953  0.953  0.953    NaN      NaN     NaN         NaN     NaN
+              R         0.954  0.955  0.955  0.970   33.800  10.400    7304.467   1.660
+              R7        0.956  0.957  0.957  0.965    5.400   2.200     984.533   0.141
+              Rq        0.946  0.946  0.946  0.965   33.133   9.733    7342.733   1.663
+              Rq7       0.947  0.948  0.948  0.963    5.933   2.467     984.133   0.138
+wine          B         0.963  0.964  0.966  0.950   23.533   6.800   10570.400   0.655
+              B7        0.966  0.966  0.967  0.953    6.867   2.600    1673.800   0.187
+              C4.5      0.929  0.929  0.932  0.916    9.800   3.600         NaN   0.064
+              MLP       0.978  0.977  0.976    NaN      NaN     NaN         NaN   0.008
+              MLP_orig  0.969  0.969  0.968    NaN      NaN     NaN         NaN     NaN
+              R         0.959  0.959  0.961  0.951   18.467   5.733    8761.267   2.049
+              R7        0.947  0.948  0.949  0.942    7.000   2.733    1648.000   0.367
+              Rq        0.959  0.959  0.958  0.959   23.400   6.933   10218.133   2.563
+              Rq7       0.954  0.954  0.954  0.948    6.733   2.533    1794.267   0.352
+elegibilidade: {'iris': {'mean_gap': 0.012411067193675906, 'units': 5, 'eligible': False}, 'breast_cancer': {'mean_gap': 0.04412585499316006, 'units': 5, 'eligible': True}, 'wine': {'mean_gap': 0.08170940170940173, 'units': 5, 'eligible': True}, 'digits': {'mean_gap': 0.13020459865069517, 'units': 5, 'eligible': True}, 'adult': {'mean_gap': -0.02173333333333336, 'units': 5, 'eligible': False}}
+               orcamento  id                                        contraste        dataset   media      lo      hi  pos  neg
+0                      —   M           accuracy: MLP otimizado − MLP original           iris -0.0105 -0.0211  0.0000    0    2
+1                      —   M           accuracy: MLP otimizado − MLP original           wine  0.0089  0.0000  0.0178    2    0
+2                      —   M           accuracy: MLP otimizado − MLP original  breast_cancer  0.0112 -0.0056  0.0280    3    2
+3                      —   M           accuracy: MLP otimizado − MLP original         digits  0.0227  0.0200  0.0244    5    0
+4                      —   M           accuracy: MLP otimizado − MLP original          adult -0.0072 -0.0192  0.0060    1    4
+5                      —   M                   accuracy: MLP otimizado − C4.5           iris -0.0158 -0.0368  0.0000    0    2
+6                      —   M                   accuracy: MLP otimizado − C4.5           wine  0.0489  0.0267  0.0711    5    0
+7                      —   M                   accuracy: MLP otimizado − C4.5  breast_cancer  0.0434  0.0336  0.0517    5    0
+8                      —   M                   accuracy: MLP otimizado − C4.5         digits  0.1293  0.1151  0.1431    5    0
+9                      —   M                   accuracy: MLP otimizado − C4.5          adult -0.0164 -0.0208 -0.0116    0    5
+10                     —   M                    accuracy: MLP original − C4.5           iris -0.0053 -0.0158  0.0000    0    1
+11                     —   M                    accuracy: MLP original − C4.5           wine  0.0400  0.0133  0.0711    4    0
+12                     —   M                    accuracy: MLP original − C4.5  breast_cancer  0.0322  0.0154  0.0531    5    0
+13                     —   M                    accuracy: MLP original − C4.5         digits  0.1067  0.0942  0.1213    5    0
+14                     —   M                    accuracy: MLP original − C4.5          adult -0.0092 -0.0188  0.0008    1    4
+15                     —   M           macro-F1: MLP otimizado − MLP original           iris -0.0102 -0.0205  0.0000    0    2
+16                     —   M           macro-F1: MLP otimizado − MLP original           wine  0.0087  0.0000  0.0177    3    0
+17                     —   M           macro-F1: MLP otimizado − MLP original  breast_cancer  0.0116 -0.0063  0.0294    3    2
+18                     —   M           macro-F1: MLP otimizado − MLP original         digits  0.0228  0.0202  0.0246    5    0
+19                     —   M           macro-F1: MLP otimizado − MLP original          adult  0.0026 -0.0136  0.0257    2    3
+20                     —   M                   macro-F1: MLP otimizado − C4.5           iris -0.0154 -0.0360  0.0000    0    2
+21                     —   M                   macro-F1: MLP otimizado − C4.5           wine  0.0485  0.0236  0.0763    5    0
+22                     —   M                   macro-F1: MLP otimizado − C4.5  breast_cancer  0.0469  0.0358  0.0563    5    0
+23                     —   M                   macro-F1: MLP otimizado − C4.5         digits  0.1296  0.1154  0.1434    5    0
+24                     —   M                   macro-F1: MLP otimizado − C4.5          adult -0.0143 -0.0331  0.0129    1    4
+25                     —   M                    macro-F1: MLP original − C4.5           iris -0.0052 -0.0154 -0.0000    0    2
+26                     —   M                    macro-F1: MLP original − C4.5           wine  0.0399  0.0097  0.0732    4    1
+27                     —   M                    macro-F1: MLP original − C4.5  breast_cancer  0.0353  0.0170  0.0578    5    0
+28                     —   M                    macro-F1: MLP original − C4.5         digits  0.1068  0.0941  0.1215    5    0
+29                     —   M                    macro-F1: MLP original − C4.5          adult -0.0169 -0.0304 -0.0023    1    4
+30                     —   M  balanced accuracy: MLP otimizado − MLP original           iris -0.0103 -0.0205  0.0000    0    2
+31                     —   M  balanced accuracy: MLP otimizado − MLP original           wine  0.0081  0.0007  0.0156    3    0
+32                     —   M  balanced accuracy: MLP otimizado − MLP original  breast_cancer  0.0066 -0.0099  0.0230    3    2
+33                     —   M  balanced accuracy: MLP otimizado − MLP original         digits  0.0228  0.0202  0.0246    5    0
+34                     —   M  balanced accuracy: MLP otimizado − MLP original          adult  0.0107 -0.0039  0.0328    2    3
+35                     —   M          balanced accuracy: MLP otimizado − C4.5           iris -0.0154 -0.0359  0.0000    0    2
+36                     —   M          balanced accuracy: MLP otimizado − C4.5           wine  0.0441  0.0196  0.0748    5    0
+37                     —   M          balanced accuracy: MLP otimizado − C4.5  breast_cancer  0.0461  0.0329  0.0574    5    0
+38                     —   M          balanced accuracy: MLP otimizado − C4.5         digits  0.1298  0.1156  0.1437    5    0
+39                     —   M          balanced accuracy: MLP otimizado − C4.5          adult -0.0096 -0.0357  0.0263    2    3
+40                     —   M           balanced accuracy: MLP original − C4.5           iris -0.0051 -0.0154  0.0000    0    1
+41                     —   M           balanced accuracy: MLP original − C4.5           wine  0.0359  0.0059  0.0719    4    1
+42                     —   M           balanced accuracy: MLP original − C4.5  breast_cancer  0.0395  0.0192  0.0624    5    0
+43                     —   M           balanced accuracy: MLP original − C4.5         digits  0.1070  0.0944  0.1218    5    0
+44                     —   M           balanced accuracy: MLP original − C4.5          adult -0.0203 -0.0373 -0.0030    2    3
+45   estrutura do tuning  H1                               H1 accuracy: R − B           iris -0.0018 -0.0105  0.0088    1    2
+46   estrutura do tuning  H1                               H1 accuracy: R − B           wine -0.0044 -0.0178  0.0089    1    2
+47   estrutura do tuning  H1                               H1 accuracy: R − B  breast_cancer -0.0014 -0.0089  0.0047    2    2
+48   estrutura do tuning  H1                               H1 accuracy: R − B         digits  0.0006 -0.0049  0.0044    4    1
+49   estrutura do tuning  H1                               H1 accuracy: R − B          adult -0.0004 -0.0037  0.0035    2    3
+50   estrutura do tuning  H2                            H2 accuracy: R − C4.5           iris -0.0035 -0.0246  0.0175    2    2
+51   estrutura do tuning  H2                            H2 accuracy: R − C4.5           wine  0.0296  0.0059  0.0489    4    1
+52   estrutura do tuning  H2                            H2 accuracy: R − C4.5  breast_cancer  0.0089 -0.0019  0.0219    3    1
+53   estrutura do tuning  H2                            H2 accuracy: R − C4.5         digits  0.0193  0.0027  0.0368    4    1
+54   estrutura do tuning  H2                            H2 accuracy: R − C4.5          adult -0.0051 -0.0169  0.0085    2    3
+55   estrutura do tuning  H3                            H3 accuracy: B − C4.5           iris -0.0018 -0.0193  0.0175    1    2
+56   estrutura do tuning  H3                            H3 accuracy: B − C4.5           wine  0.0341  0.0059  0.0578    4    1
+57   estrutura do tuning  H3                            H3 accuracy: B − C4.5  breast_cancer  0.0103 -0.0000  0.0224    4    1
+58   estrutura do tuning  H3                            H3 accuracy: B − C4.5         digits  0.0187 -0.0003  0.0376    4    1
+59   estrutura do tuning  H3                            H3 accuracy: B − C4.5          adult -0.0047 -0.0157  0.0081    2    3
+60   estrutura do tuning  H4                             H4 fidelidade: R − B           iris -0.0053 -0.0140  0.0035    1    2
+61   estrutura do tuning  H4                             H4 fidelidade: R − B           wine  0.0015 -0.0059  0.0119    1    2
+62   estrutura do tuning  H4                             H4 fidelidade: R − B  breast_cancer -0.0051 -0.0131  0.0028    2    3
+63   estrutura do tuning  H4                             H4 fidelidade: R − B         digits  0.0006 -0.0053  0.0062    3    2
+64   estrutura do tuning  H4                             H4 fidelidade: R − B          adult -0.0012 -0.0063  0.0032    3    2
+65   estrutura do tuning  H5                          H5 fidelidade: R − C4.5           iris -0.0035 -0.0123  0.0035    1    2
+66   estrutura do tuning  H5                          H5 fidelidade: R − C4.5           wine  0.0356  0.0089  0.0533    4    1
+67   estrutura do tuning  H5                          H5 fidelidade: R − C4.5  breast_cancer  0.0005 -0.0084  0.0093    2    2
+68   estrutura do tuning  H5                          H5 fidelidade: R − C4.5         digits  0.0194  0.0016  0.0385    4    1
+69   estrutura do tuning  H5                          H5 fidelidade: R − C4.5          adult  0.0107  0.0049  0.0156    4    0
+70   estrutura do tuning  AT                              AT accuracy: R − Rq           iris  0.0088  0.0018  0.0175    3    0
+71   estrutura do tuning  AT                              AT accuracy: R − Rq           wine  0.0000 -0.0326  0.0326    2    3
+72   estrutura do tuning  AT                              AT accuracy: R − Rq  breast_cancer -0.0005 -0.0145  0.0135    2    3
+73   estrutura do tuning  AT                              AT accuracy: R − Rq         digits  0.0030  0.0009  0.0050    3    0
+74   estrutura do tuning  AT                              AT accuracy: R − Rq          adult  0.0057 -0.0008  0.0132    4    1
+75   estrutura do tuning  AT                            AT fidelidade: R − Rq           iris  0.0053 -0.0035  0.0158    2    1
+76   estrutura do tuning  AT                            AT fidelidade: R − Rq           wine -0.0074 -0.0296  0.0178    2    3
+77   estrutura do tuning  AT                            AT fidelidade: R − Rq  breast_cancer -0.0005 -0.0061  0.0051    2    3
+78   estrutura do tuning  AT                            AT fidelidade: R − Rq         digits  0.0040  0.0025  0.0055    5    0
+79   estrutura do tuning  AT                            AT fidelidade: R − Rq          adult  0.0057 -0.0016  0.0131    3    2
+80            máx. 7 nós  H1                             H1 accuracy: R7 − B7           iris  0.0088  0.0035  0.0140    4    0
+81            máx. 7 nós  H1                             H1 accuracy: R7 − B7           wine -0.0193 -0.0311 -0.0089    0    4
+82            máx. 7 nós  H1                             H1 accuracy: R7 − B7  breast_cancer -0.0056 -0.0182  0.0051    1    4
+83            máx. 7 nós  H1                             H1 accuracy: R7 − B7         digits  0.0039  0.0001  0.0079    4    1
+84            máx. 7 nós  H1                             H1 accuracy: R7 − B7          adult -0.0004 -0.0068  0.0055    3    2
+85            máx. 7 nós  H2                           H2 accuracy: R7 − C4.5           iris -0.0018 -0.0193  0.0175    1    2
+86            máx. 7 nós  H2                           H2 accuracy: R7 − C4.5           wine  0.0178 -0.0044  0.0356    4    1
+87            máx. 7 nós  H2                           H2 accuracy: R7 − C4.5  breast_cancer -0.0019 -0.0186  0.0182    2    3
+88            máx. 7 nós  H2                           H2 accuracy: R7 − C4.5         digits -0.4881 -0.5006 -0.4745    0    5
+89            máx. 7 nós  H2                           H2 accuracy: R7 − C4.5          adult -0.0011 -0.0072  0.0043    2    2
+90            máx. 7 nós  H3                           H3 accuracy: B7 − C4.5           iris -0.0105 -0.0298  0.0105    1    3
+91            máx. 7 nós  H3                           H3 accuracy: B7 − C4.5           wine  0.0370  0.0119  0.0578    4    1
+92            máx. 7 nós  H3                           H3 accuracy: B7 − C4.5  breast_cancer  0.0037 -0.0065  0.0149    2    2
+93            máx. 7 nós  H3                           H3 accuracy: B7 − C4.5         digits -0.4920 -0.5046 -0.4759    0    5
+94            máx. 7 nós  H3                           H3 accuracy: B7 − C4.5          adult -0.0007 -0.0092  0.0076    2    3
+95            máx. 7 nós  H4                           H4 fidelidade: R7 − B7           iris  0.0018 -0.0158  0.0211    2    2
+96            máx. 7 nós  H4                           H4 fidelidade: R7 − B7           wine -0.0104 -0.0178 -0.0030    0    3
+97            máx. 7 nós  H4                           H4 fidelidade: R7 − B7  breast_cancer -0.0093 -0.0224  0.0009    1    4
+98            máx. 7 nós  H4                           H4 fidelidade: R7 − B7         digits  0.0033 -0.0001  0.0070    4    1
+99            máx. 7 nós  H4                           H4 fidelidade: R7 − B7          adult -0.0047 -0.0145  0.0044    2    3
+100           máx. 7 nós  H5                         H5 fidelidade: R7 − C4.5           iris -0.0088 -0.0228  0.0000    0    2
+101           máx. 7 nós  H5                         H5 fidelidade: R7 − C4.5           wine  0.0267  0.0015  0.0459    4    1
+102           máx. 7 nós  H5                         H5 fidelidade: R7 − C4.5  breast_cancer -0.0121 -0.0247  0.0000    1    3
+103           máx. 7 nós  H5                         H5 fidelidade: R7 − C4.5         digits -0.4876 -0.4994 -0.4750    0    5
+104           máx. 7 nós  H5                         H5 fidelidade: R7 − C4.5          adult -0.0053 -0.0176  0.0069    2    3
+105           máx. 7 nós  AT                            AT accuracy: R7 − Rq7           iris  0.0088  0.0000  0.0228    2    0
+106           máx. 7 nós  AT                            AT accuracy: R7 − Rq7           wine -0.0074 -0.0326  0.0163    2    3
+107           máx. 7 nós  AT                            AT accuracy: R7 − Rq7  breast_cancer -0.0075 -0.0177  0.0037    2    3
+108           máx. 7 nós  AT                            AT accuracy: R7 − Rq7         digits -0.0001 -0.0009  0.0004    1    1
+109           máx. 7 nós  AT                            AT accuracy: R7 − Rq7          adult -0.0023 -0.0076  0.0023    3    2
+110           máx. 7 nós  AT                          AT fidelidade: R7 − Rq7           iris  0.0018 -0.0053  0.0105    1    1
+111           máx. 7 nós  AT                          AT fidelidade: R7 − Rq7           wine -0.0059 -0.0281  0.0163    2    3
+112           máx. 7 nós  AT                          AT fidelidade: R7 − Rq7  breast_cancer -0.0037 -0.0149  0.0075    2    2
+113           máx. 7 nós  AT                          AT fidelidade: R7 − Rq7         digits -0.0004 -0.0010  0.0000    0    2
+114           máx. 7 nós  AT                          AT fidelidade: R7 − Rq7          adult -0.0031 -0.0111  0.0049    3    2
+             orcamento        dataset  elegivel  sustentada  observada  atribuivel
+0  estrutura do tuning           iris     False       False      False       False
+1  estrutura do tuning           wine      True       False      False       False
+2  estrutura do tuning  breast_cancer      True       False      False       False
+3  estrutura do tuning         digits      True       False       True       False
+4  estrutura do tuning          adult     False       False      False       False
+5           máx. 7 nós           iris     False       False      False       False
+6           máx. 7 nós           wine      True       False      False       False
+7           máx. 7 nós  breast_cancer      True       False      False       False
+8           máx. 7 nós         digits      True       False      False       False
+9           máx. 7 nós          adult     False       False      False       False
+               H1  H2  H3  H4  H5  conjunta            orcamento
+dataset                                                         
+adult           2   2   2   3   4         0  estrutura do tuning
+breast_cancer   2   3   4   2   2         0  estrutura do tuning
+digits          4   4   4   3   4         2  estrutura do tuning
+iris            1   2   1   1   1         0  estrutura do tuning
+wine            1   4   4   1   4         1  estrutura do tuning
+adult           3   2   2   2   2         0           máx. 7 nós
+breast_cancer   1   2   2   1   2         1           máx. 7 nós
+digits          4   0   0   4   0         0           máx. 7 nós
+iris            4   1   1   2   0         0           máx. 7 nós
+wine            1   4   4   0   4         0           máx. 7 nós

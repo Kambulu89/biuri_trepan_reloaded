@@ -1,0 +1,407 @@
+{
+ "margin": 0.02,
+ "per_unit": [
+  {
+   "dataset": "iris",
+   "seed": 11,
+   "mlp_nested_cv_accuracy": 0.9197628458498024,
+   "c45_cv_accuracy": 0.9110671936758894,
+   "gap": 0.008695652173912993,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "perfil_por_omissao",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "iris",
+   "seed": 123,
+   "mlp_nested_cv_accuracy": 0.9553359683794467,
+   "c45_cv_accuracy": 0.9466403162055336,
+   "gap": 0.008695652173913104,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a0.1",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "iris",
+   "seed": 2024,
+   "mlp_nested_cv_accuracy": 0.9636363636363636,
+   "c45_cv_accuracy": 0.9549407114624506,
+   "gap": 0.008695652173912993,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a0.01",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "iris",
+   "seed": 42,
+   "mlp_nested_cv_accuracy": 0.9545454545454545,
+   "c45_cv_accuracy": 0.9545454545454545,
+   "gap": 0.0,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a1",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h32x16_a10",
+    "perfil_por_omissao",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "iris",
+   "seed": 7,
+   "mlp_nested_cv_accuracy": 0.9640316205533598,
+   "c45_cv_accuracy": 0.9280632411067193,
+   "gap": 0.03596837944664044,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a1",
+    "lbfgs_h32x16_a1",
+    "lbfgs_h16_a0.1",
+    "lbfgs_h32x16_a0.001",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "breast_cancer",
+   "seed": 11,
+   "mlp_nested_cv_accuracy": 0.9835567715458277,
+   "c45_cv_accuracy": 0.9390424076607389,
+   "gap": 0.04451436388508878,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1",
+    "lbfgs_h32x16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "breast_cancer",
+   "seed": 123,
+   "mlp_nested_cv_accuracy": 0.9788782489740082,
+   "c45_cv_accuracy": 0.9295485636114911,
+   "gap": 0.04932968536251714,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "breast_cancer",
+   "seed": 2024,
+   "mlp_nested_cv_accuracy": 0.9696032831737347,
+   "c45_cv_accuracy": 0.9389876880984953,
+   "gap": 0.030615595075239366,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "breast_cancer",
+   "seed": 42,
+   "mlp_nested_cv_accuracy": 0.9741997264021889,
+   "c45_cv_accuracy": 0.9109165526675786,
+   "gap": 0.06328317373461023,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "breast_cancer",
+   "seed": 7,
+   "mlp_nested_cv_accuracy": 0.9695212038303694,
+   "c45_cv_accuracy": 0.9366347469220246,
+   "gap": 0.0328864569083448,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1",
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a0.001"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "wine",
+   "seed": 11,
+   "mlp_nested_cv_accuracy": 0.9703703703703702,
+   "c45_cv_accuracy": 0.9245014245014247,
+   "gap": 0.04586894586894552,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "wine",
+   "seed": 123,
+   "mlp_nested_cv_accuracy": 0.9626780626780628,
+   "c45_cv_accuracy": 0.8717948717948717,
+   "gap": 0.09088319088319108,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a0.1",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a0.001",
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "wine",
+   "seed": 2024,
+   "mlp_nested_cv_accuracy": 0.9700854700854702,
+   "c45_cv_accuracy": 0.8945868945868947,
+   "gap": 0.07549857549857553,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a0.001",
+    "lbfgs_h16_a0.1",
+    "lbfgs_h16_a0.01",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "wine",
+   "seed": 42,
+   "mlp_nested_cv_accuracy": 0.9772079772079773,
+   "c45_cv_accuracy": 0.8723646723646723,
+   "gap": 0.10484330484330495,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a0.001",
+    "lbfgs_h32x16_a1",
+    "lbfgs_h16_a10",
+    "lbfgs_h64_a0.001"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "wine",
+   "seed": 7,
+   "mlp_nested_cv_accuracy": 0.9851851851851852,
+   "c45_cv_accuracy": 0.8937321937321936,
+   "gap": 0.09145299145299157,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "digits",
+   "seed": 11,
+   "mlp_nested_cv_accuracy": 0.9777254577998071,
+   "c45_cv_accuracy": 0.8389095415117721,
+   "gap": 0.13881591628803502,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a1",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h16_a0.1",
+    "lbfgs_h32x16_a0.01",
+    "lbfgs_h64_a0.1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "digits",
+   "seed": 123,
+   "mlp_nested_cv_accuracy": 0.9747735095690485,
+   "c45_cv_accuracy": 0.8396640506677683,
+   "gap": 0.13510945890128023,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a1",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h64_a1",
+    "lbfgs_h64_a1",
+    "lbfgs_h32x16_a0.1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "digits",
+   "seed": 2024,
+   "mlp_nested_cv_accuracy": 0.9814429299187664,
+   "c45_cv_accuracy": 0.8500344210381385,
+   "gap": 0.13140850888062783,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h64_a1",
+    "lbfgs_h64_a0.1",
+    "lbfgs_h64_a1",
+    "lbfgs_h64_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "digits",
+   "seed": 42,
+   "mlp_nested_cv_accuracy": 0.9769764560099133,
+   "c45_cv_accuracy": 0.8686135205837809,
+   "gap": 0.1083629354261324,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "digits",
+   "seed": 7,
+   "mlp_nested_cv_accuracy": 0.9777171967506539,
+   "c45_cv_accuracy": 0.8403910229932535,
+   "gap": 0.13732617375740042,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a1",
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a1",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "adult",
+   "seed": 11,
+   "mlp_nested_cv_accuracy": 0.8126666666666666,
+   "c45_cv_accuracy": 0.8493333333333333,
+   "gap": -0.036666666666666625,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "adult",
+   "seed": 123,
+   "mlp_nested_cv_accuracy": 0.8126666666666666,
+   "c45_cv_accuracy": 0.8433333333333334,
+   "gap": -0.03066666666666673,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a10",
+    "lbfgs_h64_a10",
+    "lbfgs_h16_a0.1",
+    "lbfgs_h32x16_a0.01",
+    "lbfgs_h64_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "adult",
+   "seed": 2024,
+   "mlp_nested_cv_accuracy": 0.82,
+   "c45_cv_accuracy": 0.8173333333333334,
+   "gap": 0.002666666666666595,
+   "chosen_per_outer_fold": [
+    "lbfgs_h32x16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "adult",
+   "seed": 42,
+   "mlp_nested_cv_accuracy": 0.8206666666666667,
+   "c45_cv_accuracy": 0.8353333333333334,
+   "gap": -0.014666666666666717,
+   "chosen_per_outer_fold": [
+    "lbfgs_h64_a1",
+    "lbfgs_h16_a10",
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a1",
+    "lbfgs_h16_a10"
+   ],
+   "test_used": false
+  },
+  {
+   "dataset": "adult",
+   "seed": 7,
+   "mlp_nested_cv_accuracy": 0.806,
+   "c45_cv_accuracy": 0.8353333333333334,
+   "gap": -0.029333333333333322,
+   "chosen_per_outer_fold": [
+    "lbfgs_h16_a10",
+    "lbfgs_h32x16_a0.1",
+    "lbfgs_h16_a10",
+    "lbfgs_h64_a10",
+    "lbfgs_h16_a1"
+   ],
+   "test_used": false
+  }
+ ],
+ "per_dataset": {
+  "iris": {
+   "mean_gap": 0.012411067193675906,
+   "units": 5,
+   "eligible": false
+  },
+  "breast_cancer": {
+   "mean_gap": 0.04412585499316006,
+   "units": 5,
+   "eligible": true
+  },
+  "wine": {
+   "mean_gap": 0.08170940170940173,
+   "units": 5,
+   "eligible": true
+  },
+  "digits": {
+   "mean_gap": 0.13020459865069517,
+   "units": 5,
+   "eligible": true
+  },
+  "adult": {
+   "mean_gap": -0.02173333333333336,
+   "units": 5,
+   "eligible": false
+  }
+ }
+}
