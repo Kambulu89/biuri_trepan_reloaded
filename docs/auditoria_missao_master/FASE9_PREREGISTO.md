@@ -83,3 +83,13 @@ iris, semente 42, 1 réplica (iris foi usado no desenho; este resultado não ent
 - V usa mais consultas ao oráculo do que B e E: um ganho de V pode vir em parte da informação adicional. Reporto as consultas.
 - O canal de score (λ = 1) vem com o EFSR em E e V; a fase 5 mostrou que sem EFSR ele não muda decisões, mas não é isolado aqui.
 - Todos os datasets foram observados antes com B e R; nada é confirmatório.
+
+## 9. Emenda 1 (durante a campanha, antes de qualquer análise)
+
+**Defeito de implementação:** na unidade phys_power/42, o braço `sc_V_r1` foi descartado pelo runner com `RuntimeError: Não foi possível gerar membership queries coerentes que satisfaçam as restrições do nó.` O lote novo pede `effective_min_sample_` consultas numa região onde o gerador não as consegue produzir; o lote de decisão desse nó pedia menos e não falhou.
+
+**Correção:** essa exceção passa a ser tratada como «lote indisponível», que o §2 e o código já tratavam como **rejeição** da proposta semântica (decisão conservadora: fica a divisão estatística). Nenhuma outra regra muda.
+
+**Efeito nas unidades:** o código só difere quando a exceção ocorreria, e nesse caso o braço era descartado. As unidades sem braços descartados são idênticas com e sem a correção e mantêm-se. As unidades com braços V/Vq descartados são executadas de novo com a correção, no fim da campanha; as saídas originais ficam guardadas em `interrompidas/`. Nenhum resultado foi consultado para decidir esta emenda (só a lista de braços descartados).
+
+**Outro incidente:** reinício do contentor com 8 de 30 unidades concluídas; as em falta foram retomadas do início. O registo parcial do EFSR de german_credit/7 (21 linhas da execução interrompida) foi separado para `interrompidas/`.

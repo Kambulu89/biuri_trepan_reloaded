@@ -93,6 +93,8 @@ class HoldoutEFSRReloaded(TrepanReloadedClassifier):
                  getattr(self, "error_focused_query_selected_", None))
         try:
             Xv = self._draw_membership_queries(clone, n, node.constraints, node)
+        except RuntimeError:        # emenda 1 (FASE9_PREREGISTO §9): região sem consultas válidas suficientes => lote indisponível => rejeita
+            Xv = np.empty((0, getattr(model, "n_features_in_", 0)))
         finally:                    # contadores de auditoria do Reloaded ficam como se o lote não existisse
             (self.semantic_projection_batches_, self.semantic_projected_query_count_, self.ontology_sampling_audit_,
              self.error_focused_query_batches_, self.semantic_active_query_batches_, self.semantic_active_query_selected_,
