@@ -51,8 +51,13 @@ class SemanticContributionGate:
             base = max(1, int(original_metrics.get("nodes", 0) or 0))
             node_growth = (int(reloaded_metrics.get("nodes", 0) or 0) - base) / base
             if node_growth > cfg.max_node_growth_ratio: reasons.append("tree_complexity_growth_exceeded")
+        # Uma contribuição semântica exige que a ontologia tenha alterado pelo menos uma decisão. Se nenhuma decisão mudou e
+        # nenhuma intervenção EFSR foi aceite, a diferença Reloaded−Original vem dos mecanismos não semânticos do Reloaded.
+        no_semantic_change = bool(impact <= 0.0 and efsr_accepted == 0)
+        if no_semantic_change and not reasons: reasons.append("no_semantic_decision_changed")
         accepted = not reasons
         if accepted: status = "SEMANTIC_CONTRIBUTION_SUPPORTED"
+        elif no_semantic_change and usage > 0 and reasons == ["no_semantic_decision_changed"]: status = "NO_SEMANTIC_DECISION_CHANGED"
         elif usage <= 0 and impact <= 0: status = "NO_OBSERVED_SEMANTIC_CONTRIBUTION"
         elif dfid < cfg.min_fidelity_gain: status = "SEMANTIC_EFFECT_WITHOUT_FIDELITY_GAIN"
         else: status = "SEMANTIC_CONTRIBUTION_NOT_SUPPORTED"
@@ -65,6 +70,11 @@ class SemanticContributionGate:
             "error_focused_local_gain_observed": efsr_local_gain_observed,
             "delta_oracle_fidelity": dfid, "delta_balanced_accuracy": dba,
             "delta_macro_f1": df1, "node_growth_ratio": float(node_growth),
+            # Âmbito da evidência: este gate compara UMA partição, sem controlos (ontologia permutada, grupos aleatórios,
+            # engenharia convencional) e sem réplicas. "SUPPORTED" significa «efeito observado nesta execução», não atribuição.
+            "evidence_level": "observed_single_split",
+            "controls_evaluated": False,
+            "attributable_to_ontology": False,
         }
 
 __all__ = ["SemanticContributionConfig", "SemanticContributionGate"]

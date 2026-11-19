@@ -1,0 +1,202 @@
+[
+ {
+  "dataset": "breast_cancer",
+  "seed": 11,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9020979020979021,
+  "fidelity_to_oracle": 0.916083916083916,
+  "leaf_count": 10,
+  "depth": 5
+ },
+ {
+  "dataset": "breast_cancer",
+  "seed": 123,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9440559440559441,
+  "fidelity_to_oracle": 0.9020979020979021,
+  "leaf_count": 9,
+  "depth": 5
+ },
+ {
+  "dataset": "breast_cancer",
+  "seed": 2024,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9230769230769231,
+  "fidelity_to_oracle": 0.916083916083916,
+  "leaf_count": 8,
+  "depth": 5
+ },
+ {
+  "dataset": "breast_cancer",
+  "seed": 42,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9370629370629371,
+  "fidelity_to_oracle": 0.9370629370629371,
+  "leaf_count": 9,
+  "depth": 6
+ },
+ {
+  "dataset": "breast_cancer",
+  "seed": 7,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9440559440559441,
+  "fidelity_to_oracle": 0.9440559440559441,
+  "leaf_count": 9,
+  "depth": 7
+ },
+ {
+  "dataset": "digits",
+  "seed": 11,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.86,
+  "fidelity_to_oracle": 0.8622222222222222,
+  "leaf_count": 79,
+  "depth": 16
+ },
+ {
+  "dataset": "digits",
+  "seed": 123,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.8688888888888889,
+  "fidelity_to_oracle": 0.8444444444444444,
+  "leaf_count": 82,
+  "depth": 14
+ },
+ {
+  "dataset": "digits",
+  "seed": 2024,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.8488888888888889,
+  "fidelity_to_oracle": 0.8466666666666667,
+  "leaf_count": 90,
+  "depth": 13
+ },
+ {
+  "dataset": "digits",
+  "seed": 42,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.8244444444444444,
+  "fidelity_to_oracle": 0.8266666666666667,
+  "leaf_count": 84,
+  "depth": 20
+ },
+ {
+  "dataset": "digits",
+  "seed": 7,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.8466666666666667,
+  "fidelity_to_oracle": 0.8333333333333334,
+  "leaf_count": 89,
+  "depth": 17
+ },
+ {
+  "dataset": "iris",
+  "seed": 11,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9736842105263158,
+  "fidelity_to_oracle": 1.0,
+  "leaf_count": 6,
+  "depth": 5
+ },
+ {
+  "dataset": "iris",
+  "seed": 123,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9736842105263158,
+  "fidelity_to_oracle": 0.9736842105263158,
+  "leaf_count": 6,
+  "depth": 4
+ },
+ {
+  "dataset": "iris",
+  "seed": 2024,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9210526315789473,
+  "fidelity_to_oracle": 0.9473684210526315,
+  "leaf_count": 5,
+  "depth": 4
+ },
+ {
+  "dataset": "iris",
+  "seed": 42,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": false,
+  "accuracy_real_labels": 0.9473684210526315,
+  "fidelity_to_oracle": 0.8947368421052632,
+  "leaf_count": 4,
+  "depth": 3
+ },
+ {
+  "dataset": "iris",
+  "seed": 7,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": false,
+  "accuracy_real_labels": 0.9736842105263158,
+  "fidelity_to_oracle": 1.0,
+  "leaf_count": 4,
+  "depth": 3
+ },
+ {
+  "dataset": "wine",
+  "seed": 11,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9555555555555556,
+  "fidelity_to_oracle": 0.9111111111111111,
+  "leaf_count": 5,
+  "depth": 3
+ },
+ {
+  "dataset": "wine",
+  "seed": 123,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.8888888888888888,
+  "fidelity_to_oracle": 0.8666666666666667,
+  "leaf_count": 5,
+  "depth": 4
+ },
+ {
+  "dataset": "wine",
+  "seed": 2024,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9111111111111111,
+  "fidelity_to_oracle": 0.8888888888888888,
+  "leaf_count": 7,
+  "depth": 5
+ },
+ {
+  "dataset": "wine",
+  "seed": 42,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9333333333333333,
+  "fidelity_to_oracle": 0.9333333333333333,
+  "leaf_count": 5,
+  "depth": 3
+ },
+ {
+  "dataset": "wine",
+  "seed": 7,
+  "arm": "c45_oracle_labels",
+  "mlp_reproduced": true,
+  "accuracy_real_labels": 0.9555555555555556,
+  "fidelity_to_oracle": 0.9777777777777777,
+  "leaf_count": 5,
+  "depth": 3
+ }
+]

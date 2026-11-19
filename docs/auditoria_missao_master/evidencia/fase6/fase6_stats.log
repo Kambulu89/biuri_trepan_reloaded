@@ -1,0 +1,120 @@
+unidades: {'german_credit': 5, 'phys_bmi': 5, 'phys_kinetic': 5, 'phys_power': 5} | réplicas: {'B': {'min': 3, 'max': 3}, 'B7': {'min': 3, 'max': 3}, 'C4.5': {'min': 1, 'max': 1}, 'MLP': {'min': 1, 'max': 1}, 'R': {'min': 3, 'max': 3}, 'R7': {'min': 3, 'max': 3}, 'Rq': {'min': 3, 'max': 3}, 'Rq7': {'min': 3, 'max': 3}}
+                      acc    fid    nodes   depth   rules    queries   secs   used
+dataset       kind                                                                
+german_credit B     0.724  0.865   59.267   9.467  30.133  34592.067  3.250  0.000
+              B7    0.720  0.857    4.600   1.800   2.800   2367.800  0.466  0.000
+              C4.5  0.700  0.729  172.200  28.200  86.600        NaN  1.456    NaN
+              MLP   0.731    NaN      NaN     NaN     NaN        NaN  0.012    NaN
+              R     0.715  0.853   57.933   9.400  29.467  34614.800  6.421  1.000
+              R7    0.715  0.855    5.533   2.267   3.267   2312.067  0.713  0.067
+              Rq    0.712  0.847   59.133  10.133  30.067  34267.533  6.412  3.733
+              Rq7   0.703  0.855    3.533   1.267   2.267   2167.600  0.701  1.200
+phys_bmi      B     0.908  0.899   38.733   7.533  19.867  20752.133  0.407  0.000
+              B7    0.867  0.842    5.933   2.333   3.467   2657.933  0.108  0.000
+              C4.5  0.922  0.896   23.400   6.600  12.200        NaN  0.116    NaN
+              MLP   0.874    NaN      NaN     NaN     NaN        NaN  0.011    NaN
+              R     0.931  0.903   38.600   9.200  19.800  21646.533  1.518  1.267
+              R7    0.954  0.908    3.667   1.333   2.333   2678.200  0.197  1.000
+              Rq    0.784  0.755   39.000   7.467  20.000  20656.400  1.161  0.933
+              Rq7   0.811  0.777    6.067   2.533   3.533   2695.533  0.169  0.067
+phys_kinetic  B     0.883  0.879   46.600   8.667  23.800  29205.333  0.537  0.000
+              B7    0.849  0.863    5.667   2.267   3.333   3181.933  0.095  0.000
+              C4.5  0.888  0.878   21.000   6.400  11.000        NaN  0.117    NaN
+              MLP   0.838    NaN      NaN     NaN     NaN        NaN  0.011    NaN
+              R     0.910  0.877   42.067   8.667  21.533  29467.467  1.642  1.000
+              R7    0.939  0.889    3.000   1.000   2.000   3202.867  0.195  1.000
+              Rq    0.869  0.882   45.133   8.133  23.067  29465.667  1.368  1.600
+              Rq7   0.857  0.863    6.067   2.400   3.533   3176.267  0.184  0.000
+phys_power    B     0.864  0.881   47.800   7.267  24.400  21328.800  0.462  0.000
+              B7    0.847  0.849    6.600   2.600   3.800   2141.000  0.088  0.000
+              C4.5  0.860  0.866   23.000   5.800  12.000        NaN  0.133    NaN
+              MLP   0.846    NaN      NaN     NaN     NaN        NaN  0.011    NaN
+              R     0.901  0.904   44.733   8.467  22.867  21587.467  1.745  1.000
+              R7    0.925  0.914    3.000   1.000   2.000   2127.067  0.183  1.000
+              Rq    0.873  0.876   46.333   8.067  23.667  21003.067  1.221  1.467
+              Rq7   0.844  0.839    6.333   2.667   3.667   2146.133  0.174  0.133
+elegibilidade: {'german_credit': {'mean_gap': 0.010933333333333305, 'units': 5, 'eligible': False}, 'phys_bmi': {'mean_gap': 0.005333333333333324, 'units': 5, 'eligible': False}, 'phys_kinetic': {'mean_gap': -0.0206666666666667, 'units': 5, 'eligible': False}, 'phys_power': {'mean_gap': -0.028000000000000004, 'units': 5, 'eligible': False}}
+              orcamento   id                 contraste        dataset   media      lo      hi  pos  neg
+0   estrutura do tuning   H1        H1 accuracy: R − B  german_credit -0.0083 -0.0187  0.0021    1    4
+1   estrutura do tuning   H1        H1 accuracy: R − B       phys_bmi  0.0227  0.0027  0.0407    4    1
+2   estrutura do tuning   H1        H1 accuracy: R − B   phys_kinetic  0.0273  0.0107  0.0453    4    0
+3   estrutura do tuning   H1        H1 accuracy: R − B     phys_power  0.0367  0.0147  0.0547    4    0
+4   estrutura do tuning   H2     H2 accuracy: R − C4.5  german_credit  0.0155 -0.0120  0.0416    4    1
+5   estrutura do tuning   H2     H2 accuracy: R − C4.5       phys_bmi  0.0087 -0.0067  0.0240    3    2
+6   estrutura do tuning   H2     H2 accuracy: R − C4.5   phys_kinetic  0.0220 -0.0007  0.0447    3    2
+7   estrutura do tuning   H2     H2 accuracy: R − C4.5     phys_power  0.0407  0.0160  0.0687    5    0
+8   estrutura do tuning   H3     H3 accuracy: B − C4.5  german_credit  0.0237 -0.0141  0.0547    4    1
+9   estrutura do tuning   H3     H3 accuracy: B − C4.5       phys_bmi -0.0140 -0.0353  0.0020    1    4
+10  estrutura do tuning   H3     H3 accuracy: B − C4.5   phys_kinetic -0.0053 -0.0200  0.0093    2    3
+11  estrutura do tuning   H3     H3 accuracy: B − C4.5     phys_power  0.0040 -0.0173  0.0233    3    2
+12  estrutura do tuning   H4      H4 fidelidade: R − B  german_credit -0.0115 -0.0245 -0.0005    1    4
+13  estrutura do tuning   H4      H4 fidelidade: R − B       phys_bmi  0.0040 -0.0120  0.0220    2    2
+14  estrutura do tuning   H4      H4 fidelidade: R − B   phys_kinetic -0.0020 -0.0133  0.0113    2    3
+15  estrutura do tuning   H4      H4 fidelidade: R − B     phys_power  0.0233  0.0067  0.0380    4    1
+16  estrutura do tuning   H5   H5 fidelidade: R − C4.5  german_credit  0.1243  0.0880  0.1651    5    0
+17  estrutura do tuning   H5   H5 fidelidade: R − C4.5       phys_bmi  0.0073 -0.0093  0.0260    2    2
+18  estrutura do tuning   H5   H5 fidelidade: R − C4.5   phys_kinetic -0.0007 -0.0240  0.0200    3    2
+19  estrutura do tuning   H5   H5 fidelidade: R − C4.5     phys_power  0.0380  0.0273  0.0533    5    0
+20  estrutura do tuning   AT       AT accuracy: R − Rq  german_credit  0.0035 -0.0064  0.0117    3    2
+21  estrutura do tuning   AT       AT accuracy: R − Rq       phys_bmi  0.1467  0.1307  0.1627    5    0
+22  estrutura do tuning   AT       AT accuracy: R − Rq   phys_kinetic  0.0407  0.0233  0.0553    5    0
+23  estrutura do tuning   AT       AT accuracy: R − Rq     phys_power  0.0280  0.0140  0.0407    5    0
+24  estrutura do tuning   AT     AT fidelidade: R − Rq  german_credit  0.0061 -0.0016  0.0139    2    1
+25  estrutura do tuning   AT     AT fidelidade: R − Rq       phys_bmi  0.1480  0.1347  0.1613    5    0
+26  estrutura do tuning   AT     AT fidelidade: R − Rq   phys_kinetic -0.0047 -0.0160  0.0067    2    3
+27  estrutura do tuning   AT     AT fidelidade: R − Rq     phys_power  0.0280  0.0040  0.0460    4    1
+28  estrutura do tuning  MLP  MLP accuracy: MLP − C4.5  german_credit  0.0312 -0.0088  0.0712    3    2
+29  estrutura do tuning  MLP  MLP accuracy: MLP − C4.5       phys_bmi -0.0480 -0.0880 -0.0160    0    4
+30  estrutura do tuning  MLP  MLP accuracy: MLP − C4.5   phys_kinetic -0.0500 -0.0740 -0.0280    0    5
+31  estrutura do tuning  MLP  MLP accuracy: MLP − C4.5     phys_power -0.0140 -0.0240 -0.0020    1    4
+32           máx. 7 nós   H1      H1 accuracy: R7 − B7  german_credit -0.0051 -0.0131  0.0013    2    3
+33           máx. 7 nós   H1      H1 accuracy: R7 − B7       phys_bmi  0.0873  0.0747  0.1020    5    0
+34           máx. 7 nós   H1      H1 accuracy: R7 − B7   phys_kinetic  0.0893  0.0760  0.1027    5    0
+35           máx. 7 nós   H1      H1 accuracy: R7 − B7     phys_power  0.0780  0.0613  0.0933    5    0
+36           máx. 7 nós   H2    H2 accuracy: R7 − C4.5  german_credit  0.0147 -0.0123  0.0365    3    2
+37           máx. 7 nós   H2    H2 accuracy: R7 − C4.5       phys_bmi  0.0320  0.0167  0.0440    5    0
+38           máx. 7 nós   H2    H2 accuracy: R7 − C4.5   phys_kinetic  0.0507  0.0333  0.0713    5    0
+39           máx. 7 nós   H2    H2 accuracy: R7 − C4.5     phys_power  0.0653  0.0507  0.0820    5    0
+40           máx. 7 nós   H3    H3 accuracy: B7 − C4.5  german_credit  0.0197 -0.0123  0.0475    3    2
+41           máx. 7 nós   H3    H3 accuracy: B7 − C4.5       phys_bmi -0.0553 -0.0627 -0.0480    0    5
+42           máx. 7 nós   H3    H3 accuracy: B7 − C4.5   phys_kinetic -0.0387 -0.0547 -0.0227    0    5
+43           máx. 7 nós   H3    H3 accuracy: B7 − C4.5     phys_power -0.0127 -0.0280 -0.0000    1    4
+44           máx. 7 nós   H4    H4 fidelidade: R7 − B7  german_credit -0.0019 -0.0115  0.0088    2    3
+45           máx. 7 nós   H4    H4 fidelidade: R7 − B7       phys_bmi  0.0660  0.0487  0.0833    5    0
+46           máx. 7 nós   H4    H4 fidelidade: R7 − B7   phys_kinetic  0.0253  0.0027  0.0520    4    1
+47           máx. 7 nós   H4    H4 fidelidade: R7 − B7     phys_power  0.0647  0.0420  0.0893    5    0
+48           máx. 7 nós   H5  H5 fidelidade: R7 − C4.5  german_credit  0.1261  0.0867  0.1736    5    0
+49           máx. 7 nós   H5  H5 fidelidade: R7 − C4.5       phys_bmi  0.0120  0.0027  0.0213    4    1
+50           máx. 7 nós   H5  H5 fidelidade: R7 − C4.5   phys_kinetic  0.0107 -0.0067  0.0280    3    2
+51           máx. 7 nós   H5  H5 fidelidade: R7 − C4.5     phys_power  0.0480  0.0333  0.0653    5    0
+52           máx. 7 nós   AT     AT accuracy: R7 − Rq7  german_credit  0.0120  0.0051  0.0200    5    0
+53           máx. 7 nós   AT     AT accuracy: R7 − Rq7       phys_bmi  0.1433  0.1287  0.1580    5    0
+54           máx. 7 nós   AT     AT accuracy: R7 − Rq7   phys_kinetic  0.0820  0.0680  0.0960    5    0
+55           máx. 7 nós   AT     AT accuracy: R7 − Rq7     phys_power  0.0813  0.0593  0.0967    5    0
+56           máx. 7 nós   AT   AT fidelidade: R7 − Rq7  german_credit -0.0003 -0.0093  0.0125    2    3
+57           máx. 7 nós   AT   AT fidelidade: R7 − Rq7       phys_bmi  0.1313  0.0980  0.1647    5    0
+58           máx. 7 nós   AT   AT fidelidade: R7 − Rq7   phys_kinetic  0.0260  0.0033  0.0493    3    0
+59           máx. 7 nós   AT   AT fidelidade: R7 − Rq7     phys_power  0.0747  0.0433  0.1040    5    0
+60           máx. 7 nós  MLP  MLP accuracy: MLP − C4.5  german_credit  0.0312 -0.0088  0.0712    3    2
+61           máx. 7 nós  MLP  MLP accuracy: MLP − C4.5       phys_bmi -0.0480 -0.0880 -0.0160    0    4
+62           máx. 7 nós  MLP  MLP accuracy: MLP − C4.5   phys_kinetic -0.0500 -0.0740 -0.0260    0    5
+63           máx. 7 nós  MLP  MLP accuracy: MLP − C4.5     phys_power -0.0140 -0.0240 -0.0020    1    4
+             orcamento        dataset  elegivel  sustentada  observada  atribuivel
+0  estrutura do tuning  german_credit     False       False      False       False
+1  estrutura do tuning       phys_bmi     False       False      False       False
+2  estrutura do tuning   phys_kinetic     False       False      False       False
+3  estrutura do tuning     phys_power     False       False       True        True
+4           máx. 7 nós  german_credit     False       False      False       False
+5           máx. 7 nós       phys_bmi     False       False      False        True
+6           máx. 7 nós   phys_kinetic     False       False      False        True
+7           máx. 7 nós     phys_power     False       False      False        True
+               H1  H2  H3  H4  H5  conjunta            orcamento
+dataset                                                         
+german_credit   1   4   4   1   5         0  estrutura do tuning
+phys_bmi        4   3   1   2   2         0  estrutura do tuning
+phys_kinetic    4   3   2   2   3         1  estrutura do tuning
+phys_power      4   5   3   4   5         1  estrutura do tuning
+german_credit   2   3   3   2   5         0           máx. 7 nós
+phys_bmi        5   5   0   5   4         0           máx. 7 nós
+phys_kinetic    5   5   0   4   3         0           máx. 7 nós
+phys_power      5   5   1   5   5         1           máx. 7 nós

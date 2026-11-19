@@ -1,0 +1,3 @@
+[benchmark] breast_cancer_wisconsin_diagnostic_dados: 569 amostras, 30 features, ontologia=sim
+[benchmark] guardado em /home/user/audit_runs/bc_enriched/20261112T005157_breast_cancer_wisconsin_diagnostic_dados_3b276f61 · verificação de métricas: OK (550 valores)
+[benchmark] relatórios escritos em /home/user/audit_runs/bc_enriched_reports

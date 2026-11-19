@@ -1,0 +1,96 @@
+{
+ "escolhida": "O",
+ "candidatas": [
+  {
+   "candidata": "W",
+   "elegivel": true,
+   "media_delta": 0.0,
+   "datasets_abaixo": []
+  },
+  {
+   "candidata": "T",
+   "elegivel": true,
+   "media_delta": 0.0,
+   "datasets_abaixo": []
+  },
+  {
+   "candidata": "L",
+   "elegivel": true,
+   "media_delta": 0.0,
+   "datasets_abaixo": []
+  }
+ ],
+ "integridade": {
+  "B vs fase 3": 1.1102230246251565e-16,
+  "O vs fase 4": 1.1102230246251565e-16,
+  "D vs D2 fase 3": 1.1102230246251565e-16
+ },
+ "nao_inferioridade_vs_B": [
+  {
+   "contraste": "accuracy: O − B",
+   "metrica": "accuracy",
+   "dataset": "iris",
+   "media": -0.0,
+   "lo": -0.0175,
+   "hi": 0.0123,
+   "pos": 3,
+   "neg": 1,
+   "nao_inferior": true
+  },
+  {
+   "contraste": "accuracy: O − B",
+   "metrica": "accuracy",
+   "dataset": "wine",
+   "media": -0.0059,
+   "lo": -0.0326,
+   "hi": 0.0119,
+   "pos": 2,
+   "neg": 1,
+   "nao_inferior": false
+  },
+  {
+   "contraste": "accuracy: O − B",
+   "metrica": "accuracy",
+   "dataset": "breast_cancer",
+   "media": 0.0047,
+   "lo": -0.0047,
+   "hi": 0.014,
+   "pos": 2,
+   "neg": 2,
+   "nao_inferior": true
+  },
+  {
+   "contraste": "fidelidade: O − B",
+   "metrica": "fidelidade",
+   "dataset": "iris",
+   "media": 0.0,
+   "lo": -0.014,
+   "hi": 0.0105,
+   "pos": 2,
+   "neg": 1,
+   "nao_inferior": true
+  },
+  {
+   "contraste": "fidelidade: O − B",
+   "metrica": "fidelidade",
+   "dataset": "wine",
+   "media": -0.0133,
+   "lo": -0.0385,
+   "hi": 0.0059,
+   "pos": 1,
+   "neg": 3,
+   "nao_inferior": false
+  },
+  {
+   "contraste": "fidelidade: O − B",
+   "metrica": "fidelidade",
+   "dataset": "breast_cancer",
+   "media": 0.0019,
+   "lo": -0.0047,
+   "hi": 0.0089,
+   "pos": 3,
+   "neg": 2,
+   "nao_inferior": true
+  }
+ ]
+}

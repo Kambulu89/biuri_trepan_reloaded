@@ -1,0 +1,33 @@
+Dataset,Algoritmo,Unidades,Accuracy,Accuracy_dp,Macro F1,Weighted F1,Precision macro,Recall macro,Fidelidade MLP,Fidelidade_dp,Nº regras,Nº nós,Profundidade,Literais por regra,Amostras do oráculo,Tempo (s),Nota
+iris,MLP,5,0.9526,0.022,0.9529,0.9525,0.9554,0.953,N/A,N/A,N/A,N/A,N/A,N/A,N/A,0.0092,
+iris,C4.5 (rótulos reais),5,0.9579,0.0235,0.958,0.9578,0.9595,0.9581,0.9632,0.044,4.8,8.6,3.8,2.6814,N/A,0.0197,
+iris,TREPAN Original,5,0.9368,0.0144,0.937,0.9366,0.9405,0.9376,0.9632,0.0399,18.4,35.8,8.4,7.4559,9892.2,0.2654,
+iris,TREPAN Reloaded sem ontologia,5,0.9368,0.0144,0.937,0.9366,0.9405,0.9376,0.9632,0.0399,18.4,35.8,8.4,7.4559,10004.2,0.2463,
+iris,TREPAN Reloaded + ontologia estrutural,5,0.9316,0.0577,0.9312,0.931,0.9331,0.9321,0.9579,0.0478,18.6,36.2,7.8,10.3932,21739.8,2.9251,
+iris,TREPAN Reloaded + ontologia permutada (controlo),5,0.9474,0.0372,0.9476,0.9473,0.9489,0.9479,0.9526,0.0571,17.8,34.6,9.0,11.1406,22320.4,2.5465,
+iris,TREPAN Reloaded + ontologia cientificamente enriquecida,0,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,NÃO MEDIDA,não existe ontologia enriquecida para este dataset
+iris,C4.5 treinado com rótulos do oráculo (variante separada),5,0.9579,N/A,NÃO MEDIDA,N/A,N/A,N/A,0.9632,N/A,5.0,N/A,3.8,N/A,N/A,NÃO MEDIDA,MLP reajustado fora do harness; reproduziu as previsões guardadas em 3 de 5 unidades
+wine,MLP,5,0.9689,0.0122,0.9686,0.9688,0.9707,0.9678,N/A,N/A,N/A,N/A,N/A,N/A,N/A,0.012,
+wine,C4.5 (rótulos reais),5,0.9289,0.029,0.9287,0.9285,0.9309,0.9319,0.9156,0.0427,5.4,9.8,3.6,2.7257,N/A,0.096,
+wine,TREPAN Original,5,0.9289,0.0398,0.9286,0.9289,0.9342,0.9274,0.92,0.0122,19.6,38.2,9.2,13.3779,9962.4,1.0168,
+wine,TREPAN Reloaded sem ontologia,5,0.9289,0.0398,0.9286,0.9289,0.9342,0.9274,0.92,0.0122,19.6,38.2,9.2,13.3779,10095.4,1.0451,
+wine,TREPAN Reloaded + ontologia estrutural,5,0.9022,0.0461,0.9037,0.9025,0.9111,0.9011,0.8889,0.0444,21.0,41.0,9.6,16.2777,23205.4,19.6248,
+wine,TREPAN Reloaded + ontologia permutada (controlo),5,0.9333,0.0222,0.9351,0.9336,0.9404,0.9396,0.9244,0.0199,21.6,42.2,10.0,16.4661,23107.4,20.6678,
+wine,TREPAN Reloaded + ontologia cientificamente enriquecida,0,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,NÃO MEDIDA,não existe ontologia enriquecida para este dataset
+wine,C4.5 treinado com rótulos do oráculo (variante separada),5,0.9289,N/A,NÃO MEDIDA,N/A,N/A,N/A,0.9156,N/A,5.4,N/A,3.6,N/A,N/A,NÃO MEDIDA,MLP reajustado fora do harness; reproduziu as previsões guardadas em 5 de 5 unidades
+breast_cancer,MLP,5,0.9622,0.0182,0.9596,0.9623,0.9592,0.9607,N/A,N/A,N/A,N/A,N/A,N/A,N/A,0.0122,
+breast_cancer,C4.5 (rótulos reais),5,0.9301,0.0178,0.9243,0.9297,0.9284,0.9212,0.9231,0.0171,9.0,17.0,5.6,3.935,N/A,0.5528,
+breast_cancer,TREPAN Original,5,0.9329,0.0063,0.9282,0.9329,0.9275,0.9296,0.9371,0.0178,16.6,32.2,7.0,14.6592,17515.0,2.856,
+breast_cancer,TREPAN Reloaded sem ontologia,5,0.9329,0.0063,0.9282,0.9329,0.9275,0.9296,0.9371,0.0178,16.6,32.2,7.0,14.6592,17941.0,2.8822,
+breast_cancer,TREPAN Reloaded + ontologia estrutural,5,0.9357,0.0174,0.931,0.9356,0.9311,0.9318,0.9259,0.0106,15.8,30.6,7.8,15.1475,39498.8,29.7322,
+breast_cancer,TREPAN Reloaded + ontologia permutada (controlo),5,0.9427,0.0135,0.9385,0.9426,0.9388,0.9389,0.9273,0.0176,15.6,30.2,8.0,15.2608,38994.6,18.9828,
+breast_cancer,TREPAN Reloaded + ontologia cientificamente enriquecida,5,0.9357,0.0181,0.9312,0.9357,0.9308,0.9318,0.9315,0.0194,14.0,27.0,7.2,13.3803,40188.0,14.9263,"execução separada (scripts/run_benchmark.py, ARFF UCI + ontologia enriquecida, mesmas 5 sementes; partições e MLP próprios dessa execução)"
+breast_cancer,C4.5 treinado com rótulos do oráculo (variante separada),5,0.9301,N/A,NÃO MEDIDA,N/A,N/A,N/A,0.9231,N/A,9.0,N/A,5.6,N/A,N/A,NÃO MEDIDA,MLP reajustado fora do harness; reproduziu as previsões guardadas em 5 de 5 unidades
+digits,MLP,5,0.9596,0.004,0.9595,0.9596,0.9605,0.9594,N/A,N/A,N/A,N/A,N/A,N/A,N/A,0.0106,
+digits,C4.5 (rótulos reais),5,0.8529,0.0173,0.8527,0.8532,0.8567,0.8524,0.8431,0.0184,85.2,169.4,15.2,8.7845,N/A,2.4857,
+digits,TREPAN Original,5,0.8227,0.0162,0.8206,0.8213,0.8235,0.8217,0.8227,0.0198,116.4,231.8,12.4,19.2515,179508.8,14.089,
+digits,TREPAN Reloaded sem ontologia,5,0.8227,0.0162,0.8206,0.8213,0.8235,0.8217,0.8227,0.0198,116.4,231.8,12.4,19.2515,180855.8,13.6883,
+digits,TREPAN Reloaded + ontologia estrutural,5,0.8236,0.0073,0.8222,0.8226,0.8282,0.8228,0.8227,0.0088,118.2,235.4,12.2,19.0052,386503.4,153.7584,
+digits,TREPAN Reloaded + ontologia permutada (controlo),5,0.8302,0.0206,0.8295,0.83,0.8344,0.8295,0.8307,0.0132,117.0,233.0,12.0,17.3628,386775.0,144.7954,
+digits,TREPAN Reloaded + ontologia cientificamente enriquecida,0,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,NÃO MEDIDA,N/A,N/A,NÃO MEDIDA,não existe ontologia enriquecida para este dataset
+digits,C4.5 treinado com rótulos do oráculo (variante separada),5,0.8498,N/A,NÃO MEDIDA,N/A,N/A,N/A,0.8427,N/A,84.8,N/A,16.0,N/A,N/A,NÃO MEDIDA,MLP reajustado fora do harness; reproduziu as previsões guardadas em 5 de 5 unidades

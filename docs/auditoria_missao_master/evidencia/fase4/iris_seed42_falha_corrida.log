@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/user/kambulu89/biuri_trepan_reloaded/validation/benchmark/run_fase4.py", line 81, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/user/kambulu89/biuri_trepan_reloaded/validation/benchmark/run_fase4.py", line 65, in main
+    activate_v2(dataset, out)
+  File "/home/user/kambulu89/biuri_trepan_reloaded/validation/benchmark/run_fase3.py", line 49, in activate_v2
+    known = json.loads(record.read_text(encoding="utf-8")) if record.exists() else {}
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
