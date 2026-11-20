@@ -1,0 +1,63 @@
+FFFFFFFF.FFF.                                                            [100%]
+=================================== FAILURES ===================================
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:64: assert (None is not None)
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:74: AssertionError: assert ('descartar' == 'categorica'
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:91: AssertionError: assert {'codigo_01', 'codigo_1'} <= {'x'}
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:101: AssertionError: assert {'codigo_01', 'codigo_1'} <= {'x'}
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:116: AttributeError: 'DataContract' object has no attribute 'class_order'
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:123: AttributeError: 'DataContract' object has no attribute 'class_order'
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:148: AttributeError: 'TrainingResult' object has no attribute 'class_order'
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:129: AssertionError: assert (['01', '1'] == ['1', '01']
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:206: AssertionError: assert ('?' not in {'01', '1', '?'})
+lib.pyx:2433: ValueError: Unable to parse string "?" at position 4
+/home/user/kambulu89/biuri_trepan_reloaded/tests/test_arff_declared_schema.py:229: Failed: DID NOT RAISE <class 'core.scientific_errors.DataContractError'>
+=============================== warnings summary ===============================
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+
+tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+  /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+__________ test_gui_keeps_numeric_looking_nominal_categories_distinct __________
+------------------------------ Captured log setup ------------------------------
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'parseString' deprecated - use 'parse_string'
+WARNING  matplotlib.style.core:core.py:205 In /home/user/venv-biuri/lib/python3.12/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle: 'resetCache' deprecated - use 'reset_cache'
+=========================== short test summary info ============================
+PASSED tests/test_arff_declared_schema.py::test_gui_keeps_numeric_looking_nominal_categories_distinct
+PASSED tests/test_arff_declared_schema.py::test_numeric_only_benchmark_still_preserves_declared_order_without_missing
+FAILED tests/test_arff_declared_schema.py::test_loader_exposes_the_declared_arff_schema
+FAILED tests/test_arff_declared_schema.py::test_declared_nominal_keeps_two_distinct_categories_in_contract_and_preprocessing
+FAILED tests/test_arff_declared_schema.py::test_declared_nominal_reaches_the_model_in_pipeline_v92
+FAILED tests/test_arff_declared_schema.py::test_declared_nominal_reaches_the_model_in_production_training
+FAILED tests/test_arff_declared_schema.py::test_csv_without_schema_keeps_the_existing_inference
+FAILED tests/test_arff_declared_schema.py::test_contract_carries_the_declared_class_order_and_excludes_missing_target
+FAILED tests/test_arff_declared_schema.py::test_pipeline_v92_uses_the_declared_order_end_to_end
+FAILED tests/test_arff_declared_schema.py::test_production_training_uses_the_declared_order_end_to_end
+FAILED tests/test_arff_declared_schema.py::test_gui_uses_the_declared_target_order_and_drops_missing_target
+FAILED tests/test_arff_declared_schema.py::test_numeric_only_benchmark_rejects_declared_nominal_attributes_explicitly
+FAILED tests/test_arff_declared_schema.py::test_numeric_only_benchmark_rejects_missing_target_explicitly
+11 failed, 2 passed, 14 warnings in 3.56s

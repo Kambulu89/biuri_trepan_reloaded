@@ -19,6 +19,8 @@ Cada problema indica como foi estabelecido: **MEDIDO** (experiência com resulta
 | P06 | Qualquer coluna derivada `onto_*` recebe um peso de ganho fixo (2,5), independentemente do significado; configurável por variável de ambiente `ONTO_FEATURE_BIAS_WEIGHT`, fora do manifest. Uma ontologia permutada recebe o mesmo bónus. | LIDO. | Por corrigir (novo manifest) |
 | P07 | As árvores do TREPAN são muito maiores do que as do C4.5 (mediana 2,17 vezes mais nós, até 9 vezes) e a comparação não controla a complexidade. | MEDIDO. | Por corrigir (protocolo) |
 | P08 | Três pipelines paralelos (benchmark, produção, GUI) com valores por omissão diferentes. Um resultado obtido num não se transfere para os outros. | LIDO. | Por corrigir (arquitetura) |
+| P20 | Regressão introduzida pela correção de P09 (`af02d5d`): a conversão de texto «todo numérico» em número aplicava-se também a atributos ARFF nominais. `@attribute codigo {01,1}` com 01, 1 e ? ficava com uma só categoria, era classificado como constante e descartado: o atributo não chegava ao modelo em `pipeline_v92` nem em `production_training`. O carregador descartava o esquema declarado. | EXECUTADO: `tests/test_arff_declared_schema.py`, 11 de 13 testes falhavam antes da correção. | Corrigido |
+| P21 | A ordem declarada das classes do ARFF (ex.: `{1,01}`) não chegava a `pipeline_v92` nem a `production_training` (o sklearn ordenava os rótulos); a GUI mantinha linhas com alvo `?` e o treino falhava; o benchmark numérico aceitava em silêncio atributos nominais (fundindo categorias) e tratava `?` no alvo como classe. | EXECUTADO: os mesmos testes. | Corrigido |
 
 ## Médios
 
