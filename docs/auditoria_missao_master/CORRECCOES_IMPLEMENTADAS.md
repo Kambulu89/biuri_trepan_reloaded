@@ -33,6 +33,7 @@ Nenhuma experiência anterior tinha atributos nominais com valores que parecem n
 
 - Suite completa antes das correções: 1732 aprovados, 40 ignorados (`evidencia/pytest_full_baseline.log`).
 - Suite completa depois das correções: 1742 aprovados, 40 ignorados (`evidencia/pytest_full_after_fixes.log`). Os 10 testes a mais são os novos.
+- Suite completa depois de P20/P21 (código de `010619f`, executada em `7a4ccf7`): 1773 aprovados, 40 ignorados, 0 falhados, código de saída 0 (`evidencia/arff_identidade/pytest_completo_7a4ccf7.log`). Inclui os 19 testes dirigidos novos e os testes acrescentados nas fases 2 a 9.
 
 ## O que não corrigi, e porquê
 
