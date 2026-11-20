@@ -1,0 +1,238 @@
+unidades: {'adult': 5, 'digits': 5, 'german_credit': 5, 'phys_bmi': 5, 'phys_kinetic': 5, 'phys_power': 5} | réplicas: {'B': {'min': 3, 'max': 3}, 'B7': {'min': 3, 'max': 3}, 'C4.5': {'min': 1, 'max': 1}, 'E': {'min': 3, 'max': 3}, 'E7': {'min': 3, 'max': 3}, 'MLP': {'min': 1, 'max': 1}, 'R': {'min': 3, 'max': 3}, 'R7': {'min': 3, 'max': 3}, 'V': {'min': 3, 'max': 3}, 'V7': {'min': 3, 'max': 3}, 'Vq': {'min': 3, 'max': 3}, 'Vq7': {'min': 3, 'max': 3}}
+integridade: {'igual_fase_anterior': {'adult': {'iguais': 70, 'diferentes': 0}, 'digits': {'iguais': 70, 'diferentes': 0}, 'german_credit': {'iguais': 70, 'diferentes': 0}, 'phys_bmi': {'iguais': 70, 'diferentes': 0}, 'phys_kinetic': {'iguais': 70, 'diferentes': 0}, 'phys_power': {'iguais': 70, 'diferentes': 0}}, 'E_igual_V_sem_tentativas': {'phys_bmi': {'iguais': 24, 'diferentes': 0}, 'phys_kinetic': {'iguais': 9, 'diferentes': 0}, 'phys_power': {'iguais': 11, 'diferentes': 0}}}
+                    efsr_attempted  efsr_accepted  holdout_queries
+dataset       kind                                                
+adult         E              26.93           5.47             0.00
+              E7              3.00           0.47             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V              26.87           1.47         43266.67
+              V7              3.00           0.07          4800.00
+              Vq             27.40           2.53         44133.33
+              Vq7             3.00           0.27          4800.00
+digits        E              85.53          19.47             0.00
+              E7              3.00           0.73             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V              85.07          14.07        138354.00
+              V7              3.00           0.33          4824.60
+              Vq             85.60          13.33        139377.13
+              Vq7             3.00           0.27          4824.60
+german_credit E              28.33           6.78             0.00
+              E7              3.00           0.53             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V              28.33           1.17         33500.00
+              V7              3.00           0.06          3529.41
+              Vq             28.18           1.24         33647.06
+              Vq7             3.00           0.06          3529.41
+phys_bmi      E               2.07           1.07             0.00
+              E7              0.27           0.13             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V               2.00           0.33          1800.00
+              V7              0.27           0.07           240.00
+              Vq             14.53           2.87         23460.00
+              Vq7             3.00           0.53          4860.00
+phys_kinetic  E              14.13           8.20             0.00
+              E7              0.67           0.27             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V              13.87           4.13         20820.00
+              V7              0.67           0.20          1080.00
+              Vq             19.07           4.73         29520.00
+              Vq7             2.93           1.73          4740.00
+phys_power    E               5.93           3.47             0.00
+              E7              0.73           0.53             0.00
+              R               0.00           0.00             0.00
+              R7              0.00           0.00             0.00
+              V               6.27           1.87          7500.00
+              V7              0.80           0.13           900.00
+              Vq             13.47           6.07         16800.00
+              Vq7             3.00           1.60          3780.00
+elegibilidade: {'digits': {'mean_gap': 0.13020459865069517, 'units': 5, 'eligible': True}, 'german_credit': {'mean_gap': 0.022399999999999996, 'units': 5, 'eligible': True}, 'phys_bmi': {'mean_gap': 0.04466666666666659, 'units': 5, 'eligible': True}, 'phys_power': {'mean_gap': 0.026000000000000023, 'units': 5, 'eligible': True}, 'phys_kinetic': {'mean_gap': 0.017333333333333333, 'units': 5, 'eligible': False}, 'adult': {'mean_gap': -0.02173333333333336, 'units': 5, 'eligible': False}}
+               orcamento   id                 contraste        dataset   media      lo      hi  pos  neg
+0    estrutura do tuning   H1        H1 accuracy: V − B         digits  0.0018 -0.0071  0.0107    2    3
+1    estrutura do tuning   H1        H1 accuracy: V − B  german_credit  0.0133  0.0003  0.0259    3    1
+2    estrutura do tuning   H1        H1 accuracy: V − B       phys_bmi  0.0153  0.0053  0.0253    4    0
+3    estrutura do tuning   H1        H1 accuracy: V − B     phys_power  0.0120 -0.0033  0.0273    3    2
+4    estrutura do tuning   H1        H1 accuracy: V − B   phys_kinetic  0.0187  0.0093  0.0280    5    0
+5    estrutura do tuning   H1        H1 accuracy: V − B          adult  0.0013 -0.0013  0.0040    3    2
+6    estrutura do tuning   H2     H2 accuracy: V − C4.5         digits  0.0204 -0.0028  0.0443    3    2
+7    estrutura do tuning   H2     H2 accuracy: V − C4.5  german_credit  0.0237 -0.0064  0.0499    4    1
+8    estrutura do tuning   H2     H2 accuracy: V − C4.5       phys_bmi  0.0267  0.0067  0.0440    4    1
+9    estrutura do tuning   H2     H2 accuracy: V − C4.5     phys_power  0.0480  0.0327  0.0633    5    0
+10   estrutura do tuning   H2     H2 accuracy: V − C4.5   phys_kinetic  0.0353  0.0180  0.0540    5    0
+11   estrutura do tuning   H2     H2 accuracy: V − C4.5          adult -0.0033 -0.0117  0.0063    2    3
+12   estrutura do tuning   H3     H3 accuracy: B − C4.5         digits  0.0187 -0.0003  0.0376    4    1
+13   estrutura do tuning   H3     H3 accuracy: B − C4.5  german_credit  0.0104 -0.0093  0.0301    3    2
+14   estrutura do tuning   H3     H3 accuracy: B − C4.5       phys_bmi  0.0113 -0.0053  0.0287    3    2
+15   estrutura do tuning   H3     H3 accuracy: B − C4.5     phys_power  0.0360  0.0127  0.0607    4    1
+16   estrutura do tuning   H3     H3 accuracy: B − C4.5   phys_kinetic  0.0167  0.0033  0.0327    4    1
+17   estrutura do tuning   H3     H3 accuracy: B − C4.5          adult -0.0047 -0.0157  0.0081    2    3
+18   estrutura do tuning   H4      H4 fidelidade: V − B         digits  0.0025 -0.0074  0.0127    2    3
+19   estrutura do tuning   H4      H4 fidelidade: V − B  german_credit  0.0027 -0.0059  0.0112    3    2
+20   estrutura do tuning   H4      H4 fidelidade: V − B       phys_bmi  0.0060 -0.0000  0.0127    2    0
+21   estrutura do tuning   H4      H4 fidelidade: V − B     phys_power  0.0107  0.0040  0.0180    5    0
+22   estrutura do tuning   H4      H4 fidelidade: V − B   phys_kinetic  0.0200  0.0140  0.0260    5    0
+23   estrutura do tuning   H4      H4 fidelidade: V − B          adult -0.0029 -0.0044 -0.0015    0    5
+24   estrutura do tuning   H5   H5 fidelidade: V − C4.5         digits  0.0213 -0.0018  0.0456    4    1
+25   estrutura do tuning   H5   H5 fidelidade: V − C4.5  german_credit -0.0184 -0.0469  0.0133    1    4
+26   estrutura do tuning   H5   H5 fidelidade: V − C4.5       phys_bmi  0.0280  0.0167  0.0373    5    0
+27   estrutura do tuning   H5   H5 fidelidade: V − C4.5     phys_power  0.0733  0.0487  0.0980    5    0
+28   estrutura do tuning   H5   H5 fidelidade: V − C4.5   phys_kinetic  0.0540  0.0367  0.0713    5    0
+29   estrutura do tuning   H5   H5 fidelidade: V − C4.5          adult  0.0089  0.0019  0.0148    4    1
+30   estrutura do tuning   AT       AT accuracy: V − Vq         digits  0.0000 -0.0105  0.0120    2    3
+31   estrutura do tuning   AT       AT accuracy: V − Vq  german_credit  0.0115  0.0045  0.0187    5    0
+32   estrutura do tuning   AT       AT accuracy: V − Vq       phys_bmi  0.1480  0.1220  0.1727    5    0
+33   estrutura do tuning   AT       AT accuracy: V − Vq     phys_power  0.0113 -0.0047  0.0273    3    2
+34   estrutura do tuning   AT       AT accuracy: V − Vq   phys_kinetic  0.0327  0.0193  0.0473    5    0
+35   estrutura do tuning   AT       AT accuracy: V − Vq          adult  0.0077  0.0032  0.0115    4    0
+36   estrutura do tuning   AT     AT fidelidade: V − Vq         digits  0.0004 -0.0083  0.0123    1    2
+37   estrutura do tuning   AT     AT fidelidade: V − Vq  german_credit  0.0136  0.0000  0.0261    4    1
+38   estrutura do tuning   AT     AT fidelidade: V − Vq       phys_bmi  0.1280  0.1013  0.1493    5    0
+39   estrutura do tuning   AT     AT fidelidade: V − Vq     phys_power  0.0153  0.0067  0.0233    4    0
+40   estrutura do tuning   AT     AT fidelidade: V − Vq   phys_kinetic  0.0247  0.0087  0.0433    4    1
+41   estrutura do tuning   AT     AT fidelidade: V − Vq          adult  0.0064  0.0000  0.0136    4    1
+42   estrutura do tuning   G1        G1 accuracy: V − E         digits -0.0018 -0.0089  0.0049    3    2
+43   estrutura do tuning   G1        G1 accuracy: V − E  german_credit  0.0051 -0.0048  0.0147    3    1
+44   estrutura do tuning   G1        G1 accuracy: V − E       phys_bmi  0.0007  0.0000  0.0020    1    0
+45   estrutura do tuning   G1        G1 accuracy: V − E     phys_power -0.0020 -0.0060  0.0000    0    1
+46   estrutura do tuning   G1        G1 accuracy: V − E   phys_kinetic -0.0013 -0.0093  0.0033    3    1
+47   estrutura do tuning   G1        G1 accuracy: V − E          adult  0.0027 -0.0024  0.0077    3    2
+48   estrutura do tuning   G1      G1 fidelidade: V − E         digits -0.0015 -0.0070  0.0034    3    2
+49   estrutura do tuning   G1      G1 fidelidade: V − E  german_credit -0.0040 -0.0152  0.0072    2    3
+50   estrutura do tuning   G1      G1 fidelidade: V − E       phys_bmi -0.0007 -0.0020  0.0000    0    1
+51   estrutura do tuning   G1      G1 fidelidade: V − E     phys_power  0.0033  0.0007  0.0060    3    0
+52   estrutura do tuning   G1      G1 fidelidade: V − E   phys_kinetic  0.0027  0.0013  0.0033    4    0
+53   estrutura do tuning   G1      G1 fidelidade: V − E          adult -0.0035 -0.0093  0.0013    1    3
+54   estrutura do tuning   G2        G2 accuracy: V − R         digits  0.0012 -0.0073  0.0087    3    2
+55   estrutura do tuning   G2        G2 accuracy: V − R  german_credit  0.0112  0.0053  0.0173    5    0
+56   estrutura do tuning   G2        G2 accuracy: V − R       phys_bmi  0.0020  0.0000  0.0060    1    0
+57   estrutura do tuning   G2        G2 accuracy: V − R     phys_power -0.0020 -0.0060  0.0000    0    1
+58   estrutura do tuning   G2        G2 accuracy: V − R   phys_kinetic  0.0000 -0.0033  0.0027    2    1
+59   estrutura do tuning   G2        G2 accuracy: V − R          adult  0.0017 -0.0019  0.0053    2    2
+60   estrutura do tuning   G2      G2 fidelidade: V − R         digits  0.0019 -0.0055  0.0086    3    2
+61   estrutura do tuning   G2      G2 fidelidade: V − R  german_credit  0.0064 -0.0029  0.0157    3    2
+62   estrutura do tuning   G2      G2 fidelidade: V − R       phys_bmi -0.0007 -0.0020  0.0000    0    1
+63   estrutura do tuning   G2      G2 fidelidade: V − R     phys_power -0.0007 -0.0020  0.0000    0    1
+64   estrutura do tuning   G2      G2 fidelidade: V − R   phys_kinetic  0.0000 -0.0060  0.0060    1    1
+65   estrutura do tuning   G2      G2 fidelidade: V − R          adult -0.0017 -0.0055  0.0021    2    3
+66   estrutura do tuning  E-R       E-R accuracy: E − R         digits  0.0030 -0.0013  0.0065    4    1
+67   estrutura do tuning  E-R       E-R accuracy: E − R  german_credit  0.0061 -0.0005  0.0117    4    1
+68   estrutura do tuning  E-R       E-R accuracy: E − R       phys_bmi  0.0013  0.0000  0.0040    1    0
+69   estrutura do tuning  E-R       E-R accuracy: E − R     phys_power  0.0000  0.0000  0.0000    0    0
+70   estrutura do tuning  E-R       E-R accuracy: E − R   phys_kinetic  0.0013 -0.0020  0.0060    1    1
+71   estrutura do tuning  E-R       E-R accuracy: E − R          adult -0.0009 -0.0096  0.0077    2    3
+72   estrutura do tuning  E-R     E-R fidelidade: E − R         digits  0.0034 -0.0003  0.0059    4    1
+73   estrutura do tuning  E-R     E-R fidelidade: E − R  german_credit  0.0104 -0.0037  0.0248    3    2
+74   estrutura do tuning  E-R     E-R fidelidade: E − R       phys_bmi  0.0000  0.0000  0.0000    0    0
+75   estrutura do tuning  E-R     E-R fidelidade: E − R     phys_power -0.0040 -0.0067 -0.0013    0    3
+76   estrutura do tuning  E-R     E-R fidelidade: E − R   phys_kinetic -0.0027 -0.0087  0.0027    1    3
+77   estrutura do tuning  E-R     E-R fidelidade: E − R          adult  0.0017 -0.0047  0.0099    2    3
+78            máx. 7 nós   H1      H1 accuracy: V7 − B7         digits  0.0015 -0.0037  0.0046    4    1
+79            máx. 7 nós   H1      H1 accuracy: V7 − B7  german_credit  0.0117  0.0061  0.0195    5    0
+80            máx. 7 nós   H1      H1 accuracy: V7 − B7       phys_bmi  0.0773  0.0487  0.0980    5    0
+81            máx. 7 nós   H1      H1 accuracy: V7 − B7     phys_power  0.0667  0.0433  0.0913    5    0
+82            máx. 7 nós   H1      H1 accuracy: V7 − B7   phys_kinetic  0.0760  0.0620  0.0900    5    0
+83            máx. 7 nós   H1      H1 accuracy: V7 − B7          adult -0.0003 -0.0067  0.0057    3    2
+84            máx. 7 nós   H2    H2 accuracy: V7 − C4.5         digits -0.4905 -0.5004 -0.4796    0    5
+85            máx. 7 nós   H2    H2 accuracy: V7 − C4.5  german_credit  0.0275  0.0059  0.0472    4    1
+86            máx. 7 nós   H2    H2 accuracy: V7 − C4.5       phys_bmi  0.0293  0.0093  0.0440    4    1
+87            máx. 7 nós   H2    H2 accuracy: V7 − C4.5     phys_power  0.0500  0.0340  0.0660    5    0
+88            máx. 7 nós   H2    H2 accuracy: V7 − C4.5   phys_kinetic  0.0440  0.0253  0.0673    5    0
+89            máx. 7 nós   H2    H2 accuracy: V7 − C4.5          adult -0.0009 -0.0068  0.0043    2    2
+90            máx. 7 nós   H3    H3 accuracy: B7 − C4.5         digits -0.4920 -0.5046 -0.4760    0    5
+91            máx. 7 nós   H3    H3 accuracy: B7 − C4.5  german_credit  0.0157 -0.0136  0.0400    3    2
+92            máx. 7 nós   H3    H3 accuracy: B7 − C4.5       phys_bmi -0.0480 -0.0660 -0.0353    0    5
+93            máx. 7 nós   H3    H3 accuracy: B7 − C4.5     phys_power -0.0167 -0.0387  0.0067    1    4
+94            máx. 7 nós   H3    H3 accuracy: B7 − C4.5   phys_kinetic -0.0320 -0.0520 -0.0187    0    5
+95            máx. 7 nós   H3    H3 accuracy: B7 − C4.5          adult -0.0007 -0.0092  0.0076    2    3
+96            máx. 7 nós   H4    H4 fidelidade: V7 − B7         digits  0.0015 -0.0034  0.0047    4    1
+97            máx. 7 nós   H4    H4 fidelidade: V7 − B7  german_credit  0.0032 -0.0032  0.0112    3    2
+98            máx. 7 nós   H4    H4 fidelidade: V7 − B7       phys_bmi  0.0467  0.0247  0.0707    5    0
+99            máx. 7 nós   H4    H4 fidelidade: V7 − B7     phys_power  0.0853  0.0567  0.1253    5    0
+100           máx. 7 nós   H4    H4 fidelidade: V7 − B7   phys_kinetic  0.0653  0.0560  0.0740    5    0
+101           máx. 7 nós   H4    H4 fidelidade: V7 − B7          adult -0.0045 -0.0152  0.0047    2    3
+102           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5         digits -0.4893 -0.4991 -0.4791    0    5
+103           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5  german_credit -0.0189 -0.0467  0.0096    1    4
+104           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5       phys_bmi  0.0253  0.0133  0.0373    5    0
+105           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5     phys_power  0.0713  0.0480  0.0947    5    0
+106           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5   phys_kinetic  0.0453  0.0260  0.0647    5    0
+107           máx. 7 nós   H5  H5 fidelidade: V7 − C4.5          adult -0.0052 -0.0173  0.0069    2    3
+108           máx. 7 nós   AT     AT accuracy: V7 − Vq7         digits -0.0001 -0.0009  0.0004    1    1
+109           máx. 7 nós   AT     AT accuracy: V7 − Vq7  german_credit  0.0064 -0.0040  0.0131    4    1
+110           máx. 7 nós   AT     AT accuracy: V7 − Vq7       phys_bmi  0.1373  0.1173  0.1513    5    0
+111           máx. 7 nós   AT     AT accuracy: V7 − Vq7     phys_power  0.0540  0.0260  0.0880    5    0
+112           máx. 7 nós   AT     AT accuracy: V7 − Vq7   phys_kinetic  0.0413  0.0260  0.0613    5    0
+113           máx. 7 nós   AT     AT accuracy: V7 − Vq7          adult -0.0024 -0.0073  0.0020    3    2
+114           máx. 7 nós   AT   AT fidelidade: V7 − Vq7         digits  0.0001 -0.0003  0.0006    2    1
+115           máx. 7 nós   AT   AT fidelidade: V7 − Vq7  german_credit  0.0107 -0.0045  0.0259    3    2
+116           máx. 7 nós   AT   AT fidelidade: V7 − Vq7       phys_bmi  0.1067  0.0887  0.1273    5    0
+117           máx. 7 nós   AT   AT fidelidade: V7 − Vq7     phys_power  0.0807  0.0547  0.1240    5    0
+118           máx. 7 nós   AT   AT fidelidade: V7 − Vq7   phys_kinetic  0.0413  0.0287  0.0540    5    0
+119           máx. 7 nós   AT   AT fidelidade: V7 − Vq7          adult -0.0056 -0.0133  0.0021    2    3
+120           máx. 7 nós   G1      G1 accuracy: V7 − E7         digits  0.0031  0.0003  0.0064    3    0
+121           máx. 7 nós   G1      G1 accuracy: V7 − E7  german_credit  0.0021  0.0000  0.0043    2    0
+122           máx. 7 nós   G1      G1 accuracy: V7 − E7       phys_bmi  0.0040  0.0000  0.0120    1    0
+123           máx. 7 nós   G1      G1 accuracy: V7 − E7     phys_power -0.0027 -0.0047 -0.0007    0    3
+124           máx. 7 nós   G1      G1 accuracy: V7 − E7   phys_kinetic  0.0020  0.0000  0.0047    2    0
+125           máx. 7 nós   G1      G1 accuracy: V7 − E7          adult -0.0007 -0.0020  0.0000    0    1
+126           máx. 7 nós   G1    G1 fidelidade: V7 − E7         digits  0.0030  0.0003  0.0062    3    0
+127           máx. 7 nós   G1    G1 fidelidade: V7 − E7  german_credit  0.0037  0.0000  0.0091    2    0
+128           máx. 7 nós   G1    G1 fidelidade: V7 − E7       phys_bmi -0.0027 -0.0080  0.0000    0    1
+129           máx. 7 nós   G1    G1 fidelidade: V7 − E7     phys_power  0.0027  0.0007  0.0047    3    0
+130           máx. 7 nós   G1    G1 fidelidade: V7 − E7   phys_kinetic  0.0020  0.0000  0.0047    2    0
+131           máx. 7 nós   G1    G1 fidelidade: V7 − E7          adult -0.0004 -0.0012  0.0000    0    1
+132           máx. 7 nós   G2      G2 accuracy: V7 − R7         digits -0.0024 -0.0052  0.0003    1    2
+133           máx. 7 nós   G2      G2 accuracy: V7 − R7  german_credit  0.0000  0.0000  0.0000    0    0
+134           máx. 7 nós   G2      G2 accuracy: V7 − R7       phys_bmi  0.0007  0.0000  0.0020    1    0
+135           máx. 7 nós   G2      G2 accuracy: V7 − R7     phys_power -0.0033 -0.0073  0.0000    0    2
+136           máx. 7 nós   G2      G2 accuracy: V7 − R7   phys_kinetic -0.0013 -0.0080  0.0040    1    1
+137           máx. 7 nós   G2      G2 accuracy: V7 − R7          adult  0.0001  0.0000  0.0004    1    0
+138           máx. 7 nós   G2    G2 fidelidade: V7 − R7         digits -0.0018 -0.0044  0.0006    1    2
+139           máx. 7 nós   G2    G2 fidelidade: V7 − R7  german_credit  0.0000  0.0000  0.0000    0    0
+140           máx. 7 nós   G2    G2 fidelidade: V7 − R7       phys_bmi  0.0007  0.0000  0.0020    1    0
+141           máx. 7 nós   G2    G2 fidelidade: V7 − R7     phys_power  0.0007 -0.0020  0.0040    1    1
+142           máx. 7 nós   G2    G2 fidelidade: V7 − R7   phys_kinetic  0.0013  0.0000  0.0040    1    0
+143           máx. 7 nós   G2    G2 fidelidade: V7 − R7          adult  0.0001  0.0000  0.0004    1    0
+144           máx. 7 nós  E-R     E-R accuracy: E7 − R7         digits -0.0055 -0.0076 -0.0027    0    4
+145           máx. 7 nós  E-R     E-R accuracy: E7 − R7  german_credit -0.0021 -0.0043  0.0000    0    2
+146           máx. 7 nós  E-R     E-R accuracy: E7 − R7       phys_bmi -0.0033 -0.0100  0.0000    0    1
+147           máx. 7 nós  E-R     E-R accuracy: E7 − R7     phys_power -0.0007 -0.0040  0.0020    1    1
+148           máx. 7 nós  E-R     E-R accuracy: E7 − R7   phys_kinetic -0.0033 -0.0087  0.0000    0    2
+149           máx. 7 nós  E-R     E-R accuracy: E7 − R7          adult  0.0008  0.0000  0.0021    2    0
+150           máx. 7 nós  E-R   E-R fidelidade: E7 − R7         digits -0.0047 -0.0065 -0.0024    0    4
+151           máx. 7 nós  E-R   E-R fidelidade: E7 − R7  german_credit -0.0037 -0.0091  0.0000    0    2
+152           máx. 7 nós  E-R   E-R fidelidade: E7 − R7       phys_bmi  0.0033  0.0000  0.0100    1    0
+153           máx. 7 nós  E-R   E-R fidelidade: E7 − R7     phys_power -0.0020 -0.0047  0.0000    0    2
+154           máx. 7 nós  E-R   E-R fidelidade: E7 − R7   phys_kinetic -0.0007 -0.0020  0.0000    0    1
+155           máx. 7 nós  E-R   E-R fidelidade: E7 − R7          adult  0.0005  0.0000  0.0013    2    0
+              orcamento        dataset  elegivel  sustentada  observada  atribuivel
+0   estrutura do tuning         digits      True       False       True       False
+1   estrutura do tuning  german_credit      True       False      False       False
+2   estrutura do tuning       phys_bmi      True       False       True       False
+3   estrutura do tuning     phys_power      True       False       True       False
+4   estrutura do tuning   phys_kinetic     False        True       True        True
+5   estrutura do tuning          adult     False       False      False       False
+6            máx. 7 nós         digits      True       False      False       False
+7            máx. 7 nós  german_credit      True       False      False       False
+8            máx. 7 nós       phys_bmi      True       False      False        True
+9            máx. 7 nós     phys_power      True       False      False        True
+10           máx. 7 nós   phys_kinetic     False       False      False        True
+11           máx. 7 nós          adult     False       False      False       False
+regra de adoção: G2 com limite inferior > 0 em ['german_credit']; G2 com limite superior < 0 em []; útil = True
+               H1  H2  H3  H4  H5  conjunta            orcamento
+dataset                                                         
+adult           3   2   2   0   4         0  estrutura do tuning
+digits          2   3   4   2   4         2  estrutura do tuning
+german_credit   3   4   3   3   1         1  estrutura do tuning
+phys_bmi        4   4   3   2   5         2  estrutura do tuning
+phys_kinetic    5   5   4   5   5         4  estrutura do tuning
+phys_power      3   5   4   5   5         2  estrutura do tuning
+adult           3   2   2   2   2         0           máx. 7 nós
+digits          4   0   0   4   0         0           máx. 7 nós
+german_credit   5   4   3   3   1         1           máx. 7 nós
+phys_bmi        5   4   0   5   5         0           máx. 7 nós
+phys_kinetic    5   5   0   5   5         0           máx. 7 nós
+phys_power      5   5   1   5   5         1           máx. 7 nós

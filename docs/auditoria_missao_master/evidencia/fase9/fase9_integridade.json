@@ -1,0 +1,42 @@
+{
+ "igual_fase_anterior": {
+  "adult": {
+   "iguais": 70,
+   "diferentes": 0
+  },
+  "digits": {
+   "iguais": 70,
+   "diferentes": 0
+  },
+  "german_credit": {
+   "iguais": 70,
+   "diferentes": 0
+  },
+  "phys_bmi": {
+   "iguais": 70,
+   "diferentes": 0
+  },
+  "phys_kinetic": {
+   "iguais": 70,
+   "diferentes": 0
+  },
+  "phys_power": {
+   "iguais": 70,
+   "diferentes": 0
+  }
+ },
+ "E_igual_V_sem_tentativas": {
+  "phys_bmi": {
+   "iguais": 24,
+   "diferentes": 0
+  },
+  "phys_kinetic": {
+   "iguais": 9,
+   "diferentes": 0
+  },
+  "phys_power": {
+   "iguais": 11,
+   "diferentes": 0
+  }
+ }
+}

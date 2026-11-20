@@ -1,8 +1,8 @@
 """Pipeline headless V9.2 agnóstico ao dataset, sem dependência obrigatória de OWL."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -21,6 +21,12 @@ from core.scientific_errors import DataContractError, InsufficientSignalError
 class TrainingResult:
     contract:DataContract; preprocessor:DataPreprocessor; mlp:Any; c45:Any; trepan_original:Any; trepan_reloaded:Any
     metrics:Dict[str,Any]; split:Dict[str,Any]; artifact_path:Optional[str]=None
+    class_order:List[str]=field(default_factory=list)      # ordem declarada (ARFF); vazia = rótulos originais
+
+    def decode(self,codes):
+        """Códigos 0..k-1 do modelo → rótulos na ordem declarada (sem ordem declarada devolve os valores intactos)."""
+        codes=np.asarray(codes)
+        return np.asarray(self.class_order,dtype=object)[codes.astype(int)] if self.class_order else codes
 
 
 def _clean_target_missing(df,contract):
@@ -35,6 +41,10 @@ def train_dataset(df:pd.DataFrame,*,target,seed:int=42,out:Optional[str|Path]=No
     if not contract.target_confirmed: raise DataContractError('A coluna-alvo tem de ser confirmada explicitamente antes do treino.')
     clean=_clean_target_missing(df,contract)
     y=clean[contract.target].to_numpy(); X=clean.drop(columns=[contract.target])
+    order=list(contract.class_order)
+    if order:   # ordem declarada no ARFF: os modelos treinam com 0..k-1 nessa ordem (o sklearn ordenaria os rótulos)
+        from core.arff_schema import OrderedLabelEncoder
+        y=OrderedLabelEncoder(order).fit_transform(y.astype(str))
     idx=np.arange(len(clean)); _,counts=np.unique(y,return_counts=True)
     strat=y if counts.min()>=2 else None
     tr,te=train_test_split(idx,test_size=test_size,random_state=seed,stratify=strat)
@@ -59,8 +69,9 @@ def train_dataset(df:pd.DataFrame,*,target,seed:int=42,out:Optional[str|Path]=No
     # Sem OWL o Reloaded entra explicitamente em modo espelhado: não há componente semântica a introduzir diferença.
     reloaded=trepan
     pred_mlp=mlp.predict(Zte); pred_c45=c45.predict(Xte.to_numpy(dtype=object)); pred_t=trepan.predict(Zte)
-    metrics={'mlp':classification_metrics(yte,pred_mlp),'c45_native':classification_metrics(yte,pred_c45),
-             'trepan_original':classification_metrics(yte,pred_t),'trepan_reloaded_no_owl':classification_metrics(yte,pred_t),
+    cm=lambda a,b: classification_metrics(a,b,class_order=order or None)
+    metrics={'mlp':cm(yte,pred_mlp),'c45_native':cm(yte,pred_c45),
+             'trepan_original':cm(yte,pred_t),'trepan_reloaded_no_owl':cm(yte,pred_t),
              'trepan_fidelity':float(np.mean(pred_t==pred_mlp)),'signal_gate':signal,'convergence':extract_mlp_convergence(mlp),
              'test_consulted_after_selection_only':True}
     split={'seed':seed,'train_indices':tr.tolist(),'test_indices':te.tolist(),'test_size':test_size}
@@ -68,8 +79,9 @@ def train_dataset(df:pd.DataFrame,*,target,seed:int=42,out:Optional[str|Path]=No
     if out is not None:
         path=save_artifact(out,model=mlp,contract=contract,preprocessor=pre,classes=getattr(mlp,'classes_',None),metrics=metrics,
                            convergence=metrics['convergence'],seeds={'root':seed},tree=trepan,
-                           metadata={'feature_origins':pre.feature_origins,'mirrored_no_ontology':True,'external_test_used_for_selection':False})
+                           metadata={'feature_origins':pre.feature_origins,'mirrored_no_ontology':True,'external_test_used_for_selection':False,
+                                     'class_order':order})
         artifact_path=str(path)
-    return TrainingResult(contract,pre,mlp,c45,trepan,reloaded,metrics,split,artifact_path)
+    return TrainingResult(contract,pre,mlp,c45,trepan,reloaded,metrics,split,artifact_path,order)
 
 __all__=['TrainingResult','train_dataset']

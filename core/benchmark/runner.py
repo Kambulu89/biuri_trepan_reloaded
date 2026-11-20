@@ -150,10 +150,22 @@ class Dataset:
             return cls.from_csv(path, target, name)
         from core.arff_schema import parse_arff_class_order
         from core.data_loading import load_tabular
+        from core.scientific_errors import DataContractError
         frame, _ = load_tabular(p)
         target = target or str(frame.columns[-1])
+        schema = frame.attrs.get("arff_schema") or {}
+        nominal = [c for c in frame.columns if c != target and (schema.get(str(c)) or {}).get("type") == "nominal"]
+        if nominal:   # o benchmark é exclusivamente numérico: converter um nominal (ex.: {01,1}) fundiria categorias em silêncio
+            raise DataContractError(
+                "O benchmark aceita apenas atributos numéricos; atributo(s) nominal(is) declarado(s) no ARFF: "
+                + ", ".join(map(str, nominal)) + ". Use o pipeline de produção, que preserva as categorias declaradas.")
         order = [str(c) for c in parse_arff_class_order(p, target)]
         y_raw = frame[target].map(lambda v: v.decode() if isinstance(v, bytes) else str(v))
+        missing = y_raw.isin(["?", "", "nan", "None"]) | frame[target].isna()
+        if missing.any():
+            raise DataContractError(
+                f"O benchmark não aceita alvo ausente: {int(missing.sum())} linha(s) com '?' na coluna {target!r}. "
+                "Remova-as explicitamente antes do benchmark (o '?' nunca é tratado como classe).")
         if order and set(y_raw.unique()) <= set(order):
             codes = y_raw.map({c: i for i, c in enumerate(order)}).to_numpy()
             labels = list(range(len(order)))

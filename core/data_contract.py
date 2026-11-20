@@ -136,6 +136,7 @@ class ColumnContract:
     cardinality: int
     treatment: str
     override: Optional[str] = None
+    declared_type: Optional[str] = None      # tipo declarado no ficheiro (ARFF); None = inferido
 
 
 @dataclass
@@ -153,6 +154,8 @@ class DataContract:
     class_counts: Dict[str, int] = field(default_factory=dict)
     missing_tokens: List[str] = field(default_factory=lambda: list(DEFAULT_MISSING_TOKENS))
     column_renames: Dict[str, str] = field(default_factory=dict)
+    # Ordem DECLARADA das classes (ARFF ``{a,b}``), já sem as classes sem amostras. Vazia = sem ordem declarada.
+    class_order: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -302,7 +305,11 @@ def build_data_contract(
     imbalance_ratio_threshold: float = 3.0,
     small_n_threshold: int = 100,
     leakage_threshold: float = 0.98,
+    declared_schema: Optional[Mapping[str, Mapping[str, Any]]] = None,
 ) -> DataContract:
+    """``declared_schema``: tipos declarados pelo ficheiro ({coluna: {'type': 'nominal'|'numeric'|..., 'values': [...]}}).
+    Por omissão é lido de ``df.attrs['arff_schema']`` (preenchido por ``load_tabular`` para ARFF); um CSV não tem esquema e
+    mantém a inferência pelos valores."""
     if not isinstance(df, pd.DataFrame):
         raise DataContractError("Os dados devem ser fornecidos como pandas.DataFrame.")
     if df.empty or len(df.columns) < 2:
@@ -318,13 +325,17 @@ def build_data_contract(
             raise DataContractError(f"Nome de alvo ambíguo devido a colunas duplicadas: '{target}'. Use o índice.")
         target = positions[0]
     target_name, target_idx, confirmed = _target_name(work, target)
+    schema_src = declared_schema if declared_schema is not None else (df.attrs.get("arff_schema") or {})
+    declared = {str(w): dict(schema_src[str(o)]) for o, w in zip(original_names, work.columns) if str(o) in schema_src}
+    nominal = {c for c, d in declared.items() if d.get("type") == "nominal"}
     overrides = {str(k): str(v) for k,v in (user_overrides or {}).items()}
 
     normalised = pd.DataFrame({c: _replace_missing(work[c], missing_tokens) for c in work.columns}, index=work.index)
     # Um marcador de ausente ('?', 'NA', ...) faz o leitor de CSV devolver a coluna como texto. O tipo inferido não pode
     # depender de existirem ausentes: se TODOS os valores presentes são números, a coluna é numérica (o alvo nunca é convertido).
+    # Um atributo declarado nominal no ARFF nunca é convertido: '01' e '1' são categorias distintas.
     for c in normalised.columns:
-        if c != target_name:
+        if c != target_name and c not in nominal:
             normalised[c] = _coerce_numeric_text(normalised[c])
 
     warnings_out: List[Dict[str, Any]] = []
@@ -357,12 +368,15 @@ def build_data_contract(
         s = normalised[c]
         kind = _infer_kind(s, len(normalised))
         cardinality = int(s.nunique(dropna=True))
+        if c in nominal and c != target_name:
+            kind = "constante" if cardinality <= 1 else ("binaria" if cardinality == 2 else "categorica")
         treatment = "target" if c == target_name else _decision(kind, cardinality, len(normalised))
         override = overrides.get(str(c))
         if override:
             mapping = {"ignorar":"descartar", "categorica":"categorica", "categórica":"categorica", "numerica":"usar", "numérica":"usar"}
             treatment = mapping.get(override.lower(), treatment)
-        cc = ColumnContract(str(c), str(original_names[i]), i, kind, float(s.isna().mean()), cardinality, treatment, override)
+        cc = ColumnContract(str(c), str(original_names[i]), i, kind, float(s.isna().mean()), cardinality, treatment, override,
+                            declared.get(c, {}).get("type"))
         cols.append(cc)
         if c != target_name:
             if kind == "constante": warnings_out.append({"code":"constant_column", "column":str(c), "message":f"A coluna '{c}' é constante e será descartada."})
@@ -395,13 +409,26 @@ def build_data_contract(
         if score is not None and score > leakage_threshold:
             warnings_out.append({"code":"possible_target_leakage", "column":cc.name, "cv_accuracy":score, "message":f"A coluna '{cc.name}' prevê o alvo quase perfeitamente sozinha (CV={score:.3f}); verificar possível fuga de alvo."})
 
+    class_order: List[str] = []
+    if declared.get(target_name, {}).get("type") == "nominal":
+        observed = set(y.astype(str))
+        order = [str(v) for v in declared[target_name].get("values", [])]
+        undeclared = sorted(observed - set(order))
+        if undeclared:
+            raise DataContractError(f"Classes observadas não declaradas no cabeçalho: {', '.join(undeclared)}.")
+        class_order = [v for v in order if v in observed]
+        absent = [v for v in order if v not in observed]
+        if absent:
+            warnings_out.append({"code":"declared_class_without_samples", "classes":absent,
+                                 "message":f"Classes declaradas sem amostras (excluídas da ordem): {', '.join(absent)}."})
+
     status = "pronto" if confirmed else "alvo_nao_confirmado"
     return DataContract(
         version="1.0", target=target_name, target_index=target_idx, target_confirmed=confirmed,
         status=status, n_rows=int(len(normalised)), n_columns=int(len(normalised.columns)),
         columns=cols, warnings=warnings_out, removed_target_missing_rows=missing_target_idx,
         class_counts={str(k):int(v) for k,v in counts.items()}, missing_tokens=list(missing_tokens),
-        column_renames=rename_map,
+        column_renames=rename_map, class_order=class_order,
     )
 
 

@@ -194,6 +194,10 @@ def train_production_dataframe(
         raise DataContractError("A coluna-alvo deve ser confirmada explicitamente.")
     clean=_drop_missing_target(df,contract.target,contract.missing_tokens)
     y=clean[contract.target].to_numpy(); X=clean.drop(columns=[contract.target])
+    class_order=list(contract.class_order)
+    if class_order:   # ordem declarada no ARFF: todos os modelos treinam com 0..k-1 nessa ordem (o sklearn ordenaria os rótulos)
+        from core.arff_schema import OrderedLabelEncoder
+        y=OrderedLabelEncoder(class_order).fit_transform(y.astype(str))
     _,counts=np.unique(y,return_counts=True)
     if len(counts)<2 or counts.min()<2: raise DataContractError("O alvo precisa de duas classes com pelo menos duas amostras por classe.")
     idx=np.arange(len(clean)); tr,te=train_test_split(idx,test_size=test_size,random_state=seed,stratify=y)
@@ -363,10 +367,10 @@ def train_production_dataframe(
     evaluation=evaluate_controlled_trepan_pair(pair,Zte,yte,reloaded_X_test=Zte_rel if augmented else None)
     mlp_pred=mlp.predict(Zte); c45_pred=c45.predict(Xte.to_numpy(dtype=object))
     teacher_pred=oracle.predict(Zte)  # referência de fidelidade = professor realmente usado
-    evaluation['models']['mlp_original']=classification_metrics(yte,mlp_pred)
+    evaluation['models']['mlp_original']=classification_metrics(yte,mlp_pred,class_order=class_order or None)
     if teacher is not None:
-        evaluation['models']['mlp_semantic']=classification_metrics(yte,teacher_pred)
-    evaluation['models']['c45_native']=classification_metrics(yte,c45_pred)
+        evaluation['models']['mlp_semantic']=classification_metrics(yte,teacher_pred,class_order=class_order or None)
+    evaluation['models']['c45_native']=classification_metrics(yte,c45_pred,class_order=class_order or None)
     # C4.5 canónico (rótulos reais): concordância com o MESMO oráculo congelado no mesmo teste + complexidade completa (sem teto de nós)
     c45_agreement=float(np.mean(np.asarray(c45_pred)==np.asarray(teacher_pred)))
     evaluation['models']['c45_native'].update(
@@ -419,7 +423,8 @@ def train_production_dataframe(
         'format_version':'biuri-v9.2-production-5-semantic-real-gain', 'contract':contract, 'preprocessor':pre,
         'reloaded_feature_space':reloaded_space['space'],
         'mlp_original':mlp,'semantic_teacher':teacher,'c45_native':c45,'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,
-        'classes':list(map(str,getattr(mlp,'classes_',[]))),
+        'classes':class_order or list(map(str,getattr(mlp,'classes_',[]))),
+        'class_codes_follow_declared_order':bool(class_order),
     }
     joblib.dump(bundle,out/'production_bundle.joblib')
     manifest={
@@ -434,6 +439,7 @@ def train_production_dataframe(
         'semantic_contribution_status':contribution.get('status'),
         'claim_guard':evaluation['scientific_validation'].get('claim_guard'),
         'convergence':extract_mlp_convergence(mlp),
+        'class_order':class_order or list(map(str,getattr(mlp,'classes_',[]))),
         'scientific_tuning': bool(scientific_tuning),
         'trepan_selected_config': asdict(cfg) if hasattr(cfg, '__dataclass_fields__') else str(cfg),
     }
@@ -445,7 +451,7 @@ def train_production_dataframe(
         report['artifacts']={
             'trepan_original':pair.original,'trepan_reloaded':pair.reloaded,'oracle':oracle,'mlp_original':mlp,
             'feature_names_original':list(model_names),'feature_names_reloaded':list(names_aug) if augmented else list(model_names),
-            'class_names':[str(c) for c in getattr(mlp,'classes_',[])],'selected_config':cfg,
+            'class_names':class_order or [str(c) for c in getattr(mlp,'classes_',[])],'selected_config':cfg,
             'oracle_id':oracle.oracle_id,'preprocessor':pre,
             'c45_native':c45,'c45_feature_names':[str(c) for c in Xtr.columns],     # o C4.5 EXATO avaliado (para os visualizadores)
         }

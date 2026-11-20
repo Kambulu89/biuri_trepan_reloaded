@@ -38,3 +38,4 @@ jobs:
           tests/test_agnosticism_contract.py
           tests/test_dataset_agnosticism.py
           tests/test_v92_static_guards.py
+          tests/test_identity_metamorphic.py

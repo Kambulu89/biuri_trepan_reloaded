@@ -138,14 +138,20 @@ def noninferiority_decision(delta:float, *, configured_tolerance:float, n_valida
             'inconclusive':bool(inconclusive),'accepted':bool(delta>=-tol and not inconclusive)}
 
 
-def classification_metrics(y_true,y_pred)->Dict[str,Any]:
+def classification_metrics(y_true,y_pred,*,class_order:Optional[List[str]]=None)->Dict[str,Any]:
+    """``class_order``: rótulos na ordem declarada quando ``y`` vem codificado 0..k-1 por essa ordem; a matriz de confusão
+    segue então essa ordem (linha/coluna j = class_order[j]). Sem ``class_order`` o resultado é o de sempre."""
     y_true=np.asarray(y_true); y_pred=np.asarray(y_pred)
-    return {'accuracy':float(accuracy_score(y_true,y_pred)),
-            'balanced_accuracy':float(balanced_accuracy_score(y_true,y_pred)),
-            'macro_f1':float(f1_score(y_true,y_pred,average='macro',zero_division=0)),
-            'precision_macro':float(precision_score(y_true,y_pred,average='macro',zero_division=0)),
-            'recall_macro':float(recall_score(y_true,y_pred,average='macro',zero_division=0)),
-            'confusion_matrix':confusion_matrix(y_true,y_pred).tolist()}
+    labels=list(range(len(class_order))) if class_order else None
+    out={'accuracy':float(accuracy_score(y_true,y_pred)),
+         'balanced_accuracy':float(balanced_accuracy_score(y_true,y_pred)),
+         'macro_f1':float(f1_score(y_true,y_pred,labels=labels,average='macro',zero_division=0)),
+         'precision_macro':float(precision_score(y_true,y_pred,labels=labels,average='macro',zero_division=0)),
+         'recall_macro':float(recall_score(y_true,y_pred,labels=labels,average='macro',zero_division=0)),
+         'confusion_matrix':confusion_matrix(y_true,y_pred,labels=labels).tolist()}
+    if class_order:
+        out['class_order']=[str(c) for c in class_order]
+    return out
 
 
 def predictive_capacity_gate(model,X,y,*,margin:float=0.03,random_state:int=42)->Dict[str,Any]:
