@@ -36,7 +36,7 @@ from core.protocol_audit import stable_sha256_strings
 from core.ontology_quality import OntologyQualityGate
 from core.ontology_reasoner import run_owl_reasoner
 from core.arff_schema import parse_arff_class_order
-from core.dataset_schema import read_arff_header
+from core.dataset_schema import is_missing as _is_missing_value, read_arff_header
 from core.metrics_comparator import MetricsComparator
 from core.mlp_trainer import MLPTrainer
 from core.natural_language_explainer import NaturalLanguageExplainer
@@ -2668,7 +2668,16 @@ que la red se vuelve interpretable.
                     file_path, df, 'arff', arff_header=read_arff_header(file_path))
             else:
                 df, relation_name, attributes, dataset_schema = self._load_tabular_dataset(file_path)
-            
+
+            # Alvo ausente ('?' no ARFF) nunca é uma classe: estas linhas não entram no treino nem na avaliação.
+            _missing_target = df.iloc[:, -1].map(_is_missing_value).to_numpy(dtype=bool)
+            self.dropped_missing_target_rows = [int(i) for i in np.flatnonzero(_missing_target)]
+            if _missing_target.any():
+                import logging
+                logging.getLogger("biuri.gui").warning(
+                    "%d linha(s) com alvo ausente removidas antes do treino.", int(_missing_target.sum()))
+                df = df.loc[~_missing_target].reset_index(drop=True)
+
             original_features = list(df.columns[:-1])
             target_col = df.columns[-1]
 

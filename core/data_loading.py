@@ -12,6 +12,17 @@ def _detect_delimiter(path:Path,encoding:str)->str:
     try:return csv.Sniffer().sniff(sample,delimiters=',;\t|').delimiter
     except csv.Error:return ','
 
+def _arff_declared_schema(arff_meta)->Dict[str,Dict[str,Any]]:
+    """Esquema declarado no cabeçalho ARFF: {atributo: {'type': 'nominal'|'numeric'|..., 'values': [ordem declarada]}}."""
+    out:Dict[str,Dict[str,Any]]={}
+    for name in arff_meta.names():
+        kind,values=arff_meta[name]
+        if kind=='nominal':
+            out[str(name)]={'type':'nominal','values':[v.decode('utf-8') if isinstance(v,bytes) else str(v) for v in values]}
+        else:
+            out[str(name)]={'type':str(kind)}
+    return out
+
 def load_tabular(path,*,encoding:Optional[str]=None,separator:Optional[str]=None)->Tuple[pd.DataFrame,Dict[str,Any]]:
     p=Path(path)
     if not p.exists(): raise DataContractError(f"Ficheiro não encontrado: {p}.")
@@ -23,11 +34,14 @@ def load_tabular(path,*,encoding:Optional[str]=None,separator:Optional[str]=None
             meta={'format':'csv' if ext!='.tsv' else 'tsv','separator':sep,'encoding':enc}
         elif ext=='.arff':
             from scipy.io import arff
-            data,_=arff.loadarff(p)
+            data,arff_meta=arff.loadarff(p)
             df=pd.DataFrame(data)
             for c in df.columns:
                 if df[c].dtype==object: df[c]=df[c].map(lambda v:v.decode('utf-8',errors='replace') if isinstance(v,bytes) else v)
-            meta={'format':'arff'}
+            # O tipo DECLARADO no cabeçalho acompanha os dados: um nominal {01,1} nunca pode ser reinterpretado como número.
+            schema=_arff_declared_schema(arff_meta)
+            df.attrs['arff_schema']=schema
+            meta={'format':'arff','arff_schema':schema}
         elif ext=='.parquet':
             try: df=pd.read_parquet(p)
             except ImportError as exc: raise DataContractError('Leitura Parquet requer pyarrow ou fastparquet.') from exc
