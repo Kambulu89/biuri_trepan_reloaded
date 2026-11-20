@@ -1,0 +1,19 @@
+dataset,orcamento,H101_todas,H102_todas,integridade_todas,decisao
+iris,tuning,False,True,True,False
+iris,7 nós,True,True,True,True
+wine,tuning,False,True,True,False
+wine,7 nós,True,True,True,True
+breast_cancer,tuning,True,True,True,True
+breast_cancer,7 nós,True,True,True,True
+digits,tuning,True,True,True,True
+digits,7 nós,True,True,True,True
+adult,tuning,True,True,True,True
+adult,7 nós,True,True,True,True
+german_credit,tuning,True,True,True,True
+german_credit,7 nós,True,True,True,True
+phys_bmi,tuning,True,True,True,True
+phys_bmi,7 nós,True,True,True,True
+phys_kinetic,tuning,True,True,True,True
+phys_kinetic,7 nós,True,True,True,True
+phys_power,tuning,True,True,True,True
+phys_power,7 nós,True,True,True,True
