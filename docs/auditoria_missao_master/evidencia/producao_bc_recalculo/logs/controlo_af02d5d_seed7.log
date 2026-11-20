@@ -1,0 +1,7 @@
+commit=af02d5d954ff21afa97f841d84337728aee826d0 dirty=0 inicio=2026-11-20T11:18:48Z
+{"status": "ok", "artifact": "/home/user/audit_runs/prod_bc_recalc/controlo_af02d5d/seed7/production_bundle.joblib", "semantic_contribution_status": "SEMANTIC_CONTRIBUTION_SUPPORTED", "ontology_quality": "VALID_DOMAIN_ONTOLOGY"}
+
+real	11m3.562s
+user	12m11.110s
+sys	5m38.413s
+rc=0 fim=2026-11-20T11:29:51Z

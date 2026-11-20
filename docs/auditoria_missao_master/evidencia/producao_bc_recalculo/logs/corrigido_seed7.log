@@ -1,0 +1,7 @@
+commit=8375c6cbf34d31f4da7ddac38fcec13dba2f1855 dirty=0 inicio=2026-11-20T11:18:47Z
+{"status": "ok", "artifact": "/home/user/audit_runs/prod_bc_recalc/corrigido/seed7/production_bundle.joblib", "semantic_contribution_status": "SEMANTIC_CONTRIBUTION_SUPPORTED", "ontology_quality": "VALID_DOMAIN_ONTOLOGY"}
+
+real	17m44.424s
+user	20m51.032s
+sys	10m54.680s
+rc=0 fim=2026-11-20T11:36:31Z

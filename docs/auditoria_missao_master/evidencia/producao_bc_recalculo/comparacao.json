@@ -1,0 +1,67 @@
+{
+ "instancias_com_previsao_mudada": {
+  "controlo_seed7": {
+   "mlp": [],
+   "c45": [],
+   "trepan_original": [],
+   "trepan_reloaded": []
+  },
+  "corrigido_seed7": {
+   "mlp": [],
+   "c45": [
+    340
+   ],
+   "trepan_original": [
+    112,
+    424
+   ],
+   "trepan_reloaded": []
+  },
+  "controlo_seed42": {
+   "mlp": [],
+   "c45": [],
+   "trepan_original": [],
+   "trepan_reloaded": []
+  },
+  "corrigido_seed42": {
+   "mlp": [
+    205,
+    275,
+    14
+   ],
+   "c45": [
+    385
+   ],
+   "trepan_original": [
+    86
+   ],
+   "trepan_reloaded": [
+    385,
+    205,
+    128
+   ]
+  },
+  "controlo_seed123": {
+   "mlp": [],
+   "c45": [],
+   "trepan_original": [],
+   "trepan_reloaded": []
+  },
+  "corrigido_seed123": {
+   "mlp": [
+    99
+   ],
+   "c45": [
+    81,
+    99
+   ],
+   "trepan_original": [
+    99
+   ],
+   "trepan_reloaded": [
+    65,
+    81
+   ]
+  }
+ }
+}
