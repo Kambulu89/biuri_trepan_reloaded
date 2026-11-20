@@ -17,7 +17,7 @@ Consolida todas as comparações «TREPAN com OWL − TREPAN sem OWL» das campa
   - as mesmas linhas de teste;
   - o mesmo oráculo congelado (`oracle_id`);
   - o mesmo orçamento **configurado** (`tree_max_nodes`, `query_budget`, `tree_max_n`).
-- **Consultas efetivamente realizadas** (colunas `consultas_com_owl`, `consultas_sem_owl`, `razao_consultas`): **não são iguais.** O braço com OWL fez entre 0,57 e 5,16 vezes as consultas do braço sem OWL (mediana 2,22). «Mesmo orçamento» significa apenas o mesmo limite.
+- **Consultas efetivamente realizadas** (colunas `consultas_com_owl`, `consultas_sem_owl`, `razao_consultas`): o braço com OWL **contou** entre 0,57 e 5,16 vezes as linhas enviadas ao oráculo pelo braço sem OWL (mediana 2,22). «Mesmo orçamento» significa apenas o mesmo limite. A fase 10 decompôs estas linhas para R e R7 (§6): a diferença são probabilidades de pontos já conhecidos, sem efeito nas decisões; os pontos novos são iguais ou inferiores.
 - **Estado:**
 
 | Estado | Critério |
@@ -84,7 +84,7 @@ As 20 linhas não são independentes: dentro de cada campanha partilham o mesmo 
 | # | Conclusão | Comparador | Oráculo | Consultas com/sem OWL | Nível de evidência |
 |---|---|---|---|---|---|
 | C1 | Em dados reais, nenhuma comparação «com OWL − sem OWL» mostra ganho nas duas métricas | Os três comparadores (72 comparações, 6 datasets reais) | Ambos os MLP | 1,78–5,16 (mediana 2,25) | **Nenhuma sustentada nas duas**; 19 observadas nas médias; 9 com perda sustentada em pelo menos uma métrica |
-| C2 | Nos controlos positivos, os atributos derivados da relação declarada na OWL melhoram accuracy e fidelidade face ao Original | Original (B) e Original 7 nós (B7) | Ambos os MLP | 0,59–2,34 | **Sustentado nas duas** em 10 de 12 comparações R/R7. As 2 restantes (fase 6, R − B no phys_bmi e no phys_kinetic) têm a fidelidade com intervalo a incluir 0 |
+| C2 | Nos controlos positivos, os atributos derivados da relação declarada na OWL melhoram accuracy e fidelidade face ao Original | Original (B) e Original 7 nós (B7) | Ambos os MLP | 0,59–2,34 linhas contadas; **pontos novos 0,13–1,08 vezes os do Original** (fase 10, MLP selecionado no treino), e as reconsultas não mudam decisões | **Sustentado nas duas** em 10 de 12 comparações R/R7. As 2 restantes (fase 6, R − B no phys_bmi e no phys_kinetic) têm a fidelidade com intervalo a incluir 0 |
 | C3 | O Reloaded completo com OWL não supera o Reloaded completo sem OWL (mesmos mecanismos) | Reloaded sem OWL (`reloaded_core`, E, F) | Ambos os MLP | 1,91–2,37 | **Nenhuma sustentada nas duas** em 31 comparações (25 reais, 6 sintéticas); 5 observadas nas médias; 5 com perda sustentada |
 | C4 | Os mecanismos do Reloaded (score, EFSR) não acrescentam ganho aos atributos | **Reloaded O / R** (não o Original): contrastes G1 e G2 de `FASE5_RESULTADOS.md` e `FASE9_RESULTADOS.md`, fora desta tabela | Fase 5: por omissão; fase 9: selecionado no treino | V usa 1,15–1,55 vezes as consultas de E (`FASE9_RESULTADOS.md`, tabela de braços) | Na fase 9, G2 (V − R) só é **sustentado** na accuracy do german_credit (+1,1 pp), **sem** ganho de fidelidade |
 | C5 | O ganho nos controlos positivos é atribuível ao significado da OWL | **OWL permutada** (Rq, Vq): contrastes AT de `FASE6_RESULTADOS.md`, `FASE7_RESULTADOS.md` e `FASE9_RESULTADOS.md` | Por fase | Vq faz mais consultas do que V nos físicos (fase 9, §2) | Sustentado nas duas métricas só onde o relatório de cada fase o indica; não é inferível desta tabela |
@@ -98,4 +98,14 @@ Os relatórios de cada fase mantêm a redação original (são históricos). Par
    - **Limitação:** dados sintéticos pequenos e uma ontologia de agrupamento. A produção não recebe `dataset_id`; aí varia-se o identificador do artefacto. Um CSV sem esquema continua a inferir `01` e `1` como o mesmo número.
 2. **Ganho semântico.** «Com o mesmo MLP como oráculo, as mesmas instâncias de teste e o mesmo orçamento configurado, os atributos derivados da relação declarada na OWL melhoraram simultaneamente a accuracy (+1,3 a +8,9 pp) e a fidelidade (+0,7 a +8,5 pp) do TREPAN face ao TREPAN Original em 10 de 12 comparações nos três controlos positivos sintéticos, em que a OWL declara a relação que gera a classe; nas 72 comparações com seis conjuntos de dados reais, nenhuma melhoria das duas métricas foi sustentada pelos intervalos.»
    - **Evidência:** §3 e §4 (C1, C2) e `evidencia/owl_pairs/owl_pairs.csv`.
-   - **Limitações:** os controlos foram construídos para que a OWL contenha a regra exata, por isso dão um limite superior do benefício. O comparador é o Original, equivalente ao Reloaded sem OWL pelo contrato EQ. As consultas efetivas foram diferentes (0,59 a 2,34 vezes as do Original). Há 5 sementes por dataset, sem correção para comparações múltiplas.
+   - **Limitações:** os controlos foram construídos para que a OWL contenha a regra exata, por isso dão um limite superior do benefício. O comparador é o Original, equivalente ao Reloaded sem OWL pelo contrato EQ. As linhas contadas foram 0,59 a 2,34 vezes as do Original, mas nas comparações das fases 7 e 9 os pontos novos foram iguais ou inferiores e as reconsultas não mudam decisões (fase 10); nas da fase 6 isto não foi medido. Há 5 sementes por dataset, sem correção para comparações múltiplas.
+
+## 6. Consultas efetivas: fase 10
+
+Medição de `FASE10_PREREGISTO.md` e `FASE10_RESULTADOS.md`: 45 unidades, 270 árvores R e R7, com o MLP selecionado só no treino.
+
+- Todas as linhas que R e R7 enviam ao oráculo a mais do que B são `predict_proba` sobre pontos que a árvore já conhecia (0 pontos novos só por probabilidade).
+- Retirar `predict_proba` ao oráculo deixa as previsões iguais em 270 de 270 árvores: essas reconsultas não influenciam nenhuma decisão.
+- Pontos novos R/B: 0,73 a 1,08 com 7 nós (todos os datasets); com a estrutura do tuning, 0,13 a 1,08, exceto iris (1 unidade com 1,18) e wine (2 unidades com 1,33 e 1,67), onde o R cresceu árvores maiores.
+
+**Ressalva revista para R − B e R7 − B7** (fases 7 a 9): o braço com OWL não recebeu mais informação nova do oráculo do que o Original, exceto no iris e no wine com a estrutura do tuning, onde a comparação continua confundida pela informação e onde, de qualquer modo, não há ganho a explicar. As linhas da fase 6 (MLP por omissão) e os braços com mecanismos (E, V, D, A) não foram medidos e mantêm a ressalva original.

@@ -1,0 +1,271 @@
+dataset,seed,orcamento,rep,igual
+iris,42,tuning,0,True
+iris,42,tuning,1,True
+iris,42,tuning,2,True
+iris,42,7 nós,0,True
+iris,42,7 nós,1,True
+iris,42,7 nós,2,True
+iris,7,tuning,0,True
+iris,7,tuning,1,True
+iris,7,tuning,2,True
+iris,7,7 nós,0,True
+iris,7,7 nós,1,True
+iris,7,7 nós,2,True
+iris,123,tuning,0,True
+iris,123,tuning,1,True
+iris,123,tuning,2,True
+iris,123,7 nós,0,True
+iris,123,7 nós,1,True
+iris,123,7 nós,2,True
+iris,2024,tuning,0,True
+iris,2024,tuning,1,True
+iris,2024,tuning,2,True
+iris,2024,7 nós,0,True
+iris,2024,7 nós,1,True
+iris,2024,7 nós,2,True
+iris,11,tuning,0,True
+iris,11,tuning,1,True
+iris,11,tuning,2,True
+iris,11,7 nós,0,True
+iris,11,7 nós,1,True
+iris,11,7 nós,2,True
+wine,42,tuning,0,True
+wine,42,tuning,1,True
+wine,42,tuning,2,True
+wine,42,7 nós,0,True
+wine,42,7 nós,1,True
+wine,42,7 nós,2,True
+wine,7,tuning,0,True
+wine,7,tuning,1,True
+wine,7,tuning,2,True
+wine,7,7 nós,0,True
+wine,7,7 nós,1,True
+wine,7,7 nós,2,True
+wine,123,tuning,0,True
+wine,123,tuning,1,True
+wine,123,tuning,2,True
+wine,123,7 nós,0,True
+wine,123,7 nós,1,True
+wine,123,7 nós,2,True
+wine,2024,tuning,0,True
+wine,2024,tuning,1,True
+wine,2024,tuning,2,True
+wine,2024,7 nós,0,True
+wine,2024,7 nós,1,True
+wine,2024,7 nós,2,True
+wine,11,tuning,0,True
+wine,11,tuning,1,True
+wine,11,tuning,2,True
+wine,11,7 nós,0,True
+wine,11,7 nós,1,True
+wine,11,7 nós,2,True
+breast_cancer,42,tuning,0,True
+breast_cancer,42,tuning,1,True
+breast_cancer,42,tuning,2,True
+breast_cancer,42,7 nós,0,True
+breast_cancer,42,7 nós,1,True
+breast_cancer,42,7 nós,2,True
+breast_cancer,7,tuning,0,True
+breast_cancer,7,tuning,1,True
+breast_cancer,7,tuning,2,True
+breast_cancer,7,7 nós,0,True
+breast_cancer,7,7 nós,1,True
+breast_cancer,7,7 nós,2,True
+breast_cancer,123,tuning,0,True
+breast_cancer,123,tuning,1,True
+breast_cancer,123,tuning,2,True
+breast_cancer,123,7 nós,0,True
+breast_cancer,123,7 nós,1,True
+breast_cancer,123,7 nós,2,True
+breast_cancer,2024,tuning,0,True
+breast_cancer,2024,tuning,1,True
+breast_cancer,2024,tuning,2,True
+breast_cancer,2024,7 nós,0,True
+breast_cancer,2024,7 nós,1,True
+breast_cancer,2024,7 nós,2,True
+breast_cancer,11,tuning,0,True
+breast_cancer,11,tuning,1,True
+breast_cancer,11,tuning,2,True
+breast_cancer,11,7 nós,0,True
+breast_cancer,11,7 nós,1,True
+breast_cancer,11,7 nós,2,True
+digits,42,tuning,0,True
+digits,42,tuning,1,True
+digits,42,tuning,2,True
+digits,42,7 nós,0,True
+digits,42,7 nós,1,True
+digits,42,7 nós,2,True
+digits,7,tuning,0,True
+digits,7,tuning,1,True
+digits,7,tuning,2,True
+digits,7,7 nós,0,True
+digits,7,7 nós,1,True
+digits,7,7 nós,2,True
+digits,123,tuning,0,True
+digits,123,tuning,1,True
+digits,123,tuning,2,True
+digits,123,7 nós,0,True
+digits,123,7 nós,1,True
+digits,123,7 nós,2,True
+digits,2024,tuning,0,True
+digits,2024,tuning,1,True
+digits,2024,tuning,2,True
+digits,2024,7 nós,0,True
+digits,2024,7 nós,1,True
+digits,2024,7 nós,2,True
+digits,11,tuning,0,True
+digits,11,tuning,1,True
+digits,11,tuning,2,True
+digits,11,7 nós,0,True
+digits,11,7 nós,1,True
+digits,11,7 nós,2,True
+adult,42,tuning,0,True
+adult,42,tuning,1,True
+adult,42,tuning,2,True
+adult,42,7 nós,0,True
+adult,42,7 nós,1,True
+adult,42,7 nós,2,True
+adult,7,tuning,0,True
+adult,7,tuning,1,True
+adult,7,tuning,2,True
+adult,7,7 nós,0,True
+adult,7,7 nós,1,True
+adult,7,7 nós,2,True
+adult,123,tuning,0,True
+adult,123,tuning,1,True
+adult,123,tuning,2,True
+adult,123,7 nós,0,True
+adult,123,7 nós,1,True
+adult,123,7 nós,2,True
+adult,2024,tuning,0,True
+adult,2024,tuning,1,True
+adult,2024,tuning,2,True
+adult,2024,7 nós,0,True
+adult,2024,7 nós,1,True
+adult,2024,7 nós,2,True
+adult,11,tuning,0,True
+adult,11,tuning,1,True
+adult,11,tuning,2,True
+adult,11,7 nós,0,True
+adult,11,7 nós,1,True
+adult,11,7 nós,2,True
+german_credit,42,tuning,0,True
+german_credit,42,tuning,1,True
+german_credit,42,tuning,2,True
+german_credit,42,7 nós,0,True
+german_credit,42,7 nós,1,True
+german_credit,42,7 nós,2,True
+german_credit,7,tuning,0,True
+german_credit,7,tuning,1,True
+german_credit,7,tuning,2,True
+german_credit,7,7 nós,0,True
+german_credit,7,7 nós,1,True
+german_credit,7,7 nós,2,True
+german_credit,123,tuning,0,True
+german_credit,123,tuning,1,True
+german_credit,123,tuning,2,True
+german_credit,123,7 nós,0,True
+german_credit,123,7 nós,1,True
+german_credit,123,7 nós,2,True
+german_credit,2024,tuning,0,True
+german_credit,2024,tuning,1,True
+german_credit,2024,tuning,2,True
+german_credit,2024,7 nós,0,True
+german_credit,2024,7 nós,1,True
+german_credit,2024,7 nós,2,True
+german_credit,11,tuning,0,True
+german_credit,11,tuning,1,True
+german_credit,11,tuning,2,True
+german_credit,11,7 nós,0,True
+german_credit,11,7 nós,1,True
+german_credit,11,7 nós,2,True
+phys_bmi,42,tuning,0,True
+phys_bmi,42,tuning,1,True
+phys_bmi,42,tuning,2,True
+phys_bmi,42,7 nós,0,True
+phys_bmi,42,7 nós,1,True
+phys_bmi,42,7 nós,2,True
+phys_bmi,7,tuning,0,True
+phys_bmi,7,tuning,1,True
+phys_bmi,7,tuning,2,True
+phys_bmi,7,7 nós,0,True
+phys_bmi,7,7 nós,1,True
+phys_bmi,7,7 nós,2,True
+phys_bmi,123,tuning,0,True
+phys_bmi,123,tuning,1,True
+phys_bmi,123,tuning,2,True
+phys_bmi,123,7 nós,0,True
+phys_bmi,123,7 nós,1,True
+phys_bmi,123,7 nós,2,True
+phys_bmi,2024,tuning,0,True
+phys_bmi,2024,tuning,1,True
+phys_bmi,2024,tuning,2,True
+phys_bmi,2024,7 nós,0,True
+phys_bmi,2024,7 nós,1,True
+phys_bmi,2024,7 nós,2,True
+phys_bmi,11,tuning,0,True
+phys_bmi,11,tuning,1,True
+phys_bmi,11,tuning,2,True
+phys_bmi,11,7 nós,0,True
+phys_bmi,11,7 nós,1,True
+phys_bmi,11,7 nós,2,True
+phys_kinetic,42,tuning,0,True
+phys_kinetic,42,tuning,1,True
+phys_kinetic,42,tuning,2,True
+phys_kinetic,42,7 nós,0,True
+phys_kinetic,42,7 nós,1,True
+phys_kinetic,42,7 nós,2,True
+phys_kinetic,7,tuning,0,True
+phys_kinetic,7,tuning,1,True
+phys_kinetic,7,tuning,2,True
+phys_kinetic,7,7 nós,0,True
+phys_kinetic,7,7 nós,1,True
+phys_kinetic,7,7 nós,2,True
+phys_kinetic,123,tuning,0,True
+phys_kinetic,123,tuning,1,True
+phys_kinetic,123,tuning,2,True
+phys_kinetic,123,7 nós,0,True
+phys_kinetic,123,7 nós,1,True
+phys_kinetic,123,7 nós,2,True
+phys_kinetic,2024,tuning,0,True
+phys_kinetic,2024,tuning,1,True
+phys_kinetic,2024,tuning,2,True
+phys_kinetic,2024,7 nós,0,True
+phys_kinetic,2024,7 nós,1,True
+phys_kinetic,2024,7 nós,2,True
+phys_kinetic,11,tuning,0,True
+phys_kinetic,11,tuning,1,True
+phys_kinetic,11,tuning,2,True
+phys_kinetic,11,7 nós,0,True
+phys_kinetic,11,7 nós,1,True
+phys_kinetic,11,7 nós,2,True
+phys_power,42,tuning,0,True
+phys_power,42,tuning,1,True
+phys_power,42,tuning,2,True
+phys_power,42,7 nós,0,True
+phys_power,42,7 nós,1,True
+phys_power,42,7 nós,2,True
+phys_power,7,tuning,0,True
+phys_power,7,tuning,1,True
+phys_power,7,tuning,2,True
+phys_power,7,7 nós,0,True
+phys_power,7,7 nós,1,True
+phys_power,7,7 nós,2,True
+phys_power,123,tuning,0,True
+phys_power,123,tuning,1,True
+phys_power,123,tuning,2,True
+phys_power,123,7 nós,0,True
+phys_power,123,7 nós,1,True
+phys_power,123,7 nós,2,True
+phys_power,2024,tuning,0,True
+phys_power,2024,tuning,1,True
+phys_power,2024,tuning,2,True
+phys_power,2024,7 nós,0,True
+phys_power,2024,7 nós,1,True
+phys_power,2024,7 nós,2,True
+phys_power,11,tuning,0,True
+phys_power,11,tuning,1,True
+phys_power,11,tuning,2,True
+phys_power,11,7 nós,0,True
+phys_power,11,7 nós,1,True
+phys_power,11,7 nós,2,True
