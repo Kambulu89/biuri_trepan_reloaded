@@ -109,3 +109,12 @@ Medição de `FASE10_PREREGISTO.md` e `FASE10_RESULTADOS.md`: 45 unidades, 270 �
 - Pontos novos R/B: 0,73 a 1,08 com 7 nós (todos os datasets); com a estrutura do tuning, 0,13 a 1,08, exceto iris (1 unidade com 1,18) e wine (2 unidades com 1,33 e 1,67), onde o R cresceu árvores maiores.
 
 **Ressalva revista para R − B e R7 − B7** (fases 7 a 9): o braço com OWL não recebeu mais informação nova do oráculo do que o Original, exceto no iris e no wine com a estrutura do tuning, onde a comparação continua confundida pela informação e onde, de qualquer modo, não há ganho a explicar. As linhas da fase 6 (MLP por omissão) e os braços com mecanismos (E, V, D, A) não foram medidos e mantêm a ressalva original.
+
+## 7. Fase 11: MLP por omissão, braços com mecanismos e complexidade igual
+
+Fonte: `FASE11_RESULTADOS.md`.
+
+- **Comparações da fase 6 (MLP por omissão), R e R7:** pontos novos R/B ≤ 1,10 em 39 de 40 unidades (exceção: phys_bmi, R, 1 unidade, razão 1,16). Rnp ≡ R em 120 de 120 árvores. A ressalva revista do §6 aplica-se também a estas linhas.
+- **Braços com mecanismos (E, D, A):** recebem os mesmos pontos novos do que o Original em 42, 40 e 41 de 45 unidades. As exceções estão no wine, no iris, no breast_cancer, no phys_kinetic e no phys_power. Mas usam probabilidades do MLP sobre pontos conhecidos nas decisões. Para estas linhas, a ressalva passa a ser «informação de confiança do MLP que o Original não usa», e não «mais consultas».
+- **V:** o lote novo é informação adicional por desenho (1,35 a 2,47 vezes os pontos novos nos dados reais).
+- **Complexidade igual (P07):** comparadas com o C4.5 com o mesmo limite de nós, as conclusões sobre `Original > C4.5` e `Reloaded > C4.5` reforçam-se. As conclusões sobre o ganho semântico (R − B) não mudam: o limite é o mesmo nos dois braços TREPAN.

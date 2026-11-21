@@ -1,0 +1,117 @@
+| Contraste (pp) | iris | wine | breast_cancer | digits | adult | german_credit | phys_bmi | phys_kinetic | phys_power |
+|---|---|---|---|---|---|---|---|---|---|
+| H1c accuracy: Rc − Bc | +0,53 [-0,70; +1,58] | -1,04 [-2,07; +0,00] | +0,56 [+0,28; +0,79] | +0,10 [-0,49; +0,49] | -0,04 [-0,37; +0,35] | +0,21 [-1,09; +1,41] | +1,47 [+0,13; +2,80] | +2,00 [+1,33; +2,73] | +2,00 [+0,40; +3,27] |
+| H2c accuracy: Rc − C4.5 | -0,18 [-1,75; +1,40] | +2,22 [+0,29; +4,00] | +0,98 [-0,05; +2,10] | +1,76 [+0,18; +3,53] | -0,51 [-1,69; +0,85] | +1,25 [-1,60; +3,89] | +2,47 [+0,47; +4,40] | +3,67 [+1,93; +5,67] | +5,00 [+3,27; +6,87] |
+| H3c accuracy: Bc − C4.5 | -0,70 [-2,98; +2,11] | +3,26 [+0,44; +5,93] | +0,42 [-0,65; +1,49] | +1,66 [-0,21; +3,56] | -0,47 [-1,57; +0,81] | +1,04 [-0,93; +3,01] | +1,00 [-0,53; +2,87] | +1,67 [+0,13; +3,60] | +3,00 [+1,00; +4,80] |
+| H4c fidelidade: Rc − Bc | +0,53 [-0,53; +2,11] | -0,15 [-0,89; +0,59] | +0,28 [+0,00; +0,47] | +0,12 [-0,44; +0,65] | -0,12 [-0,63; +0,32] | -0,37 [-1,20; +0,32] | +0,80 [+0,13; +1,47] | +2,40 [+1,33; +4,13] | +1,73 [+1,00; +2,27] |
+| H5c fidelidade: Rc − C4.5 | -0,53 [-0,88; -0,18] | +3,11 [+0,44; +5,19] | +0,05 [-0,61; +0,51] | +1,82 [+0,07; +3,78] | +1,07 [+0,51; +1,61] | -2,48 [-5,18; +0,21] | +2,87 [+1,73; +3,73] | +5,13 [+3,27; +7,00] | +7,40 [+4,87; +9,93] |
+@@
+| Contraste (pp) | iris | wine | breast_cancer | digits | adult | german_credit | phys_bmi | phys_kinetic | phys_power |
+|---|---|---|---|---|---|---|---|---|---|
+| H1 accuracy: R7 − B7 | +0,88 [+0,35; +1,40] | -1,93 [-2,96; -0,89] | -0,56 [-1,82; +0,51] | +0,39 [+0,01; +0,79] | -0,04 [-0,68; +0,55] | +1,17 [+0,61; +1,95] | +7,67 [+4,87; +9,60] | +7,73 [+5,93; +9,53] | +7,00 [+4,80; +9,40] |
+| H2d accuracy: R7 − C4.5d2 | +0,35 [-1,75; +2,46] | +4,89 [+1,33; +8,89] | +0,79 [-0,09; +2,19] | +5,99 [+4,83; +7,64] | +2,61 [+1,84; +3,39] | +2,59 [+1,57; +3,60] | +14,27 [+12,07; +16,20] | +9,13 [+6,20; +11,47] | +13,53 [+8,20; +20,87] |
+| H3d accuracy: B7 − C4.5d2 | -0,53 [-2,81; +1,75] | +6,81 [+2,67; +10,96] | +1,35 [+0,42; +2,28] | +5,60 [+4,52; +6,96] | +2,65 [+1,87; +3,52] | +1,41 [+0,11; +2,72] | +6,60 [+5,40; +7,73] | +1,40 [-0,53; +2,80] | +6,53 [+0,59; +14,67] |
+| H4 fidelidade: R7 − B7 | +0,18 [-1,58; +2,11] | -1,04 [-1,78; -0,30] | -0,93 [-2,24; +0,09] | +0,33 [-0,01; +0,70] | -0,47 [-1,53; +0,44] | +0,32 [-0,32; +1,12] | +4,60 [+2,33; +7,00] | +6,40 [+5,60; +7,20] | +8,47 [+5,67; +12,47] |
+| H5d fidelidade: R7 − C4.5d2 | +1,75 [-1,23; +4,39] | +5,78 [+1,63; +9,93] | +0,05 [-1,35; +1,26] | +5,91 [+4,92; +7,44] | +3,95 [+2,87; +5,04] | +4,19 [+0,93; +6,96] | +11,87 [+9,13; +15,13] | +8,20 [+5,67; +10,27] | +17,27 [+10,33; +24,13] |
+@@
+| Dataset | Nós C4.5 | N (limite de Bc/Rc) | Nós Bc | Nós Rc | Nós B | Nós R | Nós c45_d2 | Nós B7 | Nós R7 |
+|---|---|---|---|---|---|---|---|---|---|
+| iris | 8,6 | 8,6 | 7,4 | 7,3 | 33,8 | 33,8 | 5,0 | 5,7 | 5,4 |
+| wine | 9,8 | 9,8 | 9,5 | 9,5 | 23,5 | 18,5 | 5,8 | 6,9 | 7,0 |
+| breast_cancer | 17,0 | 17,0 | 16,5 | 15,1 | 34,3 | 35,5 | 6,2 | 6,7 | 6,7 |
+| digits | 169,4 | 146,6 | 146,3 | 145,9 | 177,1 | 176,6 | 7,0 | 7,0 | 7,0 |
+| adult | 135,0 | 56,6 | 47,3 | 47,5 | 47,3 | 47,5 | 3,8 | 5,4 | 4,7 |
+| german_credit | 172,2 | 56,6 | 50,7 | 50,6 | 50,7 | 50,6 | 3,4 | 5,9 | 6,3 |
+| phys_bmi | 23,4 | 23,4 | 22,1 | 5,7 | 28,7 | 8,3 | 3,0 | 6,7 | 3,5 |
+| phys_kinetic | 21,0 | 21,0 | 20,3 | 15,1 | 41,9 | 35,8 | 5,0 | 6,3 | 3,9 |
+| phys_power | 23,0 | 23,0 | 21,5 | 15,3 | 28,9 | 18,5 | 5,0 | 6,6 | 4,6 |
+@@
+| Orçamento | Dataset | Elegível | Hierarquia sustentada | Hierarquia observada | Original > C4.5 sustentado | Reloaded > C4.5 em acc. e fid. sustentado |
+|---|---|---|---|---|---|---|
+| tamanho do C4.5 | iris | não | não | não | não | não |
+| tamanho do C4.5 | wine | sim | não | não | sim | sim |
+| tamanho do C4.5 | breast_cancer | sim | não | sim | não | não |
+| tamanho do C4.5 | digits | sim | não | sim | não | sim |
+| tamanho do C4.5 | adult | não | não | não | não | não |
+| tamanho do C4.5 | german_credit | sim | não | não | não | não |
+| tamanho do C4.5 | phys_bmi | sim | não | sim | não | sim |
+| tamanho do C4.5 | phys_kinetic | não | sim | sim | sim | sim |
+| tamanho do C4.5 | phys_power | sim | sim | sim | sim | sim |
+| 7 nós | iris | não | não | não | não | não |
+| 7 nós | wine | sim | não | não | sim | sim |
+| 7 nós | breast_cancer | sim | não | não | sim | não |
+| 7 nós | digits | sim | não | sim | sim | sim |
+| 7 nós | adult | não | não | não | sim | sim |
+| 7 nós | german_credit | sim | não | sim | sim | sim |
+| 7 nós | phys_bmi | sim | sim | sim | sim | sim |
+| 7 nós | phys_kinetic | não | não | sim | não | sim |
+| 7 nós | phys_power | sim | sim | sim | sim | sim |
+@@
+| Execução | Dataset | Braço | Razão pontos novos (mín.–máx.) | Razão linhas contadas (mín.–máx.) | Unidades com H11.1/H11.2 | Pontos novos só por probabilidade |
+|---|---|---|---|---|---|---|
+| omissao | german_credit | R | 0,98–1,01 | 2,11–2,23 | 5/5 | 0 |
+| omissao | german_credit | R7 | 0,85–1,07 | 2,32–2,77 | 5/5 | 0 |
+| omissao | phys_bmi | R | 1,00–1,16 | 2,10–2,39 | 4/5 | 0 |
+| omissao | phys_bmi | R7 | 0,98–1,02 | 2,17–2,38 | 5/5 | 0 |
+| omissao | phys_kinetic | R | 1,00–1,08 | 2,05–2,27 | 5/5 | 0 |
+| omissao | phys_kinetic | R7 | 0,99–1,02 | 2,18–2,39 | 5/5 | 0 |
+| omissao | phys_power | R | 0,99–1,04 | 2,11–2,25 | 5/5 | 0 |
+| omissao | phys_power | R7 | 0,99–1,00 | 2,32–2,37 | 5/5 | 0 |
+| selecionado | adult | A | 0,97–1,02 | 2,22–2,45 | 5/5 | 0 |
+| selecionado | adult | D | 0,98–1,02 | 2,34–2,70 | 5/5 | 0 |
+| selecionado | adult | E | 0,99–1,01 | 2,22–2,45 | 5/5 | 0 |
+| selecionado | adult | R | 0,98–1,00 | 2,22–2,45 | 5/5 | 0 |
+| selecionado | adult | R7 | 0,73–1,01 | 2,47–3,04 | 5/5 | 0 |
+| selecionado | adult | V | 2,08–2,35 | 3,39–3,98 | 0/5 | 0 |
+| selecionado | breast_cancer | A | 0,95–1,08 | 2,08–2,43 | 5/5 | 0 |
+| selecionado | breast_cancer | D | 0,96–1,12 | 2,17–2,44 | 4/5 | 0 |
+| selecionado | breast_cancer | E | 0,96–1,02 | 2,10–2,24 | 5/5 | 0 |
+| selecionado | breast_cancer | R | 0,96–1,05 | 2,08–2,29 | 5/5 | 0 |
+| selecionado | breast_cancer | R7 | 0,97–1,08 | 2,22–2,49 | 5/5 | 0 |
+| selecionado | breast_cancer | V | 1,79–1,93 | 2,97–3,11 | 0/5 | 0 |
+| selecionado | digits | A | 0,96–1,00 | 2,02–2,17 | 5/5 | 0 |
+| selecionado | digits | D | 1,00–1,08 | 2,18–2,30 | 5/5 | 0 |
+| selecionado | digits | E | 1,00–1,01 | 2,10–2,17 | 5/5 | 0 |
+| selecionado | digits | R | 1,00–1,02 | 2,10–2,17 | 5/5 | 0 |
+| selecionado | digits | R7 | 0,99–1,01 | 2,88–3,08 | 5/5 | 0 |
+| selecionado | digits | V | 1,95–2,06 | 3,07–3,29 | 0/5 | 0 |
+| selecionado | german_credit | A | 0,99–1,02 | 2,12–2,46 | 5/5 | 0 |
+| selecionado | german_credit | D | 0,98–1,01 | 2,19–2,70 | 5/5 | 0 |
+| selecionado | german_credit | E | 0,98–1,01 | 2,12–2,46 | 5/5 | 0 |
+| selecionado | german_credit | R | 0,98–1,02 | 2,12–2,46 | 5/5 | 0 |
+| selecionado | german_credit | R7 | 0,86–1,07 | 2,39–2,98 | 5/5 | 0 |
+| selecionado | german_credit | V | 2,07–2,30 | 3,24–3,89 | 0/5 | 0 |
+| selecionado | iris | A | 0,95–1,02 | 1,99–2,24 | 5/5 | 0 |
+| selecionado | iris | D | 0,93–1,24 | 2,18–2,84 | 4/5 | 0 |
+| selecionado | iris | E | 0,97–1,16 | 2,15–2,49 | 4/5 | 0 |
+| selecionado | iris | R | 0,97–1,18 | 2,15–2,54 | 4/5 | 0 |
+| selecionado | iris | R7 | 0,89–1,00 | 2,14–2,38 | 5/5 | 0 |
+| selecionado | iris | V | 1,35–1,76 | 2,56–3,13 | 0/5 | 0 |
+| selecionado | phys_bmi | A | 0,85–1,05 | 1,84–2,33 | 5/5 | 0 |
+| selecionado | phys_bmi | D | 0,42–1,01 | 0,97–2,25 | 5/5 | 0 |
+| selecionado | phys_bmi | E | 0,15–0,97 | 0,35–2,14 | 5/5 | 0 |
+| selecionado | phys_bmi | R | 0,15–1,01 | 0,35–2,26 | 5/5 | 0 |
+| selecionado | phys_bmi | R7 | 0,98–1,04 | 2,14–2,33 | 5/5 | 0 |
+| selecionado | phys_bmi | V | 0,15–1,68 | 0,35–2,93 | 4/5 | 0 |
+| selecionado | phys_kinetic | A | 0,91–1,05 | 1,89–2,27 | 5/5 | 0 |
+| selecionado | phys_kinetic | D | 0,79–1,11 | 1,81–2,41 | 4/5 | 0 |
+| selecionado | phys_kinetic | E | 0,16–1,03 | 0,37–2,18 | 5/5 | 0 |
+| selecionado | phys_kinetic | R | 0,16–1,08 | 0,37–2,27 | 5/5 | 0 |
+| selecionado | phys_kinetic | R7 | 1,00–1,04 | 2,18–2,37 | 5/5 | 0 |
+| selecionado | phys_kinetic | V | 0,16–1,75 | 0,37–2,98 | 1/5 | 0 |
+| selecionado | phys_power | A | 0,79–1,10 | 1,72–2,38 | 4/5 | 0 |
+| selecionado | phys_power | D | 0,85–1,09 | 1,83–2,36 | 5/5 | 0 |
+| selecionado | phys_power | E | 0,13–1,04 | 0,30–2,25 | 5/5 | 0 |
+| selecionado | phys_power | R | 0,13–1,05 | 0,30–2,25 | 5/5 | 0 |
+| selecionado | phys_power | R7 | 0,98–1,04 | 2,14–2,39 | 5/5 | 0 |
+| selecionado | phys_power | V | 0,13–1,77 | 0,30–3,02 | 2/5 | 0 |
+| selecionado | wine | A | 0,63–1,99 | 1,33–4,39 | 2/5 | 0 |
+| selecionado | wine | D | 0,36–1,26 | 0,79–2,71 | 3/5 | 0 |
+| selecionado | wine | E | 0,43–2,00 | 0,91–4,24 | 3/5 | 0 |
+| selecionado | wine | R | 0,41–1,67 | 0,87–3,62 | 3/5 | 0 |
+| selecionado | wine | R7 | 0,89–1,00 | 2,14–2,38 | 5/5 | 0 |
+| selecionado | wine | V | 0,60–2,47 | 1,07–4,48 | 1/5 | 0 |
+@@
+Integridade: 910/910; unidades com diferenças: []
+Construção: Bc 45/45, Rc 45/45, c45_d2 45/45
+Rnp ≡ R (MLP por omissão): 120/120
