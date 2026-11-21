@@ -1,0 +1,19 @@
+orcamento,dataset,elegivel,sustentada,observada,original_supera_c45,reloaded_supera_c45_acc_e_fid
+tamanho do C4.5,iris,False,False,False,False,False
+tamanho do C4.5,wine,True,False,False,True,True
+tamanho do C4.5,breast_cancer,True,False,True,False,False
+tamanho do C4.5,digits,True,False,True,False,True
+tamanho do C4.5,adult,False,False,False,False,False
+tamanho do C4.5,german_credit,True,False,False,False,False
+tamanho do C4.5,phys_bmi,True,False,True,False,True
+tamanho do C4.5,phys_kinetic,False,True,True,True,True
+tamanho do C4.5,phys_power,True,True,True,True,True
+7 nós,iris,False,False,False,False,False
+7 nós,wine,True,False,False,True,True
+7 nós,breast_cancer,True,False,False,True,False
+7 nós,digits,True,False,True,True,True
+7 nós,adult,False,False,False,True,True
+7 nós,german_credit,True,False,True,True,True
+7 nós,phys_bmi,True,True,True,True,True
+7 nós,phys_kinetic,False,False,True,False,True
+7 nós,phys_power,True,True,True,True,True
