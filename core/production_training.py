@@ -170,6 +170,24 @@ def _select_reloaded_mode(acfg,augmented,teacher,oracle,Ztr,ytr,cfg,ontology,qua
             'config':dataclasses.asdict(acfg)},chosen,variants
 
 
+def semantic_attribution_guard(ontology_used: bool, attribution: Optional[Dict[str,Any]], reloaded_mode: str) -> Dict[str,Any]:
+    """Âmbito da alegação semântica (P03). Só relata, nunca altera modelos.
+
+    A diferença Reloaded − Original só pode ser atribuída à ontologia se o gate de atribuição (controlos com a mesma maquinaria e
+    sem significado, avaliados só no treino) a aprovou. Sem gate, a diferença mistura mecanismos semânticos e não semânticos."""
+    if not ontology_used:
+        status='NO_ONTOLOGY'
+    elif attribution is None:
+        status='NOT_EVALUATED_AGAINST_CONTROLS'
+    else:
+        status=str(attribution.get('status'))
+    attributed=status==ATTRIBUTED
+    return {'status':status,'evaluated_against_controls':attribution is not None,'reloaded_mode':reloaded_mode,
+            'claim':'ontology_attributable_gain_supported_on_training_controls' if attributed else 'do_not_attribute_reloaded_gain_to_ontology',
+            'how_to_evaluate':None if attribution is not None or not ontology_used else
+                'train_production_dataframe(..., semantic_attribution=AttributionConfig()) / biuri_cli train-production --semantic-attribution'}
+
+
 def train_production_dataframe(
     df: pd.DataFrame, *, target, out_dir: str | Path,
     seed: int=42, test_size: float=0.25, owl_path: Optional[str|Path]=None,
@@ -413,6 +431,7 @@ def train_production_dataframe(
             real_model=AugmentedPredictor(pair.reloaded,teacher) if reloaded_mode=='augmented' else pair.reloaded
             attribution['test_attribution']=test_attribution_report(real_model,controls,Zte,yte,oracle)
         evaluation['semantic_attribution']=attribution
+    evaluation['semantic_attribution_guard']=semantic_attribution_guard(bool(quality and quality.get('accepted')),attribution,reloaded_mode)
     status=build_ontology_stage_status(quality,None,enrichment) if quality else None
     if status is not None:
         status['semantic_teacher_used']=bool(teacher is not None)
@@ -438,6 +457,7 @@ def train_production_dataframe(
         'ontology_used':bool(quality and quality.get('accepted')),
         'semantic_contribution_status':contribution.get('status'),
         'claim_guard':evaluation['scientific_validation'].get('claim_guard'),
+        'semantic_attribution_status':evaluation['semantic_attribution_guard']['status'],
         'convergence':extract_mlp_convergence(mlp),
         'class_order':class_order or list(map(str,getattr(mlp,'classes_',[]))),
         'scientific_tuning': bool(scientific_tuning),
