@@ -30,6 +30,8 @@ class MLPTrainer:
     def __init__(self):
         self.label_encoder = OrderedLabelEncoder()
         self.feature_encoders = {}
+        self.numeric_fill = {}          # mediana do treino por coluna numérica (só usada em valores ausentes)
+        self.encoding_events = {}       # {coluna: {'ausentes_imputados': n, 'categorias_nao_vistas': n}} da última codificação
         self.model = None
         self.arff_meta = None
         self._extra_column_encoders = {}
@@ -44,6 +46,8 @@ class MLPTrainer:
     def reset(self, keep_label_encoder=False):
         """Reinicia encoders e modelo (evita conflito de dimensões entre treinos)."""
         self.feature_encoders = {}
+        self.numeric_fill = {}
+        self.encoding_events = {}
         self._extra_column_encoders = {}
         self.model = None
         if not keep_label_encoder:
@@ -91,21 +95,57 @@ class MLPTrainer:
                 return True
         return False
 
+    @staticmethod
+    def _is_missing_cell(value) -> bool:
+        if value is None:
+            return True
+        if isinstance(value, str):
+            return value.strip() in ("", "?")
+        try:
+            return bool(np.isnan(value))
+        except (TypeError, ValueError):
+            return False
+
+    def _count_event(self, i, kind):
+        ev = self.encoding_events.setdefault(i, {"ausentes_imputados": 0, "categorias_nao_vistas": 0})
+        ev[kind] += 1
+
+    def _encode_categorical(self, i, encoder, text):
+        """Categoria vista no treino: código do LabelEncoder (inalterado). Não vista: código da categoria mais frequente do
+        treino (imputação por moda, ajustada só no treino; equivalente ao ``most_frequent`` do pipeline de produção)."""
+        lookup = getattr(encoder, "_biuri_index", None)
+        if lookup is None or len(lookup) != len(encoder.classes_):
+            lookup = {str(c): k for k, c in enumerate(encoder.classes_)}
+            encoder._biuri_index = lookup
+        code = lookup.get(text)
+        if code is not None:
+            return code                                     # == encoder.transform([text])[0] (classes_ ordenadas)
+        fill = getattr(encoder, "_biuri_fill_code", None)
+        if fill is None:                                    # encoder antigo (cache) sem moda registada: comportamento anterior
+            return encoder.transform([text])[0]
+        self._count_event(i, "categorias_nao_vistas")
+        return fill
+
+    def _encode_numeric(self, i, value):
+        if self._is_missing_cell(value) and i in self.numeric_fill:
+            self._count_event(i, "ausentes_imputados")
+            return self.numeric_fill[i]
+        return float(value)
+
     def _encode_features(self, X):
         X_arr = np.asarray(X, dtype=object)
         if X_arr.ndim == 1:
             X_arr = X_arr.reshape(1, -1)
+        self.encoding_events = {}
         encoded = []
         for sample in X_arr:
             sample_encoded = []
             for i, value in enumerate(sample):
                 value = self._normalize_cell(value)
                 if i in self.feature_encoders:
-                    sample_encoded.append(
-                        self.feature_encoders[i].transform([str(value)])[0]
-                    )
+                    sample_encoded.append(self._encode_categorical(i, self.feature_encoders[i], str(value)))
                 else:
-                    sample_encoded.append(float(value))
+                    sample_encoded.append(self._encode_numeric(i, value))
             encoded.append(sample_encoded)
         return np.array(encoded, dtype=float)
 
@@ -114,6 +154,9 @@ class MLPTrainer:
         X_arr = np.asarray(X, dtype=object)
         values = [str(self._normalize_cell(row[i])) for row in X_arr]
         le.fit(values)
+        # moda do treino (empate: menor código, determinístico) para categorias que só aparecem fora do treino
+        codes = le.transform(values)
+        le._biuri_fill_code = int(np.bincount(codes).argmax()) if len(codes) else None
         self.feature_encoders[i] = le
 
     def _fit_encoders(self, X):
@@ -128,6 +171,11 @@ class MLPTrainer:
         for i in range(n_cols):
             if self._column_needs_encoder(X_arr, i):
                 self._create_encoder_for_feature(i, X_arr)
+            else:
+                # mediana do treino, só aplicada a valores ausentes (o MLP do sklearn recusa NaN); sem ausentes nada muda
+                vals = [self._normalize_cell(v) for v in X_arr[:, i]]
+                present = [float(v) for v in vals if not self._is_missing_cell(v)]
+                self.numeric_fill[i] = float(np.median(present)) if present else 0.0
 
     def _stratified_split(self, X_encoded, y_encoded, test_size=0.3, random_state=42):
         try:
@@ -628,9 +676,9 @@ class MLPTrainer:
                 if col_name in base_set:
                     base_i = name_to_base_idx[col_name]
                     if base_i in self.feature_encoders:
-                        row.append(self.feature_encoders[base_i].transform([value])[0])
+                        row.append(self._encode_categorical(base_i, self.feature_encoders[base_i], str(value)))
                     else:
-                        row.append(float(value))
+                        row.append(self._encode_numeric(base_i, value))
                 elif col_name in extra_encoders:
                     row.append(extra_encoders[col_name].transform([str(value)])[0])
                 else:

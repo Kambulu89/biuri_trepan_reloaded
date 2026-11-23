@@ -178,6 +178,7 @@ class TrepanReloaded:
         try:
             self.mlp_trainer_onto.label_encoder = self.mlp_trainer.label_encoder
             self.mlp_trainer_onto.feature_encoders = dict(self.mlp_trainer.feature_encoders)
+            self.mlp_trainer_onto.numeric_fill = dict(getattr(self.mlp_trainer, 'numeric_fill', {}) or {})
             self.mlp_trainer_onto._extra_column_encoders = dict(
                 self.mlp_trainer._extra_column_encoders
             )

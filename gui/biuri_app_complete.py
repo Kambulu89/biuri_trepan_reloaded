@@ -2894,7 +2894,10 @@ que la red se vuelve interpretable.
             raise ValueError("Formato de archivo no soportado. Utilice archivos ARFF, CSV o TSV.")
 
         self.show_results(info_text)
-        n_rows = len(self.current_data) if self.current_data is not None else 0
+        data = self.current_data
+        if isinstance(data, tuple) and data:                 # (X, y): o nº de instâncias é o de linhas, não o tamanho do par
+            data = data[0]
+        n_rows = len(data) if data is not None else 0
         onto_bit = (
             " Ontología lista para enriquecer el árbol."
             if self.loaded_ontology is not None
