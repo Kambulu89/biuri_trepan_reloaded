@@ -703,10 +703,9 @@ def log_mlp_optimization(result: Dict[str, Any]) -> None:
     print(f"Method: {result.get('optimization_method', 'unknown')}")
     print(f"Best params: {_serialize_params(result.get('best_params', {}))}")
     print(f"Best CV score: {result.get('best_score', 0):.4f}")
-    print(f"Test accuracy: {tm.get('accuracy', 0):.4f}")
-    print(f"Test precision: {tm.get('precision', 0):.4f}")
-    print(f"Test recall: {tm.get('recall', 0):.4f}")
-    print(f"Test f1: {tm.get('f1', 0):.4f}")
+    for key in ("accuracy", "precision", "recall", "f1"):       # métrica ainda não calculada: «N/D», nunca 0 enganador
+        val = tm.get(key)
+        print(f"Test {key}: {val:.4f}" if isinstance(val, (int, float)) else f"Test {key}: N/D")
     conv = result.get("convergence") or tm.get("convergence") or {}
     if conv:
         print(

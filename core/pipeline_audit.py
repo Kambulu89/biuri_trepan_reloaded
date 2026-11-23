@@ -76,14 +76,17 @@ def log_ontology_acceptance(acceptance: Optional[Dict[str, Any]], selected_oracl
     print(f"ontology_feature_gate_accepted: {acceptance.get('ontology_feature_gate_accepted')}")
     print(f"oracle_gate_accepted: {acceptance.get('oracle_gate_accepted')}")
     print(f"surrogate_gate_accepted: {acceptance.get('surrogate_gate_accepted')}")
-    print(f"MLP Original accuracy: {acceptance.get('accuracy_original', 0) * 100:.1f}%")
-    print(f"MLP Original macro_f1: {acceptance.get('f1_original', 0) * 100:.1f}%")
-    print(f"MLP Original balanced_accuracy: {acceptance.get('balanced_accuracy_original', 0) * 100:.1f}%")
-    print(f"MLP Onto/Residual accuracy: {acceptance.get('accuracy_onto', 0) * 100:.1f}%")
-    print(f"MLP Onto/Residual macro_f1: {acceptance.get('f1_onto', 0) * 100:.1f}%")
-    print(f"MLP Onto/Residual balanced_accuracy: {acceptance.get('balanced_accuracy_onto', 0) * 100:.1f}%")
-    print(f"accuracy_gain: {acceptance.get('accuracy_gain', 0) * 100:+.1f}%")
-    print(f"f1_gain: {acceptance.get('f1_gain', 0) * 100:+.1f}%")
+    def _pct(key, signed=False):                                   # métrica não avaliada: «N/D», nunca 0.0 %
+        val = acceptance.get(key)
+        if not isinstance(val, (int, float)):
+            return "N/D"
+        return f"{val * 100:+.1f}%" if signed else f"{val * 100:.1f}%"
+    for label, key in (("MLP Original accuracy", "accuracy_original"), ("MLP Original macro_f1", "f1_original"),
+                       ("MLP Original balanced_accuracy", "balanced_accuracy_original"), ("MLP Onto/Residual accuracy", "accuracy_onto"),
+                       ("MLP Onto/Residual macro_f1", "f1_onto"), ("MLP Onto/Residual balanced_accuracy", "balanced_accuracy_onto")):
+        print(f"{label}: {_pct(key)}")
+    print(f"accuracy_gain: {_pct('accuracy_gain', True)}")
+    print(f"f1_gain: {_pct('f1_gain', True)}")
     print(f"ontology_impact: {acceptance.get('ontology_impact', 'N/A')}")
     print(f"Ontology accepted: {acceptance.get('ontology_accepted_label', 'N/A')}")
     if selected_oracle:

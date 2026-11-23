@@ -68,3 +68,14 @@ def test_legacy_encoder_without_mode_keeps_the_previous_error():
     del t.feature_encoders[0]._biuri_fill_code
     with pytest.raises(ValueError, match="unseen"):
         t._encode_features(X)
+
+
+def test_logs_print_nd_for_metrics_that_were_not_computed(capsys):
+    """Métrica ausente no registo: «N/D», nunca 0.0 % (que se lê como resultado)."""
+    from core.mlp_optimizer import log_mlp_optimization
+    from core.pipeline_audit import log_ontology_acceptance
+    log_mlp_optimization({"model_name": "MLP", "test_metrics": {"accuracy": 0.5}})
+    log_ontology_acceptance({"ontology_quality_accepted": True, "accuracy_original": 0.9})
+    out = capsys.readouterr().out
+    assert "Test accuracy: 0.5000" in out and "Test f1: N/D" in out
+    assert "MLP Original accuracy: 90.0%" in out and "MLP Onto/Residual accuracy: N/D" in out and "accuracy_gain: N/D" in out
