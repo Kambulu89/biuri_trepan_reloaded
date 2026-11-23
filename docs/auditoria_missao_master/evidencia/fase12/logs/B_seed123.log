@@ -1,0 +1,3 @@
+commit=03471b92f7284db034f0bbec651b52e8c1c5e960 dirty=0 inicio=2026-11-23T12:30:49Z flag=--semantic-attribution
+{"status": "ok", "artifact": "/home/user/audit_runs/fase12/B/seed123/production_bundle.joblib", "semantic_contribution_status": "NO_OBSERVED_SEMANTIC_CONTRIBUTION", "ontology_quality": "VALID_DOMAIN_ONTOLOGY", "semantic_attribution_status": "NOT_ATTRIBUTED"}
+rc=0 segundos=862 fim=2026-11-23T12:45:11Z
