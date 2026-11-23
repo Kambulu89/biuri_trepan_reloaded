@@ -25,7 +25,7 @@ from PyQt6.QtGui import (
 from PyQt6.QtCore import QRect, QSize
 import numpy as np
 import pandas as pd
-from scipy.io import arff
+from core.arff_io import read_arff
 
 sys.path.append(str(Path(__file__).parent.parent))
 from core.trepan import TrepanReloaded
@@ -2655,13 +2655,8 @@ que la red se vuelve interpretable.
             if _is_arff:
                 relation_name, attributes, num_instances_from_header = self._extract_arff_header_info(file_path)
                 
-                data, meta = arff.loadarff(file_path)
-                df = pd.DataFrame(data)
-                
-                str_df = df.select_dtypes([object])
-                str_df = str_df.stack().str.decode('utf-8').unstack()
-                for col in str_df:
-                    df[col] = str_df[col]
+                # Leitor ARFF com Unicode: valores nominais com acentos (o loadarff do scipy só aceita ASCII nos nominais).
+                df, meta = read_arff(file_path)
                 # Esquema do dataset: alvo/ordem/tipos. ARFF por omissão (alvo = última coluna, ordem declarada,
                 # sem correções manuais) devolve o dataframe intacto, exatamente como antes.
                 df, dataset_schema = self._prepare_dataset_schema(

@@ -1,7 +1,7 @@
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from scipy.io import arff
+from core.arff_io import read_arff
 import pandas as pd
 import os
 import numpy as np
@@ -651,13 +651,7 @@ class MLPTrainer:
 
     def load_arff(self, file_path):
         
-        data, meta = arff.loadarff(file_path)
-        df = pd.DataFrame(data)
-
-        # Decodificação segura de strings
-        str_cols = df.select_dtypes([object]).columns
-        for col in str_cols:
-            df[col] = df[col].str.decode('utf-8')
+        df, meta = read_arff(file_path)              # valores nominais já em str, com Unicode
 
         features = df.columns[:-1].tolist()
         target = df.columns[-1]

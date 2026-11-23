@@ -33,15 +33,12 @@ def load_tabular(path,*,encoding:Optional[str]=None,separator:Optional[str]=None
             df=pd.read_csv(p,sep=sep,encoding=enc)
             meta={'format':'csv' if ext!='.tsv' else 'tsv','separator':sep,'encoding':enc}
         elif ext=='.arff':
-            from scipy.io import arff
-            data,arff_meta=arff.loadarff(p)
-            df=pd.DataFrame(data)
-            for c in df.columns:
-                if df[c].dtype==object: df[c]=df[c].map(lambda v:v.decode('utf-8',errors='replace') if isinstance(v,bytes) else v)
+            from core.arff_io import read_arff
+            df,arff_meta=read_arff(p)              # Unicode nos valores nominais (o leitor do scipy só aceita ASCII)
             # O tipo DECLARADO no cabeçalho acompanha os dados: um nominal {01,1} nunca pode ser reinterpretado como número.
             schema=_arff_declared_schema(arff_meta)
             df.attrs['arff_schema']=schema
-            meta={'format':'arff','arff_schema':schema}
+            meta={'format':'arff','arff_schema':schema,'encoding':arff_meta.encoding}
         elif ext=='.parquet':
             try: df=pd.read_parquet(p)
             except ImportError as exc: raise DataContractError('Leitura Parquet requer pyarrow ou fastparquet.') from exc
