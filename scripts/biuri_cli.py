@@ -27,17 +27,24 @@ def cmd_train(a):
     (out/'training_report.md').write_text('# Relatório de treino BIURI V9.2\n\n```json\n'+json.dumps(report,indent=2,ensure_ascii=False,default=str)+'\n```\n',encoding='utf-8')
     print(json.dumps({'status':'ok','artifact':str(out)},ensure_ascii=False))
 
+def _attribution_config():
+    from core.semantic_attribution import AttributionConfig
+    return AttributionConfig()
+
+
 def cmd_train_production(a):
     df,meta=load_tabular(a.data,encoding=a.encoding,separator=a.separator)
     report=train_production_dataframe(
         df,target=a.target,out_dir=a.out,seed=a.seed,owl_path=a.owl,
         require_reasoner=not a.allow_unreasoned_owl,
+        semantic_attribution=_attribution_config() if a.semantic_attribution else None,
     )
     print(json.dumps({
         'status':'ok',
         'artifact':str(Path(a.out)/'production_bundle.joblib'),
         'semantic_contribution_status':report['evaluation']['semantic_contribution_gate']['status'],
         'ontology_quality':(report['evaluation'].get('ontology_quality') or {}).get('status'),
+        'semantic_attribution_status':report['evaluation']['semantic_attribution_guard']['status'],
     },ensure_ascii=False))
 
 
@@ -64,7 +71,7 @@ def main(argv=None):
     ap.add_argument('--verbose',action='store_true'); ap.add_argument('--quiet',action='store_true')
     sub=ap.add_subparsers(dest='cmd',required=True)
     t=sub.add_parser('train'); t.add_argument('--data',required=True); t.add_argument('--target',required=True); t.add_argument('--out',required=True); t.add_argument('--seed',type=int,default=42); t.add_argument('--owl'); t.add_argument('--encoding'); t.add_argument('--separator'); t.add_argument('--preset',choices=['scientific'],default='scientific'); t.add_argument('--max-nodes',type=int,default=31); t.set_defaults(func=cmd_train)
-    tp=sub.add_parser('train-production'); tp.add_argument('--data',required=True); tp.add_argument('--target',required=True); tp.add_argument('--out',required=True); tp.add_argument('--seed',type=int,default=42); tp.add_argument('--owl'); tp.add_argument('--encoding'); tp.add_argument('--separator'); tp.add_argument('--allow-unreasoned-owl',action='store_true'); tp.set_defaults(func=cmd_train_production)
+    tp=sub.add_parser('train-production'); tp.add_argument('--data',required=True); tp.add_argument('--target',required=True); tp.add_argument('--out',required=True); tp.add_argument('--seed',type=int,default=42); tp.add_argument('--owl'); tp.add_argument('--encoding'); tp.add_argument('--separator'); tp.add_argument('--allow-unreasoned-owl',action='store_true'); tp.add_argument('--semantic-attribution',action='store_true',help='avalia a atribuição à ontologia contra controlos (só treino)'); tp.set_defaults(func=cmd_train_production)
     e=sub.add_parser('evaluate'); e.add_argument('--artifact',required=True); e.add_argument('--data',required=True); e.add_argument('--target',required=True); e.set_defaults(func=cmd_evaluate)
     p=sub.add_parser('predict'); p.add_argument('--artifact',required=True); p.add_argument('--data',required=True); p.set_defaults(func=cmd_predict)
     pp=sub.add_parser('predict-production'); pp.add_argument('--artifact',required=True); pp.add_argument('--data',required=True); pp.add_argument('--model',choices=['mlp','trepan_original','trepan_reloaded','c45_native'],default='mlp'); pp.set_defaults(func=cmd_predict_production)

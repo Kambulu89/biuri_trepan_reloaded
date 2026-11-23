@@ -7,6 +7,7 @@ Ramo local `auditoria/missao-master`. Nenhum push foi feito. Nenhum baseline, da
 | `af02d5d` | P09 — coluna numérica com marcadores de ausente inferida como categórica | `core/data_contract.py` (`_coerce_numeric_text`), `tests/test_audit_numeric_with_missing_tokens.py` | 5 dos 7 testes novos falhavam com o código original | 7 aprovados |
 | `16e6be8` | P01 — gate declarava contribuição semântica sem decisão alterada | `core/semantic_contribution_gate.py`, `tests/test_audit_semantic_contribution_gate.py` | Execução real: Breast Cancer, semente 7, estado «SUPPORTED» com impacto 0 (reproduzida exatamente em 2026-11-20 com o mesmo código; com a ordem declarada das classes a semente deixa de exemplificar o defeito, ver `PRODUCAO_BC_RECALCULO.md`) | 3 testes novos + `tests/test_production_semantic_v92.py` aprovados |
 | `010619f` | P20 — regressão de `af02d5d`: atributo ARFF nominal `{01,1}` descartado; P21 — ordem declarada do alvo ignorada na produção, `?` no alvo | `core/data_loading.py`, `core/data_contract.py`, `core/evaluation_protocol.py`, `core/pipeline_v92.py`, `core/production_training.py`, `core/benchmark/runner.py`, `gui/biuri_app_complete.py`, `tests/test_arff_declared_schema.py`, `tests/test_identity_metamorphic.py` | 11 de 13 testes ARFF falhavam com o código de `a0ec5dc` (`evidencia/arff_identidade/testes_arff_antes_da_correcao_a0ec5dc.log`) | 13 testes ARFF e 6 de identidade aprovados; ver «Regressão» |
+| `03471b9` | P03 (parcial) — produção sem declaração de controlos | `core/production_training.py` (`semantic_attribution_guard`), `scripts/biuri_cli.py` (`--semantic-attribution`), `tests/test_production_attribution_guard.py` | Execução real: Breast Cancer, sementes 7 e 123, `SEMANTIC_CONTRIBUTION_SUPPORTED` sem controlos | 6 testes novos; com o gate, `NOT_ATTRIBUTED` nas 3 sementes; sem o gate, resultados idênticos ao recálculo anterior (`FASE12_RESULTADOS.md`) |
 
 ## Detalhe
 
@@ -34,6 +35,7 @@ Nenhuma experiência anterior tinha atributos nominais com valores que parecem n
 - Suite completa antes das correções: 1732 aprovados, 40 ignorados (`evidencia/pytest_full_baseline.log`).
 - Suite completa depois das correções: 1742 aprovados, 40 ignorados (`evidencia/pytest_full_after_fixes.log`). Os 10 testes a mais são os novos.
 - Suite completa depois de P20/P21 (código de `010619f`, executada em `7a4ccf7`): 1773 aprovados, 40 ignorados, 0 falhados, código de saída 0 (`evidencia/arff_identidade/pytest_completo_7a4ccf7.log`). Inclui os 19 testes dirigidos novos e os testes acrescentados nas fases 2 a 9.
+- Suite completa depois de P03 parcial (código de `03471b9`): 1779 aprovados, 40 ignorados, 0 falhados, código de saída 0 (`evidencia/fase12/pytest_completo_03471b9.log`).
 
 ## O que não corrigi, e porquê
 
