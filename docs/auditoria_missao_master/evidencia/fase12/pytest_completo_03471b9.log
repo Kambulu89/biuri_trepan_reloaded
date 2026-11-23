@@ -1,0 +1,5 @@
+03471b9 feat(produção): guarda de atribuição semântica no relatório e --semantic-attribution na CLI (P03)
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:465: ConvergenceWarning: lbfgs failed to converge (status=1):
+  /home/user/venv-biuri/lib/python3.12/site-packages/sklearn/neural_network/_multilayer_perceptron.py:546: ConvergenceWarning: lbfgs failed to converge (status=1):
+1779 passed, 40 skipped, 121 warnings in 2194.09s (0:36:34)
+exit=0
