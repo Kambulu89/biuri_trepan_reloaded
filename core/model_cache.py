@@ -292,6 +292,7 @@ def serialize_mlp_trainer_state(trainer) -> Dict[str, Any]:
     classes = getattr(trainer.label_encoder, "classes_", None)
     return {
         "feature_encoders": trainer.feature_encoders,
+        "numeric_fill": getattr(trainer, "numeric_fill", {}),
         "_extra_column_encoders": getattr(trainer, "_extra_column_encoders", {}),
         "label_encoder_classes": list(classes) if classes is not None else None,
         "arff_meta": trainer.arff_meta,
@@ -306,6 +307,7 @@ def restore_mlp_trainer_state(trainer, state: Dict[str, Any]) -> None:
     from sklearn.preprocessing import LabelEncoder
 
     trainer.feature_encoders = state.get("feature_encoders", {})
+    trainer.numeric_fill = state.get("numeric_fill", {}) or {}
     trainer._extra_column_encoders = state.get("_extra_column_encoders", {})
     le = LabelEncoder()
     classes = state.get("label_encoder_classes")

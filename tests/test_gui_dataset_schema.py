@@ -86,13 +86,15 @@ def test_arff_explicit_target_directive_reorders_columns(app, tmp_path):
     assert app.arff_meta['features'] == ['a', 'cls']
 
 
-def test_pre_training_gate_blocks_critical(app, tmp_path, monkeypatch):
+def test_missing_values_warn_but_do_not_block_training(app, tmp_path, monkeypatch):
+    """Antes bloqueavam porque o MLP não imputava; agora o MLPTrainer imputa com a mediana do treino (aviso, não bloqueio)."""
     app.load_data_from_file(_write(tmp_path, "m.csv", CSV.replace("2,2.5,no", "2,,no")))
     launched = []
     monkeypatch.setattr(app, "_launch_training_worker", lambda preset: launched.append(preset))
     app.train_model()
-    assert launched == [] and app._box["critical"], "treino devia ficar bloqueado por valores ausentes"
-    assert any(i.code == "MISSING_VALUES" for i in app.dataset_validation.critical)
+    assert len(launched) == 1 and not app._box["critical"]
+    assert any(i.code == "MISSING_VALUES" for i in app.dataset_validation.warnings)
+    assert not any(i.code == "MISSING_VALUES" for i in app.dataset_validation.critical)
 
 
 def test_pre_training_gate_allows_valid_dataset(app, tmp_path, monkeypatch):

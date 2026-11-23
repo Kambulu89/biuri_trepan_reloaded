@@ -130,10 +130,20 @@ def test_kinds_inferred_and_converted(tmp_path):
 
 
 # ---- ausentes, identificadores
-def test_missing_values_block_for_csv(tmp_path):
+def test_missing_values_warn_for_csv_and_block_only_when_strict(tmp_path):
     p, df, s = _schema(tmp_path, CSV.replace("2,51.2,no", "2,,no"))
     assert s.column("age").n_missing == 1
-    assert "MISSING_VALUES" in _codes(validate_schema(s, df))
+    assert "MISSING_VALUES" in _codes(validate_schema(s, df), "warnings")
+    assert not [i for i in validate_schema(s, df).critical if i.code == "MISSING_VALUES"]          # aviso por omissão
+    assert [i for i in validate_schema(s, df, strict_missing=True).critical if i.code == "MISSING_VALUES"]
+
+
+def test_mostly_missing_column_is_not_id_like(tmp_path):
+    """12 valores distintos em 12 presentes, mas 60 linhas: coluna quase vazia, não um identificador."""
+    rows = "\n".join(f"{i},{('h' + str(i)) if i < 12 else ''},{'A' if i % 2 else 'B'}" for i in range(60))
+    p, df, s = _schema(tmp_path, "x,hora,classe\n" + rows + "\n")
+    rep = validate_schema(s, df)
+    assert "ID_LIKE_COLUMN" not in _codes(rep) + _codes(rep, "warnings") and "MISSING_VALUES" in _codes(rep, "warnings")
 
 
 def test_id_like_column_is_blocked(tmp_path):

@@ -496,8 +496,8 @@ def validate_schema(
     strict_missing: Optional[bool] = None,
     duplicate_columns: Sequence[str] = (),
 ) -> ValidationReport:
-    """Incompatibilidades CSV/ARFF/encoder/MLP/ontologia. ``strict_missing``: ausentes bloqueiam (omissão: só se o esquema
-    não for o comportamento anterior de ARFF, para não alterar fluxos existentes).
+    """Incompatibilidades CSV/ARFF/encoder/MLP/ontologia. ``strict_missing=True``: ausentes bloqueiam. Por omissão são aviso:
+    o treino do MLP imputa-os com estatísticas só do treino (numéricos: mediana; categoria não vista: a mais frequente).
 
     * ``trained``: {'class_order': [...], 'target': str, 'feature_names': [...]} do modelo/encoder já treinado.
     * ``arff_reference``: cabeçalho de um ARFF equivalente (``read_arff_header``).
@@ -506,7 +506,7 @@ def validate_schema(
     """
     rep = ValidationReport()
     names = [str(c) for c in df.columns]
-    strict = (not schema.is_default_arff()) if strict_missing is None else bool(strict_missing)
+    strict = bool(strict_missing)
     miss_sev = CRITICAL if strict else WARNING
 
     for dup in duplicate_columns:
@@ -547,7 +547,9 @@ def validate_schema(
         present = [v for v in col if not is_missing(v)]
         miss = len(col) - len(present)
         if miss:
-            rep.add("MISSING_VALUES", miss_sev, f"{miss} valor(es) ausente(s) em {spec.name!r} (o pipeline do MLP não imputa).", spec.name)
+            rep.add("MISSING_VALUES", miss_sev, f"{miss} valor(es) ausente(s) em {spec.name!r} ({100 * miss / max(1, len(col)):.0f} %): o MLP imputa-os com "
+                    "estatísticas só do treino (numérico: mediana; categórico: categoria própria de ausente). Com muitos ausentes a coluna "
+                    "pouco informa e um ausente pode revelar o desfecho; confirme que faz sentido usá-la.", spec.name)
         texts = [_norm_text(v) for v in present]
         if spec.kind == "numeric":
             bad = [t for t in texts if not _is_number(t)]
@@ -569,15 +571,16 @@ def validate_schema(
         if spec.kind == "categorical" and texts and not legacy:
             counts = pd.Series(texts).value_counts()
             n_single = int((counts == 1).sum())
-            if len(counts) >= max(5, int(0.5 * len(texts))):
+            # denominador = todas as linhas: uma coluna quase vazia com poucos valores distintos não é um identificador
+            if len(counts) >= max(5, int(0.5 * len(col))):
                 rep.add("ID_LIKE_COLUMN", CRITICAL,
-                        f"{spec.name!r} tem {len(counts)} valores distintos em {len(texts)} linhas (praticamente um por linha): "
-                        "parece um identificador ou texto livre. O encoder do MLP é ajustado só no treino e falha com categorias "
-                        "não vistas; remova a coluna do ficheiro ou corrija o tipo.", spec.name)
+                        f"{spec.name!r} tem {len(counts)} valores distintos em {len(col)} linhas (praticamente um por linha): "
+                        "parece um identificador ou texto livre. Não generaliza (a maioria dos valores do teste nunca foi vista "
+                        "no treino) e permite memorizar instâncias; remova a coluna do ficheiro ou agrupe as categorias.", spec.name)
             elif n_single:
                 rep.add("RARE_SINGLETON_CATEGORIES", WARNING,
-                        f"{spec.name!r}: {n_single} categoria(s) com uma única ocorrência; se caírem no teste o encoder do MLP "
-                        "falha por categoria não vista.", spec.name)
+                        f"{spec.name!r}: {n_single} categoria(s) com uma única ocorrência; se caírem só no teste são codificadas "
+                        "como a categoria mais frequente do treino (verifique grafias duplicadas).", spec.name)
         if spec.ambiguous:
             rep.add("AMBIGUOUS_NUMERIC_CODES", WARNING, f"{spec.name!r}: {spec.note or 'tipo a confirmar'}.", spec.name)
         if spec.n_unique <= 1 and present:
