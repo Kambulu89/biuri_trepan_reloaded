@@ -32,6 +32,16 @@ class SurrogateImprovementDialog(QDialog):
         root.addWidget(intro)
 
         form = QFormLayout()
+        self.profile_combo = QComboBox()
+        self.profile_combo.addItem("Protocolo BIURI (recomendado)", "biuri")
+        self.profile_combo.addItem("Método da tese (González Pérez, 2026)", "tese")
+        self.profile_combo.setToolTip(
+            "Tese: validação cruzada de 2 partições a maximizar a fidelidade, grelha max_cfs {5, 10} × tipos "
+            "× fator de fronteira, reforço adaptativo dos divergentes, ≥ 50 âncoras. Os CFs de cada partição "
+            "vêm só das linhas de ajuste dessa partição, e o gate de aceitação do BIURI mantém-se."
+        )
+        form.addRow("Perfil do método", self.profile_combo)
+
         self.target_combo = QComboBox()
         self.target_combo.addItem("TREPAN Original e Reloaded", "both")
         self.target_combo.addItem("Somente TREPAN Original", "trepan_original")
@@ -83,6 +93,7 @@ class SurrogateImprovementDialog(QDialog):
         self.strict_density.setChecked(True)
         form.addRow("Gate de plausibilidade", self.strict_density)
         root.addLayout(form)
+        self.profile_combo.currentIndexChanged.connect(self._apply_profile)
 
         note = QLabel(
             "O Reloaded usa o professor e o espaço ontológico apenas quando a OWL "
@@ -106,7 +117,29 @@ class SurrogateImprovementDialog(QDialog):
         buttons.rejected.connect(self.reject)
         root.addWidget(buttons)
 
+    def _apply_profile(self):
+        thesis = self.profile_combo.currentData() == "tese"
+        # A grelha de max_cfs da tese é fixa ({5, 10}); a amostra sintética do extrator na tese é 2000.
+        self.max_cfs_spin.setEnabled(not thesis)
+        if thesis:
+            self.sample_size_spin.setValue(2000)
+            self.confidence_spin.setValue(0.60)
+            self.density_spin.setValue(95.0)
+            self.strict_density.setChecked(True)
+
     def options(self):
+        if self.profile_combo.currentData() == "tese":
+            return {
+                "profile": "tese",
+                "target_model": self.target_combo.currentData(),
+                "counterfactual_method": self.method_combo.currentData(),
+                "max_origins": int(self.max_origins_spin.value()),
+                "cfs_per_origin": int(self.cfs_per_origin_spin.value()),
+                "sample_size": int(self.sample_size_spin.value()),
+                "confidence_threshold": float(self.confidence_spin.value()),
+                "density_percentile": float(self.density_spin.value()),
+                "strict_density_gate": bool(self.strict_density.isChecked()),
+            }
         maximum = int(self.max_cfs_spin.value())
         max_grid = tuple(sorted({min(8, maximum), min(15, maximum), maximum}))
         return {

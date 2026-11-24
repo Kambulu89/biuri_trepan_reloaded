@@ -3724,6 +3724,12 @@ Asegúrese de que:
                 after = item.get('candidate_metrics') or {}
                 if after:
                     lines.append(
+                        "  Accuracy: "
+                        f"atual*={before.get('accuracy', 0):.1%} | "
+                        f"sem CF={control.get('accuracy', 0):.1%} | "
+                        f"com CF={after.get('accuracy', 0):.1%}\n"
+                    )
+                    lines.append(
                         "  Balanced accuracy: "
                         f"atual*={before.get('balanced_accuracy', 0):.1%} | "
                         f"sem CF={control.get('balanced_accuracy', 0):.1%} | "
@@ -3753,6 +3759,22 @@ Asegúrese de que:
                 blockers = (item.get('acceptance_gate') or {}).get('blockers') or []
                 if blockers:
                     lines.append("  Bloqueios: " + ", ".join(blockers) + "\n")
+                config_used = item.get('config') or {}
+                if config_used.get('profile') == 'tese':
+                    lines.append("  Perfil: método da tese (González Pérez, 2026) com o gate de aceitação do BIURI\n")
+                params = item.get('selected_parameters') or {}
+                if params:
+                    lines.append(
+                        f"  Configuração escolhida: max_cfs={params.get('max_cfs')}, tipos={params.get('cf_types')}, "
+                        f"fronteira={'sim' if params.get('use_frontier_weight', True) else 'não'}\n"
+                    )
+                consistency = (item.get('consistency_diagnostic') or {}).get('acceptance') or {}
+                if consistency.get('valid_oracle'):
+                    lines.append(
+                        "  Consistência (CFs válidos no MLP, auditoria): "
+                        f"coincidência={consistency['indicador_a']:.1%}, divergência={consistency['indicador_b']:.1%}, "
+                        f"brecha={consistency['indicador_c']:.1%} (n={consistency['valid_oracle']})\n"
+                    )
             lines.append(
                 "\n* A árvore atual pode já ter visto todo o desenvolvimento e é apenas "
                 "descritiva; o quality gate usa exclusivamente o par sem CF/com CF "
