@@ -140,7 +140,9 @@ THESIS_PROFILE_NOTES = (
     "partir das linhas de ajuste dessa partição (na tese eram gerados em todo o treino e reutilizados nas validações); "
     "(2) a accuracy do oráculo usada para ajustar cf_weight_ratio é medida no treino (na tese vinha de uma tabela "
     "por dataset com a accuracy no teste). Configurações por dataset (MLP, CLEAR) não são importadas: o BIURI é "
-    "agnóstico ao dataset."
+    "agnóstico ao dataset. Limitação: os extratores TREPAN canónicos do BIURI usam os CFs e as âncoras como sementes "
+    "reetiquetadas pelo oráculo e ignoram extra_y/extra_weights; os pesos da tese só decidem QUAIS CFs entram (ordem "
+    "e corte por max_cfs), não a sua influência na árvore."
 )
 
 
