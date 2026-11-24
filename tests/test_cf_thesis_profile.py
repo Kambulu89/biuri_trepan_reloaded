@@ -193,3 +193,55 @@ def test_gui_dialog_offers_the_thesis_profile(qapp=None):
     finally:
         dlg.close()
     assert app is not None
+
+
+# ---- pesos dos CFs com efeito real na árvore (replicação das sementes; o TREPAN canónico não aceita pesos)
+from counterfactuals.surrogate_improvement import replicate_weighted_seeds
+
+
+def test_replication_turns_weights_into_multiplicities():
+    X = np.arange(8, dtype=float).reshape(4, 2)
+    out, audit = replicate_weighted_seeds(X, np.asarray([0.1, 1.0, 2.6, 4.0]))
+    assert out.shape == (1 + 1 + 3 + 4, 2) and audit["rows_passed"] == 9 and audit["copies_min"] == 1 and audit["copies_max"] == 4
+    assert np.array_equal(out[2:5], np.repeat(X[2:3], 3, axis=0))
+    assert audit["quantization_abs_error"] == pytest.approx(0.9 + 0.0 + 0.4 + 0.0)
+    same, audit_ignore = replicate_weighted_seeds(X, np.full(4, 9.0), mode="ignore")
+    assert np.array_equal(same, X) and audit_ignore["seed_weighting"] == "ignore"
+    assert replicate_weighted_seeds(None, None)[0] is None
+    with pytest.raises(ValueError):
+        replicate_weighted_seeds(X, np.asarray([1.0, -1.0, 1.0, 1.0]))
+    assert ImprovementSearchConfig().seed_weighting == "replicate"
+    assert ImprovementSearchConfig.thesis_profile().seed_weighting == "replicate"
+
+
+def test_weights_change_the_real_trepan_tree_and_ignore_mode_is_the_previous_behaviour():
+    import warnings
+    from core.trepan_original import TrepanOriginalExtractor
+
+    class Oracle:
+        classes_ = np.asarray([0, 1])
+
+        def predict(self, X):
+            X = np.asarray(X, dtype=float)
+            return ((X[:, 0] + 0.6 * X[:, 1] ** 2 - 0.3 * X[:, 2]) > 0.4).astype(int)
+
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(120, 3))
+    oracle = Oracle()
+    cfs = rng.normal(size=(15, 3))
+    cfs[:, 0] = 0.4 - 0.6 * cfs[:, 1] ** 2 + 0.3 * cfs[:, 2] + rng.normal(scale=0.05, size=15)
+    probe = rng.normal(size=(2000, 3))
+
+    def predictions(seed_X):
+        extractor = TrepanOriginalExtractor(random_state=7)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            extractor.extract_tree(oracle, X, oracle.predict(X), sample_size=600, feature_names=["a", "b", "c"],
+                                   X_train=X, y_train=oracle.predict(X), X_test=X[:20], y_test=oracle.predict(X[:20]), extra_X=seed_X)
+        return extractor.explainer_tree.predict(probe)
+
+    weight_one = predictions(replicate_weighted_seeds(cfs, np.ones(15))[0])
+    weight_ten = predictions(replicate_weighted_seeds(cfs, np.full(15, 10.0))[0])
+    assert not np.array_equal(weight_one, weight_ten)                               # o peso muda a árvore
+    assert np.array_equal(predictions(replicate_weighted_seeds(cfs, np.full(15, 10.0), mode="ignore")[0]),
+                          predictions(cfs))                                         # "ignore" = caminho anterior
