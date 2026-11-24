@@ -33,12 +33,27 @@ class CandidateParameters:
     max_cfs: int = 15
     cf_types: str = "A+B+C"
     cf_weight_ratio: float = 0.05
+    # Tese (González Pérez, 2026): o fator de fronteira é uma dimensão da grelha. Por omissão, sempre ativo.
+    use_frontier_weight: bool = True
+
+
+PROFILE_BIURI = "biuri"
+PROFILE_THESIS = "tese"
+SELECTION_HOLDOUT = "holdout"
+SELECTION_CV2 = "cv2"
+OBJECTIVE_MULTI = "multiobjective"
+OBJECTIVE_FIDELITY = "fidelity"
 
 
 @dataclass(frozen=True)
 class ImprovementSearchConfig:
-    """Configuração auditável do experimento de melhoria."""
+    """Configuração auditável do experimento de melhoria.
 
+    Os valores por omissão são o protocolo BIURI. ``thesis_profile()`` devolve o método da tese de Eldis Dennys
+    González Pérez (2026) com as duas correções de fuga de informação descritas em ``THESIS_PROFILE_NOTES``.
+    """
+
+    profile: str = PROFILE_BIURI
     validation_fraction: float = 0.25
     acceptance_fraction: float = 0.20
     random_state: int = 42
@@ -62,16 +77,78 @@ class ImprovementSearchConfig:
     minimum_real_gain: float = 0.001
     attribution_margin: float = 0.001
     max_complexity_ratio: float = 1.75
+    # --- opções do método da tese (os valores por omissão reproduzem exatamente o protocolo BIURI)
+    use_frontier_weight_grid: Tuple[bool, ...] = (True,)
+    divergent_boost: str = "fixed"          # "fixed": peso 2,0 | "adaptive": 1 + min(3, 10 / n_B) (tese)
+    divergent_fixed_weight: float = 2.0
+    gap_weight: float = 0.30                # peso base dos CFs de brecha (C)
+    min_anchors: int = 1                    # tese: 50 (limitado ao nº de linhas)
+    min_cf_weight: float = 0.0              # tese: 0,1
+    adjust_ratio_by_oracle_accuracy: bool = False   # tese: ratio · acc/0,9 (≤ 0,10); aqui acc só do treino
+    selection_protocol: str = SELECTION_HOLDOUT     # tese: "cv2" (validação cruzada estratificada, 2 partições)
+    selection_objective: str = OBJECTIVE_MULTI      # tese: "fidelity"
+    # Orçamento que escala os pesos dos CFs (desired_total = ratio · orçamento). "sample_size": o mesmo da amostra
+    # sintética do extrator (BIURI). "thesis": min(5000, max(3000, 5·n)), independente do extrator (tese).
+    cf_weight_budget_rule: str = "sample_size"
+
+    @classmethod
+    def thesis_profile(cls, **overrides: Any) -> "ImprovementSearchConfig":
+        """Método da tese, Cap. 2 e ``pipeline_improve.py``: grelha max_cfs {5, 10} × tipos {A+B, A+B+C} ×
+        fronteira {não, sim}, seleção por validação cruzada de 2 partições a maximizar a fidelidade, reforço
+        adaptativo dos divergentes, peso C 0,3, ≥ 50 âncoras, peso mínimo 0,1, orçamento dos pesos
+        min(5000, max(3000, 5·n)), amostra sintética do extrator 2000, filtro de confiança 0,6 e de densidade P95 (rejeição, passo 5.4).
+        O gate de aceitação do BIURI mantém-se: a tese não o tem, mas sem ele uma árvore pior seria implantada."""
+        base = dict(
+            profile=PROFILE_THESIS,
+            max_origins=0,                      # tese: 33 % das instâncias de treino, sem teto
+            max_cfs_grid=(5, 10),
+            cf_types_grid=("A+B", "A+B+C"),
+            cf_weight_ratio_grid=(0.05,),
+            use_frontier_weight_grid=(False, True),
+            divergent_boost="adaptive",
+            gap_weight=0.30,
+            min_anchors=50,
+            min_cf_weight=0.1,
+            adjust_ratio_by_oracle_accuracy=True,
+            selection_protocol=SELECTION_CV2,
+            selection_objective=OBJECTIVE_FIDELITY,
+            confidence_threshold=0.60,
+            density_percentile=95.0,
+            strict_density_gate=True,
+            sample_size=2000,
+            cf_weight_budget_rule="thesis",
+        )
+        base.update(overrides)
+        return cls(**base)
 
     @classmethod
     def from_options(cls, options: Optional[Mapping[str, Any]]) -> "ImprovementSearchConfig":
         values = dict(options or {})
         allowed = set(cls.__dataclass_fields__)
         clean = {key: value for key, value in values.items() if key in allowed}
-        for key in ("max_cfs_grid", "cf_types_grid", "cf_weight_ratio_grid"):
+        for key in ("max_cfs_grid", "cf_types_grid", "cf_weight_ratio_grid", "use_frontier_weight_grid"):
             if key in clean and not isinstance(clean[key], tuple):
                 clean[key] = tuple(clean[key])
+        if str(clean.get("profile", PROFILE_BIURI)).lower() == PROFILE_THESIS:
+            clean.pop("profile", None)
+            return cls.thesis_profile(**clean)
         return cls(**clean)
+
+
+THESIS_PROFILE_NOTES = (
+    "Correções obrigatórias face ao código da tese: (1) os CFs de cada partição da validação cruzada são gerados só a "
+    "partir das linhas de ajuste dessa partição (na tese eram gerados em todo o treino e reutilizados nas validações); "
+    "(2) a accuracy do oráculo usada para ajustar cf_weight_ratio é medida no treino (na tese vinha de uma tabela "
+    "por dataset com a accuracy no teste). Configurações por dataset (MLP, CLEAR) não são importadas: o BIURI é "
+    "agnóstico ao dataset."
+)
+
+
+def _effective_sample_size(config: "ImprovementSearchConfig", n_rows: int) -> int:
+    """Orçamento que escala os pesos dos CFs: a amostra sintética (BIURI) ou min(5000, max(3000, 5·n)) (tese)."""
+    if str(config.cf_weight_budget_rule).lower() == "thesis":
+        return int(min(5000, max(3000, 5 * int(n_rows))))
+    return int(config.sample_size)
 
 
 @dataclass
@@ -403,17 +480,30 @@ def prepare_counterfactual_augmentation(
             continue
 
         frontier = 1.0
-        if hasattr(original_tree, "predict_proba"):
+        if parameters.use_frontier_weight and hasattr(original_tree, "predict_proba"):
             tree_proba = np.asarray(original_tree.predict_proba(vector.reshape(1, -1)))[0]
             frontier = 0.5 + (1.0 - float(np.max(tree_proba)))
-        type_weight = {"A": 1.0, "B": 2.0, "C": 0.30}[cf_type]
         eligible.append({
             "cf": vector,
             "label": oracle_prediction,
             "confidence": confidence,
             "type": cf_type,
-            "raw_weight": type_weight * confidence * density_factor * frontier,
+            "density_factor": density_factor,
+            "frontier": frontier,
         })
+
+    # Peso por tipo. Divergentes: fixo (BIURI, 2,0) ou adaptativo à sua escassez (tese: 1 + min(3, 10 / n_B)).
+    n_divergent = sum(item["type"] == "B" for item in eligible)
+    if str(config.divergent_boost).lower() == "adaptive":
+        boost_b = 1.0 + min(3.0, 10.0 / n_divergent) if n_divergent else 2.0
+    else:
+        boost_b = float(config.divergent_fixed_weight)
+    type_weights = {"A": 1.0, "B": boost_b, "C": float(config.gap_weight)}
+    for item in eligible:
+        # mesma ordem de multiplicação de sempre: tipo · confiança · densidade · fronteira
+        item["raw_weight"] = type_weights[item["type"]] * item["confidence"] * item["density_factor"] * item["frontier"]
+    stats["divergent_weight"] = float(boost_b)
+    stats["eligible_by_type"] = {key: int(sum(item["type"] == key for item in eligible)) for key in ("A", "B", "C")}
 
     max_by_ratio = max(1, int(np.floor(config.max_cf_ratio * len(X))))
     maximum = max(0, min(int(parameters.max_cfs), max_by_ratio))
@@ -426,17 +516,30 @@ def prepare_counterfactual_augmentation(
     cf_X = np.asarray([item["cf"] for item in selected], dtype=float)
     cf_y = np.asarray([item["label"] for item in selected])
     raw = np.asarray([item["raw_weight"] for item in selected], dtype=float)
-    desired_total = float(parameters.cf_weight_ratio) * float(config.sample_size)
+    ratio = float(parameters.cf_weight_ratio)
+    if config.adjust_ratio_by_oracle_accuracy:
+        # Tese: cf_weight_ratio · (acc_MLP / 0,9), no máximo 0,10. Aqui a accuracy é medida só nas linhas recebidas
+        # (treino), nunca no teste.
+        oracle_accuracy = float(accuracy_score(y, factual_train))
+        ratio = min(ratio * (oracle_accuracy / 0.9), 0.10)
+        stats["oracle_accuracy_on_fit"] = oracle_accuracy
+    sample_size = _effective_sample_size(config, len(X))
+    desired_total = ratio * float(sample_size)
     cf_weights = (
         np.full(len(raw), desired_total / len(raw), dtype=float)
         if raw.sum() <= EPS else raw * (desired_total / raw.sum())
     )
-    cf_weights = np.minimum(cf_weights, float(config.max_cf_weight))
+    if float(config.min_cf_weight) > 0.0:
+        cf_weights = np.clip(cf_weights, float(config.min_cf_weight), float(config.max_cf_weight))
+    else:
+        cf_weights = np.minimum(cf_weights, float(config.max_cf_weight))
     if cf_weights.sum() > desired_total + EPS:
         cf_weights *= desired_total / cf_weights.sum()
+    stats["effective_cf_weight_ratio"] = float(ratio)
+    stats["effective_sample_size"] = int(sample_size)
 
     rng = np.random.RandomState(config.random_state)
-    n_anchor = min(len(X), max(1, int(np.ceil(config.anchor_ratio * len(X)))))
+    n_anchor = min(len(X), max(int(config.min_anchors), int(np.ceil(config.anchor_ratio * len(X)))))
     anchor_indices = rng.choice(len(X), size=n_anchor, replace=False)
     stats["used_real_anchor"] = int(n_anchor)
     stats["total_cf_weight"] = float(cf_weights.sum())
@@ -530,6 +633,127 @@ def _unwrap_builder_result(value: Any) -> Tuple[Any, Dict[str, Any]]:
     return value, {}
 
 
+def consistency_indicators(oracle: Any, tree: Any, cf_list: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    """Estudo de consistência da tese (secção 2.6.3), sobre os CFs válidos no oráculo.
+
+    A (coincidência) = válidos na árvore com a mesma nova classe do oráculo / válidos no oráculo;
+    B (divergência)  = válidos na árvore com outra nova classe / válidos no oráculo;
+    C (brecha)       = válidos no oráculo que a árvore não consegue mudar de classe / válidos no oráculo.
+    Diagnóstico descritivo: a tese mostra que uma brecha alta é condição necessária mas não suficiente para melhorar.
+    """
+    n_generated = len(cf_list)
+    vectors, origins = [], []
+    for item in cf_list:
+        vector = np.asarray(item.get("cf"), dtype=float).reshape(-1)
+        if vector.size and np.isfinite(vector).all():
+            vectors.append(vector)
+            origins.append(item.get("original_class"))
+    if not vectors:
+        return {"total_cfs": int(n_generated), "valid_oracle": 0, "valid_tree": 0, "coincident": 0, "divergent": 0,
+                "gap": 0, "indicador_a": float("nan"), "indicador_b": float("nan"), "indicador_c": float("nan")}
+    matrix = np.vstack(vectors)
+    origins_arr = np.asarray(origins, dtype=object)
+    oracle_pred = np.asarray(oracle.predict(matrix), dtype=object)
+    tree_pred = np.asarray(tree.predict(matrix), dtype=object)
+    valid_oracle = oracle_pred != origins_arr
+    valid_tree = valid_oracle & (tree_pred != origins_arr)
+    coincident = valid_tree & (tree_pred == oracle_pred)
+    n_mlp, n_tree, n_same = int(valid_oracle.sum()), int(valid_tree.sum()), int(coincident.sum())
+    ratio = (lambda value: float(value) / n_mlp) if n_mlp else (lambda value: float("nan"))
+    return {
+        "total_cfs": int(n_generated), "valid_oracle": n_mlp, "valid_tree": n_tree,
+        "coincident": n_same, "divergent": n_tree - n_same, "gap": n_mlp - n_tree,
+        "indicador_a": ratio(n_same), "indicador_b": ratio(n_tree - n_same), "indicador_c": ratio(n_mlp - n_tree),
+    }
+
+
+def _parameter_grid(config: "ImprovementSearchConfig") -> List[CandidateParameters]:
+    return [
+        CandidateParameters(int(max_cfs), str(types), float(ratio), bool(frontier))
+        for max_cfs in config.max_cfs_grid
+        for types in config.cf_types_grid
+        for ratio in config.cf_weight_ratio_grid
+        for frontier in config.use_frontier_weight_grid
+    ]
+
+
+def _selection_score(metrics: Mapping[str, float], baseline_nodes: float, config: "ImprovementSearchConfig") -> float:
+    if str(config.selection_objective).lower() == OBJECTIVE_FIDELITY:
+        return float(metrics["fidelity"])                      # tese: maximizar a fidelidade média
+    return _multiobjective_score(metrics, int(round(baseline_nodes)))
+
+
+_METRIC_KEYS = ("accuracy", "balanced_accuracy", "macro_f1", "minority_recall", "fidelity", "depth", "leaves", "nodes")
+
+
+def _mean_metrics(rows: Sequence[Mapping[str, float]]) -> Dict[str, float]:
+    return {key: float(np.mean([row[key] for row in rows])) for key in _METRIC_KEYS}
+
+
+def _select_by_two_fold_cv(
+    *, oracle, X, y, work_idx, names, candidate_builder, config, constraints_config, ontology_validator,
+    progress_fn, cancel_fn, guard,
+) -> Tuple[List[Dict[str, Any]], Dict[str, float], Dict[str, Any], List[Dict[str, Any]], List[List[int]]]:
+    """Seleção da tese: validação cruzada estratificada de 2 partições no bloco de trabalho.
+
+    Correção face ao código da tese: em cada partição, a árvore de controlo e o conjunto de CFs vêm SÓ das linhas
+    de ajuste dessa partição; a outra metade nunca origina CFs. Uma configuração sem CFs utilizáveis numa partição
+    conta, nessa partição, com a árvore de controlo (como na tese, em que a melhoria devolve a árvore original).
+    """
+    from sklearn.model_selection import StratifiedKFold
+
+    y_work = np.asarray(y)[work_idx]
+    if np.unique(y_work, return_counts=True)[1].min() < 2:
+        raise ValueError("A validação cruzada de 2 partições exige pelo menos 2 exemplos por classe no bloco de trabalho.")
+    folds = list(StratifiedKFold(n_splits=2, shuffle=True, random_state=int(config.random_state)).split(work_idx, y_work))
+    grid = _parameter_grid(config)
+    per_param: List[List[Dict[str, Any]]] = [[] for _ in grid]
+    control_rows, pool_audits, consistency, fold_sizes = [], [], [], []
+    for fold_no, (a, b) in enumerate(folds):
+        tr, va = work_idx[a], work_idx[b]
+        fold_sizes.append([int(len(tr)), int(len(va))])
+        control, _ = _unwrap_builder_result(candidate_builder(TrainingRequest(
+            X[tr], y[tr], X[va], y[va], tr, va, None, None, None, None, config.random_state)))
+        control_metrics = evaluate_surrogate(oracle, X[va], y[va], control)
+        control_rows.append(control_metrics)
+        guard.record_selection(PartitionRole.TRAIN, f"generate_counterfactual_pool_cv_fold_{fold_no}", n_samples=int(len(tr)))
+        pool, audit = generate_counterfactual_pool(
+            oracle, X[tr], y[tr], names, original_tree=control, config=replace(config, random_state=config.random_state + fold_no),
+            constraints_config=constraints_config, ontology_validator=ontology_validator, progress_fn=progress_fn, cancel_fn=cancel_fn)
+        pool_audits.append(audit)
+        consistency.append(dict(consistency_indicators(oracle, control, pool), fold=fold_no))
+        guard.record_selection(PartitionRole.VALIDATION, f"cv_fold_{fold_no}_configuration_selection", n_samples=int(len(va)),
+                               subrole="configuration_selection")
+        for position, parameters in enumerate(grid):
+            if cancel_fn and cancel_fn():
+                raise InterruptedError("Melhoria cancelada.")
+            batch = prepare_counterfactual_augmentation(oracle, control, X[tr], y[tr], pool, parameters=parameters, config=config)
+            if batch.X is None:
+                per_param[position].append({"metrics": control_metrics, "used_cfs": False, "augmentation": batch.stats})
+                continue
+            tree, builder_audit = _unwrap_builder_result(candidate_builder(TrainingRequest(
+                X[tr], y[tr], X[va], y[va], tr, va, batch.X, batch.y, batch.weights, parameters, config.random_state)))
+            per_param[position].append({"metrics": evaluate_surrogate(oracle, X[va], y[va], tree), "used_cfs": True,
+                                        "augmentation": batch.stats, "builder_audit": builder_audit})
+        if progress_fn:
+            progress_fn("improvement_search", 35 + int(30 * (fold_no + 1) / len(folds)), "Validação cruzada (2 partições)...")
+    control_mean = _mean_metrics(control_rows)
+    candidates = []
+    for parameters, rows in zip(grid, per_param):
+        if not any(row["used_cfs"] for row in rows):
+            continue                                            # nenhuma partição teve CFs: não é uma configuração com CF
+        metrics = _mean_metrics([row["metrics"] for row in rows])
+        candidates.append({
+            "parameters": asdict(parameters), "metrics": metrics,
+            "score": _selection_score(metrics, control_mean["nodes"], config),
+            "augmentation": [row["augmentation"] for row in rows],
+            "builder_audit": [row.get("builder_audit", {}) for row in rows],
+            "folds_with_cfs": int(sum(row["used_cfs"] for row in rows)),
+            "_tree": None,
+        })
+    return candidates, control_mean, {"protocol": SELECTION_CV2, "folds": pool_audits}, consistency, fold_sizes
+
+
 def select_and_refit_improved_surrogate(
     *,
     model_name: str,
@@ -583,6 +807,37 @@ def select_and_refit_improved_surrogate(
     X_audit, y_audit = X[audit_idx], y[audit_idx]
     guard = EvaluationProtocolGuard(run_id=f"cf-improvement:{model_name}")
 
+    consistency_selection: Any = None
+    configuration_folds: Optional[List[List[int]]] = None
+    selection_control_audit: Dict[str, Any] = {}
+    if str(config.selection_protocol).lower() == SELECTION_CV2:
+        candidates, selection_control_metrics, pool_audit, consistency_selection, configuration_folds = _select_by_two_fold_cv(
+            oracle=oracle, X=X, y=y, work_idx=work_idx, names=names, candidate_builder=candidate_builder, config=config,
+            constraints_config=constraints_config, ontology_validator=ontology_validator, progress_fn=progress_fn,
+            cancel_fn=cancel_fn, guard=guard,
+        )
+    else:
+        candidates, selection_control_metrics, pool_audit, consistency_selection, selection_control_audit = _select_by_holdout(
+            oracle=oracle, X_fit=X_fit, y_fit=y_fit, X_selection=X_selection, y_selection=y_selection, fit_idx=fit_idx,
+            selection_idx=selection_idx, names=names, candidate_builder=candidate_builder, config=config,
+            constraints_config=constraints_config, ontology_validator=ontology_validator, progress_fn=progress_fn,
+            cancel_fn=cancel_fn, guard=guard, model_name=model_name,
+        )
+    return _finish_selection(
+        model_name=model_name, oracle=oracle, original_tree=original_tree, X=X, y=y, names=names, all_idx=all_idx,
+        work_idx=work_idx, audit_idx=audit_idx, fit_idx=fit_idx, selection_idx=selection_idx, X_work=X_work, y_work=y_work,
+        X_audit=X_audit, y_audit=y_audit, candidates=candidates, selection_control_metrics=selection_control_metrics,
+        pool_audit=pool_audit, consistency_selection=consistency_selection, configuration_folds=configuration_folds,
+        selection_control_audit=selection_control_audit, candidate_builder=candidate_builder, config=config, constraints_config=constraints_config,
+        ontology_validator=ontology_validator, progress_fn=progress_fn, cancel_fn=cancel_fn, guard=guard,
+    )
+
+
+def _select_by_holdout(
+    *, oracle, X_fit, y_fit, X_selection, y_selection, fit_idx, selection_idx, names, candidate_builder, config,
+    constraints_config, ontology_validator, progress_fn, cancel_fn, guard, model_name,
+):
+    """Protocolo BIURI (por omissão): uma validação interna escolhe a configuração."""
     # Controlo pareado: mesma reextração e mesma semente, mas sem CFs do tutor.
     selection_control_request = TrainingRequest(
         X_fit,
@@ -628,12 +883,7 @@ def select_and_refit_improved_surrogate(
     )
 
     candidates: List[Dict[str, Any]] = []
-    grid = [
-        CandidateParameters(int(max_cfs), str(types), float(ratio))
-        for max_cfs in config.max_cfs_grid
-        for types in config.cf_types_grid
-        for ratio in config.cf_weight_ratio_grid
-    ]
+    grid = _parameter_grid(config)
     for position, parameters in enumerate(grid):
         if cancel_fn and cancel_fn():
             raise InterruptedError("Melhoria cancelada.")
@@ -667,8 +917,8 @@ def select_and_refit_improved_surrogate(
         candidates.append({
             "parameters": asdict(parameters),
             "metrics": metrics,
-            "score": _multiobjective_score(
-                metrics, selection_control_metrics["nodes"]
+            "score": _selection_score(
+                metrics, selection_control_metrics["nodes"], config
             ),
             "augmentation": batch.stats,
             "builder_audit": builder_audit,
@@ -680,6 +930,32 @@ def select_and_refit_improved_surrogate(
                 35 + int(30 * (position + 1) / max(1, len(grid))),
                 f"Selecionando configuração CF para {model_name}...",
             )
+    consistency = consistency_indicators(oracle, selection_control, pool)
+    return candidates, selection_control_metrics, pool_audit, consistency, selection_control_audit
+
+
+def _finish_selection(
+    *, model_name, oracle, original_tree, X, y, names, all_idx, work_idx, audit_idx, fit_idx, selection_idx, X_work,
+    y_work, X_audit, y_audit, candidates, selection_control_metrics, pool_audit, consistency_selection,
+    configuration_folds, selection_control_audit, candidate_builder, config, constraints_config, ontology_validator,
+    progress_fn, cancel_fn, guard,
+):
+    """Gate de aceitação num bloco independente e reajuste final (igual para os dois protocolos de seleção)."""
+    partition_sizes = {
+        "configuration_fit": int(len(fit_idx)),
+        "configuration_selection": int(len(selection_idx)),
+        "acceptance_fit": int(len(work_idx)),
+        "acceptance_holdout": int(len(audit_idx)),
+        "final_refit_development": int(len(all_idx)),
+    }
+    if configuration_folds is not None:
+        partition_sizes["configuration_protocol"] = SELECTION_CV2
+        partition_sizes["configuration_folds"] = configuration_folds
+    consistency_diagnostic: Dict[str, Any] = {
+        "selection": consistency_selection,
+        "definition": "A=coincidência, B=divergência, C=brecha (proporções dos CFs válidos no oráculo; tese, 2.6.3)",
+        "role": "descriptive_only: não altera a decisão de aceitação",
+    }
 
     current_tree_metrics = evaluate_surrogate(oracle, X_audit, y_audit, original_tree)
     current_tree_note = (
@@ -700,13 +976,8 @@ def select_and_refit_improved_surrogate(
             "matched_no_cf_metrics_role": "configuration_selection_holdout",
             "candidate_metrics": None,
             "pool_audit": pool_audit,
-            "partition_sizes": {
-                "configuration_fit": int(len(fit_idx)),
-                "configuration_selection": int(len(selection_idx)),
-                "acceptance_fit": int(len(work_idx)),
-                "acceptance_holdout": int(len(audit_idx)),
-                "final_refit_development": int(len(all_idx)),
-            },
+            "partition_sizes": partition_sizes,
+            "consistency_diagnostic": consistency_diagnostic,
             "protocol_audit": guard.audit(),
             "locked_test_used": False,
             "final_test_evaluated": False,
@@ -752,6 +1023,7 @@ def select_and_refit_improved_surrogate(
         progress_fn=progress_fn,
         cancel_fn=cancel_fn,
     )
+    consistency_diagnostic["acceptance"] = consistency_indicators(oracle, audit_control, gate_pool)
     gate_batch = prepare_counterfactual_augmentation(
         oracle,
         audit_control,
@@ -825,6 +1097,7 @@ def select_and_refit_improved_surrogate(
             progress_fn=progress_fn,
             cancel_fn=cancel_fn,
         )
+        consistency_diagnostic["final"] = consistency_indicators(oracle, original_tree, final_pool)
         final_batch = prepare_counterfactual_augmentation(
             oracle,
             original_tree,
@@ -889,13 +1162,9 @@ def select_and_refit_improved_surrogate(
         "final_refit_audit": final_audit,
         "candidate_table": public_candidates,
         "config": asdict(config),
-        "partition_sizes": {
-            "configuration_fit": int(len(fit_idx)),
-            "configuration_selection": int(len(selection_idx)),
-            "acceptance_fit": int(len(work_idx)),
-            "acceptance_holdout": int(len(audit_idx)),
-            "final_refit_development": int(len(all_idx)),
-        },
+        "profile_notes": THESIS_PROFILE_NOTES if config.profile == PROFILE_THESIS else None,
+        "partition_sizes": partition_sizes,
+        "consistency_diagnostic": consistency_diagnostic,
         "protocol_audit": guard.audit(),
         "selection_estimate_only": True,
         "final_model_refit_on_all_development": bool(gate["accepted"]),
@@ -1027,6 +1296,8 @@ def evaluate_improvement(
 
 
 __all__ = [
+    "THESIS_PROFILE_NOTES",
+    "consistency_indicators",
     "AugmentationBatch",
     "CandidateParameters",
     "ImprovementSearchConfig",
