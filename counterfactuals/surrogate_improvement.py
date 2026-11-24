@@ -90,6 +90,11 @@ class ImprovementSearchConfig:
     # Orçamento que escala os pesos dos CFs (desired_total = ratio · orçamento). "sample_size": o mesmo da amostra
     # sintética do extrator (BIURI). "thesis": min(5000, max(3000, 5·n)), independente do extrator (tese).
     cf_weight_budget_rule: str = "sample_size"
+    # Como os pesos chegam à árvore. Os extratores TREPAN canónicos (congelados) não aceitam pesos por amostra e usam
+    # extra_X só como sementes reetiquetadas pelo oráculo. "replicate": cada semente entra round(peso) vezes (mín. 1),
+    # o que nas estatísticas de contagem do TREPAN (ganho, folhas, pureza, distribuições) equivale a um peso inteiro.
+    # "ignore": comportamento anterior (cada semente entra uma vez; pesos só ordenam a escolha dos CFs).
+    seed_weighting: str = "replicate"
 
     @classmethod
     def thesis_profile(cls, **overrides: Any) -> "ImprovementSearchConfig":
@@ -135,14 +140,42 @@ class ImprovementSearchConfig:
         return cls(**clean)
 
 
+def replicate_weighted_seeds(extra_X: Any, extra_weights: Any, *, mode: str = "replicate") -> Tuple[Optional[np.ndarray], Dict[str, Any]]:
+    """Converte pesos de sementes em multiplicidades: a linha i entra max(1, round(w_i)) vezes.
+
+    É a forma de dar efeito a ``sample_weight`` num algoritmo que só conta amostras, sem alterar o TREPAN canónico.
+    Para pesos inteiros é exato; para pesos não inteiros, o erro de quantização é auditado.
+    """
+    if extra_X is None:
+        return None, {"seed_weighting": str(mode), "n_seeds": 0}
+    matrix = np.asarray(extra_X, dtype=float)
+    if str(mode).lower() == "ignore" or extra_weights is None:
+        return matrix, {"seed_weighting": "ignore" if extra_weights is not None else "no_weights", "n_seeds": int(len(matrix)),
+                        "rows_passed": int(len(matrix))}
+    weights = np.asarray(extra_weights, dtype=float).reshape(-1)
+    if weights.shape != (len(matrix),) or not np.isfinite(weights).all() or (weights < 0).any():
+        raise ValueError("extra_weights incompatível com extra_X (tamanho, finitude ou sinal).")
+    copies = np.maximum(1, np.rint(weights).astype(int))
+    return np.repeat(matrix, copies, axis=0), {
+        "seed_weighting": "replicate",
+        "n_seeds": int(len(matrix)),
+        "rows_passed": int(copies.sum()),
+        "copies_min": int(copies.min()) if len(copies) else 0,
+        "copies_max": int(copies.max()) if len(copies) else 0,
+        "weight_sum": float(weights.sum()),
+        "quantization_abs_error": float(np.abs(copies - weights).sum()),
+    }
+
+
 THESIS_PROFILE_NOTES = (
     "Correções obrigatórias face ao código da tese: (1) os CFs de cada partição da validação cruzada são gerados só a "
     "partir das linhas de ajuste dessa partição (na tese eram gerados em todo o treino e reutilizados nas validações); "
     "(2) a accuracy do oráculo usada para ajustar cf_weight_ratio é medida no treino (na tese vinha de uma tabela "
     "por dataset com a accuracy no teste). Configurações por dataset (MLP, CLEAR) não são importadas: o BIURI é "
-    "agnóstico ao dataset. Limitação: os extratores TREPAN canónicos do BIURI usam os CFs e as âncoras como sementes "
-    "reetiquetadas pelo oráculo e ignoram extra_y/extra_weights; os pesos da tese só decidem QUAIS CFs entram (ordem "
-    "e corte por max_cfs), não a sua influência na árvore."
+    "agnóstico ao dataset. Os extratores TREPAN canónicos não aceitam pesos por amostra e reetiquetam as sementes com o "
+    "oráculo; com seed_weighting='replicate' (por omissão) cada semente entra round(peso) vezes, o que dá aos pesos "
+    "efeito nas contagens do TREPAN sem alterar o algoritmo congelado. Os rótulos reais das âncoras continuam "
+    "substituídos pelo oráculo (autoridade do oráculo)."
 )
 
 
@@ -1252,9 +1285,7 @@ def improve_surrogate(
         X_test=validation_X,
         y_train=np.asarray(y_train),
         y_test=validation_y,
-        extra_X=batch.X,
-        extra_y=batch.y,
-        extra_weights=batch.weights,
+        extra_X=replicate_weighted_seeds(batch.X, batch.weights, mode=config.seed_weighting)[0],
     )
     common.update(extract_kwargs)
     if extract_method == "extract_tree":
@@ -1299,6 +1330,7 @@ def evaluate_improvement(
 
 __all__ = [
     "THESIS_PROFILE_NOTES",
+    "replicate_weighted_seeds",
     "consistency_indicators",
     "AugmentationBatch",
     "CandidateParameters",

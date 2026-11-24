@@ -548,6 +548,7 @@ def improve_surrogates_from_session(
     from counterfactuals.engine import OntologyCFValidator
     from counterfactuals.surrogate_improvement import (
         ImprovementSearchConfig,
+        replicate_weighted_seeds,
         select_and_refit_improved_surrogate,
     )
 
@@ -588,9 +589,14 @@ def improve_surrogates_from_session(
     )
     constraints_config = dict(session.get('constraints') or session.get('config') or {})
 
+    def seeds(request):
+        """Pesos com efeito real: replicação das sementes (o TREPAN canónico não aceita pesos por amostra)."""
+        return replicate_weighted_seeds(request.extra_X, request.extra_weights, mode=config.seed_weighting)
+
     def original_builder(context):
         def build(request):
             from core.trepan_original import TrepanOriginalExtractor
+            seed_X, seed_audit = seeds(request)
             extractor = TrepanOriginalExtractor(random_state=int(request.seed))
             extractor.extract_tree(
                 context['oracle'],
@@ -604,11 +610,9 @@ def improve_surrogates_from_session(
                 y_train=request.y_train,
                 y_test=request.y_validation,
                 training_limits=context.get('training_limits'),
-                extra_X=request.extra_X,
-                extra_y=request.extra_y,
-                extra_weights=request.extra_weights,
+                extra_X=seed_X,
             )
-            return extractor.explainer_tree, dict(extractor.last_audit or {})
+            return extractor.explainer_tree, dict(extractor.last_audit or {}, counterfactual_seed_weighting=seed_audit)
         return build
 
     def reloaded_builder(context):
@@ -618,6 +622,7 @@ def improve_surrogates_from_session(
 
         def build(request):
             from core.trepan_reloaded_extractor import TrepanReloadedExtractor
+            seed_X, seed_audit = seeds(request)
             subcontext = dict(base_context)
             subcontext.update({
                 'X_train': request.X_train,
@@ -663,13 +668,11 @@ def improve_surrogates_from_session(
                     y_train=request.y_train,
                     y_test=request.y_validation,
                     reloaded_context=subcontext,
-                    extra_X=request.extra_X,
-                    extra_y=request.extra_y,
-                    extra_weights=request.extra_weights,
+                    extra_X=seed_X,
                 )
             finally:
                 np.random.set_state(random_state)
-            return extractor.explainer_tree, dict(extractor.last_audit or {})
+            return extractor.explainer_tree, dict(extractor.last_audit or {}, counterfactual_seed_weighting=seed_audit)
         return build
 
     def legacy_metrics(result):
