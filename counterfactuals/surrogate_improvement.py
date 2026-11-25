@@ -93,8 +93,10 @@ class ImprovementSearchConfig:
     # Como os pesos chegam à árvore. Os extratores TREPAN canónicos (congelados) não aceitam pesos por amostra e usam
     # extra_X só como sementes reetiquetadas pelo oráculo. "replicate": cada semente entra round(peso) vezes (mín. 1),
     # o que nas estatísticas de contagem do TREPAN (ganho, folhas, pureza, distribuições) equivale a um peso inteiro.
-    # "ignore": comportamento anterior (cada semente entra uma vez; pesos só ordenam a escolha dos CFs).
-    seed_weighting: str = "replicate"
+    # "ignore" (por omissão): cada semente entra uma vez; os pesos só ordenam a escolha dos CFs.
+    # Por omissão "ignore": numa comparação emparelhada (4 datasets × 5 sementes × 2 perfis) "replicate" não melhorou a
+    # fidelidade nem a balanced accuracy (diferenças médias ≤ 0, nenhuma sustentada) e reduziu as aceitações do gate.
+    seed_weighting: str = "ignore"
 
     @classmethod
     def thesis_profile(cls, **overrides: Any) -> "ImprovementSearchConfig":
@@ -173,7 +175,7 @@ THESIS_PROFILE_NOTES = (
     "(2) a accuracy do oráculo usada para ajustar cf_weight_ratio é medida no treino (na tese vinha de uma tabela "
     "por dataset com a accuracy no teste). Configurações por dataset (MLP, CLEAR) não são importadas: o BIURI é "
     "agnóstico ao dataset. Os extratores TREPAN canónicos não aceitam pesos por amostra e reetiquetam as sementes com o "
-    "oráculo; com seed_weighting='replicate' (por omissão) cada semente entra round(peso) vezes, o que dá aos pesos "
+    "oráculo; com seed_weighting='replicate' (opcional; por omissão 'ignore') cada semente entra round(peso) vezes, o que dá aos pesos "
     "efeito nas contagens do TREPAN sem alterar o algoritmo congelado. Os rótulos reais das âncoras continuam "
     "substituídos pelo oráculo (autoridade do oráculo)."
 )

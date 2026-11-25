@@ -92,6 +92,14 @@ class SurrogateImprovementDialog(QDialog):
         self.strict_density = QCheckBox("Rejeitar CFs fora do manifold empírico")
         self.strict_density.setChecked(True)
         form.addRow("Gate de plausibilidade", self.strict_density)
+
+        self.replicate_weights = QCheckBox("Dar efeito aos pesos dos CFs na árvore (replicação)")
+        self.replicate_weights.setChecked(False)
+        self.replicate_weights.setToolTip(
+            "Desligado (por omissão): cada CF entra uma vez e os pesos só ordenam a escolha. Ligado: cada CF entra "
+            "round(peso) vezes. Numa comparação emparelhada em 4 datasets não melhorou a árvore."
+        )
+        form.addRow("Pesos dos CFs", self.replicate_weights)
         root.addLayout(form)
         self.profile_combo.currentIndexChanged.connect(self._apply_profile)
 
@@ -139,6 +147,7 @@ class SurrogateImprovementDialog(QDialog):
                 "confidence_threshold": float(self.confidence_spin.value()),
                 "density_percentile": float(self.density_spin.value()),
                 "strict_density_gate": bool(self.strict_density.isChecked()),
+                "seed_weighting": "replicate" if self.replicate_weights.isChecked() else "ignore",
             }
         maximum = int(self.max_cfs_spin.value())
         max_grid = tuple(sorted({min(8, maximum), min(15, maximum), maximum}))
@@ -152,6 +161,7 @@ class SurrogateImprovementDialog(QDialog):
             "confidence_threshold": float(self.confidence_spin.value()),
             "density_percentile": float(self.density_spin.value()),
             "strict_density_gate": bool(self.strict_density.isChecked()),
+            "seed_weighting": "replicate" if self.replicate_weights.isChecked() else "ignore",
         }
 
 
