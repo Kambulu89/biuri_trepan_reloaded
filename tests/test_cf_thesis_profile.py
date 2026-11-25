@@ -189,6 +189,9 @@ def test_gui_dialog_offers_the_thesis_profile(qapp=None):
         opts = dlg.options()
         assert opts["profile"] == "tese" and "max_cfs_grid" not in opts and opts["sample_size"] == 2000
         assert not dlg.max_cfs_spin.isEnabled()
+        assert opts["seed_weighting"] == "ignore"
+        dlg.replicate_weights.setChecked(True)
+        assert dlg.options()["seed_weighting"] == "replicate"
         assert ImprovementSearchConfig.from_options({k: v for k, v in opts.items() if k != "target_model"}).selection_protocol == "cv2"
     finally:
         dlg.close()
@@ -210,8 +213,10 @@ def test_replication_turns_weights_into_multiplicities():
     assert replicate_weighted_seeds(None, None)[0] is None
     with pytest.raises(ValueError):
         replicate_weighted_seeds(X, np.asarray([1.0, -1.0, 1.0, 1.0]))
-    assert ImprovementSearchConfig().seed_weighting == "replicate"
-    assert ImprovementSearchConfig.thesis_profile().seed_weighting == "replicate"
+    assert ImprovementSearchConfig().seed_weighting == "ignore"                    # por omissão: pesos não replicados
+    assert ImprovementSearchConfig.thesis_profile().seed_weighting == "ignore"
+    assert ImprovementSearchConfig.from_options({"seed_weighting": "replicate"}).seed_weighting == "replicate"
+    assert ImprovementSearchConfig.from_options({"profile": "tese", "seed_weighting": "replicate"}).seed_weighting == "replicate"
 
 
 def test_weights_change_the_real_trepan_tree_and_ignore_mode_is_the_previous_behaviour():
